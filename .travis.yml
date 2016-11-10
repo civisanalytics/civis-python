@@ -1,0 +1,14 @@
+language: python
+python:
+    - "3.4"
+install:
+    - pip install -r requirements.txt
+    - pip install -r dev-requirements.txt
+    - pip install -e .
+env:
+  global:
+    - CIVIS_API_KEY=FOOBAR
+before_script: flake8 civis
+script:
+    - py.test --cov civis
+    - sphinx-build -b html -nW docs/source/ docs/build/

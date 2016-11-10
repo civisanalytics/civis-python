@@ -1,0 +1,206 @@
+from collections import defaultdict, OrderedDict
+import json
+import os
+import pytest
+from unittest import mock
+
+from jsonref import JsonRef
+
+from civis.resources import _resources
+
+THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+    civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
+
+
+RESPONSE_DOC = (
+"""Returns
+-------
+id : integer
+    The ID of the credential.
+name : string
+    The name identifying the credential
+type : string
+    The credential's type.
+username : string
+    The username for the credential.
+description : string
+    A long description of the credential.
+owner : string
+    The name of the user who this credential belongs to.
+remote_host_id : integer
+    The ID of the remote host associated with this credential.
+remote_host_name : string
+    The name of the remote host associated with this credential.
+created_at : string/time
+    The creation time for this credential.
+updated_at : string/time
+    The last modification time for this credential.""")  # noqa: E122
+
+
+def test_create_method_iterator_kwarg():
+    args = [{"name": 'limit', "in": 'query', "required": False, "doc": ""},
+            {"name": 'page_num', "in": 'query', "required": False, "doc": ""},
+            {"name": 'order', "in": 'query', "required": False, "doc": ""},
+            {"name": 'order_by', "in": 'query', "required": False, "doc": ""}]
+    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
+                                      'fake_doc')
+    mock_endpoint = mock.MagicMock()
+
+    method(mock_endpoint, iterator=True)
+    mock_endpoint._call_api.assert_called_once_with(
+        'get', '/objects', {}, {}, iterator=True)
+
+
+def test_create_method_no_iterator_kwarg():
+    # We don't do any validation on keyword arguments if **kwargs is in the
+    # signature. They are just ignored if they aren't in the expected body,
+    # query, or path params. Therefore, method should return a Type Error,
+    # but method2 contains **kwargs so should overwrite iterator = False
+    args = [{"name": 'id', "in": 'query', "required": True, "doc": ""}]
+    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
+                                      'fake_doc')
+    mock_endpoint = mock.MagicMock()
+
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, id=202, iterator=True)
+
+    assert 'keyword argument' in str(excinfo.value)
+
+    args2 = [{"name": 'foo', "in": 'query', "required": False, "doc": ""}]
+    method2 = _resources.create_method(args2, 'get', 'mock_name', '/objects',
+                                       'fake_doc')
+    mock_endpoint2 = mock.MagicMock()
+    method2(mock_endpoint2, iterator=True)
+    mock_endpoint2._call_api.assert_called_once_with(
+        'get', '/objects', {}, {}, iterator=False)
+
+
+def test_exclude_resource():
+    include = "tables/"
+    exclude = "excluded_in_base/"
+    assert _resources.exclude_resource(exclude, "1.0", "base")
+    assert not _resources.exclude_resource(include, "1.0", "base")
+    assert not _resources.exclude_resource(exclude, "9.0", "base")
+    assert not _resources.exclude_resource(exclude, "1.0", "all")
+
+
+def test_property_type():
+    prop = {"type": "array"}
+    prop2 = {"type": "object"}
+    prop3 = {"type": "string", "format": "date"}
+    assert _resources.property_type(prop) == "list"
+    assert _resources.property_type(prop2) == "dict"
+    assert _resources.property_type(prop3) == "string/date"
+
+
+def test_name_and_type_doc():
+    prop = {"type": "string"}
+    x = _resources.name_and_type_doc("A", prop, False, 0, True)
+    y = _resources.name_and_type_doc("A", prop, False, 1, True)
+    z = _resources.name_and_type_doc("A", prop, True, 0, False)
+    assert x == "a : string, optional"
+    assert y == "    - a : string, optional"
+    assert z == "a : string::"
+
+
+def test_docs_from_property():
+    prop = {"type": "array"}
+    prop2 = {"type": "object", "properties": {"A": prop}}
+    x = _resources.docs_from_property("A", prop, {}, 0, True)
+    y = _resources.docs_from_property("B", prop2, {}, 0, False)
+    assert sorted(x) == sorted(["a : list, optional"])
+    assert sorted(y) == sorted(["b : dict::", "    - a : list"])
+
+
+def test_docs_from_properties():
+    props = {"A": {"type": "string"}, "B": {"type": "integer"}}
+    x = _resources.docs_from_properties(props, 0)
+    y = _resources.docs_from_properties(props, 1)
+    assert sorted(x) == sorted(['a : string', 'b : integer'])
+    assert sorted(y) == sorted(['    - a : string', '    - b : integer'])
+
+
+def test_doc_from_responses():
+    responses = OrderedDict([('200', OrderedDict([('description', 'success'), ('schema', OrderedDict([('type', 'array'), ('items', OrderedDict([('type', 'object'), ('properties', OrderedDict([('id', OrderedDict([('description', 'The ID of the credential.'), ('type', 'integer')])), ('name', OrderedDict([('description', 'The name identifying the credential'), ('type', 'string')])), ('type', OrderedDict([('description', "The credential's type."), ('type', 'string')])), ('username', OrderedDict([('description', 'The username for the credential.'), ('type', 'string')])), ('description', OrderedDict([('description', 'A long description of the credential.'), ('type', 'string')])), ('owner', OrderedDict([('description', 'The name of the user who this credential belongs to.'), ('type', 'string')])), ('remoteHostId', OrderedDict([('description', 'The ID of the remote host associated with this credential.'), ('type', 'integer')])), ('remoteHostName', OrderedDict([('description', 'The name of the remote host associated with this credential.'), ('type', 'string')])), ('createdAt', OrderedDict([('description', 'The creation time for this credential.'), ('type', 'string'), ('format', 'time')])), ('updatedAt', OrderedDict([('description', 'The last modification time for this credential.'), ('type', 'string'), ('format', 'time')]))]))]))]))]))])  # noqa: E501
+    x = _resources.doc_from_responses(responses)
+    assert x == RESPONSE_DOC
+
+
+def test_iterable_method():
+    assert _resources.iterable_method("get", ["limit", "page_num"])
+    assert not _resources.iterable_method("get", ["page_num"])
+    assert not _resources.iterable_method("post", ["limit", "page_num"])
+
+
+def test_split_method_params():
+    params = [{"name": "a", "required": True, "in": "body"},
+              {"name": "b", "required": True, "in": "path"},
+              {"name": "c", "required": True, "in": "query"},
+              {"name": "d", "required": False, "in": "query"}]
+    x = _resources.split_method_params(params)
+    args, kwargs, body_params, query_params, path_params = x
+    assert sorted(args) == sorted(["a", "b", "c"])
+    assert kwargs == ["d"]
+    assert body_params == ["a"]
+    assert sorted(query_params) == sorted(["c", "d"])
+    assert path_params == ["b"]
+
+
+def test_parse_param():
+    param = {"name": "A", "in": "query", "required": True,
+             "description": "yeah!", "type": "string"}
+    x = _resources.parse_param(param)
+    expected = [{'in': 'query', 'name': 'a', 'required': True,
+                 'doc': 'a : string\n    yeah!\n'}]
+    assert x == expected
+
+
+def test_parse_params():
+    param = {"name": "A", "in": "query", "required": False,
+             "description": "yeah!", "type": "string"}
+    param2 = {"name": "B", "in": "path", "required": True,
+              "description": "nah!", "type": "integer"}
+    x, y = _resources.parse_params([param, param2], "summary!", "get")
+    expect_x, expect_y = ([{'in': 'query', 'doc': 'a : string, optional\n    yeah!\n', 'required': False, 'name': 'a'}, {'in': 'path', 'doc': 'b : integer\n    nah!\n', 'required': True, 'name': 'b'}], 'summary!\n\nParameters\n----------\nb : integer\n    nah!\na : string, optional\n    yeah!\n')  # noqa: E501
+    assert x == expect_x
+    assert y == expect_y
+
+
+def test_parse_param_body():
+    expected = [{'required': False, 'name': 'a', 'in': 'body',
+                 'doc': 'a : list, optional\n'}]
+    param_body = {"schema": {"properties": {"A": {"type": "array"}}}}
+    x = _resources.parse_param_body(param_body)
+    assert x == expected
+
+
+def test_parse_method_name():
+    x = _resources.parse_method_name("get", "url.com/containers")
+    y = _resources.parse_method_name("get", "url.com/containers/{id}")
+    z = _resources.parse_method_name("get",
+                                     "url.com/containers/{id}/runs/{run_id}")
+    a = _resources.parse_method_name("post",
+                                     "url.com/containers/{id}/runs/{run_id}")
+    b = _resources.parse_method_name("get", "url.com/containers/{id}/{run_id}")
+    c = _resources.parse_method_name("get",
+                                     "url.com/containers/{id}/{run_id}/shares")
+    assert x == "list_containers"
+    assert y == "get_containers"
+    assert z == "get_containers_runs"
+    assert a == "post_containers_runs"
+    assert b == "get_containers_id"
+    assert c == "list_containers_id_shares"
+
+
+def test_duplicate_names_generated_from_swagger():
+    resolved_civis_api_spec = JsonRef.replace_refs(civis_api_spec)
+    paths = resolved_civis_api_spec['paths']
+    classes = defaultdict(list)
+    for path, ops in paths.items():
+        class_name, methods = _resources.parse_path(path, ops, "1.0", "all")
+        method_names = [x[0] for x in methods]
+        classes[class_name].extend(method_names)
+    for cls, names in classes.items():
+        err_msg = "Duplicate methods in {}: {}".format(cls, sorted(names))
+        assert len(set(names)) == len(names), err_msg

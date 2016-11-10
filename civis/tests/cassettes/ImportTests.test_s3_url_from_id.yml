@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [civisclient/2.0.0]
+    method: GET
+    uri: https://api.civisanalytics.com/models/types
+  response:
+    body:
+      string: !!binary |
+        H4sIAEnJD1gAA5zTTUsDMRAG4L8Sct6DsfWrN1tqLxXBFj2Ih6lJ14FsZplkbYv43w0IYsS2s14n
+        zMO8k+TpXaPVI1Np8DUxptdGj/SiBY5OzanGmPBFV9q+LXety0djDMC7XFljSNfe08bl/sSd+6i+
+        rNPSeqBNC149wmqF6bi0Bh+/qYF4rNvOJwzUIPiD4vBPcUIhd3fUxZ9mUd0b90w84x3bHPnwfOel
+        NmOw6EJSY6LMhVot2bnYc40XvVHpOi97y/uXWsBXJXwPwVKjbohd7PuIzInQkoY2RggKs5pfP2a6
+        TQz/umgzEEnioEMRdyzm8ycAAAD//wMANsHkm2UEAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['260']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 25 Oct 2016 21:06:17 GMT']
+      ETag: [W/"ccbc43d66ecc4cb3d4b3f11a29b140a4"]
+      Server: [nginx/1.8.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [5f2b591c-9f5b-4f35-8bf9-944b1670dc32]
+      X-Runtime: ['0.281328']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [civisclient/2.0.0]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/4523282/history
+  response:
+    body:
+      string: !!binary |
+        H4sIAErJD1gAA4xRW3OiMBj9L8z45gXCTZxxdkBpRbTVYrXa7UOAIKmYAAkKdPrfN067j7vTmTx8
+        OXMuOV9ePyQcSyNVV1QdaFZXYkXmCUDTgQqGQNw55EgaSayKIoRiFEtdCbMJJBHKnlBRIcYFNkpg
+        xlBXSjDBLEWxzYUEyIrRU+Qe0DdAFhEjRe7LsnwQDqgsaSmNSJVlXYlWPK+E4PXje3yA51tkNAxh
+        HKpqEluapgyBGCE0wlDXtUSLVLMfsYvwyiFPBTvlPGejwSDCF8x6ESWMZqjP1D48w5YSeGX9iJ4H
+        qM5pydngu+Dgb/PBT9J+2bvAFntgzEeNF4/twLO9uaa6uuObYGauNgv7dyXLwHDrHJeIjRXNNHXd
+        UszhFx7gI4G8KtHY8CNtQdzwmFipNdVPB6dSYEwqJ/A66vSLLRxyUQTd6nBEeC/GAmCYY0rGkHMY
+        pWcBd1SnA+QEZ4iIzQl1B4Cf1BG0f+TwJkdjjmreAXeC+MWqe/Dc9hiKqhLzpsfpCZHx3ZpO9y9x
+        6y5Dwf3PubpwOq+NcLLNd+2xEEisV5OJz+ztRsMLHDVDeWEf0mRTZWC/Tsviod1tHq313k8v97o7
+        84pJ8CxkQx9hlxyhV/NL5l69cibAxjls5+rd+4ImthXKRliGs+K61KkHGnOVqzlaJlnS+Ge3Axyl
+        cHaNxtHpZAyn9wJ4eloKD2pNVyAg6f7kvizs8jwLIQvAAdvRs/NY45fwOCdrgC4yPqR8xedtuWlv
+        76msB2PlrWdZrgZaYkZzv8wWjvHuQLeUW2sZkjVdwa3tKmzXHOv5vUab3L+txH4WnyV9vn2+/QEA
+        AP//AwAErgY3iAMAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['640']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 25 Oct 2016 21:06:18 GMT']
+      ETag: [W/"f556e9a68ed23e7bd320a65b61ffa857"]
+      Server: [nginx/1.8.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [12f12380-f55f-4453-b1a0-711666c05928]
+      X-Runtime: ['0.583821']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+recorded_with: VCR
+version: 1

@@ -1,0 +1,6 @@
+pytest>=2.7.0,<=2.7.9
+sphinx
+flake8
+pytest-cov
+vcrpy>=1.10.0,<=1.10.9
+vcrpy-unittest==0.1.6
