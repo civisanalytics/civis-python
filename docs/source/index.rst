@@ -22,8 +22,8 @@ Alternatively, you may clone the code from github and build from source:
 
 .. code-block:: bash
 
-   git clone https://github.com/civisanalytics/civis-client.git
-   cd civis-client
+   git clone https://github.com/civisanalytics/civis-python.git
+   cd civis-python
    python setup.py install
 
 The client has a soft dependency on ``pandas`` to support features such as
