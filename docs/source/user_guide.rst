@@ -17,7 +17,7 @@ can now import the package ``civis``:
 
 There are two entrypoints for working with the Civis API. The first is
 the ``civis`` namespace, which contains tools for typical workflows in a user
-friendly-manner. For example, you may want to perform some tranformation on
+friendly manner. For example, you may want to perform some transformation on
 your data in Python that might be tricky to code in SQL. This code downloads
 data from Civis, calculates the correlation between all the columns and then
 uploads the data back into Civis:
