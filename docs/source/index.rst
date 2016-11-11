@@ -16,7 +16,7 @@ The recommended install method is pip:
 
 .. code-block:: bash
 
-   pip install git+git://github.com/civisanalytics/civis-python.git
+   pip install civis
 
 Alternatively, you may clone the code from github and build from source:
 

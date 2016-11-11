@@ -22,7 +22,7 @@ requests directly to the Civis API. See the
 5. Install the package
 
     ```
-    pip install git+git://github.com/civisanalytics/civis-python.git
+    pip install civis
     ```
 6. Optionally, install `pandas` to enable some functionality in `civis-python`
 
