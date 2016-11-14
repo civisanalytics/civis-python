@@ -30,7 +30,7 @@ uploads the data back into Civis:
    >>> correlation_matrix = df.corr()
    >>> correlation_matrix["corr_var"] = correlation_matrix.index
    >>> poller = civis.io.dataframe_to_civis(df=df,
-   ...                                      database="database")
+   ...                                      database="database",
    ...                                      table="my_schema.my_correlations")
    >>> poller.result()
 
