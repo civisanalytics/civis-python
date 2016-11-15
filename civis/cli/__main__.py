@@ -53,6 +53,7 @@ class YAMLParamType(click.ParamType):
         except Exception:
             self.fail("Could not load YAML from path: %s", value)
 
+
 YAML = YAMLParamType()
 
 
