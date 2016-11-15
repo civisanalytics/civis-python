@@ -29,7 +29,7 @@ uploads the data back into Civis:
    ...                          use_pandas=True)
    >>> correlation_matrix = df.corr()
    >>> correlation_matrix["corr_var"] = correlation_matrix.index
-   >>> poller = civis.io.dataframe_to_civis(df=df,
+   >>> poller = civis.io.dataframe_to_civis(df=correlation_matrix,
    ...                                      database="database",
    ...                                      table="my_schema.my_correlations")
    >>> poller.result()
