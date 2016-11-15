@@ -1,5 +1,5 @@
 pyyaml>=3.0,<=3.99
 click>=6.0,<=6.99
 jsonref>=0.1.0,<=0.1.99
-requests==2.7.0
-jsonschema==2.5.1
+requests>=2.7.0,==2.*
+jsonschema>=2.5.1,==2.*
