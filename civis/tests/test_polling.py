@@ -97,5 +97,6 @@ class TestPolling(unittest.TestCase):
             polling_interval=0.1)
         pytest.raises(ZeroDivisionError, pollable.result, timeout=5)
 
+
 if __name__ == '__main__':
     unittest.main()

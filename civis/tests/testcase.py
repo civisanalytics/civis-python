@@ -43,6 +43,8 @@ def github_serialize(cassette_dict, serializer):
         'recorded_with': 'VCR'
     }
     return serializer.serialize(data)
+
+
 persist.serialize = github_serialize
 
 
