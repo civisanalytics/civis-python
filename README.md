@@ -53,6 +53,18 @@ database = client.databases.list()
 See the [full documentation](https://civis-python.readthedocs.io) for a more
 complete user guide.
 
+# Build Documentation Locally
+To build the API documentation locally
+
+```bash
+cd docs
+make html
+```
+
+Then open `docs/build/html/index.html`.
+
+Note that this will use your API key in the `CIVIS_API_KEY` environment
+variable so it will generate documentation for all the endpoints that you have access to.
 
 # Contributing
 
