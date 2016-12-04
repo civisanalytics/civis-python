@@ -273,8 +273,8 @@ def dataframe_to_civis(df, database, table, api_key=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'`` or ``'append'``. Defaults to
-        ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
+        Defaults to ``'fail'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -349,8 +349,8 @@ def csv_to_civis(filename, database, table, api_key=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'`` or ``'append'``. Defaults to
-        ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
+        Defaults to ``'fail'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
