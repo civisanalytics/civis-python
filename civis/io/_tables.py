@@ -190,9 +190,11 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
         poll.add_done_callback(f)
     poll.result()
-    url = client.scripts.get_sql_runs(script_id, run_id)["output"][0]["path"]
-    if not url:
-        raise EmptyResultError('Query {} returned no rows.'.format(script_id))
+    outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
+    if not outputs:
+        raise EmptyResultError("Query {} returned no output."
+                               .format(script_id))
+    url = outputs[0]["path"]
     if use_pandas:
         data = pd.read_csv(url, **kwargs)
     else:
