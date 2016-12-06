@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 import requests
 
+from io import TextIOBase
 from civis import APIClient
 from civis.base import EmptyResultError
 
@@ -50,7 +51,7 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
 
     url = file_response.upload_url
 
-    if NO_TOOLBELT:
+    if NO_TOOLBELT or isinstance(buf, TextIOBase):
         response = requests.post(url, files=form_key)
     else:
         encoder = MultipartEncoder(form_key)
