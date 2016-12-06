@@ -1,16 +1,21 @@
 import csv
 import tempfile
 
+from civis import APIClient
+from civis._utils import maybe_get_random_name
+from civis.base import EmptyResultError
+from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
+import requests
+
+try:
+    from io import StringIO
+except ImportError:
+    from cStringIO import StringIO
 try:
     import pandas as pd
     NO_PANDAS = False
 except ImportError:
     NO_PANDAS = True
-import requests
-
-from civis import APIClient
-from civis._utils import maybe_get_random_name
-from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
 
 
 DELIMITERS = {
@@ -172,17 +177,30 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
-    with tempfile.NamedTemporaryFile(mode="w+") as f:
-        csv_poll = civis_to_csv(f.name, sql=sql, database=database,
-                                job_name=job_name, credential_id=credential_id,
-                                polling_interval=polling_interval,
-                                archive=archive, api_key=api_key)
-        csv_poll.result()
-        if use_pandas:
-            data = pd.read_csv(f.name, **kwargs)
-        else:
-            data = list(csv.reader(f, **kwargs))
+    client = APIClient(api_key=api_key)
+    script_id, run_id = _sql_script(client, sql, database,
+                                    job_name, credential_id)
+    poll = PollableResult(client.scripts.get_sql_runs,
+                          (script_id, run_id),
+                          polling_interval)
+    if archive:
 
+        def f(x):
+            return client.scripts.put_sql_archive(script_id, True)
+
+        poll.add_done_callback(f)
+    poll.result()
+    outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
+    if not outputs:
+        raise EmptyResultError("Query {} returned no output."
+                               .format(script_id))
+    url = outputs[0]["path"]
+    if use_pandas:
+        data = pd.read_csv(url, **kwargs)
+    else:
+        r = requests.get(url)
+        r.raise_for_status()
+        data = list(csv.reader(StringIO(r.text), **kwargs))
     return data
 
 
