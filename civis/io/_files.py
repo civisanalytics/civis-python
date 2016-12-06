@@ -5,6 +5,12 @@ import requests
 from civis import APIClient
 from civis.base import EmptyResultError
 
+try:
+    from requests_toolbelt.multipart.encoder import MultipartEncoder
+    NO_TOOLBELT = False
+except ImportError:
+    NO_TOOLBELT = True
+
 
 def file_to_civis(buf, name, api_key=None, **kwargs):
     """Upload a file to Civis.
@@ -43,7 +49,13 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     form_key['file'] = buf
 
     url = file_response.upload_url
-    response = requests.post(url, files=form_key)
+
+    if NO_TOOLBELT:
+        response = requests.post(url, files=form_key)
+    else:
+        encoder = MultipartEncoder(form_key)
+        response = requests.post(url, data=encoder, headers={'Content-Type': encoder.content_type})
+
     response.raise_for_status()
 
     return file_response.id
