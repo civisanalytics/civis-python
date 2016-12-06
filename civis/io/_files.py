@@ -54,7 +54,8 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
         response = requests.post(url, files=form_key)
     else:
         encoder = MultipartEncoder(form_key)
-        response = requests.post(url, data=encoder, headers={'Content-Type': encoder.content_type})
+        header = {'Content-Type': encoder.content_type}
+        response = requests.post(url, data=encoder, headers=header)
 
     response.raise_for_status()
 
