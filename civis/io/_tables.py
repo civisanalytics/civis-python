@@ -172,7 +172,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
-    with tempfile.NamedTemporaryFile(mode="w+") as f:
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as f:
         csv_poll = civis_to_csv(f.name, sql=sql, database=database,
                                 job_name=job_name, credential_id=credential_id,
                                 polling_interval=polling_interval,
@@ -310,7 +310,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
     ...                                      'scratch.df_table')
     >>> poller.result()
     """
-    with tempfile.NamedTemporaryFile() as f:
+    with tempfile.NamedTemporaryFile(delete=False) as f:
         df.to_csv(f.name, index=False, **kwargs)
         poll = csv_to_civis(f.name, database=database, table=table,
                             api_key=api_key, max_errors=max_errors,
