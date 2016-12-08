@@ -65,7 +65,10 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
 
     if isinstance(response, requests.Response):
         headers = response.headers
-        data = _response_to_json(response)
+        if response.status_code in [204, 205]:
+            data = {}
+        else:
+            data = _response_to_json(response)
     else:
         data = response
 
