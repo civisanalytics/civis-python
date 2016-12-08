@@ -15,10 +15,11 @@ from civis.response import (
 )
 
 
-def _create_mock_response(data, headers):
+def _create_mock_response(data, headers, status_code=200):
     mock_response = mock.MagicMock(spec=requests.Response)
     mock_response.json.return_value = data
     mock_response.headers = headers
+    mock_response.status_code = status_code
     return mock_response
 
 
@@ -135,3 +136,11 @@ def test_convert_data_type_civis_list():
     assert isinstance(data[0], Response)
     assert data[0]['foo'] == 'bar'
     assert data[0].headers == {'header': 'val'}
+
+def test_convert_data_type_no_content():
+    response = _create_mock_response(None, {'header': 'val'}, 204)
+    response.json.side_effect = Exception('parse error')
+    data = convert_response_data_type(response, return_type='snake')
+
+    assert isinstance(data, Response)
+    assert data.json_data == {}
