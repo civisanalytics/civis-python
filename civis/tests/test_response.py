@@ -19,6 +19,14 @@ def _create_mock_response(data, headers):
     mock_response = mock.MagicMock(spec=requests.Response)
     mock_response.json.return_value = data
     mock_response.headers = headers
+    mock_response.status_code = 200
+    return mock_response
+
+
+def _create_empty_response(code, headers):
+    mock_response = mock.MagicMock(spec=requests.Response)
+    mock_response.status_code = code
+    mock_response.headers = headers
     return mock_response
 
 
@@ -69,9 +77,18 @@ def test_pagination():
 
 
 def test_response_to_json_no_error():
-    raw_response = mock.MagicMock()
-    raw_response.json.return_value = {'key': 'value'}
+    raw_response = _create_mock_response({'key': 'value'}, None)
     assert _response_to_json(raw_response) == {'key': 'value'}
+
+
+def test_response_to_no_content_snake():
+    for code in [204, 205]:
+        raw_response = _create_empty_response(code, {'header1': 'val1'})
+        data = convert_response_data_type(raw_response, return_type='snake')
+
+        assert isinstance(data, Response)
+        assert data.json_data is None
+        assert data.headers == {'header1': 'val1'}
 
 
 def test_response_to_json_parsing_error():

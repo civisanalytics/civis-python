@@ -65,9 +65,6 @@ class Endpoint:
             response = self._session.request(method, url, json=data,
                                              params=params, **kwargs)
 
-        if response.status_code in [204, 205]:
-            return
-
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]
             raise CivisAPIKeyError(auth_error) from CivisAPIError(response)
