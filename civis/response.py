@@ -22,19 +22,23 @@ def _response_to_json(response):
 
     Returns
     -------
-    dict
-        The data in the response body.
+    dict | None
+        The data in the response body or None if the response has no
+        content.
 
     Raises
     ------
     CivisClientError
         If the data in the raw response cannot be parsed.
     """
-    try:
-        return response.json()
-    except ValueError:
-        raise CivisClientError("Unable to parse JSON from response",
-                               response)
+    if response.status_code in [204, 205]:
+        return None
+    else:
+        try:
+            return response.json()
+        except ValueError:
+            raise CivisClientError("Unable to parse JSON from response",
+                                   response)
 
 
 def convert_response_data_type(response, headers=None, return_type='snake'):
@@ -89,9 +93,10 @@ class Response(dict):
 
     Attributes
     ----------
-    json_data : dict
+    json_data : dict | None
         This is `json_data` as it is originally returned to the user without
-        the key names being changed. See Notes.
+        the key names being changed. See Notes. None is used if the original
+        response returned a 204 No Content response.
     headers : dict
         This is the header for the API call without changing the key names.
     calls_remaining : int
@@ -113,19 +118,21 @@ class Response(dict):
             self.calls_remaining = headers.get('X-RateLimit-Remaining')
             self.rate_limit = headers.get('X-RateLimit-Limit')
 
-        for key, v in json_data.items():
-            if snake_case:
-                key = camel_to_snake(key)
+        if json_data is not None:
+            for key, v in json_data.items():
+                if snake_case:
+                    key = camel_to_snake(key)
 
-            if isinstance(v, dict):
-                val = Response(v, False)
-            elif isinstance(v, list):
-                val = [Response(o) if isinstance(o, dict) else o for o in v]
-            else:
-                val = v
+                if isinstance(v, dict):
+                    val = Response(v, False)
+                elif isinstance(v, list):
+                    val = [Response(o) if isinstance(o, dict) else o
+                           for o in v]
+                else:
+                    val = v
 
-            self.update({key: val})
-            self.__dict__.update({key: val})
+                self.update({key: val})
+                self.__dict__.update({key: val})
 
 
 class PaginatedResponse:
