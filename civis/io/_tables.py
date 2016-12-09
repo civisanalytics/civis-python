@@ -1,5 +1,5 @@
 import csv
-import tempfile
+import io
 
 from civis import APIClient
 from civis._utils import maybe_get_random_name
@@ -328,17 +328,16 @@ def dataframe_to_civis(df, database, table, api_key=None,
     ...                                      'scratch.df_table')
     >>> poller.result()
     """
-    with tempfile.NamedTemporaryFile() as f:
-        df.to_csv(f.name, index=False, **kwargs)
-        poll = csv_to_civis(f.name, database=database, table=table,
-                            api_key=api_key, max_errors=max_errors,
-                            distkey=distkey, sortkey1=sortkey1,
-                            sortkey2=sortkey2, delimiter=',',
-                            headers=headers, credential_id=credential_id,
-                            polling_interval=_DEFAULT_POLLING_INTERVAL,
-                            existing_table_rows=existing_table_rows,
-                            archive=archive)
-    return poll
+    buf = io.BytesIO()
+    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    df.to_csv(txt, encoding='utf-8', index=False, **kwargs)
+    txt.flush()
+    buf.seek(0)
+    delimiter = ','
+    return _import_bytes(buf, database, table, api_key, max_errors,
+                         existing_table_rows, distkey, sortkey1, sortkey2,
+                         delimiter, headers, credential_id, polling_interval,
+                         archive)
 
 
 def csv_to_civis(filename, database, table, api_key=None,
@@ -408,35 +407,11 @@ def csv_to_civis(filename, database, table, api_key=None,
     ...                                'scratch.my_data')
     >>> poller.result()
     """
-    client = APIClient(api_key=api_key)
-    schema, table = table.split(".", 1)
-    db_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
-    delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
-
-    kwargs = dict(schema=schema, name=table, remote_host_id=db_id,
-                  credential_id=cred_id, max_errors=max_errors,
-                  existing_table_rows=existing_table_rows, distkey=distkey,
-                  sortkey1=sortkey1, sortkey2=sortkey2,
-                  column_delimiter=delimiter, first_row_is_header=headers)
-
-    import_job = client.imports.post_files(**kwargs)
     with open(filename, "rb") as data:
-        put_response = requests.put(import_job.upload_uri, data)
-    put_response.raise_for_status()
-    run_job_result = client._session.post(import_job.run_uri)
-    run_job_result.raise_for_status()
-    run_info = run_job_result.json()
-    poll = PollableResult(client.imports.get_files_runs,
-                          (run_info['importId'], run_info['id']),
-                          polling_interval=polling_interval)
-    if archive:
-
-        def f(x):
-            return client.imports.put_archive(import_job.id, True)
-
-        poll.add_done_callback(f)
+        poll = _import_bytes(data, database, table, api_key, max_errors,
+                             existing_table_rows, distkey, sortkey1, sortkey2,
+                             delimiter, headers, credential_id,
+                             polling_interval, archive)
     return poll
 
 
@@ -478,3 +453,38 @@ def _download_callback(job_id, run_id, client, filename):
         return _download_file(url, filename)
 
     return callback
+
+
+def _import_bytes(buf, database, table, api_key, max_errors,
+                  existing_table_rows, distkey, sortkey1, sortkey2, delimiter,
+                  headers, credential_id, polling_interval, archive):
+    client = APIClient(api_key=api_key)
+    schema, table = table.split(".", 1)
+    db_id = client.get_database_id(database)
+    cred_id = credential_id or client.default_credential
+    delimiter = DELIMITERS.get(delimiter)
+    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+
+    kwargs = dict(schema=schema, name=table, remote_host_id=db_id,
+                  credential_id=cred_id, max_errors=max_errors,
+                  existing_table_rows=existing_table_rows, distkey=distkey,
+                  sortkey1=sortkey1, sortkey2=sortkey2,
+                  column_delimiter=delimiter, first_row_is_header=headers)
+
+    import_job = client.imports.post_files(**kwargs)
+    put_response = requests.put(import_job.upload_uri, buf)
+
+    put_response.raise_for_status()
+    run_job_result = client._session.post(import_job.run_uri)
+    run_job_result.raise_for_status()
+    run_info = run_job_result.json()
+    poll = PollableResult(client.imports.get_files_runs,
+                          (run_info['importId'], run_info['id']),
+                          polling_interval=polling_interval)
+    if archive:
+
+        def f(x):
+            return client.imports.put_archive(import_job.id, True)
+
+        poll.add_done_callback(f)
+    return poll
