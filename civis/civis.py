@@ -244,7 +244,6 @@ class MetaMixin():
         """The current user's default credential."""
         # NOTE: this should be optional to endpoints...so this could go away
         creds = self.credentials.list(default=True)
-        cred = creds[0]
         return creds[0]['id'] if len(creds) > 0 else None
 
     @property
