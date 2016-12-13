@@ -6,6 +6,7 @@ from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
 import requests
+import warnings
 
 try:
     from io import StringIO
@@ -28,7 +29,7 @@ DELIMITERS = {
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, credential_id=None,
                polling_interval=_DEFAULT_POLLING_INTERVAL,
-               archive=True, **kwargs):
+               archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -55,9 +56,10 @@ def read_civis(table, database, columns=None, use_pandas=False,
         will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional
-        If ``True`` (the default), archive the export job as soon as it
-        completes.
+    archive : bool, optional (deprecated)
+        If ``True``, archive the import job as soon as it completes.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
         :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
@@ -97,19 +99,22 @@ def read_civis(table, database, columns=None, use_pandas=False,
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
+    if archive:
+        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
+                      "Use `hidden` instead.", FutureWarning)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
                           job_name=job_name, api_key=api_key,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
-                          archive=archive, **kwargs)
+                          archive=archive, hidden=hidden, **kwargs)
     return data
 
 
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, credential_id=None,
                    polling_interval=_DEFAULT_POLLING_INTERVAL,
-                   archive=True, **kwargs):
+                   archive=False, hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -133,9 +138,10 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional
-        If ``True`` (the default), archive the export job as soon as it
-        completes.
+    archive : bool, optional (deprecated)
+        If ``True``, archive the import job as soon as it completes.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
         :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
@@ -177,9 +183,13 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
+    if archive:
+        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
+                      "Use `hidden` instead.", FutureWarning)
     client = APIClient(api_key=api_key)
     script_id, run_id = _sql_script(client, sql, database,
-                                    job_name, credential_id)
+                                    job_name, credential_id,
+                                    hidden=hidden)
     poll = PollableResult(client.scripts.get_sql_runs,
                           (script_id, run_id),
                           polling_interval)
@@ -205,8 +215,8 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
 
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
-                 credential_id=None,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL, archive=True):
+                 credential_id=None, archive=False, hidden=True,
+                 polling_interval=_DEFAULT_POLLING_INTERVAL):
     """Export data from Civis to a local CSV file.
 
     Parameters
@@ -228,9 +238,10 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         credential will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional
-        If ``True`` (the default), archive the export job as soon as it
-        completes.
+    archive : bool, optional (deprecated)
+        If ``True``, archive the import job as soon as it completes.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
 
     Returns
     -------
@@ -248,9 +259,13 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     civis.io.read_civis : Read table contents into memory.
     civis.io.read_civis_sql : Read results of a SQL query into memory.
     """
+    if archive:
+        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
+                      "Use `hidden` instead.", FutureWarning)
     client = APIClient(api_key=api_key)
     script_id, run_id = _sql_script(client, sql, database,
-                                    job_name, credential_id)
+                                    job_name, credential_id,
+                                    hidden=hidden)
     poll = PollableResult(client.scripts.get_sql_runs,
                           (script_id, run_id),
                           polling_interval)
@@ -271,7 +286,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
                        distkey=None, sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
                        polling_interval=_DEFAULT_POLLING_INTERVAL,
-                       archive=True, **kwargs):
+                       archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
     Parameters
@@ -308,9 +323,10 @@ def dataframe_to_civis(df, database, table, api_key=None,
         credential will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
-    archive : bool, optional
-        If ``True`` (the default), archive the import job as soon as it
-        completes.
+    archive : bool, optional (deprecated)
+        If ``True``, archive the import job as soon as it completes.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments will be passed to
         :meth:`pandas:pandas.DataFrame.to_csv`.
@@ -328,6 +344,9 @@ def dataframe_to_civis(df, database, table, api_key=None,
     ...                                      'scratch.df_table')
     >>> poller.result()
     """
+    if archive:
+        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
+                      "Use `hidden` instead.", FutureWarning)
     buf = io.BytesIO()
     txt = io.TextIOWrapper(buf, encoding='utf-8')
     df.to_csv(txt, encoding='utf-8', index=False, **kwargs)
@@ -337,7 +356,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
     return _import_bytes(buf, database, table, api_key, max_errors,
                          existing_table_rows, distkey, sortkey1, sortkey2,
                          delimiter, headers, credential_id, polling_interval,
-                         archive)
+                         archive, hidden=hidden)
 
 
 def csv_to_civis(filename, database, table, api_key=None,
@@ -346,7 +365,7 @@ def csv_to_civis(filename, database, table, api_key=None,
                  delimiter=",", headers=None,
                  credential_id=None,
                  polling_interval=_DEFAULT_POLLING_INTERVAL,
-                 archive=True):
+                 archive=False, hidden=True):
     """Upload the contents of a local CSV file to Civis.
 
     Parameters
@@ -385,9 +404,10 @@ def csv_to_civis(filename, database, table, api_key=None,
         credential will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
-    archive : bool, optional
-        If ``True`` (the default), archive the import job as soon as it
-        completes.
+    archive : bool, optional (deprecated)
+        If ``True``, archive the import job as soon as it completes.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
 
     Returns
     -------
@@ -407,22 +427,26 @@ def csv_to_civis(filename, database, table, api_key=None,
     ...                                'scratch.my_data')
     >>> poller.result()
     """
+    if archive:
+        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
+                      "Use `hidden` instead.", FutureWarning)
     with open(filename, "rb") as data:
         poll = _import_bytes(data, database, table, api_key, max_errors,
                              existing_table_rows, distkey, sortkey1, sortkey2,
                              delimiter, headers, credential_id,
-                             polling_interval, archive)
+                             polling_interval, archive, hidden=hidden)
     return poll
 
 
-def _sql_script(client, sql, database, job_name, credential_id):
+def _sql_script(client, sql, database, job_name, credential_id, hidden=False):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     export_job = client.scripts.post_sql(job_name,
                                          remote_host_id=db_id,
                                          credential_id=cred_id,
-                                         sql=sql)
+                                         sql=sql,
+                                         hidden=hidden)
     run_job = client.scripts.post_sql_runs(export_job.id)
     return export_job.id, run_job.id
 
@@ -457,7 +481,7 @@ def _download_callback(job_id, run_id, client, filename):
 
 def _import_bytes(buf, database, table, api_key, max_errors,
                   existing_table_rows, distkey, sortkey1, sortkey2, delimiter,
-                  headers, credential_id, polling_interval, archive):
+                  headers, credential_id, polling_interval, archive, hidden):
     client = APIClient(api_key=api_key)
     schema, table = table.split(".", 1)
     db_id = client.get_database_id(database)
@@ -469,7 +493,8 @@ def _import_bytes(buf, database, table, api_key, max_errors,
                   credential_id=cred_id, max_errors=max_errors,
                   existing_table_rows=existing_table_rows, distkey=distkey,
                   sortkey1=sortkey1, sortkey2=sortkey2,
-                  column_delimiter=delimiter, first_row_is_header=headers)
+                  column_delimiter=delimiter, first_row_is_header=headers,
+                  hidden=hidden)
 
     import_job = client.imports.post_files(**kwargs)
     put_response = requests.put(import_job.upload_uri, buf)

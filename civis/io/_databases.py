@@ -5,7 +5,8 @@ from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
 
 def query_civis(sql, database, api_key=None, credential_id=None,
                 preview_rows=10,
-                polling_interval=_DEFAULT_POLLING_INTERVAL):
+                polling_interval=_DEFAULT_POLLING_INTERVAL,
+                hidden=True):
     """Execute a SQL statement as a Civis query.
 
     Run a query that may return no results or where only a small
@@ -29,6 +30,8 @@ def query_civis(sql, database, api_key=None, credential_id=None,
         returned at once.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
 
     Returns
     -------
@@ -43,8 +46,11 @@ def query_civis(sql, database, api_key=None, credential_id=None,
     client = APIClient(api_key=api_key)
     database_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
-    resp = client.queries.post(database_id, sql, preview_rows,
-                               credential=cred_id)
+    resp = client.queries.post(database_id,
+                               sql,
+                               preview_rows,
+                               credential=cred_id,
+                               hidden=hidden)
     return PollableResult(client.queries.get, (resp.id, ), polling_interval)
 
 
