@@ -243,9 +243,8 @@ class MetaMixin():
     def default_credential(self):
         """The current user's default credential."""
         # NOTE: this should be optional to endpoints...so this could go away
-        cred = find_one(self.credentials.list(), remote_host_id=None,
-                        username=self.username, type='Database')
-        return cred.id
+        creds = self.credentials.list(default=True)
+        return creds[0]['id'] if len(creds) > 0 else None
 
     @property
     @functools.lru_cache()
