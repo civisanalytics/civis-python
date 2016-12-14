@@ -418,6 +418,7 @@ def get_swagger_spec(api_key, user_agent, api_version):
     return spec
 
 
+@lru_cache(maxsize=4)
 def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
     """ Dynamically create classes to interface with the Civis API.
 
