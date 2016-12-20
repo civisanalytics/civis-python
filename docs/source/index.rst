@@ -60,7 +60,7 @@ Open ``.bash_profile`` in TextEdit:
 
 Then add the following line, replacing ``api_key_here`` with your key::
 
-   CIVIS_API_KEY="api_key_here"
+   export CIVIS_API_KEY="api_key_here"
 
 **Linux**
 
@@ -73,7 +73,7 @@ Open ``.bash_profile`` in your favorite editor (nano is used here):
 
 Then add the following line, replacing ``api_key_here`` with your key::
 
-   CIVIS_API_KEY="api_key_here"
+   export CIVIS_API_KEY="api_key_here"
 
 
 User Guide
