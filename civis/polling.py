@@ -1,8 +1,18 @@
 from concurrent import futures
 import time
 
+from civis import APIClient
 from civis.base import CivisJobFailure
 from civis.response import Response
+
+try:
+    from pubnub.pubnub import PubNub
+    from pubnub.pnconfiguration import PNConfiguration
+    from pubnub.callbacks import SubscribeCallback
+except ImportError:
+    _has_pubnub = False
+else:
+    _has_pubnub = True
 
 
 FINISHED = ['success', 'succeeded']
@@ -20,6 +30,28 @@ for name in NOT_FINISHED:
     STATE_TRANS[name] = futures._base.RUNNING
 for name in CANCELLED:
     STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
+
+if _has_pubnub:
+    class JobCompleteListener(SubscribeCallback):
+
+        def __init__(self, job_id, callback_function):
+            self.job_id = job_id
+            self.callback_function = callback_function
+
+        def message(self, pubnub, message):
+            try:
+                result = message.message
+                if result['object']['id'] == self.job_id \
+                        and result['run']['state'] in DONE:
+                    self.callback_function()
+            except:
+                pass
+
+        def status(self, pubnub, status):
+            pass
+
+        def presence(self, pubnub, presence):
+            pass
 
 
 class PollableResult(futures.Future):
@@ -81,6 +113,7 @@ class PollableResult(futures.Future):
         self._last_result = None
 
         self._self_polling_executor = None
+        self._pubnub = self._subscribe()
 
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use
@@ -103,6 +136,48 @@ class PollableResult(futures.Future):
                                             id(self),
                                             self._civis_state)
             return out
+
+    def _subscribe(self):
+        client = APIClient(resources='all')
+        me = client.users.list_me()
+        pubnub = None
+        if me.get('feature_flags').get('pubnub') \
+                and _has_pubnub \
+                and self.poller_args:
+            channel = client.channels.list()
+            channels = [chan['name'] for chan in channel['channels']]
+            pnconfig = PNConfiguration()
+            pnconfig.subscribe_key = channel['subscribe_key']
+            pnconfig.cipher_key = channel['cipher_key']
+            pnconfig.auth_key = channel['auth_key']
+            pnconfig.ssl = True
+            pnconfig.reconnect_policy = True
+
+            pubnub = PubNub(pnconfig)
+            job_id = self.poller_args[0]
+            callback = JobCompleteListener(job_id, self._check_api_result)
+            pubnub.add_listener(callback)
+            pubnub.subscribe().channels(channels).execute()
+        return pubnub
+
+    def _check_api_result(self, result=None):
+        with self._condition:
+            if result is None:
+                result = self.poller(*self.poller_args)
+            if result.state in FAILED:
+                if self._pubnub:
+                    self._pubnub.unsubscribe_all()
+                try:
+                    err_msg = str(result['error'])
+                except:
+                    err_msg = str(result)
+                self.set_exception(CivisJobFailure(err_msg,
+                                                   result))
+                self._result = result
+            elif result.state in DONE:
+                if self._pubnub:
+                    self._pubnub.unsubscribe_all()
+                self.set_result(result)
 
     def cancel(self):
         """Not currently implemented."""
@@ -173,17 +248,7 @@ class PollableResult(futures.Future):
                     # If the job has finished, then register completion and
                     # store the results. Because of the `if self._result` check
                     # up top, we will never get here twice.
-                    if self._last_result.state in FAILED:
-                        try:
-                            err_msg = str(self._last_result['error'])
-                        except:
-                            err_msg = str(self._last_result)
-                        self.set_exception(CivisJobFailure(err_msg,
-                                           self._last_result))
-
-                        self._result = self._last_result
-                    elif self._last_result.state in DONE:
-                        self.set_result(self._last_result)
+                    self._check_api_result(self._last_result)
 
             return self._last_result
 
