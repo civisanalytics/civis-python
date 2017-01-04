@@ -138,26 +138,25 @@ class PollableResult(futures.Future):
             return out
 
     def _subscribe(self):
-        client = APIClient(resources='all')
-        me = client.users.list_me()
         pubnub = None
-        if me.get('feature_flags').get('pubnub') \
-                and _has_pubnub \
-                and self.poller_args:
-            channel = client.channels.list()
-            channels = [chan['name'] for chan in channel['channels']]
-            pnconfig = PNConfiguration()
-            pnconfig.subscribe_key = channel['subscribe_key']
-            pnconfig.cipher_key = channel['cipher_key']
-            pnconfig.auth_key = channel['auth_key']
-            pnconfig.ssl = True
-            pnconfig.reconnect_policy = True
+        if _has_pubnub:
+            client = APIClient(resources='all')
+            me = client.users.list_me()
+            if me.get('feature_flags').get('pubnub') and self.poller_args:
+                channel = client.channels.list()
+                channels = [chan['name'] for chan in channel['channels']]
+                pnconfig = PNConfiguration()
+                pnconfig.subscribe_key = channel['subscribe_key']
+                pnconfig.cipher_key = channel['cipher_key']
+                pnconfig.auth_key = channel['auth_key']
+                pnconfig.ssl = True
+                pnconfig.reconnect_policy = True
 
-            pubnub = PubNub(pnconfig)
-            job_id = self.poller_args[0]
-            callback = JobCompleteListener(job_id, self._check_api_result)
-            pubnub.add_listener(callback)
-            pubnub.subscribe().channels(channels).execute()
+                pubnub = PubNub(pnconfig)
+                job_id = self.poller_args[0]
+                listener = JobCompleteListener(job_id, self._check_api_result)
+                pubnub.add_listener(listener)
+                pubnub.subscribe().channels(channels).execute()
         return pubnub
 
     def _check_api_result(self, result=None):
