@@ -9,10 +9,9 @@ try:
     from pubnub.pubnub import PubNub
     from pubnub.pnconfiguration import PNConfiguration
     from pubnub.callbacks import SubscribeCallback
+    has_pubnub = True
 except ImportError:
-    _has_pubnub = False
-else:
-    _has_pubnub = True
+    has_pubnub = False
 
 
 FINISHED = ['success', 'succeeded']
@@ -30,28 +29,6 @@ for name in NOT_FINISHED:
     STATE_TRANS[name] = futures._base.RUNNING
 for name in CANCELLED:
     STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
-
-if _has_pubnub:
-    class JobCompleteListener(SubscribeCallback):
-
-        def __init__(self, job_id, callback_function):
-            self.job_id = job_id
-            self.callback_function = callback_function
-
-        def message(self, pubnub, message):
-            try:
-                result = message.message
-                if result['object']['id'] == self.job_id \
-                        and result['run']['state'] in DONE:
-                    self.callback_function()
-            except:
-                pass
-
-        def status(self, pubnub, status):
-            pass
-
-        def presence(self, pubnub, presence):
-            pass
 
 
 class PollableResult(futures.Future):
@@ -139,10 +116,30 @@ class PollableResult(futures.Future):
 
     def _subscribe(self):
         pubnub = None
-        if _has_pubnub:
+        if has_pubnub:
             client = APIClient(resources='all')
             me = client.users.list_me()
             if me.get('feature_flags').get('pubnub') and self.poller_args:
+                class JobCompleteListener(SubscribeCallback):
+                    def __init__(self, job_id, callback_function):
+                        self.job_id = job_id
+                        self.callback_function = callback_function
+
+                    def message(self, pubnub, message):
+                        try:
+                            result = message.message
+                            if result['object']['id'] == self.job_id \
+                                    and result['run']['state'] in DONE:
+                                self.callback_function()
+                        except:
+                            pass
+
+                    def status(self, pubnub, status):
+                        pass
+
+                    def presence(self, pubnub, presence):
+                        pass
+
                 channel = client.channels.list()
                 channels = [chan['name'] for chan in channel['channels']]
                 pnconfig = PNConfiguration()
