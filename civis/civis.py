@@ -8,6 +8,7 @@ from requests.packages.urllib3.util import Retry
 
 import civis
 from civis.resources import generate_classes
+from civis.polling import PollableResult
 
 
 log = logging.getLogger(__name__)
@@ -288,6 +289,7 @@ class APIClient(MetaMixin):
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
                              "'pandas'")
+        self._feature_flags = ()
         session_auth_key = _get_api_key(api_key)
         self._session = session = requests.session()
         session.auth = (session_auth_key, '')
@@ -309,3 +311,21 @@ class APIClient(MetaMixin):
                                    resources=resources)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(session, return_type))
+
+    @property
+    def feature_flags(self):
+        if self._feature_flags:
+            return self._feature_flags
+        me = self.users.list_me()
+        self._feature_flags = tuple(flag for flag, value
+                                    in me['feature_flags'].items() if value)
+        return self._feature_flags
+
+    def run_job(self, job_id):
+        self.jobs.post_runs(job_id)
+        use_pubnub = 'pubnub' in self.feature_flags \
+                     and hasattr(self, 'channels')
+        return PollableResult(self.jobs.get,
+                              (job_id,),
+                              use_pubnub=use_pubnub,
+                              client=self)

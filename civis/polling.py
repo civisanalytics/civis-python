@@ -1,7 +1,6 @@
 from concurrent import futures
 import time
 
-from civis import APIClient
 from civis.base import CivisJobFailure
 from civis.response import Response
 
@@ -79,7 +78,8 @@ class PollableResult(futures.Future):
     # - We use the `Future` thread lock called `_condition`
     # - We assume that results of the Future are stored in `_result`.
     def __init__(self, poller, poller_args,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL):
+                 polling_interval=_DEFAULT_POLLING_INTERVAL,
+                 use_pubnub=False, client=None):
         super().__init__()
 
         # Polling arguments. Never poll more often than the requested interval.
@@ -90,7 +90,10 @@ class PollableResult(futures.Future):
         self._last_result = None
 
         self._self_polling_executor = None
-        self._pubnub = self._subscribe()
+        self._pubnub = None
+        if use_pubnub and has_pubnub:
+            self._client = client
+            self._pubnub = self._subscribe()
 
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use
@@ -116,44 +119,41 @@ class PollableResult(futures.Future):
 
     def _subscribe(self):
         pubnub = None
-        if has_pubnub:
-            client = APIClient(resources='all')
-            me = client.users.list_me()
-            if me.get('feature_flags').get('pubnub') and self.poller_args:
-                class JobCompleteListener(SubscribeCallback):
-                    def __init__(self, job_id, callback_function):
-                        self.job_id = job_id
-                        self.callback_function = callback_function
+        if self.poller_args:
+            class JobCompleteListener(SubscribeCallback):
+                def __init__(self, job_id, callback_function):
+                    self.job_id = job_id
+                    self.callback_function = callback_function
 
-                    def message(self, pubnub, message):
-                        try:
-                            result = message.message
-                            if result['object']['id'] == self.job_id \
-                                    and result['run']['state'] in DONE:
-                                self.callback_function()
-                        except:
-                            pass
-
-                    def status(self, pubnub, status):
+                def message(self, pubnub, message):
+                    try:
+                        result = message.message
+                        if result['object']['id'] == self.job_id \
+                                and result['run']['state'] in DONE:
+                            self.callback_function()
+                    except:
                         pass
 
-                    def presence(self, pubnub, presence):
-                        pass
+                def status(self, pubnub, status):
+                    pass
 
-                channel = client.channels.list()
-                channels = [chan['name'] for chan in channel['channels']]
-                pnconfig = PNConfiguration()
-                pnconfig.subscribe_key = channel['subscribe_key']
-                pnconfig.cipher_key = channel['cipher_key']
-                pnconfig.auth_key = channel['auth_key']
-                pnconfig.ssl = True
-                pnconfig.reconnect_policy = True
+                def presence(self, pubnub, presence):
+                    pass
 
-                pubnub = PubNub(pnconfig)
-                job_id = self.poller_args[0]
-                listener = JobCompleteListener(job_id, self._check_api_result)
-                pubnub.add_listener(listener)
-                pubnub.subscribe().channels(channels).execute()
+            channel = self._client.channels.list()
+            channels = [chan['name'] for chan in channel['channels']]
+            pnconfig = PNConfiguration()
+            pnconfig.subscribe_key = channel['subscribe_key']
+            pnconfig.cipher_key = channel['cipher_key']
+            pnconfig.auth_key = channel['auth_key']
+            pnconfig.ssl = True
+            pnconfig.reconnect_policy = True
+
+            pubnub = PubNub(pnconfig)
+            job_id = self.poller_args[0]
+            listener = JobCompleteListener(job_id, self._check_api_result)
+            pubnub.add_listener(listener)
+            pubnub.subscribe().channels(channels).execute()
         return pubnub
 
     def _check_api_result(self, result=None):
