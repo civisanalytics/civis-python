@@ -1,5 +1,6 @@
 from posixpath import join
 import threading
+from concurrent import futures
 
 from civis.response import PaginatedResponse, convert_response_data_type
 
@@ -84,3 +85,81 @@ class Endpoint:
             resp = convert_response_data_type(resp,
                                               return_type=self._return_type)
             return resp
+
+
+FINISHED = ['success', 'succeeded']
+FAILED = ['failed']
+NOT_FINISHED = ['queued', 'running']
+CANCELLED = ['cancelled']
+DONE = FINISHED + FAILED + CANCELLED
+
+# Translate Civis state strings into `future` state strings
+STATE_TRANS = {}
+for name in FINISHED + FAILED:
+    STATE_TRANS[name] = futures._base.FINISHED
+for name in NOT_FINISHED:
+    STATE_TRANS[name] = futures._base.RUNNING
+for name in CANCELLED:
+    STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
+
+
+class CivisAsyncResultBase(futures.Future):
+    def __repr__(self):
+        # Almost the same as the superclass's __repr__, except we use
+        # the `_civis_state` rather than the `_state`.
+        with self._condition:
+            if self._civis_state in FINISHED + FAILED:
+                if self.exception():
+                    return '<%s at %#x state=%s raised %s>' % (
+                        self.__class__.__name__,
+                        id(self),
+                        self._civis_state,
+                        self._exception.__class__.__name__)
+                else:
+                    return '<%s at %#x state=%s returned %s>' % (
+                        self.__class__.__name__,
+                        id(self),
+                        self._civis_state,
+                        self.result().__class__.__name__)
+            out = '<%s at %#x state=%s>' % (self.__class__.__name__,
+                                            id(self),
+                                            self._civis_state)
+            return out
+
+    def cancel(self):
+        """Not currently implemented."""
+        raise NotImplementedError("Running jobs cannot currently be cancelled")
+
+    def succeeded(self):
+        """Return ``True`` if the job completed in Civis with no error."""
+        with self._condition:
+            return self._civis_state in FINISHED
+
+    def failed(self):
+        """Return ``True`` if the Civis job failed."""
+        with self._condition:
+            return self._civis_state in FAILED
+
+    def _check_result(self):
+        with self._condition:
+            if self._result is not None:
+                return self._result
+
+    @property
+    def _civis_state(self):
+        """State as returned from Civis."""
+        with self._condition:
+            if self._check_result():
+                return self._check_result().state
+            return 'running'
+
+    @property
+    def _state(self):
+        """State of the PollableResult in `future` language."""
+        with self._condition:
+            return STATE_TRANS[self._civis_state]
+
+    @_state.setter
+    def _state(self, value):
+        # Ignore attempts to set the _state from the `Future` superclass
+        pass
