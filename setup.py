@@ -35,6 +35,9 @@ def main():
         packages=find_packages(),
         long_description=read('README.md'),
         install_requires=required,
+        extras_require={
+            'pubnub': ['pubnub>=4.0.0,<=4.99']
+        },
         entry_points={
             'console_scripts': [
                 'civis = civis.cli.__main__:main'
