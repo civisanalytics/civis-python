@@ -179,7 +179,7 @@ class PollableResult(futures.Future):
                         except:
                             err_msg = str(self._last_result)
                         self.set_exception(CivisJobFailure(err_msg,
-                                                           self._last_result))
+                                           self._last_result))
 
                         self._result = self._last_result
                     elif self._last_result.state in DONE:
