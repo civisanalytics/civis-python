@@ -8,7 +8,6 @@ from requests.packages.urllib3.util import Retry
 
 import civis
 from civis.resources import generate_classes
-from civis.polling import PollableResult
 
 
 log = logging.getLogger(__name__)
@@ -320,12 +319,3 @@ class APIClient(MetaMixin):
         self._feature_flags = tuple(flag for flag, value
                                     in me['feature_flags'].items() if value)
         return self._feature_flags
-
-    def run_job(self, job_id):
-        self.jobs.post_runs(job_id)
-        use_pubnub = 'pubnub' in self.feature_flags \
-                     and hasattr(self, 'channels')
-        return PollableResult(self.jobs.get,
-                              (job_id,),
-                              use_pubnub=use_pubnub,
-                              client=self)
