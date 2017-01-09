@@ -413,6 +413,9 @@ def get_swagger_spec(api_key, user_agent, api_version):
     else:
         msg = "swagger spec for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
+    if response.status_code in (401, 403):
+        msg = "{} error downloading API specification. API key may be expired."
+        raise requests.exceptions.HTTPError(msg.format(response.status_code))
     response.raise_for_status()
     spec = response.json(object_pairs_hook=OrderedDict)
     return spec

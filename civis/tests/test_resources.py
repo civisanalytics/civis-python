@@ -5,6 +5,7 @@ import pytest
 from unittest import mock
 
 from jsonref import JsonRef
+from requests.exceptions import HTTPError
 
 from civis.resources import _resources
 
@@ -204,3 +205,22 @@ def test_duplicate_names_generated_from_swagger():
     for cls, names in classes.items():
         err_msg = "Duplicate methods in {}: {}".format(cls, sorted(names))
         assert len(set(names)) == len(names), err_msg
+
+
+class MockExpiredKeyResponse:
+    status_code = 401
+
+
+mock_str = 'civis.resources._resources.requests.Session.get'
+
+
+@mock.patch(mock_str, return_value=MockExpiredKeyResponse)
+def test_expired_api_key(mock_response):
+    msg = "401 error downloading API specification. API key may be expired."
+    http_error_raised = False
+    try:
+        _resources.get_swagger_spec("expired_key", "fake_user_agent", "1.0")
+    except HTTPError as err:
+        http_error_raised = True
+        assert str(err) == msg
+    assert http_error_raised
