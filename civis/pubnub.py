@@ -11,14 +11,16 @@ except ImportError:
 
 if has_pubnub:
     class JobCompleteListener(SubscribeCallback):
-        def __init__(self, job_id, callback_function):
+        def __init__(self, job_id, run_id, callback_function):
             self.job_id = job_id
+            self.run_id = run_id
             self.callback_function = callback_function
 
         def message(self, pubnub, message):
             try:
                 result = message.message
                 if result['object']['id'] == self.job_id \
+                        and result['run']['id'] == self.run_id \
                         and result['run']['state'] in DONE:
                     self.callback_function()
             except KeyError:
@@ -43,6 +45,7 @@ class SubscribableResult(CivisAsyncResultBase):
     def _subscribe(self):
         pnconfig, channels = self._pubnub_config()
         listener = JobCompleteListener(self.poller_args[0],
+                                       self.poller_args[1],
                                        self._check_api_result)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
