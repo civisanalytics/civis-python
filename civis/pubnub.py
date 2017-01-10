@@ -47,8 +47,9 @@ class SubscribableResult(CivisAsyncResultBase):
         A function which returns an object that has a ``state`` attribute.
     poller_args : tuple
         The arguments with which to call the poller function.
-    client : object
-        An instance of :class:`~civis.APIClient`.
+    api_key : str, optional
+        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
+        environment variable will be used.
     """
     def __init__(self, poller, poller_args, api_key=None):
         super().__init__()
