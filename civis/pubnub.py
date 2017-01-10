@@ -1,3 +1,4 @@
+from civis import APIClient
 from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
 
 try:
@@ -34,12 +35,27 @@ if has_pubnub:
 
 
 class SubscribableResult(CivisAsyncResultBase):
-    def __init__(self, poller, poller_args, client):
+    """
+    A class for tracking subscribable results.
+
+    This class will subscribe to a Pubnub channel upon creation, and listen
+    for messages that indicate a job completion.
+
+    Parameters
+    ----------
+    poller : func
+        A function which returns an object that has a ``state`` attribute.
+    poller_args : tuple
+        The arguments with which to call the poller function.
+    client : object
+        An instance of :class:`~civis.APIClient`.
+    """
+    def __init__(self, poller, poller_args, api_key=None):
         super().__init__()
 
         self.poller = poller
         self.poller_args = poller_args
-        self._client = client
+        self.api_key = api_key
         self._pubnub = self._subscribe()
 
     def _subscribe(self):
@@ -53,7 +69,8 @@ class SubscribableResult(CivisAsyncResultBase):
         return pubnub
 
     def _pubnub_config(self):
-        channel_config = self._client.channels.list()
+        client = APIClient(api_key=self.api_key, resources='all')
+        channel_config = client.channels.list()
         channels = [channel['name'] for channel in channel_config['channels']]
         pnconfig = PNConfiguration()
         pnconfig.subscribe_key = channel_config['subscribe_key']
