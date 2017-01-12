@@ -12,20 +12,13 @@ except ImportError:
 
 if has_pubnub:
     class JobCompleteListener(SubscribeCallback):
-        def __init__(self, job_id, run_id, callback_function):
-            self.job_id = job_id
-            self.run_id = run_id
+        def __init__(self, match_function, callback_function):
+            self.match_function = match_function
             self.callback_function = callback_function
 
         def message(self, pubnub, message):
-            try:
-                result = message.message
-                if result['object']['id'] == self.job_id \
-                        and result['run']['id'] == self.run_id \
-                        and result['run']['state'] in DONE:
-                    self.callback_function()
-            except KeyError:
-                pass
+            if self.match_function(message.message):
+                self.callback_function()
 
         def status(self, pubnub, status):
             pass
@@ -57,13 +50,12 @@ class SubscribableResult(CivisAsyncResultBase):
         self.poller = poller
         self.poller_args = poller_args
         self.api_key = api_key
-        self._pubnub = self._subscribe()
+        config, channels = self._pubnub_config()
+        self._pubnub = self._subscribe(config, channels)
 
-    def _subscribe(self):
-        pnconfig, channels = self._pubnub_config()
-        listener = JobCompleteListener(self.poller_args[0],
-                                       self.poller_args[1],
-                                       self._check_api_result)
+    def _subscribe(self, pnconfig, channels):
+        listener = JobCompleteListener(self._check_message,
+                                       self._set_api_result)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
         pubnub.subscribe().channels(channels).execute()
@@ -81,13 +73,21 @@ class SubscribableResult(CivisAsyncResultBase):
         pnconfig.reconnect_policy = True
         return pnconfig, channels
 
-    def _check_api_result(self, result=None):
+    def _check_message(self, message):
+        try:
+            match = message['object']['id'] == self.poller_args[0] \
+                    and message['run']['id'] == self.poller_args[1] \
+                    and message['run']['state'] in DONE
+        except KeyError:
+            return False
+        return match
+
+    def _set_api_result(self, result=None):
         with self._condition:
             if result is None:
                 result = self.poller(*self.poller_args)
             if result.state in FAILED:
-                if self._pubnub:
-                    self._pubnub.unsubscribe_all()
+                self._pubnub.unsubscribe_all()
                 try:
                     err_msg = str(result['error'])
                 except:
@@ -96,6 +96,5 @@ class SubscribableResult(CivisAsyncResultBase):
                                                    result))
                 self._result = result
             elif result.state in DONE:
-                if self._pubnub:
-                    self._pubnub.unsubscribe_all()
+                self._pubnub.unsubscribe_all()
                 self.set_result(result)
