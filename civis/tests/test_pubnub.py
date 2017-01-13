@@ -1,3 +1,6 @@
+import os
+import json
+from collections import OrderedDict
 import unittest
 from unittest import mock
 from unittest.mock import patch
@@ -12,8 +15,15 @@ try:
 except ImportError:
     has_pubnub = False
 
+from civis.tests.testcase import CivisVCRTestCase
 
-class PubnubTests(unittest.TestCase):
+swagger_import_str = 'civis.resources._resources.get_swagger_spec'
+THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
+    civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
+
+
+class PubnubTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_calls_callback_when_message_matches(self):
         match = mock.Mock()
@@ -41,6 +51,7 @@ class PubnubTests(unittest.TestCase):
         self.assertEqual(callback.call_count, 0)
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
     def test_check_message(self, *mocks):
         result = SubscribableResult(lambda x: x, (1, 20))
@@ -56,6 +67,7 @@ class PubnubTests(unittest.TestCase):
         self.assertTrue(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
     def test_check_message_with_different_run_id(self, *mocks):
         result = SubscribableResult(lambda x: x, (1, 20))
@@ -71,6 +83,7 @@ class PubnubTests(unittest.TestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
     def test_check_message_when_job_is_running(self, *mocks):
         result = SubscribableResult(lambda x: x, (1, 20))
@@ -86,8 +99,9 @@ class PubnubTests(unittest.TestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
-    def test_set_api_result_poller(self, mock_subscribe):
+    def test_set_api_result_poller(self, mock_subscribe, mock_swagger):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
         mock_subscribe.return_value = mock_pubnub
@@ -103,8 +117,9 @@ class PubnubTests(unittest.TestCase):
         assert result._state == 'FINISHED'
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
-    def test_set_api_result_explicit_result(self, mock_subscribe):
+    def test_set_api_result_explicit_result(self, mock_subscribe, mock_swagger):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
         mock_subscribe.return_value = mock_pubnub
@@ -119,8 +134,9 @@ class PubnubTests(unittest.TestCase):
         assert result._state == 'FINISHED'
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec)
     @patch.object(SubscribableResult, '_subscribe')
-    def test_set_api_result_failed(self, mock_subscribe):
+    def test_set_api_result_failed(self, mock_subscribe, mock_swagger):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
         mock_subscribe.return_value = mock_pubnub
