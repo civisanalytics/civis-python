@@ -1,5 +1,6 @@
 from civis import APIClient
 from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
+from civis.response import Response
 
 try:
     from pubnub.pubnub import PubNub
@@ -75,9 +76,9 @@ class SubscribableResult(CivisAsyncResultBase):
 
     def _check_message(self, message):
         try:
-            match = message['object']['id'] == self.poller_args[0] \
-                    and message['run']['id'] == self.poller_args[1] \
-                    and message['run']['state'] in DONE
+            match = (message['object']['id'] == self.poller_args[0] and
+                     message['run']['id'] == self.poller_args[1] and
+                     message['run']['state'] in DONE)
         except KeyError:
             return False
         return match
@@ -85,12 +86,16 @@ class SubscribableResult(CivisAsyncResultBase):
     def _set_api_result(self, result=None):
         with self._condition:
             if result is None:
-                result = self.poller(*self.poller_args)
+                try:
+                    result = self.poller(*self.poller_args)
+                except Exception as e:
+                    self._result = Response({"state": FAILED[0]})
+                    self.set_exception(e)
             if result.state in FAILED:
                 self._pubnub.unsubscribe_all()
                 try:
                     err_msg = str(result['error'])
-                except:
+                except KeyError:
                     err_msg = str(result)
                 self.set_exception(CivisJobFailure(err_msg,
                                                    result))
