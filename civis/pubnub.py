@@ -41,16 +41,17 @@ class SubscribableResult(CivisAsyncResultBase):
         A function which returns an object that has a ``state`` attribute.
     poller_args : tuple
         The arguments with which to call the poller function.
+    polling_interval : int or float, optional
+        This is not used by SubscribableResult, but is required to match the
+        interface from CivisAsyncResultBase.
     api_key : str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
     """
-    def __init__(self, poller, poller_args, api_key=None):
-        super().__init__()
+    def __init__(self, poller, poller_args,
+                 polling_interval=None, api_key=None):
+        super().__init__(poller, poller_args, polling_interval, api_key)
 
-        self.poller = poller
-        self.poller_args = poller_args
-        self.api_key = api_key
         config, channels = self._pubnub_config()
         self._pubnub = self._subscribe(config, channels)
 
@@ -95,7 +96,7 @@ class SubscribableResult(CivisAsyncResultBase):
                 self._pubnub.unsubscribe_all()
                 try:
                     err_msg = str(result['error'])
-                except KeyError:
+                except:
                     err_msg = str(result)
                 self.set_exception(CivisJobFailure(err_msg,
                                                    result))

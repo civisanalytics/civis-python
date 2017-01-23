@@ -4,6 +4,22 @@ from concurrent import futures
 
 from civis.response import PaginatedResponse, convert_response_data_type
 
+FINISHED = ['success', 'succeeded']
+FINISHED = ['success', 'succeeded']
+FAILED = ['failed']
+NOT_FINISHED = ['queued', 'running']
+CANCELLED = ['cancelled']
+DONE = FINISHED + FAILED + CANCELLED
+
+# Translate Civis state strings into `future` state strings
+STATE_TRANS = {}
+for name in FINISHED + FAILED:
+    STATE_TRANS[name] = futures._base.FINISHED
+for name in NOT_FINISHED:
+    STATE_TRANS[name] = futures._base.RUNNING
+for name in CANCELLED:
+    STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
+
 
 def tostr_urljoin(*x):
     return join(*map(str, x))
@@ -87,23 +103,38 @@ class Endpoint:
             return resp
 
 
-FINISHED = ['success', 'succeeded']
-FAILED = ['failed']
-NOT_FINISHED = ['queued', 'running']
-CANCELLED = ['cancelled']
-DONE = FINISHED + FAILED + CANCELLED
-
-# Translate Civis state strings into `future` state strings
-STATE_TRANS = {}
-for name in FINISHED + FAILED:
-    STATE_TRANS[name] = futures._base.FINISHED
-for name in NOT_FINISHED:
-    STATE_TRANS[name] = futures._base.RUNNING
-for name in CANCELLED:
-    STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
-
-
 class CivisAsyncResultBase(futures.Future):
+    """A base class for tracking asynchronous results.
+
+    Sub-classes needs to call either the `set_result` method to set a result
+    when it finishes or call `set_exception` if there is an error.
+
+    The `_result` attribute can also be set to change the current state of
+    the result. The `_result_` object needs to be set to an object with a
+    ``state`` attribute. Alternatively the `_check_result` method can be
+    overwritten to change how the state of the object is returned.
+
+    Parameters
+    ----------
+    poller : func
+        A function which returns an object that has a ``state`` attribute.
+    poller_args : tuple
+        The arguments with which to call the poller function.
+    polling_interval : int or float
+        The number of seconds between API requests to check whether a result
+        is ready.
+    api_key : str, optional
+        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
+        environment variable will be used.
+    """
+    def __init__(self, poller, poller_args,
+                 polling_interval=None, api_key=None):
+        super().__init__()
+        self.poller = poller
+        self.poller_args = poller_args
+        self.polling_interval = polling_interval
+        self.api_key = api_key
+
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use
         # the `_civis_state` rather than the `_state`.
