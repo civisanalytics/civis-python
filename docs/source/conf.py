@@ -306,7 +306,8 @@ texinfo_documents = [
 
 nitpick_ignore = [
     ('envvar', 'CIVIS_API_KEY'),
-    ('py:class', 'concurrent.futures._base.Future')
+    ('py:class', 'concurrent.futures._base.Future'),
+    ('py:class', 'civis.base.CivisAsyncResultBase')
 ]
 numpydoc_show_class_members = False
 

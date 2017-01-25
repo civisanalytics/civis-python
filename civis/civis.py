@@ -288,6 +288,7 @@ class APIClient(MetaMixin):
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
                              "'pandas'")
+        self._feature_flags = ()
         session_auth_key = _get_api_key(api_key)
         self._session = session = requests.session()
         session.auth = (session_auth_key, '')
@@ -309,3 +310,12 @@ class APIClient(MetaMixin):
                                    resources=resources)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(session, return_type))
+
+    @property
+    def feature_flags(self):
+        if self._feature_flags:
+            return self._feature_flags
+        me = self.users.list_me()
+        self._feature_flags = tuple(flag for flag, value
+                                    in me['feature_flags'].items() if value)
+        return self._feature_flags
