@@ -2,10 +2,8 @@ from concurrent import futures
 import time
 
 from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
+from civis.base import _DEFAULT_POLLING_INTERVAL
 from civis.response import Response
-
-
-_DEFAULT_POLLING_INTERVAL = 15
 
 
 class PollableResult(CivisAsyncResultBase):
@@ -14,6 +12,12 @@ class PollableResult(CivisAsyncResultBase):
     This class will begin polling immediately upon creation, and poll for
     job completion once every `polling_interval` seconds until the job
     completes in Civis.
+
+    .. note:: Functions should create instances of this class through
+              the `civis.results.make_platform_future` function.
+              That will automatically select the more performant
+              :class:`~civis.pubnub.SubscribableResult`
+              when available and otherwise fall back on this class.
 
     Parameters
     ----------

@@ -35,6 +35,12 @@ class SubscribableResult(CivisAsyncResultBase):
     This class will subscribe to a Pubnub channel upon creation, and listen
     for messages that indicate a job completion.
 
+    .. note:: Functions should create instances of this class through
+              the `civis.results.make_platform_future` function.
+              That will automatically select this class
+              when available and otherwise fall back on the
+              :class:`~civis.polling.PollableResult`.
+
     Parameters
     ----------
     poller : func
