@@ -4,7 +4,7 @@ from civis.response import Response
 
 try:
     from pubnub.pubnub import PubNub
-    from pubnub.pnconfiguration import PNConfiguration
+    from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
     from pubnub.callbacks import SubscribeCallback
     has_pubnub = True
 except ImportError:
@@ -72,7 +72,7 @@ class SubscribableResult(CivisAsyncResultBase):
         pnconfig.cipher_key = channel_config['cipher_key']
         pnconfig.auth_key = channel_config['auth_key']
         pnconfig.ssl = True
-        pnconfig.reconnect_policy = True
+        pnconfig.reconnection_policy = PNReconnectionPolicy.LINEAR
         return pnconfig, channels
 
     def _check_message(self, message):
