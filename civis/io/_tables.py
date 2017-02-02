@@ -438,15 +438,18 @@ def csv_to_civis(filename, database, table, api_key=None,
     return poll
 
 
-def _sql_script(client, sql, database, job_name, credential_id, hidden=False):
+def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
+                csv_settings=None):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
+    csv_settings = csv_settings or {}
     export_job = client.scripts.post_sql(job_name,
                                          remote_host_id=db_id,
                                          credential_id=cred_id,
                                          sql=sql,
-                                         hidden=hidden)
+                                         hidden=hidden,
+                                         csv_settings=csv_settings)
     run_job = client.scripts.post_sql_runs(export_job.id)
     return export_job.id, run_job.id
 
