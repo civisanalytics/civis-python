@@ -27,6 +27,15 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     file_id : int
         The new Civis file ID.
 
+    Examples
+    --------
+    >>> # Upload file which expires in 30 days
+    >>> with open("my_data.csv", "r") as f:
+    ...     file_id = file_to_civis(f, 'my_data')
+    >>> # Upload file which never expires
+    >>> with open("my_data.csv", "r") as f:
+    ...     file_id = file_to_civis(f, 'my_data', expires_at=None)
+
     Notes
     -----
     If you are opening a binary file (e.g., a compressed archive) to
