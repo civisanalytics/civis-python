@@ -7,6 +7,7 @@ from unittest.mock import patch
 import pytest
 
 from civis.base import CivisJobFailure
+from civis.resources._resources import get_swagger_spec, generate_classes
 try:
     from civis.pubnub import (SubscribableResult,
                               has_pubnub,
@@ -23,6 +24,17 @@ with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
 
 
 class PubnubTests(CivisVCRTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        get_swagger_spec.cache_clear()
+        generate_classes.cache_clear()
+
+    @classmethod
+    def tearDownClass(cls):
+        get_swagger_spec.cache_clear()
+        generate_classes.cache_clear()
+
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_calls_callback_when_message_matches(self):
         match = mock.Mock()

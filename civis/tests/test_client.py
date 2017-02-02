@@ -4,6 +4,7 @@ import json
 from unittest.mock import patch
 
 from civis import APIClient
+from civis.resources._resources import get_swagger_spec, generate_classes
 from civis.tests.testcase import CivisVCRTestCase
 
 swagger_import_str = 'civis.resources._resources.get_swagger_spec'
@@ -13,6 +14,16 @@ with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
 
 
 class ClientTests(CivisVCRTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        get_swagger_spec.cache_clear()
+        generate_classes.cache_clear()
+
+    @classmethod
+    def tearDownClass(cls):
+        get_swagger_spec.cache_clear()
+        generate_classes.cache_clear()
 
     @patch(swagger_import_str, return_value=civis_api_spec)
     def test_feature_flags(self, *mocks):
