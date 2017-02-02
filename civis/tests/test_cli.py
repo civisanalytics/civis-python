@@ -4,16 +4,9 @@ from unittest.mock import patch
 import os
 
 from civis.cli.__main__ import generate_cli, invoke
+from civis.resources._resources import BASE_RESOURCES_V1
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-
-CIVIS_RESOURCES = [
-    'announcements', 'apps', 'codes', 'credentials', 'databases', 'endpoints',
-    'exports', 'files', 'groups', 'imports', 'jobs', 'match-targets',
-    'models', 'notifications', 'ontology', 'predictions', 'projects',
-    'queries', 'remote-hosts', 'results', 'reports', 'scripts', 'surveys',
-    'tables', 'templates', 'users', 'civis'
-]
 
 
 @patch("civis.cli.__main__.add_extra_commands")
@@ -36,13 +29,14 @@ def test_generate_cli_petstore(mock_retrieve_spec_dict,
 
 @patch("civis.cli.__main__.retrieve_spec_dict")
 def test_generate_cli_civis(mock_retrieve_spec_dict):
-    """Test loading the Civis API spec as of 2016-05-18."""
+    """Test loading the Civis API spec as of 2017-02-02."""
     with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
         civis_spec = json.load(f, object_pairs_hook=OrderedDict)
     mock_retrieve_spec_dict.return_value = civis_spec
 
     cli = generate_cli()
-    assert sorted(cli.commands.keys()) == sorted(CIVIS_RESOURCES)
+    expected_cli_keys = set(BASE_RESOURCES_V1) | {'civis'}
+    assert sorted(cli.commands.keys()) == sorted(expected_cli_keys)
 
     # Check a regular command.
     list_runs_cmd = cli.commands['scripts'].commands['list-containers-runs']
@@ -73,11 +67,6 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
             assert not p.required
         if p.name == 'database':
             assert p.required
-
-    # Check that commands for resources with underscores are named properly:
-    # specifically, that the resource prefix is removed.
-    assert 'list' in cli.commands['remote-hosts'].commands
-    assert 'list-remote-hosts' not in cli.commands['remote-hosts'].commands
 
 
 @patch("civis.cli.__main__.make_api_request_headers")
