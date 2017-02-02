@@ -151,7 +151,7 @@ class ImportTests(CivisVCRTestCase):
                                                  database='redshift-general')
         assert set(result.keys()) == {'files', 'query', 'header'}
         assert result['query'] == sql
-        assert result['header'] == ['id', 'a', 'b']
+        assert result['header'] == ['a', 'b', 'c']
         assert isinstance(result['files'], list)
         assert set(result['files'][0].keys()) == {'id', 'name', 'size', 'url'}
         assert result['files'][0]['url'].startswith('https://civis-console.s3.'
