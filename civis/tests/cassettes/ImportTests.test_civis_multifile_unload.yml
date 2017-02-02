@@ -1,0 +1,188 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.1.0 python-requests/2.13.0]
+    method: GET
+    uri: https://api.civisanalytics.com/databases
+  response:
+    body:
+      string: !!binary |
+        H4sIADR/klgAA2ySTWuDQBCG/8rgOQU/WjW5idqQQxtoeis9bNyJGVh3Yd1Im9L/Xgthx6Dn92He
+        Z2b34ycgGWySfBVo0WGwCeIshIOzwmFL2Ae/qxvxFHmkqA7wbgVp0i0DceqBkgbqoRJOHEWPjDBR
+        uzM1QkGtsHGWmskYVimNsRLiMEo5zjmuSthph1YvyCTcpK1RCooOxxrBxGPskV19X7LmVV/xy21R
+        Q6moG08yOYdH9rYVmq5jPZyMhaJxZPRkZ+55Q9mf6eSgfNkzkPnc3vIHiZ3xQL5eACzLcrwdDXt4
+        Nhctxb1EPB/RokYrFNekc6ZDSXyyKFxQ7S92wG/+J1GUzKFRy3kizhZshvF1rv/Gn38AAAD//wMA
+        T+EefZICAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['293']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 02 Feb 2017 00:37:08 GMT']
+      ETag: [W/"8e1ab09b1a216ac2821abf87e5567fc5"]
+      Server: [nginx/1.10.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [18c24125-07d9-40a1-ad92-b81e5f737fca]
+      X-Runtime: ['0.208770']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.1.0 python-requests/2.13.0]
+    method: GET
+    uri: https://api.civisanalytics.com/credentials
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-Pagination-Per-Page, X-Pagination-Current-Page,
+          X-Pagination-Total-Pages, X-Pagination-Total-Entries']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['3860']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 02 Feb 2017 00:37:08 GMT']
+      ETag: [W/"ae79b0daa4fb95f334ba18ab50ba36d6"]
+      Server: [nginx/1.10.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Pagination-Current-Page: ['1']
+      X-Pagination-Per-Page: ['1000']
+      X-Pagination-Total-Entries: ['87']
+      X-Pagination-Total-Pages: ['1']
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [0feb7d6b-2a8a-407d-b604-5eb8a4321112]
+      X-Runtime: ['0.374974']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "7e67761b64364e4baeb14d0ceae91433", "credential_id": 4749, "remote_host_id":
+      32, "sql": "SELECT * FROM scratch.api_client_test_fixture", "hidden": true}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['161']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.1.0 python-requests/2.13.0]
+    method: POST
+    uri: https://api.civisanalytics.com/scripts/sql
+  response:
+    body:
+      string: !!binary |
+        H4sIADV/klgAAyyOPQ7CMAyFr2JlZujA1A2JIyBW5CYPaikkxXEpEuLuuJTpWZ/ej98BqlVDHwZO
+        F8VjRrOw2+gRLapMJrW44TSCbvJEob+NFm5UqpELXhOiIfV05iyJ1wxdWfKKDtFmzuSUB26gqEgo
+        Js5ka4j1PnlmyKBFbCTzrYb8q/RDnxLhX8WaEPp9132+AAAA//8DAAfpfva4AAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['162']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 02 Feb 2017 00:37:09 GMT']
+      Server: [nginx/1.10.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [b8f328fc-3fd9-4327-a1f6-a20c4311cd37]
+      X-Runtime: ['0.330559']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 400, message: Bad Request}
+recorded_with: VCR
+version: 1

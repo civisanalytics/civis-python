@@ -145,6 +145,19 @@ class ImportTests(CivisVCRTestCase):
         assert result.state == 'succeeded'
 
     @patch(swagger_import_str, return_value=civis_api_spec)
+    def test_civis_multifile_unload(self, *mocks):
+        sql = "SELECT * FROM scratch.api_client_test_fixture"
+        result = civis.io.civis_multifile_unload(sql,
+                                                 database='redshift-general')
+        assert set(result.keys()) == {'files', 'query', 'header'}
+        assert result['query'] == sql
+        assert result['header'] == ['id', 'a', 'b']
+        assert isinstance(result['files'], list)
+        assert set(result['files'][0].keys()) == {'id', 'name', 'size', 'url'}
+        assert result['files'][0]['url'].startswith('https://civis-console.s3.'
+                                                    'amazonaws.com/')
+
+    @patch(swagger_import_str, return_value=civis_api_spec)
     def test_transfer_table(self, *mocks):
         result = civis.io.transfer_table('redshift-general', 'redshift-test',
                                          'scratch.api_client_test_fixture',
