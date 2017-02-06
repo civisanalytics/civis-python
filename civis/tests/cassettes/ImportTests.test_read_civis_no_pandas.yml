@@ -94,7 +94,7 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [civisclient/2.0.0]
     method: GET
-    uri: https://api.civisanalytics.com/credentials
+    uri: https://api.civisanalytics.com/credentials?default=True
   response:
     body:
       string: !!binary |
