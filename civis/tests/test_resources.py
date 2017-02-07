@@ -237,7 +237,7 @@ def test_create_method_unexpected_kwargs():
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
     mock_endpoint._call_api.assert_called_once_with(
-        'get', '/objects', {"foo":0, "bar": 0}, {}, iterator=False)
+        'get', '/objects', {"foo": 0, "bar": 0}, {}, iterator=False)
 
     # Method raises TypeError with unexpected kwarg
     expected_msg = "mock_name() got an unexpected keyword argument 'baz'"
