@@ -54,10 +54,8 @@ def test_create_method_iterator_kwarg():
 
 
 def test_create_method_no_iterator_kwarg():
-    # We don't do any validation on keyword arguments if **kwargs is in the
-    # signature. They are just ignored if they aren't in the expected body,
-    # query, or path params. Therefore, method should return a Type Error,
-    # but method2 contains **kwargs so should overwrite iterator = False
+
+    # Test for TypeError when iterator is present and no **kwargs
     args = [{"name": 'id', "in": 'query', "required": True, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
                                       'fake_doc')
@@ -68,13 +66,16 @@ def test_create_method_no_iterator_kwarg():
 
     assert 'keyword argument' in str(excinfo.value)
 
+    # Test for TypeError when iterator is present and method takes **kwargs,
+    # but iterator is not valid
     args2 = [{"name": 'foo', "in": 'query', "required": False, "doc": ""}]
     method2 = _resources.create_method(args2, 'get', 'mock_name', '/objects',
                                        'fake_doc')
     mock_endpoint2 = mock.MagicMock()
-    method2(mock_endpoint2, iterator=True)
-    mock_endpoint2._call_api.assert_called_once_with(
-        'get', '/objects', {}, {}, iterator=False)
+    with pytest.raises(TypeError) as excinfo:
+        method2(mock_endpoint2, iterator=True)
+
+    assert 'keyword argument' in str(excinfo.value)
 
 
 def test_exclude_resource():
@@ -224,3 +225,22 @@ def test_expired_api_key(mock_response):
         http_error_raised = True
         assert str(err) == msg
     assert http_error_raised
+
+
+def test_create_method_unexpected_kwargs():
+    args = [{"name": 'foo', "in": 'query', "required": True, "doc": ""},
+            {"name": 'bar', "in": 'query', "required": False, "doc": ""}]
+    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
+                                      'fake_doc')
+    mock_endpoint = mock.MagicMock()
+
+    # Method works without unexpected kwarg
+    method(mock_endpoint, foo=0, bar=0)
+    mock_endpoint._call_api.assert_called_once_with(
+        'get', '/objects', {"foo":0, "bar": 0}, {}, iterator=False)
+
+    # Method raises TypeError with unexpected kwarg
+    expected_msg = "mock_name() got an unexpected keyword argument 'baz'"
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, foo=0, bar=0, baz=0)
+    assert str(excinfo.value) == expected_msg
