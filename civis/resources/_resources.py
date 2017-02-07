@@ -223,27 +223,41 @@ def create_method(params, verb, method_name, path, doc):
         A function which will make an API call
     """
     elements = split_method_params(params)
-    args, kwargs, body_params, query_params, path_params = elements
-    sig = create_signature(args, kwargs)
+    sig_args, sig_kwargs, body_params, query_params, path_params = elements
+    sig = create_signature(sig_args, sig_kwargs)
+    is_iterable = iterable_method(verb, query_params)
 
     def f(self, *args, **kwargs):
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
+        raise_for_unexpected_kwargs(method_name, arguments, sig_args,
+                                    sig_kwargs, is_iterable)
         body = {x: arguments[x] for x in body_params if x in arguments}
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        iterator = (arguments.get('iterator', False) and
-                    iterable_method(verb, query_params))
+        iterator = arguments.get('iterator', False)
         return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(["self"] + args, kwargs)
+    sig_self = create_signature(["self"] + sig_args, sig_kwargs)
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = method_name
     return f
+
+
+def raise_for_unexpected_kwargs(method_name, arguments, sig_args, sig_kwargs,
+                                is_iterable):
+    """Raise TypeError if arguments are not in sig_args or sig_kwargs."""
+    expected = set(sig_args) | set(sig_kwargs)
+    if is_iterable:
+        expected |= {'iterator'}
+    unexpected = set(arguments.keys()) - expected
+    if unexpected:
+        msg_fmt = "{}() got an unexpected keyword argument(s) {}"
+        raise TypeError(msg_fmt.format(method_name, str(unexpected)))
 
 
 def bracketed(x):
