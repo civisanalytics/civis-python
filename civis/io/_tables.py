@@ -291,6 +291,11 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            hidden=True):
     """Unload the result of SQL query and return presigned urls.
 
+    This function is intended for unloading large queries/tables from redshift
+    as it uses a 'PARALLEL ON' S3 unload. It returns a similar manifest file
+    to conventional S3 UNLOAD statements except the CSV parts are accessible
+    via both files endpoint IDs and presigned S3 urls.
+
     Parameters
     ----------
     sql : str, optional
@@ -330,10 +335,11 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     -------
     unload_manifest: dict
         A dictionary resembling an AWS manifest file. Has the following keys:
-        ``'header'``, ``'query'``, ``'files'``, respresenting the columns from
-        the query, the query itself, and a list of dictionaries for each
+        ``'header'``, ``'query'``, ``'entries'``, respresenting the columns
+        from the query, the query itself, and a list of dictionaries for each
         unloaded CSV part, each containing its file ``'id'``, ``'name'``,
-        ``'size'``, and a presigned S3 ``'url'``.
+        ``'size'``, and unsigned and signed S3 urls, ``'url'`` and
+        ``'url_signed'``, respectively.
 
     Examples
     --------
