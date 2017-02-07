@@ -256,8 +256,8 @@ def raise_for_unexpected_kwargs(method_name, arguments, sig_args, sig_kwargs,
         expected |= {'iterator'}
     unexpected = set(arguments.keys()) - expected
     if unexpected:
-        msg_fmt = "{}() got an unexpected keyword argument '{}'"
-        raise TypeError(msg_fmt.format(method_name, next(iter(unexpected))))
+        msg_fmt = "{}() got an unexpected keyword argument(s) {}"
+        raise TypeError(msg_fmt.format(method_name, str(unexpected)))
 
 
 def bracketed(x):

@@ -55,7 +55,8 @@ def test_create_method_iterator_kwarg():
 
 def test_create_method_no_iterator_kwarg():
 
-    # Test for TypeError when iterator is present and no **kwargs
+    # Test that dynamically-created function errors when an
+    # unexpected "iterator" parameter is passed in
     args = [{"name": 'id', "in": 'query', "required": True, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
                                       'fake_doc')
@@ -66,8 +67,8 @@ def test_create_method_no_iterator_kwarg():
 
     assert 'keyword argument' in str(excinfo.value)
 
-    # Test for TypeError when iterator is present and method takes **kwargs,
-    # but iterator is not valid
+    # Dynamic functions handle optional argument through a different
+    # code path; verify that this also rejects unexpected arguments.
     args2 = [{"name": 'foo', "in": 'query', "required": False, "doc": ""}]
     method2 = _resources.create_method(args2, 'get', 'mock_name', '/objects',
                                        'fake_doc')
@@ -240,7 +241,7 @@ def test_create_method_unexpected_kwargs():
         'get', '/objects', {"foo": 0, "bar": 0}, {}, iterator=False)
 
     # Method raises TypeError with unexpected kwarg
-    expected_msg = "mock_name() got an unexpected keyword argument 'baz'"
+    expected_msg = "mock_name() got an unexpected keyword argument(s) {'baz'}"
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
