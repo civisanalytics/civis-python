@@ -45,7 +45,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
         A list of column names. Column SQL transformations are possible.
         If omitted, all columns are exported.
     use_pandas : bool, optional
-        If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
+        If ``True``, return a ``pandas.DataFrame``. Otherwise,
         return a list of results from :func:`python:csv.reader`.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
@@ -64,15 +64,15 @@ def read_civis(table, database, columns=None, use_pandas=False,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
+        ``pandas.read_csv`` if `use_pandas` is ``True`` or
         passed into :func:`python:csv.reader` if `use_pandas` is
         ``False``.
 
     Returns
     -------
-    data : :class:`pandas:pandas.DataFrame` or list
+    data : ``pandas.DataFrame`` or list
         A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
+        ``False``, otherwise a ``pandas.DataFrame``. Note that if
         `use_pandas` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
@@ -127,7 +127,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         Execute the query against this database. Can be the database name
         or ID.
     use_pandas : bool, optional
-        If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
+        If ``True``, return a ``pandas.DataFrame``. Otherwise,
         return a list of results from :func:`python:csv.reader`.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
@@ -146,15 +146,15 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
+       ``pandas.read_csv`` if `use_pandas` is ``True`` or
         passed into :func:`python:csv.reader` if `use_pandas` is
         ``False``.
 
     Returns
     -------
-    data : :class:`pandas:pandas.DataFrame` or list
+    data : ``pandas.DataFrame`` or list
         A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
+        ``False``, otherwise a ``pandas.DataFrame``. Note that if
         `use_pandas` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
@@ -400,7 +400,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
 
     Parameters
     ----------
-    df : :class:`pandas:pandas.DataFrame`
+    df : ``pandas.DataFrame``
         The `DataFrame` to upload to Civis.
     database : str or int
         Upload data into this database. Can be the database name or ID.
@@ -438,7 +438,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments will be passed to
-        :meth:`pandas:pandas.DataFrame.to_csv`.
+        ``pandas.DataFrame.to_csv``.
 
     Returns
     -------
