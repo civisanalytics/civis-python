@@ -2,8 +2,15 @@ from collections import OrderedDict
 
 import requests
 
+from io import TextIOBase
 from civis import APIClient
 from civis.base import EmptyResultError
+
+try:
+    from requests_toolbelt.multipart.encoder import MultipartEncoder
+    NO_TOOLBELT = False
+except ImportError:
+    NO_TOOLBELT = True
 
 
 def file_to_civis(buf, name, api_key=None, **kwargs):
@@ -52,7 +59,14 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     form_key['file'] = buf
 
     url = file_response.upload_url
-    response = requests.post(url, files=form_key)
+
+    if NO_TOOLBELT or isinstance(buf, TextIOBase):
+        response = requests.post(url, files=form_key)
+    else:
+        encoder = MultipartEncoder(form_key)
+        header = {'Content-Type': encoder.content_type}
+        response = requests.post(url, data=encoder, headers=header)
+
     response.raise_for_status()
 
     return file_response.id
