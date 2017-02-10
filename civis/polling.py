@@ -6,6 +6,7 @@ from civis.response import Response
 
 
 _DEFAULT_POLLING_INTERVAL = 15
+_LONG_POLLING_INTERVAL = 60 * 10
 
 
 class PollableResult(CivisAsyncResultBase):

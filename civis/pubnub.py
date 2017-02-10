@@ -52,8 +52,10 @@ class SubscribableResult(CivisAsyncResultBase):
                  polling_interval=None, api_key=None):
         super().__init__(poller, poller_args, polling_interval, api_key)
 
-        config, channels = self._pubnub_config()
-        self._pubnub = self._subscribe(config, channels)
+        client = APIClient(api_key=api_key, resources='all')
+        if has_pubnub and hasattr(client, 'channels'):
+            config, channels = self._pubnub_config()
+            self._pubnub = self._subscribe(config, channels)
 
     def _subscribe(self, pnconfig, channels):
         listener = JobCompleteListener(self._check_message,
