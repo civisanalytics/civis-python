@@ -15,10 +15,8 @@ def run_job(job_id, api_key=None):
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult` or
-    :class:`~civis.pubnub.SubscribableResult`
-        A `PollableResult` or `SubscribableResult` object if a Pubnub
-        connection is available.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
     """
     client = APIClient(api_key=api_key, resources='all')
     run = client.jobs.post_runs(job_id)

@@ -28,6 +28,10 @@ class PollableResult(CivisAsyncResultBase):
     api_key : str, optional
         This is not used by PollableResult, but is required to match the
         interface from CivisAsyncResultBase.
+    poll_on_creation : bool, optional
+        If ``True`` (the default), it will poll upon calling ``result()`` the
+        first time. If ``False``, it will wait the number of seconds specified
+        in `polling_interval` from object creation before polling.
 
     Examples
     --------
@@ -60,11 +64,19 @@ class PollableResult(CivisAsyncResultBase):
     # - We use the `Future` thread lock called `_condition`
     # - We assume that results of the Future are stored in `_result`.
     def __init__(self, poller, poller_args,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL, api_key=None):
-        super().__init__(poller, poller_args, polling_interval, api_key)
+                 polling_interval=_DEFAULT_POLLING_INTERVAL, api_key=None,
+                 poll_on_creation=True):
+        super().__init__(poller,
+                         poller_args,
+                         polling_interval,
+                         api_key,
+                         poll_on_creation)
 
         # Polling arguments. Never poll more often than the requested interval.
-        self._last_polled = None
+        if poll_on_creation:
+            self._last_polled = None
+        else:
+            self._last_polled = time.time()
         self._last_result = None
 
         self._self_polling_executor = None
