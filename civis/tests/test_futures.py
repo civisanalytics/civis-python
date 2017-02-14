@@ -20,11 +20,11 @@ from civis.tests.testcase import CivisVCRTestCase
 
 swagger_import_str = 'civis.resources._resources.get_swagger_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
-    civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
-
 with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
-    civis_api_spec_no_channels = json.load(f, object_pairs_hook=OrderedDict)
+    civis_api_spec_base = json.load(f, object_pairs_hook=OrderedDict)
+
+with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
+    civis_api_spec_channels = json.load(f, object_pairs_hook=OrderedDict)
 
 
 def clear_lru_cache():
@@ -71,7 +71,7 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertEqual(callback.call_count, 0)
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_check_message(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
@@ -87,7 +87,7 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertTrue(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_check_message_with_different_run_id(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
@@ -103,7 +103,7 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_check_message_when_job_is_running(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
@@ -119,7 +119,7 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_poller(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
@@ -137,7 +137,7 @@ class CivisFutureTests(CivisVCRTestCase):
         assert result._state == 'FINISHED'
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_explicit_result(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
@@ -154,7 +154,7 @@ class CivisFutureTests(CivisVCRTestCase):
         assert result._state == 'FINISHED'
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_failed(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
@@ -172,20 +172,14 @@ class CivisFutureTests(CivisVCRTestCase):
             result.result()
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
-    @patch.object(CivisFuture, '_subscribe')
-    def test_polls_on_first_result_call(self, *mocks):
-        pass
-
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec)
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
     def test_overwrite_polling_interval_with_channels(self, *mocks):
         future = CivisFuture(lambda x: x, (1, 20), polling_interval=5)
         assert future.polling_interval == _LONG_POLLING_INTERVAL
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec_no_channels)
+    @patch(swagger_import_str, return_value=civis_api_spec_base)
     @patch.object(CivisFuture, '_subscribe')
     def test_polling_interval(self, *mocks):
         # This test uses a different swagger spec than the other tests so it
