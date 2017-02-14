@@ -102,11 +102,11 @@ class TestPolling(unittest.TestCase):
         poller = mock.Mock(side_effect=Response({"state": "running"}))
         pollable = PollableResult(poller,
                                   (),
-                                  polling_interval=1,
+                                  polling_interval=0.1,
                                   poll_on_creation=False)
         repr(pollable)
         assert poller.call_count == 0
-        time.sleep(1.1)
+        time.sleep(0.2)
         assert poller.call_count == 1
 
 
