@@ -69,9 +69,14 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     if has_toolbelt:
         # This streams from the open file buffer without holding the
         # contents in memory.
-        enc = MultipartEncoder(fields=form_key)
-        response = requests.post(url, data=enc,
-                                 headers={'Content-Type': enc.content_type})
+        en = MultipartEncoder(fields=form_key)
+        if en.len / 2 ** 20 < 100:
+            # Semi-arbitrary cutoff for "small" files.
+            # Send these with requests directly because that uses less CPU
+            response = requests.post(url, files=form_key)
+        else:
+            response = requests.post(url, data=en,
+                                     headers={'Content-Type': en.content_type})
     else:
         response = requests.post(url, files=form_key)
     response.raise_for_status()
