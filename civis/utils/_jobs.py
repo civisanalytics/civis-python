@@ -22,4 +22,5 @@ def run_job(job_id, api_key=None):
     run = client.jobs.post_runs(job_id)
     return CivisFuture(client.jobs.get_runs,
                        (job_id, run['id']),
-                       api_key=api_key)
+                       api_key=api_key,
+                       poll_on_creation=False)
