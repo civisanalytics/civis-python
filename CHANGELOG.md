@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- `civis.futures.CivisFuture` for tracking future results  
 
 ## 1.2.0 - 2017-02-08
 ### Added
