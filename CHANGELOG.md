@@ -2,12 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased]
+
+## 1.2.0 - 2017-02-08
+### Added
+- support for multifile csv exports
+- support for subscription based polling
+
 ### Changed
 - civis.io functions use the "hidden" API option to keep jobs out of the UI. Deprecate the "archive" parameter in favor of "hidden".
 - civis.io.query_civis now has a "hidden" parameter which defaults to True
 - expose `poller` and `poller_args` as public attributes in `PollableResults`
+- update to  `default_credential` to handle pagination in `credentials.list` endpoint.
+
+### Fixed
+- miscellaneous documentation fixes
+- unexpected keyword arguments passed to `APIClient` methods now raise appropriate TypeError
 
 ### Performance Enhancements
 - Decrease time required to create client objects from ~0.6 seconds to ~150 us for all objects after the first in a session
