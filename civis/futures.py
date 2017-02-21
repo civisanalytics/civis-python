@@ -1,9 +1,7 @@
 from civis import APIClient
-from civis.base import CivisJobFailure, FAILED, DONE
+from civis.base import FAILED, DONE
 from civis.response import Response
-from civis.polling import (PollableResult,
-                           _DEFAULT_POLLING_INTERVAL,
-                           _LONG_POLLING_INTERVAL)
+from civis.polling import PollableResult
 
 try:
     from pubnub.pubnub import PubNub
@@ -12,6 +10,8 @@ try:
     has_pubnub = True
 except ImportError:
     has_pubnub = False
+
+_LONG_POLLING_INTERVAL = 9.5 * 60
 
 if has_pubnub:
     class JobCompleteListener(SubscribeCallback):
@@ -38,6 +38,10 @@ class CivisFuture(PollableResult):
     job completion events. If you don't have access to Pubnub channels, then
     it will fallback to polling.
 
+    This is a subclass of ``concurrent.futures.Future`` from the Python
+    standard library. See:
+    https://docs.python.org/3/library/concurrent.futures.html
+
     Parameters
     ----------
     poller : func
@@ -57,6 +61,7 @@ class CivisFuture(PollableResult):
 
     Examples
     --------
+    This example is provided as a function at ``civis.io.query_civis``.
     >>> client = civis.APIClient()
     >>> database_id = client.get_database_id("my_database")
     >>> cred_id = client.default_credential
@@ -72,10 +77,12 @@ class CivisFuture(PollableResult):
     >>> future = CivisFuture(poller, poller_args, polling_interval)
     """
     def __init__(self, poller, poller_args,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL, api_key=None,
+                 polling_interval=None, api_key=None,
                  poll_on_creation=True):
         client = APIClient(api_key=api_key, resources='all')
-        if has_pubnub and hasattr(client, 'channels'):
+        if (polling_interval is None and
+                has_pubnub and
+                hasattr(client, 'channels')):
             polling_interval = _LONG_POLLING_INTERVAL
 
         super().__init__(poller,
@@ -88,9 +95,17 @@ class CivisFuture(PollableResult):
             config, channels = self._pubnub_config()
             self._pubnub = self._subscribe(config, channels)
 
+    @property
+    def subscribed(self):
+        return (hasattr(self, '_pubnub') and
+                len(self._pubnub.get_subscribed_channels()) > 0)
+
+    def cleanup(self):
+        self._pubnub.unsubscribe_all()
+
     def _subscribe(self, pnconfig, channels):
         listener = JobCompleteListener(self._check_message,
-                                       self._set_api_result)
+                                       self._poll_and_set_api_result)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
         pubnub.subscribe().channels(channels).execute()
@@ -122,23 +137,11 @@ class CivisFuture(PollableResult):
             return False
         return match
 
-    def _set_api_result(self, result=None):
+    def _poll_and_set_api_result(self):
         with self._condition:
-            if result is None:
-                try:
-                    result = self.poller(*self.poller_args)
-                except Exception as e:
-                    self._result = Response({"state": FAILED[0]})
-                    self.set_exception(e)
-            if result.state in FAILED:
-                self._pubnub.unsubscribe_all()
-                try:
-                    err_msg = str(result['error'])
-                except:
-                    err_msg = str(result)
-                self.set_exception(CivisJobFailure(err_msg,
-                                                   result))
-                self._result = result
-            elif result.state in DONE:
-                self._pubnub.unsubscribe_all()
-                self.set_result(result)
+            try:
+                result = self.poller(*self.poller_args)
+                self._set_api_result(result)
+            except Exception as e:
+                self._result = Response({"state": FAILED[0]})
+                self.set_exception(e)

@@ -7,12 +7,12 @@ from unittest.mock import patch
 import pytest
 
 from civis.base import CivisJobFailure
-from civis.polling import _LONG_POLLING_INTERVAL
 from civis.resources._resources import get_swagger_spec, generate_classes
 try:
     from civis.futures import (CivisFuture,
                                has_pubnub,
-                               JobCompleteListener)
+                               JobCompleteListener,
+                               _LONG_POLLING_INTERVAL)
 except ImportError:
     has_pubnub = False
 
@@ -121,25 +121,7 @@ class CivisFutureTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
-    def test_set_api_result_poller(self, mock_subscribe, mock_api):
-        mock_pubnub = mock.Mock()
-        mock_pubnub.unsubscribe_all.return_value = None
-        mock_subscribe.return_value = mock_pubnub
-        poller = mock.Mock()
-        poller_result = mock.Mock()
-        poller_result.state = 'succeeded'
-        poller.return_value = poller_result
-
-        result = CivisFuture(poller, (1, 2))
-        result._set_api_result()
-        poller.assert_called_with(1, 2)
-        assert mock_pubnub.unsubscribe_all.call_count == 1
-        assert result._state == 'FINISHED'
-
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(swagger_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
-    def test_set_api_result_explicit_result(self, mock_subscribe, mock_api):
+    def test_set_api_result_result_succeeded(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
         mock_subscribe.return_value = mock_pubnub
@@ -174,15 +156,53 @@ class CivisFutureTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @patch(swagger_import_str, return_value=civis_api_spec_channels)
     @patch.object(CivisFuture, '_subscribe')
+    def test_subscribed_with_channels(self, *mocks):
+        future = CivisFuture(lambda x: x,
+                             (1, 20))
+        future._pubnub.get_subscribed_channels.return_value = [1]
+        assert future.subscribed is True
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
+    @patch.object(CivisFuture, '_subscribe')
+    def test_subscribed_with_no_subscription(self, *mocks):
+        future = CivisFuture(lambda x: x,
+                             (1, 20))
+        future._pubnub.get_subscribed_channels.return_value = []
+        assert future.subscribed is False
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec_base)
+    @patch.object(CivisFuture, '_subscribe')
+    def test_subscribed_with_no_channels(self, *mocks):
+        clear_lru_cache()
+        future = CivisFuture(lambda x: x,
+                             (1, 20))
+        assert future.subscribed is False
+        clear_lru_cache()
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
+    @patch.object(CivisFuture, '_subscribe')
     def test_overwrite_polling_interval_with_channels(self, *mocks):
-        future = CivisFuture(lambda x: x, (1, 20), polling_interval=5)
+        future = CivisFuture(lambda x: x, (1, 20))
         assert future.polling_interval == _LONG_POLLING_INTERVAL
+        assert hasattr(future, '_pubnub')
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    @patch(swagger_import_str, return_value=civis_api_spec_channels)
+    @patch.object(CivisFuture, '_subscribe')
+    def test_explicit_polling_interval_with_channels(self, *mocks):
+        future = CivisFuture(lambda x: x, (1, 20), polling_interval=5)
+        assert future.polling_interval == 5
+        assert hasattr(future, '_pubnub')
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @patch(swagger_import_str, return_value=civis_api_spec_base)
     @patch.object(CivisFuture, '_subscribe')
     def test_polling_interval(self, *mocks):
-        # This test uses a different swagger spec than the other tests so it
+        # This tests the fallback to polling when channels is not available.
+        # It uses a different swagger spec than the other tests so it
         # should clear the cached values before and after
         clear_lru_cache()
 
@@ -191,5 +211,6 @@ class CivisFutureTests(CivisVCRTestCase):
                              (1, 20),
                              polling_interval=polling_interval)
         assert future.polling_interval == polling_interval
+        assert hasattr(future, '_pubnub') is False
 
         clear_lru_cache()

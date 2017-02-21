@@ -6,7 +6,6 @@ from civis.response import Response
 
 
 _DEFAULT_POLLING_INTERVAL = 15
-_LONG_POLLING_INTERVAL = 10 * 60
 
 
 class PollableResult(CivisAsyncResultBase):
@@ -64,8 +63,10 @@ class PollableResult(CivisAsyncResultBase):
     # - We use the `Future` thread lock called `_condition`
     # - We assume that results of the Future are stored in `_result`.
     def __init__(self, poller, poller_args,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL, api_key=None,
+                 polling_interval=None, api_key=None,
                  poll_on_creation=True):
+        if polling_interval is None:
+            polling_interval = _DEFAULT_POLLING_INTERVAL
         super().__init__(poller,
                          poller_args,
                          polling_interval,
@@ -136,16 +137,25 @@ class PollableResult(CivisAsyncResultBase):
                     # If the job has finished, then register completion and
                     # store the results. Because of the `if self._result` check
                     # up top, we will never get here twice.
-                    if self._last_result.state in FAILED:
-                        try:
-                            err_msg = str(self._last_result['error'])
-                        except:
-                            err_msg = str(self._last_result)
-                        self.set_exception(CivisJobFailure(err_msg,
-                                           self._last_result))
-
-                        self._result = self._last_result
-                    elif self._last_result.state in DONE:
-                        self.set_result(self._last_result)
+                    self._set_api_result(self._last_result)
 
             return self._last_result
+
+    def _set_api_result(self, result):
+        with self._condition:
+            if result.state in FAILED:
+                try:
+                    err_msg = str(result['error'])
+                except:
+                    err_msg = str(result)
+                self.set_exception(CivisJobFailure(err_msg,
+                                                   result))
+                self._result = result
+                self.cleanup()
+            elif result.state in DONE:
+                self.set_result(result)
+                self.cleanup()
+
+    def cleanup(self):
+        # This gets called after the result is set
+        pass
