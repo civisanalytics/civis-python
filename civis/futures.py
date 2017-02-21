@@ -101,6 +101,7 @@ class CivisFuture(PollableResult):
                 len(self._pubnub.get_subscribed_channels()) > 0)
 
     def cleanup(self):
+        super().cleanup()
         self._pubnub.unsubscribe_all()
 
     def _subscribe(self, pnconfig, channels):
