@@ -6,9 +6,9 @@ from civis import APIClient
 from civis.base import EmptyResultError
 try:
     from requests_toolbelt.multipart.encoder import MultipartEncoder
-    has_toolbelt = True
+    HAS_TOOLBELT = True
 except ImportError:
-    has_toolbelt = False
+    HAS_TOOLBELT = False
 
 
 def file_to_civis(buf, name, api_key=None, **kwargs):
@@ -66,7 +66,7 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     form_key['file'] = buf
 
     url = file_response.upload_url
-    if has_toolbelt:
+    if HAS_TOOLBELT:
         # This streams from the open file buffer without holding the
         # contents in memory.
         en = MultipartEncoder(fields=form_key)
