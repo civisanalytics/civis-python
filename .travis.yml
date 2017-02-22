@@ -11,4 +11,4 @@ env:
 before_script: flake8 civis
 script:
     - py.test --cov civis
-    - sphinx-build -b html -nW docs/source/ docs/build/
+    - sphinx-build -b html -n docs/source/ docs/build/
