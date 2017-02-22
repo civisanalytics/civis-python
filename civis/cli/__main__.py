@@ -51,7 +51,7 @@ class YAMLParamType(click.ParamType):
                 result = yaml.load(f)
                 return result
         except Exception:
-            self.fail("Could not load YAML from path: %s", value)
+            self.fail("Could not load YAML from path: %s" % value, param, ctx)
 
 
 YAML = YAMLParamType()
