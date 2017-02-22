@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.1.0 python-requests/2.12.4]
+    method: GET
+    uri: https://api.civisanalytics.com/channels
+  response:
+    body:
+      string: '{"origin": "civis.pubnub.com", "subscribeKey": "test-sub-key", "cipherKey":
+              "test-cipher-key", "authKey": "test-auth-key", "channels": [{"name":
+              "channel1"}, {"name": "channel2"}]}'
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 17 Feb 2017 21:41:17 GMT']
+      ETag: [W/"e9cc22a7ba461110cf01273466af1cf7"]
+      Server: [nginx/1.10.1]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [e480113b-09c6-4730-bbef-ae2771dd3e0a]
+      X-Runtime: ['0.113446']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+recorded_with: VCR
+version: 1

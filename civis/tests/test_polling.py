@@ -1,4 +1,5 @@
 """Test the `civis.polling` module"""
+import time
 from concurrent import futures
 import unittest
 from unittest import mock
@@ -96,6 +97,17 @@ class TestPolling(unittest.TestCase):
             lambda: Response({"state": "running"}), (),
             polling_interval=0.1)
         pytest.raises(ZeroDivisionError, pollable.result, timeout=5)
+
+    def test_poll_on_creation(self):
+        poller = mock.Mock(side_effect=Response({"state": "running"}))
+        pollable = PollableResult(poller,
+                                  (),
+                                  polling_interval=0.01,
+                                  poll_on_creation=False)
+        repr(pollable)
+        assert poller.call_count == 0
+        time.sleep(0.02)
+        assert poller.call_count == 1
 
 
 if __name__ == '__main__':

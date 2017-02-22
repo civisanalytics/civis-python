@@ -126,14 +126,20 @@ class CivisAsyncResultBase(futures.Future):
     api_key : str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    poll_on_creation : bool, optional
+        If ``True`` (the default), it will poll upon calling ``result()`` the
+        first time. If ``False``, it will wait the number of seconds specified
+        in `polling_interval` from object creation before polling.
     """
     def __init__(self, poller, poller_args,
-                 polling_interval=None, api_key=None):
+                 polling_interval=None, api_key=None,
+                 poll_on_creation=True):
         super().__init__()
         self.poller = poller
         self.poller_args = poller_args
         self.polling_interval = polling_interval
         self.api_key = api_key
+        self.poll_on_creation = poll_on_creation
 
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use

@@ -1,6 +1,5 @@
 from civis import APIClient
-from civis.polling import PollableResult
-from civis.pubnub import SubscribableResult, has_pubnub
+from civis.futures import CivisFuture
 
 
 def run_job(job_id, api_key=None):
@@ -16,15 +15,12 @@ def run_job(job_id, api_key=None):
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult` or
-    :class:`~civis.pubnub.SubscribableResult`
-        A `PollableResult` or `SubscribableResult` object if a Pubnub
-        connection is available.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
     """
     client = APIClient(api_key=api_key, resources='all')
     run = client.jobs.post_runs(job_id)
-    if 'pubnub' in client.feature_flags and has_pubnub:
-        return SubscribableResult(client.jobs.get_runs,
-                                  (job_id, run['id']),
-                                  api_key=api_key)
-    return PollableResult(client.jobs.get_runs, (job_id, run['id']))
+    return CivisFuture(client.jobs.get_runs,
+                       (job_id, run['id']),
+                       api_key=api_key,
+                       poll_on_creation=False)
