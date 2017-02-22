@@ -4,6 +4,11 @@ import requests
 
 from civis import APIClient
 from civis.base import EmptyResultError
+try:
+    from requests_toolbelt.multipart.encoder import MultipartEncoder
+    HAS_TOOLBELT = True
+except ImportError:
+    HAS_TOOLBELT = False
 
 
 def file_to_civis(buf, name, api_key=None, **kwargs):
@@ -41,18 +46,39 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     If you are opening a binary file (e.g., a compressed archive) to
     pass to this function, do so using the ``'rb'`` (read binary)
     mode (e.g., ``open('myfile.zip', 'rb')``).
+
+    If you have the `requests-toolbelt` package installed
+    (`pip install requests-toolbelt`), then this function will stream
+    from the open file pointer into Platform. If `requests-toolbelt`
+    is not installed, then it will need to read the entire buffer
+    into memory before writing.
     """
     client = APIClient(api_key=api_key)
     file_response = client.files.post(name, **kwargs)
 
+    # Platform has given us a URL to which we can upload a file.
+    # The file must be uploaded with a POST formatted as per
+    # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html
+    # Note that the payload must have "key" first and "file" last.
     form = file_response.upload_fields
-    # order matters here! key must be first
     form_key = OrderedDict(key=form.pop('key'))
     form_key.update(form)
     form_key['file'] = buf
 
     url = file_response.upload_url
-    response = requests.post(url, files=form_key)
+    if HAS_TOOLBELT:
+        # This streams from the open file buffer without holding the
+        # contents in memory.
+        en = MultipartEncoder(fields=form_key)
+        if en.len / 2 ** 20 < 100:
+            # Semi-arbitrary cutoff for "small" files.
+            # Send these with requests directly because that uses less CPU
+            response = requests.post(url, files=form_key)
+        else:
+            response = requests.post(url, data=en,
+                                     headers={'Content-Type': en.content_type})
+    else:
+        response = requests.post(url, files=form_key)
     response.raise_for_status()
 
     return file_response.id

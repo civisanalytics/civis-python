@@ -24,10 +24,11 @@ requests directly to the Civis API. See the
     ```
     pip install civis
     ```
-6. Optionally, install `pandas` to enable some functionality in `civis-python`
+6. Optionally, install `pandas` and `requests-toolbelt` to enable some functionality in `civis-python`
 
     ```
     pip install pandas
+    pip install requests-toolbelt
     ```
 
 # Usage
