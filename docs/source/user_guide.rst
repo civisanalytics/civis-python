@@ -29,29 +29,42 @@ uploads the data back into Civis:
    ...                          use_pandas=True)
    >>> correlation_matrix = df.corr()
    >>> correlation_matrix["corr_var"] = correlation_matrix.index
-   >>> poller = civis.io.dataframe_to_civis(df=correlation_matrix,
-   ...                                      database="database",
-   ...                                      table="my_schema.my_correlations")
-   >>> poller.result()
+   >>> fut = civis.io.dataframe_to_civis(df=correlation_matrix,
+   ...                                   database="database",
+   ...                                   table="my_schema.my_correlations")
+   >>> fut.result()
 
 
-Pollable Results
-================
+Civis Platform Futures
+======================
 
 In the code above, :func:`~civis.io.dataframe_to_civis` returns a special
-:class:`~civis.polling.PollableResult` object. Making a request to the Civis
+:class:`~civis.polling.PollableResult` or
+:class:`~civis.pubnub.SubscribableResult` object.
+Making a request to the Civis
 API usually results in a long running job. To account for this, various
 functions in the ``civis`` namespace return a
-:class:`PollableResult <civis.polling.PollableResult>` to allow you to
+subclass of the :class:`python:concurrent.futures.Future` to allow you to
 process multiple long running jobs simultaneously. For instance, you may
 want to start many jobs in parallel and wait for them all to finish rather
 than wait for each job to finish before starting the next one.
 
-The :class:`PollableResult <civis.polling.PollableResult>` follows the
+The Civis API classes follow the
 :class:`python:concurrent.futures.Future` API fairly closely. For example,
-calling ``result()`` on ``poller`` above forces the program to wait for the
+calling ``result()`` on ``fut`` above forces the program to wait for the
 job started with :func:`~civis.io.dataframe_to_civis` to finish and
 returns the result.
+
+The difference between the two classes,
+:class:`~civis.polling.PollableResult` and
+:class:`~civis.pubnub.SubscribableResult`, is in how they check
+for job completion. The :class:`~civis.polling.PollableResult` always
+works, but it relies on periodically polling the Civis Platform
+to check for run completion. The :class:`~civis.pubnub.SubscribableResult`
+requires an optional external package, ``pubnub``, but can see
+jobs complete immediately instead of waiting for the next ping.
+The Civis API Python client will automatically select the
+:class:`~civis.pubnub.SubscribableResult` if it's available.
 
 
 Working Directly with the Client

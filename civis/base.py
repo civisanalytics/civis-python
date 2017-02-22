@@ -10,6 +10,7 @@ FAILED = ['failed']
 NOT_FINISHED = ['queued', 'running']
 CANCELLED = ['cancelled']
 DONE = FINISHED + FAILED + CANCELLED
+_DEFAULT_POLLING_INTERVAL = 15
 
 # Translate Civis state strings into `future` state strings
 STATE_TRANS = {}
@@ -132,7 +133,7 @@ class CivisAsyncResultBase(futures.Future):
         super().__init__()
         self.poller = poller
         self.poller_args = poller_args
-        self.polling_interval = polling_interval
+        self.polling_interval = polling_interval or _DEFAULT_POLLING_INTERVAL
         self.api_key = api_key
 
     def __repr__(self):
@@ -186,7 +187,7 @@ class CivisAsyncResultBase(futures.Future):
 
     @property
     def _state(self):
-        """State of the PollableResult in `future` language."""
+        """State of the CivisAsyncResultBase in `future` language."""
         with self._condition:
             return STATE_TRANS[self._civis_state]
 
