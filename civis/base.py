@@ -192,7 +192,7 @@ class CivisAsyncResultBase(futures.Future):
 
     @property
     def _state(self):
-        """State of the PollableResult in `future` language."""
+        """State of the CivisAsyncResultBase in `future` language."""
         with self._condition:
             return STATE_TRANS[self._civis_state]
 

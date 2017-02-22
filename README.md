@@ -24,12 +24,18 @@ requests directly to the Civis API. See the
     ```
     pip install civis
     ```
-6. Optionally, install `pandas` and `requests-toolbelt` to enable some functionality in `civis-python`
+6. Optionally, install `pandas`, `pubnub`, and `requests-toolbelt` to enable some functionality in `civis-python`
 
     ```
     pip install pandas
+    pip install pubnub
     pip install requests-toolbelt
     ```
+    Installation of `pandas` will allow some functions to return `DataFrame` outputs.
+    Installation of `pubnub` will improve performance in all functions which
+    wait for a Civis Platform job to complete.
+    Installation of `requests-toolbelt` will allow streaming file uploads to
+    Civis via `civis.io.file_to_civis`.
 
 # Usage
 
