@@ -148,8 +148,7 @@ class PollableResult(CivisAsyncResultBase):
                     err_msg = str(result['error'])
                 except:
                     err_msg = str(result)
-                self.set_exception(CivisJobFailure(err_msg,
-                                                   result))
+                self.set_exception(CivisJobFailure(err_msg, result))
                 self._result = result
                 self.cleanup()
             elif result.state in DONE:

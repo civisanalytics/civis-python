@@ -11,6 +11,9 @@ try:
 except ImportError:
     has_pubnub = False
 
+# Pubnub connections can recover missed messages upon reconnecting for up to 10
+# minutes from the disconnect. Polling on a 9.5 minute interval is used as a
+# fallback in case the job complete message is missed in an outage.
 _LONG_POLLING_INTERVAL = 9.5 * 60
 
 if has_pubnub:
