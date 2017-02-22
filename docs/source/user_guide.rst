@@ -29,27 +29,27 @@ uploads the data back into Civis:
    ...                          use_pandas=True)
    >>> correlation_matrix = df.corr()
    >>> correlation_matrix["corr_var"] = correlation_matrix.index
-   >>> poller = civis.io.dataframe_to_civis(df=correlation_matrix,
-   ...                                      database="database",
-   ...                                      table="my_schema.my_correlations")
-   >>> poller.result()
+   >>> fut = civis.io.dataframe_to_civis(df=correlation_matrix,
+   ...                                   database="database",
+   ...                                   table="my_schema.my_correlations")
+   >>> fut.result()
 
 
-Pollable Results
-================
+Civis Futures
+=============
 
 In the code above, :func:`~civis.io.dataframe_to_civis` returns a special
-:class:`~civis.polling.PollableResult` object. Making a request to the Civis
+:class:`~civis.futures.CivisFuture` object. Making a request to the Civis
 API usually results in a long running job. To account for this, various
 functions in the ``civis`` namespace return a
-:class:`PollableResult <civis.polling.PollableResult>` to allow you to
+:class:`CivisFuture <civis.futures.CivisFuture>` to allow you to
 process multiple long running jobs simultaneously. For instance, you may
 want to start many jobs in parallel and wait for them all to finish rather
 than wait for each job to finish before starting the next one.
 
-The :class:`PollableResult <civis.polling.PollableResult>` follows the
+The :class:`CivisFuture <civis.futures.CivisFuture>` follows the
 :class:`python:concurrent.futures.Future` API fairly closely. For example,
-calling ``result()`` on ``poller`` above forces the program to wait for the
+calling ``result()`` on ``fut`` above forces the program to wait for the
 job started with :func:`~civis.io.dataframe_to_civis` to finish and
 returns the result.
 

@@ -1,12 +1,10 @@
 from civis import APIClient
 from civis._utils import maybe_get_random_name
-from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
+from civis.futures import CivisFuture
 
 
 def query_civis(sql, database, api_key=None, credential_id=None,
-                preview_rows=10,
-                polling_interval=_DEFAULT_POLLING_INTERVAL,
-                hidden=True):
+                preview_rows=10, polling_interval=None, hidden=True):
     """Execute a SQL statement as a Civis query.
 
     Run a query that may return no results or where only a small
@@ -35,8 +33,8 @@ def query_civis(sql, database, api_key=None, credential_id=None,
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult`
-        A `PollableResult` object.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
 
     Examples
     --------
@@ -51,13 +49,13 @@ def query_civis(sql, database, api_key=None, credential_id=None,
                                preview_rows,
                                credential=cred_id,
                                hidden=hidden)
-    return PollableResult(client.queries.get, (resp.id, ), polling_interval)
+    return CivisFuture(client.queries.get, (resp.id, ), polling_interval,
+                       api_key=api_key, poll_on_creation=False)
 
 
 def transfer_table(source_db, dest_db, source_table, dest_table,
                    job_name=None, api_key=None, source_credential_id=None,
-                   dest_credential_id=None,
-                   polling_interval=_DEFAULT_POLLING_INTERVAL,
+                   dest_credential_id=None, polling_interval=None,
                    **advanced_options):
     """Transfer a table from one location to another.
 
@@ -94,8 +92,8 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult`
-        A `PollableResult` object.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
 
     Examples
     --------
@@ -123,7 +121,7 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
                               advanced_options=advanced_options)
     run_id = client.imports.post_runs(id=job_id).run_id
 
-    poll = PollableResult(client.imports.get_files_runs,
-                          (job_id, run_id),
-                          polling_interval)
-    return poll
+    fut = CivisFuture(client.imports.get_files_runs, (job_id, run_id),
+                      polling_interval=polling_interval, api_key=api_key,
+                      poll_on_creation=False)
+    return fut

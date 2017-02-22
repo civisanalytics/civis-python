@@ -6,7 +6,7 @@ from civis import APIClient
 from civis.io import civis_to_file
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
-from civis.polling import PollableResult, _DEFAULT_POLLING_INTERVAL
+from civis.futures import CivisFuture
 import requests
 import warnings
 
@@ -30,8 +30,7 @@ DELIMITERS = {
 
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, credential_id=None,
-               polling_interval=_DEFAULT_POLLING_INTERVAL,
-               archive=False, hidden=True, **kwargs):
+               polling_interval=None, archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -115,8 +114,8 @@ def read_civis(table, database, columns=None, use_pandas=False,
 
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, credential_id=None,
-                   polling_interval=_DEFAULT_POLLING_INTERVAL,
-                   archive=False, hidden=True, **kwargs):
+                   polling_interval=None, archive=False,
+                   hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -192,16 +191,16 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
                                     hidden=hidden)
-    poll = PollableResult(client.scripts.get_sql_runs,
-                          (script_id, run_id),
-                          polling_interval)
+    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
+                      polling_interval=polling_interval, api_key=api_key,
+                      poll_on_creation=False)
     if archive:
 
         def f(x):
             return client.scripts.put_sql_archive(script_id, True)
 
-        poll.add_done_callback(f)
-    poll.result()
+        fut.add_done_callback(f)
+    fut.result()
     outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
     if not outputs:
         raise EmptyResultError("Query {} returned no output."
@@ -218,7 +217,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                  credential_id=None, archive=False, hidden=True,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL):
+                 polling_interval=None):
     """Export data from Civis to a local CSV file.
 
     Parameters
@@ -247,14 +246,14 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult`
-        A `PollableResult` object.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
 
     Examples
     --------
     >>> sql = "SELECT * FROM schema.table"
-    >>> poll = civis_to_csv("file.csv", sql, "my_database")
-    >>> poll.result()  # Wait for job to complete
+    >>> fut = civis_to_csv("file.csv", sql, "my_database")
+    >>> fut.result()  # Wait for job to complete
 
     See Also
     --------
@@ -268,27 +267,26 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
                                     hidden=hidden)
-    poll = PollableResult(client.scripts.get_sql_runs,
-                          (script_id, run_id),
-                          polling_interval)
+    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
+                      polling_interval=polling_interval, api_key=api_key,
+                      poll_on_creation=False)
     download = _download_callback(script_id, run_id, client, filename)
-    poll.add_done_callback(download)
+    fut.add_done_callback(download)
     if archive:
 
         def f(x):
             return client.scripts.put_sql_archive(script_id, True)
 
-        poll.add_done_callback(f)
+        fut.add_done_callback(f)
 
-    return poll
+    return fut
 
 
 def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            credential_id=None, include_header=True,
                            compression='none', delimiter='|',
                            unquoted=False, prefix=None,
-                           polling_interval=_DEFAULT_POLLING_INTERVAL,
-                           hidden=True):
+                           polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
@@ -372,11 +370,10 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                                     credential_id, hidden,
                                     csv_settings=csv_settings)
 
-    poll = PollableResult(client.scripts.get_sql_runs,
-                          (script_id, run_id),
-                          polling_interval)
-    poll.result()
-    outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
+    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
+                      polling_interval=polling_interval, api_key=api_key,
+                      poll_on_creation=False)
+    outputs = fut.result()["output"]
     if not outputs:
         raise EmptyResultError("Unload query {} returned no manifest."
                                .format(script_id))
@@ -394,7 +391,7 @@ def dataframe_to_civis(df, database, table, api_key=None,
                        max_errors=None, existing_table_rows="fail",
                        distkey=None, sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
-                       polling_interval=_DEFAULT_POLLING_INTERVAL,
+                       polling_interval=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -442,16 +439,16 @@ def dataframe_to_civis(df, database, table, api_key=None,
 
     Returns
     -------
-    poll : :class:`~civis.polling.PollableResult`
-        A `PollableResult` object.
+    fut : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
 
     Examples
     --------
     >>> import pandas as pd
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
-    >>> poller = civis.io.dataframe_to_civis(df, 'my-database',
-    ...                                      'scratch.df_table')
-    >>> poller.result()
+    >>> fut = civis.io.dataframe_to_civis(df, 'my-database',
+    ...                                   'scratch.df_table')
+    >>> fut.result()
     """
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
@@ -472,8 +469,7 @@ def csv_to_civis(filename, database, table, api_key=None,
                  max_errors=None, existing_table_rows="fail",
                  distkey=None, sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
-                 credential_id=None,
-                 polling_interval=_DEFAULT_POLLING_INTERVAL,
+                 credential_id=None, polling_interval=None,
                  archive=False, hidden=True):
     """Upload the contents of a local CSV file to Civis.
 
@@ -520,8 +516,8 @@ def csv_to_civis(filename, database, table, api_key=None,
 
     Returns
     -------
-    results : :class:`~civis.polling.PollableResult`
-        A `PollableResult` object.
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
 
     Notes
     -----
@@ -531,20 +527,20 @@ def csv_to_civis(filename, database, table, api_key=None,
     --------
     >>> with open('input_file.csv', 'w') as _input:
     ...     _input.write('a,b,c\\n1,2,3')
-    >>> poller = civis.io.csv_to_civis('input_file.csv',
-    ...                                'my-database',
-    ...                                'scratch.my_data')
-    >>> poller.result()
+    >>> fut = civis.io.csv_to_civis('input_file.csv',
+    ...                             'my-database',
+    ...                             'scratch.my_data')
+    >>> fut.result()
     """
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
     with open(filename, "rb") as data:
-        poll = _import_bytes(data, database, table, api_key, max_errors,
-                             existing_table_rows, distkey, sortkey1, sortkey2,
-                             delimiter, headers, credential_id,
-                             polling_interval, archive, hidden=hidden)
-    return poll
+        fut = _import_bytes(data, database, table, api_key, max_errors,
+                            existing_table_rows, distkey, sortkey1, sortkey2,
+                            delimiter, headers, credential_id,
+                            polling_interval, archive, hidden=hidden)
+    return fut
 
 
 def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
@@ -615,13 +611,15 @@ def _import_bytes(buf, database, table, api_key, max_errors,
     run_job_result = client._session.post(import_job.run_uri)
     run_job_result.raise_for_status()
     run_info = run_job_result.json()
-    poll = PollableResult(client.imports.get_files_runs,
-                          (run_info['importId'], run_info['id']),
-                          polling_interval=polling_interval)
+    fut = CivisFuture(client.imports.get_files_runs,
+                      (run_info['importId'], run_info['id']),
+                      polling_interval=polling_interval,
+                      api_key=api_key,
+                      poll_on_creation=False)
     if archive:
 
         def f(x):
             return client.imports.put_archive(import_job.id, True)
 
-        poll.add_done_callback(f)
-    return poll
+        fut.add_done_callback(f)
+    return fut

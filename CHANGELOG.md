@@ -4,10 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `civis.futures.CivisFuture` for tracking future results  
+- `civis.futures.CivisFuture` for tracking future results
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` will perform a streaming upload to Platform if the optional ``requests-toolbelt`` package is installed.
+- Replace all ``PollableResult`` return values with ``CivisFuture`` to reduce the number of API calls and increase speed
 
 ## 1.2.0 - 2017-02-08
 ### Added
