@@ -95,8 +95,7 @@ class PollableResult(CivisAsyncResultBase):
             # bug in `_check_result`, however, we would get stuck
             # in an infinite loop without setting the `_result`.
             with self._condition:
-                self._result = Response({"state": FAILED[0]})
-                self.set_exception(e)
+                self._set_api_exception(exc=e)
 
     def _poll_wait_elapsed(self, now):
         # thie exists because it's easier to monkeypatch in testing
@@ -130,9 +129,7 @@ class PollableResult(CivisAsyncResultBase):
                 except Exception as e:
                     # The _poller can raise API exceptions
                     # Set those directly as this Future's exception
-                    self._result = Response({"state": FAILED[0]})
-                    self._last_result = self._result
-                    self.set_exception(e)
+                    self._set_api_exception(exc=e)
                 else:
                     # If the job has finished, then register completion and
                     # store the results. Because of the `if self._result` check
@@ -148,12 +145,20 @@ class PollableResult(CivisAsyncResultBase):
                     err_msg = str(result['error'])
                 except:
                     err_msg = str(result)
-                self.set_exception(CivisJobFailure(err_msg, result))
-                self._result = result
-                self.cleanup()
+                self._set_api_exception(exc=CivisJobFailure(err_msg, result),
+                                        result=result)
             elif result.state in DONE:
                 self.set_result(result)
                 self.cleanup()
+
+    def _set_api_exception(self, exc, result=None):
+        with self._condition:
+            if result is None:
+                result = Response({"state": FAILED[0]})
+            self._result = result
+            self._last_result = self._result
+            self.set_exception(exc)
+            self.cleanup()
 
     def cleanup(self):
         # This gets called after the result is set
