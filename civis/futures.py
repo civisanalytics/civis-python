@@ -1,6 +1,5 @@
 from civis import APIClient
-from civis.base import FAILED, DONE
-from civis.response import Response
+from civis.base import DONE
 from civis.polling import PollableResult
 
 try:
@@ -148,5 +147,4 @@ class CivisFuture(PollableResult):
                 result = self.poller(*self.poller_args)
                 self._set_api_result(result)
             except Exception as e:
-                self._result = Response({"state": FAILED[0]})
-                self.set_exception(e)
+                self._set_api_exception(exc=e)
