@@ -13,7 +13,7 @@ except ImportError:
 from jsonref import JsonRef
 import requests
 
-from civis.base import Endpoint
+from civis.base import Endpoint, get_base_url
 from civis._utils import camel_to_snake, to_camelcase
 
 
@@ -423,7 +423,7 @@ def get_swagger_spec(api_key, user_agent, api_version):
     session.auth = (api_key, '')
     session.headers.update({"User-Agent": user_agent.strip()})
     if api_version == "1.0":
-        response = session.get("{}endpoints".format(Endpoint._base_url))
+        response = session.get("{}endpoints".format(get_base_url()))
     else:
         msg = "swagger spec for api version {} cannot be found"
         raise ValueError(msg.format(api_version))

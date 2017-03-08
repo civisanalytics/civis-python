@@ -1,3 +1,4 @@
+import os
 from posixpath import join
 import threading
 from concurrent import futures
@@ -19,6 +20,9 @@ for name in NOT_FINISHED:
     STATE_TRANS[name] = futures._base.RUNNING
 for name in CANCELLED:
     STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
+
+
+DEFAULT_API_ENDPOINT = 'https://api.civisanalytics.com/'
 
 
 def tostr_urljoin(*x):
@@ -60,14 +64,21 @@ class CivisAPIKeyError(Exception):
     pass
 
 
+def get_base_url():
+    base_url = os.environ.get('CIVIS_API_ENDPOINT', DEFAULT_API_ENDPOINT)
+    if not base_url.endswith('/'):
+        base_url += '/'
+    return base_url
+
+
 class Endpoint:
 
-    _base_url = "https://api.civisanalytics.com/"
     _lock = threading.Lock()
 
     def __init__(self, session, return_type='civis'):
         self._session = session
         self._return_type = return_type
+        self._base_url = get_base_url()
 
     def _build_path(self, path):
         if not path:
