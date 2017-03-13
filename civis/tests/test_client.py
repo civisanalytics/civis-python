@@ -39,3 +39,13 @@ class ClientTests(CivisVCRTestCase):
             client.feature_flags
             client.feature_flags
             self.assertEqual(client.users.list_me.call_count, 1)
+
+    def test_passthrough_creation_from_existing_client(self):
+        # If we input an existing client object, we should use that
+        # instead of creating a new object.
+        client = APIClient()
+        client2 = APIClient(client)
+        assert client2 is client
+
+        client3 = APIClient(api_key=client)
+        assert client3 is client

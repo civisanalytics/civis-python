@@ -258,9 +258,11 @@ class APIClient(MetaMixin):
 
     Parameters
     ----------
-    api_key : str, optional
+    api_key : str or APIClient, optional
         Your API key obtained from the Civis Platform. If not given, the
         client will use the :envvar:`CIVIS_API_KEY` environment variable.
+        If the input is an existing :class:`civis.civis.APIClient`, it will
+        be returned and a new client object will not be created.
     return_type : str, optional
         The following types are implemented:
 
@@ -285,6 +287,9 @@ class APIClient(MetaMixin):
     """
     def __init__(self, api_key=None, return_type='snake',
                  retry_total=6, api_version="1.0", resources="base"):
+        if api_key is self:
+            # The object is already initialized.
+            return
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
                              "'pandas'")
@@ -310,6 +315,14 @@ class APIClient(MetaMixin):
                                    resources=resources)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(session, return_type))
+
+    def __new__(cls, api_key=None, *args, **kwargs):
+        if isinstance(api_key, cls):
+            # If the "api_key" is already an APIClient, use the
+            # existing client and don't create a new one.
+            return api_key
+        else:
+            return super().__new__(cls)
 
     @property
     def feature_flags(self):
