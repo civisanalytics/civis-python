@@ -1,6 +1,7 @@
 import json
 import csv
 import io
+import warnings
 
 from civis import APIClient
 from civis.io import civis_to_file
@@ -8,7 +9,6 @@ from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
 import requests
-import warnings
 
 try:
     from io import StringIO
@@ -29,7 +29,7 @@ DELIMITERS = {
 
 
 def read_civis(table, database, columns=None, use_pandas=False,
-               job_name=None, api_key=None, credential_id=None,
+               job_name=None, api_key=None, client=None, credential_id=None,
                polling_interval=None, archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
 
@@ -49,9 +49,12 @@ def read_civis(table, database, columns=None, use_pandas=False,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     credential_id : str or int, optional
         The database credential ID.  If ``None``, the default credential
         will be used.
@@ -105,7 +108,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
                       "Use `hidden` instead.", FutureWarning)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, api_key=api_key,
+                          job_name=job_name, api_key=api_key, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
@@ -113,7 +116,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
 
 
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
-                   api_key=None, credential_id=None,
+                   api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
                    hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
@@ -131,9 +134,12 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     credential_id : str or int, optional
         The database credential ID.  If ``None``, the default credential
         will be used.
@@ -182,17 +188,22 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     civis.io.read_civis : Read directly into memory without SQL.
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    client = APIClient(api_key=api_key)
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
                                     hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, api_key=api_key,
+                      polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
     if archive:
 
@@ -216,7 +227,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
 
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
-                 credential_id=None, archive=False, hidden=True,
+                 client=None, credential_id=None, archive=False, hidden=True,
                  polling_interval=None):
     """Export data from Civis to a local CSV file.
 
@@ -231,9 +242,12 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -263,12 +277,17 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    client = APIClient(api_key=api_key)
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
                                     hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, api_key=api_key,
+                      polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
     download = _download_callback(script_id, run_id, client, filename)
     fut.add_done_callback(download)
@@ -283,7 +302,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 
 
 def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
-                           credential_id=None, include_header=True,
+                           client=None, credential_id=None,
+                           include_header=True,
                            compression='none', delimiter='|',
                            unquoted=False, prefix=None,
                            polling_interval=None, hidden=True):
@@ -304,9 +324,12 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     credential_id : str or int, optional
         The database credential ID.  If ``None``, the default credential
         will be used.
@@ -355,10 +378,14 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     --------
     civis.APIClient.scripts.post_sql
     """
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     delimiter = DELIMITERS.get(delimiter)
     assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
-
-    client = APIClient(api_key=api_key)
 
     csv_settings = dict(include_header=include_header,
                         compression=compression,
@@ -371,7 +398,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                                     csv_settings=csv_settings)
 
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, api_key=api_key,
+                      polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
     outputs = fut.result()["output"]
     if not outputs:
@@ -387,7 +414,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     return unload_manifest
 
 
-def dataframe_to_civis(df, database, table, api_key=None,
+def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        distkey=None, sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
@@ -404,9 +431,12 @@ def dataframe_to_civis(df, database, table, api_key=None,
     table : str
         The schema and table you want to upload to. E.g.,
         ``'scratch.table'``.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     max_errors : int, optional
         The maximum number of rows with errors to remove from the import
         before failing.
@@ -450,6 +480,12 @@ def dataframe_to_civis(df, database, table, api_key=None,
     ...                                   'scratch.df_table')
     >>> fut.result()
     """
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
@@ -459,13 +495,13 @@ def dataframe_to_civis(df, database, table, api_key=None,
     txt.flush()
     buf.seek(0)
     delimiter = ','
-    return _import_bytes(buf, database, table, api_key, max_errors,
+    return _import_bytes(buf, database, table, client, max_errors,
                          existing_table_rows, distkey, sortkey1, sortkey2,
                          delimiter, headers, credential_id, polling_interval,
                          archive, hidden=hidden)
 
 
-def csv_to_civis(filename, database, table, api_key=None,
+def csv_to_civis(filename, database, table, api_key=None, client=None,
                  max_errors=None, existing_table_rows="fail",
                  distkey=None, sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
@@ -482,9 +518,12 @@ def csv_to_civis(filename, database, table, api_key=None,
     table : str
         The schema and table you want to upload to. E.g.,
         ``'scratch.table'``.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     max_errors : int, optional
         The maximum number of rows with errors to remove from the import
         before failing.
@@ -532,11 +571,17 @@ def csv_to_civis(filename, database, table, api_key=None,
     ...                             'scratch.my_data')
     >>> fut.result()
     """
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
     with open(filename, "rb") as data:
-        fut = _import_bytes(data, database, table, api_key, max_errors,
+        fut = _import_bytes(data, database, table, client, max_errors,
                             existing_table_rows, distkey, sortkey1, sortkey2,
                             delimiter, headers, credential_id,
                             polling_interval, archive, hidden=hidden)
@@ -587,10 +632,9 @@ def _download_callback(job_id, run_id, client, filename):
     return callback
 
 
-def _import_bytes(buf, database, table, api_key, max_errors,
+def _import_bytes(buf, database, table, client, max_errors,
                   existing_table_rows, distkey, sortkey1, sortkey2, delimiter,
                   headers, credential_id, polling_interval, archive, hidden):
-    client = APIClient(api_key=api_key)
     schema, table = table.split(".", 1)
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
@@ -614,7 +658,7 @@ def _import_bytes(buf, database, table, api_key, max_errors,
     fut = CivisFuture(client.imports.get_files_runs,
                       (run_info['importId'], run_info['id']),
                       polling_interval=polling_interval,
-                      api_key=api_key,
+                      client=client,
                       poll_on_creation=False)
     if archive:
 

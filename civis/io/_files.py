@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import warnings
 
 import requests
 
@@ -11,7 +12,7 @@ except ImportError:
     HAS_TOOLBELT = False
 
 
-def file_to_civis(buf, name, api_key=None, **kwargs):
+def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     """Upload a file to Civis.
 
     Parameters
@@ -20,9 +21,12 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
         The file or other buffer that you wish to upload.
     name : str
         The name you wish to give the file.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     **kwargs : kwargs
         Extra keyword arguments will be passed to the file creation
         endpoint. See :func:`~civis.resources._resources.Files.post`.
@@ -53,7 +57,12 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     is not installed, then it will need to read the entire buffer
     into memory before writing.
     """
-    client = APIClient(api_key=api_key)
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -84,7 +93,7 @@ def file_to_civis(buf, name, api_key=None, **kwargs):
     return file_response.id
 
 
-def civis_to_file(file_id, buf, api_key=None):
+def civis_to_file(file_id, buf, api_key=None, client=None):
     """Download a file from Civis.
 
     Parameters
@@ -94,9 +103,12 @@ def civis_to_file(file_id, buf, api_key=None):
     buf : file-like object
         The file or other buffer to write the contents of the Civis file
         into.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
 
     Returns
     -------
@@ -108,7 +120,13 @@ def civis_to_file(file_id, buf, api_key=None):
     >>> with open("my_file.txt", "w") as f:
     ...    civis_to_file(file_id, f)
     """
-    url = _get_url_from_file_id(file_id, api_key=api_key)
+    if api_key is not None:
+        warnings.warn('The "api_key" parameter is deprecated and will be '
+                      'removed in v2. Please use the `client` parameter '
+                      'instead.', FutureWarning)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
+    url = _get_url_from_file_id(file_id, client=client)
     if not url:
         raise EmptyResultError('Unable to locate file {}. If it previously '
                                'existed, it may have '
@@ -121,8 +139,7 @@ def civis_to_file(file_id, buf, api_key=None):
         buf.write(lines)
 
 
-def _get_url_from_file_id(file_id, api_key=None):
-    client = APIClient(api_key=api_key)
+def _get_url_from_file_id(file_id, client):
     files_response = client.files.get(file_id)
     url = files_response.file_url
     return url
