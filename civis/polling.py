@@ -116,10 +116,6 @@ class PollableResult(CivisAsyncResultBase):
         self._polling_thread = ResultPollingThread(self._check_result, (),
                                                    polling_interval)
 
-    def _poll_wait_elapsed(self, now):
-        # thie exists because it's easier to monkeypatch in testing
-        return (now - self._last_polled) >= self.polling_interval
-
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
         result and never poll again."""
@@ -137,7 +133,8 @@ class PollableResult(CivisAsyncResultBase):
             # Check to see if the job has finished, but don't poll more
             # frequently than the requested polling frequency.
             now = time.time()
-            if not self._last_polled or self._poll_wait_elapsed(now):
+            if (not self._last_polled or
+                    (now - self._last_polled) >= self.polling_interval):
                 # Poll for a new result
                 self._last_polled = now
                 try:

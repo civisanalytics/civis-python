@@ -18,7 +18,7 @@ import civis
 from civis.resources._resources import get_swagger_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
-                                  conditionally_patch)
+                                  POLL_INTERVAL)
 
 swagger_import_str = 'civis.resources._resources.get_swagger_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -26,11 +26,12 @@ with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
 
 
-@conditionally_patch('civis.polling.time.sleep', return_value=None)
-@conditionally_patch('civis.polling.PollableResult._poll_wait_elapsed',
-                     return_value=True)
 @patch(swagger_import_str, return_value=civis_api_spec)
 class ImportTests(CivisVCRTestCase):
+    # Note that all functions tested here should use a
+    # `polling_interval=POLL_INTERVAL` input. This lets us use
+    # sensible polling intervals when recording, but speed through
+    # the calls in the VCR cassette when testing later.
 
     @classmethod
     def setUpClass(cls):
@@ -43,9 +44,6 @@ class ImportTests(CivisVCRTestCase):
         generate_classes.cache_clear()
 
     @classmethod
-    @conditionally_patch('civis.polling.time.sleep', return_value=None)
-    @conditionally_patch('civis.polling.PollableResult._poll_wait_elapsed',
-                         return_value=True)
     @patch(swagger_import_str, return_value=civis_api_spec)
     def setup_class(cls, *mocks):
         setup_vcr = vcr.VCR(filter_headers=['Authorization'])
@@ -71,14 +69,16 @@ class ImportTests(CivisVCRTestCase):
                 INSERT INTO scratch.api_client_test_fixture
                 VALUES (1,2,3);
             """
-            res = civis.io.query_civis(sql, 'redshift-general')
+            res = civis.io.query_civis(sql, 'redshift-general',
+                                       polling_interval=POLL_INTERVAL)
             res.result()  # block
 
             # create an export to check get_url. also tests export_csv
             with tempfile.NamedTemporaryFile() as tmp:
                 sql = "SELECT * FROM scratch.api_client_test_fixture"
                 database = 'redshift-general'
-                result = civis.io.civis_to_csv(tmp.name, sql, database)
+                result = civis.io.civis_to_csv(tmp.name, sql, database,
+                                               polling_interval=POLL_INTERVAL)
                 result = result.result()
                 assert result.state == 'succeeded'
 
@@ -105,7 +105,8 @@ class ImportTests(CivisVCRTestCase):
             table = "scratch.api_client_test_fixture"
             database = 'redshift-general'
             result = civis.io.csv_to_civis(tmp.name, database, table,
-                                           existing_table_rows='truncate')
+                                           existing_table_rows='truncate',
+                                           polling_interval=POLL_INTERVAL)
             result = result.result()  # block until done
 
         assert isinstance(result.id, int)
@@ -116,14 +117,16 @@ class ImportTests(CivisVCRTestCase):
     def test_read_civis_pandas(self, *mocks):
         expected = pd.DataFrame([[1, 2, 3]], columns=['a', 'b', 'c'])
         df = civis.io.read_civis('scratch.api_client_test_fixture',
-                                 'redshift-general', use_pandas=True)
+                                 'redshift-general', use_pandas=True,
+                                 polling_interval=POLL_INTERVAL)
         assert df.equals(expected)
 
     @patch(swagger_import_str, return_value=civis_api_spec)
     def test_read_civis_no_pandas(self, *mocks):
         expected = [['a', 'b', 'c'], ['1', '2', '3']]
         data = civis.io.read_civis('scratch.api_client_test_fixture',
-                                   'redshift-general', use_pandas=False)
+                                   'redshift-general', use_pandas=False,
+                                   polling_interval=POLL_INTERVAL)
         assert data == expected
 
     @patch(swagger_import_str, return_value=civis_api_spec)
@@ -131,7 +134,8 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         expected = [['a', 'b', 'c'], ['1', '2', '3']]
         data = civis.io.read_civis_sql(sql, 'redshift-general',
-                                       use_pandas=False)
+                                       use_pandas=False,
+                                       polling_interval=POLL_INTERVAL)
         assert data == expected
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
@@ -140,15 +144,16 @@ class ImportTests(CivisVCRTestCase):
         df = pd.DataFrame([['1', '2', '3']], columns=['a', 'b', 'c'])
         result = civis.io.dataframe_to_civis(df, 'redshift-general',
                                              'scratch.api_client_test_fixture',
-                                             existing_table_rows='truncate')
+                                             existing_table_rows='truncate',
+                                             polling_interval=POLL_INTERVAL)
         result = result.result()
         assert result.state == 'succeeded'
 
     @patch(swagger_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
-        result = civis.io.civis_to_multifile_csv(sql,
-                                                 database='redshift-general')
+        result = civis.io.civis_to_multifile_csv(
+            sql, database='redshift-general', polling_interval=POLL_INTERVAL)
         assert set(result.keys()) == {'entries', 'query', 'header'}
         assert result['query'] == sql
         assert result['header'] == ['a', 'b', 'c']
@@ -163,13 +168,15 @@ class ImportTests(CivisVCRTestCase):
     def test_transfer_table(self, *mocks):
         result = civis.io.transfer_table('redshift-general', 'redshift-test',
                                          'scratch.api_client_test_fixture',
-                                         'scratch.api_client_test_fixture')
+                                         'scratch.api_client_test_fixture',
+                                         polling_interval=POLL_INTERVAL)
         result = result.result()
         assert result.state == 'succeeded'
 
         # check for side effect
         sql = 'select * from scratch.api_client_test_fixture'
-        result = civis.io.query_civis(sql, 'redshift-test').result()
+        result = civis.io.query_civis(sql, 'redshift-test',
+                                      polling_interval=POLL_INTERVAL).result()
         assert result.state == 'succeeded'
 
     def test_get_sql_select(self, *mocks):

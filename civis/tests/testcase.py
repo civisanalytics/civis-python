@@ -1,4 +1,3 @@
-from functools import wraps
 import os
 
 from vcr import persist
@@ -6,18 +5,14 @@ from vcr.serialize import CASSETTE_FORMAT_VERSION
 from vcr.serializers import compat
 from vcr_unittest import VCRTestCase
 
-
-def conditionally_patch(target, *args, **kwargs):
-    from unittest.mock import patch
-    if os.getenv('GENERATE_TESTS'):
-        def pass_func(func):
-            wraps(func)
-            return func
-        return pass_func
-    else:
-        def decorated_func(func):
-            return patch(target, *args, **kwargs)(func)
-        return decorated_func
+# The "GENERATE_TEST" environment variable indicates that
+# we're recording new cassettes.
+if os.environ.get('GENERATE_TESTS'):
+    # Use default polling intervals if generating new tests.
+    POLL_INTERVAL = None
+else:
+    # Speed through calls in pre-recorded VCR cassettes.
+    POLL_INTERVAL = 0.00001
 
 
 def cassette_dir():
