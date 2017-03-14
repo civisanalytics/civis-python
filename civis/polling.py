@@ -1,11 +1,42 @@
-from concurrent import futures
 import time
+import threading
 
 from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
 from civis.response import Response
 
 
 _DEFAULT_POLLING_INTERVAL = 15
+
+
+class ResultPollingThread(threading.Thread):
+    """Poll a function until it returns a Response with a DONE state
+    """
+    # Inspired by `threading.Timer`
+
+    def __init__(self, poller, poller_args, polling_interval):
+        super().__init__()
+        self.polling_interval = polling_interval
+        self.poller = poller
+        self.poller_args = poller_args
+        self.finished = threading.Event()
+
+    def cancel(self):
+        """Stop the poller if it hasn't finished yet.
+        """
+        self.finished.set()
+
+    def join(self, timeout=None):
+        """Shut down the polling when the thread is terminated.
+        """
+        self.cancel()
+        super().join(timeout=timeout)
+
+    def run(self):
+        """Poll until done.
+        """
+        while not self.finished.wait(self.polling_interval):
+            if self.poller(*self.poller_args).state in DONE:
+                self.finished.set()
 
 
 class PollableResult(CivisAsyncResultBase):
@@ -52,7 +83,7 @@ class PollableResult(CivisAsyncResultBase):
     # Implementation notes: The `PollableResult` depends on some private
     # features of the `concurrent.futures.Future` class, so it's possible
     # that future versions of Python could break something here.
-    # (It works under at least 3.4 and 3.5.)
+    # (It works under at least 3.4, 3.5, and 3.6)
     # We use the following `Future` implementation details
     # - The `Future` checks its state against predefined strings. We use
     #   `STATE_TRANS` to translate from the Civis platform states to `Future`
@@ -72,6 +103,8 @@ class PollableResult(CivisAsyncResultBase):
                          polling_interval,
                          api_key,
                          poll_on_creation)
+        if self.polling_interval <= 0:
+            raise ValueError("The polling interval must be positive.")
 
         # Polling arguments. Never poll more often than the requested interval.
         if poll_on_creation:
@@ -80,15 +113,15 @@ class PollableResult(CivisAsyncResultBase):
             self._last_polled = time.time()
         self._last_result = None
 
-        self._self_polling_executor = None
+        self._polling_thread = ResultPollingThread(self._check_with_error_handling, (),
+                                             polling_interval)
 
-    def _wait_for_completion(self):
+    def _check_with_error_handling(self):
         """Poll the job every `polling_interval` seconds. Blocks until the
         job completes.
         """
         try:
-            while self._civis_state not in DONE:
-                time.sleep(self.polling_interval)
+            return self._check_result()
         except Exception as e:
             # Exceptions are caught in `_check_result`, so
             # we should never get here. If there were to be a
@@ -96,6 +129,7 @@ class PollableResult(CivisAsyncResultBase):
             # in an infinite loop without setting the `_result`.
             with self._condition:
                 self._set_api_exception(exc=e)
+            return self._result
 
     def _poll_wait_elapsed(self, now):
         # thie exists because it's easier to monkeypatch in testing
@@ -104,13 +138,10 @@ class PollableResult(CivisAsyncResultBase):
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
         result and never poll again."""
-
-        # If we haven't started the polling thread, do it now.
-        if self._self_polling_executor is None and self._result is None:
-            # Start a single thread continuously polling. It will stop once the
-            # job completes.
-            self._self_polling_executor = futures.ThreadPoolExecutor(1)
-            self._self_polling_executor.submit(self._wait_for_completion)
+        # Start a single thread continuously polling.
+        # It will stop once the job completes.
+        if not self._polling_thread.is_alive() and self._result is None:
+            self._polling_thread.start()
 
         with self._condition:
             if self._result is not None:
@@ -161,5 +192,7 @@ class PollableResult(CivisAsyncResultBase):
             self.cleanup()
 
     def cleanup(self):
-        # This gets called after the result is set
-        pass
+        # This gets called after the result is set.
+        # Ensure that the polling thread shuts down when it's no longer needed.
+        if self._polling_thread.is_alive():
+            self._polling_thread.cancel()
