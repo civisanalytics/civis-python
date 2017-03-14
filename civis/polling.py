@@ -113,23 +113,8 @@ class PollableResult(CivisAsyncResultBase):
             self._last_polled = time.time()
         self._last_result = None
 
-        self._polling_thread = ResultPollingThread(self._check_with_error_handling, (),
-                                             polling_interval)
-
-    def _check_with_error_handling(self):
-        """Poll the job every `polling_interval` seconds. Blocks until the
-        job completes.
-        """
-        try:
-            return self._check_result()
-        except Exception as e:
-            # Exceptions are caught in `_check_result`, so
-            # we should never get here. If there were to be a
-            # bug in `_check_result`, however, we would get stuck
-            # in an infinite loop without setting the `_result`.
-            with self._condition:
-                self._set_api_exception(exc=e)
-            return self._result
+        self._polling_thread = ResultPollingThread(self._check_result, (),
+                                                   polling_interval)
 
     def _poll_wait_elapsed(self, now):
         # thie exists because it's easier to monkeypatch in testing

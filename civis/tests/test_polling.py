@@ -63,29 +63,6 @@ class TestPolling(unittest.TestCase):
             polling_interval=0.1)
         pytest.raises(futures.TimeoutError, pollable.result, timeout=0.05)
 
-    def test_no_hanging(self):
-        # Make sure that an error in the `_check_result` doesn't
-        # cause an infinite loop.
-        class PollableResultTester(PollableResult):
-            def __init__(self, *args, **kwargs):
-                self._poll_ct = 0
-                super().__init__(*args, **kwargs)
-
-            def _check_result(self):
-                if self._poll_ct is not None:
-                    self._poll_ct += 1
-                    if self._poll_ct > 10:
-                        self._poll_ct = None  # Disable the counter.
-                        # Make the _wait_for_completion loop fail.
-                        raise ZeroDivisionError()
-                return super()._check_result()
-
-        # The following should raise a CivisJobFailure before a TimeoutError.
-        pollable = PollableResultTester(
-            lambda: Response({"state": "running"}), (),
-            polling_interval=0.1)
-        pytest.raises(ZeroDivisionError, pollable.result, timeout=5)
-
     def test_poll_on_creation(self):
         poller = mock.Mock(return_value=Response({"state": "running"}))
         pollable = PollableResult(poller,
