@@ -8,6 +8,8 @@ from civis.io import civis_to_file
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
+from civis.utils.deprecation import deprecate
+
 import requests
 
 try:
@@ -115,6 +117,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
     return data
 
 
+@deprecate('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
@@ -188,10 +191,6 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     civis.io.read_civis : Read directly into memory without SQL.
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     if use_pandas and NO_PANDAS:
