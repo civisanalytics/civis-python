@@ -8,7 +8,7 @@ from civis.response import Response
 _DEFAULT_POLLING_INTERVAL = 15
 
 
-class ResultPollingThread(threading.Thread):
+class _ResultPollingThread(threading.Thread):
     """Poll a function until it returns a Response with a DONE state
     """
     # Inspired by `threading.Timer`
@@ -113,8 +113,8 @@ class PollableResult(CivisAsyncResultBase):
             self._last_polled = time.time()
         self._last_result = None
 
-        self._polling_thread = ResultPollingThread(self._check_result, (),
-                                                   polling_interval)
+        self._polling_thread = _ResultPollingThread(self._check_result, (),
+                                                    polling_interval)
 
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
