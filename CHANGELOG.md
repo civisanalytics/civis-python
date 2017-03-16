@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Decorator function for deprecating parameters (#46)
+- ``wait`` parameter for function ``utils.run_job``
+- Function ``utils.wait_for_run``
 
 ## 1.3.0 - 2017-03-07
 ### Added
