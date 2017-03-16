@@ -8,7 +8,7 @@ from civis.io import civis_to_file
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
-from civis.utils.deprecation import deprecate
+from civis.utils._deprecation import deprecate_param
 
 import requests
 
@@ -30,6 +30,7 @@ DELIMITERS = {
 }
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, client=None, credential_id=None,
                polling_interval=None, archive=False, hidden=True, **kwargs):
@@ -117,7 +118,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
     return data
 
 
-@deprecate('v2.0.0', 'api_key')
+@deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
@@ -225,6 +226,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     return data
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                  client=None, credential_id=None, archive=False, hidden=True,
                  polling_interval=None):
@@ -276,10 +278,6 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     script_id, run_id = _sql_script(client, sql, database,
@@ -300,6 +298,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     return fut
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
                            include_header=True,
@@ -377,10 +376,6 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     --------
     civis.APIClient.scripts.post_sql
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     delimiter = DELIMITERS.get(delimiter)
@@ -413,6 +408,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     return unload_manifest
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        distkey=None, sortkey1=None, sortkey2=None,
@@ -479,10 +475,6 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     ...                                   'scratch.df_table')
     >>> fut.result()
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     if archive:
@@ -500,6 +492,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                          archive, hidden=hidden)
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def csv_to_civis(filename, database, table, api_key=None, client=None,
                  max_errors=None, existing_table_rows="fail",
                  distkey=None, sortkey1=None, sortkey2=None,
@@ -570,10 +563,6 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     ...                             'scratch.my_data')
     >>> fut.result()
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     if archive:

@@ -1,10 +1,10 @@
-import warnings
-
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.futures import CivisFuture
+from civis.utils._deprecation import deprecate_param
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def query_civis(sql, database, api_key=None, client=None, credential_id=None,
                 preview_rows=10, polling_interval=None, hidden=True):
     """Execute a SQL statement as a Civis query.
@@ -46,10 +46,6 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
     >>> run = query_civis(sql="DELETE schema.table", database='database')
     >>> run.result()  # Wait for query to complete
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     database_id = client.get_database_id(database)
@@ -63,6 +59,7 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
                        client=client, poll_on_creation=False)
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def transfer_table(source_db, dest_db, source_table, dest_table,
                    job_name=None, api_key=None, client=None,
                    source_credential_id=None, dest_credential_id=None,
@@ -113,10 +110,6 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     >>> transfer_table(source_db='Cluster A', dest_db='Cluster B',
     ...                source_table='schma.tbl', dest_table='schma.tbl')
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     source_cred_id = source_credential_id or client.default_credential

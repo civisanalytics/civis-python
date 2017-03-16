@@ -1,9 +1,9 @@
-import warnings
-
 from civis import APIClient
 from civis.futures import CivisFuture
+from civis.utils._deprecation import deprecate_param
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def run_job(job_id, api_key=None, client=None):
     """Run a job.
 
@@ -23,10 +23,6 @@ def run_job(job_id, api_key=None, client=None):
     results : :class:`~civis.futures.CivisFuture`
         A `CivisFuture` object.
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
     run = client.jobs.post_runs(job_id)

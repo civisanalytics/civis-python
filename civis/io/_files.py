@@ -1,10 +1,10 @@
 from collections import OrderedDict
-import warnings
 
 import requests
 
 from civis import APIClient
 from civis.base import EmptyResultError
+from civis.utils._deprecation import deprecate_param
 try:
     from requests_toolbelt.multipart.encoder import MultipartEncoder
     HAS_TOOLBELT = True
@@ -12,6 +12,7 @@ except ImportError:
     HAS_TOOLBELT = False
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     """Upload a file to Civis.
 
@@ -57,12 +58,8 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     is not installed, then it will need to read the entire buffer
     into memory before writing.
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -93,6 +90,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     return file_response.id
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def civis_to_file(file_id, buf, api_key=None, client=None):
     """Download a file from Civis.
 
@@ -120,12 +118,8 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     >>> with open("my_file.txt", "w") as f:
     ...    civis_to_file(file_id, f)
     """
-    if api_key is not None:
-        warnings.warn('The "api_key" parameter is deprecated and will be '
-                      'removed in v2. Please use the `client` parameter '
-                      'instead.', FutureWarning)
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     url = _get_url_from_file_id(file_id, client=client)
     if not url:
         raise EmptyResultError('Unable to locate file {}. If it previously '
