@@ -3,8 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### API Changes
+- Deprecate ``api_key`` input to higher-level functions and classes in favor of an ``APIClient`` input. The ``api_key`` will be removed in v2.0.0. (#46)
+
 ### Fixed
 - Improved threading implementation in ``PollableResult`` so that it no longer blocks interpreter shutdown.
+
+### Added
+- Decorator function for deprecating parameters (#46)
 
 ## 1.3.0 - 2017-03-07
 ### Added
