@@ -109,9 +109,12 @@ def read_civis(table, database, columns=None, use_pandas=False,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
+    if client is None:
+        # Instantiate client here in case users provide a (deprecated) api_key
+        client = APIClient(api_key=api_key, resources='all')
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, api_key=api_key, client=client,
+                          job_name=job_name, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
