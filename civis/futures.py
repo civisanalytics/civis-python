@@ -53,9 +53,10 @@ class CivisFuture(PollableResult):
     polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
         is ready.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
     poll_on_creation : bool, optional
         If ``True`` (the default), it will poll upon calling ``result()`` the
         first time. If ``False``, it will wait the number of seconds specified
@@ -79,19 +80,22 @@ class CivisFuture(PollableResult):
     >>> future = CivisFuture(poller, poller_args, polling_interval)
     """
     def __init__(self, poller, poller_args,
-                 polling_interval=None, api_key=None,
+                 polling_interval=None, api_key=None, client=None,
                  poll_on_creation=True):
-        client = APIClient(api_key=api_key, resources='all')
+        if client is None:
+            client = APIClient(api_key=api_key, resources='all')
+
         if (polling_interval is None and
                 has_pubnub and
                 hasattr(client, 'channels')):
             polling_interval = _LONG_POLLING_INTERVAL
 
-        super().__init__(poller,
-                         poller_args,
-                         polling_interval,
-                         api_key,
-                         poll_on_creation)
+        super().__init__(poller=poller,
+                         poller_args=poller_args,
+                         polling_interval=polling_interval,
+                         api_key=api_key,
+                         client=client,
+                         poll_on_creation=poll_on_creation)
 
         if has_pubnub and hasattr(client, 'channels'):
             config, channels = self._pubnub_config()
@@ -116,8 +120,7 @@ class CivisFuture(PollableResult):
         return pubnub
 
     def _pubnub_config(self):
-        client = APIClient(api_key=self.api_key, resources='all')
-        channel_config = client.channels.list()
+        channel_config = self.client.channels.list()
         channels = [channel['name'] for channel in channel_config['channels']]
         pnconfig = PNConfiguration()
         pnconfig.subscribe_key = channel_config['subscribe_key']

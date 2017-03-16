@@ -1,9 +1,11 @@
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.futures import CivisFuture
+from civis.utils._deprecation import deprecate_param
 
 
-def query_civis(sql, database, api_key=None, credential_id=None,
+@deprecate_param('v2.0.0', 'api_key')
+def query_civis(sql, database, api_key=None, client=None, credential_id=None,
                 preview_rows=10, polling_interval=None, hidden=True):
     """Execute a SQL statement as a Civis query.
 
@@ -17,9 +19,12 @@ def query_civis(sql, database, api_key=None, credential_id=None,
         The SQL statement to execute.
     database : str or int
         The name or ID of the database.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     credential_id : str or int, optional
         The ID of the database credential. If ``None``, the default
         credential will be used.
@@ -41,7 +46,8 @@ def query_civis(sql, database, api_key=None, credential_id=None,
     >>> run = query_civis(sql="DELETE schema.table", database='database')
     >>> run.result()  # Wait for query to complete
     """
-    client = APIClient(api_key=api_key)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     database_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     resp = client.queries.post(database_id,
@@ -50,13 +56,14 @@ def query_civis(sql, database, api_key=None, credential_id=None,
                                credential=cred_id,
                                hidden=hidden)
     return CivisFuture(client.queries.get, (resp.id, ), polling_interval,
-                       api_key=api_key, poll_on_creation=False)
+                       client=client, poll_on_creation=False)
 
 
+@deprecate_param('v2.0.0', 'api_key')
 def transfer_table(source_db, dest_db, source_table, dest_table,
-                   job_name=None, api_key=None, source_credential_id=None,
-                   dest_credential_id=None, polling_interval=None,
-                   **advanced_options):
+                   job_name=None, api_key=None, client=None,
+                   source_credential_id=None, dest_credential_id=None,
+                   polling_interval=None, **advanced_options):
     """Transfer a table from one location to another.
 
     Parameters
@@ -75,9 +82,12 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : str, optional
+    api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     source_credential_id : str or int, optional
         Optional credential ID for the source database. If ``None``, the
         default credential will be used.
@@ -100,7 +110,8 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     >>> transfer_table(source_db='Cluster A', dest_db='Cluster B',
     ...                source_table='schma.tbl', dest_table='schma.tbl')
     """
-    client = APIClient(api_key=api_key)
+    if client is None:
+        client = APIClient(api_key=api_key, resources='all')
     source_cred_id = source_credential_id or client.default_credential
     dest_cred_id = dest_credential_id or client.default_credential
     job_name = maybe_get_random_name(job_name)
@@ -122,6 +133,6 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     run_id = client.imports.post_runs(id=job_id).run_id
 
     fut = CivisFuture(client.imports.get_files_runs, (job_id, run_id),
-                      polling_interval=polling_interval, api_key=api_key,
+                      polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
     return fut

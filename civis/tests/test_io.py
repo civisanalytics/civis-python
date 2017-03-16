@@ -86,7 +86,8 @@ class ImportTests(CivisVCRTestCase):
 
     @patch(swagger_import_str, return_value=civis_api_spec)
     def test_get_url_from_file_id(self, *mocks):
-        url = civis.io._files._get_url_from_file_id(self.file_id)
+        client = civis.APIClient()
+        url = civis.io._files._get_url_from_file_id(self.file_id, client)
         assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
 
     @patch(swagger_import_str, return_value=civis_api_spec)
