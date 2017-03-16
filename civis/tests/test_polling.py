@@ -15,12 +15,8 @@ class State:
         self.state = state
 
 
-def func():
-    pass
-
-
 def create_pollable_result(state, exception=None, result=None):
-    f = PollableResult(State, (state, ), polling_interval=0)
+    f = PollableResult(State, (state, ), polling_interval=0.001)
     f._exception = exception
     f._result = result
     return f
@@ -29,12 +25,9 @@ def create_pollable_result(state, exception=None, result=None):
 CANCELLED_RESULT = create_pollable_result(state='cancelled')
 FINISHED_RESULT = create_pollable_result(state='success')
 QUEUED_RESULT = create_pollable_result(state='queued')
-# avoid the polling thread hanging
-QUEUED_RESULT._wait_for_completion = func
 
 
 class TestPolling(unittest.TestCase):
-
     def test_as_completed(self):
         my_futures = [QUEUED_RESULT, CANCELLED_RESULT, FINISHED_RESULT]
         fs = futures.as_completed(my_futures)
@@ -64,50 +57,32 @@ class TestPolling(unittest.TestCase):
         assert isinstance(pollable.exception(), ZeroDivisionError)
 
     def test_timeout(self):
-        # Note: Something about the test framework seems to prevent the
-        # Pollable result from being destroyed while the polling
-        # thread is running. The test will hang if the PollableResult
-        # never completes. I haven't seen the same problem in
-        # the interpreter.
         pollable = PollableResult(
-            mock.Mock(side_effect=[Response({"state": "running"}),
-                                   ValueError()]), (),
+            mock.Mock(return_value=Response({"state": "running"})),
+            poller_args=(),
             polling_interval=0.1)
         pytest.raises(futures.TimeoutError, pollable.result, timeout=0.05)
 
-    def test_no_hanging(self):
-        # Make sure that an error in the `_check_result` doesn't
-        # cause an infinite loop.
-        class PollableResultTester(PollableResult):
-            def __init__(self, *args, **kwargs):
-                self._poll_ct = 0
-                super().__init__(*args, **kwargs)
-
-            def _check_result(self):
-                if self._poll_ct is not None:
-                    self._poll_ct += 1
-                    if self._poll_ct > 10:
-                        self._poll_ct = None  # Disable the counter.
-                        # Make the _wait_for_completion loop fail.
-                        raise ZeroDivisionError()
-                return super()._check_result()
-
-        # The following should raise a CivisJobFailure before a TimeoutError.
-        pollable = PollableResultTester(
-            lambda: Response({"state": "running"}), (),
-            polling_interval=0.1)
-        pytest.raises(ZeroDivisionError, pollable.result, timeout=5)
-
     def test_poll_on_creation(self):
-        poller = mock.Mock(side_effect=Response({"state": "running"}))
+        poller = mock.Mock(return_value=Response({"state": "running"}))
         pollable = PollableResult(poller,
                                   (),
                                   polling_interval=0.01,
                                   poll_on_creation=False)
-        repr(pollable)
+        pollable.done()  # Check status once to start the polling thread
         assert poller.call_count == 0
-        time.sleep(0.02)
+        time.sleep(0.015)
         assert poller.call_count == 1
+
+
+def test_repeated_polling():
+    # Verify that we poll the expected number of times.
+    poller = mock.Mock(return_value=Response({"state": "running"}))
+    pollable = PollableResult(poller, (), polling_interval=0.1)
+    pollable.done()  # Check status once to start the polling thread
+    assert poller.call_count == 1, "Poll once on the first status check"
+    time.sleep(0.25)
+    assert poller.call_count == 3, "After waiting 2.5x the polling interval"
 
 
 if __name__ == '__main__':
