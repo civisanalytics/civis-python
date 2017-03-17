@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Improved threading implementation in ``PollableResult`` so that it no longer blocks interpreter shutdown.
+- Allow the base url of the API to be configured through the ``CIVIS_API_ENDPOINT`` environment variable. (#43)
 
 ### Added
 - Decorator function for deprecating parameters (#46)
