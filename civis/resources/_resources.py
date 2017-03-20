@@ -12,7 +12,10 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util import Retry
 
+import civis
 from civis.base import Endpoint, get_base_url
 from civis._utils import camel_to_snake, to_camelcase
 
@@ -27,6 +30,7 @@ ITERATOR_PARAM_DESC = (
     "    If True, return a generator to iterate over all responses. Use when\n"
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
+MAX_RETRIES = 10
 
 
 def exclude_resource(path, api_version, resources):
@@ -422,6 +426,10 @@ def get_swagger_spec(api_key, user_agent, api_version):
     session = requests.Session()
     session.auth = (api_key, '')
     session.headers.update({"User-Agent": user_agent.strip()})
+    max_retries = Retry(MAX_RETRIES, backoff_factor=.75,
+                        status_forcelist=civis.civis.RETRY_CODES)
+    adapter = HTTPAdapter(max_retries=max_retries)
+    session.mount("https://", adapter)
     if api_version == "1.0":
         response = session.get("{}endpoints".format(get_base_url()))
     else:
