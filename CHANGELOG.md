@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
 
 ## 1.4.0 - 2017-03-17
 ### API Changes
