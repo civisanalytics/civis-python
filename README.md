@@ -60,6 +60,19 @@ database = client.databases.list()
 See the [full documentation](https://civis-python.readthedocs.io) for a more
 complete user guide.
 
+## Retries
+
+The API client will automatically retry for certain API error responses.
+
+If the error is one of [413, 429, 503] and the API client is told how long it needs
+to wait before it's safe to retry (this is always the case with 429s, which are
+rate limit errors), then the client will wait the specified amount of time
+before retrying the request.
+
+If the error is one of [429, 502, 503, 504] and the request is not a `patch*` or `post*`
+method, then the API client will retry the request several times, with a delay,
+to see if it will succeed.
+
 # Build Documentation Locally
 To build the API documentation locally
 

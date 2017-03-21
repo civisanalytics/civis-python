@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
 
+### Changed
+- Modified retry behavior so that 413, 429, or 503 errors accompanied by a "Retry-After" header will be retried regardless of the HTTP verb used.
+
 ## 1.4.0 - 2017-03-17
 ### API Changes
 - Deprecate ``api_key`` input to higher-level functions and classes in favor of an ``APIClient`` input. The ``api_key`` will be removed in v2.0.0. (#46)

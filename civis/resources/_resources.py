@@ -13,10 +13,9 @@ except ImportError:
 from jsonref import JsonRef
 import requests
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util import Retry
 
 import civis
-from civis.base import Endpoint, get_base_url
+from civis.base import AggressiveRetry, Endpoint, get_base_url
 from civis._utils import camel_to_snake, to_camelcase
 
 
@@ -426,8 +425,8 @@ def get_swagger_spec(api_key, user_agent, api_version):
     session = requests.Session()
     session.auth = (api_key, '')
     session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = Retry(MAX_RETRIES, backoff_factor=.75,
-                        status_forcelist=civis.civis.RETRY_CODES)
+    max_retries = AggressiveRetry(MAX_RETRIES, backoff_factor=.75,
+                                  status_forcelist=civis.civis.RETRY_CODES)
     adapter = HTTPAdapter(max_retries=max_retries)
     session.mount("https://", adapter)
     if api_version == "1.0":

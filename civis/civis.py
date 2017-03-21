@@ -4,9 +4,9 @@ import os
 
 import requests
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util import Retry
 
 import civis
+from civis.base import AggressiveRetry
 from civis.resources import generate_classes
 
 
@@ -298,8 +298,8 @@ class APIClient(MetaMixin):
         user_agent = "civis-python/{} {}".format(civis_version, session_agent)
         session.headers.update({"User-Agent": user_agent.strip()})
 
-        max_retries = Retry(retry_total, backoff_factor=.75,
-                            status_forcelist=RETRY_CODES)
+        max_retries = AggressiveRetry(retry_total, backoff_factor=.75,
+                                      status_forcelist=RETRY_CODES)
         adapter = HTTPAdapter(max_retries=max_retries)
 
         session.mount("https://", adapter)
