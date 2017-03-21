@@ -2,16 +2,12 @@ import os
 from posixpath import join
 import threading
 from concurrent import futures
-import logging
 import warnings
 
 from requests.packages.urllib3.util import Retry
 
 from civis.response import PaginatedResponse, convert_response_data_type
 
-log = logging.getLogger(__name__)
-
-FINISHED = ['success', 'succeeded']
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
 NOT_FINISHED = ['queued', 'running']
@@ -92,7 +88,6 @@ class AggressiveRetry(Retry):
                 self.respect_retry_after_header and
                 has_retry_after and
                 (status_code in self.RETRY_AFTER_STATUS_CODES)):
-            log.debug("Retrying %s error from a %s call.", status_code, method)
             return True
 
         else:
