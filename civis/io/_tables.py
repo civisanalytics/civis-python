@@ -339,10 +339,10 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
         of column names. Default: ``True``.
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
-        ``'gzip'``. Default ``'gzip'``.
+        ``'gzip'``. Default ``'none'``.
     delimiter, str: optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
-        ``'|'``. Default: ``','``.
+        ``'|'``. Default: ``'|'``.
     unquoted: bool, optional
         Where or not to quote fields. Default: ``False``.
     prefix: str, optional
