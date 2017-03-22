@@ -4,7 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
+- Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
+
+### Fixed
+- Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
 
 ## 1.4.0 - 2017-03-17
 ### API Changes
