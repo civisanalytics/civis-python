@@ -7,6 +7,5 @@ API Response Types
 .. autoclass:: civis.response.PaginatedResponse
    :members:
 
-.. autoclass:: civis.polling.PollableResult
-   :show-inheritance:
+.. autoclass:: civis.futures.CivisFuture
    :members:

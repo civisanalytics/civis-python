@@ -40,8 +40,8 @@ class CivisFuture(PollableResult):
     job completion events. If you don't have access to Pubnub channels, then
     it will fallback to polling.
 
-    This is a subclass of ``concurrent.futures.Future`` from the Python
-    standard library. See:
+    This is a subclass of :class:`python:concurrent.futures.Future` from the
+    Python standard library. See:
     https://docs.python.org/3/library/concurrent.futures.html
 
     Parameters
@@ -64,7 +64,8 @@ class CivisFuture(PollableResult):
 
     Examples
     --------
-    This example is provided as a function at ``civis.io.query_civis``.
+    This example is provided as a function at :func:`~civis.io.query_civis`.
+
     >>> client = civis.APIClient()
     >>> database_id = client.get_database_id("my_database")
     >>> cred_id = client.default_credential
