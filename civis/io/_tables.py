@@ -402,11 +402,13 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
         raise EmptyResultError("Unload query {} returned no manifest."
                                .format(script_id))
 
+    manifest_file_id = outputs[0]['file_id']
     buf = io.BytesIO()
-    civis_to_file(outputs[0]['file_id'], buf)
+    civis_to_file(manifest_file_id, buf)
     txt = io.TextIOWrapper(buf, encoding='utf-8')
     txt.seek(0)
     unload_manifest = json.load(txt)
+    unload_manifest['file_id'] = manifest_file_id
 
     return unload_manifest
 
