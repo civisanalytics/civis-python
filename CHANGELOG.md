@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Modified retry behavior so that 413, 429, or 503 errors accompanied by a "Retry-After" header will be retried regardless of the HTTP verb used.
+- Add CSV settings arguments to ``civis.io.civis_to_csv`` function.
 
 ## 1.4.0 - 2017-03-17
 ### API Changes
