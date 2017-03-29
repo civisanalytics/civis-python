@@ -124,8 +124,8 @@ def read_civis(table, database, columns=None, use_pandas=False,
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
-                   polling_interval=None, archive=False, hidden=True,
-                   **kwargs):
+                   polling_interval=None, archive=False,
+                   hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -202,9 +202,9 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-
-    script_id, run_id = _sql_script(client, sql, database, job_name,
-                                    credential_id, hidden=hidden)
+    script_id, run_id = _sql_script(client, sql, database,
+                                    job_name, credential_id,
+                                    hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
@@ -330,8 +330,9 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 @deprecate_param('v2.0.0', 'api_key')
 def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
-                           include_header=True, compression='none',
-                           delimiter='|', unquoted=False, prefix=None,
+                           include_header=True,
+                           compression='none', delimiter='|',
+                           unquoted=False, prefix=None,
                            polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
 
