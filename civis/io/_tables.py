@@ -297,7 +297,9 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         client = APIClient(api_key=api_key, resources='all')
 
     delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    if not delimiter:
+        raise ValueError("delimiter must be one of {}"
+                         .format(DELIMITERS.keys()))
     csv_settings = dict(include_header=include_header,
                         compression=compression,
                         column_delimiter=delimiter,
