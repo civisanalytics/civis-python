@@ -33,7 +33,9 @@ DELIMITERS = {
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, client=None, credential_id=None,
-               polling_interval=None, archive=False, hidden=True, **kwargs):
+               include_header=True, compression='none', delimiter=',',
+               unquoted=False, prefix=None, polling_interval=None,
+               archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -61,6 +63,20 @@ def read_civis(table, database, columns=None, use_pandas=False,
     credential_id : str or int, optional
         The database credential ID.  If ``None``, the default credential
         will be used.
+    include_header: bool, optional
+        If ``True`` include a key in the returned dictionary containing a list
+        of column names. Default: ``True``.
+    compression: str, optional
+        Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
+        ``'gzip'``. Default ``'none'``.
+    delimiter, str: optional
+        Which delimiter to use, if any. One of ``','``, ``'\t'``, or
+        ``'|'``. Default: ``','``.
+    unquoted: bool, optional
+        Where or not to quote fields. Default: ``False``.
+    prefix: str, optional
+        A user specified filename prefix for the output file to have. Default:
+        ``None``.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
     archive : bool, optional (deprecated)
@@ -116,6 +132,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
                           job_name=job_name, client=client,
                           credential_id=credential_id,
+                          include_header=include_header,
+                          compression=compression, delimiter=delimiter,
+                          unquoted=unquoted, prefix=prefix,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
     return data
@@ -124,8 +143,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
-                   polling_interval=None, archive=False,
-                   hidden=True, **kwargs):
+                   include_header=True, compression='none', delimiter=',',
+                   unquoted=False, prefix=None, polling_interval=None,
+                   archive=False, hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -150,6 +170,20 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     credential_id : str or int, optional
         The database credential ID.  If ``None``, the default credential
         will be used.
+    include_header: bool, optional
+        If ``True`` include a key in the returned dictionary containing a list
+        of column names. Default: ``True``.
+    compression: str, optional
+        Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
+        ``'gzip'``. Default ``'none'``.
+    delimiter, str: optional
+        Which delimiter to use, if any. One of ``','``, ``'\t'``, or
+        ``'|'``. Default: ``','``.
+    unquoted: bool, optional
+        Where or not to quote fields. Default: ``False``.
+    prefix: str, optional
+        A user specified filename prefix for the output file to have. Default:
+        ``None``.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
     archive : bool, optional (deprecated)
@@ -202,9 +236,20 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    script_id, run_id = _sql_script(client, sql, database,
-                                    job_name, credential_id,
-                                    hidden=hidden)
+
+    column_delimiter = DELIMITERS.get(delimiter)
+    assert column_delimiter, "delimiter must be one of {}".format(
+        DELIMITERS.keys())
+    csv_settings = dict(include_header=include_header,
+                        compression=compression,
+                        column_delimiter=column_delimiter,
+                        unquoted=unquoted,
+                        filename_prefix=prefix,
+                        force_multifile=False)
+
+    script_id, run_id = _sql_script(client, sql, database, job_name,
+                                    credential_id, hidden=hidden,
+                                    csv_settings=csv_settings)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
@@ -221,6 +266,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
+        kwargs.update({'sep': delimiter})
         data = pd.read_csv(url, **kwargs)
     else:
         r = requests.get(url)
@@ -231,7 +277,9 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
 @deprecate_param('v2.0.0', 'api_key')
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
-                 client=None, credential_id=None, archive=False, hidden=True,
+                 client=None, credential_id=None, include_header=True,
+                 compression='none', delimiter=',', unquoted=False,
+                 prefix=None, archive=False, hidden=True,
                  polling_interval=None):
     """Export data from Civis to a local CSV file.
 
@@ -255,6 +303,20 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
+    include_header: bool, optional
+        If ``True`` include a key in the returned dictionary containing a list
+        of column names. Default: ``True``.
+    compression: str, optional
+        Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
+        ``'gzip'``. Default ``'none'``.
+    delimiter, str: optional
+        Which delimiter to use, if any. One of ``','``, ``'\t'``, or
+        ``'|'``. Default: ``','``.
+    unquoted: bool, optional
+        Where or not to quote fields. Default: ``False``.
+    prefix: str, optional
+        A user specified filename prefix for the output file to have. Default:
+        ``None``.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
     archive : bool, optional (deprecated)
@@ -283,9 +345,19 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                       "Use `hidden` instead.", FutureWarning)
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
-    script_id, run_id = _sql_script(client, sql, database,
-                                    job_name, credential_id,
-                                    hidden=hidden)
+
+    delimiter = DELIMITERS.get(delimiter)
+    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    csv_settings = dict(include_header=include_header,
+                        compression=compression,
+                        column_delimiter=delimiter,
+                        unquoted=unquoted,
+                        filename_prefix=prefix,
+                        force_multifile=False)
+
+    script_id, run_id = _sql_script(client, sql, database, job_name,
+                                    credential_id, hidden=hidden,
+                                    csv_settings=csv_settings)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
@@ -304,9 +376,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 @deprecate_param('v2.0.0', 'api_key')
 def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
-                           include_header=True,
-                           compression='none', delimiter='|',
-                           unquoted=False, prefix=None,
+                           include_header=True, compression='none',
+                           delimiter='|', unquoted=False, prefix=None,
                            polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
 
