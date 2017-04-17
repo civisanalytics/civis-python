@@ -128,7 +128,7 @@ class CivisFuture(PollableResult):
         pnconfig.cipher_key = channel_config['cipher_key']
         pnconfig.auth_key = channel_config['auth_key']
         pnconfig.ssl = True
-        pnconfig.reconnection_policy = PNReconnectionPolicy.LINEAR
+        pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
         return pnconfig, channels
 
     def _check_message(self, message):
