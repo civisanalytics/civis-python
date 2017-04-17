@@ -76,7 +76,11 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         # This streams from the open file buffer without holding the
         # contents in memory.
         en = MultipartEncoder(fields=form_key)
-        if en.len / 2 ** 20 < 100:
+        # The refusal error from AWS states 5368730624 is the max size allowed
+        if en.len >= 5 * 2 ** 30:  # 5 GB
+            msg = "Cannot upload files greater than 5GB. Got {:d}."
+            raise ValueError(msg.format(en.len))
+        elif en.len <= 100 * 2 ** 20:  # 100 MB
             # Semi-arbitrary cutoff for "small" files.
             # Send these with requests directly because that uses less CPU
             response = requests.post(url, files=form_key)
