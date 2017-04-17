@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import requests
+from requests import HTTPError
 
 from civis import APIClient
 from civis.base import EmptyResultError
@@ -10,6 +11,26 @@ try:
     HAS_TOOLBELT = True
 except ImportError:
     HAS_TOOLBELT = False
+
+
+def _get_aws_error_message(response):
+    # NOTE: This is cribbed from response.raise_for_status with AWS
+    # message appended
+    msg = ''
+
+    if 400 <= response.status_code < 500:
+        msg = '%s Client Error: %s for url: %s' % (response.status_code,
+                                                   response.reason,
+                                                   response.url)
+
+    elif 500 <= response.status_code < 600:
+        msg = '%s Server Error: %s for url: %s' % (response.status_code,
+                                                   response.reason,
+                                                   response.url)
+
+    msg += '\nAWS Content: %s' % response.content
+
+    return msg
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -76,7 +97,11 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         # This streams from the open file buffer without holding the
         # contents in memory.
         en = MultipartEncoder(fields=form_key)
-        if en.len / 2 ** 20 < 100:
+        # The refusal error from AWS states 5368730624 is the max size allowed
+        if en.len >= 5 * 2 ** 30:  # 5 GB
+            msg = "Cannot upload files greater than 5GB. Got {:d}."
+            raise ValueError(msg.format(en.len))
+        elif en.len <= 100 * 2 ** 20:  # 100 MB
             # Semi-arbitrary cutoff for "small" files.
             # Send these with requests directly because that uses less CPU
             response = requests.post(url, files=form_key)
@@ -85,7 +110,12 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
                                      headers={'Content-Type': en.content_type})
     else:
         response = requests.post(url, files=form_key)
-    response.raise_for_status()
+
+    if not response.ok:
+        # Amazon gives back informative error messages
+        # http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
+        msg = _get_aws_error_message(response)
+        raise HTTPError(msg, response=response)
 
     return file_response.id
 
