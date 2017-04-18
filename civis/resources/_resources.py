@@ -424,7 +424,6 @@ def parse_api_spec(api_spec, api_version, resources):
         client object.  Set to "all" to include all endpoints available for
         a given user, including those that may be in development and subject
         to breaking changes at a later date.
-
     """
     paths = api_spec['paths']
     classes = {}
