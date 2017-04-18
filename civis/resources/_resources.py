@@ -403,12 +403,12 @@ def parse_path(path, operations, api_version, resources):
     return class_name, methods
 
 
-def parse_swagger(swagger, api_version, resources):
-    """ Parse a swagger specifiction into a dictionary of classes
+def parse_api_spec(api_spec, api_version, resources):
+    """ Parse the Civis API specifiction into a dictionary of classes
     where each class represents an endpoint resource and contains
     methods to make http requests on that resource.
     """
-    paths = swagger['paths']
+    paths = api_spec['paths']
     classes = {}
     for path, ops in paths.items():
         class_name, methods = parse_path(path, ops, api_version, resources)
@@ -421,7 +421,7 @@ def parse_swagger(swagger, api_version, resources):
 
 
 @lru_cache(maxsize=4)
-def get_swagger_spec(api_key, user_agent, api_version):
+def get_api_spec(api_key, user_agent, api_version):
     session = requests.Session()
     session.auth = (api_key, '')
     session.headers.update({"User-Agent": user_agent.strip()})
@@ -432,7 +432,7 @@ def get_swagger_spec(api_key, user_agent, api_version):
     if api_version == "1.0":
         response = session.get("{}endpoints".format(get_base_url()))
     else:
-        msg = "swagger spec for api version {} cannot be found"
+        msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
     if response.status_code in (401, 403):
         msg = "{} error downloading API specification. API key may be expired."
@@ -473,6 +473,6 @@ def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
         "APIClient api_version must be one of {}".format(API_VERSIONS))
     assert resources in ["base", "all"], (
         "resources must be one of {}".format(["base", "all"]))
-    raw_swagger = get_swagger_spec(api_key, user_agent, api_version)
-    swagger = JsonRef.replace_refs(raw_swagger)
-    return parse_swagger(swagger, api_version, resources)
+    raw_spec = get_api_spec(api_key, user_agent, api_version)
+    spec = JsonRef.replace_refs(raw_spec)
+    return parse_api_spec(spec, api_version, resources)
