@@ -374,12 +374,12 @@ if _test_build:
 
     this_dir = os.path.dirname(os.path.realpath(__file__))
     test_dir = os.path.join(this_dir, os.pardir, os.pardir, 'civis', 'tests')
-    swagger_path = os.path.join(test_dir, 'civis_api_spec.json')
-    with open(swagger_path) as _raw:
-        swagger = JsonRef.replace_refs(
+    api_path = os.path.join(test_dir, 'civis_api_spec.json')
+    with open(api_path) as _raw:
+        api_spec = JsonRef.replace_refs(
             json.load(_raw, object_hook=OrderedDict))
-    extra_classes = civis.resources._resources.parse_swagger(
-        swagger, '1.0', 'base')
+    extra_classes = civis.resources._resources.parse_api_spec(
+        api_spec, '1.0', 'base')
 else:
     api_key = os.environ.get("CIVIS_API_KEY")
     user_agent = "civis-python/SphinxDocs"
