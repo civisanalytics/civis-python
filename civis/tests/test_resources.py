@@ -196,7 +196,7 @@ def test_parse_method_name():
     assert c == "list_containers_id_shares"
 
 
-def test_duplicate_names_generated_from_swagger():
+def test_duplicate_names_generated_from_api_spec():
     resolved_civis_api_spec = JsonRef.replace_refs(civis_api_spec)
     paths = resolved_civis_api_spec['paths']
     classes = defaultdict(list)
@@ -221,7 +221,7 @@ def test_expired_api_key(mock_response):
     msg = "401 error downloading API specification. API key may be expired."
     http_error_raised = False
     try:
-        _resources.get_swagger_spec("expired_key", "fake_user_agent", "1.0")
+        _resources.get_api_spec("expired_key", "fake_user_agent", "1.0")
     except HTTPError as err:
         http_error_raised = True
         assert str(err) == msg
