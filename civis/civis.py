@@ -7,7 +7,7 @@ from requests.adapters import HTTPAdapter
 
 import civis
 from civis.base import AggressiveRetry
-from civis.resources import generate_classes
+from civis.resources import generate_classes_maybe_cached
 
 
 log = logging.getLogger(__name__)
@@ -282,9 +282,17 @@ class APIClient(MetaMixin):
         client object. Set to "all" to include all endpoints available for
         a given user, including those that may be in development and subject
         to breaking changes at a later date.
+    local_api_spec : collections.OrderedDict or string, optional
+        The methods on this class are dynamically built from the Civis API
+        specification, which can be retrieved from the /endpoints endpoint.
+        When local_api_spec is None, the default, this specification is
+        downloaded the first time APIClient is instantiated. Alternatively,
+        a local cache of the specification may be passed as either an
+        OrderedDict or a filename which points to a json file.
     """
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0", resources="base"):
+                 retry_total=6, api_version="1.0", resources="base",
+                 local_api_spec=None):
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
                              "'pandas'")
@@ -304,10 +312,10 @@ class APIClient(MetaMixin):
 
         session.mount("https://", adapter)
 
-        classes = generate_classes(api_key=session_auth_key,
-                                   user_agent=user_agent,
-                                   api_version=api_version,
-                                   resources=resources)
+        classes = generate_classes_maybe_cached(local_api_spec,
+                                                session_auth_key,
+                                                api_version,
+                                                resources)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(session, return_type))
 

@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import json
 import re
 import textwrap
 try:
@@ -404,9 +405,25 @@ def parse_path(path, operations, api_version, resources):
 
 
 def parse_api_spec(api_spec, api_version, resources):
-    """ Parse the Civis API specification into a dictionary of classes
+    """ Dynamically create classes to interface with the Civis API.
+
+    Parse an OpenAPI (Swagger) specification into a dictionary of classes
     where each class represents an endpoint resource and contains
     methods to make http requests on that resource.
+
+    Parameters
+    ----------
+    api_spec : OrderedDict
+        The Civis API specification to parse.  References should be resolved
+        before passing, typically using jsonref.JsonRef().
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions.  Currently only "1.0" is supported.
+    resources : string, optional
+        When set to "base", only the default endpoints will be exposed in the
+        client object.  Set to "all" to include all endpoints available for
+        a given user, including those that may be in development and subject
+        to breaking changes at a later date.
     """
     paths = api_spec['paths']
     classes = {}
@@ -421,9 +438,22 @@ def parse_api_spec(api_spec, api_version, resources):
 
 
 @lru_cache(maxsize=4)
-def get_api_spec(api_key, user_agent, api_version):
+def get_api_spec(api_key, api_version="1.0"):
+    """Download the Civis API specification.
+
+    Parameters
+    ----------
+    api_key : str
+        Your API key obtained from the Civis Platform.
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions.  Currently only "1.0" is supported.
+    """
+    civis_version = civis.__version__
     session = requests.Session()
     session.auth = (api_key, '')
+    session_agent = session.headers.get('User-Agent', '')
+    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
     max_retries = AggressiveRetry(MAX_RETRIES, backoff_factor=.75,
                                   status_forcelist=civis.civis.RETRY_CODES)
@@ -443,7 +473,7 @@ def get_api_spec(api_key, user_agent, api_version):
 
 
 @lru_cache(maxsize=4)
-def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
+def generate_classes(api_key, api_version="1.0", resources="base"):
     """ Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -456,10 +486,7 @@ def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
     Parameters
     ----------
     api_key : str
-        Your API key obtained from the Civis Platform. If not given, the
-        client will use the :envvar:`CIVIS_API_KEY` environment variable.
-    user_agent : str
-        The user agent used in the request to get api endpoint specification.
+        Your API key obtained from the Civis Platform.
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
@@ -473,6 +500,24 @@ def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
         "APIClient api_version must be one of {}".format(API_VERSIONS))
     assert resources in ["base", "all"], (
         "resources must be one of {}".format(["base", "all"]))
-    raw_spec = get_api_spec(api_key, user_agent, api_version)
+    raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
+
+
+def generate_classes_maybe_cached(cache, api_key, api_version, resources):
+    """Generate class objects either from /endpoints or a local cache."""
+    if cache is None:
+        classes = generate_classes(api_key, api_version, resources)
+    else:
+        if isinstance(cache, OrderedDict):
+            raw_spec = cache
+        elif isinstance(cache, str):
+            with open(cache, "r") as f:
+                raw_spec = json.load(f, object_pairs_hook=OrderedDict)
+        else:
+            msg = "cache must be an OrderedDict or str, given {}"
+            raise ValueError(msg.format(type(cache)))
+        spec = JsonRef.replace_refs(raw_spec)
+        classes = parse_api_spec(spec, api_version, resources)
+    return classes
