@@ -249,8 +249,8 @@ def test_create_method_unexpected_kwargs():
 
 @mock.patch('builtins.open', new_callable=mock.mock_open,
             read_data='{"test": true}')
-@mock.patch('civis.resources._resources.generate_classes')
-@mock.patch('civis.resources._resources.parse_api_spec')
+@mock.patch('civis.resources._resources.generate_classes', autospec=True)
+@mock.patch('civis.resources._resources.parse_api_spec', autospec=True)
 def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
     api_key = "mock"
     api_version = "1.0"
@@ -260,18 +260,21 @@ def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
     _resources.generate_classes_maybe_cached(None, api_key, api_version,
                                              resources)
     mock_gen.assert_called_once_with(api_key, api_version, resources)
+    mock_gen.reset_mock()
 
     # Handles OrderedDict
     spec = OrderedDict({"test": True})
     _resources.generate_classes_maybe_cached(spec, api_key, api_version,
                                              resources)
     mock_parse.assert_called_once_with(spec, api_version, resources)
+    assert not mock_gen.called
 
     # Handles str
     mock_parse.reset_mock()
     _resources.generate_classes_maybe_cached('mock', api_key, api_version,
                                              resources)
     mock_parse.assert_called_once_with(spec, api_version, resources)
+    assert not mock_gen.called
 
     # Error when a regular dict is passed
     bad_spec = {"test": True}
