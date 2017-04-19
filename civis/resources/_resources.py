@@ -444,8 +444,7 @@ def get_api_spec(api_key, user_agent, api_version):
     Parameters
     ----------
     api_key : str
-        Your API key obtained from the Civis Platform. If not given, the
-        client will use the :envvar:`CIVIS_API_KEY` environment variable.
+        Your API key obtained from the Civis Platform.
     user_agent : str
         The user agent used in the request to get api endpoint specification.
     api_version : string, optional
