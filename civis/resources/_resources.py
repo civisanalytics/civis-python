@@ -404,7 +404,7 @@ def parse_path(path, operations, api_version, resources):
 
 
 def parse_api_spec(api_spec, api_version, resources):
-    """ Parse the Civis API specifiction into a dictionary of classes
+    """ Parse the Civis API specification into a dictionary of classes
     where each class represents an endpoint resource and contains
     methods to make http requests on that resource.
     """
