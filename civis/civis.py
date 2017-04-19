@@ -314,7 +314,6 @@ class APIClient(MetaMixin):
 
         classes = generate_classes_maybe_cached(local_api_spec,
                                                 session_auth_key,
-                                                user_agent,
                                                 api_version,
                                                 resources)
         for class_name, cls in classes.items():

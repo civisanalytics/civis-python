@@ -26,7 +26,7 @@ specification has been saved.
 .. code-block:: python
 
    api_key = os.environ['CIVIS_API_KEY']
-   spec = civis.resources.get_swagger_spec(api_key)
+   spec = civis.resources.get_api_spec(api_key)
 
    # From OrderedDict
    client = civis.APIClient(local_api_spec=spec)

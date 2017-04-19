@@ -221,7 +221,7 @@ def test_expired_api_key(mock_response):
     msg = "401 error downloading API specification. API key may be expired."
     http_error_raised = False
     try:
-        _resources.get_api_spec("expired_key", "fake_user_agent", "1.0")
+        _resources.get_api_spec("expired_key", "1.0")
     except HTTPError as err:
         http_error_raised = True
         assert str(err) == msg
@@ -250,33 +250,31 @@ def test_create_method_unexpected_kwargs():
 @mock.patch('builtins.open', new_callable=mock.mock_open,
             read_data='{"test": true}')
 @mock.patch('civis.resources._resources.generate_classes')
-@mock.patch('civis.resources._resources.parse_swagger')
+@mock.patch('civis.resources._resources.parse_api_spec')
 def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
     api_key = "mock"
-    user_agent = "mock"
     api_version = "1.0"
     resources = "all"
 
     # Calls generate_classes when no cache is passed
-    _resources.generate_classes_maybe_cached(None, api_key, user_agent,
-                                             api_version, resources)
-    mock_gen.assert_called_once_with(api_key, user_agent, api_version,
-                                     resources)
+    _resources.generate_classes_maybe_cached(None, api_key, api_version,
+                                             resources)
+    mock_gen.assert_called_once_with(api_key, api_version, resources)
 
     # Handles OrderedDict
     spec = OrderedDict({"test": True})
-    _resources.generate_classes_maybe_cached(spec, api_key, user_agent,
-                                             api_version, resources)
+    _resources.generate_classes_maybe_cached(spec, api_key, api_version,
+                                             resources)
     mock_parse.assert_called_once_with(spec, api_version, resources)
 
     # Handles str
     mock_parse.reset_mock()
-    _resources.generate_classes_maybe_cached('mock', api_key, user_agent,
-                                             api_version, resources)
+    _resources.generate_classes_maybe_cached('mock', api_key, api_version,
+                                             resources)
     mock_parse.assert_called_once_with(spec, api_version, resources)
 
     # Error when a regular dict is passed
     bad_spec = {"test": True}
     with pytest.raises(ValueError):
-        _resources.generate_classes_maybe_cached(bad_spec, api_key, user_agent,
+        _resources.generate_classes_maybe_cached(bad_spec, api_key,
                                                  api_version, resources)

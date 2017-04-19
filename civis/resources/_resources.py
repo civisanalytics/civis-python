@@ -438,23 +438,23 @@ def parse_api_spec(api_spec, api_version, resources):
 
 
 @lru_cache(maxsize=4)
-def get_api_spec(api_key, user_agent, api_version):
+def get_api_spec(api_key, api_version="1.0"):
     """Download the Civis API specification.
 
     Parameters
     ----------
     api_key : str
         Your API key obtained from the Civis Platform.
-    user_agent : str
-        The user agent used in the request to get api endpoint specification.
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
     """
+    civis_version = civis.__version__
     session = requests.Session()
     session.auth = (api_key, '')
-    if user_agent:
-        session.headers.update({"User-Agent": user_agent.strip()})
+    session_agent = session.headers.get('User-Agent', '')
+    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
+    session.headers.update({"User-Agent": user_agent.strip()})
     max_retries = AggressiveRetry(MAX_RETRIES, backoff_factor=.75,
                                   status_forcelist=civis.civis.RETRY_CODES)
     adapter = HTTPAdapter(max_retries=max_retries)
@@ -473,7 +473,7 @@ def get_api_spec(api_key, user_agent, api_version):
 
 
 @lru_cache(maxsize=4)
-def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
+def generate_classes(api_key, api_version="1.0", resources="base"):
     """ Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -486,10 +486,7 @@ def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
     Parameters
     ----------
     api_key : str
-        Your API key obtained from the Civis Platform. If not given, the
-        client will use the :envvar:`CIVIS_API_KEY` environment variable.
-    user_agent : str
-        The user agent used in the request to get api endpoint specification.
+        Your API key obtained from the Civis Platform.
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
@@ -503,16 +500,15 @@ def generate_classes(api_key, user_agent, api_version="1.0", resources="base"):
         "APIClient api_version must be one of {}".format(API_VERSIONS))
     assert resources in ["base", "all"], (
         "resources must be one of {}".format(["base", "all"]))
-    raw_spec = get_api_spec(api_key, user_agent, api_version)
+    raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
 
 
-def generate_classes_maybe_cached(cache, api_key, user_agent, api_version,
-                                  resources):
+def generate_classes_maybe_cached(cache, api_key, api_version, resources):
     """Generate class objects either from /endpoints or a local cache."""
     if cache is None:
-        classes = generate_classes(api_key, user_agent, api_version, resources)
+        classes = generate_classes(api_key, api_version, resources)
     else:
         if isinstance(cache, OrderedDict):
             raw_spec = cache
