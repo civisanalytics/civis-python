@@ -7,7 +7,7 @@ from requests.adapters import HTTPAdapter
 
 import civis
 from civis.base import AggressiveRetry
-from civis.resources._resources import generate_classes_maybe_cached
+from civis.resources import generate_classes_maybe_cached
 
 
 log = logging.getLogger(__name__)
