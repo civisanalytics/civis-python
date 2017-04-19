@@ -245,3 +245,38 @@ def test_create_method_unexpected_kwargs():
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
+
+
+@mock.patch('builtins.open', new_callable=mock.mock_open,
+            read_data='{"test": true}')
+@mock.patch('civis.resources._resources.generate_classes')
+@mock.patch('civis.resources._resources.parse_swagger')
+def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
+    api_key = "mock"
+    user_agent = "mock"
+    api_version = "1.0"
+    resources = "all"
+
+    # Calls generate_classes when no cache is passed
+    _resources.generate_classes_maybe_cached(None, api_key, user_agent,
+                                             api_version, resources)
+    mock_gen.assert_called_once_with(api_key, user_agent, api_version,
+                                     resources)
+
+    # Handles OrderedDict
+    spec = OrderedDict({"test": True})
+    _resources.generate_classes_maybe_cached(spec, api_key, user_agent,
+                                             api_version, resources)
+    mock_parse.assert_called_once_with(spec, api_version, resources)
+
+    # Handles str
+    mock_parse.reset_mock()
+    _resources.generate_classes_maybe_cached('mock', api_key, user_agent,
+                                             api_version, resources)
+    mock_parse.assert_called_once_with(spec, api_version, resources)
+
+    # Error when a regular dict is passed
+    bad_spec = {"test": True}
+    with pytest.raises(ValueError):
+        _resources.generate_classes_maybe_cached(bad_spec, api_key, user_agent,
+                                                 api_version, resources)
