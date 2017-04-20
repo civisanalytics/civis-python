@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
 - Parameter ``local_api_spec`` to ``APIClient`` to allow creation of client from local cache
+- Clarify ``civis.io.dataframe_to_civis`` docstring with a note about treatment of the index.
 
 ### Fixed
 - Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
