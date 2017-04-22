@@ -264,12 +264,12 @@ class APIClient(MetaMixin):
     return_type : str, optional
         The following types are implemented:
 
-        - ``'raw'`` Returns the raw :class:`requests:requests.Response` object.
+        - ``'raw'`` Returns the raw ``requests.Response`` object.
         - ``'snake'`` Returns a :class:`civis.response.Response` object for the
           json-encoded content of a response. This maps the top-level json
           keys to snake_case.
-        - ``'pandas'`` Returns a :class:`pandas:pandas.DataFrame` for
-          list-like responses and a :class:`pandas:pandas.Series` for single a
+        - ``'pandas'`` Returns a ``pandas.DataFrame`` for
+          list-like responses and a ``pandas.Series`` for single a
           json response.
     retry_total : int, optional
         A number indicating the maximum number of retries for 429, 502, 503, or

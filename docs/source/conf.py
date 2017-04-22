@@ -40,9 +40,7 @@ extensions = [
 autosummary_generate = True
 
 intersphinx_mapping = {
-    'pandas': ('http://pandas.pydata.org/pandas-docs/stable', None),
     'python': ('https://docs.python.org/3.4', None),
-    'requests': ('https://requests.readthedocs.org/en/latest/', None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
