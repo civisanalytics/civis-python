@@ -444,6 +444,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
+    The `DataFrame`'s index will not be included. To store the index
+    along with the other values, use `df.reset_index()` instead
+    of `df` as the first argument to this function.
+
     Parameters
     ----------
     df : :class:`pandas:pandas.DataFrame`
