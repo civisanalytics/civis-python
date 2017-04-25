@@ -145,7 +145,7 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     Examples
     --------
     >>> file_id = 100
-    >>> with open("my_file.txt", "w") as f:
+    >>> with open("my_file.txt", "wb") as f:
     ...    civis_to_file(file_id, f)
     """
     if client is None:
