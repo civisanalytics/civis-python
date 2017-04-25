@@ -185,7 +185,8 @@ class PollableResult(CivisAsyncResultBase):
 
     def _reset_polling_thread(self,
                               polling_interval=_DEFAULT_POLLING_INTERVAL):
-        self.cleanup()
+        if self._polling_thread.is_alive():
+            self._polling_thread.cancel()
         self.polling_interval = polling_interval
         self._polling_thread = _ResultPollingThread(self._check_result, (),
                                                     polling_interval)
