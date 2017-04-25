@@ -74,6 +74,24 @@ class TestPolling(unittest.TestCase):
         time.sleep(0.015)
         assert poller.call_count == 1
 
+    def test_reset_polling_thread(self):
+        pollable = PollableResult(
+            mock.Mock(return_value=Response({"state": "running"})),
+            poller_args=(),
+            polling_interval=0.1
+        )
+        initial_polling_thread = pollable._polling_thread
+        assert pollable.polling_interval == 0.1
+        assert pollable._polling_thread.polling_interval == 0.1
+        pollable._reset_polling_thread(0.2)
+        # Check that the polling interval was updated
+        assert pollable.polling_interval == 0.2
+        assert pollable._polling_thread.polling_interval == 0.2
+        # Check that the _polling_thread is a new thread
+        assert pollable._polling_thread != initial_polling_thread
+        # Check that the old thread was stopped
+        assert not initial_polling_thread.is_alive()
+
 
 def test_repeated_polling():
     # Verify that we poll the expected number of times.
