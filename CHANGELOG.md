@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Modified retry behavior so that 413, 429, or 503 errors accompanied by a "Retry-After" header will be retried regardless of the HTTP verb used.
 - Add CSV settings arguments to ``civis.io.civis_to_csv`` function.
 - Refactored use of "swagger" language.  ``get_swagger_spec`` is now ``get_api_spec`` and ``parse_swagger`` is now ``parse_api_spec``.
+- Modified ``CivisFuture`` so if PubNub is disconnected, it will fall back to polling on a shorter interval.  
 
 ## 1.4.0 - 2017-03-17
 ### API Changes

@@ -5,6 +5,7 @@ from civis.polling import PollableResult
 try:
     from pubnub.pubnub import PubNub
     from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
+    from pubnub.enums import PNStatusCategory
     from pubnub.callbacks import SubscribeCallback
     has_pubnub = True
 except ImportError:
@@ -17,16 +18,26 @@ _LONG_POLLING_INTERVAL = 9.5 * 60
 
 if has_pubnub:
     class JobCompleteListener(SubscribeCallback):
-        def __init__(self, match_function, callback_function):
+        _disconnect_categories = [
+            PNStatusCategory.PNTimeoutCategory,
+            PNStatusCategory.PNNetworkIssuesCategory,
+            PNStatusCategory.PNUnexpectedDisconnectCategory,
+        ]
+
+        def __init__(self, match_function, callback_function,
+                     disconnect_function=None):
             self.match_function = match_function
             self.callback_function = callback_function
+            self.disconnect_function = disconnect_function
 
         def message(self, pubnub, message):
             if self.match_function(message.message):
                 self.callback_function()
 
         def status(self, pubnub, status):
-            pass
+            if status.category in self._disconnect_categories:
+                if self.disconnect_function:
+                    self.disconnect_function()
 
         def presence(self, pubnub, presence):
             pass
@@ -114,7 +125,8 @@ class CivisFuture(PollableResult):
 
     def _subscribe(self, pnconfig, channels):
         listener = JobCompleteListener(self._check_message,
-                                       self._poll_and_set_api_result)
+                                       self._poll_and_set_api_result,
+                                       self._reset_polling_thread)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
         pubnub.subscribe().channels(channels).execute()

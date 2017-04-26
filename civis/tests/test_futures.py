@@ -13,6 +13,7 @@ try:
                                has_pubnub,
                                JobCompleteListener,
                                _LONG_POLLING_INTERVAL)
+    from pubnub.enums import PNStatusCategory
 except ImportError:
     has_pubnub = False
 
@@ -32,6 +33,16 @@ def clear_lru_cache():
     # when different api specs are used in different test cases
     get_api_spec.cache_clear()
     generate_classes.cache_clear()
+
+
+def setup_listener_status_mocks(status_category):
+    match = mock.Mock()
+    callback = mock.Mock()
+    disconnect = mock.Mock()
+    listener = JobCompleteListener(match, callback, disconnect)
+    status = mock.Mock()
+    status.category = status_category
+    return match, callback, disconnect, listener, status
 
 
 class CivisFutureTests(CivisVCRTestCase):
@@ -69,6 +80,32 @@ class CivisFutureTests(CivisVCRTestCase):
         listener.message(None, message)
         match.assert_called_with(message.message)
         self.assertEqual(callback.call_count, 0)
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    def test_listener_calls_disconnect_callback_when_status_disconnect(self):
+        disconnect_categories = [
+            PNStatusCategory.PNTimeoutCategory,
+            PNStatusCategory.PNNetworkIssuesCategory,
+            PNStatusCategory.PNUnexpectedDisconnectCategory,
+        ]
+        for category in disconnect_categories:
+            mocks = setup_listener_status_mocks(category)
+            _, _, disconnect, listener, status = mocks
+            listener.status(None, status)
+            assert disconnect.call_count == 1
+
+    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
+    def test_listener_does_note_call_disconnect_callback_on_other_status(self):
+        nondisconnect_categories = [
+            PNStatusCategory.PNAcknowledgmentCategory,
+            PNStatusCategory.PNConnectedCategory,
+            PNStatusCategory.PNReconnectedCategory,
+        ]
+        for category in nondisconnect_categories:
+            mocks = setup_listener_status_mocks(category)
+            _, _, disconnect, listener, status = mocks
+            listener.status(None, status)
+            assert disconnect.call_count == 0
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @patch(api_import_str, return_value=civis_api_spec_channels)
