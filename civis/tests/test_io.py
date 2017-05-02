@@ -279,35 +279,35 @@ def test_file_id_from_run_output_platform_error():
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-@patch.object(civis.io._files.pd, 'read_csv')
-def test_file_to_dataframe_infer(mock_read_csv):
+def test_file_to_dataframe_infer():
     m_client = Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv',
                                                 'file_url': 'url'})
-    civis.io.file_to_dataframe(121, compression='infer', client=m_client)
-    assert mock_read_csv.called_once_with(121, compression='infer')
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='infer', client=m_client)
+        assert mock_read_csv.called_once_with(121, compression='infer')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-@patch.object(civis.io._files.pd, 'read_csv')
-def test_file_to_dataframe_infer_gzip(mock_read_csv):
+def test_file_to_dataframe_infer_gzip():
     m_client = Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv.gz',
                                                 'file_url': 'url'})
-    civis.io.file_to_dataframe(121, compression='infer', client=m_client)
-    assert mock_read_csv.called_once_with(121, compression='gzip')
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='infer', client=m_client)
+        assert mock_read_csv.called_once_with(121, compression='gzip')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-@patch.object(civis.io._files.pd, 'read_csv')
-def test_file_to_dataframe_kwargs(mock_read_csv):
+def test_file_to_dataframe_kwargs():
     m_client = Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv',
                                                 'file_url': 'url'})
-    civis.io.file_to_dataframe(121, compression='special', client=m_client,
-                               delimiter='|', nrows=10)
-    assert mock_read_csv.called_once_with(121, compression='special',
-                                          delimiter='|', nrows=10)
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='special', client=m_client,
+                                   delimiter='|', nrows=10)
+        assert mock_read_csv.called_once_with(121, compression='special',
+                                              delimiter='|', nrows=10)
 
 
 @patch.object(civis.io._files, 'civis_to_file', autospec=True)
