@@ -22,6 +22,8 @@ try:
 except ImportError:
     NO_PANDAS = True
 
+__all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
+           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis']
 
 DELIMITERS = {
     ',': 'comma',

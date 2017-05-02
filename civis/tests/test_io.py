@@ -3,7 +3,7 @@ from io import StringIO, BytesIO
 import json
 import os
 import tempfile
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 import vcr
@@ -15,6 +15,8 @@ except ImportError:
     has_pandas = False
 
 import civis
+from civis.response import Response
+from civis.base import CivisAPIError
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -24,6 +26,12 @@ api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
+
+
+class MockAPIError(CivisAPIError):
+    """A fake API error with only a status code"""
+    def __init__(self, sc):
+        self.status_code = sc
 
 
 @patch(api_import_str, return_value=civis_api_spec)
@@ -200,3 +208,114 @@ class ImportTests(CivisVCRTestCase):
             with open(tmp.name, "r") as f:
                 data = f.read()
         assert data == expected
+
+
+def test_file_id_from_run_output_exact():
+    m_client = Mock()
+    m_client.scripts.list_containers_runs_outputs.return_value = \
+        [Response({'name': 'spam', 'object_id': 2013,
+                   'object_type': 'File'})]
+
+    fid = civis.io.file_id_from_run_output('spam', 17, 13, client=m_client)
+    assert fid == 2013
+
+
+def test_file_id_from_run_output_approximate():
+    # Test fuzzy name matching
+    m_client = Mock()
+    m_client.scripts.list_containers_runs_outputs.return_value = \
+        [Response({'name': 'spam.csv.gz', 'object_id': 2013,
+                   'object_type': 'File'})]
+
+    fid = civis.io.file_id_from_run_output('^spam', 17, 13, regex=True,
+                                           client=m_client)
+    assert fid == 2013
+
+
+def test_file_id_from_run_output_approximate_multiple():
+    # Fuzzy name matching with muliple matches should return the first
+    m_cl = Mock()
+    m_cl.scripts.list_containers_runs_outputs.return_value = [
+        Response({'name': 'spam.csv.gz', 'object_id': 2013,
+                  'object_type': 'File'}),
+        Response({'name': 'eggs.csv.gz', 'object_id': 2014,
+                  'object_type': 'File'})]
+
+    fid = civis.io.file_id_from_run_output('.csv', 17, 13, regex=True,
+                                           client=m_cl)
+    assert fid == 2013
+
+
+def test_file_id_from_run_output_no_file():
+    # Get an IOError if we request a file which doesn't exist
+    m_client = Mock()
+    m_client.scripts.list_containers_runs_outputs.return_value = [
+        Response({'name': 'spam', 'object_id': 2013,
+                  'object_type': 'File'})]
+
+    with pytest.raises(FileNotFoundError) as err:
+        civis.io.file_id_from_run_output('eggs', 17, 13, client=m_client)
+    assert 'not an output' in str(err.value)
+
+
+def test_file_id_from_run_output_no_run():
+    # Get an IOError if we request a file from a run which doesn't exist
+    m_client = Mock()
+    m_client.scripts.list_containers_runs_outputs.side_effect =\
+        MockAPIError(404)  # Mock a run which doesn't exist
+
+    with pytest.raises(IOError) as err:
+        civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
+    assert 'could not find job/run id 17/13' in str(err.value).lower()
+
+
+def test_file_id_from_run_output_platform_error():
+    # Make sure we don't swallow real Platform errors
+    m_client = Mock()
+    m_client.scripts.list_containers_runs_outputs.side_effect =\
+        MockAPIError(500)  # Mock a platform error
+    with pytest.raises(CivisAPIError):
+        civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_file_to_dataframe_infer():
+    m_client = Mock()
+    m_client.files.get.return_value = Response({'name': 'spam.csv',
+                                                'file_url': 'url'})
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='infer', client=m_client)
+        assert mock_read_csv.called_once_with(121, compression='infer')
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_file_to_dataframe_infer_gzip():
+    m_client = Mock()
+    m_client.files.get.return_value = Response({'name': 'spam.csv.gz',
+                                                'file_url': 'url'})
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='infer', client=m_client)
+        assert mock_read_csv.called_once_with(121, compression='gzip')
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_file_to_dataframe_kwargs():
+    m_client = Mock()
+    m_client.files.get.return_value = Response({'name': 'spam.csv',
+                                                'file_url': 'url'})
+    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+        civis.io.file_to_dataframe(121, compression='special', client=m_client,
+                                   delimiter='|', nrows=10)
+        assert mock_read_csv.called_once_with(121, compression='special',
+                                              delimiter='|', nrows=10)
+
+
+@patch.object(civis.io._files, 'civis_to_file', autospec=True)
+def test_load_json(mock_c2f):
+    obj = {'spam': 'eggs'}
+
+    def _dump_json(file_id, buf, *args, **kwargs):
+        buf.write(json.dumps(obj).encode())
+    mock_c2f.side_effect = _dump_json
+    out = civis.io.file_to_json(13, client=Mock())
+    assert out == obj
