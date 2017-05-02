@@ -1,3 +1,3 @@
 """Machine learning in Civis
 """
-from civismodel.ml._model import *  # NOQA
+from civis.ml._model import *  # NOQA

@@ -1,25 +1,32 @@
-"""Running CivisML jobs and retrieving the results
+"""Run CivisML jobs and retrieve the results
 """
-from concurrent import futures
-from functools import wraps
 import io
 import os
 import tempfile
 import threading
-from typing import Callable, Dict, Union
 import warnings
+from concurrent import futures
+from functools import wraps
+from typing import Callable, Dict, Union
 
 try:
     import pandas as pd
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
+try:
+    import joblib
+    HAS_JOBLIB = True
+except ImportError:
+    HAS_JOBLIB = False
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.io import civis_to_file, file_to_civis
+import civis.io as cio
 from civis.futures import CivisFuture
 from civis.polling import _ResultPollingThread
+
+__all__ = ['ModelFuture', 'ModelError']
 
 
 class ModelError(RuntimeError):
@@ -31,9 +38,8 @@ class ModelError(RuntimeError):
         super().__init__(msg)
 
 
-def check_is_fit(method: Callable) -> Callable:
-    """Makes sure that the ModelPipeline's been trained
-    """
+def _check_is_fit(method: Callable) -> Callable:
+    """Makes sure that the ModelPipeline's been trained"""
     @wraps(method)
     def wrapper(*args, **kwargs):
         self = args[0]
@@ -74,18 +80,17 @@ def _stash_local_data(X: Union['pandas.DataFrame', str],
         X.to_csv(txt, encoding='utf-8', index=False)
         txt.flush()
         buf.seek(0)
-        file_id = file_to_civis(buf, name=civis_fname, client=client)
+        file_id = cio.file_to_civis(buf, name=civis_fname, client=client)
     else:
         with open(X) as _fin:
-            file_id = file_to_civis(_fin, name=civis_fname, client=client)
+            file_id = cio.file_to_civis(_fin, name=civis_fname, client=client)
 
     return file_id
 
 
-def decode_train_run(train_job_id: int, train_run_id: str,
-                     client: APIClient) -> int:
-    """Determine correct run ID for use for a given training job ID.
-    """
+def _decode_train_run(train_job_id: int, train_run_id: str,
+                      client: APIClient) -> int:
+    """Determine correct run ID for use for a given training job ID"""
     try:
         return int(train_run_id)
     except ValueError:
@@ -105,8 +110,8 @@ def decode_train_run(train_job_id: int, train_run_id: str,
                              'or one of "active" or "latest".') from exc
 
 
-def retrieve_file(fname: str, job_id: int, run_id: int, local_dir: str,
-                  client: APIClient=None) -> str:
+def _retrieve_file(fname: str, job_id: int, run_id: int, local_dir: str,
+                   client: APIClient=None) -> str:
     """Download a Civis file using a reference on a previous run
 
     Parameters
@@ -122,50 +127,37 @@ def retrieve_file(fname: str, job_id: int, run_id: int, local_dir: str,
     -------
     str
         The path of the downloaded file
-
-    Raises
-    ------
-    IOError
-        If the given job/run doesn't exist
-        or doesn't have the requested file
     """
-    try:
-        file_id = _file_id_from_run_output(fname, job_id, run_id,
-                                           client=client)
-    except CivisAPIError as err:
-        if err.status_code == 404:
-            raise IOError('Could not find job/run ID {}/{}'
-                          .format(job_id, run_id)) from err
-        else:
-            raise
+    file_id = cio.file_id_from_run_output(fname, job_id, run_id, client=client)
     fpath = os.path.join(local_dir, fname)
     os.makedirs(os.path.dirname(fpath), exist_ok=True)
     with open(fpath, 'wb') as down_file:
-        civis_to_file(file_id, down_file, client=client)
+        cio.civis_to_file(file_id, down_file, client=client)
     return fpath
 
 
-def load_table_from_outputs(job_id: int,
-                            run_id: int,
-                            filename: str,
-                            client: APIClient=None,
-                            **table_kwargs) -> 'pandas.DataFrame':
-    """Load a table from a run output directly into a ``DataFrame``
-    """
+def _load_table_from_outputs(job_id: int,
+                             run_id: int,
+                             filename: str,
+                             client: APIClient=None,
+                             **table_kwargs) -> 'pandas.DataFrame':
+    """Load a table from a run output directly into a ``DataFrame``"""
     client = APIClient(resources='all') if client is None else client
-    file_id = _file_id_from_run_output(filename, job_id, run_id, client, False)
-    return load_table(file_id, client=client, **table_kwargs)
+    file_id = cio.file_id_from_run_output(filename, job_id, run_id, client,
+                                          regex=True)
+    return cio.file_to_dataframe(file_id, client=client, **table_kwargs)
 
 
-def load_estimator(job_id: int,
-                   run_id: int,
-                   filename: str='estimator.pkl',
-                   client: APIClient=None) -> dict:
+def _load_estimator(job_id: int,
+                    run_id: int,
+                    filename: str='estimator.pkl',
+                    client: APIClient=None) -> dict:
     """Load a joblib-serialized Estimator from run outputs
     """
-    import joblib
+    if not HAS_JOBLIB:
+        raise ImportError('Install joblib to download models from Civis.')
     with tempfile.TemporaryDirectory() as tempdir:
-        path = retrieve_file(filename, job_id, run_id, tempdir, client=client)
+        path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
         return joblib.load(path)
 
 
@@ -389,7 +381,7 @@ class ModelFuture(CivisFuture):
     def train_data(self) -> 'pandas.DataFrame':
         if self._train_data is None:
             try:
-                self._train_data = load_table_from_outputs(
+                self._train_data = _load_table_from_outputs(
                     self.train_job_id,
                     self.train_run_id,
                     self.train_data_fname,
@@ -409,11 +401,11 @@ class ModelFuture(CivisFuture):
         if self._table is None:
             if self.is_training:
                 # Training jobs only have one output table, the OOS scores
-                self._table = load_table_from_outputs(self.job_id,
-                                                      self.run_id,
-                                                      self.table_fname,
-                                                      index_col=0,
-                                                      client=self.client)
+                self._table = _load_table_from_outputs(self.job_id,
+                                                       self.run_id,
+                                                       self.table_fname,
+                                                       index_col=0,
+                                                       client=self.client)
             else:
                 # Prediction jobs may have many output tables.
                 output_ids = self.metadata['output_file_ids']
@@ -421,38 +413,36 @@ class ModelFuture(CivisFuture):
                     print('This job output {} files. Retrieving only the '
                           'first. Find the full list at `metadata'
                           '["output_file_ids"]`.'.format(len(output_ids)))
-                self._table = load_table(output_ids[0],
-                                         client=self.client,
-                                         index_col=0)
+                self._table = cio.file_to_dataframe(output_ids[0],
+                                                    client=self.client,
+                                                    index_col=0)
         return self._table
 
     @property
     @_block_and_handle_missing
     def metadata(self) -> dict:
         if self._metadata is None:
-            self._metadata = load_dict(self.job_id,
-                                       self.run_id,
-                                       self.metadata_fname,
-                                       client=self.client)
+            fid = cio.file_id_from_run_output('model_info.json', self.job_id,
+                                              self.run_id, client=self.client)
+            self._metadata = cio.file_to_json(fid, client=self.client)
         return self._metadata
 
     @property
     @_block_and_handle_missing
     def estimator(self) -> 'sklearn.pipeline.Pipeline':
         if self._estimator is None:
-            self._estimator = load_estimator(self.train_job_id,
-                                             self.train_run_id,
-                                             client=self.client)
+            self._estimator = _load_estimator(self.train_job_id,
+                                              self.train_run_id,
+                                              client=self.client)
         return self._estimator
 
     @property
     @_block_and_handle_missing
     def validation_metadata(self) -> dict:
         if self._val_metadata is None:
-            self._val_metadata = load_dict(self.train_job_id,
-                                           self.train_run_id,
-                                           'metrics.json',
-                                           client=self.client)
+            fid = cio.file_id_from_run_output('metrics.json', self.job_id,
+                                              self.run_id, client=self.client)
+            self._val_metadata = cio.file_to_json(fid, client=self.client)
         return self._val_metadata
 
     @property
@@ -463,8 +453,7 @@ class ModelFuture(CivisFuture):
     @_block_and_handle_missing
     def training_metadata(self) -> dict:
         if self._train_metadata is None:
-            self._train_metadata = load_dict(self.train_job_id,
-                                             self.train_run_id,
-                                             'model_info.json',
-                                             client=self.client)
+            fid = cio.file_id_from_run_output('model_info.json', self.job_id,
+                                              self.run_id, client=self.client)
+            self._train_metadata = cio.file_to_json(fid, client=self.client)
         return self._train_metadata

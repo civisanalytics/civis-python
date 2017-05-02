@@ -1,24 +1,28 @@
 
-from collections import namedtuple
 from io import BytesIO
-import json
 import os
 import pickle
 import tempfile
 from unittest import mock
 
-import joblib
-import numpy as np
+try:
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
+try:
+    import joblib
+    HAS_JOBLIB = True
+except ImportError:
+    HAS_JOBLIB = False
 
 from civis import APIClient
 from civis.base import CivisAPIError, CivisJobFailure
-from civis import futures
 from civis.response import Response
-import pandas as pd
 import pytest
-from sklearn.linear_model import LogisticRegression
 
 from civis.ml import _model
+
 
 def setup_client_mock(script_id=-10, run_id=100):
     """Return a Mock set up for use in testing container scripts
@@ -57,7 +61,7 @@ def setup_client_mock(script_id=-10, run_id=100):
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
 
-    # No channels endpoint available
+    # Avoid channels endpoint while testing here
     del c.channels
 
     return c
@@ -67,7 +71,7 @@ def test_check_is_fit_exception():
     mock_pipe = mock.MagicMock()
     mock_pipe.train_result_ = None
 
-    @_model.check_is_fit
+    @_model._check_is_fit
     def foo(arg):
         return 7
 
@@ -79,7 +83,7 @@ def test_check_is_fit():
     mock_pipe = mock.MagicMock()
     mock_pipe.train_result_ = True
 
-    @_model.check_is_fit
+    @_model._check_is_fit
     def foo(arg):
         return 7
 
@@ -111,17 +115,20 @@ def test_block_and_handle_missing(mock_fut):
     assert foo('bar') == 7
 
 
-@mock.patch.object(_model, 'open', new_callable=mock.mock_open)
-@mock.patch.object(_model, 'file_to_civis', return_value=-11)
-def test_stash_local_data_from_file(mock_file, mock_open):
-    assert _model._stash_local_data('airspeed_velocity.csv') == -11
-    mock_open.assert_called_once_with('airspeed_velocity.csv')
-    mock_file.assert_called_once_with(mock_open.return_value,
+@mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
+def test_stash_local_data_from_file(mock_file):
+    with tempfile.TemporaryDirectory() as tempdir:
+        fname = os.path.join(tempdir, 'filename')
+        with open(fname, 'wt') as _fout:
+            _fout.write("a,b,c\n1,2,3\n")
+        assert _model._stash_local_data(fname) == -11
+    mock_file.assert_called_once_with(mock.ANY,
                                       name='modelpipeline_data.csv',
                                       client=mock.ANY)
 
 
-@mock.patch.object(_model, 'file_to_civis', return_value=-11)
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
+@mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_dataframe(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
     assert _model._stash_local_data(df) == -11
@@ -130,7 +137,8 @@ def test_stash_local_data_from_dataframe(mock_file):
     assert isinstance(mock_file.call_args[0][0], BytesIO)
 
 
-@mock.patch.object(_model, 'retrieve_file', autospec=True)
+@pytest.mark.skipif(not HAS_JOBLIB, reason="joblib not installed")
+@mock.patch.object(_model, '_retrieve_file', autospec=True)
 def test_load_estimator(mock_retrieve):
     obj = {'spam': 'eggs'}
 
@@ -140,7 +148,7 @@ def test_load_estimator(mock_retrieve):
         return full_name
 
     mock_retrieve.side_effect = _retrieve_json
-    out = _model.load_estimator(13, 17, 'fname')
+    out = _model._load_estimator(13, 17, 'fname')
     assert out == obj
 
 
@@ -149,25 +157,24 @@ def test_load_estimator(mock_retrieve):
 ###################################
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", autospec=True)
 @mock.patch.object(_model.ModelFuture, "add_done_callback", autospec=True)
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, 'APIClient')
-def test_modelfuture_constructor(m_api, m_f_api, mock_adc, mock_spe):
+def test_modelfuture_constructor(mock_adc, mock_spe):
     c = setup_client_mock(7, 17)
-    m_api.return_value = m_f_api.return_value = c
 
-    mf = _model.ModelFuture(job_id=7, run_id=17)
+    mf = _model.ModelFuture(job_id=7, run_id=17, client=c)
     assert mf.is_training is True
     assert mf.train_run_id == 17
     assert mf.train_job_id == 7
 
     mf = _model.ModelFuture(job_id=7, run_id=17,
-                            train_job_id=23, train_run_id=29)
+                            train_job_id=23, train_run_id=29, client=c)
     assert mf.is_training is False
     assert mf.train_run_id == 29
     assert mf.train_job_id == 23
 
 
-@mock.patch.object(_model, "load_dict",
+@mock.patch.object(_model.cio, "file_id_from_run_output",
+                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_to_json",
                    mock.Mock(return_value={'spam': 'eggs'}))
 @mock.patch.object(_model, 'APIClient', setup_client_mock())
 def test_modelfuture_pickle_smoke():
@@ -241,15 +248,14 @@ def test_set_model_exception_validation_metadata():
     _test_set_model_exc(trn, val, exc)
 
 
-@mock.patch.object(_model, "load_dict", mock.Mock(return_value='bar'))
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, 'APIClient')
-@mock.patch.object(api.ModelFuture, "_set_model_exception", lambda *args: None)
-def test_getstate(m_api, m_f_api):
+@mock.patch.object(_model.cio, "file_to_json",
+                   mock.Mock(return_value='bar', spec_set=True))
+@mock.patch.object(_model.ModelFuture, "_set_model_exception",
+                   lambda *args: None)
+def test_getstate():
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
 
-    mf = _model.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
     ret = mf.__getstate__()
     assert ret['_done_callbacks'] == []
     assert not ret['_self_polling_executor']
@@ -258,9 +264,12 @@ def test_getstate(m_api, m_f_api):
     assert '_condition' not in ret
 
 
-@mock.patch.object(_model, 'load_dict', autospec=True,
-                   return_value={'run': {'status': 'foo'}})
-def test_state(mock_load_dict):
+@mock.patch.object(_model.cio, "file_id_from_run_output",
+                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_to_json",
+                   mock.Mock(spec_set=True,
+                             return_value={'run': {'status': 'foo'}}))
+def test_state():
     c = setup_client_mock(3, 7)
 
     mf = _model.ModelFuture(3, 7, client=c)
@@ -274,30 +283,26 @@ def test_state(mock_load_dict):
     assert mf.state == 'failed'
 
 
-@mock.patch.object(futures, "APIClient")
-@mock.patch.object(_model, "APIClient")
-@mock.patch.object(_model, "load_table_from_outputs", return_value='bar')
+@mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
-def test_table(mock_res, mock_lt, m_api, m_f_api):
+def test_table(mock_res, mock_lt):
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
-    mf = api.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
     assert mf.table == 'bar'
     mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
-                                    index_col=0, client=mock.ANY)
+                                    index_col=0, client=c)
 
 
-@mock.patch.object(_model, "load_dict", return_value='bar')
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, "APIClient")
+@mock.patch.object(_model.cio, "file_id_from_run_output",
+                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_to_json", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
-def test_metadata(mock_spe, m_api, m_f_api, mock_ld):
+def test_metadata(mock_spec, mock_f2j):
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
-    mf = _model.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
     assert mf.metadata == 'bar'
-    mock_ld.assert_called_once_with(3, 7, 'model_info.json', client=mock.ANY)
+    mock_f2j.assert_called_once_with(11, client=c)
 
 
 def test_train_data_fname():
@@ -315,7 +320,7 @@ def test_train_data_fname():
     assert mf.train_data_fname == 'ham'
 
 
-@mock.patch.object(_model, "load_table_from_outputs", autospec=True)
+@mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
 def test_train_data(mock_load_table):
     def poller(*args, **kwargs):
         return Response({'state': 'succeeded'})
@@ -329,7 +334,7 @@ def test_train_data(mock_load_table):
     assert mf.train_data == miscallaneous_string
 
 
-@mock.patch.object(_model, "load_table_from_outputs", autospec=True)
+@mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
 def test_train_data_exc_handling(mock_load_table):
     def poller(*args, **kwargs):
         return Response({'state': 'succeeded'})
@@ -340,20 +345,17 @@ def test_train_data_exc_handling(mock_load_table):
 
     # check we catch 404 error and raise some intelligible
     r = Response({'content': None, 'status_code': 404, 'reason': None})
-    mock_load_table.side_effect = CivisAPIError(r)
+    mock_load_table.side_effect = [CivisAPIError(r)]
     with pytest.raises(ValueError):
         mf.train_data
 
 
-@mock.patch.object(_model, "load_estimator", return_value='spam')
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, "APIClient")
+@mock.patch.object(_model, "_load_estimator", return_value='spam')
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
-def test_estimator(m_api, m_f_api, mock_le):
+def test_estimator(mock_le):
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
 
-    mf = _model.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
     assert mock_le.call_count == 0, "Estimator retrieval is lazy."
     assert mf.estimator == 'spam'
     assert mock_le.call_count == 1
@@ -363,25 +365,23 @@ def test_estimator(m_api, m_f_api, mock_le):
         "The Estimator is only downloaded once and cached."
 
 
-@mock.patch.object(_model, "load_dict", return_value='foo')
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, "APIClient")
-@mock.patch.object(api.ModelFuture, "_set_model_exception")
-def test_validation_metadata(mock_spe, m_api, m_f_api, mock_ld):
+@mock.patch.object(_model.cio, "file_id_from_run_output",
+                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo')
+@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+def test_validation_metadata(mock_spe, mock_f2f):
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
-    mf = _model.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
     assert mf.validation_metadata == 'foo'
-    mock_ld.assert_called_once_with(3, 7, 'metrics.json', client=mock.ANY)
+    mock_f2f.assert_called_once_with(11, client=c)
 
 
-@mock.patch.object(_model, "load_dict",
+@mock.patch.object(_model.cio, "file_id_from_run_output",
+                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_to_json",
                    mock.MagicMock(return_value={'metrics': 'foo'}))
-@mock.patch.object(futures, 'APIClient')
-@mock.patch.object(_model, "APIClient")
-def test_metrics(m_api, m_f_api):
+def test_metrics():
     c = setup_client_mock(3, 7)
-    m_api.return_value = m_f_api.return_value = c
-    mf = _model.ModelFuture(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
