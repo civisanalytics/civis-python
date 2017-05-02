@@ -235,11 +235,11 @@ def test_file_id_from_run_output_approximate():
 def test_file_id_from_run_output_approximate_multiple():
     # Fuzzy name matching with muliple matches should return the first
     m_cl = Mock()
-    m_cl.scripts.list_containers_runs_outputs.return_value = \
-        [Response({'name': 'spam.csv.gz', 'object_id': 2013,
-                   'object_type': 'File'}),
-         Response({'name': 'eggs.csv.gz', 'object_id': 2014,
-                   'object_type': 'File'})]
+    m_cl.scripts.list_containers_runs_outputs.return_value = [
+        Response({'name': 'spam.csv.gz', 'object_id': 2013,
+                  'object_type': 'File'}),
+        Response({'name': 'eggs.csv.gz', 'object_id': 2014,
+                  'object_type': 'File'})]
 
     fid = civis.io.file_id_from_run_output('.csv', 17, 13, regex=True,
                                            client=m_cl)
@@ -249,9 +249,9 @@ def test_file_id_from_run_output_approximate_multiple():
 def test_file_id_from_run_output_no_file():
     # Get an IOError if we request a file which doesn't exist
     m_client = Mock()
-    m_client.scripts.list_containers_runs_outputs.return_value = \
-        [Response({'name': 'spam', 'object_id': 2013,
-                   'object_type': 'File'})]
+    m_client.scripts.list_containers_runs_outputs.return_value = [
+        Response({'name': 'spam', 'object_id': 2013,
+                  'object_type': 'File'})]
 
     with pytest.raises(FileNotFoundError) as err:
         civis.io.file_id_from_run_output('eggs', 17, 13, client=m_client)

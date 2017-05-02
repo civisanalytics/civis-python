@@ -17,9 +17,10 @@ try:
 except ImportError:
     HAS_TOOLBELT = False
 try:
-    import pandas as pd  # NOQA
+    import pandas as pd
+    HAS_PANDAS = True
 except ImportError:
-    pass
+    HAS_PANDAS = False
 
 log = logging.getLogger(__name__)
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
@@ -285,20 +286,17 @@ def file_to_dataframe(file_id, compression='infer', client=None,
     --------
     :func:`~pandas.read_csv`
     """
-    # Make sure we have pandas; this will raise an ImportError if not.
-    import pandas  # NOQA
+    if not HAS_PANDAS:
+        raise ImportError('file_to_dataframe requires pandas to be installed.')
     client = APIClient() if client is None else client
     file_info = client.files.get(file_id)
     file_url = file_info.file_url
     file_name = file_info.name
     if compression == 'infer':
-        for ext in ['.bz2', '.zip', '.xz']:
-            if os.path.splitext(file_name)[-1] == ext:
-                compression = ext[1:]
-                break
-        else:
-            if os.path.splitext(file_name)[-1] == '.gz':
-                compression = 'gzip'
+        comp_exts = {'.gz': 'gzip', '.xz': 'xz', '.bz2': 'bz2', '.zip': 'zip'}
+        ext = os.path.splitext(file_name)[-1]
+        if ext in comp_exts:
+            compression = comp_exts[ext]
 
     return pd.read_csv(file_url, compression=compression, **read_kwargs)
 
