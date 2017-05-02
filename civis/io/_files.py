@@ -1,16 +1,29 @@
 from collections import OrderedDict
+import io
+import json
+import logging
+import os
+import re
 
 import requests
 from requests import HTTPError
 
-from civis import APIClient
-from civis.base import EmptyResultError
+from civis import APIClient, find_one
+from civis.base import CivisAPIError, EmptyResultError
 from civis.utils._deprecation import deprecate_param
 try:
     from requests_toolbelt.multipart.encoder import MultipartEncoder
     HAS_TOOLBELT = True
 except ImportError:
     HAS_TOOLBELT = False
+try:
+    import pandas as pd  # NOQA
+except ImportError:
+    pass
+
+log = logging.getLogger(__name__)
+__all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
+           'file_to_dataframe', 'file_to_json']
 
 
 def _get_aws_error_message(response):
@@ -167,3 +180,154 @@ def _get_url_from_file_id(file_id, client):
     files_response = client.files.get(file_id)
     url = files_response.file_url
     return url
+
+
+def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
+    """Find the file ID of a File run output with the name "name"
+
+    The run output is required to have type "File".
+    If using an approximate match and multiple names match the
+    provided string, return only the first file ID.
+
+    Parameters
+    ----------
+    name : str
+        The "name" field of the run output you wish to retrieve
+    job_id : int
+    run_id : int
+    regex : bool, optional
+        If False (the default), require an exact string match between
+        ``name`` and the name of the run output. If True, search for a
+        name which matches the regular expression ``name`` and
+        retrieve the first found.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+
+    Returns
+    -------
+    file_id : int
+        The ID of a Civis File with name matching ``name``
+
+    Raises
+    ------
+    IOError
+        If the provided job ID and run ID combination can't be found
+    FileNotFoundError
+        If the run exists, but ``name`` isn't in its run outputs
+
+    See Also
+    --------
+    APIClient.scripts.list_containers.runs_outputs
+    """
+    client = APIClient() if client is None else client
+    # Retrieve run outputs
+    try:
+        outputs = client.scripts.list_containers_runs_outputs(job_id, run_id)
+    except CivisAPIError as err:
+        if err.status_code == 404:
+            raise IOError('Could not find job/run ID {}/{}'
+                          .format(job_id, run_id)) from err
+        else:
+            raise
+
+    # Find file in the run outputs.
+    if not regex:
+        # Require an exact match on the "name" string.
+        obj = find_one(outputs, name=name, object_type='File')
+    else:
+        # Search for a filename which contains the "name" string
+        obj_matches = [o for o in outputs
+                       if re.search(name, o.name) and o.object_type == 'File']
+        if len(obj_matches) > 1:
+            log.warning('Found %s matches to "%s". Returning the first.',
+                        len(obj_matches), name)
+        obj = None if not obj_matches else obj_matches[0]
+    if obj is None:
+        prefix = "A file containing the pattern" if regex else "File"
+        raise FileNotFoundError('{} "{}" is not an output of job/run ID '
+                                '{}/{}.'.format(prefix, name, job_id, run_id))
+    return obj['object_id']
+
+
+def file_to_dataframe(file_id, compression='infer', client=None,
+                      **read_kwargs):
+    """Load a :class:`~pandas.DataFrame` from a CSV stored in a Civis File
+
+    The :class:`~pandas.DataFrame` will be read directly from Civis
+    without copying the CSV to a local file on disk.
+
+    Parameters
+    ----------
+    file_id : int
+        ID of a Civis File which contains a CSV
+    compression : str, optional
+        If "infer", set the ``compression`` argument of ``pandas.read_csv``
+        based on the file extension of the name of the Civis File.
+        Otherwise pass this argument to ``pandas.read_csv``.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    **read_kwargs
+        Additional arguments will be passed directly to
+        :func:`~pandas.read_csv`.
+
+    Returns
+    -------
+    :class:`~pandas.DataFrame` containing the contents of the CSV
+
+    Raises
+    ------
+    ImportError
+        If ``pandas`` is not available
+
+    See Also
+    --------
+    :func:`~pandas.read_csv`
+    """
+    # Make sure we have pandas; this will raise an ImportError if not.
+    import pandas  # NOQA
+    client = APIClient() if client is None else client
+    file_info = client.files.get(file_id)
+    file_url = file_info.file_url
+    file_name = file_info.name
+    if compression == 'infer':
+        for ext in ['.bz2', '.zip', '.xz']:
+            if os.path.splitext(file_name)[-1] == ext:
+                compression = ext[1:]
+                break
+        else:
+            if os.path.splitext(file_name)[-1] == '.gz':
+                compression = 'gzip'
+
+    return pd.read_csv(file_url, compression=compression, **read_kwargs)
+
+
+def file_to_json(file_id, client=None, **json_kwargs):
+    """Restore JSON stored in a Civis File
+
+    Parameters
+    ----------
+    file_id : int
+        ID of a JSON-formatted Civis File
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    **json_kwargs
+        Additional keyword arguments will be passed directly to
+        :func:`json.load`.
+
+    Returns
+    -------
+    The object extracted from the JSON-formatted file
+
+    See Also
+    --------
+    :func:`civis_to_file`
+    :func:`json.load`
+    """
+    buf = io.BytesIO()
+    civis_to_file(file_id, buf, client=client)
+    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    txt.seek(0)
+    return json.load(txt, **json_kwargs)
