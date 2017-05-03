@@ -106,22 +106,7 @@ def _decode_train_run(train_job_id, train_run_id, client):
 
 
 def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
-    """Download a Civis file using a reference on a previous run
-
-    Parameters
-    ----------
-    fname: str
-        Name of the Civis file you wish to retrieve
-    job_id, run_id: int
-        Job ID and run ID of the run holding a reference to this file
-    local_dir: str
-        Download the file `fname` from Civis Platform to this directory
-
-    Returns
-    -------
-    str
-        The path of the downloaded file
-    """
+    """Download a Civis file using a reference on a previous run"""
     file_id = cio.file_id_from_run_output(fname, job_id, run_id, client=client)
     fpath = os.path.join(local_dir, fname)
     os.makedirs(os.path.dirname(fpath), exist_ok=True)
@@ -156,6 +141,31 @@ class ModelFuture(CivisFuture):
     from CivisML jobs. All data attributes are
     lazily retrieved and block on job completion.
     This object can be pickled.
+
+    Parameters
+    ----------
+    job_id : int
+        ID of the modeling job
+    run_id : int
+        ID of the modeling run
+    train_job_id : int, optional
+        If not provided, this object is assumed to encapsulate a training
+        job, and ``train_job_id`` will equal ``job_id``.
+    train_run_id : int, optional
+        If not provided, this object is assumed to encapsulate a training
+        run, and ``train_run_id`` will equal ``run_id``.
+    polling_interval : int or float, optional
+        The number of seconds between API requests to check whether a result
+        is ready. The default intelligently switches between a short
+        interval if ``pubnub`` is not available and a long interval
+        for ``pubnub`` backup if that library is installed.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    poll_on_creation : bool, optional
+        If ``True`` (the default), it will poll upon calling ``result()`` the
+        first time. If ``False``, it will wait the number of seconds specified
+        in `polling_interval` from object creation before polling.
 
     Attributes
     ----------
