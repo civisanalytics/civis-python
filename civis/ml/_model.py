@@ -7,7 +7,6 @@ import threading
 import warnings
 from concurrent import futures
 from functools import wraps
-from typing import Callable, Dict, Union
 
 try:
     import pandas as pd
@@ -30,15 +29,13 @@ __all__ = ['ModelFuture', 'ModelError']
 
 
 class ModelError(RuntimeError):
-    def __init__(self, msg: str,
-                 estimator: 'sklearn.base.BaseEstimator'=None,
-                 metadata: Dict=None):
+    def __init__(self, msg, estimator=None, metadata=None):
         self.metadata = metadata
         self.estimator = estimator
         super().__init__(msg)
 
 
-def _check_is_fit(method: Callable) -> Callable:
+def _check_is_fit(method):
     """Makes sure that the ModelPipeline's been trained"""
     @wraps(method)
     def wrapper(*args, **kwargs):
@@ -49,7 +46,7 @@ def _check_is_fit(method: Callable) -> Callable:
     return wrapper
 
 
-def _block_and_handle_missing(method: Callable) -> Callable:
+def _block_and_handle_missing(method):
     """For ModelFuture file-retrieving property methods.
     Block until completion and attempt to retrieve result.
     Raise exception only if the result isn't found.
@@ -69,8 +66,7 @@ def _block_and_handle_missing(method: Callable) -> Callable:
     return wrapper
 
 
-def _stash_local_data(X: Union['pandas.DataFrame', str],
-                      client: APIClient=None) -> int:
+def _stash_local_data(X, client=None):
     """Store data in a temporary Civis File and return the file ID
     """
     civis_fname = 'modelpipeline_data.csv'
@@ -88,8 +84,7 @@ def _stash_local_data(X: Union['pandas.DataFrame', str],
     return file_id
 
 
-def _decode_train_run(train_job_id: int, train_run_id: str,
-                      client: APIClient) -> int:
+def _decode_train_run(train_job_id, train_run_id, client):
     """Determine correct run ID for use for a given training job ID"""
     try:
         return int(train_run_id)
@@ -110,8 +105,7 @@ def _decode_train_run(train_job_id: int, train_run_id: str,
                              'or one of "active" or "latest".') from exc
 
 
-def _retrieve_file(fname: str, job_id: int, run_id: int, local_dir: str,
-                   client: APIClient=None) -> str:
+def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
     """Download a Civis file using a reference on a previous run
 
     Parameters
@@ -136,11 +130,8 @@ def _retrieve_file(fname: str, job_id: int, run_id: int, local_dir: str,
     return fpath
 
 
-def _load_table_from_outputs(job_id: int,
-                             run_id: int,
-                             filename: str,
-                             client: APIClient=None,
-                             **table_kwargs) -> 'pandas.DataFrame':
+def _load_table_from_outputs(job_id, run_id, filename, client=None,
+                             **table_kwargs):
     """Load a table from a run output directly into a ``DataFrame``"""
     client = APIClient(resources='all') if client is None else client
     file_id = cio.file_id_from_run_output(filename, job_id, run_id, client,
@@ -148,12 +139,8 @@ def _load_table_from_outputs(job_id: int,
     return cio.file_to_dataframe(file_id, client=client, **table_kwargs)
 
 
-def _load_estimator(job_id: int,
-                    run_id: int,
-                    filename: str='estimator.pkl',
-                    client: APIClient=None) -> dict:
-    """Load a joblib-serialized Estimator from run outputs
-    """
+def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
+    """Load a joblib-serialized Estimator from run outputs"""
     if not HAS_JOBLIB:
         raise ImportError('Install joblib to download models from Civis.')
     with tempfile.TemporaryDirectory() as tempdir:
@@ -226,12 +213,8 @@ class ModelFuture(CivisFuture):
     :class:`~civis.futures.CivisFuture`
     :class:`~concurrent.futures.Future`
     """
-    def __init__(self, job_id, run_id,
-                 train_job_id: int=None,
-                 train_run_id: int=None,
-                 polling_interval: float=None,
-                 client: APIClient=None,
-                 poll_on_creation: bool=True):
+    def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
+                 polling_interval=None, client=None, poll_on_creation=True):
         if client is None:
             client = APIClient(resources='all')
         super().__init__(client.scripts.get_containers_runs,
@@ -262,7 +245,7 @@ class ModelFuture(CivisFuture):
         return self.poller_args[1]
 
     @staticmethod
-    def _set_model_exception(fut: "ModelFuture"):
+    def _set_model_exception(fut):
         """Callback: On job completion, check the metadata.
         If it indicates an exception, replace the generic
         ``CivisJobFailure`` by a more informative ``ModelError``.
@@ -327,7 +310,7 @@ class ModelFuture(CivisFuture):
                 return self.cancelled()
             return False
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self):
         state = self.__dict__.copy()
         del state['_polling_thread']
         del state['client']
@@ -340,7 +323,7 @@ class ModelFuture(CivisFuture):
 
         return state
 
-    def __setstate__(self, state: dict):
+    def __setstate__(self, state):
         self.__dict__ = state
         self.client = APIClient(resources='all')
         if getattr(self, '_pubnub', None) is True:
@@ -353,22 +336,22 @@ class ModelFuture(CivisFuture):
         self.add_done_callback(self._set_model_exception)
 
     @property
-    def state(self) -> str:
+    def state(self):
         state = self._civis_state
         if state == 'succeeded':
             state = self.metadata['run']['status']
         return state
 
     @property
-    def table_fname(self) -> str:
+    def table_fname(self):
         return 'predictions.csv'
 
     @property
-    def metadata_fname(self) -> str:
+    def metadata_fname(self):
         return 'model_info.json'
 
     @property
-    def train_data_fname(self) -> str:
+    def train_data_fname(self):
         if self._train_data_fname is None:
             self._train_data_fname = os.path.basename(self.training_metadata
                                                       .get('run')
@@ -378,7 +361,7 @@ class ModelFuture(CivisFuture):
         return self._train_data_fname
 
     @property
-    def train_data(self) -> 'pandas.DataFrame':
+    def train_data(self):
         if self._train_data is None:
             try:
                 self._train_data = _load_table_from_outputs(
@@ -396,7 +379,7 @@ class ModelFuture(CivisFuture):
         return self._train_data
 
     @property
-    def table(self) -> 'pandas.DataFrame':
+    def table(self):
         self.result()  # Block and raise errors if any
         if self._table is None:
             if self.is_training:
@@ -420,7 +403,7 @@ class ModelFuture(CivisFuture):
 
     @property
     @_block_and_handle_missing
-    def metadata(self) -> dict:
+    def metadata(self):
         if self._metadata is None:
             fid = cio.file_id_from_run_output('model_info.json', self.job_id,
                                               self.run_id, client=self.client)
@@ -429,7 +412,7 @@ class ModelFuture(CivisFuture):
 
     @property
     @_block_and_handle_missing
-    def estimator(self) -> 'sklearn.pipeline.Pipeline':
+    def estimator(self):
         if self._estimator is None:
             self._estimator = _load_estimator(self.train_job_id,
                                               self.train_run_id,
@@ -438,7 +421,7 @@ class ModelFuture(CivisFuture):
 
     @property
     @_block_and_handle_missing
-    def validation_metadata(self) -> dict:
+    def validation_metadata(self):
         if self._val_metadata is None:
             fid = cio.file_id_from_run_output('metrics.json', self.job_id,
                                               self.run_id, client=self.client)
@@ -446,12 +429,12 @@ class ModelFuture(CivisFuture):
         return self._val_metadata
 
     @property
-    def metrics(self) -> dict:
+    def metrics(self):
         return self.validation_metadata['metrics']
 
     @property
     @_block_and_handle_missing
-    def training_metadata(self) -> dict:
+    def training_metadata(self):
         if self._train_metadata is None:
             fid = cio.file_id_from_run_output('model_info.json', self.job_id,
                                               self.run_id, client=self.client)
