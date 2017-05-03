@@ -115,7 +115,7 @@ def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
     job_id, run_id: int
         Job ID and run ID of the run holding a reference to this file
     local_dir: str
-        Download the file `fname` from Civis to this directory
+        Download the file `fname` from Civis Platform to this directory
 
     Returns
     -------
@@ -142,17 +142,18 @@ def _load_table_from_outputs(job_id, run_id, filename, client=None,
 def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     """Load a joblib-serialized Estimator from run outputs"""
     if not HAS_JOBLIB:
-        raise ImportError('Install joblib to download models from Civis.')
+        raise ImportError('Install joblib to download models '
+                          'from Civis Platform.')
     with tempfile.TemporaryDirectory() as tempdir:
         path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
         return joblib.load(path)
 
 
 class ModelFuture(CivisFuture):
-    """Encapsulates asynchronous execution of a Civis-ML job
+    """Encapsulates asynchronous execution of a CivisML job
 
     This object knows where to find modeling outputs
-    from Civis-ML jobs. All data attributes are
+    from CivisML jobs. All data attributes are
     lazily retrieved and block on job completion.
     This object can be pickled.
 
@@ -180,7 +181,7 @@ class ModelFuture(CivisFuture):
 
     [These attributes are non-blocking]
     state : str
-        The current state of the Civis run
+        The current state of the Civis Platform run
     job_id : int
     run_id : int
     train_job_id : int
@@ -206,7 +207,7 @@ class ModelFuture(CivisFuture):
     done()
         (Non-blocking) Is the job finished?
     result()
-        (Blocking) Return the final status of the Civis job.
+        (Blocking) Return the final status of the Civis Platform job.
 
     See Also
     --------
@@ -279,7 +280,7 @@ class ModelFuture(CivisFuture):
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
             # mask the real error.
-            warnings.warn("Received malformed metadata from Civis. "
+            warnings.warn("Received malformed metadata from Civis Platform. "
                           "Something went wrong with execution. "
                           "Please report this error.")
 
