@@ -152,6 +152,15 @@ def test_load_estimator(mock_retrieve):
     assert out == obj
 
 
+@mock.patch.object(_model.cio, 'file_to_dataframe', autospec=True)
+@mock.patch.object(_model.cio, 'file_id_from_run_output', autospec=True)
+def test_load_table_from_outputs(mock_fid, mock_f2df):
+    # Test that _load_table_from_outputs is calling functions
+    # correctly. Let `autospec` catch errors in arguments being passed.
+    mock_client = setup_client_mock()
+    _model._load_table_from_outputs(1, 2, 'fname', client=mock_client)
+
+
 ###################################
 # Tests of ModelFuture below here #
 ###################################
