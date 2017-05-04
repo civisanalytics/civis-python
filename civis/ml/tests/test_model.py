@@ -77,7 +77,7 @@ def test_check_is_fit_exception():
     mock_pipe = mock.MagicMock()
     mock_pipe.train_result_ = None
 
-    @_model._check_is_fit
+    @_model._check_fit_initiated
     def foo(arg):
         return 7
 
@@ -89,7 +89,7 @@ def test_check_is_fit():
     mock_pipe = mock.MagicMock()
     mock_pipe.train_result_ = True
 
-    @_model._check_is_fit
+    @_model._check_fit_initiated
     def foo(arg):
         return 7
 
@@ -609,13 +609,3 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     with pytest.raises(ValueError) as exc:
         mp_setup.predict(file_id=7, manifest=123)
     assert str(exc.value) == "Provide a single source of data."
-
-
-def test_modelpipeline_predict_runtime_error(mp_setup):
-    mp = mp_setup
-    mp.train_result_ = mock.Mock()
-    mp.train_result_.running.return_value = True
-
-    with pytest.raises(RuntimeError,
-                       message='Wait for the training to finish.'):
-        mp.predict()

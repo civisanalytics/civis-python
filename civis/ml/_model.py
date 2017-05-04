@@ -47,7 +47,7 @@ class ModelError(RuntimeError):
         super().__init__(msg)
 
 
-def _check_is_fit(method):
+def _check_fit_initiated(method):
     """Makes sure that the ModelPipeline's been trained"""
     @wraps(method)
     def wrapper(*args, **kwargs):
@@ -622,7 +622,35 @@ class ModelPipeline:
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
-        """Create a ``ModelPipeline`` object from existing model IDs"""
+        """Create a ``ModelPipeline`` object from existing model IDs
+
+        Parameters
+        ----------
+        train_job_id : int
+            The ID of the CivisML job in the Civis Platform
+        train_run_id : int or string, optional
+            Location of the model run, either
+            - an explicit run ID,
+            - "latest" : The most recent run
+            - "active" : The run designated by the training job's
+                "active build" parameter
+        client : :class:`~civis.APIClient`, optional
+            If not provided, an :class:`~civis.APIClient` object will be
+            created from the :envvar:`CIVIS_API_KEY`.
+
+        Returns
+        -------
+        :class:`~ModelPipeline`
+            A :class:`~ModelPipeline` which refers to
+            a previously-trained model
+
+        Examples
+        --------
+        >>> from civis.ml import ModelPipeline
+        >>> model = ModelPipeline.from_existing(job_id)
+        >>> model.train_result_.metrics['roc_auc']
+        0.843
+        """
         if client is None:
             client = APIClient(resources='all')
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
@@ -762,8 +790,8 @@ class ModelPipeline:
         if fit_params:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
 
-        if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
-            import joblib
+        if (HAS_SKLEARN and HAS_JOBLIB and
+                isinstance(self.model, BaseEstimator)):
             with tempfile.TemporaryDirectory() as tempdir:
                 fout = os.path.join(tempdir, 'estimator.pkl')
                 joblib.dump(self.model, fout, compress=3)
@@ -835,16 +863,16 @@ class ModelPipeline:
         return fut, container, run
 
     @property
-    @_check_is_fit
+    @_check_fit_initiated
     def state(self) -> str:
         return self.train_result_.state
 
     @property
-    @_check_is_fit
+    @_check_fit_initiated
     def estimator(self):
         return self.train_result_.estimator
 
-    @_check_is_fit
+    @_check_fit_initiated
     def predict(self, X=None, table_name=None, database_name=None,
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
@@ -899,7 +927,9 @@ class ModelPipeline:
             SQL LIMIT clause to restrict the size of the prediction set
         primary_key : str, optional
             Primary key of the prediction table. Defaults to
-            the primary key of the training data.
+            the primary key of the training data. Use ``None`` to
+            indicate that the prediction data don't have a
+            primary key column.
         output_table: str, optional
             The table in which to put the predictions.
         output_db : str, optional
@@ -918,8 +948,6 @@ class ModelPipeline:
         -------
         :class:`~ModelFuture`
         """
-        if self.train_result_.running():
-            raise RuntimeError('Wait for the training to finish.')
         self.train_result_.result()  # Blocks and raises training errors
 
         if ((table_name is None or database_name is None) and
