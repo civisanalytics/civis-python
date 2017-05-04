@@ -291,8 +291,7 @@ class ModelFuture(CivisFuture):
             # but showing the resulting KeyError can be confusing and
             # mask the real error.
             warnings.warn("Received malformed metadata from Civis Platform. "
-                          "Something went wrong with execution. "
-                          "Please report this error.")
+                          "Something went wrong with job execution.")
 
     def cancel(self):
         """Submit a request to cancel the container/script/run.
