@@ -16,6 +16,11 @@ try:
     HAS_JOBLIB = True
 except ImportError:
     HAS_JOBLIB = False
+try:
+    from sklearn.linear_model import LogisticRegression
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
 
 from civis import APIClient
 from civis.base import CivisAPIError, CivisJobFailure
@@ -391,6 +396,13 @@ def test_metrics():
 #####################################
 # Tests of ModelPipeline below here #
 #####################################
+@pytest.fixture
+def mp_setup():
+    mock_api = setup_client_mock()
+    mp = _model.ModelPipeline('wf', 'dv', client=mock_api)
+    return mp
+
+
 @mock.patch.object(_model, 'ModelFuture')
 @mock.patch.object(_model, 'APIClient', mock.Mock())
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
@@ -468,8 +480,9 @@ def test_modelpipeline_train(mock_ccr, mp_setup):
     assert mp.train_result_ == 'res'
 
 
+@pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
 @mock.patch.object(_model, "APIClient", mock.Mock())
-@mock.patch.object(_model, "file_to_civis")
+@mock.patch.object(_model.cio, "file_to_civis")
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     # Provide a model as a pre-made model and make sure we can train.
@@ -485,6 +498,7 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     assert mock_f2c.call_count == 1  # Called once to store input Estimator
 
 
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model, "_stash_local_data", return_value=-11)
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):

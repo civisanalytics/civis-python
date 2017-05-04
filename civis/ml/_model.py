@@ -2,6 +2,8 @@
 """
 from collections import namedtuple
 import io
+import json
+import logging
 import os
 import tempfile
 import threading
@@ -19,6 +21,11 @@ try:
     HAS_JOBLIB = True
 except ImportError:
     HAS_JOBLIB = False
+try:
+    from sklearn.base import BaseEstimator
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, CivisJobFailure
@@ -26,7 +33,8 @@ import civis.io as cio
 from civis.futures import CivisFuture
 from civis.polling import _ResultPollingThread
 
-__all__ = ['ModelFuture', 'ModelError']
+__all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
+log = logging.getLogger(__name__)
 
 # sentinel value for default primary key value
 SENTINEL = namedtuple('Sentinel', [])()
@@ -573,21 +581,12 @@ class ModelPipeline:
     train_template_id = 8387
     predict_template_id = 8388
 
-    def __init__(self,
-                 model: Union[str, 'sklearn.base.BaseEstimator'],
-                 dependent_variable: Union[str, Sequence[str]],
-                 *,
-                 primary_key: str=None,
-                 parameters: Dict=None,
-                 cross_validation_parameters: Dict=None,
-                 model_name: str=None,
-                 calibration: str=None,
-                 excluded_columns: Sequence[str]=None,
-                 client: APIClient=None,
-                 cpu_requested: int=None,
-                 memory_requested: int=None,
-                 disk_requested: float=None,
-                 verbose: bool=False):
+    def __init__(self, model, dependent_variable, *,
+                 primary_key=None, parameters=None,
+                 cross_validation_parameters=None, model_name=None,
+                 calibration=None, excluded_columns=None, client=None,
+                 cpu_requested=None, memory_requested=None,
+                 disk_requested=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -622,17 +621,11 @@ class ModelPipeline:
         self._client = APIClient(resources='all')
 
     @classmethod
-    def from_existing(cls,
-                      train_job_id: int,
-                      train_run_id: Union[str, int]='latest',
-                      client: APIClient=None) -> 'ModelPipeline':
-        """Create a ``ModelPipeline`` object from existing model IDs
-        """
+    def from_existing(cls, train_job_id, train_run_id='latest', client=None):
+        """Create a ``ModelPipeline`` object from existing model IDs"""
         if client is None:
             client = APIClient(resources='all')
-        train_run_id = decode_train_run(train_job_id,
-                                        train_run_id,
-                                        client)
+        train_run_id = _decode_train_run(train_job_id, train_run_id, client)
         try:
             fut = ModelFuture(train_job_id, train_run_id, client)
             container = client.scripts.get_containers(train_job_id)
@@ -677,18 +670,10 @@ class ModelPipeline:
         klass.train_result_ = fut
         return klass
 
-    def train(self,
-              X: Union['pandas.DataFrame', str]=None,
-              table_name: str=None,
-              database_name: str=None,
-              file_id: int=None,
-              sql_where: str=None,
-              sql_limit: int=None,
-              oos_scores: str=None,
-              oos_scores_db: str=None,
-              if_exists: str='fail',
-              fit_params: Dict[str, str]=None,
-              polling_interval: float=None) -> ModelFuture:
+    def train(self, X=None, table_name=None, database_name=None, file_id=None,
+              sql_where=None, sql_limit=None, oos_scores=None,
+              oos_scores_db=None, if_exists='fail', fit_params=None,
+              polling_interval=None):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -777,16 +762,15 @@ class ModelPipeline:
         if fit_params:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
 
-        if has_sklearn and isinstance(self.model, BaseEstimator):
+        if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             import joblib
             with tempfile.TemporaryDirectory() as tempdir:
                 fout = os.path.join(tempdir, 'estimator.pkl')
                 joblib.dump(self.model, fout, compress=3)
                 with open(fout, 'rb') as _fout:
                     n = self.model_name if self.model_name else "CivisML"
-                    estimator_file_id = file_to_civis(
-                        _fout, 'Estimator for ' + n,
-                        client=self._client)
+                    estimator_file_id = cio.file_to_civis(
+                        _fout, 'Estimator for ' + n, client=self._client)
                 self._input_model = self.model  # Keep the estimator
             self.model = str(estimator_file_id)
         train_args['MODEL'] = self.model
@@ -809,17 +793,9 @@ class ModelPipeline:
 
         return result
 
-    def _create_custom_run(
-          self,
-          template_id: int,
-          job_name: str=None,
-          table_name: str=None,
-          database_name: str=None,
-          file_id: int=None,
-          args: dict=None,
-          resources: Dict[str, float]=None,
-          polling_interval: float=None) \
-            -> Tuple[ModelFuture, Response, Response]:
+    def _create_custom_run(self, template_id, job_name=None, table_name=None,
+                           database_name=None, file_id=None, args=None,
+                           resources=None, polling_interval=None):
 
         db_id = self._client.get_database_id(database_name)
         script_arguments = {'TABLE_NAME': table_name,
@@ -859,31 +835,20 @@ class ModelPipeline:
         return fut, container, run
 
     @property
-    @check_is_fit
+    @_check_is_fit
     def state(self) -> str:
         return self.train_result_.state
 
     @property
-    @check_is_fit
-    def estimator(self) -> 'sklearn.pipeline.Pipeline':
+    @_check_is_fit
+    def estimator(self):
         return self.train_result_.estimator
 
-    @check_is_fit
-    def predict(self,
-                X: Union['pandas.DataFrame', str]=None,
-                table_name: str=None,
-                database_name: str=None,
-                manifest: int=None,
-                file_id: int=None,
-                sql_where: str=None,
-                sql_limit: int=None,
-                primary_key: Union[str, None]=SENTINEL,
-                output_table: str=None,
-                output_db: str=None,
-                if_exists: str='fail',
-                n_jobs: int=None,
-                polling_interval: float=None) \
-            -> ModelFuture:
+    @_check_is_fit
+    def predict(self, X=None, table_name=None, database_name=None,
+                manifest=None, file_id=None, sql_where=None, sql_limit=None,
+                primary_key=SENTINEL, output_table=None, output_db=None,
+                if_exists='fail', n_jobs=None, polling_interval=None):
         """Make predictions on a trained model
 
         Provide input through one of
