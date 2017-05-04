@@ -1,5 +1,6 @@
 """Run CivisML jobs and retrieve the results
 """
+from collections import namedtuple
 import io
 import os
 import tempfile
@@ -26,6 +27,9 @@ from civis.futures import CivisFuture
 from civis.polling import _ResultPollingThread
 
 __all__ = ['ModelFuture', 'ModelError']
+
+# sentinel value for default primary key value
+SENTINEL = namedtuple('Sentinel', [])()
 
 
 class ModelError(RuntimeError):
@@ -450,3 +454,561 @@ class ModelFuture(CivisFuture):
                                               self.run_id, client=self.client)
             self._train_metadata = cio.file_to_json(fid, client=self.client)
         return self._train_metadata
+
+
+class ModelPipeline:
+    """Interface for scikit-learn modeling in the Civis Platform
+
+    Each ModelPipeline corresponds to a scikit-learn Pipeline
+    which will run in Civis Platform.
+
+    Parameters
+    ----------
+    model : string or Estimator
+        Either the name of a pre-defined model
+        (e.g. "sparse_logistic" or "gradient_boosting_classifier")
+        or else a pre-existing Estimator object.
+    dependent_variable : string or List[str]
+        The dependent variable of the training dataset.
+        For a multi-target problem, this should be a list of
+        column names of dependent variables.
+    primary_key : string, optional
+        The unique ID (primary key) of the training dataset.
+        This will be used to index the out-of-sample scores.
+    parameters : dict, optional
+        Specify parameters for the final stage estimator in a
+        predefined model, e.g. {'C': 2} for a "sparse_logistic"
+        model.
+    cross_validation_parameters : dict, optional
+        Cross validation parameter grid for learner parameters, e.g.
+        {{'n_estimators': [100, 200, 500], 'learning_rate': [0.01, 0.1],
+        'max_depth': [2, 3]}}.
+    model_name : string, optional
+        The prefix of the Platform modeling jobs. It will have
+        " Train" or " Predict" added to become the Script title.
+    calibration : {None, "sigmoid", "isotonic"}
+        If not None, calibrate output probabilities with the selected method.
+        Valid only with classification models.
+    excluded_columns : array, optional
+        A list of columns which will be considered ineligible to be
+        independent variables.
+    client : :class:`~civis.APIClient`, optional
+        If not provided, an :class:`~civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    cpu_requested : int, optional
+        Number of CPU shares requested in the Civis Platform for
+        training jobs. 1024 shares = 1 CPU.
+    memory_requested : int, optional
+        Memory requested from Civis Platform for training jobs, in MiB
+    disk_requested : float, optional
+        Disk space requested on Civis Platform for training jobs, in GB
+    verbose : bool, optional
+        If True, supply debug outputs in Platform logs and make
+        prediction child jobs visible.
+
+    Methods
+    -------
+    train(X=None, table_name=None, database_name=None, file_id=None, \
+          sql_where=None,sql_limit=None, oos_scores=None, oos_scores_db=None,\
+          if_exists='fail', fit_params=None, polling_interval=None)
+        Train the model on data in Civis Platform; outputs :class:`ModelFuture`
+    predict(X=None, table_name=None, database_name=None, manifest=None,\
+                file_id=None, sql_where=None, sql_limit=None,\
+                primary_key=SENTINEL, output_table=None, output_db=None,\
+                if_exists='fail', n_jobs=None, polling_interval=None)
+        Make predictions on new data; outputs :class:`ModelFuture`
+    from_existing(train_job_id, train_run_id='latest', client=None)
+        Class method; use to create a :class:`ModelPipeline`
+        from an existing model training run
+
+    Attributes
+    ----------
+    estimator : :class:`sklearn.pipeline.Pipeline`
+        The trained scikit-learn Pipeline
+    train_result_ : :class:`ModelFuture`
+        :class:`ModelFuture` encapsulating this model's training run
+    state : str
+        Status of the training job (non-blocking)
+
+    Examples
+    --------
+    >>> from civismodel import ModelPipeline
+    >>> model = ModelPipeline('gradient_boosting_classifier', 'depvar',\
+                              primary_key='voterbase_id')
+    >>> train = model.train(table_name='schema.survey_data',\
+                            fit_params={'sample_weight': 'survey_weight'},\
+                            database_name='My Redshift Cluster',\
+                            oos_scores='scratch.survey_depvar_oos_scores')
+    >>> train
+    <ModelFuture at 0x11be7ae10 state=queued>
+    >>> train.running()
+    True
+    >>> train.done()
+    False
+    >>> df = train.table  # Read OOS scores from its Civis File. Blocking.
+    >>> meta = train.metadata  # Metadata from training run
+    >>> train.metrics['roc_auc']
+    0.88425
+    >>> pred = model.predict(table_name='schema.demographics_table ',\
+                             database_name='My Redshift Cluster',\
+                             output_table='schema.predicted_survey_response',\
+                             if_exists='drop',\
+                             n_jobs=50)
+    >>> df_pred = pred.table  # Blocks until finished
+    # Modify the parameters of the base estimator in a default model:
+    >>> model = ModelPipeline('sparse_logistic', 'depvar',\
+                              primary_key='voterbase_id',\
+                              parameters={'C': 2})
+    # Grid search over hyperparameters in the base estimator:
+    >>> model = ModelPipeline('sparse_logistic', 'depvar',\
+                              primary_key='voterbase_id',\
+                              cross_validation_parameters={'C': [0.1, 1, 10]})
+
+    See Also
+    --------
+    ModelFuture : Subclass of :class:`~concurrent.future.Future`,
+        output by :class:`~ModelPipeline` methods
+    """
+    # These are the v1.0 templates
+    train_template_id = 8387
+    predict_template_id = 8388
+
+    def __init__(self,
+                 model: Union[str, 'sklearn.base.BaseEstimator'],
+                 dependent_variable: Union[str, Sequence[str]],
+                 *,
+                 primary_key: str=None,
+                 parameters: Dict=None,
+                 cross_validation_parameters: Dict=None,
+                 model_name: str=None,
+                 calibration: str=None,
+                 excluded_columns: Sequence[str]=None,
+                 client: APIClient=None,
+                 cpu_requested: int=None,
+                 memory_requested: int=None,
+                 disk_requested: float=None,
+                 verbose: bool=False):
+        self.model = model
+        self._input_model = model  # In case we need to modify the input
+        if isinstance(dependent_variable, str):
+            # Standardize the dependent variable as a list.
+            dependent_variable = [dependent_variable]
+        self.dependent_variable = dependent_variable
+
+        # optional but common parameters
+        self.primary_key = primary_key
+        self.parameters = parameters or {}
+        self.cv_params = cross_validation_parameters or {}
+        self.model_name = model_name  # None lets Platform use template name
+        self.excluded_columns = excluded_columns
+        self.calibration = calibration
+        self.job_resources = {'REQUIRED_CPU': cpu_requested,
+                              'REQUIRED_MEMORY': memory_requested,
+                              'REQUIRED_DISK_SPACE': disk_requested}
+        self.verbose = verbose
+
+        if client is None:
+            client = APIClient(resources='all')
+        self._client = client
+        self.train_result_ = None
+
+    def __getstate__(self) -> dict:
+        state = self.__dict__.copy()
+        del state['_client']
+        return state
+
+    def __setstate__(self, state: dict):
+        self.__dict__ = state
+        self._client = APIClient(resources='all')
+
+    @classmethod
+    def from_existing(cls,
+                      train_job_id: int,
+                      train_run_id: Union[str, int]='latest',
+                      client: APIClient=None) -> 'ModelPipeline':
+        """Create a ``ModelPipeline`` object from existing model IDs
+        """
+        if client is None:
+            client = APIClient(resources='all')
+        train_run_id = decode_train_run(train_job_id,
+                                        train_run_id,
+                                        client)
+        try:
+            fut = ModelFuture(train_job_id, train_run_id, client)
+            container = client.scripts.get_containers(train_job_id)
+        except CivisAPIError as api_err:
+            if api_err.status_code == 404:
+                raise ValueError('There is no Civis Platform job with '
+                                 'script ID {} and run ID {}!'.format(
+                                     train_job_id, train_run_id)) from api_err
+            raise
+
+        args = container.arguments
+        model = args['MODEL']
+        dependent_variable = args['TARGET_COLUMN'].split()
+        primary_key = args.get('PRIMARY_KEY')
+        parameters = json.loads(args.get('PARAMS', {}))
+        cross_validation_parameters = json.loads(args.get('CVPARAMS', {}))
+        calibration = args.get('CALIBRATION')
+        excluded_columns = args.get('EXCLUDE_COLS', None)
+        if excluded_columns:
+            excluded_columns = excluded_columns.split()
+        cpu_requested = args.get('REQUIRED_CPU')
+        memory_requested = args.get('REQUIRED_MEMORY')
+        disk_requested = args.get('REQUIRED_DISK_SPACE')
+        name = container.name
+        if name.endswith(' Train'):
+            # Strip object-applied suffix
+            name = name[:-len(' Train')]
+
+        klass = cls(model=model,
+                    dependent_variable=dependent_variable,
+                    primary_key=primary_key,
+                    model_name=name,
+                    parameters=parameters,
+                    cross_validation_parameters=cross_validation_parameters,
+                    calibration=calibration,
+                    excluded_columns=excluded_columns,
+                    client=client,
+                    cpu_requested=cpu_requested,
+                    disk_requested=disk_requested,
+                    memory_requested=memory_requested,
+                    verbose=args.get('DEBUG', False))
+        klass.train_result_ = fut
+        return klass
+
+    def train(self,
+              X: Union['pandas.DataFrame', str]=None,
+              table_name: str=None,
+              database_name: str=None,
+              file_id: int=None,
+              sql_where: str=None,
+              sql_limit: int=None,
+              oos_scores: str=None,
+              oos_scores_db: str=None,
+              if_exists: str='fail',
+              fit_params: Dict[str, str]=None,
+              polling_interval: float=None) -> ModelFuture:
+        """Start a Civis Platform job to train your model
+
+        Provide input through one of
+        a local CSV or :class:`~pandas.DataFrame` (``X``),
+        a Civis Table (``table_name`` and ``database_name``), or
+        a Civis File containing a CSV (``file_id``).
+
+        Model outputs will always contain out-of-sample scores
+        (accessible through ``ModelFuture.table`` on this function's
+        output), and you may chose to store these out-of-sample scores
+        in a Civis Table with the ``oos_scores``, ``oos_scores_db``,
+        and ``if_exists`` parameters.
+
+        Parameters
+        ----------
+        X : pd.DataFrame or str, optional
+            Local data, as either a ``DataFrame`` (the ``DataFrame`` should
+            contain all training data, including the dependent variable(s)
+            and primary key) or as the file name of a CSV.
+            Note that if a ``DataFrame``, the index will be ignored.
+        table_name : str, optional
+            The qualified name of the table containing the training set from
+            which to build the model.
+        database_name : str, optional
+            Name of the database holding the training set table used to
+            build the model. E.g., 'My Cluster Name'.
+        file_id : int, optional
+            If the training data are stored in a Civis file,
+            provide the integer file ID.
+        sql_where : str, optional
+            A SQL WHERE clause used to scope the rows of the training set
+            (used for table input only)
+        sql_limit : int, optional
+            SQL LIMIT clause for querying the training set
+            (used for table input only)
+        oos_scores : str, optional
+            If provided, store out-of-sample predictions on
+            training set data to this Redshift "schema.tablename".
+        oos_scores_db : str, optional
+            If not provided, store OOS predictions in the same database
+            which holds the training data.
+        if_exists : {'fail', 'append', 'drop', 'truncate'}
+            Action to take if the out-of-sample prediction table
+            already exists.
+        fit_params: Dict[str, str]
+            Mapping from parameter names in the model's `fit` method
+            to the column names which hold the data, e.g.
+            `{'sample_weight': 'survey_weight_column'}`.
+        polling_interval : float, optional
+            Check for job completion every this number of seconds.
+            Do not set if using the notifications endpoint.
+
+        Returns
+        -------
+        :class:`~ModelFuture`
+        """
+        if ((table_name is None or database_name is None) and
+                file_id is None and
+                X is None):
+            raise ValueError('Provide a source of data.')
+        if sum((bool(table_name and database_name),
+                bool(file_id),
+                X is not None)) > 1:
+            raise ValueError('Provide a single source of data.')
+
+        if X is not None:
+            file_id = _stash_local_data(X, client=self._client)
+
+        train_args = {'TARGET_COLUMN': ' '.join(self.dependent_variable),
+                      'PRIMARY_KEY': self.primary_key,
+                      'PARAMS': json.dumps(self.parameters),
+                      'CVPARAMS': json.dumps(self.cv_params),
+                      'CALIBRATION': self.calibration,
+                      'IF_EXISTS': if_exists}
+        if oos_scores:
+            train_args['OOSTABLE'] = oos_scores
+        if oos_scores_db:
+            oos_db_id = self._client.get_database_id(oos_scores_db)
+            train_args['OOSDB'] = {'database': oos_db_id}
+        if sql_where:
+            train_args['WHERESQL'] = sql_where
+        if sql_limit:
+            train_args['LIMITSQL'] = sql_limit
+        if self.excluded_columns:
+            train_args['EXCLUDE_COLS'] = ' '.join(self.excluded_columns)
+        if fit_params:
+            train_args['FIT_PARAMS'] = json.dumps(fit_params)
+
+        if has_sklearn and isinstance(self.model, BaseEstimator):
+            import joblib
+            with tempfile.TemporaryDirectory() as tempdir:
+                fout = os.path.join(tempdir, 'estimator.pkl')
+                joblib.dump(self.model, fout, compress=3)
+                with open(fout, 'rb') as _fout:
+                    n = self.model_name if self.model_name else "CivisML"
+                    estimator_file_id = file_to_civis(
+                        _fout, 'Estimator for ' + n,
+                        client=self._client)
+                self._input_model = self.model  # Keep the estimator
+            self.model = str(estimator_file_id)
+        train_args['MODEL'] = self.model
+
+        name = self.model_name + ' Train' if self.model_name else None
+        # Clear the existing training result so we can make a new one.
+        self.train_result_ = None
+
+        result, container, run = self._create_custom_run(
+              self.train_template_id,
+              job_name=name,
+              table_name=table_name,
+              database_name=database_name,
+              file_id=file_id,
+              args=train_args,
+              resources=self.job_resources,
+              polling_interval=polling_interval)
+
+        self.train_result_ = result
+
+        return result
+
+    def _create_custom_run(
+          self,
+          template_id: int,
+          job_name: str=None,
+          table_name: str=None,
+          database_name: str=None,
+          file_id: int=None,
+          args: dict=None,
+          resources: Dict[str, float]=None,
+          polling_interval: float=None) \
+            -> Tuple[ModelFuture, Response, Response]:
+
+        db_id = self._client.get_database_id(database_name)
+        script_arguments = {'TABLE_NAME': table_name,
+                            'DB': {'database': db_id},
+                            'CIVIS_FILE_ID': file_id,
+                            'DEBUG': self.verbose}
+        resources = resources or {}
+        for key, value in resources.items():
+            if value:
+                # Default resources are set on the template. Only
+                # modify via arguments if users give a non-default value.
+                script_arguments[key] = value
+
+        script_arguments.update(args or {})
+
+        container = self._client.scripts.post_custom(
+            from_template_id=template_id,
+            name=job_name,
+            arguments=script_arguments)
+        log.info('Created custom script %s.', container.id)
+
+        run = self._client.scripts.post_custom_runs(container.id)
+        log.debug('Started job %s, run %s.', container.id, run.id)
+
+        train_kwargs = {}
+        if self.train_result_ is not None:
+            train_kwargs = {'train_job_id': self.train_result_.job_id,
+                            'train_run_id': self.train_result_.run_id}
+        fut = ModelFuture(
+              container.id,
+              run.id,
+              client=self._client,
+              polling_interval=polling_interval,
+              poll_on_creation=False,
+              **train_kwargs)
+
+        return fut, container, run
+
+    @property
+    @check_is_fit
+    def state(self) -> str:
+        return self.train_result_.state
+
+    @property
+    @check_is_fit
+    def estimator(self) -> 'sklearn.pipeline.Pipeline':
+        return self.train_result_.estimator
+
+    @check_is_fit
+    def predict(self,
+                X: Union['pandas.DataFrame', str]=None,
+                table_name: str=None,
+                database_name: str=None,
+                manifest: int=None,
+                file_id: int=None,
+                sql_where: str=None,
+                sql_limit: int=None,
+                primary_key: Union[str, None]=SENTINEL,
+                output_table: str=None,
+                output_db: str=None,
+                if_exists: str='fail',
+                n_jobs: int=None,
+                polling_interval: float=None) \
+            -> ModelFuture:
+        """Make predictions on a trained model
+
+        Provide input through one of
+        a local CSV or :class:`~pandas.DataFrame` (``X``),
+        a Civis Table (``table_name`` and ``database_name``),
+        a Civis File containing a CSV (``file_id``), or
+        a Civis File containing a manifest file (``manifest``).
+
+        A "manifest file" is JSON which specifies the location of
+        many shards of the data to be used for prediction.
+        A manifest file is the output of a Civis
+        export job with ``force_multifile=True`` set,
+        e.g. from :func:`civis.io.civis_to_multifile_csv`.
+        Large Civis Tables (provided using ``table_name``)
+        will automatically be exported to manifest files.
+
+        Prediction outputs will always be stored as gzipped
+        CSVs in one or more Civis Files. You can find a list of
+        File ID numbers for output files at the "output_file_ids"
+        key in the metadata returned by the prediction job.
+        Provide an ``output_table`` (and optionally an ``output_db``,
+        if it's different from ``database_name``) to copy these
+        predictions into a Civis Table.
+
+        Parameters
+        ----------
+        X : pd.DataFrame or str, optional
+            Local data, as either a ``DataFrame`` or as the
+            file name of a CSV. Note that if this is a ``DataFrame``,
+            the index will be ignored.
+        table_name : str, optional
+            The qualified name of the table containing your data
+        database_name : str, optional
+            Name of the database holding the
+            data, e.g., 'My Redshift Cluster'.
+        manifest : int, optional
+            ID for a manifest file stored as a Civis file.
+            (Note: if the manifest is not a Civis Platform-specific manifest,
+            like the one returned from `civis.io.civis_to_multfile_csv`,
+            this must be used in conjunction with table_name and database_name
+            due to the need for column discovery via Redshift.)
+        file_id : int, optional
+            If the data are a CSV stored in a Civis file,
+            provide the integer file ID.
+        sql_where : str, optional
+            A SQL WHERE clause used to scope the rows to be predicted
+        sql_limit : int, optional
+            SQL LIMIT clause to restrict the size of the prediction set
+        primary_key : str, optional
+            Primary key of the prediction table. Defaults to
+            the primary key of the training data.
+        output_table: str, optional
+            The table in which to put the predictions.
+        output_db : str, optional
+            Database of the output table. Defaults to the database
+            of the input table.
+        if_exists : {'fail', 'append', 'drop', 'truncate'}
+            Action to take if the prediction table already exists.
+        n_jobs : int, optional
+            Number of concurrent Platform jobs to use
+            for multi-file / large table prediction.
+        polling_interval : float, optional
+            Check for job completion every this number of seconds.
+            Do not set if using the notifications endpoint.
+
+        Returns
+        -------
+        :class:`~ModelFuture`
+        """
+        if self.train_result_.running():
+            raise RuntimeError('Wait for the training to finish.')
+        self.train_result_.result()  # Blocks and raises training errors
+
+        if ((table_name is None or database_name is None) and
+                file_id is None and
+                X is None and
+                manifest is None):
+            raise ValueError('Provide a source of data.')
+        if sum((bool(table_name and database_name) or (manifest is not None),
+                bool(file_id),
+                X is not None)) > 1:
+            raise ValueError('Provide a single source of data.')
+
+        if X is not None:
+            file_id = _stash_local_data(X, client=self._client)
+
+        if primary_key is SENTINEL:
+            primary_key = self.primary_key
+
+        predict_args = {'TRAIN_JOB': self.train_result_.job_id,
+                        'TRAIN_RUN': self.train_result_.run_id,
+                        'PRIMARY_KEY': primary_key,
+                        'IF_EXISTS': if_exists}
+        if output_table:
+            predict_args['OUTPUT_TABLE'] = output_table
+        if output_db:
+            output_db_id = self._client.get_database_id(output_db)
+            predict_args['OUTPUT_DB'] = {'database': output_db_id}
+        if manifest:
+            predict_args['MANIFEST'] = manifest
+        if sql_where:
+            predict_args['WHERESQL'] = sql_where
+        if sql_limit:
+            predict_args['LIMITSQL'] = sql_limit
+        if n_jobs:
+            predict_args['N_JOBS'] = n_jobs
+
+        # If n_jobs is 1, we'll do computation in the leader job.
+        # Otherwise, rely on the default resources in the template.
+        if n_jobs == 1:
+            resources = {'REQUIRED_CPU': 1024,
+                         'REQUIRED_MEMORY': 3000,
+                         'REQUIRED_DISK_SPACE': 30}
+        else:
+            resources = None
+
+        name = self.model_name + ' Predict' if self.model_name else None
+        result, container, run = self._create_custom_run(
+            self.predict_template_id,
+            job_name=name,
+            table_name=table_name,
+            database_name=database_name,
+            file_id=file_id,
+            args=predict_args,
+            resources=resources,
+            polling_interval=polling_interval)
+
+        return result

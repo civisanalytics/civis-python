@@ -1,5 +1,6 @@
-
+from collections import namedtuple
 from io import BytesIO
+import json
 import os
 import pickle
 import tempfile
@@ -385,3 +386,222 @@ def test_metrics():
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
+
+
+#####################################
+# Tests of ModelPipeline below here #
+#####################################
+@mock.patch.object(_model, 'ModelFuture')
+@mock.patch.object(_model, 'APIClient', mock.Mock())
+def test_modelpipeline_classmethod_constructor_errors(mock_future):
+    # catch 404 error if model isn't found and throw ValueError
+    response = namedtuple('Reponse', ['content', 'response', 'reason',
+                                      'status_code'])(False, None, None, 404)
+    mock_future.side_effect = CivisAPIError(response)
+    with pytest.raises(ValueError):
+        _model.ModelPipeline.from_existing(1, 1)
+
+
+@pytest.fixture()
+def container_response_stub():
+    Container = namedtuple('Container', ['arguments',
+                                         'required_resources',
+                                         'docker_image_tag',
+                                         'docker_command',
+                                         'repo_http_uri',
+                                         'repo_ref',
+                                         'name'])
+    arguments = {
+        'MODEL': 'sparse_logistic',
+        'TARGET_COLUMN': 'brushes_teeth_much',
+        'PRIMARY_KEY': 'voterbase_id',
+        'CALIBRATION': 'sigmoid',
+        'EXCLUDE_COLS': 'dog cat lizard frog',
+        'CVPARAMS': '{}',
+        'PARAMS': '{}',
+        'REQUIRED_CPU': 1000,
+        'REQUIRED_MEMORY': 9999,
+        'REQUIRED_DISK_SPACE': -20
+    }
+    return Container(arguments=arguments,
+                     required_resources={},
+                     docker_image_tag=None,
+                     docker_command=None,
+                     repo_http_uri=None,
+                     repo_ref=None,
+                     name='Civis Model Train')
+
+
+@mock.patch.object(_model, 'ModelFuture')
+@mock.patch.object(_model, 'APIClient')
+def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
+                                               container_response_stub):
+    mock_client.return_value.scripts.get_containers.return_value = \
+        container = container_response_stub
+
+    resources = {'REQUIRED_CPU': 1000,
+                 'REQUIRED_MEMORY': 9999,
+                 'REQUIRED_DISK_SPACE': -20}
+
+    # test everything is working fine
+    mp = _model.ModelPipeline.from_existing(1, 1)
+    assert isinstance(mp, _model.ModelPipeline)
+    assert mp.dependent_variable == [container.arguments['TARGET_COLUMN']]
+    assert mp.primary_key == container.arguments['PRIMARY_KEY']
+    excluded = container.arguments.get('EXCLUDE_COLS', None)
+    assert mp.excluded_columns == excluded.split() if excluded else None
+    assert mp.model == container.arguments['MODEL']
+    assert mp.calibration == container.arguments['CALIBRATION']
+    assert mp.cv_params == json.loads(container.arguments['CVPARAMS'])
+    assert mp.parameters == json.loads(container.arguments['PARAMS'])
+    assert mp.job_resources == resources
+    assert mp.model_name == container.name[:-6]
+
+
+@mock.patch.object(_model.ModelPipeline, "_create_custom_run")
+def test_modelpipeline_train(mock_ccr, mp_setup):
+    mp = mp_setup
+    mock1, mock2 = mock.Mock(), mock.Mock()
+    mock_ccr.return_value = 'res', mock1, mock2
+
+    assert 'res' == mp.train(file_id=7)
+    assert mp.train_result_ == 'res'
+
+
+@mock.patch.object(_model, "APIClient", mock.Mock())
+@mock.patch.object(_model, "file_to_civis")
+@mock.patch.object(_model.ModelPipeline, "_create_custom_run")
+def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
+    # Provide a model as a pre-made model and make sure we can train.
+    mock_f2c.return_value = -21
+
+    est = LogisticRegression()
+    mp = _model.ModelPipeline(est, "dv")
+    mock1, mock2 = mock.Mock(), mock.Mock()
+    mock_ccr.return_value = 'res', mock1, mock2
+
+    assert 'res' == mp.train(file_id=7)
+    assert mp.train_result_ == 'res'
+    assert mock_f2c.call_count == 1  # Called once to store input Estimator
+
+
+@mock.patch.object(_model, "_stash_local_data", return_value=-11)
+@mock.patch.object(_model.ModelPipeline, "_create_custom_run")
+def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
+    mp = mp_setup
+    mock1, mock2 = mock.Mock(), mock.Mock()
+    mock_ccr.return_value = 'res', mock1, mock2
+
+    train_data = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+    assert 'res' == mp.train(train_data)
+    mock_stash.assert_called_once_with(train_data, client=mock.ANY)
+    assert mp.train_result_ == 'res'
+
+
+@mock.patch.object(_model, "_stash_local_data", return_value=-11)
+@mock.patch.object(_model.ModelPipeline, "_create_custom_run")
+def test_modelpipeline_train_file_name(mock_ccr, mock_stash, mp_setup):
+    mp = mp_setup
+    mock1, mock2 = mock.Mock(), mock.Mock()
+    mock_ccr.return_value = 'res', mock1, mock2
+
+    assert 'res' == mp.train('meaning_of_life.csv')
+    mock_stash.assert_called_once_with('meaning_of_life.csv', client=mock.ANY)
+    assert mp.train_result_ == 'res'
+
+
+def test_modelpipeline_train_value_no_input_error(mp_setup):
+    mp = mp_setup
+    with pytest.raises(ValueError) as exc:
+        mp.train()
+    assert str(exc.value) == "Provide a source of data."
+    with pytest.raises(ValueError) as exc:
+        mp.train(table_name='tab')
+    assert str(exc.value) == "Provide a source of data."
+    with pytest.raises(ValueError) as exc:
+        mp.train(database_name='db')
+    assert str(exc.value) == "Provide a source of data."
+
+
+def test_modelpipeline_train_value_too_much_input_error(mp_setup):
+    with pytest.raises(ValueError) as exc:
+        mp_setup.train(X=[[1, 2, 3]], table_name='tab', database_name='db')
+    assert str(exc.value) == "Provide a single source of data."
+    with pytest.raises(ValueError) as exc:
+        mp_setup.train(X=[[1, 2, 3]], file_id=12)
+    assert str(exc.value) == "Provide a single source of data."
+    with pytest.raises(ValueError) as exc:
+        mp_setup.train(file_id=7, table_name='tab', database_name='db')
+    assert str(exc.value) == "Provide a single source of data."
+
+
+def test_modelpipeline_state(mp_setup):
+    mp = mp_setup
+
+    with pytest.raises(ValueError,
+                       message="This model hasn't been trained yet."):
+        mp.state
+
+    mp.train_result_ = mock.Mock()
+    mp.train_result_.state = 'foo'
+    assert mp.state == 'foo'
+
+
+def test_modelpipeline_estimator(mp_setup):
+    mp = mp_setup
+    with pytest.raises(ValueError,
+                       message="This model hasn't been trained yet."):
+        mp.estimator
+
+    mp.train_result_ = mock.Mock()
+    mp.train_result_.estimator = 'foo'
+    assert mp.estimator == 'foo'
+
+
+def test_modelpipeline_predict_value_error(mp_setup):
+    mp = mp_setup
+    with pytest.raises(ValueError,
+                       message="This model hasn't been trained yet."):
+        mp.predict()
+
+    mp.train_result_ = mock.Mock()
+    mp.train_result_.running.return_value = False
+
+    with pytest.raises(ValueError) as exc:
+        mp.predict()
+    assert str(exc.value) == "Provide a source of data."
+    with pytest.raises(ValueError) as exc:
+        mp.predict(table_name='tab')
+    assert str(exc.value) == "Provide a source of data."
+    with pytest.raises(ValueError) as exc:
+        mp.predict(database_name='db')
+    assert str(exc.value) == "Provide a source of data."
+
+
+def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
+    result = mock.Mock(spec_set=_model.ModelFuture)
+    result.running.return_value = False
+    mp_setup.train_result_ = result  # Make this look trained.
+
+    with pytest.raises(ValueError) as exc:
+        mp_setup.predict(X=[[1, 2, 3]], table_name='tab', database_name='db')
+    assert str(exc.value) == "Provide a single source of data."
+    with pytest.raises(ValueError) as exc:
+        mp_setup.predict(X=[[1, 2, 3]], file_id=12)
+    assert str(exc.value) == "Provide a single source of data."
+    with pytest.raises(ValueError) as exc:
+        mp_setup.predict(file_id=7, table_name='tab', database_name='db')
+    assert str(exc.value) == "Provide a single source of data."
+    with pytest.raises(ValueError) as exc:
+        mp_setup.predict(file_id=7, manifest=123)
+    assert str(exc.value) == "Provide a single source of data."
+
+
+def test_modelpipeline_predict_runtime_error(mp_setup):
+    mp = mp_setup
+    mp.train_result_ = mock.Mock()
+    mp.train_result_.running.return_value = True
+
+    with pytest.raises(RuntimeError,
+                       message='Wait for the training to finish.'):
+        mp.predict()
