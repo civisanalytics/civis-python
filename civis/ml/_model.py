@@ -12,11 +12,6 @@ from concurrent import futures
 from functools import wraps
 
 try:
-    import pandas as pd
-    HAS_PANDAS = True
-except ImportError:
-    HAS_PANDAS = False
-try:
     import joblib
     HAS_JOBLIB = True
 except ImportError:
@@ -78,20 +73,24 @@ def _block_and_handle_missing(method):
     return wrapper
 
 
-def _stash_local_data(X, client=None):
-    """Store data in a temporary Civis File and return the file ID
-    """
+def _stash_local_dataframe(df, client=None):
+    """Store data in a temporary Civis File and return the file ID"""
     civis_fname = 'modelpipeline_data.csv'
-    if HAS_PANDAS and isinstance(X, pd.DataFrame):
-        buf = io.BytesIO()
-        txt = io.TextIOWrapper(buf, encoding='utf-8')
-        X.to_csv(txt, encoding='utf-8', index=False)
-        txt.flush()
-        buf.seek(0)
-        file_id = cio.file_to_civis(buf, name=civis_fname, client=client)
-    else:
-        with open(X) as _fin:
-            file_id = cio.file_to_civis(_fin, name=civis_fname, client=client)
+    buf = io.BytesIO()
+    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    df.to_csv(txt, encoding='utf-8', index=False)
+    txt.flush()
+    buf.seek(0)
+    file_id = cio.file_to_civis(buf, name=civis_fname, client=client)
+
+    return file_id
+
+
+def _stash_local_file(csv_path, client=None):
+    """Store data in a temporary Civis File and return the file ID"""
+    civis_fname = 'modelpipeline_data.csv'
+    with open(csv_path) as _fin:
+        file_id = cio.file_to_civis(_fin, name=civis_fname, client=client)
 
     return file_id
 
@@ -698,14 +697,16 @@ class ModelPipeline:
         klass.train_result_ = fut
         return klass
 
-    def train(self, X=None, table_name=None, database_name=None, file_id=None,
+    def train(self, df=None, csv_path=None, table_name=None,
+              database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
               polling_interval=None):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
-        a local CSV or :class:`~pandas.DataFrame` (``X``),
+        a :class:`~pandas.DataFrame` (``df``),
+        a local CSV (``csv_path``),
         a Civis Table (``table_name`` and ``database_name``), or
         a Civis File containing a CSV (``file_id``).
 
@@ -717,11 +718,16 @@ class ModelPipeline:
 
         Parameters
         ----------
-        X : pd.DataFrame or str, optional
-            Local data, as either a ``DataFrame`` (the ``DataFrame`` should
-            contain all training data, including the dependent variable(s)
-            and primary key) or as the file name of a CSV.
-            Note that if a ``DataFrame``, the index will be ignored.
+        df : pd.DataFrame, optional
+            A :class:`~pandas.DataFrame` of training data.
+            The ``DataFrame`` will be uploaded to a Civis file so
+            that CivisML can access it.
+            Note that the index of the ``DataFrame`` will be
+            ignored -- use ``df.reset_index()`` if you want your
+            index column to be included with the data passed to CivisML.
+        csv_path : str, optional
+            The location of a CSV of data on the local disk.
+            It will be uploaded to a Civis file.
         table_name : str, optional
             The qualified name of the table containing the training set from
             which to build the model.
@@ -759,16 +765,16 @@ class ModelPipeline:
         :class:`~ModelFuture`
         """
         if ((table_name is None or database_name is None) and
-                file_id is None and
-                X is None):
+                file_id is None and df is None and csv_path is None):
             raise ValueError('Provide a source of data.')
         if sum((bool(table_name and database_name),
-                bool(file_id),
-                X is not None)) > 1:
+                bool(file_id), df is not None, csv_path is not None)) > 1:
             raise ValueError('Provide a single source of data.')
 
-        if X is not None:
-            file_id = _stash_local_data(X, client=self._client)
+        if df is not None:
+            file_id = _stash_local_dataframe(df, client=self._client)
+        elif csv_path:
+            file_id = _stash_local_file(csv_path, client=self._client)
 
         train_args = {'TARGET_COLUMN': ' '.join(self.dependent_variable),
                       'PRIMARY_KEY': self.primary_key,
@@ -874,14 +880,16 @@ class ModelPipeline:
         return self.train_result_.estimator
 
     @_check_fit_initiated
-    def predict(self, X=None, table_name=None, database_name=None,
+    def predict(self, df=None, csv_path=None,
+                table_name=None, database_name=None,
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
                 if_exists='fail', n_jobs=None, polling_interval=None):
         """Make predictions on a trained model
 
         Provide input through one of
-        a local CSV or :class:`~pandas.DataFrame` (``X``),
+        a :class:`~pandas.DataFrame` (``df``),
+        a local CSV (``csv_path``),
         a Civis Table (``table_name`` and ``database_name``),
         a Civis File containing a CSV (``file_id``), or
         a Civis File containing a manifest file (``manifest``).
@@ -904,10 +912,16 @@ class ModelPipeline:
 
         Parameters
         ----------
-        X : pd.DataFrame or str, optional
-            Local data, as either a ``DataFrame`` or as the
-            file name of a CSV. Note that if this is a ``DataFrame``,
-            the index will be ignored.
+        df : pd.DataFrame, optional
+            A :class:`~pandas.DataFrame` of data for prediction.
+            The ``DataFrame`` will be uploaded to a Civis file so
+            that CivisML can access it.
+            Note that the index of the ``DataFrame`` will be
+            ignored -- use ``df.reset_index()`` if you want your
+            index column to be included with the data passed to CivisML.
+        csv_path : str, optional
+            The location of a CSV of data on the local disk.
+            It will be uploaded to a Civis file.
         table_name : str, optional
             The qualified name of the table containing your data
         database_name : str, optional
@@ -952,17 +966,17 @@ class ModelPipeline:
         self.train_result_.result()  # Blocks and raises training errors
 
         if ((table_name is None or database_name is None) and
-                file_id is None and
-                X is None and
+                file_id is None and df is None and csv_path is None and
                 manifest is None):
             raise ValueError('Provide a source of data.')
         if sum((bool(table_name and database_name) or (manifest is not None),
-                bool(file_id),
-                X is not None)) > 1:
+                bool(file_id), df is not None, csv_path is not None)) > 1:
             raise ValueError('Provide a single source of data.')
 
-        if X is not None:
-            file_id = _stash_local_data(X, client=self._client)
+        if df is not None:
+            file_id = _stash_local_dataframe(df, client=self._client)
+        elif csv_path:
+            file_id = _stash_local_file(csv_path, client=self._client)
 
         if primary_key is SENTINEL:
             primary_key = self.primary_key

@@ -127,7 +127,7 @@ def test_stash_local_data_from_file(mock_file):
         fname = os.path.join(tempdir, 'filename')
         with open(fname, 'wt') as _fout:
             _fout.write("a,b,c\n1,2,3\n")
-        assert _model._stash_local_data(fname) == -11
+        assert _model._stash_local_file(fname) == -11
     mock_file.assert_called_once_with(mock.ANY,
                                       name='modelpipeline_data.csv',
                                       client=mock.ANY)
@@ -137,7 +137,7 @@ def test_stash_local_data_from_file(mock_file):
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_dataframe(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
-    assert _model._stash_local_data(df) == -11
+    assert _model._stash_local_dataframe(df) == -11
     mock_file.assert_called_once_with(mock.ANY, name='modelpipeline_data.csv',
                                       client=mock.ANY)
     assert isinstance(mock_file.call_args[0][0], BytesIO)
@@ -499,7 +499,7 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
-@mock.patch.object(_model, "_stash_local_data", return_value=-11)
+@mock.patch.object(_model, "_stash_local_dataframe", return_value=-11)
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
     mp = mp_setup
@@ -512,14 +512,14 @@ def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
     assert mp.train_result_ == 'res'
 
 
-@mock.patch.object(_model, "_stash_local_data", return_value=-11)
+@mock.patch.object(_model, "_stash_local_file", return_value=-11)
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_file_name(mock_ccr, mock_stash, mp_setup):
     mp = mp_setup
     mock1, mock2 = mock.Mock(), mock.Mock()
     mock_ccr.return_value = 'res', mock1, mock2
 
-    assert 'res' == mp.train('meaning_of_life.csv')
+    assert 'res' == mp.train(csv_path='meaning_of_life.csv')
     mock_stash.assert_called_once_with('meaning_of_life.csv', client=mock.ANY)
     assert mp.train_result_ == 'res'
 
@@ -539,10 +539,10 @@ def test_modelpipeline_train_value_no_input_error(mp_setup):
 
 def test_modelpipeline_train_value_too_much_input_error(mp_setup):
     with pytest.raises(ValueError) as exc:
-        mp_setup.train(X=[[1, 2, 3]], table_name='tab', database_name='db')
+        mp_setup.train([[1, 2, 3]], table_name='tab', database_name='db')
     assert str(exc.value) == "Provide a single source of data."
     with pytest.raises(ValueError) as exc:
-        mp_setup.train(X=[[1, 2, 3]], file_id=12)
+        mp_setup.train([[1, 2, 3]], file_id=12)
     assert str(exc.value) == "Provide a single source of data."
     with pytest.raises(ValueError) as exc:
         mp_setup.train(file_id=7, table_name='tab', database_name='db')
@@ -598,10 +598,10 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     mp_setup.train_result_ = result  # Make this look trained.
 
     with pytest.raises(ValueError) as exc:
-        mp_setup.predict(X=[[1, 2, 3]], table_name='tab', database_name='db')
+        mp_setup.predict([[1, 2, 3]], table_name='tab', database_name='db')
     assert str(exc.value) == "Provide a single source of data."
     with pytest.raises(ValueError) as exc:
-        mp_setup.predict(X=[[1, 2, 3]], file_id=12)
+        mp_setup.predict([[1, 2, 3]], file_id=12)
     assert str(exc.value) == "Provide a single source of data."
     with pytest.raises(ValueError) as exc:
         mp_setup.predict(file_id=7, table_name='tab', database_name='db')
