@@ -130,8 +130,8 @@ def _load_table_from_outputs(job_id, run_id, filename, client=None,
                              **table_kwargs):
     """Load a table from a run output directly into a ``DataFrame``"""
     client = APIClient(resources='all') if client is None else client
-    file_id = cio.file_id_from_run_output(filename, job_id, run_id, client,
-                                          regex=True)
+    file_id = cio.file_id_from_run_output(filename, job_id, run_id,
+                                          client=client, regex=True)
     return cio.file_to_dataframe(file_id, client=client, **table_kwargs)
 
 
