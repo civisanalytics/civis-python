@@ -43,6 +43,7 @@ intersphinx_mapping = {
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable', None),
     'python': ('https://docs.python.org/3.4', None),
     'requests': ('https://requests.readthedocs.org/en/latest/', None),
+    'sklearn': ('http://scikit-learn.org/stable', None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
