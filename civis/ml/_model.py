@@ -180,27 +180,24 @@ class ModelFuture(CivisFuture):
 
     Attributes
     ----------
-    [Accessing these attributes blocks until the Platform run completes]
-    metadata : dict
+    metadata : dict, blocking
         The metadata associated with this modeling job
-    metrics : dict
+    metrics : dict, blocking
         Validation metrics from this job's training
-    validation_metadata : dict
+    validation_metadata : dict, blocking
         Metadata from this modeling job's validation run
-    train_metadata : dict
+    train_metadata : dict, blocking
         Metadata from this modeling job's training run
         (will be identical to `metadata` if this is a training run)
-    estimator : Pipeline
+    estimator : :class:`sklearn.pipeline.Pipeline`, blocking
         The fitted scikit-learn Pipeline resulting from this model run
-    table : pandas.DataFrame
+    table : :class:`pandas.DataFrame`, blocking
         The table output from this modeling job: out-of-sample
         predictions on the training set for a training job, or
         a table of predictions for a prediction job.
         If the prediction job was split into multiple files
         (this happens automatically for large tables),
         this attribute will provide only predictions for the first file.
-
-    [These attributes are non-blocking]
     state : str
         The current state of the Civis Platform run
     job_id : int
@@ -232,8 +229,8 @@ class ModelFuture(CivisFuture):
 
     See Also
     --------
-    :class:`~civis.futures.CivisFuture`
-    :class:`~concurrent.futures.Future`
+    civis.futures.CivisFuture
+    concurrent.futures.Future
     """
     def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
                  polling_interval=None, client=None, poll_on_creation=True):
@@ -466,8 +463,8 @@ class ModelFuture(CivisFuture):
 class ModelPipeline:
     """Interface for scikit-learn modeling in the Civis Platform
 
-    Each ModelPipeline corresponds to a scikit-learn Pipeline
-    which will run in Civis Platform.
+    Each ModelPipeline corresponds to a scikit-learn
+    :class:`~sklearn.pipeline.Pipeline` which will run in Civis Platform.
 
     Parameters
     ----------
@@ -484,12 +481,12 @@ class ModelPipeline:
         This will be used to index the out-of-sample scores.
     parameters : dict, optional
         Specify parameters for the final stage estimator in a
-        predefined model, e.g. {'C': 2} for a "sparse_logistic"
+        predefined model, e.g. ``{'C': 2}`` for a "sparse_logistic"
         model.
     cross_validation_parameters : dict, optional
         Cross validation parameter grid for learner parameters, e.g.
-        {{'n_estimators': [100, 200, 500], 'learning_rate': [0.01, 0.1],
-        'max_depth': [2, 3]}}.
+        ``{{'n_estimators': [100, 200, 500], 'learning_rate': [0.01, 0.1],
+        'max_depth': [2, 3]}}``.
     model_name : string, optional
         The prefix of the Platform modeling jobs. It will have
         " Train" or " Predict" added to become the Script title.
@@ -515,37 +512,33 @@ class ModelPipeline:
 
     Methods
     -------
-    train(X=None, table_name=None, database_name=None, file_id=None, \
-          sql_where=None,sql_limit=None, oos_scores=None, oos_scores_db=None,\
-          if_exists='fail', fit_params=None, polling_interval=None)
-        Train the model on data in Civis Platform; outputs :class:`ModelFuture`
-    predict(X=None, table_name=None, database_name=None, manifest=None,\
-                file_id=None, sql_where=None, sql_limit=None,\
-                primary_key=SENTINEL, output_table=None, output_db=None,\
-                if_exists='fail', n_jobs=None, polling_interval=None)
-        Make predictions on new data; outputs :class:`ModelFuture`
-    from_existing(train_job_id, train_run_id='latest', client=None)
-        Class method; use to create a :class:`ModelPipeline`
+    train()
+        Train the model on data in Civis Platform; outputs
+        :class:`~civis.ml.ModelFuture`
+    predict()
+        Make predictions on new data; outputs :class:`~civis.ml.ModelFuture`
+    from_existing()
+        Class method; use to create a :class:`~civis.ml.ModelPipeline`
         from an existing model training run
 
     Attributes
     ----------
-    estimator : :class:`sklearn.pipeline.Pipeline`
+    estimator : :class:`~sklearn.pipeline.Pipeline`
         The trained scikit-learn Pipeline
-    train_result_ : :class:`ModelFuture`
-        :class:`ModelFuture` encapsulating this model's training run
+    train_result_ : :class:`~civis.ml.ModelFuture`
+        :class:`~civis.ml.ModelFuture` encapsulating this model's training run
     state : str
         Status of the training job (non-blocking)
 
     Examples
     --------
     >>> from civismodel import ModelPipeline
-    >>> model = ModelPipeline('gradient_boosting_classifier', 'depvar',\
-                              primary_key='voterbase_id')
-    >>> train = model.train(table_name='schema.survey_data',\
-                            fit_params={'sample_weight': 'survey_weight'},\
-                            database_name='My Redshift Cluster',\
-                            oos_scores='scratch.survey_depvar_oos_scores')
+    >>> model = ModelPipeline('gradient_boosting_classifier', 'depvar',
+    ...                       primary_key='voterbase_id')
+    >>> train = model.train(table_name='schema.survey_data',
+    ...                     fit_params={'sample_weight': 'survey_weight'},
+    ...                     database_name='My Redshift Cluster',
+    ...                     oos_scores='scratch.survey_depvar_oos_scores')
     >>> train
     <ModelFuture at 0x11be7ae10 state=queued>
     >>> train.running()
@@ -556,25 +549,24 @@ class ModelPipeline:
     >>> meta = train.metadata  # Metadata from training run
     >>> train.metrics['roc_auc']
     0.88425
-    >>> pred = model.predict(table_name='schema.demographics_table ',\
-                             database_name='My Redshift Cluster',\
-                             output_table='schema.predicted_survey_response',\
-                             if_exists='drop',\
-                             n_jobs=50)
+    >>> pred = model.predict(table_name='schema.demographics_table ',
+    ...                      database_name='My Redshift Cluster',
+    ...                      output_table='schema.predicted_survey_response',
+    ...                      if_exists='drop',
+    ...                      n_jobs=50)
     >>> df_pred = pred.table  # Blocks until finished
     # Modify the parameters of the base estimator in a default model:
-    >>> model = ModelPipeline('sparse_logistic', 'depvar',\
-                              primary_key='voterbase_id',\
-                              parameters={'C': 2})
+    >>> model = ModelPipeline('sparse_logistic', 'depvar',
+    ...                       primary_key='voterbase_id',
+    ...                       parameters={'C': 2})
     # Grid search over hyperparameters in the base estimator:
-    >>> model = ModelPipeline('sparse_logistic', 'depvar',\
-                              primary_key='voterbase_id',\
-                              cross_validation_parameters={'C': [0.1, 1, 10]})
+    >>> model = ModelPipeline('sparse_logistic', 'depvar',
+    ...                       primary_key='voterbase_id',
+    ...                       cross_validation_parameters={'C': [0.1, 1, 10]})
 
     See Also
     --------
-    ModelFuture : Subclass of :class:`~concurrent.future.Future`,
-        output by :class:`~ModelPipeline` methods
+    civis.ml.ModelFuture
     """
     # These are the v1.0 templates
     train_template_id = 8387
@@ -621,7 +613,7 @@ class ModelPipeline:
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
-        """Create a ``ModelPipeline`` object from existing model IDs
+        """Create a :class:`ModelPipeline` object from existing model IDs
 
         Parameters
         ----------
@@ -629,18 +621,19 @@ class ModelPipeline:
             The ID of the CivisML job in the Civis Platform
         train_run_id : int or string, optional
             Location of the model run, either
-            - an explicit run ID,
-            - "latest" : The most recent run
-            - "active" : The run designated by the training job's
-                "active build" parameter
+
+            * an explicit run ID,
+            * "latest" : The most recent run
+            * "active" : The run designated by the training job's
+              "active build" parameter
         client : :class:`~civis.APIClient`, optional
             If not provided, an :class:`~civis.APIClient` object will be
             created from the :envvar:`CIVIS_API_KEY`.
 
         Returns
         -------
-        :class:`~ModelPipeline`
-            A :class:`~ModelPipeline` which refers to
+        :class:`~civis.ml.ModelPipeline`
+            A :class:`~civis.ml.ModelPipeline` which refers to
             a previously-trained model
 
         Examples
@@ -711,7 +704,7 @@ class ModelPipeline:
         a Civis File containing a CSV (``file_id``).
 
         Model outputs will always contain out-of-sample scores
-        (accessible through ``ModelFuture.table`` on this function's
+        (accessible through :attr:`ModelFuture.table` on this function's
         output), and you may chose to store these out-of-sample scores
         in a Civis Table with the ``oos_scores``, ``oos_scores_db``,
         and ``if_exists`` parameters.
@@ -720,9 +713,9 @@ class ModelPipeline:
         ----------
         df : pd.DataFrame, optional
             A :class:`~pandas.DataFrame` of training data.
-            The ``DataFrame`` will be uploaded to a Civis file so
+            The :class:`~pandas.DataFrame` will be uploaded to a Civis file so
             that CivisML can access it.
-            Note that the index of the ``DataFrame`` will be
+            Note that the index of the :class:`~pandas.DataFrame` will be
             ignored -- use ``df.reset_index()`` if you want your
             index column to be included with the data passed to CivisML.
         csv_path : str, optional
@@ -753,16 +746,16 @@ class ModelPipeline:
             Action to take if the out-of-sample prediction table
             already exists.
         fit_params: Dict[str, str]
-            Mapping from parameter names in the model's `fit` method
+            Mapping from parameter names in the model's ``fit`` method
             to the column names which hold the data, e.g.
-            `{'sample_weight': 'survey_weight_column'}`.
+            ``{'sample_weight': 'survey_weight_column'}``.
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
 
         Returns
         -------
-        :class:`~ModelFuture`
+        :class:`~civis.ml.ModelFuture`
         """
         if ((table_name is None or database_name is None) and
                 file_id is None and df is None and csv_path is None):
@@ -914,9 +907,9 @@ class ModelPipeline:
         ----------
         df : pd.DataFrame, optional
             A :class:`~pandas.DataFrame` of data for prediction.
-            The ``DataFrame`` will be uploaded to a Civis file so
+            The :class:`~pandas.DataFrame` will be uploaded to a Civis file so
             that CivisML can access it.
-            Note that the index of the ``DataFrame`` will be
+            Note that the index of the :class:`~pandas.DataFrame` will be
             ignored -- use ``df.reset_index()`` if you want your
             index column to be included with the data passed to CivisML.
         csv_path : str, optional
@@ -930,7 +923,7 @@ class ModelPipeline:
         manifest : int, optional
             ID for a manifest file stored as a Civis file.
             (Note: if the manifest is not a Civis Platform-specific manifest,
-            like the one returned from `civis.io.civis_to_multfile_csv`,
+            like the one returned from :func:`civis.io.civis_to_multfile_csv`,
             this must be used in conjunction with table_name and database_name
             due to the need for column discovery via Redshift.)
         file_id : int, optional
@@ -961,7 +954,7 @@ class ModelPipeline:
 
         Returns
         -------
-        :class:`~ModelFuture`
+        :class:`~civis.ml.ModelFuture`
         """
         self.train_result_.result()  # Blocks and raises training errors
 

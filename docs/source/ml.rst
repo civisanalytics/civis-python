@@ -15,7 +15,7 @@ Define Your Model
 =================
 
 Start the modeling process by defining your model. Do this by creating an instance
-of the :class:`~ModelPipeline` class. Each :class:`~ModelPipeline` corresponds to a
+of the :class:`~civis.ml.ModelPipeline` class. Each :class:`~civis.ml.ModelPipeline` corresponds to a
 scikit-learn :class:`~sklearn.pipeline.Pipeline` which will run in Civis Platform.
 A :class:`~sklearn.pipeline.Pipeline` allows you to combine multiple
 modeling steps (such as missing value imputation and feature selection) into a
@@ -24,7 +24,7 @@ cross-validation happens over all steps together.
  
 You can define your model in two ways, either by selecting a pre-defined algorithm
 or by providing your own scikit-learn
-:class:`~sklearn.pipeline.Pipeline` or :class:`~sklearn.base.Estimator` object.
+:class:`~sklearn.pipeline.Pipeline` or :class:`~sklearn.base.BaseEstimator` object.
 Note that whichever option you chose, CivisML will pre-process your data to
 one-hot-encode categorical features (the non-numerical columns) to binary indicator columns
 before sending the features to the :class:`~sklearn.pipeline.Pipeline`.
@@ -62,7 +62,7 @@ Custom Models
 
 You can create your own :class:`~sklearn.pipeline.Pipeline` instead of using one of
 the pre-defined ones. Create the object and pass it as the ``model`` parameter
-of the :class:`ModelPipeline`. Your model must be built from libraries which CivisML
+of the :class:`~civis.ml.ModelPipeline`. Your model must be built from libraries which CivisML
 recognizes. You can use code from
 
 - `scikit-learn <http://scikit-learn.org>`_ v0.18.1
@@ -80,46 +80,49 @@ you can add one by wrapping it in a :class:`~sklearn.calibration.CalibratedClass
 Asynchronous Execution
 ======================
 
-All calls to a :class:`~ModelPipeline` object are non-blocking, i.e. they immediately
+All calls to a :class:`~civis.ml.ModelPipeline` object are non-blocking, i.e. they immediately
 provide a result without waiting for the job in the Civis Platform to complete.
-Calls to ``ModelPipeline.train`` and ``ModelPipeline.predict`` return
-a :class:`~ModelFuture` object, which is a subclass of
+Calls to :meth:`civis.ml.ModelPipeline.train` and :meth:`civis.ml.ModelPipeline.predict` return
+a :class:`~civis.ml.ModelFuture` object, which is a subclass of
 :class:`~concurrent.futures.Future` from the Python standard library.
 This behavior lets you train multiple models at once, or generate predictions
 from models, while still doing other work while waiting for your jobs to complete.
 
-The :class:`~ModelFuture` can find and retrieve outputs from your CivisML jobs,
+The :class:`~civis.ml.ModelFuture` can find and retrieve outputs from your CivisML jobs,
 such as trained :class:`~sklearn.pipeline.Pipeline` objects or out-of-sample predictions.
-The :class:`~ModelFuture` only downloads outputs when you request them.
+The :class:`~civis.ml.ModelFuture` only downloads outputs when you request them.
+
 
 Model Persistence
 =================
 
 Civis Platform permanently stores all models, indexed by the job ID and the run ID
 (also called a "build") of the training job. If you wish to use an existing
-model, call :func:`ModelPipeline.from_existing` with the job ID of the training job.
-You can find the job ID with the ``train_job_id`` attribute of a :class:`~ModelFuture`,
+model, call :meth:`civis.ml.ModelPipeline.from_existing` with the job ID of the training job.
+You can find the job ID with the :attr:`~civis.ml.ModelFuture.train_job_id`
+attribute of a :class:`~civis.ml.ModelFuture`,
 or by looking at the URL of your model on the
-`Civis Platform models page (https://platform.civisanalytics.com/#/models)`_.
+`Civis Platform models page <https://platform.civisanalytics.com/#/models>`_.
 If the training job has multiple runs, you may also provide a run ID to select
 a run other than the most recent.
 You can list all model runs of a training job by calling
 ``civis.APIClient().jobs.get(train_job_id)['runs']``.
-You may also store the :class:`~ModelPipeline` itself with the Python ``pickle`` module.
+You may also store the :class:`~civis.ml.ModelPipeline` itself with the :mod:`pickle` module.
 
 
 Examples
 ========
 
-:class:`concurrent.futures.Future` objects have the method ``add_done_callback``.
+:class:`~concurrent.futures.Future` objects have the method
+:meth:`~concurrent.futures.Future.add_done_callback`.
 This is called as soon as the run completes. It takes a single argument, the
-:class:`concurrent.futures.Future` for the completed job.
+:class:`~concurrent.futures.Future` for the completed job.
 You can use this method to chain jobs together::
 
   from concurrent import futures
-  from civismodel import ModelPipeline
-  from civismodel.tests.datasets import load_iris
-  df = load_iris()
+  from civis.ml import ModelPipeline
+  import pandas as pd
+  df = pd.read_csv('data.csv')
   training, predictions = [], []
   model = ModelPipeline('sparse_logistic', dependent_variable='type')
   training.append(model.train(df))
@@ -130,6 +133,7 @@ You can use this method to chain jobs together::
 You can create and train multiple models at once to find the best approach
 for solving a problem. For example::
 
+  from civis.ml import ModelPipeline
   algorithms = ['gradient_boosting_classifier', 'sparse_logistic', 'random_forest_classifier']
   pkey = 'person_id'
   depvar = 'likes_cats'
@@ -142,7 +146,7 @@ Optional dependencies
 
 You do not need any external libraries installed to use CivisML, but
 the following pip-installable dependencies enhance the capabilities of the
-:class:`~ModelPipeline`:
+:class:`~civis.ml.ModelPipeline`:
 
 - pandas
 - scikit-learn
@@ -150,7 +154,7 @@ the following pip-installable dependencies enhance the capabilities of the
 - glmnet
 - pubnub
 
-Install ``pandas`` if you wish to download tables of predictions.
+Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
 
 If you wish to use custom models or download trained models,
@@ -166,15 +170,13 @@ a model created from one of these pre-defined models.
 If you install ``pubnub``, the Civis Platform API client can use the notifications endpoint instead of
 polling for job completion. This gives faster results and uses fewer API calls.
 
-
 Object reference
 ================
 
-.. autoclass:: civismodel.api.ModelPipeline
+.. autoclass:: civis.ml.ModelPipeline
 	       :members:
 
-.. autoclass:: civismodel.api.ModelFuture
+
+.. autoclass:: civis.ml.ModelFuture
 	       :members:
 	       :inherited-members:
-		  
-		 
