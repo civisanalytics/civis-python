@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Parameter ``local_api_spec`` to ``APIClient`` to allow creation of client from local cache
 - Clarify ``civis.io.dataframe_to_civis`` docstring with a note about treatment of the index.
 - Added functions ``civis.io.file_id_from_run_output``, ``civis.io.file_to_dataframe``, and ``civis.io.file_to_json``.
+- Added ``civis.ml`` namespace with ``ModelPipeline`` interface to Civis Platform modeling capabilities.
 
 ### Fixed
 - Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
@@ -17,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Modified retry behavior so that 413, 429, or 503 errors accompanied by a "Retry-After" header will be retried regardless of the HTTP verb used.
 - Add CSV settings arguments to ``civis.io.civis_to_csv`` function.
 - Refactored use of "swagger" language.  ``get_swagger_spec`` is now ``get_api_spec`` and ``parse_swagger`` is now ``parse_api_spec``.
-- Modified ``CivisFuture`` so if PubNub is disconnected, it will fall back to polling on a shorter interval. 
+- Modified ``CivisFuture`` so if PubNub is disconnected, it will fall back to polling on a shorter interval.
 
 ## 1.4.0 - 2017-03-17
 ### API Changes
