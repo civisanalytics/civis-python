@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
 - Do not allow uploading of files greater than 5GB to S3 (#58).
+- Revised example code of docstring of civis_to_file to use bytes when downloading file
 
 ### Changed
 - Modified retry behavior so that 413, 429, or 503 errors accompanied by a "Retry-After" header will be retried regardless of the HTTP verb used.
