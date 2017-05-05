@@ -825,11 +825,12 @@ class ModelPipeline:
                            database_name=None, file_id=None, args=None,
                            resources=None, polling_interval=None):
 
-        db_id = self._client.get_database_id(database_name)
         script_arguments = {'TABLE_NAME': table_name,
-                            'DB': {'database': db_id},
                             'CIVIS_FILE_ID': file_id,
                             'DEBUG': self.verbose}
+        if database_name:
+            db_id = self._client.get_database_id(database_name)
+            script_arguments['DB'] = {'database': db_id}
         resources = resources or {}
         for key, value in resources.items():
             if value:
