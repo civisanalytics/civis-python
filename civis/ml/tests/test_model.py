@@ -1,5 +1,5 @@
 from collections import namedtuple
-from io import BytesIO
+from six import BytesIO
 import json
 import os
 import pickle
@@ -131,6 +131,7 @@ def test_stash_local_data_from_file(mock_file):
         fname = tempfname.name
         with open(fname, 'wt') as _fout:
             _fout.write("a,b,c\n1,2,3\n")
+
         assert _model._stash_local_file(fname) == -11
     mock_file.assert_called_once_with(mock.ANY,
                                       name='modelpipeline_data.csv',

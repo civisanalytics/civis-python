@@ -88,8 +88,11 @@ def _block_and_handle_missing(method):
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
     civis_fname = 'modelpipeline_data.csv'
-    buf = io.BytesIO()
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    buf = six.BytesIO()
+    if six.PY3:
+        txt = io.TextIOWrapper(buf, encoding='utf-8')
+    else:
+        txt = buf
     df.to_csv(txt, encoding='utf-8', index=False)
     txt.flush()
     buf.seek(0)
