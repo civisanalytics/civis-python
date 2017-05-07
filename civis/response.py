@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import requests
 
 from civis._utils import camel_to_snake

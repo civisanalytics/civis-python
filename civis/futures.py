@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from civis import APIClient
 from civis.base import DONE
 from civis.polling import PollableResult

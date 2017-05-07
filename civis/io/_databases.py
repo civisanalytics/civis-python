@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.futures import CivisFuture
