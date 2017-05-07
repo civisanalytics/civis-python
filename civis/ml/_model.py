@@ -613,12 +613,12 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self):
         state = self.__dict__.copy()
         del state['_client']
         return state
 
-    def __setstate__(self, state: dict):
+    def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient(resources='all')
 
@@ -883,7 +883,7 @@ class ModelPipeline:
 
     @property
     @_check_fit_initiated
-    def state(self) -> str:
+    def state(self):
         return self.train_result_.state
 
     @property
