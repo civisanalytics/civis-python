@@ -583,7 +583,7 @@ class ModelPipeline:
     train_template_id = 8387
     predict_template_id = 8388
 
-    def __init__(self, model, dependent_variable, *,
+    def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
