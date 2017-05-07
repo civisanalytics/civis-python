@@ -14,6 +14,8 @@ THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
 
+MOCKED_OPEN = 'builtins.open' if six.PY3 else '__builtin__.open'
+
 
 RESPONSE_DOC = (
 """Returns
@@ -253,7 +255,7 @@ def test_create_method_unexpected_kwargs():
     assert str(excinfo.value) == expected_msg
 
 
-@mock.patch('builtins.open', new_callable=mock.mock_open,
+@mock.patch(MOCKED_OPEN, new_callable=mock.mock_open,
             read_data='{"test": true}')
 @mock.patch('civis.resources._resources.generate_classes', autospec=True)
 @mock.patch('civis.resources._resources.parse_api_spec', autospec=True)
