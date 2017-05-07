@@ -413,14 +413,14 @@ def mp_setup():
 
 
 @mock.patch.object(_model, 'ModelFuture')
-@mock.patch.object(_model, 'APIClient', mock.Mock())
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
     # catch 404 error if model isn't found and throw ValueError
+    mock_client = mock.Mock()
     response = namedtuple('Reponse', ['content', 'response', 'reason',
                                       'status_code'])(False, None, None, 404)
     mock_future.side_effect = CivisAPIError(response)
     with pytest.raises(ValueError):
-        _model.ModelPipeline.from_existing(1, 1)
+        _model.ModelPipeline.from_existing(1, 1, client=mock_client)
 
 
 @pytest.fixture()
@@ -454,10 +454,10 @@ def container_response_stub():
 
 
 @mock.patch.object(_model, 'ModelFuture')
-@mock.patch.object(_model, 'APIClient')
-def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
+def test_modelpipeline_classmethod_constructor(mock_future,
                                                container_response_stub):
-    mock_client.return_value.scripts.get_containers.return_value = \
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = \
         container = container_response_stub
 
     resources = {'REQUIRED_CPU': 1000,
@@ -465,7 +465,7 @@ def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
                  'REQUIRED_DISK_SPACE': -20}
 
     # test everything is working fine
-    mp = _model.ModelPipeline.from_existing(1, 1)
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert isinstance(mp, _model.ModelPipeline)
     assert mp.dependent_variable == [container.arguments['TARGET_COLUMN']]
     assert mp.primary_key == container.arguments['PRIMARY_KEY']
