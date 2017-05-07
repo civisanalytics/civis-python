@@ -3,6 +3,7 @@ import warnings
 
 from civis.compat import signature
 
+
 def deprecate_param(version_removed, parameter_name):
     """Create a decorator which warns of parameter deprecation
 
