@@ -98,7 +98,7 @@ class AggressiveRetry(Retry):
                                     has_retry_after=has_retry_after)
 
 
-class Endpoint:
+class Endpoint(object):
 
     _lock = threading.Lock()
 
