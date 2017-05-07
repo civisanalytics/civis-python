@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import os
 import json
+import six
 
 from civis import APIClient
 from civis.compat import mock
@@ -30,7 +31,7 @@ class ClientTests(CivisVCRTestCase):
         client = APIClient()
         feature_flags = client.feature_flags
         expected = ('python_3_scripts', 'container_scripts', 'pubnub')
-        self.assertCountEqual(feature_flags, expected)
+        six.assertCountEqual(self, feature_flags, expected)
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_feature_flags_memoized(self, *mocks):
