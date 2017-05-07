@@ -127,8 +127,8 @@ def test_block_and_handle_missing(mock_fut):
 
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_file(mock_file):
-    with tempfile.TemporaryDirectory() as tempdir:
-        fname = os.path.join(tempdir, 'filename')
+    with tempfile.NamedTemporaryFile() as tempfname:
+        fname = tempfname.name
         with open(fname, 'wt') as _fout:
             _fout.write("a,b,c\n1,2,3\n")
         assert _model._stash_local_file(fname) == -11
