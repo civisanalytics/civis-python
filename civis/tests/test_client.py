@@ -1,9 +1,9 @@
 from collections import OrderedDict
 import os
 import json
-from unittest.mock import patch
 
 from civis import APIClient
+from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import CivisVCRTestCase
 
@@ -25,17 +25,18 @@ class ClientTests(CivisVCRTestCase):
         get_api_spec.cache_clear()
         generate_classes.cache_clear()
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_feature_flags(self, *mocks):
         client = APIClient()
         feature_flags = client.feature_flags
         expected = ('python_3_scripts', 'container_scripts', 'pubnub')
         self.assertCountEqual(feature_flags, expected)
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_feature_flags_memoized(self, *mocks):
         client = APIClient()
-        with patch.object(client.users, 'list_me', wraps=client.users.list_me):
+        with mock.patch.object(client.users, 'list_me',
+                               wraps=client.users.list_me):
             client.feature_flags
             client.feature_flags
             self.assertEqual(client.users.list_me.call_count, 1)

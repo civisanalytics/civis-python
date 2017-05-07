@@ -4,7 +4,6 @@ import json
 import os
 import pickle
 import tempfile
-from unittest import mock
 
 try:
     import pandas as pd
@@ -24,6 +23,7 @@ except ImportError:
 
 from civis import APIClient
 from civis.base import CivisAPIError, CivisJobFailure
+from civis.compat import mock
 from civis.response import Response
 import pytest
 

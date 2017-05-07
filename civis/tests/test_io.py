@@ -3,7 +3,6 @@ from io import StringIO, BytesIO
 import json
 import os
 import tempfile
-from unittest.mock import patch, Mock
 
 import pytest
 import vcr
@@ -15,6 +14,7 @@ except ImportError:
     has_pandas = False
 
 import civis
+from civis.compat import mock
 from civis.response import Response
 from civis.base import CivisAPIError
 from civis.resources._resources import get_api_spec, generate_classes
@@ -34,7 +34,7 @@ class MockAPIError(CivisAPIError):
         self.status_code = sc
 
 
-@patch(api_import_str, return_value=civis_api_spec)
+@mock.patch(api_import_str, return_value=civis_api_spec)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
     # `polling_interval=POLL_INTERVAL` input. This lets us use
@@ -52,7 +52,7 @@ class ImportTests(CivisVCRTestCase):
         generate_classes.cache_clear()
 
     @classmethod
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def setup_class(cls, *mocks):
         setup_vcr = vcr.VCR(filter_headers=['Authorization'])
         setup_cassette = os.path.join(cassette_dir(), 'io_setup.yml')
@@ -92,20 +92,20 @@ class ImportTests(CivisVCRTestCase):
 
             cls.export_job_id = result.sql_id
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_get_url_from_file_id(self, *mocks):
         client = civis.APIClient()
         url = civis.io._files._get_url_from_file_id(self.file_id, client)
         assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_file(self, *mocks):
         buf = BytesIO()
         civis.io.civis_to_file(self.file_id, buf)
         buf.seek(0)
         assert buf.read() == b'a,b,c\n1,2,3'
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(b'a,b,c\n1,2,3')
@@ -122,7 +122,7 @@ class ImportTests(CivisVCRTestCase):
         assert result.state == 'succeeded'
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas(self, *mocks):
         expected = pd.DataFrame([[1, 2, 3]], columns=['a', 'b', 'c'])
         df = civis.io.read_civis('scratch.api_client_test_fixture',
@@ -130,7 +130,7 @@ class ImportTests(CivisVCRTestCase):
                                  polling_interval=POLL_INTERVAL)
         assert df.equals(expected)
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_no_pandas(self, *mocks):
         expected = [['a', 'b', 'c'], ['1', '2', '3']]
         data = civis.io.read_civis('scratch.api_client_test_fixture',
@@ -138,7 +138,7 @@ class ImportTests(CivisVCRTestCase):
                                    polling_interval=POLL_INTERVAL)
         assert data == expected
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_sql(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         expected = [['a', 'b', 'c'], ['1', '2', '3']]
@@ -148,7 +148,7 @@ class ImportTests(CivisVCRTestCase):
         assert data == expected
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_dataframe_to_civis(self, *mocks):
         df = pd.DataFrame([['1', '2', '3']], columns=['a', 'b', 'c'])
         result = civis.io.dataframe_to_civis(df, 'redshift-general',
@@ -158,7 +158,7 @@ class ImportTests(CivisVCRTestCase):
         result = result.result()
         assert result.state == 'succeeded'
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         result = civis.io.civis_to_multifile_csv(
@@ -173,7 +173,7 @@ class ImportTests(CivisVCRTestCase):
                                                              'console.s3.'
                                                              'amazonaws.com/')
 
-    @patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_transfer_table(self, *mocks):
         result = civis.io.transfer_table('redshift-general', 'redshift-test',
                                          'scratch.api_client_test_fixture',
@@ -211,7 +211,7 @@ class ImportTests(CivisVCRTestCase):
 
 
 def test_file_id_from_run_output_exact():
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.return_value = \
         [Response({'name': 'spam', 'object_id': 2013,
                    'object_type': 'File'})]
@@ -222,7 +222,7 @@ def test_file_id_from_run_output_exact():
 
 def test_file_id_from_run_output_approximate():
     # Test fuzzy name matching
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.return_value = \
         [Response({'name': 'spam.csv.gz', 'object_id': 2013,
                    'object_type': 'File'})]
@@ -234,7 +234,7 @@ def test_file_id_from_run_output_approximate():
 
 def test_file_id_from_run_output_approximate_multiple():
     # Fuzzy name matching with muliple matches should return the first
-    m_cl = Mock()
+    m_cl = mock.Mock()
     m_cl.scripts.list_containers_runs_outputs.return_value = [
         Response({'name': 'spam.csv.gz', 'object_id': 2013,
                   'object_type': 'File'}),
@@ -248,7 +248,7 @@ def test_file_id_from_run_output_approximate_multiple():
 
 def test_file_id_from_run_output_no_file():
     # Get an IOError if we request a file which doesn't exist
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.return_value = [
         Response({'name': 'spam', 'object_id': 2013,
                   'object_type': 'File'})]
@@ -260,7 +260,7 @@ def test_file_id_from_run_output_no_file():
 
 def test_file_id_from_run_output_no_run():
     # Get an IOError if we request a file from a run which doesn't exist
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.side_effect =\
         MockAPIError(404)  # Mock a run which doesn't exist
 
@@ -271,7 +271,7 @@ def test_file_id_from_run_output_no_run():
 
 def test_file_id_from_run_output_platform_error():
     # Make sure we don't swallow real Platform errors
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.side_effect =\
         MockAPIError(500)  # Mock a platform error
     with pytest.raises(CivisAPIError):
@@ -280,42 +280,42 @@ def test_file_id_from_run_output_platform_error():
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv',
                                                 'file_url': 'url'})
-    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='infer', client=m_client)
         assert mock_read_csv.called_once_with(121, compression='infer')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv.gz',
                                                 'file_url': 'url'})
-    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='infer', client=m_client)
         assert mock_read_csv.called_once_with(121, compression='gzip')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
-    m_client = Mock()
+    m_client = mock.Mock()
     m_client.files.get.return_value = Response({'name': 'spam.csv',
                                                 'file_url': 'url'})
-    with patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='special', client=m_client,
                                    delimiter='|', nrows=10)
         assert mock_read_csv.called_once_with(121, compression='special',
                                               delimiter='|', nrows=10)
 
 
-@patch.object(civis.io._files, 'civis_to_file', autospec=True)
+@mock.patch.object(civis.io._files, 'civis_to_file', autospec=True)
 def test_load_json(mock_c2f):
     obj = {'spam': 'eggs'}
 
     def _dump_json(file_id, buf, *args, **kwargs):
         buf.write(json.dumps(obj).encode())
     mock_c2f.side_effect = _dump_json
-    out = civis.io.file_to_json(13, client=Mock())
+    out = civis.io.file_to_json(13, client=mock.Mock())
     assert out == obj

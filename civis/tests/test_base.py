@@ -1,8 +1,7 @@
-from unittest import mock
-
 import requests
 
 from civis.base import Endpoint, get_base_url
+from civis.compat import mock
 
 
 def test_base_url_default():

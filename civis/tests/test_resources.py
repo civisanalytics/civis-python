@@ -2,11 +2,11 @@ from collections import defaultdict, OrderedDict
 import json
 import os
 import pytest
-from unittest import mock
 
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
+from civis.compat import mock
 from civis.resources import _resources
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))

@@ -1,16 +1,16 @@
 from collections import OrderedDict
 import json
-from unittest.mock import patch
 import os
 
 from civis.cli.__main__ import generate_cli, invoke
+from civis.compat import mock
 from civis.resources._resources import BASE_RESOURCES_V1
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-@patch("civis.cli.__main__.add_extra_commands")
-@patch("civis.cli.__main__.retrieve_spec_dict")
+@mock.patch("civis.cli.__main__.add_extra_commands")
+@mock.patch("civis.cli.__main__.retrieve_spec_dict")
 def test_generate_cli_petstore(mock_retrieve_spec_dict,
                                mock_add_extra_commands):
     """Test loading the OpenAPI petstore example."""
@@ -27,7 +27,7 @@ def test_generate_cli_petstore(mock_retrieve_spec_dict,
             {'limit', 'json_output'})
 
 
-@patch("civis.cli.__main__.retrieve_spec_dict")
+@mock.patch("civis.cli.__main__.retrieve_spec_dict")
 def test_generate_cli_civis(mock_retrieve_spec_dict):
     """Test loading the Civis API spec as of 2017-02-02."""
     with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
@@ -69,9 +69,9 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
             assert p.required
 
 
-@patch("civis.cli.__main__.make_api_request_headers")
-@patch("civis.cli.__main__.yaml")
-@patch("civis.cli.__main__.requests.request")
+@mock.patch("civis.cli.__main__.make_api_request_headers")
+@mock.patch("civis.cli.__main__.yaml")
+@mock.patch("civis.cli.__main__.requests.request")
 def test_blank_output(mock_request, mock_yaml, mock_make_api_request_headers):
     """
     Test that endpoints that return blank results don't cause exceptions.
@@ -94,9 +94,9 @@ def test_blank_output(mock_request, mock_yaml, mock_make_api_request_headers):
     invoke("WIBBLE", "/wobble/wubble", op)
 
 
-@patch("civis.cli.__main__.make_api_request_headers")
-@patch("civis.cli.__main__.yaml")
-@patch("civis.cli.__main__.requests.request")
+@mock.patch("civis.cli.__main__.make_api_request_headers")
+@mock.patch("civis.cli.__main__.yaml")
+@mock.patch("civis.cli.__main__.requests.request")
 def test_parameter_case(mock_request, mock_yaml,
                         mock_make_api_request_headers):
     """
