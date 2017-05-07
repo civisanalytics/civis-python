@@ -68,7 +68,7 @@ recognizes. You can use code from
 - `scikit-learn <http://scikit-learn.org>`_ v0.18.1
 - `glmnet <https://github.com/civisanalytics/python-glmnet>`_ v2.0.0
 - `xgboost <http://xgboost.readthedocs.io>`_ v0.6a2
-- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.0.0
+- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.1.1
 
 When you're assembling your own model, remember that you'll have to make certain that
 either you add a missing value imputation step or that your data doesn't have any
