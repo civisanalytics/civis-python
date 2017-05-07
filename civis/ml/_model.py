@@ -5,6 +5,7 @@ import io
 import json
 import logging
 import os
+import six
 import tempfile
 import threading
 import warnings
@@ -73,7 +74,7 @@ def _block_and_handle_missing(method):
             # We get here if the modeling job failed to produce
             # any output and we don't have metadata.
             if self.exception():
-                raise self.exception() from None
+                six.raise_from(self.exception(), None)
             else:
                 raise
     return wrapper
@@ -117,9 +118,10 @@ def _decode_train_run(train_job_id, train_run_id, client):
         try:
             return int(train_run_id)
         except Exception as exc:
-            raise ValueError('Please provide valid train_run_id! Needs to be '
-                             'integer corresponding to a training run ID '
-                             'or one of "active" or "latest".') from exc
+            msg = ('Please provide valid train_run_id! Needs to be '
+                   'integer corresponding to a training run ID '
+                   'or one of "active" or "latest".')
+            six.raise_from(ValueError(msg), exc)
 
 
 def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
@@ -395,8 +397,8 @@ class ModelFuture(CivisFuture):
                     client=self.client)
             except CivisAPIError as err:
                 if err.status_code == 404:
-                    raise ValueError('There is no training data stored for '
-                                     'this job!') from err
+                    msg = 'There is no training data stored for this job!'
+                    six.raise_from(ValueError(msg), err)
                 else:
                     raise
 
@@ -659,9 +661,10 @@ class ModelPipeline:
             container = client.scripts.get_containers(train_job_id)
         except CivisAPIError as api_err:
             if api_err.status_code == 404:
-                raise ValueError('There is no Civis Platform job with '
-                                 'script ID {} and run ID {}!'.format(
-                                     train_job_id, train_run_id)) from api_err
+                msg = ('There is no Civis Platform job with '
+                       'script ID {} and run ID {}!'.format(train_job_id,
+                                                            train_run_id))
+                six.raise_from(ValueError(msg), api_err)
             raise
 
         args = container.arguments

@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import re
+import six
 
 import requests
 from requests import HTTPError
@@ -227,8 +228,8 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
         outputs = client.scripts.list_containers_runs_outputs(job_id, run_id)
     except CivisAPIError as err:
         if err.status_code == 404:
-            raise IOError('Could not find job/run ID {}/{}'
-                          .format(job_id, run_id)) from err
+            six.raise_from(IOError('Could not find job/run ID {}/{}'
+                           .format(job_id, run_id)), err)
         else:
             raise
 
