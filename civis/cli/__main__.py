@@ -7,6 +7,7 @@ This is based on https://github.com/zalando/openapi-cli-client,
 which has an Apache 2.0 License:
 https://github.com/zalando/openapi-cli-client/blob/master/LICENSE
 """
+from __future__ import print_function
 
 
 import calendar
