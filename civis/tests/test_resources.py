@@ -2,6 +2,7 @@ from collections import defaultdict, OrderedDict
 import json
 import os
 import pytest
+import six
 
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
@@ -241,7 +242,12 @@ def test_create_method_unexpected_kwargs():
         'get', '/objects', {"foo": 0, "bar": 0}, {}, iterator=False)
 
     # Method raises TypeError with unexpected kwarg
-    expected_msg = "mock_name() got an unexpected keyword argument(s) {'baz'}"
+    if six.PY3:
+        expected_msg = ("mock_name() got an unexpected keyword argument(s) "
+                        "{'baz'}")
+    else:
+        expected_msg = ("mock_name() got an unexpected keyword argument(s) "
+                        "set(['baz'])")
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
