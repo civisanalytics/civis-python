@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from builtins import super
+
 from civis import APIClient
 from civis.base import DONE
 from civis.polling import PollableResult

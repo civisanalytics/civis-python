@@ -1,5 +1,6 @@
 """Run CivisML jobs and retrieve the results
 """
+from builtins import super
 from collections import namedtuple
 import io
 import json
