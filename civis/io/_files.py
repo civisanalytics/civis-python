@@ -22,6 +22,10 @@ try:
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
 
 log = logging.getLogger(__name__)
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',

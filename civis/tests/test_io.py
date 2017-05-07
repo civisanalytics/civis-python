@@ -21,6 +21,10 @@ from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
+try:
+    FileNotFoundError
+except:
+    FileNotFoundError = IOError
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
