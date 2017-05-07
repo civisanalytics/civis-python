@@ -6,10 +6,6 @@ try:
     from inspect import Signature, Parameter
 except ImportError:
     from funcsigs import Signature, Parameter
-try:
-    from functools import lru_cache
-except ImportError:
-    from functools32 import lru_cache
 
 from jsonref import JsonRef
 import requests
@@ -17,6 +13,7 @@ from requests.adapters import HTTPAdapter
 
 import civis
 from civis.base import AggressiveRetry, Endpoint, get_base_url
+from civis.compat import lru_cache
 from civis._utils import camel_to_snake, to_camelcase
 
 
