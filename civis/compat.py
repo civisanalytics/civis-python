@@ -1,3 +1,5 @@
+# flake8: noqa
+
 import six
 
 if six.PY3:

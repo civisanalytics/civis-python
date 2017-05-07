@@ -22,7 +22,7 @@ from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
 try:
-    FileNotFoundError
+    FileNotFoundError  # NOQA
 except:
     FileNotFoundError = IOError
 
