@@ -1,7 +1,7 @@
 from collections import OrderedDict
-from io import StringIO, BytesIO
 import json
 import os
+from six import StringIO, BytesIO
 import tempfile
 
 import pytest
