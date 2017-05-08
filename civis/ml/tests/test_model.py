@@ -158,6 +158,15 @@ def test_load_estimator(mock_retrieve):
     assert out == obj
 
 
+@mock.patch.object(_model.cio, 'file_to_dataframe', autospec=True)
+@mock.patch.object(_model.cio, 'file_id_from_run_output', autospec=True)
+def test_load_table_from_outputs(mock_fid, mock_f2df):
+    # Test that _load_table_from_outputs is calling functions
+    # correctly. Let `autospec` catch errors in arguments being passed.
+    mock_client = setup_client_mock()
+    _model._load_table_from_outputs(1, 2, 'fname', client=mock_client)
+
+
 ###################################
 # Tests of ModelFuture below here #
 ###################################
@@ -181,7 +190,7 @@ def test_modelfuture_constructor(mock_adc, mock_spe):
 @mock.patch.object(_model.cio, "file_id_from_run_output",
                    mock.Mock(return_value=11, spec_set=True))
 @mock.patch.object(_model.cio, "file_to_json",
-                   mock.Mock(return_value={'spam': 'eggs'}))
+                   mock.Mock(return_value={'run': {'status': 'succeeded'}}))
 @mock.patch.object(_model, 'APIClient', setup_client_mock())
 def test_modelfuture_pickle_smoke():
     mf = _model.ModelFuture(job_id=7, run_id=13, client=setup_client_mock())
@@ -404,25 +413,18 @@ def mp_setup():
 
 
 @mock.patch.object(_model, 'ModelFuture')
-@mock.patch.object(_model, 'APIClient', mock.Mock())
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
     # catch 404 error if model isn't found and throw ValueError
+    mock_client = mock.Mock()
     response = namedtuple('Reponse', ['content', 'response', 'reason',
                                       'status_code'])(False, None, None, 404)
     mock_future.side_effect = CivisAPIError(response)
     with pytest.raises(ValueError):
-        _model.ModelPipeline.from_existing(1, 1)
+        _model.ModelPipeline.from_existing(1, 1, client=mock_client)
 
 
 @pytest.fixture()
-def container_response_stub():
-    Container = namedtuple('Container', ['arguments',
-                                         'required_resources',
-                                         'docker_image_tag',
-                                         'docker_command',
-                                         'repo_http_uri',
-                                         'repo_ref',
-                                         'name'])
+def container_response_stub(from_template_id=8387):
     arguments = {
         'MODEL': 'sparse_logistic',
         'TARGET_COLUMN': 'brushes_teeth_much',
@@ -435,20 +437,22 @@ def container_response_stub():
         'REQUIRED_MEMORY': 9999,
         'REQUIRED_DISK_SPACE': -20
     }
-    return Container(arguments=arguments,
-                     required_resources={},
-                     docker_image_tag=None,
-                     docker_command=None,
-                     repo_http_uri=None,
-                     repo_ref=None,
-                     name='Civis Model Train')
+    return Response(dict(arguments=arguments,
+                         required_resources={},
+                         docker_image_tag=None,
+                         docker_command=None,
+                         repo_http_uri=None,
+                         repo_ref=None,
+                         name='Civis Model Train',
+                         from_template_id=from_template_id,
+                         ))
 
 
 @mock.patch.object(_model, 'ModelFuture')
-@mock.patch.object(_model, 'APIClient')
-def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
+def test_modelpipeline_classmethod_constructor(mock_future,
                                                container_response_stub):
-    mock_client.return_value.scripts.get_containers.return_value = \
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = \
         container = container_response_stub
 
     resources = {'REQUIRED_CPU': 1000,
@@ -456,7 +460,7 @@ def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
                  'REQUIRED_DISK_SPACE': -20}
 
     # test everything is working fine
-    mp = _model.ModelPipeline.from_existing(1, 1)
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert isinstance(mp, _model.ModelPipeline)
     assert mp.dependent_variable == [container.arguments['TARGET_COLUMN']]
     assert mp.primary_key == container.arguments['PRIMARY_KEY']
@@ -468,6 +472,23 @@ def test_modelpipeline_classmethod_constructor(mock_client, mock_future,
     assert mp.parameters == json.loads(container.arguments['PARAMS'])
     assert mp.job_resources == resources
     assert mp.model_name == container.name[:-6]
+
+
+@mock.patch.object(_model, 'ModelFuture', autospec=True)
+def test_modelpipeline_classmethod_constructor_old_version(mock_future):
+    # Test that we select the correct prediction template for different
+    # versions of a training job.
+    mock_client = setup_client_mock()
+    mock_client.scripts.get_containers.return_value = \
+        container_response_stub(from_template_id=8387)
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    assert mp.predict_template_id == 8388, "Predict template v1.0"
+
+    # v0.5 training
+    mock_client.scripts.get_containers.return_value = \
+        container_response_stub(from_template_id=7020)
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    assert mp.predict_template_id == 7021, "Predict template v0.5"
 
 
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
