@@ -36,6 +36,18 @@ set ``use_pandas=True`` in functions that accept that parameter.  To install
 
    pip install pandas
 
+Machine learning features in the ``ml`` namespace have a soft dependency on
+``scikit-learn``, ``joblib``, and ``pandas``. Install ``scikit-learn`` and
+``joblib`` to export your trained models from the Civis Platform or to
+provide your own custom models. Use ``pandas`` to download model predictions
+from the Civis Platform. Install these dependencies with
+
+.. code-block:: bash
+
+   pip install scikit-learn
+   pip install joblib
+   pip install pandas
+
 
 Authentication
 --------------
@@ -90,6 +102,7 @@ Client API Reference
 
    user_guide
    io
+   ml
    client
    cli
 
