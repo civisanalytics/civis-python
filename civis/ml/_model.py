@@ -34,6 +34,12 @@ log = logging.getLogger(__name__)
 # sentinel value for default primary key value
 SENTINEL = namedtuple('Sentinel', [])()
 
+# Map training template to prediction template so that we
+# always use a compatible version for predictions.
+_PRED_TEMPLATES = {8387: 8388,  # v1.0
+                   7020: 7021,  # v0.5
+                   }
+
 
 class ModelError(RuntimeError):
     def __init__(self, msg, estimator=None, metadata=None):
@@ -695,6 +701,11 @@ class ModelPipeline:
                     memory_requested=memory_requested,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
+
+        # Set prediction template corresponding to training template
+        template_id = int(container['from_template_id'])
+        klass.predict_template_id = _PRED_TEMPLATES.get(template_id)
+
         return klass
 
     def train(self, df=None, csv_path=None, table_name=None,
