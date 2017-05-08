@@ -11,6 +11,7 @@ from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
+from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
 try:
     from requests_toolbelt.multipart.encoder import MultipartEncoder
@@ -22,10 +23,6 @@ try:
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
-try:
-    FileNotFoundError
-except NameError:
-    FileNotFoundError = IOError
 
 log = logging.getLogger(__name__)
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',

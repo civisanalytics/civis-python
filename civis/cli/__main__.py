@@ -26,11 +26,7 @@ import requests
 import yaml
 from civis.cli._cli_commands import \
     civis_ascii_art, files_download_cmd, files_upload_cmd
-
-try:
-    FileNotFoundError
-except NameError:
-    FileNotFoundError = IOError
+from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')

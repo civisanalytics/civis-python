@@ -14,17 +14,13 @@ except ImportError:
     has_pandas = False
 
 import civis
-from civis.compat import mock
+from civis.compat import mock, FileNotFoundError
 from civis.response import Response
 from civis.base import CivisAPIError
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
-try:
-    FileNotFoundError  # NOQA
-except:
-    FileNotFoundError = IOError
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))

@@ -20,14 +20,10 @@ try:
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
-try:
-    FileNotFoundError
-except NameError:
-    FileNotFoundError = IOError
 
 from civis import APIClient
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import mock
+from civis.compat import mock, FileNotFoundError
 from civis.response import Response
 import pytest
 
