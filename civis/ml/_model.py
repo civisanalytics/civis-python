@@ -6,6 +6,7 @@ import io
 import json
 import logging
 import os
+import shutil
 import six
 import tempfile
 import threading
@@ -156,11 +157,12 @@ def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     if not HAS_JOBLIB:
         raise ImportError('Install joblib to download models '
                           'from Civis Platform.')
-    tempdir = tempfile.mkdtemp()
-    path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
-    obj = joblib.load(path)
-    os.remove(path)
-    os.removedirs(tempdir)
+    try:
+        tempdir = tempfile.mkdtemp()
+        path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
+        obj = joblib.load(path)
+    finally:
+        shutil.rmtree(tempdir)
     return obj
 
 
@@ -820,17 +822,18 @@ class ModelPipeline:
 
         if (HAS_SKLEARN and HAS_JOBLIB and
                 isinstance(self.model, BaseEstimator)):
-            tempdir = tempfile.mkdtemp()
-            fout = os.path.join(tempdir, 'estimator.pkl')
-            joblib.dump(self.model, fout, compress=3)
-            with open(fout, 'rb') as _fout:
-                n = self.model_name if self.model_name else "CivisML"
-                estimator_file_id = cio.file_to_civis(
-                    _fout, 'Estimator for ' + n, client=self._client)
-            self._input_model = self.model  # Keep the estimator
-            self.model = str(estimator_file_id)
-            os.remove(fout)
-            os.removedirs(tempdir)
+            try:
+                tempdir = tempfile.mkdtemp()
+                fout = os.path.join(tempdir, 'estimator.pkl')
+                joblib.dump(self.model, fout, compress=3)
+                with open(fout, 'rb') as _fout:
+                    n = self.model_name if self.model_name else "CivisML"
+                    estimator_file_id = cio.file_to_civis(
+                        _fout, 'Estimator for ' + n, client=self._client)
+                self._input_model = self.model  # Keep the estimator
+                self.model = str(estimator_file_id)
+            finally:
+                shutil.rmtree(tempdir)
         train_args['MODEL'] = self.model
 
         name = self.model_name + ' Train' if self.model_name else None
