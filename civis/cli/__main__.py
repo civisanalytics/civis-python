@@ -137,6 +137,10 @@ def param_case_map(param_names):
 
 
 def invoke(method, path, op, *args, **kwargs):
+    """
+    If json_output is in `kwargs` then the output is json. Otherwise, it is
+    yaml.
+    """
     # Remove None b/c click passes everything in as None if it's not set.
     kwargs = {k: v for k, v in kwargs.items()
               if v is not None}
