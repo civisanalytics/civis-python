@@ -545,7 +545,7 @@ class ModelPipeline:
 
     Examples
     --------
-    >>> from civismodel import ModelPipeline
+    >>> from civis.ml import ModelPipeline
     >>> model = ModelPipeline('gradient_boosting_classifier', 'depvar',\
                               primary_key='voterbase_id')
     >>> train = model.train(table_name='schema.survey_data',\
@@ -660,7 +660,7 @@ class ModelPipeline:
             client = APIClient(resources='all')
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
         try:
-            fut = ModelFuture(train_job_id, train_run_id, client)
+            fut = ModelFuture(train_job_id, train_run_id, client=client)
             container = client.scripts.get_containers(train_job_id)
         except CivisAPIError as api_err:
             if api_err.status_code == 404:
