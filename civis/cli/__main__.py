@@ -137,11 +137,10 @@ def param_case_map(param_names):
 
 
 def invoke(method, path, op, *args, **kwargs):
-
     # Remove None b/c click passes everything in as None if it's not set.
     kwargs = {k: v for k, v in kwargs.items()
               if v is not None}
-    json_output = kwargs.setdefault('json_output', False)
+    json_output = kwargs.pop('json_output', False)
 
     # Construct the body of the request.
     body = {}
