@@ -335,18 +335,22 @@ def test_train_data_fname():
     assert mf.train_data_fname == 'ham'
 
 
-@mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
-def test_train_data(mock_load_table):
+@mock.patch.object(_model, 'cio', autospec=True)
+def test_train_data_(mock_cio):
     def poller(*args, **kwargs):
         return Response({'state': 'succeeded'})
     mock_client = mock.MagicMock()
     mock_client.scripts.get_containers_runs = poller
-    mf = _model.ModelFuture(job_id=1, run_id=2, client=mock_client)
-    mf._train_data_fname = 'placeholder.csv'
 
-    miscallaneous_string = 'one two three'
-    mock_load_table.return_value = miscallaneous_string
-    assert mf.train_data == miscallaneous_string
+    path = '/green/eggs/and/ham'
+    training_meta = {'run': {'configuration': {'data': {'location': path}}}}
+    mock_cio.file_to_json.return_value = training_meta
+
+    mf = _model.ModelFuture(job_id=1, run_id=2, train_job_id=11,
+                            train_run_id=13, client=mock_client)
+    assert mf.training_metadata == training_meta
+    mock_cio.file_id_from_run_output.assert_called_with(
+        'model_info.json', 11, 13, client=mock_client)
 
 
 @mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
