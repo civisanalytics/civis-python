@@ -163,7 +163,7 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         result = civis.io.civis_to_multifile_csv(
             sql, database='redshift-general', polling_interval=POLL_INTERVAL)
-        assert set(result.keys()) == {'entries', 'query', 'header'}
+        assert set(result.keys()) == {'entries', 'query', 'header', 'file_id'}
         assert result['query'] == sql
         assert result['header'] == ['a', 'b', 'c']
         assert isinstance(result['entries'], list)
