@@ -460,8 +460,10 @@ class ModelFuture(CivisFuture):
     @_block_and_handle_missing
     def training_metadata(self):
         if self._train_metadata is None:
-            fid = cio.file_id_from_run_output('model_info.json', self.job_id,
-                                              self.run_id, client=self.client)
+            fid = cio.file_id_from_run_output('model_info.json',
+                                              self.train_job_id,
+                                              self.train_run_id,
+                                              client=self.client)
             self._train_metadata = cio.file_to_json(fid, client=self.client)
         return self._train_metadata
 
