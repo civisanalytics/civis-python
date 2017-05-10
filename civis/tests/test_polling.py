@@ -93,16 +93,5 @@ class TestPolling(unittest.TestCase):
         assert not initial_polling_thread.is_alive()
 
 
-def test_repeated_polling():
-    # Verify that we poll the expected number of times.
-    poll_interval = 0.2
-    poller = mock.Mock(return_value=Response({"state": "running"}))
-    pollable = PollableResult(poller, (), polling_interval=poll_interval)
-    pollable.done()  # Check status once to start the polling thread
-    assert poller.call_count == 1, "Poll once on the first status check"
-    time.sleep(2.2 * poll_interval)
-    assert poller.call_count == 3, "After waiting 2.2x the polling interval"
-
-
 if __name__ == '__main__':
     unittest.main()
