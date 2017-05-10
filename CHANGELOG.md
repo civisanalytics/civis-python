@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Clarify ``civis.io.dataframe_to_civis`` docstring with a note about treatment of the index.
 - Added functions ``civis.io.file_id_from_run_output``, ``civis.io.file_to_dataframe``, and ``civis.io.file_to_json``.
 - Added ``civis.ml`` namespace with ``ModelPipeline`` interface to Civis Platform modeling capabilities.
+- Added ``examples`` directory with sample ``ModelPipeline`` code from ``civis.ml``.
 
 ### Fixed
 - Corrected the defaults listed in the docstring for ``civis.io.civis_to_multifile_csv``.
