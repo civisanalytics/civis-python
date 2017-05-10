@@ -151,6 +151,26 @@ def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
         return joblib.load(path)
 
 
+def _exception_from_logs(job_id, run_id, client, nlog=15):
+    """Create an exception if the log has a recognizable error
+
+    Search "error" emits in the last ``n_log`` lines.
+    This function presently recognizes the following errors:
+
+    - MemoryError
+    """
+    logs = client.scripts.list_containers_runs_logs(job_id, run_id, limit=nlog)
+    msgs = [l['message'] for l in logs if l['level'] == 'error']
+
+    # Check for memory errors
+    mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
+    if mem_err:
+        exc = MemoryError(mem_err[0])
+    else:
+        exc = None
+    return exc
+
+
 class ModelFuture(CivisFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
@@ -297,9 +317,10 @@ class ModelFuture(CivisFuture):
         except (FileNotFoundError, CivisJobFailure):
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
-            # then there's no improvements to make on
-            # any existing exception.
-            pass
+            # check the tail of the log for a clearer exception
+            exc = _exception_from_logs(fut.job_id, fut.run_id, fut.client)
+            if exc:
+                fut.set_exception(exc)
         except KeyError:
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
