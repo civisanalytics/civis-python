@@ -665,7 +665,9 @@ class ModelPipeline:
             raise
 
         args = container.arguments
-        model = args['MODEL']
+
+        # Older templates used "WORKFLOW" instead of "MODEL"
+        model = args.get('MODEL', args.get('WORKFLOW'))
         dependent_variable = args['TARGET_COLUMN'].split()
         primary_key = args.get('PRIMARY_KEY')
         parameters = json.loads(args.get('PARAMS', {}))
