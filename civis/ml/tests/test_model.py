@@ -30,7 +30,8 @@ import pytest
 from civis.ml import _model
 
 
-def setup_client_mock(script_id=-10, run_id=100):
+def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
+                      run_outputs=None):
     """Return a Mock set up for use in testing container scripts
 
     Parameters
@@ -40,6 +41,10 @@ def setup_client_mock(script_id=-10, run_id=100):
         or `post_containers_runs`.
     run_id: int
         Mock-create runs with this ID when calling `post_containers_runs`.
+    state: str, optional
+        The reported state of the container run
+    run_outputs: list, optional
+        List of Response objects returned as run outputs
 
     Returns
     -------
@@ -57,9 +62,11 @@ def setup_client_mock(script_id=-10, run_id=100):
                                          'state': 'queued'})
     mock_container_run = Response({'id': run_id,
                                    'container_id': script_id,
-                                   'state': 'succeeded'})
+                                   'state': state})
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run
+    c.scripts.list_containers_runs_outputs.return_value = (run_outputs or [])
+    c.scripts.list_containers_runs_logs.return_value = []
 
     def change_state_to_cancelled(script_id):
         mock_container_run.state = "cancelled"
@@ -202,22 +209,50 @@ def test_modelfuture_pickle_smoke():
 def test_set_model_exception_metadata_exception():
     """Tests cases where accessing metadata throws exceptions
     """
-    class ModelFutureRaiseExc:
-        def __init__(self, exc):
-            self.exc = exc
+    # State "running" prevents termination when the object is created.
+    mock_client = setup_client_mock(1, 2, state='running')
+
+    class ModelFutureRaiseExc(_model.ModelFuture):
+        def __init__(self, exc, *args, **kwargs):
+            self.__exc = exc
+            super().__init__(*args, **kwargs)
 
         @property
         def metadata(self):
-            raise self.exc('What a spectacular failure, you say!')
+            raise self.__exc('What a spectacular failure, you say!')
 
     # exception types get caught!
     for exc in [FileNotFoundError, CivisJobFailure, KeyError]:
-        fut = ModelFutureRaiseExc(exc)
+        fut = ModelFutureRaiseExc(exc, 1, 2, client=mock_client)
         _model.ModelFuture._set_model_exception(fut)
 
-    fut = ModelFutureRaiseExc(RuntimeError)
+    fut = ModelFutureRaiseExc(RuntimeError, 1, 2, client=mock_client)
     with pytest.raises(RuntimeError):
         _model.ModelFuture._set_model_exception(fut)
+
+
+def test_set_model_exception_memory_error():
+    mock_client = setup_client_mock(1, 2, state='failed')
+    err_msg = ('Process ran out of its allowed 3000 MiB of '
+               'memory and was killed.')
+    logs = [{'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10005,
+             'level': 'error',
+             'message': 'Failed'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10003,
+             'level': 'error',
+             'message': 'Error on job: Process ended with an '
+                        'error, exiting: 137.'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10000,
+             'level': 'error',
+             'message': err_msg}]
+    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    fut = _model.ModelFuture(1, 2, client=mock_client)
+    with pytest.raises(MemoryError) as err:
+        fut.result()
+    assert str(err.value) == err_msg
 
 
 class ModelFutureStub:
