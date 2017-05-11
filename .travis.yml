@@ -15,4 +15,4 @@ env:
 before_script: flake8 civis
 script:
     - py.test -rxs --cov civis
-    - if [[ $TRAVIS_PYTHON_VERSION == 3* ]] ; then sphinx-build -b html -n docs/source/ docs/build/ ; fi
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.5* ]] ; then sphinx-build -b html -n docs/source/ docs/build/ ; fi
