@@ -1,12 +1,11 @@
 import os
 import json
 from collections import OrderedDict
-from unittest import mock
-from unittest.mock import patch
 
 import pytest
 
 from civis.base import CivisJobFailure
+from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 try:
     from civis.futures import (CivisFuture,
@@ -108,8 +107,8 @@ class CivisFutureTests(CivisVCRTestCase):
             assert disconnect.call_count == 0
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -124,8 +123,8 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertTrue(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message_with_different_run_id(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -140,8 +139,8 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message_when_job_is_running(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -156,8 +155,8 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_result_succeeded(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
@@ -173,8 +172,8 @@ class CivisFutureTests(CivisVCRTestCase):
         assert result._state == 'FINISHED'
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_failed(self, mock_subscribe, mock_api):
         mock_pubnub = mock.Mock()
         mock_pubnub.unsubscribe_all.return_value = None
@@ -191,8 +190,8 @@ class CivisFutureTests(CivisVCRTestCase):
             result.result()
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_channels(self, *mocks):
         future = CivisFuture(lambda x: x,
                              (1, 20))
@@ -200,8 +199,8 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.subscribed is True
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_no_subscription(self, *mocks):
         future = CivisFuture(lambda x: x,
                              (1, 20))
@@ -209,8 +208,8 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.subscribed is False
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_base)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_no_channels(self, *mocks):
         clear_lru_cache()
         future = CivisFuture(lambda x: x,
@@ -219,24 +218,24 @@ class CivisFutureTests(CivisVCRTestCase):
         clear_lru_cache()
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_overwrite_polling_interval_with_channels(self, *mocks):
         future = CivisFuture(lambda x: x, (1, 20))
         assert future.polling_interval == _LONG_POLLING_INTERVAL
         assert hasattr(future, '_pubnub')
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_channels)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_channels)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_explicit_polling_interval_with_channels(self, *mocks):
         future = CivisFuture(lambda x: x, (1, 20), polling_interval=5)
         assert future.polling_interval == 5
         assert hasattr(future, '_pubnub')
 
     @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
-    @patch(api_import_str, return_value=civis_api_spec_base)
-    @patch.object(CivisFuture, '_subscribe')
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
     def test_polling_interval(self, *mocks):
         # This tests the fallback to polling when channels is not available.
         # It uses a different api spec than the other tests so it

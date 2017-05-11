@@ -2,8 +2,8 @@
 import time
 from concurrent import futures
 import unittest
-from unittest import mock
 
+from civis.compat import mock
 from civis.response import Response
 from civis.polling import PollableResult
 

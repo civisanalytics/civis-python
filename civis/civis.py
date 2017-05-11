@@ -1,4 +1,4 @@
-import functools
+from __future__ import absolute_import
 import logging
 import os
 
@@ -7,6 +7,7 @@ from requests.adapters import HTTPAdapter
 
 import civis
 from civis.base import AggressiveRetry
+from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
 
 
@@ -58,7 +59,7 @@ def find_one(object_list, filter_func=None, **kwargs):
 
 class MetaMixin():
 
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def get_database_id(self, database):
         """Return the database ID for a given database name.
 
@@ -86,7 +87,7 @@ class MetaMixin():
 
         return db["id"]
 
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def get_database_credential_id(self, username, database_name):
         """Return the credential ID for a given username in a given database.
 
@@ -136,7 +137,7 @@ class MetaMixin():
 
         return my_creds["id"]
 
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def get_aws_credential_id(self, cred_name, owner=None):
         """Find an AWS credential ID.
 
@@ -202,7 +203,7 @@ class MetaMixin():
 
         return my_creds["id"]
 
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def get_table_id(self, table, database):
         """Return the table ID for a given database and table name.
 
@@ -239,7 +240,7 @@ class MetaMixin():
         return tables[0].id
 
     @property
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def default_credential(self):
         """The current user's default credential."""
         # NOTE: this should be optional to endpoints...so this could go away
@@ -247,7 +248,7 @@ class MetaMixin():
         return creds[0]['id'] if len(creds) > 0 else None
 
     @property
-    @functools.lru_cache()
+    @lru_cache(maxsize=128)
     def username(self):
         """The current user's username."""
         return self.users.list_me().username

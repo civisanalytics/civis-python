@@ -49,6 +49,12 @@ from the Civis Platform. Install these dependencies with
    pip install pandas
 
 
+Python version support
+----------------------
+
+Python 2.7, 3.4, 3.5, and 3.6
+
+
 Authentication
 --------------
 

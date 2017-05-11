@@ -1,6 +1,9 @@
 language: python
 python:
+    - "2.7"
     - "3.4"
+    - "3.5"
+    - "3.6"
 install:
     - pip install --upgrade pip setuptools
     - pip install -r requirements.txt
@@ -11,5 +14,5 @@ env:
     - CIVIS_API_KEY=FOOBAR
 before_script: flake8 civis
 script:
-    - py.test --cov civis
-    - sphinx-build -b html -n docs/source/ docs/build/
+    - py.test -rxs --cov civis
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.5* ]] ; then sphinx-build -b html -n docs/source/ docs/build/ ; fi

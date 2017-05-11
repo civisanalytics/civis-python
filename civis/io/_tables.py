@@ -1,6 +1,7 @@
 import json
 import csv
 import io
+import six
 import warnings
 
 from civis import APIClient
@@ -513,8 +514,11 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    buf = io.BytesIO()
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    buf = six.BytesIO()
+    if six.PY3:
+        txt = io.TextIOWrapper(buf, encoding='utf-8')
+    else:
+        txt = buf
     df.to_csv(txt, encoding='utf-8', index=False, **kwargs)
     txt.flush()
     buf.seek(0)

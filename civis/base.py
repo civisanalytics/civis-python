@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+from builtins import super
 import os
 from posixpath import join
 import threading
 from concurrent import futures
+import six
 import warnings
 
 from requests.packages.urllib3.util import Retry
@@ -95,7 +98,7 @@ class AggressiveRetry(Retry):
                                     has_retry_after=has_retry_after)
 
 
-class Endpoint:
+class Endpoint(object):
 
     _lock = threading.Lock()
 
@@ -119,7 +122,8 @@ class Endpoint:
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]
-            raise CivisAPIKeyError(auth_error) from CivisAPIError(response)
+            six.raise_from(CivisAPIKeyError(auth_error),
+                           CivisAPIError(response))
 
         if not response.ok:
             raise CivisAPIError(response)

@@ -1,10 +1,13 @@
 """Run CivisML jobs and retrieve the results
 """
+from builtins import super
 from collections import namedtuple
 import io
 import json
 import logging
 import os
+import shutil
+import six
 import tempfile
 import threading
 import warnings
@@ -24,6 +27,7 @@ except ImportError:
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, CivisJobFailure
+from civis.compat import FileNotFoundError
 import civis.io as cio
 from civis.futures import CivisFuture
 from civis.polling import _ResultPollingThread
@@ -73,7 +77,7 @@ def _block_and_handle_missing(method):
             # We get here if the modeling job failed to produce
             # any output and we don't have metadata.
             if self.exception():
-                raise self.exception() from None
+                six.raise_from(self.exception(), None)
             else:
                 raise
     return wrapper
@@ -82,8 +86,11 @@ def _block_and_handle_missing(method):
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
     civis_fname = 'modelpipeline_data.csv'
-    buf = io.BytesIO()
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    buf = six.BytesIO()
+    if six.PY3:
+        txt = io.TextIOWrapper(buf, encoding='utf-8')
+    else:
+        txt = buf
     df.to_csv(txt, encoding='utf-8', index=False)
     txt.flush()
     buf.seek(0)
@@ -117,16 +124,20 @@ def _decode_train_run(train_job_id, train_run_id, client):
         try:
             return int(train_run_id)
         except Exception as exc:
-            raise ValueError('Please provide valid train_run_id! Needs to be '
-                             'integer corresponding to a training run ID '
-                             'or one of "active" or "latest".') from exc
+            msg = ('Please provide valid train_run_id! Needs to be '
+                   'integer corresponding to a training run ID '
+                   'or one of "active" or "latest".')
+            six.raise_from(ValueError(msg), exc)
 
 
 def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
     """Download a Civis file using a reference on a previous run"""
     file_id = cio.file_id_from_run_output(fname, job_id, run_id, client=client)
     fpath = os.path.join(local_dir, fname)
-    os.makedirs(os.path.dirname(fpath), exist_ok=True)
+    # fname may contain a path
+    output_dir = os.path.dirname(fpath)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     with open(fpath, 'wb') as down_file:
         cio.civis_to_file(file_id, down_file, client=client)
     return fpath
@@ -146,9 +157,13 @@ def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     if not HAS_JOBLIB:
         raise ImportError('Install joblib to download models '
                           'from Civis Platform.')
-    with tempfile.TemporaryDirectory() as tempdir:
+    try:
+        tempdir = tempfile.mkdtemp()
         path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
-        return joblib.load(path)
+        obj = joblib.load(path)
+    finally:
+        shutil.rmtree(tempdir)
+    return obj
 
 
 def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
@@ -423,8 +438,8 @@ class ModelFuture(CivisFuture):
                     client=self.client)
             except CivisAPIError as err:
                 if err.status_code == 404:
-                    raise ValueError('There is no training data stored for '
-                                     'this job!') from err
+                    msg = 'There is no training data stored for this job!'
+                    six.raise_from(ValueError(msg), err)
                 else:
                     raise
 
@@ -608,7 +623,7 @@ class ModelPipeline:
     train_template_id = 8387
     predict_template_id = 8388
 
-    def __init__(self, model, dependent_variable, *,
+    def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
@@ -638,12 +653,12 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self):
         state = self.__dict__.copy()
         del state['_client']
         return state
 
-    def __setstate__(self, state: dict):
+    def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient(resources='all')
 
@@ -687,9 +702,10 @@ class ModelPipeline:
             container = client.scripts.get_containers(train_job_id)
         except CivisAPIError as api_err:
             if api_err.status_code == 404:
-                raise ValueError('There is no Civis Platform job with '
-                                 'script ID {} and run ID {}!'.format(
-                                     train_job_id, train_run_id)) from api_err
+                msg = ('There is no Civis Platform job with '
+                       'script ID {} and run ID {}!'.format(train_job_id,
+                                                            train_run_id))
+                six.raise_from(ValueError(msg), api_err)
             raise
 
         args = container.arguments
@@ -834,7 +850,8 @@ class ModelPipeline:
 
         if (HAS_SKLEARN and HAS_JOBLIB and
                 isinstance(self.model, BaseEstimator)):
-            with tempfile.TemporaryDirectory() as tempdir:
+            try:
+                tempdir = tempfile.mkdtemp()
                 fout = os.path.join(tempdir, 'estimator.pkl')
                 joblib.dump(self.model, fout, compress=3)
                 with open(fout, 'rb') as _fout:
@@ -842,7 +859,9 @@ class ModelPipeline:
                     estimator_file_id = cio.file_to_civis(
                         _fout, 'Estimator for ' + n, client=self._client)
                 self._input_model = self.model  # Keep the estimator
-            self.model = str(estimator_file_id)
+                self.model = str(estimator_file_id)
+            finally:
+                shutil.rmtree(tempdir)
         train_args['MODEL'] = self.model
 
         name = self.model_name + ' Train' if self.model_name else None
@@ -907,7 +926,7 @@ class ModelPipeline:
 
     @property
     @_check_fit_initiated
-    def state(self) -> str:
+    def state(self):
         return self.train_result_.state
 
     @property

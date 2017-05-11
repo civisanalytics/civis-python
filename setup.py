@@ -2,6 +2,14 @@ import re
 import os
 from setuptools import find_packages, setup
 
+CLASSIFIERS = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3.5',
+]
+
 
 def get_version():
     version = open("civis/_version.py", "r").read()
@@ -26,6 +34,7 @@ def main():
         required = f.read().splitlines()
 
     setup(
+        classifiers=CLASSIFIERS,
         name="civis",
         version=get_version(),
         author="Civis Analytics Inc",

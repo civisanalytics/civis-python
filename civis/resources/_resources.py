@@ -6,10 +6,6 @@ try:
     from inspect import Signature, Parameter
 except ImportError:
     from funcsigs import Signature, Parameter
-try:
-    from functools import lru_cache
-except ImportError:
-    from functools32 import lru_cache
 
 from jsonref import JsonRef
 import requests
@@ -17,6 +13,7 @@ from requests.adapters import HTTPAdapter
 
 import civis
 from civis.base import AggressiveRetry, Endpoint, get_base_url
+from civis.compat import lru_cache
 from civis._utils import camel_to_snake, to_camelcase
 
 
@@ -248,7 +245,7 @@ def create_method(params, verb, method_name, path, doc):
     sig_self = create_signature(["self"] + sig_args, sig_kwargs)
     f.__signature__ = sig_self
     f.__doc__ = doc
-    f.__name__ = method_name
+    f.__name__ = str(method_name)
     return f
 
 
@@ -431,7 +428,7 @@ def parse_api_spec(api_spec, api_version, resources):
         class_name, methods = parse_path(path, ops, api_version, resources)
         class_name_lower = class_name.lower()
         if methods and classes.get(class_name_lower) is None:
-            classes[class_name_lower] = type(class_name, (Endpoint,), {})
+            classes[class_name_lower] = type(str(class_name), (Endpoint,), {})
         for method_name, method in methods:
             setattr(classes[class_name_lower], method_name, method)
     return classes

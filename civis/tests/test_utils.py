@@ -1,5 +1,4 @@
-from unittest import mock
-
+from civis.compat import mock
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 
 

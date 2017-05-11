@@ -7,6 +7,7 @@ This is based on https://github.com/zalando/openapi-cli-client,
 which has an Apache 2.0 License:
 https://github.com/zalando/openapi-cli-client/blob/master/LICENSE
 """
+from __future__ import print_function
 
 
 import calendar
@@ -25,6 +26,7 @@ import requests
 import yaml
 from civis.cli._cli_commands import \
     civis_ascii_art, files_download_cmd, files_upload_cmd
+from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
@@ -130,11 +132,15 @@ def param_case_map(param_names):
     return result
 
 
-def invoke(method, path, op, *args, json_output=False, **kwargs):
-
+def invoke(method, path, op, *args, **kwargs):
+    """
+    If json_output is in `kwargs` then the output is json. Otherwise, it is
+    yaml.
+    """
     # Remove None b/c click passes everything in as None if it's not set.
     kwargs = {k: v for k, v in kwargs.items()
               if v is not None}
+    json_output = kwargs.pop('json_output', False)
 
     # Construct the body of the request.
     body = {}
