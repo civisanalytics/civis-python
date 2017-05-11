@@ -14,5 +14,5 @@ env:
     - CIVIS_API_KEY=FOOBAR
 before_script: flake8 civis
 script:
-    - py.test --cov civis
+    - py.test -rxs --cov civis
     - if [[ $TRAVIS_PYTHON_VERSION == 3* ]] ; then sphinx-build -b html -n docs/source/ docs/build/ ; fi
