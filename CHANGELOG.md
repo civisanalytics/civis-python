@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 1.5.0 - 2017-05-11
 ### Added
 - Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
 - Parameter ``local_api_spec`` to ``APIClient`` to allow creation of client from local cache
