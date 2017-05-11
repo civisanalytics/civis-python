@@ -8,7 +8,10 @@ if six.PY3:
     from inspect import signature
     FileNotFoundError = FileNotFoundError
 else:
-    import mock
+    try:
+        import mock
+    except ImportError:  # dev dependency
+        pass
     from functools32 import lru_cache
     from funcsigs import signature
     FileNotFoundError = IOError
