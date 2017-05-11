@@ -1,3 +1,4 @@
+from builtins import super
 from collections import namedtuple
 from six import BytesIO
 import json
