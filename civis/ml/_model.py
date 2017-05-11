@@ -134,8 +134,10 @@ def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
     """Download a Civis file using a reference on a previous run"""
     file_id = cio.file_id_from_run_output(fname, job_id, run_id, client=client)
     fpath = os.path.join(local_dir, fname)
-    if not os.path.exists(os.path.dirname(local_dir)):
-        os.makedirs(local_dir)
+    # fname may contain a path
+    output_dir = os.path.dirname(fpath)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     with open(fpath, 'wb') as down_file:
         cio.civis_to_file(file_id, down_file, client=client)
     return fpath
