@@ -255,6 +255,31 @@ def test_set_model_exception_memory_error():
     assert str(err.value) == err_msg
 
 
+def test_set_model_exception_unknown_error():
+    # If we really don't recognize the error, at least give the
+    # user a few lines of logs so they can maybe figure it out themselves.
+    mock_client = setup_client_mock(1, 2, state='failed')
+    logs = [{'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10005,
+             'level': 'error',
+             'message': 'Failed'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10003,
+             'level': 'error',
+             'message': 'Error on job: Process ended with an '
+                        'error, exiting: 137.'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10000,
+             'level': 'error',
+             'message': 'Oops'}]
+    err_msg = '\n'.join([l['message'] for l in logs])
+    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    fut = _model.ModelFuture(1, 2, client=mock_client)
+    with pytest.raises(CivisJobFailure) as err:
+        fut.result()
+    assert str(err.value).startswith(err_msg)
+
+
 class ModelFutureStub:
 
     def __init__(self, exc, trn, val):
@@ -262,6 +287,7 @@ class ModelFutureStub:
         self.metadata = trn
         self.validation_metadata = val
         self.is_training = True
+        self._exception_handled = False
 
     def set_exception(self, exc):
         self._exception = exc
