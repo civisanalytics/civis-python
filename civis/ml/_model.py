@@ -151,7 +151,7 @@ def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
         return joblib.load(path)
 
 
-def _exception_from_logs(job_id, run_id, client, nlog=15):
+def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
     """Create an exception if the log has a recognizable error
 
     Search "error" emits in the last ``n_log`` lines.
@@ -160,14 +160,19 @@ def _exception_from_logs(job_id, run_id, client, nlog=15):
     - MemoryError
     """
     logs = client.scripts.list_containers_runs_logs(job_id, run_id, limit=nlog)
-    msgs = [l['message'] for l in logs if l['level'] == 'error']
 
     # Check for memory errors
+    msgs = [l['message'] for l in logs if l['level'] == 'error']
     mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
     if mem_err:
         exc = MemoryError(mem_err[0])
     else:
-        exc = None
+        # Unknown error; return logs to the user as a sort of traceback
+        all_logs = '\n'.join([l['message'] for l in logs])
+        if isinstance(exc, CivisJobFailure):
+            exc.error_message = all_logs + '\n' + exc.error_message
+        else:
+            exc = CivisJobFailure(all_logs)
     return exc
 
 
@@ -279,6 +284,7 @@ class ModelFuture(CivisFuture):
         self._train_data, self._train_data_fname = None, None
         self._train_metadata = None
         self._table, self._estimator = None, None
+        self._exception_handled = False
         self.add_done_callback(self._set_model_exception)
 
     @property
@@ -295,6 +301,13 @@ class ModelFuture(CivisFuture):
         If it indicates an exception, replace the generic
         ``CivisJobFailure`` by a more informative ``ModelError``.
         """
+        # Prevent inifinite recursion: this function calls `set_exception`,
+        # which triggers callbacks (i.e. re-calls this function).
+        if fut._exception_handled:
+            return
+        else:
+            fut._exception_handled = True
+
         try:
             meta = fut.metadata
             if fut.is_training and meta['run']['status'] == 'succeeded':
@@ -314,13 +327,12 @@ class ModelFuture(CivisFuture):
                       ModelError('Model run failed with stack trace:\n'
                                  '{}'.format(meta['run']['stack_trace']),
                                  est, meta))
-        except (FileNotFoundError, CivisJobFailure):
+        except (FileNotFoundError, CivisJobFailure) as exc:
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
-            # check the tail of the log for a clearer exception
-            exc = _exception_from_logs(fut.job_id, fut.run_id, fut.client)
-            if exc:
-                fut.set_exception(exc)
+            # check the tail of the log for a clearer exception.
+            exc = _exception_from_logs(exc, fut.job_id, fut.run_id, fut.client)
+            fut.set_exception(exc)
         except KeyError:
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
