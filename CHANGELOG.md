@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Convert `README.md` (Markdown) to `README.rst` (reStructuredText).
 
 ## 1.5.0 - 2017-05-11
 ### Added

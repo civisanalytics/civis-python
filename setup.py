@@ -42,7 +42,7 @@ def main():
         url="https://www.civisanalytics.com",
         description="Access the Civis Platform API",
         packages=find_packages(),
-        long_description=read('README.md'),
+        long_description=read('README.rst'),
         install_requires=required,
         extras_require={
             'pubnub': ['pubnub>=4.0.0,<=4.99']
