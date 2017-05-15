@@ -21,6 +21,11 @@ try:
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
 
 from civis import APIClient
 from civis.base import CivisAPIError, CivisJobFailure
@@ -539,6 +544,19 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     assert mp.parameters == json.loads(container.arguments['PARAMS'])
     assert mp.job_resources == resources
     assert mp.model_name == container.name[:-6]
+
+
+@pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
+def test_modelpipeline_classmethod_constructor_nonint_id():
+    mock_client = setup_client_mock(1, 2)
+    mock_client.scripts.get_containers.return_value = container_response_stub()
+
+    mp = _model.ModelPipeline.from_existing(np.int64(1), np.int64(2),
+                                            client=mock_client)
+
+    out = json.dumps({'job': mp.train_result_.job_id,
+                      'run': mp.train_result_.run_id})
+    assert out == '{"job": 1, "run": 2}'
 
 
 @mock.patch.object(_model, 'ModelFuture', autospec=True)

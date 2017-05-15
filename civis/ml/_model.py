@@ -113,7 +113,7 @@ def _decode_train_run(train_job_id, train_run_id, client):
     try:
         return int(train_run_id)
     except ValueError:
-        container = client.scripts.get_containers(train_job_id)
+        container = client.scripts.get_containers(int(train_job_id))
         if train_run_id == 'active':
             train_run_id = container.arguments.get('ACTIVE_BUILD', find_one(
                 container.params, name='ACTIVE_BUILD'))['default']
@@ -283,7 +283,7 @@ class ModelFuture(CivisFuture):
         if client is None:
             client = APIClient(resources='all')
         super().__init__(client.scripts.get_containers_runs,
-                         [job_id, run_id],
+                         [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
@@ -694,6 +694,7 @@ class ModelPipeline:
         >>> model.train_result_.metrics['roc_auc']
         0.843
         """
+        train_job_id = int(train_job_id)  # Convert np.int to int
         if client is None:
             client = APIClient(resources='all')
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
@@ -885,7 +886,8 @@ class ModelPipeline:
     def _create_custom_run(self, template_id, job_name=None, table_name=None,
                            database_name=None, file_id=None, args=None,
                            resources=None, polling_interval=None):
-
+        # Handle int-like but non-Python-integer types such as np.int64
+        file_id = int(file_id) if file_id is not None else file_id
         script_arguments = {'TABLE_NAME': table_name,
                             'CIVIS_FILE_ID': file_id,
                             'DEBUG': self.verbose}
