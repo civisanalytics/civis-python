@@ -316,7 +316,7 @@ class ModelFuture(CivisFuture):
         If it indicates an exception, replace the generic
         ``CivisJobFailure`` by a more informative ``ModelError``.
         """
-        # Prevent inifinite recursion: this function calls `set_exception`,
+        # Prevent infinite recursion: this function calls `set_exception`,
         # which triggers callbacks (i.e. re-calls this function).
         if fut._exception_handled:
             return
@@ -328,15 +328,16 @@ class ModelFuture(CivisFuture):
             if fut.is_training and meta['run']['status'] == 'succeeded':
                 # if training job and job succeeded, check validation job
                 meta = fut.validation_metadata
-            try:
-                # This will fail if the user doesn't have joblib installed
-                est = fut.estimator
-            except Exception:  # NOQA
-                est = None
-            fut.set_exception(
-                  ModelError('Model run failed with stack trace:\n'
-                             '{}'.format(meta['run']['stack_trace']),
-                             est, meta))
+            if meta['run']['status'] == 'exception':
+                try:
+                    # This will fail if the user doesn't have joblib installed
+                    est = fut.estimator
+                except Exception:  # NOQA
+                    est = None
+                fut.set_exception(
+                      ModelError('Model run failed with stack trace:\n'
+                                 '{}'.format(meta['run']['stack_trace']),
+                                 est, meta))
         except (FileNotFoundError, CivisJobFailure) as exc:
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),

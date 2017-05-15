@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
+- Fixed a bug which made the ``ModelPipeline`` unable to generate prediction jobs for models trained with v0.5 templates (#84).
+
 ## 1.5.0 - 2017-05-11
 ### Added
 - Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure

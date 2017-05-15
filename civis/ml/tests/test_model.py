@@ -282,6 +282,19 @@ def test_set_model_exception_unknown_error():
     assert str(err.value).startswith(err_msg)
 
 
+@mock.patch.object(_model.cio, "file_to_json", autospec=True,
+                   return_value={'run': {'status': 'succeeded',
+                                         'stack_trace': None}})
+def test_set_model_exception_no_exception(mock_f2j):
+    # If nothing went wrong, we shouldn't set an exception
+    ro = [{'name': 'model_info.json', 'object_id': 137, 'object_type': 'File'},
+          {'name': 'metrics.json', 'object_id': 139, 'object_type': 'File'}]
+    ro = [Response(o) for o in ro]
+    mock_client = setup_client_mock(1, 2, state='succeeded', run_outputs=ro)
+    fut = _model.ModelFuture(1, 2, client=mock_client)
+    assert fut.exception() is None
+
+
 class ModelFutureStub:
 
     def __init__(self, exc, trn, val):
