@@ -569,7 +569,7 @@ def test_modelpipeline_classmethod_constructor_nonint_id():
 
     out = json.dumps({'job': mp.train_result_.job_id,
                       'run': mp.train_result_.run_id})
-    assert out == '{"job": 1, "run": 2}'
+    assert out == '{"job": 1, "run": 2}' or out == '{"run": 2, "job": 1}'
 
 
 @mock.patch.object(_model, 'ModelFuture', autospec=True)
