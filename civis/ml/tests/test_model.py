@@ -561,6 +561,9 @@ def test_modelpipeline_classmethod_constructor(mock_future,
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 def test_modelpipeline_classmethod_constructor_nonint_id():
+    # Verify that we can still JSON-serialize job and run IDs even
+    # if they're entered in a non-JSON-able format.
+    # We need to turn them into JSON to set them as script arguments.
     mock_client = setup_client_mock(1, 2)
     mock_client.scripts.get_containers.return_value = container_response_stub()
 
