@@ -890,8 +890,12 @@ class ModelPipeline:
                             'CIVIS_FILE_ID': file_id,
                             'DEBUG': self.verbose}
         if database_name:
-            db_id = self._client.get_database_id(database_name)
-            script_arguments['DB'] = {'database': db_id}
+            if template_id < 8000:
+                # v0 jobs used a different database parameter
+                script_arguments['DB_NAME'] = database_name
+            else:
+                db_id = self._client.get_database_id(database_name)
+                script_arguments['DB'] = {'database': db_id}
         resources = resources or {}
         for key, value in resources.items():
             if value:
@@ -1043,8 +1047,12 @@ class ModelPipeline:
         if output_table:
             predict_args['OUTPUT_TABLE'] = output_table
         if output_db:
-            output_db_id = self._client.get_database_id(output_db)
-            predict_args['OUTPUT_DB'] = {'database': output_db_id}
+            if self.predict_template_id == 7021:
+                # v0 jobs used a different database parameter
+                predict_args['OUTPUT_DB'] = output_db
+            else:
+                output_db_id = self._client.get_database_id(output_db)
+                predict_args['OUTPUT_DB'] = {'database': output_db_id}
         if manifest:
             predict_args['MANIFEST'] = manifest
         if sql_where:
