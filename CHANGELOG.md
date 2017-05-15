@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Convert `README.md` (Markdown) to `README.rst` (reStructuredText).
 
 ### Fixed
 - Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
