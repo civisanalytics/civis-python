@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Handle the case when inputs to ``ModelFuture`` are ``numpy.int64`` (or other non-``integer`` ints) (#85).
+
 ## 1.5.0 - 2017-05-11
 ### Added
 - Retries to http request in ``get_swagger_spec`` to make calls to ``APIClient`` robust to network failure
