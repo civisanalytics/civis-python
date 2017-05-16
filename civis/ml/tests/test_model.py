@@ -465,8 +465,9 @@ def test_estimator(mock_le):
         "The Estimator is only downloaded once and cached."
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output")
-@mock.patch.object(_model.cio, "file_to_json", return_value='foo')
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo',
+                   autospec=True)
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
 def test_validation_metadata_training(mock_spe, mock_f2f,
                                       mock_file_id_from_run_output):
@@ -480,8 +481,9 @@ def test_validation_metadata_training(mock_spe, mock_f2f,
                                                     client=mock.ANY)
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output")
-@mock.patch.object(_model.cio, "file_to_json", return_value='foo')
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo',
+                   autospec=True)
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
 def test_validation_metadata_prediction(mock_spe, mock_f2f,
                                         mock_file_id_from_run_output):
