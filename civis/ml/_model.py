@@ -393,6 +393,7 @@ class ModelFuture(CivisFuture):
 
     def __setstate__(self, state):
         self.__dict__ = state
+        self._condition = threading.Condition()
         self.client = APIClient(resources='all')
         if getattr(self, '_pubnub', None) is True:
             # Re-subscribe to notifications channel
@@ -400,7 +401,6 @@ class ModelFuture(CivisFuture):
         self._polling_thread = _ResultPollingThread(self._check_result, (),
                                                     self.polling_interval)
         self.poller = self.client.scripts.get_containers_runs
-        self._condition = threading.Condition()
         self.add_done_callback(self._set_model_exception)
 
     @property
