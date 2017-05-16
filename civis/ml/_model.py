@@ -491,8 +491,10 @@ class ModelFuture(CivisFuture):
     @_block_and_handle_missing
     def validation_metadata(self):
         if self._val_metadata is None:
-            fid = cio.file_id_from_run_output('metrics.json', self.job_id,
-                                              self.run_id, client=self.client)
+            fid = cio.file_id_from_run_output('metrics.json',
+                                              self.train_job_id,
+                                              self.train_run_id,
+                                              client=self.client)
             self._val_metadata = cio.file_to_json(fid, client=self.client)
         return self._val_metadata
 

@@ -465,26 +465,60 @@ def test_estimator(mock_le):
         "The Estimator is only downloaded once and cached."
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output",
-                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_id_from_run_output")
 @mock.patch.object(_model.cio, "file_to_json", return_value='foo')
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
-def test_validation_metadata(mock_spe, mock_f2f):
+def test_validation_metadata_training(mock_spe, mock_f2f,
+                                      mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
+
     assert mf.validation_metadata == 'foo'
     mock_f2f.assert_called_once_with(11, client=c)
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output",
-                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_id_from_run_output")
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo')
+@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+def test_validation_metadata_prediction(mock_spe, mock_f2f,
+                                        mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(1, 2, 3, 7, client=c)
+
+    assert mf.validation_metadata == 'foo'
+    mock_f2f.assert_called_once_with(11, client=c)
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json",
                    mock.MagicMock(return_value={'metrics': 'foo'}))
-def test_metrics():
+def test_metrics_training(mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json",
+                   mock.MagicMock(return_value={'metrics': 'foo'}))
+def test_metrics_prediction(mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(1, 2, 3, 7, client=c)
+
+    assert mf.metrics == 'foo'
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
 
 
 #####################################
