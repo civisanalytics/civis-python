@@ -3,13 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Fixed a bug where ``ModelFuture.validation_metadata`` would not source training job metadata for a ``ModelFuture`` corresponding to prediction job (#90).
 
-## 1.5.1 - 2017-05-16
+## 1.5.1 - 2017-05-15
 ### Fixed
 - Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
 - Fixed a bug which made the ``ModelPipeline`` unable to generate prediction jobs for models trained with v0.5 templates (#84).
 - Handle the case when inputs to ``ModelFuture`` are ``numpy.int64`` (or other non-``integer`` ints) (#85).
-- Fixed a bug where ``ModelFuture.validation_metadata`` would not source training job metadata for a ``ModelFuture`` corresponding to prediction job (#90).
 
 ### Changed
 - Convert `README.md` (Markdown) to `README.rst` (reStructuredText).
