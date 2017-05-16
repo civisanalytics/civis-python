@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Added more locks to improve thread safety in the ``PollableResult`` and ``CivisFuture``.
+
 ## 1.5.1 - 2017-05-15
 ### Fixed
 - Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
