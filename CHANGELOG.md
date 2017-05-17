@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Fix issue with Python 2/3 dependency management (#89).
+
 ## 1.5.1 - 2017-05-15
 ### Fixed
 - Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
