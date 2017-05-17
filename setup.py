@@ -1,5 +1,6 @@
 import re
 import os
+import setuptools
 from setuptools import find_packages, setup
 
 CLASSIFIERS = [
@@ -9,6 +10,10 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.5',
 ]
+
+
+if int(setuptools.__version__.split(".", 1)[0]) < 18:
+    raise AssertionError("setuptools >= 18 must be installed")
 
 
 def get_version():
@@ -24,14 +29,9 @@ def get_version():
     return ".".join([MAJOR, MINOR, MICRO])
 
 
-def read(fname):
-    with open(os.path.join(os.path.dirname(__file__), fname)) as _in:
-        return _in.read()
-
-
 def main():
-    with open('requirements.txt') as f:
-        required = f.read().splitlines()
+    with open('README.rst') as README_FILE:
+        README = README_FILE.read()
 
     setup(
         classifiers=CLASSIFIERS,
@@ -42,9 +42,22 @@ def main():
         url="https://www.civisanalytics.com",
         description="Access the Civis Platform API",
         packages=find_packages(),
-        long_description=read('README.rst'),
-        install_requires=required,
+        long_description=README,
+        install_requires=[
+            'pyyaml>=3.0,<=3.99',
+            'click>=6.0,<=6.99',
+            'jsonref>=0.1.0,<=0.1.99',
+            'requests>=2.12.0,==2.*',
+            'jsonschema>=2.5.1,==2.*',
+            'six>=1.10,<=1.99',
+        ],
         extras_require={
+            ':python_version=="2.7"': [
+                'funcsigs==1.0.2',
+                'future>=0.16,<=0.99',
+                'futures==3.1.1',
+                'functools32>=3.2<=3.99'
+            ],
             'pubnub': ['pubnub>=4.0.0,<=4.99']
         },
         entry_points={
@@ -53,6 +66,7 @@ def main():
             ]
         }
     )
+
 
 if __name__ == "__main__":
     main()

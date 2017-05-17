@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed a bug where ``ModelFuture.validation_metadata`` would not source training job metadata for a ``ModelFuture`` corresponding to prediction job (#90).
 - Added more locks to improve thread safety in the ``PollableResult`` and ``CivisFuture``.
 
+- Fix issue with Python 2/3 dependency management (#89).
+
 ## 1.5.1 - 2017-05-15
 ### Fixed
 - Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
