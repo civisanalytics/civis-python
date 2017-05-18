@@ -56,7 +56,7 @@ def main():
                 'funcsigs==1.0.2',
                 'future>=0.16,<=0.99',
                 'futures==3.1.1',
-                'functools32>=3.2<=3.99'
+                'functools32>=3.2,<=3.99'
             ],
             'pubnub': ['pubnub>=4.0.0,<=4.99']
         },
