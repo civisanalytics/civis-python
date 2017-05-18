@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
 
 ## 1.5.2 - 2017-05-17
 ### Fixed
