@@ -20,6 +20,7 @@ from Civis will all be treated as strings.
    :toctree: generated
 
    civis_to_csv
+   civis_to_multifile_csv
    csv_to_civis
    dataframe_to_civis
    read_civis
@@ -38,7 +39,10 @@ be stored in platform via the files endpoint.
    :toctree: generated
 
    civis_to_file
+   file_id_from_run_output
    file_to_civis
+   file_to_dataframe
+   file_to_json
 
 Databases
 ---------

@@ -286,7 +286,7 @@ def file_to_dataframe(file_id, compression='infer', client=None,
 
     See Also
     --------
-    :func:`~pandas.read_csv`
+    pandas.read_csv
     """
     if not HAS_PANDAS:
         raise ImportError('file_to_dataframe requires pandas to be installed.')
