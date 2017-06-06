@@ -26,6 +26,7 @@ except ImportError:
     HAS_SKLEARN = False
 
 from civis import APIClient, find_one
+from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
 import civis.io as cio
@@ -560,6 +561,9 @@ class ModelPipeline:
         Memory requested from Civis Platform for training jobs, in MiB
     disk_requested : float, optional
         Disk space requested on Civis Platform for training jobs, in GB
+    notifications : dict
+        See :func:`~civis.resources._resources.Scripts.post_custom` for
+        further documentation about email and URL notification.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -631,7 +635,7 @@ class ModelPipeline:
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
-                 disk_requested=None, verbose=False):
+                 disk_requested=None, notifications=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -649,6 +653,7 @@ class ModelPipeline:
         self.job_resources = {'REQUIRED_CPU': cpu_requested,
                               'REQUIRED_MEMORY': memory_requested,
                               'REQUIRED_DISK_SPACE': disk_requested}
+        self.notifications = notifications or {}
         self.verbose = verbose
 
         if client is None:
@@ -731,6 +736,8 @@ class ModelPipeline:
         if name.endswith(' Train'):
             # Strip object-applied suffix
             name = name[:-len(' Train')]
+        notifications = {camel_to_snake(key): val for key, val
+                         in container.notifications.items()}
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -744,6 +751,7 @@ class ModelPipeline:
                     cpu_requested=cpu_requested,
                     disk_requested=disk_requested,
                     memory_requested=memory_requested,
+                    notifications=notifications,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
@@ -913,7 +921,8 @@ class ModelPipeline:
         container = self._client.scripts.post_custom(
             from_template_id=template_id,
             name=job_name,
-            arguments=script_arguments)
+            arguments=script_arguments,
+            notifications=self.notifications)
         log.info('Created custom script %s.', container.id)
 
         run = self._client.scripts.post_custom_runs(container.id)

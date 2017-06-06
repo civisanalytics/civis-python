@@ -28,6 +28,7 @@ except ImportError:
     HAS_NUMPY = False
 
 from civis import APIClient
+from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock, FileNotFoundError
 from civis.response import Response
@@ -558,7 +559,18 @@ def container_response_stub(from_template_id=8387):
         'REQUIRED_MEMORY': 9999,
         'REQUIRED_DISK_SPACE': -20
     }
+    notifications = {
+        'urls': [],
+        'failureEmailAddresses': [],
+        'failureOn': True,
+        'stallWarningMinutes': None,
+        'successEmailAddresses': [],
+        'successEmailBody': None,
+        'successEmailSubject': None,
+        'successOn': True
+    }
     return Response(dict(arguments=arguments,
+                         notifications=notifications,
                          required_resources={},
                          docker_image_tag=None,
                          docker_command=None,
@@ -593,6 +605,8 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     assert mp.parameters == json.loads(container.arguments['PARAMS'])
     assert mp.job_resources == resources
     assert mp.model_name == container.name[:-6]
+    assert mp.notifications == {camel_to_snake(key): val for key, val
+                                in container.notifications.items()}
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
