@@ -26,6 +26,7 @@ except ImportError:
     HAS_SKLEARN = False
 
 from civis import APIClient, find_one
+from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
 import civis.io as cio
@@ -560,18 +561,9 @@ class ModelPipeline:
         Memory requested from Civis Platform for training jobs, in MiB
     disk_requested : float, optional
         Disk space requested on Civis Platform for training jobs, in GB
-    notification_urls : list
-        URLs to receive a POST request at job completion
-    success_email_subject : string
-        Custom subject line for success e-mail.
-    success_email_body : string
-        Custom body text for success e-mail, written in Markdown.
-    success_email_addresses : list
-        Addresses to notify by e-mail when the job completes successfully.
-    failure_email_addresses : list
-        Addresses to notify by e-mail when the job fails.
-    stall_warning_minutes : integer
-        Stall warning emails will be sent after this amount of minutes.
+    notifications : dict
+        See :func:`~civis.resources._resources.Scripts.post_custom` for
+        further documentation about email and URL notification.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -643,10 +635,7 @@ class ModelPipeline:
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
-                 disk_requested=None, notification_urls=None,
-                 success_email_subject=None, success_email_body=None,
-                 success_email_addresses=None, failure_email_addresses=None,
-                 stall_warning_minutes=None, verbose=False):
+                 disk_requested=None, notifications=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -664,16 +653,7 @@ class ModelPipeline:
         self.job_resources = {'REQUIRED_CPU': cpu_requested,
                               'REQUIRED_MEMORY': memory_requested,
                               'REQUIRED_DISK_SPACE': disk_requested}
-        self.notifications = {
-            'urls': notification_urls or [],
-            'success_email_subject': success_email_subject,
-            'success_email_body': success_email_body,
-            'success_email_addresses': success_email_addresses or [],
-            'failure_email_addresses': failure_email_addresses or [],
-            'stall_warning_minutes': stall_warning_minutes,
-            'success_on': True,
-            'failure_on': True
-        }
+        self.notifications = notifications or {}
         self.verbose = verbose
 
         if client is None:
@@ -756,13 +736,8 @@ class ModelPipeline:
         if name.endswith(' Train'):
             # Strip object-applied suffix
             name = name[:-len(' Train')]
-        notifications = container.notifications
-        notification_urls = notifications['urls']
-        success_email_subject = notifications['successEmailSubject']
-        success_email_body = notifications['successEmailBody']
-        success_email_addresses = notifications['successEmailAddresses']
-        failure_email_addresses = notifications['failureEmailAddresses']
-        stall_warning_minutes = notifications['stallWarningMinutes']
+        notifications = {camel_to_snake(key): val for key, val
+                         in container.notifications.items()}
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -776,12 +751,7 @@ class ModelPipeline:
                     cpu_requested=cpu_requested,
                     disk_requested=disk_requested,
                     memory_requested=memory_requested,
-                    notification_urls=notification_urls,
-                    success_email_subject=success_email_subject,
-                    success_email_body=success_email_body,
-                    success_email_addresses=success_email_addresses,
-                    failure_email_addresses=failure_email_addresses,
-                    stall_warning_minutes=stall_warning_minutes,
+                    notifications=notifications,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
