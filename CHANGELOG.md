@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Changed
+- Edited example for safer null value handling
+
 ### Added
 - Added email notifications option to ``ModelPipeline``.
 
