@@ -192,6 +192,18 @@ def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
     return exc
 
 
+def _get_credential(credential, client=None):
+    """Get the credential ID from either an integer or a string."""
+    try:
+        return int(credential)
+    except ValueError:
+        client = client or APIClient()
+        cred = find_one(client.credentials.list(), name=credential)
+        if not cred:
+            raise ValueError("Credential '{}' not found!".format(credential))
+        return cred.id
+
+
 class ModelFuture(CivisFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
@@ -564,6 +576,15 @@ class ModelPipeline:
     notifications : dict
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
+    dependencies : array, optional
+        List of packages to install from PyPI or Github. If a private Github
+        pacakge is specificed, please include a ``github_token_name``
+        argument as well (see below).
+    github_token_name : str, optional
+        Name of Github API token stored in platform as the password field in a
+        custom platform credential. Used only when installing private Github
+        repositories. Note, these API tokens can be generated from this URL:
+        https://github.com/settings/tokens.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -635,7 +656,8 @@ class ModelPipeline:
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
-                 disk_requested=None, notifications=None, verbose=False):
+                 disk_requested=None, notifications=None,
+                 dependencies=None, github_token_name=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -654,6 +676,8 @@ class ModelPipeline:
                               'REQUIRED_MEMORY': memory_requested,
                               'REQUIRED_DISK_SPACE': disk_requested}
         self.notifications = notifications or {}
+        self.dependencies = dependencies
+        self.github_token_name = github_token_name
         self.verbose = verbose
 
         if client is None:
@@ -738,6 +762,10 @@ class ModelPipeline:
             name = name[:-len(' Train')]
         notifications = {camel_to_snake(key): val for key, val
                          in container.notifications.items()}
+        dependencies = args.get('DEPENDENCIES', None)
+        if dependencies:
+            dependencies = dependencies.split()
+        github_token_name = args.get('GITHUB')
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -752,6 +780,8 @@ class ModelPipeline:
                     disk_requested=disk_requested,
                     memory_requested=memory_requested,
                     notifications=notifications,
+                    dependencies=dependencies,
+                    github_token_name=github_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
@@ -859,6 +889,8 @@ class ModelPipeline:
             train_args['EXCLUDE_COLS'] = ' '.join(self.excluded_columns)
         if fit_params:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
+        if self.dependencies:
+            train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
 
         if (HAS_SKLEARN and HAS_JOBLIB and
                 isinstance(self.model, BaseEstimator)):
@@ -915,6 +947,9 @@ class ModelPipeline:
                 # Default resources are set on the template. Only
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
+        if self.github_token_name:
+            script_arguments['GITHUB'] = _get_credential(
+                self.github_token_name)
 
         script_arguments.update(args or {})
 

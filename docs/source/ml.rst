@@ -77,6 +77,22 @@ method. If the class you're using doesn't have a ``predict_proba`` method,
 you can add one by wrapping it in a :class:`~sklearn.calibration.CalibratedClassifierCV`.
 
 
+Custom Dependencies
+-------------------
+
+Installing packages to from PyPI is straightforward. You can specify a `dependencies`
+argument to `~civis.ml.ModelPipeline` which will install the dependencies in your runtime
+environment. Installing a package from github only requires passing the HTTPS URL in
+the form of, for example, `git+https://github.com/scikit-learn/scikit-learn`.
+
+Additionally, you can store your Github API Token in platform as a credential to use for
+installing private Github repositores. Simply go to Github at the
+`https://github.com/settings/tokens` URL, copy your token into the password field of a
+credential, and pass the credential name to the `github_token_name` argument in
+`~civis.ml.ModelPipeline`. Note, installing private dependencies (i.e., submodules) as
+part of your package is not yet supported.
+
+
 Asynchronous Execution
 ======================
 
