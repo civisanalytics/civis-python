@@ -4,11 +4,13 @@ from collections import OrderedDict
 
 import pytest
 
-from civis.base import CivisJobFailure
+from civis import APIClient, response
+from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 try:
     from civis.futures import (CivisFuture,
+                               ContainerFuture,
                                has_pubnub,
                                JobCompleteListener,
                                _LONG_POLLING_INTERVAL)
@@ -250,3 +252,143 @@ class CivisFutureTests(CivisVCRTestCase):
         assert hasattr(future, '_pubnub') is False
 
         clear_lru_cache()
+
+
+# A function to raise fake API errors the first
+# num_failures times it is called.
+def _make_error_func(num_failures, failure_is_error=False):
+    """Raise API errors multiple times before succeeding
+
+    Test error-handling code by using this to mock
+    calls to post_containers_runs or get_containers_runs.
+
+    Parameters
+    ----------
+    num_failures: int
+        Fail this many times before returning a success
+    failure_is_error: bool
+        If True, "failure" means raising a `CivisAPIError`.
+
+    Returns
+    -------
+    MockRun
+        Mock which imitates the result of a `post_containers_runs`
+        or `get_containers_runs` call
+    """
+    counter = {'failures': 0}  # Use a dict so we can modify it in the closure
+
+    def mock_api_error(job_id, run_id):
+        if counter['failures'] < num_failures:
+            counter['failures'] += 1
+            if failure_is_error:
+                raise CivisAPIError(mock.MagicMock())
+            else:
+                return response.Response({'id': run_id,
+                                          'container_id': job_id,
+                                          'state': 'failed'})
+        else:
+            return response.Response({'id': run_id,
+                                      'container_id': job_id,
+                                      'state': 'succeeded'})
+    return mock_api_error
+
+
+def _setup_client_mock(job_id=-10, run_id=100, n_failures=8,
+                       failure_is_error=False):
+    """Return a Mock set up for use in testing container scripts
+
+    Parameters
+    ----------
+    job_id: int
+        Mock-create containers with this ID when calling `post_containers`
+        or `post_containers_runs`.
+    run_id: int
+        Mock-create runs with this ID when calling `post_containers_runs`.
+    n_failures: int
+        When calling `get_containers_runs`, fail this many times
+        before succeeding.
+    failure_is_error: bool
+        If True, "failure" means raising a `CivisAPIError`.
+
+    Returns
+    -------
+    `unittest.mock.Mock`
+        With `post_containers`, `post_containers_runs`, and
+        `get_containers_runs` methods set up.
+    """
+    c = mock.Mock()
+    c.__class__ = APIClient
+
+    mock_container = response.Response({'id': job_id})
+    c.scripts.post_containers.return_value = mock_container
+    c.scripts.post_custom.return_value = mock_container
+    mock_container_run = response.Response({'id': run_id,
+                                            'container_id': job_id,
+                                            'state': 'queued'})
+    c.scripts.post_containers_runs.return_value = mock_container_run
+    c.jobs.post_runs.return_value = mock_container_run
+    c.scripts.get_containers_runs.side_effect = _make_error_func(
+        n_failures, failure_is_error)
+
+    def change_state_to_cancelled(job_id):
+        mock_container_run.state = "cancelled"
+        return mock_container_run
+
+    c.scripts.post_cancel.side_effect = change_state_to_cancelled
+    del c.channels  # Remove "channels" endpoint to fall back on polling
+
+    return c
+
+
+def test_future_no_retry_error():
+    # Verify that with no retries, exceptions on job polling
+    #  are raised to the user
+    c = _setup_client_mock(failure_is_error=True)
+    fut = ContainerFuture(-10, 100, polling_interval=0.001, client=c)
+    with pytest.raises(CivisAPIError):
+        fut.result()
+
+
+def test_future_no_retry_failure():
+    # Verify that with no retries, job failures are raised as
+    # exceptions for the user
+    c = _setup_client_mock(failure_is_error=False)
+    fut = ContainerFuture(-10, 100, polling_interval=0.001, client=c)
+    with pytest.raises(CivisJobFailure):
+        fut.result()
+
+
+def test_future_not_enough_retry_error():
+    # Verify that if polling the run is still erroring after all retries
+    # are exhausted, the error will be raised for the user.
+    c = _setup_client_mock(failure_is_error=True)
+    fut = ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01,
+                          client=c)
+    with pytest.raises(CivisAPIError):
+        fut.result()
+
+
+def test_future_not_enough_retry_failure():
+    # Verify that if the job is still failing after all retries
+    # are exhausted, the job failure will be raised for the user.
+    c = _setup_client_mock(failure_is_error=False)
+    fut = ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01,
+                          client=c)
+    with pytest.raises(CivisJobFailure):
+        fut.result()
+
+
+def test_future_retry_failure():
+    # Verify that we can retry through API errors until a job succeeds
+    c = _setup_client_mock(failure_is_error=False)
+    fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01,
+                          client=c)
+    assert fut.result().state == 'succeeded'
+
+
+def test_future_retry_error():
+    # Verify that we can retry through job failures until it succeeds
+    c = _setup_client_mock(failure_is_error=True)
+    fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01,
+                          client=c)
+    assert fut.result().state == 'succeeded'
