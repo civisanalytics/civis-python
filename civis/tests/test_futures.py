@@ -256,9 +256,10 @@ class CivisFutureTests(CivisVCRTestCase):
 
         clear_lru_cache()
 
+
 def _check_executor(from_template_id=None):
-    script_id, run_id = 42, 43
-    c = _setup_client_mock(script_id, run_id, n_failures=0)
+    job_id, run_id = 42, 43
+    c = _setup_client_mock(job_id, run_id, n_failures=0)
     mock_run = c.scripts.post_containers_runs()
     if from_template_id:
         bpe = CustomPoolExecutor(from_template_id=from_template_id,
@@ -268,10 +269,10 @@ def _check_executor(from_template_id=None):
         bpe = ContainerPoolExecutor(client=c, polling_interval=0.01)
         future = bpe.submit("foo")
 
-    # Mock and test running, future.script_id, and done()
+    # Mock and test running, future.job_id, and done()
     mock_run.state = "running"
     assert future.running(), "future is incorrectly marked as not running"
-    assert future.script_id == script_id, "script_id not stored properly"
+    assert future.job_id == job_id, "job_id not stored properly"
     assert not future.done(), "future is incorrectly marked as done"
 
     future.cancel()
