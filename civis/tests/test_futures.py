@@ -8,9 +8,12 @@ from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
+from civis.futures import (ContainerFuture,
+                           ContainerPoolExecutor,
+                           CustomPoolExecutor,
+                           create_docker_command)
 try:
     from civis.futures import (CivisFuture,
-                               ContainerFuture,
                                has_pubnub,
                                JobCompleteListener,
                                _LONG_POLLING_INTERVAL)
@@ -252,6 +255,63 @@ class CivisFutureTests(CivisVCRTestCase):
         assert hasattr(future, '_pubnub') is False
 
         clear_lru_cache()
+
+def _check_executor(from_template_id=None):
+    script_id, run_id = 42, 43
+    c = _setup_client_mock(script_id, run_id, n_failures=0)
+    mock_run = c.scripts.post_containers_runs()
+    if from_template_id:
+        bpe = CustomPoolExecutor(from_template_id=from_template_id,
+                                 client=c, polling_interval=0.01)
+        future = bpe.submit(my_param='spam')
+    else:
+        bpe = ContainerPoolExecutor(client=c, polling_interval=0.01)
+        future = bpe.submit("foo")
+
+    # Mock and test running, future.script_id, and done()
+    mock_run.state = "running"
+    assert future.running(), "future is incorrectly marked as not running"
+    assert future.script_id == script_id, "script_id not stored properly"
+    assert not future.done(), "future is incorrectly marked as done"
+
+    future.cancel()
+
+    # Mock and test cancelled()
+    assert future.cancelled(), "cancelled() did not return True as expected"
+    assert not future.running(), "running() did not return False as expected"
+
+    # Mock and test done()
+    mock_run.state = "succeeded"
+    assert future.done(), "done() did not return True as expected"
+
+    # Test cancelling all jobs.
+    mock_run.state = "running"
+    bpe.cancel_all()
+    assert future.cancelled(), "cancel_all() failed"
+
+    # Test shutdown method.
+    bpe.shutdown(wait=True)
+    assert future.done(), "shutdown() failed"
+
+    return c
+
+
+def test_container_scripts():
+    c = _check_executor()
+    assert c.scripts.post_custom.call_count == 0
+    assert c.scripts.post_containers.call_count > 0
+
+
+def test_custom_scripts():
+    c = _check_executor(133)
+    assert c.scripts.post_custom.call_count > 0
+    assert c.scripts.post_containers.call_count == 0
+
+
+def test_create_docker_command():
+    res = create_docker_command("foo.sh", "bar", "baz", wibble="wibble1",
+                                wobble="wobble1")
+    assert res == "foo.sh bar baz --wibble wibble1 --wobble wobble1"
 
 
 # A function to raise fake API errors the first

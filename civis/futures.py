@@ -1,8 +1,13 @@
 from __future__ import absolute_import
 
+from abc import ABCMeta, abstractmethod
 from builtins import super
+from concurrent.futures import Executor
+from concurrent import futures
+import datetime
 import logging
 import time
+import threading
 
 from civis import APIClient
 from civis.base import DONE
@@ -285,3 +290,373 @@ class ContainerFuture(CivisFuture):
                 self._invoke_callbacks()
                 return self.cancelled()
             return False
+
+
+def create_docker_command(*args, **kwargs):
+    """
+    Returns a string with the ordered arguments args in order,
+    followed by the keyword arguments kwargs (in sorted order, for
+    consistency), separated by spaces.
+
+    For example,
+    ``create_docker_command('./myprogram', 5, 6, wibble=7, wobble=8)``
+    returns ``"./myprogram 5 6 --wibble 7 --wobble 8"``.
+    """
+    return " ".join([str(x) for x in args] +
+                    ["--{} {}".format(k, v)
+                     for k, v in sorted(kwargs.items())])
+
+
+class CivisExecutor(Executor, metaclass=ABCMeta):
+    def __init__(self,
+                 script_name=None,
+                 hidden=True,
+                 max_n_retries=0,
+                 client=None,
+                 polling_interval=None,
+                 inc_script_names=False):
+        self.max_n_retries = max_n_retries
+        self.hidden = hidden
+        self.script_name = script_name
+        self.polling_interval = polling_interval
+        self.inc_script_names = inc_script_names
+        self._script_name_counter = 0
+
+        self._shutdown_lock = threading.Lock()
+        self._shutdown_thread = False
+
+        self.script_name = script_name
+
+        if client is None:
+            client = APIClient(resources='all')
+        self.client = client
+
+        # A list of ContainerFuture objects for submitted jobs.
+        self._futures = []
+
+    def _make_future(self, script_id, run_id):
+        """
+        Instantiates a :class:`~civisjobs.containers.ContainerFuture`,
+        adds it to the internal list of futures, and returns it.
+        This is a helper method for :func:`submit`.
+        """
+        future = ContainerFuture(script_id, run_id,
+                                 polling_interval=self.polling_interval,
+                                 max_n_retries=self.max_n_retries,
+                                 client=self.client,
+                                 poll_on_creation=False)
+
+        self._futures.append(future)
+
+        # Return a ContainerFuture object with the script ID.
+        return future
+
+    def submit(self, fn, *args, arguments=None, **kwargs):
+        """Submits a callable to be executed with the given arguments.
+
+        This creates a container script with the command determined by the
+        arguments (see below) and returns a
+        :class:`~civisjobs.containers.ContainerFuture` instance.
+
+        Parameters
+        ----------
+        fn: str or callable
+            If this is a callable, it ``fn(*args, **kwargs)`` should return a
+            ``str`` for the command to run in docker.  If ``None``, then
+            ``create_docker_command`` will be used.
+        *args: args
+            Additional arguments passed to ``fn``.
+        arguments: dict, optional
+            If provided, the created script will use the
+            `arguments` dictionary from the class initialization
+            updated with the dictionary provided to `submit`.
+        **kwargs: kwargs
+            Additional keyword arguments passed to ``fn``.
+
+        Returns
+        -------
+        :class:`~civis.futures.CivisFuture`
+        """
+        with self._shutdown_lock:
+            if self._shutdown_thread:
+                raise RuntimeError('cannot schedule new '
+                                   'futures after shutdown')
+
+            if isinstance(fn, str):
+                cmd = fn
+            else:
+                if fn is None:
+                    fn = create_docker_command
+                cmd = fn(*args, **kwargs)
+
+            script_name = self.script_name
+            if self.inc_script_names:
+                script_name = \
+                    "{} {}".format(script_name, self._script_name_counter)
+                self._script_name_counter += 1
+
+            job = self._create_job(script_name=script_name,
+                                   arguments=arguments,
+                                   cmd=cmd)
+            run = self.client.jobs.post_runs(job.id)
+            log.debug('Container "{}" created with script ID {} and '
+                      'run ID {}'.format(script_name, job.id, run.id))
+
+            return self._make_future(job.id, run.id)
+
+    @abstractmethod
+    def _create_job(self, script_name, arguments=None, cmd=None):
+        raise NotImplementedError("Implement in the child class")
+
+    def shutdown(self, wait=True):
+        """Wait until all Civis jobs started by this are in done states.
+
+        Parameters
+        ----------
+        wait: bool
+            If ``True``, then this will poll the API periodically until
+            all jobs are in a done (i.e., finished or cancelled) state.
+        """
+        with self._shutdown_lock:
+            self._shutdown_thread = True
+
+        if wait:
+            futures.wait(self._futures)
+
+    def cancel_all(self):
+        """Create cancel requests for all running Civis jobs."""
+        for f in self._futures:
+            # The ContainerFuture is smart enough to only cancel the run
+            # if the run is still in progress.
+            f.cancel()
+
+
+class ContainerPoolExecutor(CivisExecutor):
+    """A :class:`~civisjobs.containers.ContainerPoolExecutor` for running
+    shell commands in Docker through Civis, as "container scripts".
+
+    The semantics are a bit different since it runs shell commands rather than
+    Python functions, but we tried to closely adapt the implementations in
+    :ref:`concurrent.futures`.
+
+    .. note:: If you expect to run a large number of jobs, you may
+              wish to set automatic retries of failed jobs
+              (via `max_n_retries`) to protect against network and
+              infrastructure failures. Be careful with this if your
+              jobs cause side effects other than returning a result;
+              retries may cause any operations executed by your jobs
+              to be run twice.
+
+    Parameters
+    ----------
+    docker_image_name: str
+        The name of the Docker image to be used by Civis.
+    docker_image_tag: str
+        The name of the tag for the Docker image.
+    repo_http_uri: str
+        The URI for the GitHub repository to check out to /app.
+    repo_ref: str
+        The reference (branch, tag, or commit) for the GitHub repository.
+    git_credential_id: int
+        See :func:`~civis.scripts.post_containers` for details.
+    docker_environment: dict
+        See :func:`~civis.scripts.post_containers` for details.
+    script_name: str
+        The name for containers in Civis.
+    required_resources: dict
+        A dictionary specifying what resources the job needs.
+        See :func:`~civis.scripts.post_containers` for details.
+    user_context: str, optional
+        "runner" or "author", who to execute the script as
+        when run as a template.
+    time_zone: str, optional
+        The time zone of this script.
+    hidden: bool, optional
+        The hidden status of the object. Setting this to true hides it
+        from most API endpoints. The object can still be queried
+        directly by ID. Defaults to True.
+    params: list of dict, optional
+        See :func:`~civis.scripts.post_containers` for details.
+    arguments: dict, optional
+        See :func:`~civis.scripts.post_containers` for details.
+    max_n_retries: int, optional
+        Retry failed jobs this many times before giving up.
+        Retried jobs will be restarted with exactly the same parameters
+        as they used the first time; only use this if you expect
+        that your code is functional and errors would come from
+        e.g. network problems.
+    client: APIClient, optional
+        The :class:`~civis.APIClient` object to use for interacting with the
+        API. If not specified, a new one will be instantiated.
+    polling_interval: int or float, optional
+        The number of seconds between API requests to check whether a result
+        is ready.  This will be passed to the
+        :class:`~civisjobs.containers.ContainerFuture`
+        objects that are created. You should only set this if you
+        aren't using pubnub notifications.
+    inc_script_names: bool, optional
+        If ``True``, a counter will be added to the ``script_name`` to create
+        the script names for each submission.
+    """
+    def __init__(self, docker_image_name="civisanalytics/datascience-base",
+                 docker_image_tag="latest",
+                 repo_http_uri=None,
+                 repo_ref=None,
+                 git_credential_id=None,
+                 script_name=None,
+                 required_resources=None,
+                 user_context=None,
+                 time_zone=None,
+                 hidden=True,
+                 params=None,
+                 arguments=None,
+                 max_n_retries=0,
+                 client=None,
+                 polling_interval=None,
+                 inc_script_names=False):
+        self.docker_image_name = docker_image_name
+        self.docker_image_tag = docker_image_tag
+        self.repo_http_uri = repo_http_uri
+        self.repo_ref = repo_ref
+        self.git_credential_id = git_credential_id
+        self.required_resources = required_resources
+        self.user_context = user_context
+        self.time_zone = time_zone
+        self.params = params
+        self.arguments = arguments
+
+        if required_resources is None:
+            required_resources = {'cpu': 1024, 'memory': 1024}
+        self.required_resources = required_resources
+
+        if script_name is None:
+            date_str = datetime.datetime.today().strftime("%Y-%m-%d")
+            script_name = "ContainerPoolExecutorScript {}".format(date_str)
+
+        super().__init__(script_name=script_name,
+                         hidden=hidden,
+                         client=client,
+                         max_n_retries=max_n_retries,
+                         polling_interval=polling_interval,
+                         inc_script_names=inc_script_names)
+
+    def _create_job(self, script_name, arguments=None, cmd=None):
+        # Combine instance and input arguments into one dictionary.
+        # Use `None` instead of an empty dictionary.
+        arguments = {**(self.arguments or {}), **(arguments or {})} or None
+
+        # Submit a request to Civis to make the container script object.
+        job = self.client.scripts.post_containers(
+            name=script_name,
+            required_resources=self.required_resources,
+            repo_http_uri=self.repo_http_uri,
+            repo_ref=self.repo_ref,
+            docker_command=cmd,
+            docker_image_name=self.docker_image_name,
+            docker_image_tag=self.docker_image_tag,
+            user_context=self.user_context,
+            time_zone=self.time_zone,
+            hidden=self.hidden,
+            params=self.params,
+            arguments=arguments,
+            git_credential_id=self.git_credential_id
+        )
+
+        return job
+
+
+class CustomPoolExecutor(CivisExecutor):
+    """Manage a pool of Custom Scripts in the Civis Platform
+
+    Each Custom Script will be created from the same template, but may
+    use different arguments. This class follows the implementations in
+    :ref:`concurrent.futures`.
+
+    .. note:: If you expect to run a large number of jobs, you may
+              wish to set automatic retries of failed jobs
+              (via `max_n_retries`) to protect against network and
+              infrastructure failures. Be careful with this if your
+              jobs cause side effects other than returning a result;
+              retries may cause any operations executed by your jobs
+              to be run twice.
+
+    Parameters
+    ----------
+    from_template_id: int
+        Create jobs as Custom Scripts from the given template ID.
+    script_name: str
+        The name for containers in Civis.
+    hidden: bool, optional
+        The hidden status of the object. Setting this to true hides it
+        from most API endpoints. The object can still be queried
+        directly by ID. Defaults to True.
+    arguments: dict, optional
+        See :func:`~civis.scripts.post_containers` for details.
+    max_n_retries: int, optional
+        Retry failed jobs this many times before giving up.
+        Retried jobs will be restarted with exactly the same parameters
+        as they used the first time; only use this if you expect
+        that your code is functional and errors would come from
+        e.g. network problems.
+    client: APIClient, optional
+        The :class:`~civis.APIClient` object to use for interacting with the
+        API. If not specified, a new one will be instantiated.
+    polling_interval: int or float, optional
+        The number of seconds between API requests to check whether a result
+        is ready.  This will be passed to the
+        :class:`~civisjobs.containers.ContainerFuture`
+        objects that are created. You should only set this if you
+        aren't using pubnub notifications.
+    inc_script_names: bool, optional
+        If ``True``, a counter will be added to the ``script_name`` to create
+        the script names for each submission.
+    """
+    def __init__(self, from_template_id,
+                 script_name=None,
+                 hidden=True,
+                 arguments=None,
+                 max_n_retries=0,
+                 client=None,
+                 polling_interval=None,
+                 inc_script_names=False):
+        self.from_template_id = from_template_id
+        self.arguments = arguments
+
+        if script_name is None:
+            date_str = datetime.datetime.today().strftime("%Y-%m-%d")
+            script_name = "CustomPoolExecutorScript {}".format(date_str)
+
+        super().__init__(script_name=script_name,
+                         hidden=hidden,
+                         client=client,
+                         max_n_retries=max_n_retries,
+                         polling_interval=polling_interval,
+                         inc_script_names=inc_script_names)
+
+    def submit(self, **arguments):
+        """Submit a Custom Script with the given arguments
+
+        Parameters
+        ----------
+        arguments: dict, optional
+            The created script will use the `arguments` dictionary
+            from the class initialization updated with any additional
+            keywords provided here.
+
+        Returns
+        -------
+        :class:`~civis.futures.CivisFuture`
+        """
+        return super().submit(fn=None, arguments=arguments)
+
+    def _create_job(self, script_name, arguments=None, cmd=None):
+        # Combine instance and input arguments into one dictionary.
+        # Use `None` instead of an empty dictionary.
+        arguments = {**(self.arguments or {}), **(arguments or {})} or None
+
+        job = self.client.scripts.post_custom(
+            self.from_template_id,
+            name=script_name,
+            arguments=arguments,
+            hidden=self.hidden)
+        return job
