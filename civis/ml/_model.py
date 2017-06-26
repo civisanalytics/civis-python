@@ -578,7 +578,7 @@ class ModelPipeline:
         further documentation about email and URL notification.
     dependencies : array, optional
         List of packages to install from PyPI or Github. If a private Github
-        pacakge is specificed, please include a ``github_token_name``
+        package is specificed, please include a ``github_token_name``
         argument as well (see below).
     github_token_name : str, optional
         Name of Github API token stored in platform as the password field in a
