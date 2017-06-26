@@ -1,10 +1,12 @@
 from __future__ import absolute_import
 
 from builtins import super
+import logging
+import time
 
 from civis import APIClient
 from civis.base import DONE
-from civis.polling import PollableResult
+from civis.polling import PollableResult, _ResultPollingThread
 
 try:
     from pubnub.pubnub import PubNub
@@ -14,6 +16,8 @@ try:
     has_pubnub = True
 except ImportError:
     has_pubnub = False
+
+log = logging.getLogger(__name__)
 
 # Pubnub connections can recover missed messages upon reconnecting for up to 10
 # minutes from the disconnect. Polling on a 9.5 minute interval is used as a
@@ -169,3 +173,115 @@ class CivisFuture(PollableResult):
                 self._set_api_result(result)
             except Exception as e:
                 self._set_api_exception(exc=e)
+
+
+class ContainerFuture(CivisFuture):
+    """Encapsulates asynchronous execution of a Civis Container Script
+
+    This object includes the ability to cancel a run in progress,
+    as well as the option to automatically retry failed runs.
+    Retries should only be used for idempotent scripts which might fail
+    because of network or other random failures.
+
+    Parameters
+    ----------
+    job_id: int
+        The ID for the container/script/job.
+    run_id : int
+        The ID for the run to monitor
+    max_n_retries : int, optional
+        If the job generates an exception, retry up to this many times
+    polling_interval: int or float, optional
+        The number of seconds between API requests to check whether a result
+        is ready. You should not set this if you're using ``pubnub``
+        (the default if ``pubnub`` is installed).
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    poll_on_creation : bool, optional
+        If ``True`` (the default), it will poll upon calling ``result()`` the
+        first time. If ``False``, it will wait the number of seconds specified
+        in `polling_interval` from object creation before polling.
+
+    See Also
+    --------
+    civis.futures.CivisFuture
+    """
+    def __init__(self, job_id, run_id,
+                 max_n_retries=0,
+                 polling_interval=None,
+                 client=None,
+                 poll_on_creation=True):
+        if client is None:
+            client = APIClient(resources='all')
+        super().__init__(client.scripts.get_containers_runs,
+                         [int(job_id), int(run_id)],
+                         polling_interval=polling_interval,
+                         client=client,
+                         poll_on_creation=poll_on_creation)
+        self._max_n_retries = max_n_retries
+
+    @property
+    def job_id(self):
+        return self.poller_args[0]
+
+    @property
+    def run_id(self):
+        return self.poller_args[1]
+
+    def _set_api_exception(self, exc, result=None):
+        # Catch attempts to set an exception. If there's retries
+        # remaining, retry the run instead of erroring.
+        with self._condition:
+            if self._max_n_retries > 0:
+                # Start a new run of the script and update
+                # the run ID used by the poller.
+                self.cleanup()
+                self._last_result = self.client.jobs.post_runs(self.job_id)
+                orig_run_id = self.run_id
+                self.poller_args[1] = run_id = self._last_result.id
+                self._max_n_retries -= 1
+                self._last_polled = time.time()
+
+                # Threads can only be started once, and the last thread
+                # stopped in cleanup. Start a new polling thread.
+                # Note that it's possible to have a race condition if
+                # you shut down the old thread too soon after starting it.
+                # In practice this only happens when testing retries
+                # with extremely short polling intervals.
+                self._polling_thread = _ResultPollingThread(
+                    self._check_result, (), self.polling_interval)
+                self._polling_thread.start()
+
+                if hasattr(self, '_pubnub'):
+                    # Subscribe to the new run's notifications endpoint
+                    self._pubnub = self._subscribe(*self._pubnub_config())
+                log.debug('Job ID %d / Run ID %d failed. Retrying '
+                          'with run %d. %d retries remaining.',
+                          self.job_id, orig_run_id,
+                          run_id, self._max_n_retries)
+            else:
+                super()._set_api_exception(exc=exc, result=result)
+
+    def cancel(self):
+        """Submit a request to cancel the container/script/run.
+
+        Returns
+        -------
+        bool
+            Whether or not the job is in a cancelled state.
+        """
+        with self._condition:
+            if self.cancelled():
+                return True
+            elif not self.done():
+                # Cancel the job and store the result of the cancellation in
+                # the "finished result" attribute, `_result`.
+                self._result = self.client.scripts.post_cancel(self.job_id)
+                for waiter in self._waiters:
+                    waiter.add_cancelled(self)
+                self._condition.notify_all()
+                self.cleanup()
+                self._invoke_callbacks()
+                return self.cancelled()
+            return False

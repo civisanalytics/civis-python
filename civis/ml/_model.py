@@ -30,7 +30,7 @@ from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
 import civis.io as cio
-from civis.futures import CivisFuture
+from civis.futures import ContainerFuture
 from civis.polling import _ResultPollingThread
 
 __all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
@@ -204,7 +204,7 @@ def _get_credential(credential, client=None):
         return cred.id
 
 
-class ModelFuture(CivisFuture):
+class ModelFuture(ContainerFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
     This object knows where to find modeling outputs
@@ -289,14 +289,12 @@ class ModelFuture(CivisFuture):
     See Also
     --------
     civis.futures.CivisFuture
+    civis.futures.ContainerFuture
     concurrent.futures.Future
     """
     def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
                  polling_interval=None, client=None, poll_on_creation=True):
-        if client is None:
-            client = APIClient(resources='all')
-        super().__init__(client.scripts.get_containers_runs,
-                         [int(job_id), int(run_id)],
+        super().__init__(job_id, run_id,
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
@@ -314,14 +312,6 @@ class ModelFuture(CivisFuture):
         self._table, self._estimator = None, None
         self._exception_handled = False
         self.add_done_callback(self._set_model_exception)
-
-    @property
-    def job_id(self):
-        return self.poller_args[0]
-
-    @property
-    def run_id(self):
-        return self.poller_args[1]
 
     @staticmethod
     def _set_model_exception(fut):
@@ -363,33 +353,6 @@ class ModelFuture(CivisFuture):
             # mask the real error.
             warnings.warn("Received malformed metadata from Civis Platform. "
                           "Something went wrong with job execution.")
-
-    def cancel(self):
-        """Submit a request to cancel the container/script/run.
-
-        .. note:: If this object represents a prediction run,
-                  ``cancel`` will only cancel the parent job.
-                  Child jobs will remain active.
-
-        Returns
-        -------
-        bool
-            Whether or not the run is in a cancelled state.
-        """
-        with self._condition:
-            if self.cancelled():
-                return True
-            elif not self.done():
-                # Cancel the job and store the result of the cancellation in
-                # the "finished result" attribute, `_result`.
-                self._result = self.client.scripts.post_cancel(self.job_id)
-                for waiter in self._waiters:
-                    waiter.add_cancelled(self)
-                self._condition.notify_all()
-                self._invoke_callbacks()
-                self.cleanup()
-                return self.cancelled()
-            return False
 
     def __getstate__(self):
         state = self.__dict__.copy()
