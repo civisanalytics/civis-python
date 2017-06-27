@@ -82,14 +82,27 @@ Custom Dependencies
 
 Installing packages from PyPI is straightforward. You can specify a `dependencies`
 argument to `~civis.ml.ModelPipeline` which will install the dependencies in your runtime
-environment. Installing a package from github only requires passing the HTTPS URL in
-the form of, for example, `git+https://github.com/scikit-learn/scikit-learn`.
+environment. VCS support is also enabled (see [docs](https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support). Installing a remote git repository from, say, Github
+only requires passing the HTTPS URL in the form of, for example,
+`git+https://github.com/scikit-learn/scikit-learn`.
 
-Additionally, you can store your Github API Token in platform as a credential to use for
-installing private Github repositores. Simply go to Github at the
-`https://github.com/settings/tokens` URL, copy your token into the password field of a
-credential, and pass the credential name to the `github_token_name` argument in
-`~civis.ml.ModelPipeline`. Note, installing private dependencies with submodules is not yet supported.
+CivisML will run `pip install [your package here]`. We strongly encourage you to pin
+package versions for consistency. Example code looks like:::
+
+  from civis.ml import ModelPipeline
+  from pyearth import Earth
+  deps = ['git+https://github.com/scikit-learn-contrib/py-earth.git']
+  est = Earth()
+  model = ModelPipeline(est, dependent_variable='age')
+  train = model.train(table_name='donors.from_march', database_name='client')
+
+Additionally, you can store a remote git hosts' API token in platform as a
+credential to use for installing private git repositores. For example, you can go to
+Github at the `https://github.com/settings/tokens` URL, copy your token into the
+password field of a credential, and pass the credential name to the `git_token_name`
+argument in `~civis.ml.ModelPipeline`. This also works with other hosting services.
+Note, installing private dependencies with submodules is not yet supported.
+
 
 
 Asynchronous Execution

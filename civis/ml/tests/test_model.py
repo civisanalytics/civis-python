@@ -623,7 +623,7 @@ def test_modelpipeline_classmethod_constructor(mock_future,
                                 in container.notifications.items()}
     deps = container.arguments.get('DEPENDENCIES', None)
     assert mp.dependencies == deps.split() if deps else None
-    assert mp.github_token_name == container.arguments['GITHUB']
+    assert mp.git_token_name == container.arguments['GITHUB']
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")

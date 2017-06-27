@@ -539,15 +539,14 @@ class ModelPipeline:
     notifications : dict
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
-    dependencies : array, optional
-        List of packages to install from PyPI or Github. If a private Github
-        package is specificed, please include a ``github_token_name``
-        argument as well (see below).
-    github_token_name : str, optional
-        Name of Github API token stored in platform as the password field in a
-        custom platform credential. Used only when installing private Github
-        repositories. Note, these API tokens can be generated from this URL:
-        https://github.com/settings/tokens.
+     dependencies : array, optional
+         List of packages to install from PyPI or git repository (i.e., Github
+         or Bitbucket). If a private repo is specificed, please include a
+         ``git_token_name`` argument as well (see below).
+     git_token_name : str, optional
+         Name of remote git API token stored in platform as the password field
+         in a custom platform credential. Used only when installing private git
+         repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -620,7 +619,7 @@ class ModelPipeline:
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
                  disk_requested=None, notifications=None,
-                 dependencies=None, github_token_name=None, verbose=False):
+                 dependencies=None, git_token_name=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -640,7 +639,7 @@ class ModelPipeline:
                               'REQUIRED_DISK_SPACE': disk_requested}
         self.notifications = notifications or {}
         self.dependencies = dependencies
-        self.github_token_name = github_token_name
+        self.git_token_name = git_token_name
         self.verbose = verbose
 
         if client is None:
@@ -728,7 +727,7 @@ class ModelPipeline:
         dependencies = args.get('DEPENDENCIES', None)
         if dependencies:
             dependencies = dependencies.split()
-        github_token_name = args.get('GITHUB')
+        git_token_name = args.get('GITHUB')
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -744,7 +743,7 @@ class ModelPipeline:
                     memory_requested=memory_requested,
                     notifications=notifications,
                     dependencies=dependencies,
-                    github_token_name=github_token_name,
+                    git_token_name=git_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
@@ -910,9 +909,9 @@ class ModelPipeline:
                 # Default resources are set on the template. Only
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
-        if self.github_token_name:
+        if self.git_token_name:
             script_arguments['GITHUB'] = _get_credential(
-                self.github_token_name)
+                self.git_token_name)
 
         script_arguments.update(args or {})
 
