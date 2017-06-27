@@ -437,7 +437,7 @@ class _CivisExecutor(Executor):
             f.cancel()
 
 
-class ContainerPoolExecutor(_CivisExecutor):
+class _ContainerPoolShellExecutor(_CivisExecutor):
     """Parallel computation with Container Scripts in the Civis Platform
 
     Create and run new Container Scripts in the Civis Platform.
@@ -537,7 +537,8 @@ class ContainerPoolExecutor(_CivisExecutor):
 
         if script_name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
-            script_name = "ContainerPoolExecutorScript {}".format(date_str)
+            script_name = ("ContainerPoolShellExecutorScript "
+                           "{}".format(date_str))
 
         super().__init__(script_name=script_name,
                          hidden=hidden,
