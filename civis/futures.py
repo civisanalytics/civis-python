@@ -537,7 +537,7 @@ class _ContainerShellExecutor(_CivisExecutor):
 
         if script_name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
-            script_name = ("ContainerPoolShellExecutorScript "
+            script_name = ("ContainerShellExecutorScript "
                            "{}".format(date_str))
 
         super().__init__(script_name=script_name,
@@ -636,7 +636,7 @@ class CustomScriptExecutor(_CivisExecutor):
 
         if script_name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
-            script_name = "CustomPoolExecutorScript {}".format(date_str)
+            script_name = "CustomScriptExecutorScript {}".format(date_str)
 
         super().__init__(script_name=script_name,
                          hidden=hidden,
