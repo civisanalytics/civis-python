@@ -9,8 +9,8 @@ from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
-                           _ContainerPoolShellExecutor,
-                           CustomPoolExecutor,
+                           _ContainerShellExecutor,
+                           CustomScriptExecutor,
                            _create_docker_command)
 try:
     from civis.futures import (CivisFuture,
@@ -262,11 +262,11 @@ def _check_executor(from_template_id=None):
     c = _setup_client_mock(job_id, run_id, n_failures=0)
     mock_run = c.scripts.post_containers_runs()
     if from_template_id:
-        bpe = CustomPoolExecutor(from_template_id=from_template_id,
-                                 client=c, polling_interval=0.01)
+        bpe = CustomScriptExecutor(from_template_id=from_template_id,
+                                   client=c, polling_interval=0.01)
         future = bpe.submit(my_param='spam')
     else:
-        bpe = _ContainerPoolShellExecutor(client=c, polling_interval=0.01)
+        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01)
         future = bpe.submit("foo")
 
     # Mock and test running, future.job_id, and done()

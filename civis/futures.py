@@ -437,7 +437,7 @@ class _CivisExecutor(Executor):
             f.cancel()
 
 
-class _ContainerPoolShellExecutor(_CivisExecutor):
+class _ContainerShellExecutor(_CivisExecutor):
     """Parallel computation with Container Scripts in the Civis Platform
 
     Create and run new Container Scripts in the Civis Platform.
@@ -574,7 +574,7 @@ class _ContainerPoolShellExecutor(_CivisExecutor):
         return job
 
 
-class CustomPoolExecutor(_CivisExecutor):
+class CustomScriptExecutor(_CivisExecutor):
     """Manage a pool of Custom Scripts in the Civis Platform
 
     Each Custom Script will be created from the same template, but may
