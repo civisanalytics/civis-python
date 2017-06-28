@@ -294,14 +294,14 @@ class ContainerFuture(CivisFuture):
             return False
 
 
-def create_docker_command(*args, **kwargs):
+def _create_docker_command(*args, **kwargs):
     """
     Returns a string with the ordered arguments args in order,
     followed by the keyword arguments kwargs (in sorted order, for
     consistency), separated by spaces.
 
     For example,
-    ``create_docker_command('./myprogram', 5, 6, wibble=7, wobble=8)``
+    ``_create_docker_command('./myprogram', 5, 6, wibble=7, wobble=8)``
     returns ``"./myprogram 5 6 --wibble 7 --wobble 8"``.
     """
     return " ".join([str(x) for x in args] +
@@ -364,7 +364,7 @@ class _CivisExecutor(Executor):
         fn: str or callable
             If this is a callable, it ``fn(*args, **kwargs)`` should return a
             ``str`` for the command to run in docker.  If ``None``, then
-            ``create_docker_command`` will be used.
+            ``_create_docker_command`` will be used.
         *args: args
             Additional arguments passed to ``fn``.
         arguments: dict, optional
@@ -392,7 +392,7 @@ class _CivisExecutor(Executor):
                 cmd = fn
             else:
                 if fn is None:
-                    fn = create_docker_command
+                    fn = _create_docker_command
                 cmd = fn(*args, **kwargs)
 
             script_name = self.script_name

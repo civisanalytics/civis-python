@@ -11,7 +11,7 @@ from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerPoolShellExecutor,
                            CustomPoolExecutor,
-                           create_docker_command)
+                           _create_docker_command)
 try:
     from civis.futures import (CivisFuture,
                                has_pubnub,
@@ -310,8 +310,8 @@ def test_custom_scripts():
 
 
 def test_create_docker_command():
-    res = create_docker_command("foo.sh", "bar", "baz", wibble="wibble1",
-                                wobble="wobble1")
+    res = _create_docker_command("foo.sh", "bar", "baz", wibble="wibble1",
+                                 wobble="wobble1")
     assert res == "foo.sh bar baz --wibble wibble1 --wobble wobble1"
 
 
