@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 This is an executable intended for use with a joblib backend
 for the Civis platform. It takes a Civis File ID representing
@@ -8,6 +6,7 @@ deserializes it, calls the callable, serializes the result,
 and uploads the result to another Civis File. The output file's ID
 will be set as an output on this run.
 """
+from __future__ import absolute_import, print_function
 
 from datetime import datetime, timedelta
 from io import BytesIO
@@ -40,7 +39,7 @@ def worker_func(func_file_id):
     result = None
     try:
         result = func()
-    except Exception as exc:
+    except Exception:
         print("Error! Attempting to record exception.")
         # Wrap the exception in joblib's TransportableException
         # so that joblib can properly display the results.

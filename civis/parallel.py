@@ -1,25 +1,26 @@
+"""Parallel computations using the Civis Platform infrastructure
 """
-A module that facilitates the use of Civis's container scripts for
-parallelizing Python workflows.
-"""
+from __future__ import absolute_import
+
 from concurrent.futures import wait
 from datetime import datetime, timedelta
 from io import BytesIO
 import logging
 import os
-from tempfile import TemporaryDirectory
 import time
 
 import joblib
 from joblib._parallel_backends import ParallelBackendBase
 from joblib.my_exceptions import TransportableException
-import civis
-from civis.base import CivisAPIError
 import requests
 
-from civisjobs.containers import ContainerPoolExecutor, CustomPoolExecutor
+import civis
+from civis.base import CivisAPIError
 
-_LOGGER = logging.getLogger(__name__)
+from civis.compat import TemporaryDirectory
+from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
+
+log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 _DEFAULT_SETUP_CMD = ":"  # An sh command that does nothing.
 _DEFAULT_REPO_SETUP_CMD = "cd /app; python setup.py install; cd /"
@@ -87,7 +88,7 @@ def infer_backend_factory(required_resources=None,
         in the dockerhub repo (e.g., "cd /app && python setup.py install"
         or "pip install gensim").
             With no GitHub repo input, the setup command will
-        default to a command that does nothing. If a `repo_http_uri`
+        default to a command that does nothing. If a ``repo_http_uri``
         is provided, the default setup command will attempt to run
         "python setup.py install". If this command fails, execution
         will still continue.
@@ -99,7 +100,7 @@ def infer_backend_factory(required_resources=None,
         whether they are run once or many times).
     max_job_retries : int, optional
         Retry failed jobs this number of times before giving up.
-        Even more than with `max_submit_retries`, this should only
+        Even more than with ``max_submit_retries``, this should only
         be used for jobs which are idempotent, as the job may have
         caused side effects (if any) before failing.
         These retries assist with jobs which may have failed because
@@ -116,7 +117,7 @@ def infer_backend_factory(required_resources=None,
 
     See Also
     --------
-    make_backend_factory
+    civis.parallel.make_backend_factory
     """
     if client is None:
         client = civis.APIClient(resources='all')
@@ -175,7 +176,7 @@ def infer_backend_factory(required_resources=None,
                                 hidden=hidden)
 
 
-def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
+def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          docker_image_tag="latest",
                          repo_http_uri=None,
                          repo_ref=None,
@@ -188,7 +189,11 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
                          max_submit_retries=0,
                          max_job_retries=0,
                          hidden=True):
-    """Create a joblib backend factory that uses Civis container scripts.
+    """Create a joblib backend factory that uses Civis Container Scripts
+
+    .. note:: The total size of function parameters in `Parallel()`
+              calls on this backend must be less than 5 GB due to
+              AWS file size limits.
 
     Parameters
     ----------
@@ -256,6 +261,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
     Examples
     --------
     >>> # Without joblib:
+    >>> from __future__ import print_function
     >>> from math import sqrt
     >>> print([sqrt(i ** 2) for i in range(10)])
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
@@ -268,7 +274,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
 
     >>> # Using the Civis backend:
     >>> from joblib import parallel_backend, register_parallel_backend
-    >>> from civisjobs import make_backend_factory
+    >>> from civis.parallel import make_backend_factory
     >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
     >>> with parallel_backend('civis'):
@@ -281,7 +287,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
     ...     register_parallel_backend as sklearn_register_parallel_backend
     >>> from sklearn.externals.joblib import \
     ...     parallel_backend as sklearn_parallel_backend
-    >>> from sklearn.grid_search import GridSearchCV
+    >>> from sklearn.model_selection import GridSearchCV
     >>> from sklearn.ensemble import GradientBoostingClassifier
     >>> from sklearn.datasets import load_digits
     >>> digits = load_digits()
@@ -290,7 +296,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
     ...     "max_features": ["sqrt", "log2", None],
     ...     "learning_rate": [0.1, 0.01, 0.001]
     ... }
-    >>> # Note: n_jobs and predispatch specify the maximum number of
+    >>> # Note: n_jobs and pre_dispatch specify the maximum number of
     >>> # concurrent jobs.
     >>> gs = GridSearchCV(GradientBoostingClassifier(n_estimators=1000,
     ...                                              random_state=42),
@@ -314,7 +320,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-base",
     deserialize the jobs they are given, including the data and all the
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
     must have Pandas installed). In particular, the function that is called by
-    joblib must be available in the specified environment.
+    ``joblib`` must be available in the specified environment.
     """
     if setup_cmd is None:
         if repo_http_uri is not None:
@@ -420,8 +426,8 @@ def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
             buffer.close()
             if n_failed < n_retries:
                 n_failed += 1
-                _LOGGER.debug("Download failure %s due to %s; retrying.",
-                              n_failed, str(exc))
+                log.debug("Download failure %s due to %s; retrying.",
+                          n_failed, str(exc))
                 time.sleep(delay)
             else:
                 raise
@@ -431,16 +437,17 @@ def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
 
 
 class _CivisBackendResult:
-    """
-    A wrapper for results that looks like the results from multiprocessing
+    """A wrapper for results of joblib tasks
+
+    This wrapper makes results look like the results from multiprocessing
     pools that joblib expects.  This retrieves the results for a completed
     job (i.e., container script) from Civis.
 
     Parameters
     ----------
-    future : :class:`~civisjobs.containers.ContainerFuture`
+    future : :class:`~civis.futures.ContainerFuture`
         A Future which represents a Civis job. Created by a
-        :class:`~ContainerPoolExecutor`.
+        :class:`~_ContainerShellExecutor`.
     callback : callable
         A `joblib`-provided callback function which should be
         called on successful job completion. It will launch the
@@ -485,9 +492,9 @@ class _CivisBackendResult:
 
             Parameters
             ----------
-            fut : :class:`~civisjobs.containers.ContainerFuture`
+            fut : :class:`~civis.futures.ContainerFuture`
                 A Future which represents a Civis job. Created by a
-                :class:`~ContainerPoolExecutor`.
+                :class:`~_ContainerShellExecutor`.
 
             Note
             ----
@@ -496,34 +503,34 @@ class _CivisBackendResult:
             as a new attribute ``remote_func_output``.
             """
             if fut.succeeded():
-                _LOGGER.debug(
+                log.debug(
                     "Ran job through Civis. script ID: %d, run ID: %d;"
-                    " job succeeded!", fut.script_id, fut.run_id)
+                    " job succeeded!", fut.job_id, fut.run_id)
             elif fut.cancelled():
-                _LOGGER.debug(
+                log.debug(
                     "Ran job through Civis. script ID: %d, run ID: %d;"
-                    " job cancelled!", fut.script_id, fut.run_id)
+                    " job cancelled!", fut.job_id, fut.run_id)
             else:
-                _LOGGER.error(
+                log.error(
                     "Ran job through Civis. script ID: %d, run ID: %d;"
-                    " job failure!", fut.script_id, fut.run_id)
+                    " job failure!", fut.job_id, fut.run_id)
 
             try:
                 # Find the output file ID from the run outputs.
                 run_outputs = client.scripts.list_containers_runs_outputs(
-                    fut.script_id, fut.run_id)
+                    fut.job_id, fut.run_id)
                 if run_outputs:
                     output_file_id = run_outputs[0]['object_id']
                     res = _robust_result_download(output_file_id, client,
                                                   n_retries=5, delay=1.0)
                     fut.remote_func_output = res
-                    _LOGGER.debug("Downloaded and deserialized the result.")
+                    log.debug("Downloaded and deserialized the result.")
             except BaseException as exc:
                 # If something went wrong when fetching outputs, record the
                 # exception so we can re-raise it in the parent process.
                 # Catch BaseException so we can also re-raise a
                 # KeyboardInterrupt where it can be properly handled.
-                _LOGGER.debug('Exception during result download: %s', str(exc))
+                log.debug('Exception during result download: %s', str(exc))
                 fut.remote_func_output = exc
             else:
                 fut.result_fetched = True
@@ -535,22 +542,20 @@ class _CivisBackendResult:
         return _fetch_result
 
     def get(self):
-        """
-        Return the result of the job (i.e., the deserialized python object
-        produced by the job).
+        """Block and return the result of the job
 
         Returns
         -------
-        The output of the function which `joblib` ran via Civis
-        NB: `joblib` expects that `get` will always return an iterable.
+        The output of the function which ``joblib`` ran via Civis
+            NB: ``joblib`` expects that ``get`` will always return an iterable.
         The remote function(s) should always be wrapped in
-        `joblib.parallel.BatchedCalls`, which does always return a list.
+        ``joblib.parallel.BatchedCalls``, which does always return a list.
 
         Raises
         ------
         TransportableException
             Any error in the remote job will result in a
-            `TransportableException`, to be handled by `Parallel.retrieve`.
+            ``TransportableException``, to be handled by ``Parallel.retrieve``.
         futures.CancelledError
             If the remote job was cancelled before completion
         """
@@ -577,21 +582,9 @@ class _CivisBackendResult:
 
 
 class _CivisBackend(ParallelBackendBase):
-    """
-    The backend class that tells joblib how to use Civis to run jobs.
-    Users should interact with this through ``make_backend_factory``.
+    """The backend class that tells joblib how to use Civis to run jobs
 
-    .. note:: If we're polling to monitor job status, then
-              the `ContainerFuture` returned by the `ContainerPoolExecutor`
-              doesn't start polling until someone requests status
-              (to minimize the number of API calls used).
-              If it doesn't poll, it can't retry a failed run.
-              `joblib` is careful to keep results in order, which means
-              that it submits all jobs at once, then queries them for
-              results one at a time, in order.
-                  This behavior matters for retrying failed jobs.
-              If polling hasn't started, then the `ContainerFuture`
-              can't notice and retry failures.
+    Users should interact with this through ``make_backend_factory``.
     """
     def __init__(self, setup_cmd=_DEFAULT_SETUP_CMD,
                  from_template_id=None,
@@ -607,11 +600,12 @@ class _CivisBackend(ParallelBackendBase):
             client = civis.APIClient(resources='all')
         self._client = client
         if from_template_id:
-            self.executor = CustomPoolExecutor(from_template_id, client=client,
-                                               **executor_kwargs)
+            self.executor = CustomScriptExecutor(from_template_id,
+                                                 client=client,
+                                                 **executor_kwargs)
         else:
-            self.executor = ContainerPoolExecutor(client=client,
-                                                  **executor_kwargs)
+            self.executor = _ContainerShellExecutor(client=client,
+                                                    **executor_kwargs)
         self.setup_cmd = setup_cmd
         self.max_submit_retries = max_submit_retries
         self.run_file_id = None
@@ -636,12 +630,6 @@ class _CivisBackend(ParallelBackendBase):
 
     def apply_async(self, func, callback=None):
         """Schedule func to be run
-
-        Note that if the `executor` is set to retry job failures
-        (`max_n_retries` set, via `max_job_retries` on the
-        `make_backend_factory`), then run polling will begin
-        immediately. Otherwise, runs will be polled sequentially,
-        with later runs not polled until earlier runs have finished.
         """
         # Upload the job runner script if needed.
         if self.run_file_id is None and not self.using_template:
@@ -650,8 +638,8 @@ class _CivisBackend(ParallelBackendBase):
             with open(runner_local_path) as f:
                 self.run_file_id = civis.io.file_to_civis(f, runfunc_name,
                                                           client=self._client)
-                _LOGGER.debug("Uploaded job runner script to File %d",
-                              self.run_file_id)
+                log.debug("Uploaded job runner script to File %d",
+                          self.run_file_id)
 
         # Serialize func to a temporary file and upload it to a Civis File.
         # Make the temporary files expire in a week.
@@ -667,8 +655,8 @@ class _CivisBackend(ParallelBackendBase):
                                            "civis_joblib_backend_func",
                                            expires_at=expires_at,
                                            client=self._client)
-                _LOGGER.debug("uploaded serialized function to File: %d",
-                              func_file_id)
+                log.debug("uploaded serialized function to File: %d",
+                          func_file_id)
 
             # Use the Civis CLI client to download the job runner script into
             # the container, and then run it on the uploaded job.
@@ -694,14 +682,14 @@ class _CivisBackend(ParallelBackendBase):
                     if self.using_template:
                         args = {'JOBLIB_FUNC_FILE_ID': func_file_id}
                         future = self.executor.submit(**args)
-                        _LOGGER.debug("Started custom script from template "
-                                      "%s with arguments %s",
-                                      self.executor.from_template_id, args)
+                        log.debug("Started custom script from template "
+                                  "%s with arguments %s",
+                                  self.executor.from_template_id, args)
                     else:
                         future = self.executor.submit(fn=cmd)
-                        _LOGGER.debug("started container script with "
-                                      "command: %s", cmd)
-                    # Stop retrying if submissions was successful.
+                        log.debug("started container script with "
+                                  "command: %s", cmd)
+                    # Stop retrying if submission was successful.
                     break
                 except CivisAPIError as e:
                     # If we've retried the maximum number of times already,
@@ -710,8 +698,8 @@ class _CivisBackend(ParallelBackendBase):
                     if retries_left < 1:
                         raise JobSubmissionError(e)
 
-                    _LOGGER.debug("Retrying submission. %d retries left",
-                                  retries_left)
+                    log.debug("Retrying submission. %d retries left",
+                              retries_left)
 
                     # Sleep with exponentially increasing intervals in case
                     # the issue persists for a while.
@@ -726,7 +714,6 @@ class _CivisBackend(ParallelBackendBase):
                 # notifications endpoint.)
                 future.done()
 
-            # Wait for the job to finish.
             result = _CivisBackendResult(future, callback)
 
         return result

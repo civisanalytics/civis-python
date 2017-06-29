@@ -58,11 +58,13 @@ def main():
                 'futures==3.1.1',
                 'functools32>=3.2,<=3.99'
             ],
-            'pubnub': ['pubnub>=4.0.0,<=4.99']
+            'pubnub': ['pubnub>=4.0.0,<=4.99'],
+            'joblib': ['joblib>=0.11.0,<=0.11.99'],
         },
         entry_points={
             'console_scripts': [
-                'civis = civis.cli.__main__:main'
+                'civis = civis.cli.__main__:main',
+                'joblib_remote_worker = civis.run_joblib_func:main',
             ]
         }
     )
