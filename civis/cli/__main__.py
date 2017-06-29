@@ -323,8 +323,8 @@ def add_command_params(cmd, op_dict):
         description = p.get('description', '')
 
         if p['required']:
-            cmd.help += "\n\n{} - {}".format(p['name'].upper(),
-                                             description)
+            cmd.help += "\n\n{} ({}) - {}".format(
+                p['name'].upper(), param_type_spec, description)
             arg = click.Argument([p['name'].lower()],
                                  type=param_type)
             cmd.params.append(arg)
