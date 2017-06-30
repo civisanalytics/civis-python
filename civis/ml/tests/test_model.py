@@ -182,18 +182,6 @@ def test_load_table_from_outputs(mock_fid, mock_f2df):
     _model._load_table_from_outputs(1, 2, 'fname', client=mock_client)
 
 
-def test_get_credential_int():
-    client = None
-    assert _model._get_credential(1, client) == 1
-
-
-def test_get_credential_str():
-    res = Response({'name': 'a', 'id': 1})
-    mock_client = mock.MagicMock()
-    mock_client.credentials.list.return_value = [res]
-    assert _model._get_credential('a', mock_client) == 1
-
-
 ###################################
 # Tests of ModelFuture below here #
 ###################################
@@ -571,7 +559,7 @@ def container_response_stub(from_template_id=8387):
         'REQUIRED_MEMORY': 9999,
         'REQUIRED_DISK_SPACE': -20,
         'DEPENDENCIES': 'A B C D',
-        'GITHUB': 'Github API Token'
+        'GIT_CRED': 9876
     }
     notifications = {
         'urls': [],
@@ -601,6 +589,7 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = \
         container = container_response_stub
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
 
     resources = {'REQUIRED_CPU': 1000,
                  'REQUIRED_MEMORY': 9999,
@@ -623,7 +612,7 @@ def test_modelpipeline_classmethod_constructor(mock_future,
                                 in container.notifications.items()}
     deps = container.arguments.get('DEPENDENCIES', None)
     assert mp.dependencies == deps.split() if deps else None
-    assert mp.git_token_name == container.arguments['GITHUB']
+    assert mp.git_token_name == 'Token'
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")

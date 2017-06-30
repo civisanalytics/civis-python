@@ -192,18 +192,6 @@ def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
     return exc
 
 
-def _get_credential(credential, client=None):
-    """Get the credential ID from either an integer or a string."""
-    try:
-        return int(credential)
-    except ValueError:
-        client = client or APIClient()
-        cred = find_one(client.credentials.list(), name=credential)
-        if not cred:
-            raise ValueError("Credential '{}' not found!".format(credential))
-        return cred.id
-
-
 class ModelFuture(ContainerFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
@@ -727,7 +715,7 @@ class ModelPipeline:
         dependencies = args.get('DEPENDENCIES', None)
         if dependencies:
             dependencies = dependencies.split()
-        git_token_name = args.get('GITHUB')
+        git_token_name = client.credentials.get(args.get('GIT_CRED')).name
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -910,8 +898,9 @@ class ModelPipeline:
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
         if self.git_token_name:
-            script_arguments['GITHUB'] = _get_credential(
-                self.git_token_name)
+            cred = find_one(self._client.credentials.list(),
+                            name=self.git_token_name)
+            script_arguments['GIT_CRED'] = cred.id
 
         script_arguments.update(args or {})
 
