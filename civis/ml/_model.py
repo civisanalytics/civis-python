@@ -25,7 +25,7 @@ try:
 except ImportError:
     HAS_SKLEARN = False
 
-from civis import APIClient, find_one
+from civis import APIClient, find, find_one
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
@@ -715,7 +715,9 @@ class ModelPipeline:
         dependencies = args.get('DEPENDENCIES', None)
         if dependencies:
             dependencies = dependencies.split()
-        git_token_name = client.credentials.get(args.get('GIT_CRED')).name
+        git_token_name = args.get('GIT_CRED', None)
+        if git_token_name:
+            git_token_name = client.credentials.get(git_token_name).name
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -898,9 +900,14 @@ class ModelPipeline:
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
         if self.git_token_name:
-            cred = find_one(self._client.credentials.list(),
-                            name=self.git_token_name)
-            script_arguments['GIT_CRED'] = cred.id
+            creds = find(self._client.credentials.list(),
+                         name=self.git_token_name,
+                         type='Custom')
+            if len(creds) > 1:
+                raise ValueError("Unique credential with name '{}' for "
+                                 "remote git hosting service not found!"
+                                 .format(self.git_token_name))
+            script_arguments['GIT_CRED'] = creds[0].id
 
         script_arguments.update(args or {})
 
