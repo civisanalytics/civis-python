@@ -608,7 +608,6 @@ class _CivisBackend(ParallelBackendBase):
                                                     **executor_kwargs)
         self.setup_cmd = setup_cmd
         self.max_submit_retries = max_submit_retries
-        self.run_file_id = None
         self.using_template = (from_template_id is not None)
 
     def effective_n_jobs(self, n_jobs):
@@ -631,16 +630,6 @@ class _CivisBackend(ParallelBackendBase):
     def apply_async(self, func, callback=None):
         """Schedule func to be run
         """
-        # Upload the job runner script if needed.
-        if self.run_file_id is None and not self.using_template:
-            runfunc_name = "run_joblib_func.py"
-            runner_local_path = os.path.join(_THIS_DIR, runfunc_name)
-            with open(runner_local_path) as f:
-                self.run_file_id = civis.io.file_to_civis(f, runfunc_name,
-                                                          client=self._client)
-                log.debug("Uploaded job runner script to File %d",
-                          self.run_file_id)
-
         # Serialize func to a temporary file and upload it to a Civis File.
         # Make the temporary files expire in a week.
         expires_at = (datetime.now() + timedelta(days=7)).isoformat()
@@ -665,12 +654,12 @@ class _CivisBackend(ParallelBackendBase):
             runner_remote_path = "civis_joblib_worker"
             cmd = ("{setup_cmd} && "
                    "if command -v {runner_remote_path} >/dev/null; "
-                   "then {runner_remote_path} {func_file_id}; "
-                   "else pip install joblib=={jl_version} && "
-                   "civis files download {run_file_id} {runner_remote_path} "
-                   "&& python {runner_remote_path} {func_file_id}; fi"
-                   .format(run_file_id=self.run_file_id,
-                           jl_version=joblib.__version__,
+                   "then exec {runner_remote_path} {func_file_id}; "
+                   "else pip install civis=={civis_version} && "
+                   "pip install joblib=={jl_version} && "
+                   "exec {runner_remote_path} {func_file_id}; fi"
+                   .format(jl_version=joblib.__version__,
+                           civis_version=civis.__version__,
                            runner_remote_path=runner_remote_path,
                            func_file_id=func_file_id,
                            setup_cmd=self.setup_cmd))
