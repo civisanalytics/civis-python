@@ -36,6 +36,10 @@ else:
 
         Upon exiting the context, the directory and everything contained
         in it are removed.
+
+        This is a port of the Python 3.2+ TemporaryDirectory object,
+        modified slightly to work with Python 2.7. Python 3 docs are at
+        https://docs.python.org/3/library/tempfile.html#tempfile.TemporaryDirectory
         """
 
         def __init__(self, suffix='', prefix='tmp', dir=None):

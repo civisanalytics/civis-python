@@ -504,15 +504,15 @@ class _CivisBackendResult:
             """
             if fut.succeeded():
                 log.debug(
-                    "Ran job through Civis. script ID: %d, run ID: %d;"
+                    "Ran job through Civis. Job ID: %d, run ID: %d;"
                     " job succeeded!", fut.job_id, fut.run_id)
             elif fut.cancelled():
                 log.debug(
-                    "Ran job through Civis. script ID: %d, run ID: %d;"
+                    "Ran job through Civis. Job ID: %d, run ID: %d;"
                     " job cancelled!", fut.job_id, fut.run_id)
             else:
                 log.error(
-                    "Ran job through Civis. script ID: %d, run ID: %d;"
+                    "Ran job through Civis. Job ID: %d, run ID: %d;"
                     " job failure!", fut.job_id, fut.run_id)
 
             try:
@@ -662,7 +662,7 @@ class _CivisBackend(ParallelBackendBase):
             # the container, and then run it on the uploaded job.
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
-            runner_remote_path = "joblib_remote_worker"
+            runner_remote_path = "civis_joblib_worker"
             cmd = ("{setup_cmd} && "
                    "if command -v {runner_remote_path} >/dev/null; "
                    "then {runner_remote_path} {func_file_id}; "

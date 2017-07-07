@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added email notifications option to ``ModelPipeline``.
+- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``.
 
 ### Fixed
 - Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.

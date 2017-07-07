@@ -64,7 +64,7 @@ def main():
         entry_points={
             'console_scripts': [
                 'civis = civis.cli.__main__:main',
-                'joblib_remote_worker = civis.run_joblib_func:main',
+                'civis_joblib_worker = civis.run_joblib_func:main',
             ]
         }
     )
