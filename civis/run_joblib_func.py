@@ -30,14 +30,14 @@ def worker_func(func_file_id):
         raise RuntimeError("This function must be run inside a "
                            "Civis container job.")
 
-    func_buffer = BytesIO()
-    civis.io.civis_to_file(func_file_id, func_buffer)
-    func_buffer.seek(0)
-    func = joblib.load(func_buffer)
-
     # Run the function.
     result = None
     try:
+        func_buffer = BytesIO()
+        civis.io.civis_to_file(func_file_id, func_buffer)
+        func_buffer.seek(0)
+        func = joblib.load(func_buffer)
+
         result = func()
     except Exception:
         print("Error! Attempting to record exception.")
