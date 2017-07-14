@@ -44,6 +44,7 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3.4', None),
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
     'sklearn': ('http://scikit-learn.org/stable', None),
+    'joblib': ('http://pythonhosted.org/joblib', None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
