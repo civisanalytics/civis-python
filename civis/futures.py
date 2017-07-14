@@ -15,14 +15,10 @@ from civis import APIClient
 from civis.base import DONE
 from civis.polling import PollableResult, _ResultPollingThread
 
-try:
-    from pubnub.pubnub import PubNub
-    from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
-    from pubnub.enums import PNStatusCategory
-    from pubnub.callbacks import SubscribeCallback
-    has_pubnub = True
-except ImportError:
-    has_pubnub = False
+from pubnub.pubnub import PubNub
+from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
+from pubnub.enums import PNStatusCategory
+from pubnub.callbacks import SubscribeCallback
 
 log = logging.getLogger(__name__)
 
@@ -31,31 +27,31 @@ log = logging.getLogger(__name__)
 # fallback in case the job complete message is missed in an outage.
 _LONG_POLLING_INTERVAL = 9.5 * 60
 
-if has_pubnub:
-    class JobCompleteListener(SubscribeCallback):
-        _disconnect_categories = [
-            PNStatusCategory.PNTimeoutCategory,
-            PNStatusCategory.PNNetworkIssuesCategory,
-            PNStatusCategory.PNUnexpectedDisconnectCategory,
-        ]
 
-        def __init__(self, match_function, callback_function,
-                     disconnect_function=None):
-            self.match_function = match_function
-            self.callback_function = callback_function
-            self.disconnect_function = disconnect_function
+class JobCompleteListener(SubscribeCallback):
+    _disconnect_categories = [
+        PNStatusCategory.PNTimeoutCategory,
+        PNStatusCategory.PNNetworkIssuesCategory,
+        PNStatusCategory.PNUnexpectedDisconnectCategory,
+    ]
 
-        def message(self, pubnub, message):
-            if self.match_function(message.message):
-                self.callback_function()
+    def __init__(self, match_function, callback_function,
+                 disconnect_function=None):
+        self.match_function = match_function
+        self.callback_function = callback_function
+        self.disconnect_function = disconnect_function
 
-        def status(self, pubnub, status):
-            if status.category in self._disconnect_categories:
-                if self.disconnect_function:
-                    self.disconnect_function()
+    def message(self, pubnub, message):
+        if self.match_function(message.message):
+            self.callback_function()
 
-        def presence(self, pubnub, presence):
-            pass
+    def status(self, pubnub, status):
+        if status.category in self._disconnect_categories:
+            if self.disconnect_function:
+                self.disconnect_function()
+
+    def presence(self, pubnub, presence):
+        pass
 
 
 class CivisFuture(PollableResult):
@@ -112,9 +108,7 @@ class CivisFuture(PollableResult):
         if client is None:
             client = APIClient(api_key=api_key, resources='all')
 
-        if (polling_interval is None and
-                has_pubnub and
-                hasattr(client, 'channels')):
+        if polling_interval is None and hasattr(client, 'channels'):
             polling_interval = _LONG_POLLING_INTERVAL
 
         super().__init__(poller=poller,
@@ -124,7 +118,7 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-        if has_pubnub and hasattr(client, 'channels'):
+        if hasattr(client, 'channels'):
             config, channels = self._pubnub_config()
             self._pubnub = self._subscribe(config, channels)
 

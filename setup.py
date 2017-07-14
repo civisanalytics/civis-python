@@ -1,5 +1,4 @@
 import re
-import os
 import setuptools
 from setuptools import find_packages, setup
 
@@ -50,6 +49,8 @@ def main():
             'requests>=2.12.0,==2.*',
             'jsonschema>=2.5.1,==2.*',
             'six>=1.10,<=1.99',
+            'joblib>=0.11,<=0.11.99',
+            'pubnub>=4.0,<=4.99',
         ],
         extras_require={
             ':python_version=="2.7"': [
@@ -58,8 +59,6 @@ def main():
                 'futures==3.1.1',
                 'functools32>=3.2,<=3.99'
             ],
-            'pubnub': ['pubnub>=4.0.0,<=4.99'],
-            'joblib': ['joblib>=0.11.0,<=0.11.99'],
         },
         entry_points={
             'console_scripts': [

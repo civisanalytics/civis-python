@@ -12,14 +12,11 @@ from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
                            CustomScriptExecutor,
                            _create_docker_command)
-try:
-    from civis.futures import (CivisFuture,
-                               has_pubnub,
-                               JobCompleteListener,
-                               _LONG_POLLING_INTERVAL)
-    from pubnub.enums import PNStatusCategory
-except ImportError:
-    has_pubnub = False
+
+from civis.futures import (CivisFuture,
+                           JobCompleteListener,
+                           _LONG_POLLING_INTERVAL)
+from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
 
@@ -59,7 +56,6 @@ class CivisFutureTests(CivisVCRTestCase):
     def tearDownClass(cls):
         clear_lru_cache()
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_calls_callback_when_message_matches(self):
         match = mock.Mock()
         match.return_value = True
@@ -72,7 +68,6 @@ class CivisFutureTests(CivisVCRTestCase):
         match.assert_called_with(message.message)
         self.assertEqual(callback.call_count, 1)
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_does_not_call_callback(self):
         match = mock.Mock()
         match.return_value = False
@@ -85,7 +80,6 @@ class CivisFutureTests(CivisVCRTestCase):
         match.assert_called_with(message.message)
         self.assertEqual(callback.call_count, 0)
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_calls_disconnect_callback_when_status_disconnect(self):
         disconnect_categories = [
             PNStatusCategory.PNTimeoutCategory,
@@ -98,7 +92,6 @@ class CivisFutureTests(CivisVCRTestCase):
             listener.status(None, status)
             assert disconnect.call_count == 1
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     def test_listener_does_note_call_disconnect_callback_on_other_status(self):
         nondisconnect_categories = [
             PNStatusCategory.PNAcknowledgmentCategory,
@@ -111,7 +104,6 @@ class CivisFutureTests(CivisVCRTestCase):
             listener.status(None, status)
             assert disconnect.call_count == 0
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message(self, *mocks):
@@ -127,7 +119,6 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertTrue(result._check_message(message))
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message_with_different_run_id(self, *mocks):
@@ -143,7 +134,6 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertFalse(result._check_message(message))
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_check_message_when_job_is_running(self, *mocks):
@@ -159,7 +149,6 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertFalse(result._check_message(message))
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_result_succeeded(self, mock_subscribe, mock_api):
@@ -176,7 +165,6 @@ class CivisFutureTests(CivisVCRTestCase):
         assert mock_pubnub.unsubscribe_all.call_count == 1
         assert result._state == 'FINISHED'
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_set_api_result_failed(self, mock_subscribe, mock_api):
@@ -194,7 +182,6 @@ class CivisFutureTests(CivisVCRTestCase):
         with pytest.raises(CivisJobFailure):
             result.result()
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_channels(self, *mocks):
@@ -203,7 +190,6 @@ class CivisFutureTests(CivisVCRTestCase):
         future._pubnub.get_subscribed_channels.return_value = [1]
         assert future.subscribed is True
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_no_subscription(self, *mocks):
@@ -212,7 +198,6 @@ class CivisFutureTests(CivisVCRTestCase):
         future._pubnub.get_subscribed_channels.return_value = []
         assert future.subscribed is False
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_subscribed_with_no_channels(self, *mocks):
@@ -222,7 +207,6 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.subscribed is False
         clear_lru_cache()
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_overwrite_polling_interval_with_channels(self, *mocks):
@@ -230,7 +214,6 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.polling_interval == _LONG_POLLING_INTERVAL
         assert hasattr(future, '_pubnub')
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_explicit_polling_interval_with_channels(self, *mocks):
@@ -238,7 +221,6 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.polling_interval == 5
         assert hasattr(future, '_pubnub')
 
-    @pytest.mark.skipif(not has_pubnub, reason="pubnub not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
     @mock.patch.object(CivisFuture, '_subscribe')
     def test_polling_interval(self, *mocks):
