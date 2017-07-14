@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Edited example for safer null value handling
+- Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
 
 ### Added
 - Added email notifications option to ``ModelPipeline``.
