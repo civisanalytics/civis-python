@@ -656,7 +656,6 @@ class _CivisBackend(ParallelBackendBase):
                    "if command -v {runner_remote_path} >/dev/null; "
                    "then exec {runner_remote_path} {func_file_id}; "
                    "else pip install civis=={civis_version} && "
-                   "pip install joblib=={jl_version} && "
                    "exec {runner_remote_path} {func_file_id}; fi"
                    .format(jl_version=joblib.__version__,
                            civis_version=civis.__version__,

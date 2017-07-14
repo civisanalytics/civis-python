@@ -7,7 +7,7 @@ python:
 install:
     - pip install --upgrade pip setuptools
     - pip install -r dev-requirements.txt
-    - pip install -e .[pubnub]
+    - pip install -e .
 env:
   global:
     - CIVIS_API_KEY=FOOBAR
