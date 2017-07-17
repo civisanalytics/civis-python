@@ -14,11 +14,7 @@ import warnings
 from concurrent import futures
 from functools import wraps
 
-try:
-    import joblib
-    HAS_JOBLIB = True
-except ImportError:
-    HAS_JOBLIB = False
+import joblib
 try:
     from sklearn.base import BaseEstimator
     HAS_SKLEARN = True
@@ -155,9 +151,6 @@ def _load_table_from_outputs(job_id, run_id, filename, client=None,
 
 def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     """Load a joblib-serialized Estimator from run outputs"""
-    if not HAS_JOBLIB:
-        raise ImportError('Install joblib to download models '
-                          'from Civis Platform.')
     try:
         tempdir = tempfile.mkdtemp()
         path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
@@ -844,8 +837,7 @@ class ModelPipeline:
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
 
-        if (HAS_SKLEARN and HAS_JOBLIB and
-                isinstance(self.model, BaseEstimator)):
+        if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
                 tempdir = tempfile.mkdtemp()
                 fout = os.path.join(tempdir, 'estimator.pkl')

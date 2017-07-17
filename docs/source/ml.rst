@@ -192,9 +192,7 @@ the following pip-installable dependencies enhance the capabilities of the
 
 - pandas
 - scikit-learn
-- joblib
 - glmnet
-- pubnub
 
 Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
@@ -202,15 +200,9 @@ You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
 If you wish to use custom models or download trained models,
 you'll need scikit-learn installed.
 
-We use the ``joblib`` library to move scikit-learn models back and forth from Platform.
-Install it if you wish to use custom models or download trained models.
-
 The "sparse_logistic", "sparse_linear_regressor", and "sparse_ridge_regressor" models
 all use the public Civis Analytics ``glmnet`` library. Install it if you wish to download
 a model created from one of these pre-defined models.
-
-If you install ``pubnub``, the Civis Platform API client can use the notifications endpoint instead of
-polling for job completion. This gives faster results and uses fewer API calls.
 
 Object reference
 ================

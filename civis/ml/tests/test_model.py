@@ -6,16 +6,12 @@ import os
 import pickle
 import tempfile
 
+import joblib
 try:
     import pandas as pd
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
-try:
-    import joblib
-    HAS_JOBLIB = True
-except ImportError:
-    HAS_JOBLIB = False
 try:
     from sklearn.linear_model import LogisticRegression
     HAS_SKLEARN = True
@@ -158,7 +154,6 @@ def test_stash_local_data_from_dataframe(mock_file):
     assert isinstance(mock_file.call_args[0][0], BytesIO)
 
 
-@pytest.mark.skipif(not HAS_JOBLIB, reason="joblib not installed")
 @mock.patch.object(_model, '_retrieve_file', autospec=True)
 def test_load_estimator(mock_retrieve):
     obj = {'spam': 'eggs'}
