@@ -3,6 +3,7 @@ import json
 import os
 from six import StringIO, BytesIO
 import tempfile
+import zipfile
 
 import pytest
 import vcr
@@ -97,6 +98,27 @@ class ImportTests(CivisVCRTestCase):
         client = civis.APIClient()
         url = civis.io._files._get_url_from_file_id(self.file_id, client)
         assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_zip_member_to_civis(self, *mocks):
+        with tempfile.NamedTemporaryFile() as tmp:
+            with zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                zip_file.writestr(tmp.name, 'a,b,c\n1,2,3')
+                zip_member = zip_file.namelist()[0]
+                with zip_file.open(zip_member) as zip_member_buf:
+                    result = civis.io.file_to_civis(zip_member_buf, zip_member)
+
+        assert isinstance(result, int)
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_file_to_civis(self, *mocks):
+        with tempfile.NamedTemporaryFile() as tmp:
+            tmp.write(b'a,b,c\n1,2,3')
+            tmp.flush()
+
+            result = civis.io.file_to_civis(tmp, tmp.name)
+
+        assert isinstance(result, int)
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_file(self, *mocks):

@@ -109,7 +109,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     form_key['file'] = buf
 
     url = file_response.upload_url
-    if HAS_TOOLBELT:
+    if HAS_TOOLBELT and buf.seekable():
         # This streams from the open file buffer without holding the
         # contents in memory.
         en = MultipartEncoder(fields=form_key)

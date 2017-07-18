@@ -15,6 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
 
+## 1.5.3 - 2017-05-18
+### Changed
+- Changed criteria in ``civis.io.file_to_civis`` for streaming a file to include a check on if the file object is seekable.
+
 ## 1.5.2 - 2017-05-17
 ### Fixed
 - Fixed a bug where ``ModelFuture.validation_metadata`` would not source training job metadata for a ``ModelFuture`` corresponding to prediction job (#90).
