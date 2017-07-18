@@ -52,6 +52,11 @@ so it will run ``pre_dispatch`` jobs at once. The default value of
 at once in the Civis Platform. Set ``pre_dispatch="n_jobs"`` in your
 :class:`~joblib.Parallel` call to run at most ``n_jobs`` jobs.
 
+The Civis joblib backend uses `cloudpickle <https://github.com/cloudpipe/cloudpickle>`_
+to transport code and data from the parent environment to the Civis Platform.
+This means that you may parallelize dynamically-defined functions and classes,
+including lambda functions.
+
 Infer backend parameters
 ------------------------
 If you're writing code which will run inside a Civis Container Script, then
@@ -143,21 +148,19 @@ prints information to either stdout or stderr.
 
 Mismatches between your local environment and the environment in the
 Civis container script jobs are a common source of errors.
-To run a function in the Civis platform, that function must be 
-importable from a Python interpreter running in the container script.
-For example, if you define a function::
+To run a function in the Civis platform, any modules called by 
+that function must be importable from a Python interpreter running 
+in the container script. For example, if you use :class:`joblib.Parallel`
+with :func:`numpy.sqrt`, the joblib backend must be set to run
+your function in a container which has :mod:`numpy` installed.
+If you see an error such as::
 
-    def my_func(x):
-        return 2*x
-        
-and run this with :class:`joblib.Parallel`, you'll get an error like::
-
-    AttributeError: module '__main__' has no attribute 'my_func'
+    ModuleNotFoundError: No module named 'numpy'
     
-which signifies that the function you're trying to run doesn't exist
-in the remote environment. Install it in your remote environment by
-putting it into a GitHub repository and using the ``repo_http_uri``
-parameter of :func:`~civis.parallel.make_backend_factory`.
+this signifies that the function you're trying to run doesn't exist
+in the remote environment. Select a Docker container with the module installed,
+or install it in your remote environment by using the ``repo_http_uri``
+parameter of :func:`~civis.parallel.make_backend_factory` to install it from GitHub.
 
 Object Reference
 ================

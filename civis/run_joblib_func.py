@@ -1,7 +1,8 @@
 """
 This is an executable intended for use with a joblib backend
 for the Civis platform. It takes a Civis File ID representing
-a joblib-serialized callable as an argument, downloads the file,
+a callable serialized by either ``pickle`` or ``cloudpickle``
+as an argument, downloads the file,
 deserializes it, calls the callable, serializes the result,
 and uploads the result to another Civis File. The output file's ID
 will be set as an output on this run.
@@ -11,10 +12,11 @@ from __future__ import absolute_import, print_function
 from datetime import datetime, timedelta
 from io import BytesIO
 import os
+import pickle
 import sys
 
 import civis
-import joblib
+import cloudpickle
 from joblib.my_exceptions import TransportableException
 from joblib.format_stack import format_exc
 
@@ -48,13 +50,10 @@ def worker_func(func_file_id):
         raise
     finally:
         # Serialize the result and upload it to the Files API.
-        # Note that if compress is 0, joblib will output multiple files.
-        # compress=3 is a good compromise between space and read/write times
-        # (https://github.com/joblib/joblib/blob/18f9b4ce95e8788cc0e9b5106fc22573d768c44b/joblib/numpy_pickle.py#L358).
         if result is not None:
             # If the function exits without erroring, we may not have a result.
             result_buffer = BytesIO()
-            joblib.dump(result, result_buffer, compress=3)
+            cloudpickle.dump(result, result_buffer, pickle.HIGHEST_PROTOCOL)
             result_buffer.seek(0)
             output_name = "Results from Joblib job {} / run {}".format(job_id,
                                                                        run_id)
