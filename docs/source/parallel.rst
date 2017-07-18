@@ -150,7 +150,7 @@ For example, if you define a function::
     def my_func(x):
         return 2*x
         
-and run this with :func:`joblib.Parallel`, you'll get an error like::
+and run this with :class:`joblib.Parallel`, you'll get an error like::
 
     AttributeError: module '__main__' has no attribute 'my_func'
     
