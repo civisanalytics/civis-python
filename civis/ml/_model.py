@@ -37,7 +37,8 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {8387: 8388,  # v1.0
+_PRED_TEMPLATES = {9112: 9113,  # v1.1
+                   8387: 8388,  # v1.0
                    7020: 7021,  # v0.5
                    }
 
@@ -590,9 +591,9 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    # These are the v1.0 templates
-    train_template_id = 8387
-    predict_template_id = 8388
+    # These are the v1.1 templates
+    train_template_id = 9112
+    predict_template_id = 9113
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
