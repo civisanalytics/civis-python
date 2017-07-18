@@ -18,6 +18,8 @@ import joblib
 from joblib.my_exceptions import TransportableException
 from joblib.format_stack import format_exc
 
+from civis.parallel import _robust_pickle_download, _robust_file_to_civis
+
 
 def worker_func(func_file_id):
     # Have the output File expire in 7 days.
@@ -33,11 +35,8 @@ def worker_func(func_file_id):
     # Run the function.
     result = None
     try:
-        func_buffer = BytesIO()
-        civis.io.civis_to_file(func_file_id, func_buffer)
-        func_buffer.seek(0)
-        func = joblib.load(func_buffer)
-
+        func = _robust_pickle_download(func_file_id, client=client,
+                                       n_retries=5, delay=0.5)
         result = func()
     except Exception:
         print("Error! Attempting to record exception.")
@@ -59,8 +58,10 @@ def worker_func(func_file_id):
             result_buffer.seek(0)
             output_name = "Results from Joblib job {} / run {}".format(job_id,
                                                                        run_id)
-            output_file_id = civis.io.file_to_civis(result_buffer, output_name,
-                                                    expires_at=expires_at)
+            output_file_id = _robust_file_to_civis(result_buffer, output_name,
+                                                   n_retries=5, delay=0.5,
+                                                   expires_at=expires_at,
+                                                   client=client)
             client.scripts.post_containers_runs_outputs(job_id, run_id,
                                                         'File', output_file_id)
             print("Results output to file ID: {}".format(output_name,
