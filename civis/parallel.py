@@ -35,7 +35,8 @@ def infer_backend_factory(required_resources=None,
                           setup_cmd=None,
                           max_submit_retries=0,
                           max_job_retries=0,
-                          hidden=True):
+                          hidden=True,
+                          **kwargs):
     """Infer the container environment and return a backend factory.
 
     This function helps you run additional jobs from code which executes
@@ -109,6 +110,10 @@ def infer_backend_factory(required_resources=None,
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to ``scripts.post_containers``, potentially overriding
+        the values of those arguments in the parent environment.
 
     Raises
     ------
@@ -161,11 +166,14 @@ def infer_backend_factory(required_resources=None,
     # Update arguments with input
     state.arguments.update(arguments or {})
 
-    return make_backend_factory(docker_image_name=state.docker_image_name,
-                                docker_image_tag=state.docker_image_tag,
-                                repo_http_uri=state.repo_http_uri,
-                                repo_ref=state.repo_ref,
-                                required_resources=state.required_resources,
+    # Set defaults on other keyword arguments with
+    # values from the current script
+    for key in ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
+                'repo_ref', 'remote_host_credential_id', 'git_credential_id',
+                'cancel_timeout', 'time_zone']:
+        kwargs.setdefault(key, state[key])
+
+    return make_backend_factory(required_resources=state.required_resources,
                                 params=state.params,
                                 arguments=state.arguments,
                                 client=client,
@@ -173,22 +181,19 @@ def infer_backend_factory(required_resources=None,
                                 setup_cmd=setup_cmd,
                                 max_submit_retries=max_submit_retries,
                                 max_job_retries=max_job_retries,
-                                hidden=hidden)
+                                hidden=hidden,
+                                **kwargs)
 
 
 def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          docker_image_tag="latest",
-                         repo_http_uri=None,
-                         repo_ref=None,
-                         required_resources=None,
-                         params=None,
-                         arguments=None,
                          client=None,
                          polling_interval=None,
                          setup_cmd=None,
                          max_submit_retries=0,
                          max_job_retries=0,
-                         hidden=True):
+                         hidden=True,
+                         **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
 
     .. note:: The total size of function parameters in `Parallel()`
@@ -201,27 +206,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The image for the container script.
     docker_image_tag : str, optional
         The tag for the Docker image.
-    repo_http_uri : str, optional
-        The GitHub repo to check out to /app
-        (e.g., github.com/my-user/my-repo.git)
-    repo_ref : str, optional
-        The GitHub repo reference to check out (e.g., "master")
-    required_resources : dict or None, optional
-        The resources needed by the container. See the
-        `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
-    params : list or None, optional
-        A definition of the parameters this script accepts in the
-        arguments field. See the `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
-    arguments : dict or None, optional
-        Dictionary of name/value pairs to use to run this script.
-        Only settable if this script has defined params. See the `container
-        scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
     client : `civis.APIClient` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
@@ -257,6 +241,9 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to :func:`~civis.APIClient.scripts.post_containers`.
 
     Examples
     --------
@@ -321,9 +308,13 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
     must have Pandas installed). In particular, the function that is called by
     ``joblib`` must be available in the specified environment.
+
+    See Also
+    --------
+    civis.APIClient.scripts.post_containers
     """
     if setup_cmd is None:
-        if repo_http_uri is not None:
+        if kwargs.get('repo_http_uri'):
             setup_cmd = _DEFAULT_REPO_SETUP_CMD
         else:
             setup_cmd = _DEFAULT_SETUP_CMD
@@ -331,17 +322,13 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     def backend_factory():
         return _CivisBackend(docker_image_name=docker_image_name,
                              docker_image_tag=docker_image_tag,
-                             repo_http_uri=repo_http_uri,
-                             repo_ref=repo_ref,
-                             required_resources=required_resources,
-                             params=params,
-                             arguments=arguments,
                              client=client,
                              polling_interval=polling_interval,
                              setup_cmd=setup_cmd,
                              max_submit_retries=max_submit_retries,
                              max_n_retries=max_job_retries,
-                             hidden=hidden)
+                             hidden=hidden,
+                             **kwargs)
 
     return backend_factory
 

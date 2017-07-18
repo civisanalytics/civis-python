@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 from builtins import super
 from concurrent.futures import Executor
 from concurrent import futures
+import copy
 import datetime
 import logging
 import time
@@ -457,27 +458,15 @@ class _ContainerShellExecutor(_CivisExecutor):
         The name of the Docker image to be used by Civis.
     docker_image_tag: str
         The name of the tag for the Docker image.
-    repo_http_uri: str
-        The URI for the GitHub repository to check out to /app.
-    repo_ref: str
-        The reference (branch, tag, or commit) for the GitHub repository.
-    git_credential_id: int
-        See :func:`~civis.scripts.post_containers` for details.
     script_name: str
         The name for containers in Civis.
     required_resources: dict
         A dictionary specifying what resources the job needs.
         See :func:`~APIClient.scripts.post_containers` for details.
-    time_zone: str, optional
-        The time zone of this script.
     hidden: bool, optional
         The hidden status of the object. Setting this to ``True`` hides it
         from most API endpoints. The object can still be queried
         directly by ID. Defaults to ``True``.
-    params: list of dict, optional
-        See :func:`~civis.APIClient.scripts.post_containers` for details.
-    arguments: dict, optional
-        See :func:`~civis.APIClient.scripts.post_containers` for details.
     max_n_retries: int, optional
         Retry failed jobs this many times before giving up.
         Retried jobs will be restarted with exactly the same parameters
@@ -495,6 +484,9 @@ class _ContainerShellExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``script_name`` to create
         the script names for each submission.
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to ``scripts.post_containers``.
 
     See Also
     --------
@@ -502,28 +494,17 @@ class _ContainerShellExecutor(_CivisExecutor):
     """
     def __init__(self, docker_image_name="civisanalytics/datascience-python",
                  docker_image_tag="latest",
-                 repo_http_uri=None,
-                 repo_ref=None,
-                 git_credential_id=None,
                  script_name=None,
                  required_resources=None,
-                 time_zone=None,
                  hidden=True,
-                 params=None,
-                 arguments=None,
                  max_n_retries=0,
                  client=None,
                  polling_interval=None,
-                 inc_script_names=False):
+                 inc_script_names=False,
+                 **kwargs):
         self.docker_image_name = docker_image_name
         self.docker_image_tag = docker_image_tag
-        self.repo_http_uri = repo_http_uri
-        self.repo_ref = repo_ref
-        self.git_credential_id = git_credential_id
-        self.required_resources = required_resources
-        self.time_zone = time_zone
-        self.params = params
-        self.arguments = arguments
+        self.container_kwargs = kwargs
 
         if required_resources is None:
             required_resources = {'cpu': 1024, 'memory': 1024}
@@ -544,25 +525,20 @@ class _ContainerShellExecutor(_CivisExecutor):
     def _create_job(self, script_name, arguments=None, cmd=None):
         # Combine instance and input arguments into one dictionary.
         # Use `None` instead of an empty dictionary.
-        combined_args = (self.arguments or {}).copy()
-        combined_args.update((arguments or {}))
-        if not combined_args:
-            combined_args = None
+        kwargs = copy.deepcopy(self.container_kwargs)
+        kwargs.setdefault('arguments', {}).update(arguments or {})
+        if not kwargs['arguments']:
+            del kwargs['arguments']
 
         # Submit a request to Civis to make the container script object.
         job = self.client.scripts.post_containers(
             name=script_name,
             required_resources=self.required_resources,
-            repo_http_uri=self.repo_http_uri,
-            repo_ref=self.repo_ref,
             docker_command=cmd,
             docker_image_name=self.docker_image_name,
             docker_image_tag=self.docker_image_tag,
-            time_zone=self.time_zone,
             hidden=self.hidden,
-            params=self.params,
-            arguments=combined_args,
-            git_credential_id=self.git_credential_id,
+            **self.container_kwargs
         )
 
         return job

@@ -16,12 +16,20 @@ from civis.futures import ContainerFuture
 
 @pytest.fixture
 def mock_job():
-    return Response(dict(from_template_id=None, id='42',
+    return Response(dict(from_template_id=None,
+                         id='42',
                          required_resources={'cpu': 11},
-                         params=[{'name': 'spam'}], arguments={'spam': 'eggs'},
+                         params=[{'name': 'spam'}],
+                         arguments={'spam': 'eggs'},
                          docker_image_name='image_name',
                          docker_image_tag='tag',
-                         repo_http_uri='cabbage', repo_ref='servant'))
+                         repo_http_uri='cabbage',
+                         repo_ref='servant',
+                         remote_host_credential_id=171,
+                         git_credential_id=213,
+                         cancel_timeout=23,
+                         time_zone="America/Chicago",
+                         ))
 
 
 def test_retries():
@@ -269,12 +277,7 @@ def test_infer_from_custom_job(mock_make_factory):
                                 docker_image_name='image_name',
                                 docker_image_tag='tag',
                                 repo_http_uri='cabbage', repo_ref='servant'))
-    mock_script = Response(dict(from_template_id=None,
-                                id=171, required_resources={'cpu': 11},
-                                params=[{'name': 'spam'}], arguments={},
-                                docker_image_name='image_name',
-                                docker_image_tag='tag',
-                                repo_http_uri='cabbage', repo_ref='servant'))
+    mock_script = mock_job()
     mock_template = Response(dict(id=999, script_id=171))
 
     def _get_container(job_id):
@@ -299,11 +302,7 @@ def test_infer_from_custom_job(mock_make_factory):
     # the container which was created from it.
     assert mock_client.scripts.get_containers.call_count == 2
     mock_client.templates.get_scripts.assert_called_once_with(999)
-    expected_kwargs = {'docker_image_name': 'image_name',
-                       'docker_image_tag': 'tag',
-                       'repo_http_uri': 'cabbage',
-                       'repo_ref': 'servant',
-                       'required_resources': {'cpu': 11},
+    expected_kwargs = {'required_resources': {'cpu': 11},
                        'params': [{'name': 'spam'}],
                        'arguments': {'spam': 'eggs'},
                        'client': mock.ANY,
@@ -312,6 +311,10 @@ def test_infer_from_custom_job(mock_make_factory):
                        'max_submit_retries': mock.ANY,
                        'max_job_retries': mock.ANY,
                        'hidden': True}
+    for key in ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
+                'repo_ref', 'remote_host_credential_id', 'git_credential_id',
+                'cancel_timeout', 'time_zone']:
+        expected_kwargs[key] = mock_script[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
 
 
