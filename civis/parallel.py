@@ -409,11 +409,33 @@ class JobSubmissionError(Exception):
     pass
 
 
-def _robust_pickle_download(output_file_id, client, n_retries=5, delay=0.0):
+def _robust_pickle_download(output_file_id, client=None,
+                            n_retries=5, delay=0.0):
     """Download and deserialize the result from output_file_id
 
     Retry network errors `n_retries` times with `delay` seconds between calls
+
+    Parameters
+    ----------
+    output_file_id : int
+        ID of the file to download
+    client : civis.APIClient, optional
+    n_retries : int, optional
+        Retry the upload this many times before raising an error.
+    delay : float, optional
+        If provided, wait this many seconds between retries.
+
+    Returns
+    -------
+    obj
+        Any Python object; the result of calling ``joblib.load`` on the
+        downloaded file
+
+    See Also
+    --------
+    joblib.load
     """
+    client = client or civis.APIClient(resources='all')
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -436,7 +458,7 @@ def _robust_pickle_download(output_file_id, client, n_retries=5, delay=0.0):
             return joblib.load(buffer)
 
 
-def _robust_file_to_civis(buf, name, client, n_retries=5,
+def _robust_file_to_civis(buf, name, client=None, n_retries=5,
                           delay=0.0, **kwargs):
     """Upload the contents of an input file-like buffer
 
@@ -472,6 +494,7 @@ def _robust_file_to_civis(buf, name, client, n_retries=5,
     --------
     civis.io.file_to_civis
     """
+    client = client or civis.APIClient(resources='all')
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
