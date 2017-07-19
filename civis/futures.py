@@ -307,7 +307,7 @@ def _create_docker_command(*args, **kwargs):
 @six.add_metaclass(ABCMeta)
 class _CivisExecutor(Executor):
     def __init__(self,
-                 script_name=None,
+                 name=None,
                  hidden=True,
                  max_n_retries=0,
                  client=None,
@@ -315,15 +315,13 @@ class _CivisExecutor(Executor):
                  inc_script_names=False):
         self.max_n_retries = max_n_retries
         self.hidden = hidden
-        self.script_name = script_name
+        self.name = name
         self.polling_interval = polling_interval
         self.inc_script_names = inc_script_names
         self._script_name_counter = 0
 
         self._shutdown_lock = threading.Lock()
         self._shutdown_thread = False
-
-        self.script_name = script_name
 
         if client is None:
             client = APIClient(resources='all')
@@ -390,23 +388,22 @@ class _CivisExecutor(Executor):
                     fn = _create_docker_command
                 cmd = fn(*args, **kwargs)
 
-            script_name = self.script_name
+            name = self.name
             if self.inc_script_names:
-                script_name = \
-                    "{} {}".format(script_name, self._script_name_counter)
+                name = "{} {}".format(name, self._script_name_counter)
                 self._script_name_counter += 1
 
-            job = self._create_job(script_name=script_name,
+            job = self._create_job(name=name,
                                    arguments=arguments,
                                    cmd=cmd)
             run = self.client.jobs.post_runs(job.id)
             log.debug('Container "{}" created with script ID {} and '
-                      'run ID {}'.format(script_name, job.id, run.id))
+                      'run ID {}'.format(name, job.id, run.id))
 
             return self._make_future(job.id, run.id)
 
     @abstractmethod
-    def _create_job(self, script_name, arguments=None, cmd=None):
+    def _create_job(self, name, arguments=None, cmd=None):
         raise NotImplementedError("Implement in the child class")
 
     def shutdown(self, wait=True):
@@ -457,7 +454,7 @@ class _ContainerShellExecutor(_CivisExecutor):
     docker_image_name: str, optional
         The name of the Docker image to be used by Civis. You may also
         wish to specify a ``docker_image_tag`` in the keyword arguments.
-    script_name: str, optional
+    name: str, optional
         The name for containers in Civis.
         Defaults to "ContainerShellExecutorScript" followed by the date.
     required_resources: dict, optional
@@ -483,7 +480,7 @@ class _ContainerShellExecutor(_CivisExecutor):
         :class:`~ContainerFuture` objects that are created. You should
         only set this if you aren't using ``pubnub`` notifications.
     inc_script_names: bool, optional
-        If ``True``, a counter will be added to the ``script_name`` to create
+        If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
     **kwargs:
         Additional keyword arguments will be passed
@@ -494,7 +491,7 @@ class _ContainerShellExecutor(_CivisExecutor):
     civis.APIClient.scripts.post_containers
     """
     def __init__(self, docker_image_name="civisanalytics/datascience-python",
-                 script_name=None,
+                 name=None,
                  required_resources=None,
                  hidden=True,
                  max_n_retries=0,
@@ -509,22 +506,18 @@ class _ContainerShellExecutor(_CivisExecutor):
             required_resources = {'cpu': 1024, 'memory': 1024}
         self.required_resources = required_resources
 
-        if kwargs.get('name'):
-            # The argument in `post_containers` is named "name"
-            script_name = kwargs.pop('name')
-        if script_name is None:
+        if name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
-            script_name = ("ContainerShellExecutorScript "
-                           "{}".format(date_str))
+            name = "ContainerShellExecutorScript {}".format(date_str)
 
-        super().__init__(script_name=script_name,
+        super().__init__(name=name,
                          hidden=hidden,
                          client=client,
                          max_n_retries=max_n_retries,
                          polling_interval=polling_interval,
                          inc_script_names=inc_script_names)
 
-    def _create_job(self, script_name, arguments=None, cmd=None):
+    def _create_job(self, name, arguments=None, cmd=None):
         # Combine instance and input arguments into one dictionary.
         # Use `None` instead of an empty dictionary.
         kwargs = copy.deepcopy(self.container_kwargs)
@@ -534,7 +527,7 @@ class _ContainerShellExecutor(_CivisExecutor):
 
         # Submit a request to Civis to make the container script object.
         job = self.client.scripts.post_containers(
-            name=script_name,
+            name=name,
             required_resources=self.required_resources,
             docker_command=cmd,
             docker_image_name=self.docker_image_name,
@@ -564,7 +557,7 @@ class CustomScriptExecutor(_CivisExecutor):
     ----------
     from_template_id: int
         Create jobs as Custom Scripts from the given template ID.
-    script_name: str
+    name: str
         The name for containers in Civis.
     hidden: bool, optional
         The hidden status of the object. Setting this to ``True`` hides it
@@ -587,7 +580,7 @@ class CustomScriptExecutor(_CivisExecutor):
         :class:`~ContainerFuture` objects that are created. You should
         only set this if you aren't using ``pubnub`` notifications.
     inc_script_names: bool, optional
-        If ``True``, a counter will be added to the ``script_name`` to create
+        If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
 
     See Also
@@ -595,7 +588,7 @@ class CustomScriptExecutor(_CivisExecutor):
     civis.APIClient.scripts.post_custom
     """
     def __init__(self, from_template_id,
-                 script_name=None,
+                 name=None,
                  hidden=True,
                  arguments=None,
                  max_n_retries=0,
@@ -605,11 +598,11 @@ class CustomScriptExecutor(_CivisExecutor):
         self.from_template_id = from_template_id
         self.arguments = arguments
 
-        if script_name is None:
+        if name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
-            script_name = "CustomScriptExecutorScript {}".format(date_str)
+            name = "CustomScriptExecutorScript {}".format(date_str)
 
-        super().__init__(script_name=script_name,
+        super().__init__(name=name,
                          hidden=hidden,
                          client=client,
                          max_n_retries=max_n_retries,
@@ -632,7 +625,7 @@ class CustomScriptExecutor(_CivisExecutor):
         """
         return super().submit(fn=None, arguments=arguments)
 
-    def _create_job(self, script_name, arguments=None, cmd=None):
+    def _create_job(self, name, arguments=None, cmd=None):
         # Combine instance and input arguments into one dictionary.
         # Use `None` instead of an empty dictionary.
         combined_args = (self.arguments or {}).copy()
@@ -642,7 +635,7 @@ class CustomScriptExecutor(_CivisExecutor):
 
         job = self.client.scripts.post_custom(
             self.from_template_id,
-            name=script_name,
+            name=name,
             arguments=combined_args,
             hidden=self.hidden)
         return job
