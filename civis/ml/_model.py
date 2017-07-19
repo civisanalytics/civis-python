@@ -38,7 +38,7 @@ SENTINEL = namedtuple('Sentinel', [])()
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
 _PRED_TEMPLATES = {9112: 9113,  # v1.1
-                   8387: 8388,  # v1.0
+                   8387: 9113,  # v1.0
                    7020: 7021,  # v0.5
                    }
 
