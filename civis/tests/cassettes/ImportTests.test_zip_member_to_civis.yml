@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: '{"name": "/var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmpmcal0q01"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['72']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.5.2 python-requests/2.18.1]
+    method: POST
+    uri: https://api.civisanalytics.com/files
+  response:
+    body:
+      string: !!binary |
+        H4sIAKB5blkAA6RT2Y6jOhD9F56bxmYn0jxko0MaJ5NAEuBlZGwnIW2WxmSB0fz7de6MWqP7ei2V
+        LFedc8qq5adSUGVkGbbhOM6LUuGSKSNFu+FWO9acslZoba61ZVe5j5sHPiG5EZP8aE06VLAF8pwq
+        Lda6sikJ5uATQOVFIS3DHaPjTkrpADoqcFToxjocQX0EwKvlmZmEHQvOomKQCcGLwh5N0TLxF8dV
+        ofMXx7GenGvDa0x3LZewc9c1YqRppLgVQiV1JWrOXoXxiks81BW+i1dSl18kv2CcCmX0U/lgvaTX
+        7Ulo3ak7ac+PCA3Do0EI9VTXY6ZqAuuoYsMBqms7rs2AYege0/5nZZqaF+SZnPVLzhaThpQ+wAfv
+        GlzqAl3Gj1UP7tIea3/To0v9kHZHfl2E0+Ul160PnGwbeQ/BpcmlRkEPqzZLNsW6WF5wkjWkh0/c
+        kOsPHlRASIyMfzzjN1LSITS2FX0jt6zkIkvQLY39EumrSzb76NYzzldTANBsX4aH+bAaxtKXGutZ
+        xtEMDejCedh7epoEku+J7G3fk97r08Lr82R7XS/O+jqePNBhpafD9pIYAcgWzRUlwR3NxvdMN2/7
+        qQfyZNKlui/QYn5H0dILF6JgU3jOk7pLjSWXulf6xs/5NLCDDz+Mdv4yAvt9vFtFh91ytuHn99if
+        bMNB6sbkvhrmZmjsh/CwPxNj06HIG1DvnamBQCL1SLLn0l8co4cTVKcuPUA7PPgi071e1rPOo3/z
+        JLth00VzONn0MI7m834Vp//hbM/0bSdrGfRoNjfQjPzuUzyX7wkOKkiPm2/fZJ8fKi4HVe4BZVVX
+        4Oe0jt+DcfA+36HpNp1MJ8ky/L7RnpMOHOhqV6EyLDoVasLQ5OSaP1r2eWWi+xLD/FS3RXcun1qH
+        yFQXaDxVo8VYt+wvEJV792eBnrJyfaAOQPYVF8Wpwt21fYKgkzPTtl1sW64Bc0/PTcc82sTCjLoY
+        2qalW8SguecSaufQ1V3MckoA1G0TAM9Tfv36BwAA//8DAN+3ozQ+BAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['783']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 18 Jul 2017 21:12:00 GMT']
+      ETag: [W/"28e058dc0aed8e9461c712fbce39c7c6"]
+      Server: [nginx/1.13.2]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [4ddbc177-37fc-4f17-b373-e928069138df]
+      X-Runtime: ['0.102526']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: "--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition: form-data; name=\"key\";
+      filename=\"key\"\r\n\r\norgs/tgtg/files/a1f3ccd9-89e4-405f-a370-86786e03329e//var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmpmcal0q01\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"; filename=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"; filename=\"x-amz-signature\"\r\n\r\n17be4668a65831b92b474f6c5aed8a164525c3db98cd6b1828aebdc012640099\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"policy\"; filename=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjoiMjAxNy0wNy0xOFQyMjoxMjowMFoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJjaXZpcy1jb25zb2xlIn0seyJrZXkiOiJvcmdzL3RndGcvZmlsZXMvYTFmM2NjZDktODllNC00MDVmLWEzNzAtODY3ODZlMDMzMjllLy92YXIvZm9sZGVycy9yYi9ybXRuOHh2OTBxMWN2YzRjX3I0ZHpuMXIwMDAwZ24vVC90bXBtY2FsMHEwMSJ9LHsieC1hbXotY3JlZGVudGlhbCI6IkFLSUFJS0VVTUNSWUJDQlhKTFBRLzIwMTcwNzE4L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSx7IngtYW16LWFsZ29yaXRobSI6IkFXUzQtSE1BQy1TSEEyNTYifSx7IngtYW16LWRhdGUiOiIyMDE3MDcxOFQyMTEyMDBaIn1dfQ==\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"; filename=\"x-amz-credential\"\r\n\r\nAKIAIKEUMCRYBCBXJLPQ/20170718/us-east-1/s3/aws4_request\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"; filename=\"x-amz-date\"\r\n\r\n20170718T211200Z\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"tmpmcal0q01\"\r\n\r\na,b,c\n1,2,3\r\n--cf53dd66dbd14a3f80a9105c4bc8da8e--\r\n"
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['1592']
+      Content-Type: [multipart/form-data; boundary=cf53dd66dbd14a3f80a9105c4bc8da8e]
+      User-Agent: [python-requests/2.18.1]
+    method: POST
+    uri: https://civis-console.s3.amazonaws.com/
+  response:
+    body: {string: ''}
+    headers:
+      Date: ['Tue, 18 Jul 2017 21:12:01 GMT']
+      ETag: ['"1a477f6d2f9c9fc827fa46b5ace1a145"']
+      Location: ['https://civis-console.s3.amazonaws.com/orgs%2Ftgtg%2Ffiles%2Fa1f3ccd9-89e4-405f-a370-86786e03329e%2F%2Fvar%2Ffolders%2Frb%2Frmtn8xv90q1cvc4c_r4dzn1r0000gn%2FT%2Ftmpmcal0q01']
+      Server: [AmazonS3]
+      x-amz-id-2: [rBR0/RWksromP7Gp0OyGO4rEE6LIR5TBFS4Gi1982cpLse2jBSE5OQilG4B4ZzVkZwtF0+hDats=]
+      x-amz-request-id: [56DBAC1314F363FD]
+    status: {code: 204, message: No Content}
+recorded_with: VCR
+version: 1
