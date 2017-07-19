@@ -26,6 +26,12 @@ _DEFAULT_SETUP_CMD = ":"  # An sh command that does nothing.
 _DEFAULT_REPO_SETUP_CMD = "cd /app; python setup.py install; cd /"
 _ALL_JOBS = 50  # Give the user this many jobs if they request "all of them"
 
+# When creating a remote execution environment from an existing
+# Container Script, read these keys.
+KEYS_TO_INFER = ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
+                 'repo_ref', 'remote_host_credential_id', 'git_credential_id',
+                 'cancel_timeout', 'time_zone']
+
 
 def infer_backend_factory(required_resources=None,
                           params=None,
@@ -49,6 +55,9 @@ def infer_backend_factory(required_resources=None,
     user has modified the container job since the run started
     (e.g. by changing the GitHub branch in the container's GUI),
     this function may infer incorrect settings for the child jobs.
+
+    Keyword arguments inferred from the existing script's state are
+    %s
 
     Parameters
     ----------
@@ -168,9 +177,7 @@ def infer_backend_factory(required_resources=None,
 
     # Set defaults on other keyword arguments with
     # values from the current script
-    for key in ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
-                'repo_ref', 'remote_host_credential_id', 'git_credential_id',
-                'cancel_timeout', 'time_zone']:
+    for key in KEYS_TO_INFER:
         kwargs.setdefault(key, state[key])
 
     return make_backend_factory(required_resources=state.required_resources,
@@ -183,6 +190,9 @@ def infer_backend_factory(required_resources=None,
                                 max_job_retries=max_job_retries,
                                 hidden=hidden,
                                 **kwargs)
+
+
+infer_backend_factory.__doc__ = infer_backend_factory.__doc__ % KEYS_TO_INFER
 
 
 def make_backend_factory(docker_image_name="civisanalytics/datascience-python",

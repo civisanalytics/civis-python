@@ -311,9 +311,7 @@ def test_infer_from_custom_job(mock_make_factory):
                        'max_submit_retries': mock.ANY,
                        'max_job_retries': mock.ANY,
                        'hidden': True}
-    for key in ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
-                'repo_ref', 'remote_host_credential_id', 'git_credential_id',
-                'cancel_timeout', 'time_zone']:
+    for key in civis.parallel.KEYS_TO_INFER:
         expected_kwargs[key] = mock_script[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
 
