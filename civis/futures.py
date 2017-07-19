@@ -454,15 +454,17 @@ class _ContainerShellExecutor(_CivisExecutor):
 
     Parameters
     ----------
-    docker_image_name: str
+    docker_image_name: str, optional
         The name of the Docker image to be used by Civis.
-    docker_image_tag: str
+    docker_image_tag: str, optional
         The name of the tag for the Docker image.
-    script_name: str
+    script_name: str, optional
         The name for containers in Civis.
-    required_resources: dict
+        Defaults to "ContainerShellExecutorScript" followed by the date.
+    required_resources: dict, optional
         A dictionary specifying what resources the job needs.
         See :func:`~APIClient.scripts.post_containers` for details.
+        Defaults to 1 CPU and 1 GiB of RAM.
     hidden: bool, optional
         The hidden status of the object. Setting this to ``True`` hides it
         from most API endpoints. The object can still be queried
@@ -486,7 +488,7 @@ class _ContainerShellExecutor(_CivisExecutor):
         the script names for each submission.
     **kwargs:
         Additional keyword arguments will be passed
-        directly to ``scripts.post_containers``.
+        directly to :func:`~civis.APIClient.scripts.post_containers`.
 
     See Also
     --------
@@ -510,6 +512,9 @@ class _ContainerShellExecutor(_CivisExecutor):
             required_resources = {'cpu': 1024, 'memory': 1024}
         self.required_resources = required_resources
 
+        if kwargs.get('name'):
+            # The argument in `post_containers` is named "name"
+            script_name = kwargs.pop('name')
         if script_name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
             script_name = ("ContainerShellExecutorScript "

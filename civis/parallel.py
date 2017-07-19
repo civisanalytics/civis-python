@@ -111,9 +111,9 @@ def infer_backend_factory(required_resources=None,
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
     **kwargs:
-        Additional keyword arguments will be passed
-        directly to ``scripts.post_containers``, potentially overriding
-        the values of those arguments in the parent environment.
+        Additional keyword arguments will be passed directly to
+        :func:`~civis.APIClient.scripts.post_containers`, potentially
+        overriding the values of those arguments in the parent environment.
 
     Raises
     ------
