@@ -186,7 +186,6 @@ def infer_backend_factory(required_resources=None,
 
 
 def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
-                         docker_image_tag="latest",
                          client=None,
                          polling_interval=None,
                          setup_cmd=None,
@@ -203,9 +202,8 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     Parameters
     ----------
     docker_image_name : str, optional
-        The image for the container script.
-    docker_image_tag : str, optional
-        The tag for the Docker image.
+        The image for the container script. You may also wish to specify
+        a ``docker_image_tag`` in the keyword arguments.
     client : `civis.APIClient` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
@@ -321,7 +319,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
 
     def backend_factory():
         return _CivisBackend(docker_image_name=docker_image_name,
-                             docker_image_tag=docker_image_tag,
                              client=client,
                              polling_interval=polling_interval,
                              setup_cmd=setup_cmd,

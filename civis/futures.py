@@ -455,9 +455,8 @@ class _ContainerShellExecutor(_CivisExecutor):
     Parameters
     ----------
     docker_image_name: str, optional
-        The name of the Docker image to be used by Civis.
-    docker_image_tag: str, optional
-        The name of the tag for the Docker image.
+        The name of the Docker image to be used by Civis. You may also
+        wish to specify a ``docker_image_tag`` in the keyword arguments.
     script_name: str, optional
         The name for containers in Civis.
         Defaults to "ContainerShellExecutorScript" followed by the date.
@@ -495,7 +494,6 @@ class _ContainerShellExecutor(_CivisExecutor):
     civis.APIClient.scripts.post_containers
     """
     def __init__(self, docker_image_name="civisanalytics/datascience-python",
-                 docker_image_tag="latest",
                  script_name=None,
                  required_resources=None,
                  hidden=True,
@@ -505,7 +503,6 @@ class _ContainerShellExecutor(_CivisExecutor):
                  inc_script_names=False,
                  **kwargs):
         self.docker_image_name = docker_image_name
-        self.docker_image_tag = docker_image_tag
         self.container_kwargs = kwargs
 
         if required_resources is None:
@@ -541,7 +538,6 @@ class _ContainerShellExecutor(_CivisExecutor):
             required_resources=self.required_resources,
             docker_command=cmd,
             docker_image_name=self.docker_image_name,
-            docker_image_tag=self.docker_image_tag,
             hidden=self.hidden,
             **self.container_kwargs
         )
