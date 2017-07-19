@@ -14,10 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
-
-## 1.5.3 - 2017-05-18
-### Changed
-- Changed criteria in ``civis.io.file_to_civis`` for streaming a file to include a check on if the file object is seekable.
+- Non-seekable file-like objects can now be provided to ``civis.io.file_to_civis``. Only seekable file-like objects will be streamed.
 
 ## 1.5.2 - 2017-05-17
 ### Fixed

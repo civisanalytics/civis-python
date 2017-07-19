@@ -115,7 +115,7 @@ class ImportTests(CivisVCRTestCase):
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(b'a,b,c\n1,2,3')
             tmp.flush()
-
+            tmp.seek(0)
             result = civis.io.file_to_civis(tmp, tmp.name)
 
         assert isinstance(result, int)
