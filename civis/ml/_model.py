@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_SKLEARN = False
 
-from civis import APIClient, find_one
+from civis import APIClient, find, find_one
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
@@ -37,7 +37,8 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {8387: 8388,  # v1.0
+_PRED_TEMPLATES = {9112: 9113,  # v1.1
+                   8387: 9113,  # v1.0
                    7020: 7021,  # v0.5
                    }
 
@@ -523,6 +524,14 @@ class ModelPipeline:
     notifications : dict
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
+     dependencies : array, optional
+         List of packages to install from PyPI or git repository (i.e., Github
+         or Bitbucket). If a private repo is specificed, please include a
+         ``git_token_name`` argument as well (see below).
+     git_token_name : str, optional
+         Name of remote git API token stored in platform as the password field
+         in a custom platform credential. Used only when installing private git
+         repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -585,16 +594,17 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    # These are the v1.0 templates
-    train_template_id = 8387
-    predict_template_id = 8388
+    # These are the v1.1 templates
+    train_template_id = 9112
+    predict_template_id = 9113
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
-                 disk_requested=None, notifications=None, verbose=False):
+                 disk_requested=None, notifications=None,
+                 dependencies=None, git_token_name=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -613,6 +623,8 @@ class ModelPipeline:
                               'REQUIRED_MEMORY': memory_requested,
                               'REQUIRED_DISK_SPACE': disk_requested}
         self.notifications = notifications or {}
+        self.dependencies = dependencies
+        self.git_token_name = git_token_name
         self.verbose = verbose
 
         if client is None:
@@ -697,6 +709,12 @@ class ModelPipeline:
             name = name[:-len(' Train')]
         notifications = {camel_to_snake(key): val for key, val
                          in container.notifications.items()}
+        dependencies = args.get('DEPENDENCIES', None)
+        if dependencies:
+            dependencies = dependencies.split()
+        git_token_name = args.get('GIT_CRED', None)
+        if git_token_name:
+            git_token_name = client.credentials.get(git_token_name).name
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -711,6 +729,8 @@ class ModelPipeline:
                     disk_requested=disk_requested,
                     memory_requested=memory_requested,
                     notifications=notifications,
+                    dependencies=dependencies,
+                    git_token_name=git_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
@@ -818,6 +838,8 @@ class ModelPipeline:
             train_args['EXCLUDE_COLS'] = ' '.join(self.excluded_columns)
         if fit_params:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
+        if self.dependencies:
+            train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
@@ -873,6 +895,15 @@ class ModelPipeline:
                 # Default resources are set on the template. Only
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
+        if self.git_token_name:
+            creds = find(self._client.credentials.list(),
+                         name=self.git_token_name,
+                         type='Custom')
+            if len(creds) > 1:
+                raise ValueError("Unique credential with name '{}' for "
+                                 "remote git hosting service not found!"
+                                 .format(self.git_token_name))
+            script_arguments['GIT_CRED'] = creds[0].id
 
         script_arguments.update(args or {})
 

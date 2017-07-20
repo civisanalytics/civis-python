@@ -553,7 +553,9 @@ def container_response_stub(from_template_id=8387):
         'PARAMS': '{}',
         'REQUIRED_CPU': 1000,
         'REQUIRED_MEMORY': 9999,
-        'REQUIRED_DISK_SPACE': -20
+        'REQUIRED_DISK_SPACE': -20,
+        'DEPENDENCIES': 'A B C D',
+        'GIT_CRED': 9876
     }
     notifications = {
         'urls': [],
@@ -583,6 +585,7 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = \
         container = container_response_stub
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
 
     resources = {'REQUIRED_CPU': 1000,
                  'REQUIRED_MEMORY': 9999,
@@ -603,6 +606,9 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     assert mp.model_name == container.name[:-6]
     assert mp.notifications == {camel_to_snake(key): val for key, val
                                 in container.notifications.items()}
+    deps = container.arguments.get('DEPENDENCIES', None)
+    assert mp.dependencies == deps.split() if deps else None
+    assert mp.git_token_name == 'Token'
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
@@ -629,7 +635,7 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
     mock_client.scripts.get_containers.return_value = \
         container_response_stub(from_template_id=8387)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    assert mp.predict_template_id == 8388, "Predict template v1.0"
+    assert mp.predict_template_id == 9113, "Predict template v1.1"
 
     # v0.5 training
     mock_client.scripts.get_containers.return_value = \

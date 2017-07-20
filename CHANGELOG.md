@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
 
 ### Added
+- Version 1.1 of CivisML, with custom dependency installation from remote git hosting services (i.e., Github, Bitbucket).
 - Added email notifications option to ``ModelPipeline``.
 - Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``.
 

@@ -77,6 +77,48 @@ method. If the class you're using doesn't have a ``predict_proba`` method,
 you can add one by wrapping it in a :class:`~sklearn.calibration.CalibratedClassifierCV`.
 
 
+Custom Dependencies
+-------------------
+
+Installing packages from PyPI is straightforward. You can specify a `dependencies`
+argument to `~civis.ml.ModelPipeline` which will install the dependencies in your runtime
+environment. VCS support is also enabled (see [docs](https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support).)
+Installing a remote git repository from, say, Github only requires passing the HTTPS 
+URL in the form of, for example, `git+https://github.com/scikit-learn/scikit-learn`.
+
+CivisML will run `pip install [your package here]`. We strongly encourage you to pin
+package versions for consistency. Example code looks like:::
+
+  from civis.ml import ModelPipeline
+  from pyearth import Earth
+  deps = ['git+https://github.com/scikit-learn-contrib/py-earth.git@da856e11b2a5d16aba07f51c3c15cef5e40550c7']
+  est = Earth()
+  model = ModelPipeline(est, dependent_variable='age', dependencies=deps)
+  train = model.train(table_name='donors.from_march', database_name='client')
+
+Additionally, you can store a remote git host's API token in the Civis Platform as a
+credential to use for installing private git repositores. For example, you can go to
+Github at the `https://github.com/settings/tokens` URL, copy your token into the
+password field of a credential, and pass the credential name to the `git_token_name`
+argument in `~civis.ml.ModelPipeline`. This also works with other hosting services.
+A simple example of how to do this with API looks as follows::
+
+  import civis
+  password = 'abc123'  # token copied from https://github.com/settings/tokens
+  username = 'user123'  # Github username
+  git_token_name = 'Github credential' 
+
+  client = civis.APIClient()
+  credential = client.credentials.post(password=password,
+                                       username=username,
+                                       name=git_token_name,
+                                       type="Custom")
+
+  pipeline = civis.ml.ModelPipeline(..., git_token_name=git_token_name)
+
+Note, installing private dependencies with submodules is not supported.
+
+
 Asynchronous Execution
 ======================
 
