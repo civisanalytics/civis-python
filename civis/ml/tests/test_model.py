@@ -1,5 +1,6 @@
 from builtins import super
 from collections import namedtuple
+from concurrent.futures import CancelledError
 from six import BytesIO
 import json
 import os
@@ -225,7 +226,7 @@ def test_set_model_exception_metadata_exception():
             raise self.__exc('What a spectacular failure, you say!')
 
     # exception types get caught!
-    for exc in [FileNotFoundError, CivisJobFailure, KeyError]:
+    for exc in [FileNotFoundError, CivisJobFailure, KeyError, CancelledError]:
         fut = ModelFutureRaiseExc(exc, 1, 2, client=mock_client)
         _model.ModelFuture._set_model_exception(fut)
 
