@@ -94,10 +94,10 @@ def test_blank_output(mock_request, mock_yaml, mock_make_api_request_headers):
     invoke("WIBBLE", "/wobble/wubble", op)
 
 
-@mock.patch("civis.cli.__main__.make_api_request_headers")
-@mock.patch("civis.cli.__main__.yaml")
-@mock.patch("civis.cli.__main__.requests.request")
-def test_parameter_case(mock_request, mock_yaml,
+@mock.patch("civis.cli.__main__.make_api_request_headers", autospec=True)
+@mock.patch("civis.cli.__main__.yaml", autospec=True)
+@mock.patch("civis.cli.__main__.get_session", autospec=True)
+def test_parameter_case(mock_session, mock_yaml,
                         mock_make_api_request_headers):
     """
     Test that parameter names are sent in camelCase rather than snake_case.
@@ -113,7 +113,8 @@ def test_parameter_case(mock_request, mock_yaml,
     invoke("WIBBLE", "/wobble/wubble", op,
            first_parameter='a', second_parameter='b')
 
-    mock_request.assert_called_with(
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.request.assert_called_with(
         url='https://api.civisanalytics.com/wobble/wubble',
         headers={},
         json={},
