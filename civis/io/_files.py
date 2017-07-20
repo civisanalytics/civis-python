@@ -90,10 +90,11 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     mode (e.g., ``open('myfile.zip', 'rb')``).
 
     If you have the `requests-toolbelt` package installed
-    (`pip install requests-toolbelt`), then this function will stream
-    from the open file pointer into Platform. If `requests-toolbelt`
-    is not installed, then it will need to read the entire buffer
-    into memory before writing.
+    (`pip install requests-toolbelt`) and the file-like object is seekable,
+    then this function will stream from the open file pointer into Platform.
+    If `requests-toolbelt` is not installed or the file-like object is not
+    seekable, then it will need to read the entire buffer into memory before
+    writing.
     """
     if client is None:
         client = APIClient(api_key=api_key)
@@ -109,7 +110,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     form_key['file'] = buf
 
     url = file_response.upload_url
-    if HAS_TOOLBELT:
+    if HAS_TOOLBELT and buf.seekable():
         # This streams from the open file buffer without holding the
         # contents in memory.
         en = MultipartEncoder(fields=form_key)

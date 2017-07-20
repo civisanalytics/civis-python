@@ -26,6 +26,12 @@ _DEFAULT_SETUP_CMD = ":"  # An sh command that does nothing.
 _DEFAULT_REPO_SETUP_CMD = "cd /app; python setup.py install; cd /"
 _ALL_JOBS = 50  # Give the user this many jobs if they request "all of them"
 
+# When creating a remote execution environment from an existing
+# Container Script, read these keys.
+KEYS_TO_INFER = ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
+                 'repo_ref', 'remote_host_credential_id', 'git_credential_id',
+                 'cancel_timeout', 'time_zone']
+
 
 def infer_backend_factory(required_resources=None,
                           params=None,
@@ -35,7 +41,8 @@ def infer_backend_factory(required_resources=None,
                           setup_cmd=None,
                           max_submit_retries=0,
                           max_job_retries=0,
-                          hidden=True):
+                          hidden=True,
+                          **kwargs):
     """Infer the container environment and return a backend factory.
 
     This function helps you run additional jobs from code which executes
@@ -48,6 +55,9 @@ def infer_backend_factory(required_resources=None,
               user has modified the container job since the run started
               (e.g. by changing the GitHub branch in the container's GUI),
               this function may infer incorrect settings for the child jobs.
+
+    Keyword arguments inferred from the existing script's state are
+    %s
 
     Parameters
     ----------
@@ -112,6 +122,10 @@ def infer_backend_factory(required_resources=None,
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    **kwargs:
+        Additional keyword arguments will be passed directly to
+        :func:`~civis.APIClient.scripts.post_containers`, potentially
+        overriding the values of those arguments in the parent environment.
 
     Raises
     ------
@@ -164,11 +178,12 @@ def infer_backend_factory(required_resources=None,
     # Update arguments with input
     state.arguments.update(arguments or {})
 
-    return make_backend_factory(docker_image_name=state.docker_image_name,
-                                docker_image_tag=state.docker_image_tag,
-                                repo_http_uri=state.repo_http_uri,
-                                repo_ref=state.repo_ref,
-                                required_resources=state.required_resources,
+    # Set defaults on other keyword arguments with
+    # values from the current script
+    for key in KEYS_TO_INFER:
+        kwargs.setdefault(key, state[key])
+
+    return make_backend_factory(required_resources=state.required_resources,
                                 params=state.params,
                                 arguments=state.arguments,
                                 client=client,
@@ -176,22 +191,21 @@ def infer_backend_factory(required_resources=None,
                                 setup_cmd=setup_cmd,
                                 max_submit_retries=max_submit_retries,
                                 max_job_retries=max_job_retries,
-                                hidden=hidden)
+                                hidden=hidden,
+                                **kwargs)
+
+
+infer_backend_factory.__doc__ = infer_backend_factory.__doc__ % KEYS_TO_INFER
 
 
 def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
-                         docker_image_tag="latest",
-                         repo_http_uri=None,
-                         repo_ref=None,
-                         required_resources=None,
-                         params=None,
-                         arguments=None,
                          client=None,
                          polling_interval=None,
                          setup_cmd=None,
                          max_submit_retries=0,
                          max_job_retries=0,
-                         hidden=True):
+                         hidden=True,
+                         **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
 
     .. note:: The total size of function parameters in `Parallel()`
@@ -208,30 +222,8 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     Parameters
     ----------
     docker_image_name : str, optional
-        The image for the container script.
-    docker_image_tag : str, optional
-        The tag for the Docker image.
-    repo_http_uri : str, optional
-        The GitHub repo to check out to /app
-        (e.g., github.com/my-user/my-repo.git)
-    repo_ref : str, optional
-        The GitHub repo reference to check out (e.g., "master")
-    required_resources : dict or None, optional
-        The resources needed by the container. See the
-        `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
-    params : list or None, optional
-        A definition of the parameters this script accepts in the
-        arguments field. See the `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
-    arguments : dict or None, optional
-        Dictionary of name/value pairs to use to run this script.
-        Only settable if this script has defined params. See the `container
-        scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
-        for details.
+        The image for the container script. You may also wish to specify
+        a ``docker_image_tag`` in the keyword arguments.
     client : `civis.APIClient` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
@@ -268,6 +260,9 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to :func:`~civis.APIClient.scripts.post_containers`.
 
     Examples
     --------
@@ -333,27 +328,26 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
     must have Pandas installed). In particular, the function that is called by
     :mod:`joblib` must be available in the specified environment.
+
+    See Also
+    --------
+    civis.APIClient.scripts.post_containers
     """
     if setup_cmd is None:
-        if repo_http_uri is not None:
+        if kwargs.get('repo_http_uri'):
             setup_cmd = _DEFAULT_REPO_SETUP_CMD
         else:
             setup_cmd = _DEFAULT_SETUP_CMD
 
     def backend_factory():
         return _CivisBackend(docker_image_name=docker_image_name,
-                             docker_image_tag=docker_image_tag,
-                             repo_http_uri=repo_http_uri,
-                             repo_ref=repo_ref,
-                             required_resources=required_resources,
-                             params=params,
-                             arguments=arguments,
                              client=client,
                              polling_interval=polling_interval,
                              setup_cmd=setup_cmd,
                              max_submit_retries=max_submit_retries,
                              max_n_retries=max_job_retries,
-                             hidden=hidden)
+                             hidden=hidden,
+                             **kwargs)
 
     return backend_factory
 
@@ -421,11 +415,33 @@ class JobSubmissionError(Exception):
     pass
 
 
-def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
+def _robust_pickle_download(output_file_id, client=None,
+                            n_retries=5, delay=0.0):
     """Download and deserialize the result from output_file_id
 
     Retry network errors `n_retries` times with `delay` seconds between calls
+
+    Parameters
+    ----------
+    output_file_id : int
+        ID of the file to download
+    client : civis.APIClient, optional
+    n_retries : int, optional
+        Retry the upload this many times before raising an error.
+    delay : float, optional
+        If provided, wait this many seconds between retries.
+
+    Returns
+    -------
+    obj
+        Any Python object; the result of calling ``joblib.load`` on the
+        downloaded file
+
+    See Also
+    --------
+    joblib.load
     """
+    client = client or civis.APIClient(resources='all')
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -446,6 +462,64 @@ def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
         else:
             buffer.seek(0)
             return joblib.load(buffer)
+
+
+def _robust_file_to_civis(buf, name, client=None, n_retries=5,
+                          delay=0.0, **kwargs):
+    """Upload the contents of an input file-like buffer
+
+    Call :func:`~civis.io.file_to_civis`, and retry a specified
+    number of times before giving up. This will abandon
+    Civis files created for failed uploads. Thoase files may
+    be partially filled; it's necessary to create new files
+    to ensure that the contents are exactly as requested.
+
+    .. note:: This function starts by calling ``.seek(0)`` on the
+              buffer, and will do so before every retry.
+
+    Parameters
+    ----------
+    buf : File
+        File-like bytes object to send to a Civis File
+    name : str
+        Name of the new Civis File
+    client : civis.APIClient, optional
+    n_retries : int, optional
+        Retry the upload this many times before raising an error.
+    delay : float, optional
+        If provided, wait this many seconds between retries.
+    kwargs :
+        Extra keyword arguments will be passed to ``io.file_to_civis``
+
+    Returns
+    -------
+    int
+        ID of the new Civis File
+
+    See Also
+    --------
+    civis.io.file_to_civis
+    """
+    client = client or civis.APIClient(resources='all')
+    retry_exc = (requests.HTTPError,
+                 requests.ConnectionError,
+                 requests.ConnectTimeout)
+    n_failed = 0
+    while True:
+        buf.seek(0)
+        try:
+            file_id = civis.io.file_to_civis(buf, name=name,
+                                             client=client, **kwargs)
+        except retry_exc as exc:
+            if n_failed < n_retries:
+                n_failed += 1
+                log.debug("Upload failure %s due to %s; retrying.",
+                          n_failed, str(exc))
+                time.sleep(delay)
+            else:
+                raise
+        else:
+            return file_id
 
 
 class _CivisBackendResult:
@@ -533,7 +607,7 @@ class _CivisBackendResult:
                     fut.job_id, fut.run_id)
                 if run_outputs:
                     output_file_id = run_outputs[0]['object_id']
-                    res = _robust_result_download(output_file_id, client,
+                    res = _robust_pickle_download(output_file_id, client,
                                                   n_retries=5, delay=1.0)
                     fut.remote_func_output = res
                     log.debug("Downloaded and deserialized the result.")
@@ -652,10 +726,12 @@ class _CivisBackend(ParallelBackendBase):
             joblib.dump(func, temppath, compress=3)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
-                    civis.io.file_to_civis(tmpfile,
-                                           "civis_joblib_backend_func",
-                                           expires_at=expires_at,
-                                           client=self._client)
+                    _robust_file_to_civis(tmpfile,
+                                          "civis_joblib_backend_func",
+                                          n_retries=5,
+                                          delay=0.5,
+                                          expires_at=expires_at,
+                                          client=self._client)
                 log.debug("uploaded serialized function to File: %d",
                           func_file_id)
 
