@@ -108,6 +108,7 @@ Client API Reference
    user_guide
    io
    ml
+   parallel
    client
    cli
 

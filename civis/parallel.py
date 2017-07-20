@@ -51,10 +51,10 @@ def infer_backend_factory(required_resources=None,
     it's running inside of.
 
     .. note:: This function will read the state of the parent
-    container job at the time this function executes. If the
-    user has modified the container job since the run started
-    (e.g. by changing the GitHub branch in the container's GUI),
-    this function may infer incorrect settings for the child jobs.
+              container job at the time this function executes. If the
+              user has modified the container job since the run started
+              (e.g. by changing the GitHub branch in the container's GUI),
+              this function may infer incorrect settings for the child jobs.
 
     Keyword arguments inferred from the existing script's state are
     %s
@@ -72,7 +72,8 @@ def infer_backend_factory(required_resources=None,
         arguments field. See the `container scripts API documentation
         <https://platform.civisanalytics.com/api#resources-scripts>`
         for details.
-            Parameters of the child jobs will default to the parameters
+
+        Parameters of the child jobs will default to the parameters
         of the current job. Any parameters provided here will override
         parameters of the same name from the current job.
     arguments : dict or None, optional
@@ -81,7 +82,8 @@ def infer_backend_factory(required_resources=None,
         scripts API documentation
         <https://platform.civisanalytics.com/api#resources-scripts>`
         for details.
-            Arguments will default to the arguments of the current job.
+
+        Arguments will default to the arguments of the current job.
         Anything provided here will override portions of the current job's
         arguments.
     client : `civis.APIClient` instance or None, optional
@@ -97,7 +99,8 @@ def infer_backend_factory(required_resources=None,
         This is primarily for installing dependencies that are not available
         in the dockerhub repo (e.g., "cd /app && python setup.py install"
         or "pip install gensim").
-            With no GitHub repo input, the setup command will
+
+        With no GitHub repo input, the setup command will
         default to a command that does nothing. If a ``repo_http_uri``
         is provided, the default setup command will attempt to run
         "python setup.py install". If this command fails, execution
@@ -209,6 +212,13 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
               calls on this backend must be less than 5 GB due to
               AWS file size limits.
 
+    .. note:: The maximum number of concurrent jobs in the Civis Platform
+              is controlled by both the ``n_jobs`` and ``pre_dispatch``
+              parameters of ``joblib.Parallel``.
+              Set ``pre_dispatch="n_jobs"`` to have a maximum of
+              ``n_jobs`` processes running at once.
+              (The default is ``pre_dispatch="2*n_jobs"``.)
+
     Parameters
     ----------
     docker_image_name : str, optional
@@ -227,7 +237,8 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         This is primarily for installing dependencies that are not available
         in the dockerhub repo (e.g., "cd /app && python setup.py install"
         or "pip install gensim").
-            With no GitHub repo input, the setup command will
+
+        With no GitHub repo input, the setup command will
         default to a command that does nothing. If a `repo_http_uri`
         is provided, the default setup command will attempt to run
         "python setup.py install". If this command fails, execution
@@ -304,8 +315,9 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
 
     Notes
     -----
-    Joblib's ``register_parallel_backend`` (see example above) expects a
-    callable that returns a ``ParallelBackendBase`` instance. This function
+    Joblib's :func:`joblib.parallel.register_parallel_backend`
+    (see example above) expects a callable that returns a
+    :class:`joblib.parallel.ParallelBackendBase` instance. This function
     allows the user to specify the Civis container script setting that will be
     used when that backend creates container scripts to run jobs.
 
@@ -315,7 +327,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     deserialize the jobs they are given, including the data and all the
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
     must have Pandas installed). In particular, the function that is called by
-    ``joblib`` must be available in the specified environment.
+    :mod:`joblib` must be available in the specified environment.
 
     See Also
     --------
@@ -355,7 +367,7 @@ def make_backend_template_factory(from_template_id,
         Create jobs as Custom Scripts from the given template ID.
         When using the joblib backend with templates,
         the template must have a very specific form. Refer
-        to the README for details.
+        to the documentation for details.
     arguments : dict or None, optional
         Dictionary of name/value pairs to use to run this script.
         Only settable if this script has defined params. See the `container
