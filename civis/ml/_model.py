@@ -328,6 +328,9 @@ class ModelFuture(ContainerFuture):
             # check the tail of the log for a clearer exception.
             exc = _exception_from_logs(exc, fut.job_id, fut.run_id, fut.client)
             fut.set_exception(exc)
+        except futures.CancelledError:
+            # We don't need to change the exception if the run was cancelled
+            pass
         except KeyError:
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
