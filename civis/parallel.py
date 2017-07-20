@@ -403,11 +403,33 @@ class JobSubmissionError(Exception):
     pass
 
 
-def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
+def _robust_pickle_download(output_file_id, client=None,
+                            n_retries=5, delay=0.0):
     """Download and deserialize the result from output_file_id
 
     Retry network errors `n_retries` times with `delay` seconds between calls
+
+    Parameters
+    ----------
+    output_file_id : int
+        ID of the file to download
+    client : civis.APIClient, optional
+    n_retries : int, optional
+        Retry the upload this many times before raising an error.
+    delay : float, optional
+        If provided, wait this many seconds between retries.
+
+    Returns
+    -------
+    obj
+        Any Python object; the result of calling ``joblib.load`` on the
+        downloaded file
+
+    See Also
+    --------
+    joblib.load
     """
+    client = client or civis.APIClient(resources='all')
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -428,6 +450,64 @@ def _robust_result_download(output_file_id, client, n_retries=5, delay=0.0):
         else:
             buffer.seek(0)
             return joblib.load(buffer)
+
+
+def _robust_file_to_civis(buf, name, client=None, n_retries=5,
+                          delay=0.0, **kwargs):
+    """Upload the contents of an input file-like buffer
+
+    Call :func:`~civis.io.file_to_civis`, and retry a specified
+    number of times before giving up. This will abandon
+    Civis files created for failed uploads. Thoase files may
+    be partially filled; it's necessary to create new files
+    to ensure that the contents are exactly as requested.
+
+    .. note:: This function starts by calling ``.seek(0)`` on the
+              buffer, and will do so before every retry.
+
+    Parameters
+    ----------
+    buf : File
+        File-like bytes object to send to a Civis File
+    name : str
+        Name of the new Civis File
+    client : civis.APIClient, optional
+    n_retries : int, optional
+        Retry the upload this many times before raising an error.
+    delay : float, optional
+        If provided, wait this many seconds between retries.
+    kwargs :
+        Extra keyword arguments will be passed to ``io.file_to_civis``
+
+    Returns
+    -------
+    int
+        ID of the new Civis File
+
+    See Also
+    --------
+    civis.io.file_to_civis
+    """
+    client = client or civis.APIClient(resources='all')
+    retry_exc = (requests.HTTPError,
+                 requests.ConnectionError,
+                 requests.ConnectTimeout)
+    n_failed = 0
+    while True:
+        buf.seek(0)
+        try:
+            file_id = civis.io.file_to_civis(buf, name=name,
+                                             client=client, **kwargs)
+        except retry_exc as exc:
+            if n_failed < n_retries:
+                n_failed += 1
+                log.debug("Upload failure %s due to %s; retrying.",
+                          n_failed, str(exc))
+                time.sleep(delay)
+            else:
+                raise
+        else:
+            return file_id
 
 
 class _CivisBackendResult:
@@ -515,7 +595,7 @@ class _CivisBackendResult:
                     fut.job_id, fut.run_id)
                 if run_outputs:
                     output_file_id = run_outputs[0]['object_id']
-                    res = _robust_result_download(output_file_id, client,
+                    res = _robust_pickle_download(output_file_id, client,
                                                   n_retries=5, delay=1.0)
                     fut.remote_func_output = res
                     log.debug("Downloaded and deserialized the result.")
@@ -634,10 +714,12 @@ class _CivisBackend(ParallelBackendBase):
             joblib.dump(func, temppath, compress=3)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
-                    civis.io.file_to_civis(tmpfile,
-                                           "civis_joblib_backend_func",
-                                           expires_at=expires_at,
-                                           client=self._client)
+                    _robust_file_to_civis(tmpfile,
+                                          "civis_joblib_backend_func",
+                                          n_retries=5,
+                                          delay=0.5,
+                                          expires_at=expires_at,
+                                          client=self._client)
                 log.debug("uploaded serialized function to File: %d",
                           func_file_id)
 
