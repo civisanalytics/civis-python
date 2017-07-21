@@ -22,14 +22,11 @@ from warnings import warn
 
 import click
 from jsonref import JsonRef
-import requests
-from requests.adapters import HTTPAdapter
 import yaml
 from civis.cli._cli_commands import \
     civis_ascii_art, files_download_cmd, files_upload_cmd
-import civis
-from civis.base import AggressiveRetry
-from civis.resources._resources import get_api_spec
+from civis.resources import get_api_spec
+from civis._utils import open_session
 from civis.compat import FileNotFoundError
 
 
@@ -75,19 +72,6 @@ _TYPE_MAP = {
 }
 
 
-def make_api_request_headers():
-    try:
-        headers = {
-            'Authorization': "Bearer {}".format(os.environ["CIVIS_API_KEY"])
-        }
-    except KeyError:
-        print("You must set the CIVIS_API_KEY environment variable.",
-              file=sys.stderr)
-        sys.exit(1)
-
-    return headers
-
-
 def get_api_key():
     try:
         return os.environ["CIVIS_API_KEY"]
@@ -95,22 +79,6 @@ def get_api_key():
         print("You must set the CIVIS_API_KEY environment variable.",
               file=sys.stderr)
         sys.exit(1)
-
-
-def get_session(max_retries=5):
-
-    civis_version = civis.__version__
-    session = requests.Session()
-    session.auth = (get_api_key(), '')
-    session_agent = session.headers.get('User-Agent', '')
-    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
-    session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
-                                  status_forcelist=civis.civis.RETRY_CODES)
-    adapter = HTTPAdapter(max_retries=max_retries)
-    session.mount("https://", adapter)
-
-    return session
 
 
 def camel_to_snake(s):
@@ -189,13 +157,12 @@ def invoke(method, path, op, *args, **kwargs):
 
     # Make the request.
     request_info = dict(
-        headers=make_api_request_headers(),
         params=query,
         json=body,
         url=_API_URL + path.format(**kwargs),
         method=method
     )
-    with get_session() as sess:
+    with open_session(get_api_key()) as sess:
         response = sess.request(**request_info)
 
     # Print the response to stderr if there was an error.
