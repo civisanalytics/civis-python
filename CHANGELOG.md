@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Edited example for safer null value handling
 - Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
+- Include ``pandas`` and ``sklearn``-dependent code in Travis CI tests.
 
 ### Added
 - Version 1.1 of CivisML, with custom dependency installation from remote git hosting services (i.e., Github, Bitbucket).
