@@ -226,8 +226,13 @@ def test_set_model_exception_metadata_exception():
             raise self.__exc('What a spectacular failure, you say!')
 
     # exception types get caught!
-    for exc in [FileNotFoundError, CivisJobFailure, KeyError, CancelledError]:
+    for exc in [FileNotFoundError, CivisJobFailure, CancelledError]:
         fut = ModelFutureRaiseExc(exc, 1, 2, client=mock_client)
+        _model.ModelFuture._set_model_exception(fut)
+
+    with pytest.warns(UserWarning):
+        # The KeyError is caught, but sends a warning
+        fut = ModelFutureRaiseExc(KeyError, 1, 2, client=mock_client)
         _model.ModelFuture._set_model_exception(fut)
 
     fut = ModelFutureRaiseExc(RuntimeError, 1, 2, client=mock_client)
@@ -421,7 +426,8 @@ def test_train_data_(mock_cio):
     mock_client.scripts.get_containers_runs = poller
 
     path = '/green/eggs/and/ham'
-    training_meta = {'run': {'configuration': {'data': {'location': path}}}}
+    training_meta = {'run': {'configuration': {'data': {'location': path}},
+                             'status': 'succeeded'}}
     mock_cio.file_to_json.return_value = training_meta
 
     mf = _model.ModelFuture(job_id=1, run_id=2, train_job_id=11,
@@ -496,7 +502,9 @@ def test_validation_metadata_prediction(mock_spe, mock_f2f,
 
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json",
-                   mock.MagicMock(return_value={'metrics': 'foo'}))
+                   mock.MagicMock(
+                       return_value={'metrics': 'foo',
+                                     'run': {'status': 'succeeded'}}))
 def test_metrics_training(mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)
@@ -509,7 +517,9 @@ def test_metrics_training(mock_file_id_from_run_output):
 
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json",
-                   mock.MagicMock(return_value={'metrics': 'foo'}))
+                   mock.MagicMock(
+                       return_value={'metrics': 'foo',
+                                     'run': {'status': 'succeeded'}}))
 def test_metrics_prediction(mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)

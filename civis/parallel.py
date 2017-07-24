@@ -7,8 +7,10 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import logging
 import os
+import pickle
 import time
 
+import cloudpickle
 import joblib
 from joblib._parallel_backends import ParallelBackendBase
 from joblib.my_exceptions import TransportableException
@@ -326,8 +328,10 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     module is used to submit jobs. The worker jobs need to be able to
     deserialize the jobs they are given, including the data and all the
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
-    must have Pandas installed). In particular, the function that is called by
-    :mod:`joblib` must be available in the specified environment.
+    must have Pandas installed). You may use functions and classes
+    dynamically defined in the code (e.g. lambda functions), but
+    if your joblib-parallized function calls code imported from another
+    module, that module must be installed in the remote environment.
 
     See Also
     --------
@@ -434,12 +438,12 @@ def _robust_pickle_download(output_file_id, client=None,
     Returns
     -------
     obj
-        Any Python object; the result of calling ``joblib.load`` on the
+        Any Python object; the result of calling ``cloudpickle.load`` on the
         downloaded file
 
     See Also
     --------
-    joblib.load
+    cloudpickle.load
     """
     client = client or civis.APIClient(resources='all')
     retry_exc = (requests.HTTPError,
@@ -461,7 +465,7 @@ def _robust_pickle_download(output_file_id, client=None,
                 raise
         else:
             buffer.seek(0)
-            return joblib.load(buffer)
+            return cloudpickle.load(buffer)
 
 
 def _robust_file_to_civis(buf, name, client=None, n_retries=5,
@@ -721,9 +725,8 @@ class _CivisBackend(ParallelBackendBase):
         expires_at = (datetime.now() + timedelta(days=7)).isoformat()
         with TemporaryDirectory() as tempdir:
             temppath = os.path.join(tempdir, "civis_joblib_backend_func")
-            # compress=3 is a compromise between space and read/write times
-            # (https://github.com/joblib/joblib/blob/18f9b4ce95e8788cc0e9b5106fc22573d768c44b/joblib/numpy_pickle.py#L358).
-            joblib.dump(func, temppath, compress=3)
+            with open(temppath, "wb") as tmpfile:
+                cloudpickle.dump(func, tmpfile, pickle.HIGHEST_PROTOCOL)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
                     _robust_file_to_civis(tmpfile,

@@ -8,16 +8,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Edited example for safer null value handling
 - Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
 - Retry network errors and wait for API rate limit refresh when using the CLI.
+- Include ``pandas`` and ``sklearn``-dependent code in Travis CI tests.
 
 ### Added
 - Version 1.1 of CivisML, with custom dependency installation from remote git hosting services (i.e., Github, Bitbucket).
 - Added email notifications option to ``ModelPipeline``.
-- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``.
+- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``. Includes a new hard dependency on ``cloudpickle`` to facilitate code transport.
 
 ### Fixed
 - Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
 - Non-seekable file-like objects can now be provided to ``civis.io.file_to_civis``. Only seekable file-like objects will be streamed.
 - The ``civis.ml.ModelFuture`` no longer raises an exception if its model job is cancelled.
+- The CLI's API spec cache now expires after 24 hours instead of 10 seconds.
 
 ## 1.5.2 - 2017-05-17
 ### Fixed

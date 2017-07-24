@@ -198,7 +198,7 @@ def retrieve_spec_dict(api_version="1.0"):
     try:
         # If the cached spec is from the last 24 hours, use it.
         modified_time = os.path.getmtime(_CACHED_SPEC_PATH)
-        if now_timestamp - modified_time < 10:
+        if now_timestamp - modified_time < 24 * 3600:
             refresh_spec = False
             with open(_CACHED_SPEC_PATH) as f:
                 spec_dict = json.load(f, object_pairs_hook=OrderedDict)
