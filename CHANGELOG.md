@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Version 1.1 of CivisML, with custom dependency installation from remote git hosting services (i.e., Github, Bitbucket).
 - Added email notifications option to ``ModelPipeline``.
-- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``.
+- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``. Includes a new hard dependency on ``cloudpickle`` to facilitate code transport.
 
 ### Fixed
 - Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
