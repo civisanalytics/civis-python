@@ -98,6 +98,7 @@ def test_parameter_case(mock_session):
     invoke("WIBBLE", "/wobble/wubble", op,
            first_parameter='a', second_parameter='b')
 
+    mock_session.call_args[1]['user_agent'] = 'civis-cli'
     session_context.request.assert_called_with(
         url='https://api.civisanalytics.com/wobble/wubble',
         json={},

@@ -35,6 +35,7 @@ _API_URL = "https://api.civisanalytics.com"
 _OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
 _CACHED_SPEC_PATH = \
     os.path.join(os.path.expanduser('~'), ".civis_api_spec.json")
+CLI_USER_AGENT = 'civis-cli'
 
 
 class YAMLParamType(click.ParamType):
@@ -162,7 +163,7 @@ def invoke(method, path, op, *args, **kwargs):
         url=_API_URL + path.format(**kwargs),
         method=method
     )
-    with open_session(get_api_key()) as sess:
+    with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
         response = sess.request(**request_info)
 
     # Print the response to stderr if there was an error.
@@ -208,7 +209,8 @@ def retrieve_spec_dict(api_version="1.0"):
 
     # Download the spec and cache it in the user's home directory.
     if refresh_spec:
-        spec_dict = get_api_spec(get_api_key(), api_version=api_version)
+        spec_dict = get_api_spec(get_api_key(), api_version=api_version,
+                                 user_agent=CLI_USER_AGENT)
         with open(_CACHED_SPEC_PATH, "w") as f:
             json.dump(spec_dict, f)
     return spec_dict

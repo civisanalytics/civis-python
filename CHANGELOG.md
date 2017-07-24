@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Edited example for safer null value handling
 - Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
-- Retry network errors and wait for API rate limit refresh when using the CLI.
+- Retry network errors and wait for API rate limit refresh when using the CLI (#117).
+- The CLI now provides a User-Agent header which starts with "civis-cli" (#117)
 - Include ``pandas`` and ``sklearn``-dependent code in Travis CI tests.
 
 ### Added

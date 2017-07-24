@@ -32,13 +32,13 @@ def to_camelcase(s):
     return re.sub(r'(^|_)([a-zA-Z])', lambda m: m.group(2).upper(), s)
 
 
-def open_session(api_key, max_retries=5):
+def open_session(api_key, max_retries=5, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = client_version
     session = requests.Session()
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
-    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
+    user_agent = "{}/{} {}".format(user_agent, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
     max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
                                   status_forcelist=civis.civis.RETRY_CODES)
