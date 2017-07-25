@@ -7,8 +7,6 @@ from concurrent import futures
 import six
 import warnings
 
-from requests.packages.urllib3.util import Retry
-
 from civis.response import PaginatedResponse, convert_response_data_type
 
 FINISHED = ['success', 'succeeded']
@@ -74,28 +72,6 @@ def get_base_url():
     if not base_url.endswith('/'):
         base_url += '/'
     return base_url
-
-
-class AggressiveRetry(Retry):
-    # Subclass Retry so that it retries more things. In particular,
-    # always retry API requests with a Retry-After header, regardless
-    # of the verb.
-    def is_retry(self, method, status_code, has_retry_after=False):
-        """ Is this method/status code retryable? (Based on whitelists and control
-        variables such as the number of total retries to allow, whether to
-        respect the Retry-After header, whether this header is present, and
-        whether the returned status code is on the list of status codes to
-        be retried upon on the presence of the aforementioned header)
-        """
-        if (self.total and
-                self.respect_retry_after_header and
-                has_retry_after and
-                (status_code in self.RETRY_AFTER_STATUS_CODES)):
-            return True
-
-        else:
-            return super().is_retry(method=method, status_code=status_code,
-                                    has_retry_after=has_retry_after)
 
 
 class Endpoint(object):

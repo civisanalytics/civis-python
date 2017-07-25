@@ -9,12 +9,10 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
-from requests.adapters import HTTPAdapter
 
-import civis
-from civis.base import AggressiveRetry, Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
-from civis._utils import camel_to_snake, to_camelcase
+from civis._utils import camel_to_snake, to_camelcase, open_session
 
 
 API_VERSIONS = ["1.0"]
@@ -435,7 +433,7 @@ def parse_api_spec(api_spec, api_version, resources):
 
 
 @lru_cache(maxsize=4)
-def get_api_spec(api_key, api_version="1.0"):
+def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """Download the Civis API specification.
 
     Parameters
@@ -445,19 +443,13 @@ def get_api_spec(api_key, api_version="1.0"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
+    user_agent : string, optional
+        Provide this user agent to the the Civis API, along with an
+        API client version tag and ``requests`` version tag.
     """
-    civis_version = civis.__version__
-    session = requests.Session()
-    session.auth = (api_key, '')
-    session_agent = session.headers.get('User-Agent', '')
-    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
-    session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = AggressiveRetry(MAX_RETRIES, backoff_factor=.75,
-                                  status_forcelist=civis.civis.RETRY_CODES)
-    adapter = HTTPAdapter(max_retries=max_retries)
-    session.mount("https://", adapter)
     if api_version == "1.0":
-        response = session.get("{}endpoints".format(get_base_url()))
+        with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
+            response = sess.get("{}endpoints".format(get_base_url()))
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))

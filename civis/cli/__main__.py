@@ -22,10 +22,11 @@ from warnings import warn
 
 import click
 from jsonref import JsonRef
-import requests
 import yaml
 from civis.cli._cli_commands import \
     civis_ascii_art, files_download_cmd, files_upload_cmd
+from civis.resources import get_api_spec
+from civis._utils import open_session
 from civis.compat import FileNotFoundError
 
 
@@ -34,6 +35,7 @@ _API_URL = "https://api.civisanalytics.com"
 _OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
 _CACHED_SPEC_PATH = \
     os.path.join(os.path.expanduser('~'), ".civis_api_spec.json")
+CLI_USER_AGENT = 'civis-cli'
 
 
 class YAMLParamType(click.ParamType):
@@ -71,17 +73,13 @@ _TYPE_MAP = {
 }
 
 
-def make_api_request_headers():
+def get_api_key():
     try:
-        headers = {
-            'Authorization': "Bearer {}".format(os.environ["CIVIS_API_KEY"])
-        }
+        return os.environ["CIVIS_API_KEY"]
     except KeyError:
         print("You must set the CIVIS_API_KEY environment variable.",
               file=sys.stderr)
         sys.exit(1)
-
-    return headers
 
 
 def camel_to_snake(s):
@@ -160,13 +158,13 @@ def invoke(method, path, op, *args, **kwargs):
 
     # Make the request.
     request_info = dict(
-        headers=make_api_request_headers(),
         params=query,
         json=body,
         url=_API_URL + path.format(**kwargs),
         method=method
     )
-    response = requests.request(**request_info)
+    with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
+        response = sess.request(**request_info)
 
     # Print the response to stderr if there was an error.
     output_file = sys.stdout
@@ -192,7 +190,7 @@ def invoke(method, path, op, *args, **kwargs):
             print("Error parsing response: {}".format(e), file=sys.stderr)
 
 
-def retrieve_spec_dict():
+def retrieve_spec_dict(api_version="1.0"):
     """Retrieve the API specification from a cached version or from Civis."""
 
     refresh_spec = True
@@ -211,15 +209,10 @@ def retrieve_spec_dict():
 
     # Download the spec and cache it in the user's home directory.
     if refresh_spec:
-        resp = requests.get(_OPENAPI_SPEC_URL,
-                            headers=make_api_request_headers())
-        assert resp.status_code == 200, \
-            "Failure downloading API specification: %d %s" % \
-            (resp.status_code, resp.reason)
+        spec_dict = get_api_spec(get_api_key(), api_version=api_version,
+                                 user_agent=CLI_USER_AGENT)
         with open(_CACHED_SPEC_PATH, "w") as f:
-            f.write(resp.text)
-        spec_dict = json.loads(resp.text, object_pairs_hook=OrderedDict)
-
+            json.dump(spec_dict, f)
     return spec_dict
 
 

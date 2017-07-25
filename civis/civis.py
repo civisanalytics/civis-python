@@ -2,13 +2,9 @@ from __future__ import absolute_import
 import logging
 import os
 
-import requests
-from requests.adapters import HTTPAdapter
-
-import civis
-from civis.base import AggressiveRetry
 from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
+from civis._utils import open_session
 
 
 log = logging.getLogger(__name__)
@@ -299,19 +295,7 @@ class APIClient(MetaMixin):
                              "'pandas'")
         self._feature_flags = ()
         session_auth_key = _get_api_key(api_key)
-        self._session = session = requests.session()
-        session.auth = (session_auth_key, '')
-
-        civis_version = civis.__version__
-        session_agent = session.headers.get('User-Agent', '')
-        user_agent = "civis-python/{} {}".format(civis_version, session_agent)
-        session.headers.update({"User-Agent": user_agent.strip()})
-
-        max_retries = AggressiveRetry(retry_total, backoff_factor=.75,
-                                      status_forcelist=RETRY_CODES)
-        adapter = HTTPAdapter(max_retries=max_retries)
-
-        session.mount("https://", adapter)
+        self._session = session = open_session(session_auth_key, retry_total)
 
         classes = generate_classes_maybe_cached(local_api_spec,
                                                 session_auth_key,
