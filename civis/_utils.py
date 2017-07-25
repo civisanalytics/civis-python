@@ -9,7 +9,6 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util import Retry
 
 import civis
-from civis import __version__ as client_version
 
 
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
@@ -34,7 +33,7 @@ def to_camelcase(s):
 
 def open_session(api_key, max_retries=5, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
-    civis_version = client_version
+    civis_version = civis.__version__
     session = requests.Session()
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
