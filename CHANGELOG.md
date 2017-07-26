@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## 1.6.0 - 2017-07-27
 ### Changed
 - Edited example for safer null value handling
 - Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
