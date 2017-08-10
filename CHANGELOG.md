@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+### Changed
+- Used with block to catch unnecessary warning while importing xgboost in CivisML_parallel_training.ipynb (#121)
 
 ## 1.6.0 - 2017-07-27
 ### Changed
