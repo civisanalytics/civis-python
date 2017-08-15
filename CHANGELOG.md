@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Catch unnecessary warning while importing xgboost in CivisML_parallel_training.ipynb (#121)
 
 ### Fixed
-- Fixed bug where instantiating a ``ModelPipeline`` from a CivisML model built w/ the templated script breaks.
+- Fixed bug where instantiating a ``ModelPipeline`` from a CivisML model built w/ the templated script breaks (#122).
 
 ## 1.6.0 - 2017-07-27
 ### Changed
