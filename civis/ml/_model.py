@@ -694,8 +694,8 @@ class ModelPipeline:
         model = args.get('MODEL', args.get('WORKFLOW'))
         dependent_variable = args['TARGET_COLUMN'].split()
         primary_key = args.get('PRIMARY_KEY')
-        parameters = json.loads(args.get('PARAMS', {}))
-        cross_validation_parameters = json.loads(args.get('CVPARAMS', {}))
+        parameters = json.loads(args.get('PARAMS', "{}"))
+        cross_validation_parameters = json.loads(args.get('CVPARAMS', "{}"))
         calibration = args.get('CALIBRATION')
         excluded_columns = args.get('EXCLUDE_COLS', None)
         if excluded_columns:
