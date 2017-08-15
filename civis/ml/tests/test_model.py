@@ -627,13 +627,8 @@ def test_modelpipeline_classmethod_constructor_defaults(
     del container_response_stub.arguments['PARAMS']
     del container_response_stub.arguments['CVPARAMS']
     mock_client = mock.Mock()
-    mock_client.scripts.get_containers.return_value = \
-        container = container_response_stub
+    mock_client.scripts.get_containers.return_value = container_response_stub
     mock_client.credentials.get.return_value = Response({'name': 'Token'})
-
-    resources = {'REQUIRED_CPU': 1000,
-                 'REQUIRED_MEMORY': 9999,
-                 'REQUIRED_DISK_SPACE': -20}
 
     # test everything is working fine
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
