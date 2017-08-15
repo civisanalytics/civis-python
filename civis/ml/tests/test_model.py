@@ -621,6 +621,21 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     assert mp.git_token_name == 'Token'
 
 
+@mock.patch.object(_model, 'ModelFuture')
+def test_modelpipeline_classmethod_constructor_defaults(
+        mock_future, container_response_stub):
+    del container_response_stub.arguments['PARAMS']
+    del container_response_stub.arguments['CVPARAMS']
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = container_response_stub
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
+
+    # test everything is working fine
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    assert mp.cv_params == {}
+    assert mp.parameters == {}
+
+
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 def test_modelpipeline_classmethod_constructor_nonint_id():
     # Verify that we can still JSON-serialize job and run IDs even
