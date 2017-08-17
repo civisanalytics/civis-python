@@ -379,7 +379,7 @@ if _test_build:
     api_path = os.path.join(test_dir, 'civis_api_spec.json')
     with open(api_path) as _raw:
         api_spec = JsonRef.replace_refs(
-            json.load(_raw, object_hook=OrderedDict))
+            json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
         api_spec, '1.0', 'base')
 else:
