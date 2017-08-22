@@ -2,13 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## 1.6.1 - 2017-08-22
 ### Changed
 - Catch unnecessary warning while importing xgboost in CivisML_parallel_training.ipynb (#121)
 
 ### Fixed
 - Fixed bug where instantiating a new model via ``ModelPipeline.from_existing`` from an existing model with empty "PARAMS" and "CV_PARAMS" boxes fails (#122).
-- Users can now access the ``ml`` and ``parallel`` namespaces from the base ``civis`` namespace.
+- Users can now access the ``ml`` and ``parallel`` namespaces from the base ``civis`` namespace (#123).
+- Parameters in the Civis API documentation now display in the proper order (#124).
 
 ## 1.6.0 - 2017-07-27
 ### Changed
