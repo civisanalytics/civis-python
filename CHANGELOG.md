@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+- Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
+
 ## 1.6.1 - 2017-08-22
 ### Changed
 - Catch unnecessary warning while importing xgboost in CivisML_parallel_training.ipynb (#121)
