@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Added explanatory text to CivisML_parallel_training.ipynb (#126).
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
