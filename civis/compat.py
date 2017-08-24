@@ -6,14 +6,14 @@ if six.PY3:
     from unittest import mock
     from functools import lru_cache
     from inspect import signature
-    FileNotFoundError = FileNotFoundError
+    FileNotFoundError = FileNotFoundError  # noqa
 else:
     try:
-        import mock
+        import mock  # noqa
     except ImportError:  # dev dependency
         pass
-    from functools32 import lru_cache
-    from funcsigs import signature
+    from functools32 import lru_cache  # noqa
+    from funcsigs import signature  # noqa
     FileNotFoundError = IOError
 
 if six.PY3:
@@ -24,7 +24,6 @@ else:
     import shutil as _shutil
     import sys as _sys
     import warnings as _warnings
-
 
     class ResourceWarning(Warning):
         pass
@@ -81,4 +80,3 @@ else:
                 if _warn:
                     _warnings.warn("Implicitly cleaning up {!r}".format(self),
                                    ResourceWarning)
-
