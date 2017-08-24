@@ -1,4 +1,3 @@
-# flake8: noqa
 from __future__ import print_function
 
 import six
@@ -25,6 +24,10 @@ else:
     import shutil as _shutil
     import sys as _sys
     import warnings as _warnings
+
+
+    class ResourceWarning(Warning):
+        pass
 
     class TemporaryDirectory(object):
         """Create and return a temporary directory.  This has the same
