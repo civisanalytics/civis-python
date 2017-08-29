@@ -83,6 +83,9 @@ def _block_and_handle_missing(method):
 
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
+    # Standard dataframe indexes do not have a "levels" attribute,
+    # but multiindexes do. Checking for this attribute means we don't
+    # need to import pandas to do error handling here.
     if getattr(getattr(df, "index", None), "levels", None) is not None:
         raise TypeError("CivisML does not currently support "
                         "multi-indexed data frames.")
