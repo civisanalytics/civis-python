@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import json
+import os
 import re
 import textwrap
 try:
@@ -27,6 +28,8 @@ ITERATOR_PARAM_DESC = (
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
 MAX_RETRIES = 10
+CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
+                                ".civis_api_spec.json")
 
 
 def exclude_resource(path, api_version, resources):
