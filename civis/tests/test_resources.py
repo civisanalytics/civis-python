@@ -42,20 +42,6 @@ updated_at : string/time
     The last modification time for this credential.""")  # noqa: E122
 
 
-def test_create_method_iterator_kwarg():
-    args = [{"name": 'limit', "in": 'query', "required": False, "doc": ""},
-            {"name": 'page_num', "in": 'query', "required": False, "doc": ""},
-            {"name": 'order', "in": 'query', "required": False, "doc": ""},
-            {"name": 'order_by', "in": 'query', "required": False, "doc": ""}]
-    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
-                                      'fake_doc')
-    mock_endpoint = mock.MagicMock()
-
-    method(mock_endpoint, iterator=True)
-    mock_endpoint._call_api.assert_called_once_with(
-        'get', '/objects', {}, {}, iterator=True)
-
-
 def test_create_method_no_iterator_kwarg():
 
     # Test that dynamically-created function errors when an
@@ -231,12 +217,17 @@ def test_expired_api_key(mock_response):
     assert http_error_raised
 
 
-def test_create_method_unexpected_kwargs():
+def _create_mock_endpoint():
     args = [{"name": 'foo', "in": 'query', "required": True, "doc": ""},
             {"name": 'bar', "in": 'query', "required": False, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
                                       'fake_doc')
     mock_endpoint = mock.MagicMock()
+    return mock_endpoint, method
+
+
+def test_create_method_unexpected_kwargs():
+    mock_endpoint, method = _create_mock_endpoint()
 
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
@@ -253,6 +244,36 @@ def test_create_method_unexpected_kwargs():
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
+
+
+def test_create_method_too_many_pos_args():
+    mock_endpoint, method = _create_mock_endpoint()
+
+    # Method raises TypeError with too many arguments
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, 0, 0)
+    assert str(excinfo.value) == "too many positional arguments"
+
+
+def test_create_method_multiple_values():
+    mock_endpoint, method = _create_mock_endpoint()
+
+    # Method raises TypeError with multiple values for arguments
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, foo=0)
+    assert str(excinfo.value) == "multiple values for argument 'foo'"
+
+
+@pytest.mark.skipif(six.PY2, reason='Keyword-only parameters are '
+                                    'not in Python 2')
+def test_create_method_keyword_only():
+    # Verify that optional arguments are keyword-only
+    # (This language feature is only present in Python 3)
+    mock_endpoint, method = _create_mock_endpoint()
+
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, 0)
+    assert str(excinfo.value) == "too many positional arguments"
 
 
 @mock.patch(MOCKED_OPEN, new_callable=mock.mock_open,
