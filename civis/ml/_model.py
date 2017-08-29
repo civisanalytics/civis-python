@@ -83,6 +83,9 @@ def _block_and_handle_missing(method):
 
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
+    if getattr(getattr(df, "index", None), "levels", None) is not None:
+        raise TypeError("CivisML does not currently support "
+                        "multi-indexed data frames.")
     civis_fname = 'modelpipeline_data.csv'
     buf = six.BytesIO()
     if six.PY3:
