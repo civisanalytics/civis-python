@@ -8,7 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Added `ResourceWarning` for Python 2.7 (#128).
-- Added `TypeError` for multi-indexed dataframes (#131).
+- Added `TypeError` for multi-indexed dataframes when used as input to
+  CivisML (#131).
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
