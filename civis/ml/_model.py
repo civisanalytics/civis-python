@@ -83,6 +83,13 @@ def _block_and_handle_missing(method):
 
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
+    # Standard dataframe indexes do not have a "levels" attribute,
+    # but multiindexes do. Checking for this attribute means we don't
+    # need to import pandas to do error handling here.
+    if getattr(getattr(df, "index", None), "levels", None) is not None:
+        raise TypeError("CivisML does not support multi-indexed data frames. "
+                        "Try calling `.reset_index` on your data to convert "
+                        "it into a CivisML-friendly format.")
     civis_fname = 'modelpipeline_data.csv'
     buf = six.BytesIO()
     if six.PY3:

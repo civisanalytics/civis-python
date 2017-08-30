@@ -146,6 +146,18 @@ def test_stash_local_data_from_file(mock_file):
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
+@pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
+def test_stash_local_dataframe_multiindex_err():
+    arrays = [np.array(['bar', 'bar', 'baz', 'baz',
+                        'foo', 'foo', 'qux', 'qux']),
+              np.array(['one', 'two', 'one', 'two',
+                        'one', 'two', 'one', 'two'])]
+    df = pd.DataFrame(np.random.randn(8, 4), index=arrays)
+    with pytest.raises(TypeError):
+        _model._stash_local_dataframe(df)
+
+
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_dataframe(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
