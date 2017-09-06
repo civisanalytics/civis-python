@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `ResourceWarning` for Python 2.7 (#128).
 - Added `TypeError` for multi-indexed dataframes when used as input to
   CivisML (#131).
+- Make the `PaginatedResponse` returned by LIST endpoints a full iterator.
+  This also makes the `iterator=True` parameter work in Python 2.
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
