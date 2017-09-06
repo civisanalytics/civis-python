@@ -651,8 +651,19 @@ def _download_file(url, local_path):
 def _download_callback(job_id, run_id, client, filename):
 
     def callback(future):
-        url = client.scripts.get_sql_runs(job_id, run_id)["output"][0]["path"]
-        return _download_file(url, filename)
+        outputs = client.scripts.get_sql_runs(job_id, run_id)["output"]
+        if not outputs:
+            if future.succeeded():
+                # Only warn if the job succeeded. Otherwise the user
+                # will see an error surfaced through the Future.
+                warnings.warn("Job %s, run %s does not have any output to "
+                              "download. Not creating file %s."
+                              % (job_id, run_id, filename),
+                              RuntimeWarning)
+            return
+        else:
+            url = outputs[0]["path"]
+            return _download_file(url, filename)
 
     return callback
 
