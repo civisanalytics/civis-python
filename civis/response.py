@@ -137,7 +137,7 @@ class Response(dict):
 
 
 class PaginatedResponse:
-    """A response object that supports iteration.
+    """A response object which is an iterator
 
     Parameters
     ----------
@@ -172,7 +172,12 @@ class PaginatedResponse:
         self._params['page_num'] = 1
         self._params.pop('limit', None)
 
+        self._iter = None
+
     def __iter__(self):
+        return self
+
+    def _get_iter(self):
         while True:
             response = self._endpoint._make_request('GET',
                                                     self._path,
@@ -190,3 +195,10 @@ class PaginatedResponse:
                 yield converted_data
 
             self._params['page_num'] += 1
+
+    def __next__(self):
+        if self._iter is None:
+            self._iter = self._get_iter()
+        return next(self._iter)
+
+    next = __next__  # Python 2 compatibility

@@ -30,7 +30,7 @@ def _create_empty_response(code, headers):
     return mock_response
 
 
-def test_pagination():
+def _make_paginated_response(path, params):
     results = [
         [
             {'id': 1, 'name': 'job_1'},
@@ -49,9 +49,15 @@ def test_pagination():
     ]
     mock_endpoint._return_type = 'snake'
 
+    paginator = PaginatedResponse(path, params, mock_endpoint)
+
+    return paginator, mock_endpoint
+
+
+def test_pagination():
     path = '/objects'
     params = {'param': 'value'}
-    paginator = iter(PaginatedResponse(path, params, mock_endpoint))
+    paginator, mock_endpoint = _make_paginated_response(path, params)
 
     # No API calls made yet.
     mock_endpoint._make_request.assert_not_called()
@@ -74,6 +80,19 @@ def test_pagination():
     # empty.
     assert mock_endpoint._make_request.call_count == 3
     assert len(all_data) == 5
+
+
+def test_iterator_interface():
+    # Make sure that the PaginatedResponse implements `next` as expected
+    paginator, _ = _make_paginated_response('/objects', {'param': 'value'})
+
+    assert next(paginator)['id'] == 1
+    assert next(paginator)['id'] == 2
+    assert next(paginator)['id'] == 3
+    assert next(paginator)['id'] == 4
+    assert next(paginator)['id'] == 5
+    with pytest.raises(StopIteration):
+        next(paginator)
 
 
 def test_response_to_json_no_error():
