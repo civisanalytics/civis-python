@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_SKLEARN = False
 
-from civis import APIClient, find, find_one
+from civis import APIClient, find, find_one, __version__
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
@@ -743,7 +743,17 @@ class ModelPipeline:
 
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
-        klass.predict_template_id = _PRED_TEMPLATES.get(template_id)
+        p_id = _PRED_TEMPLATES.get(template_id)
+        if p_id is None:
+            warnings.warn('Model %s was trained with a newer version of '
+                          'CivisML than is available in the API client '
+                          'version %s. Please update your API client version .'
+                          'Attempting to use an older version of the '
+                          'prediction code. Prediction will either fail '
+                          'immediately or succeed.'
+                          % (train_job_id, __version__), RuntimeWarning)
+            p_id = max(_PRED_TEMPLATES.values())
+        klass.predict_template_id = p_id
 
         return klass
 

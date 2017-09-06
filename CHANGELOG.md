@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `ResourceWarning` for Python 2.7 (#128).
 - Added `TypeError` for multi-indexed dataframes when used as input to
   CivisML (#131).
+- ``ModelPipeline.from_existing`` will warn if users attempt to recreate
+  a model trained with a newer version of CivisML, and fall back on the
+  most recent prediction template it knows of.
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
