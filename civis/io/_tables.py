@@ -384,7 +384,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     -------
     unload_manifest: dict
         A dictionary resembling an AWS manifest file. Has the following keys:
-        ``'header'``, ``'query'``, ``'entries'``, respresenting the columns
+        ``'header'``, ``'query'``, ``'entries'``, representing the columns
         from the query, the query itself, and a list of dictionaries for each
         unloaded CSV part, each containing its file ``'id'``, ``'name'``,
         ``'size'``, and unsigned and signed S3 urls, ``'url'`` and
@@ -395,8 +395,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     >>> sql = "SELECT * FROM schema.my_big_table"
     >>> database = "my_database"
     >>> delimiter = "|"
-    >>> manifest = civis_multipart_unload(sql, database, delimiter=delimiter)
-    >>> ids = [file['id'] for file in manifest['files']]
+    >>> manifest = civis_to_multifile_csv(sql, database, delimiter=delimiter)
+    >>> ids = [entry['id'] for entry in manifest['entries']]
     >>> buf = BytesIO()
     >>> civis_to_file(ids[0], buf)
     >>> buf.seek(0)
