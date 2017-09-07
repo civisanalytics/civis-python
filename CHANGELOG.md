@@ -17,6 +17,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   This also makes the `iterator=True` parameter work in Python 2.
 - When using ``civis.io.civis_to_csv``, emit a warning on SQL queries which
   return no results instead of allowing a cryptic ``IndexError`` to surface (#135).
+- Fixed the example code snippet for ``civis.io.civis_to_multifile_csv``.
+  Also provided more details on its return dict in the docstring.
+- Pinned down `sphinx_rtd_theme` and `numpydoc` in `dev-requirements.txt`
+  for building the documentation.
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
