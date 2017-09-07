@@ -39,23 +39,40 @@ values in a column. The "sparse_*" models include a LASSO regression step
 (using the `glmnet <https://github.com/civisanalytics/python-glmnet>`_ package)
 to do feature selection before passing data to the final model.
 In some models, CivisML uses default parameters different from those in scikit-learn,
-as indicated in the "Altered Defaults" column. All models also have ``random_state=42``.
+as indicated in the "Altered Defaults" column. All models also have
+``random_state=42``. Note that "multilayer_perceptron_classifier"
+and "multilayer_perceptron_regressor" can only be used with
+hyperband; see :ref:`hyperparam-search`.
 
-=============================  ================    ==================================================================================================================================   ==================================
-Name                           Model Type          Algorithm                                                                                                                            Altered Defaults
-=============================  ================    ==================================================================================================================================   ==================================
-sparse_logistic                classification      `LogisticRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_                ``C=499999950, tol=1e-08``
-gradient_boosting_classifier   classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
-random_forest_classifier       classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
+================================  ================    ==================================================================================================================================   ==================================
+Name                              Model Type          Algorithm                                                                                                                            Altered Defaults
+================================  ================    ==================================================================================================================================   ==================================
+sparse_logistic                   classification      `LogisticRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_                ``C=499999950, tol=1e-08``
+gradient_boosting_classifier      classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
+random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
+extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
+multilayer_perceptron_classifier  classification      `MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
+stacking_classifier               classification      `StackedClassifier <GET_LINK_FROM_CIVISMLEXT>`_ 
+sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
+sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
+gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
+random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
+extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
+multilayer_perceptron_regressor   regression          `MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
+stacking_regressor                regression          `StackedRegressor <GET_LINK_FROM_CIVISMLEXT>`_ 
+================================  ================    ==================================================================================================================================   ==================================
 
-extra_trees_classifier         classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
-sparse_linear_regressor        regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
-sparse_ridge_regressor         regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
-gradient_boosting_regressor    regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
-random_forest_regressor        regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
-extra_trees_regressor          regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
-=============================  ================    ==================================================================================================================================   ==================================
-
+The "stacking_classifier" model stacks
+together the "sparse_logistic", "gradient_boosting_classifier",
+and "random_forest_classifier" models, using altered defaults as
+listed for each in "Altered Defaults". The models are combined using a
+:class:`~sklearn.pipeline.Pipeline` containing a `Normalizer <http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer>`_
+step, followed by `LogisticRegressionCV <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html>`_
+with ``penalty='l2'`` and ``tol=1e-08``. The
+"stacking_regressor" works similarly, stacking together the
+"sparse_linear_regressor", "gradient_boosting_regressor",
+and "random_forest_regressor" models, and combining them using
+`NonNegativeLinearRegression <GET_LINK_FROM_CIVISMLEXT>`_.
 
 Custom Models
 -------------
@@ -76,13 +93,52 @@ missing values. If you're making a classification model, the model must have a `
 method. If the class you're using doesn't have a ``predict_proba`` method,
 you can add one by wrapping it in a :class:`~sklearn.calibration.CalibratedClassifierCV`.
 
+Custom ETL
+----------
+
+By default, CivisML pre-processes data using the
+:class:`~civismlext.preprocessing.DataFrameETL` class, with ``cols_to_drop``
+equal to the ``excluded_columns`` parameter. You can replace this
+with your own ETL by creating an object of class
+:class:`~sklearn.base.BaseEstimator` and passing it as the ``etl``
+parameter during training. 
+
+By default, :class:`~civismlext.preprocessing.DataFrameETL`
+automatically one-hot encodes all categorical columns in the
+dataset. If you are passing a custom ETL estimator, you will have to
+ensure that no categorical columns remain after the ``transform``
+method is called on the dataset.
+
+.. _hyperparam-search:
+
+Hyperparameter Tuning
+---------------------
+
+You can tune hyperparamters using one of two methods: grid search or
+hyperband. CivisML will perform grid search if you pass a dictionary
+of hyperparameters to the ``cross_validation_parameters`` parameter, where the keys are
+hyperparameter names, and the values are lists of hyperparameter
+values to grid search over. You can run grid search in parallel by
+setting the ``n_jobs``
+parameter to however many jobs you would like to run in
+parallel. ``n_jobs`` defaults to 1 (no parallelization). 
+
+`Hyperband <https://arxiv.org/abs/1603.06560>`_
+is an efficient approach to hyperparameter optimization, and
+*recommended over grid search where possible*. CivisML will perform
+hyperband optimization if you pass the string ``'hyperband'`` to
+``cross_validation_parameters``. Hyperband is currently only supported for the following models:
+"gradient_boosting_classifier", "random_forest_classifier",
+"extra_trees_classifier", "multilayer_perceptron_classifier",
+"gradient_boosting_regressor", "random_forest_regressor",
+"extra_trees_regressor", and "multilayer_perceptron_regressor".
 
 Custom Dependencies
 -------------------
 
 Installing packages from PyPI is straightforward. You can specify a `dependencies`
 argument to `~civis.ml.ModelPipeline` which will install the dependencies in your runtime
-environment. VCS support is also enabled (see [docs](https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support).)
+environment. VCS support is also enabled (see `docs <https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_.)
 Installing a remote git repository from, say, Github only requires passing the HTTPS 
 URL in the form of, for example, `git+https://github.com/scikit-learn/scikit-learn`.
 
