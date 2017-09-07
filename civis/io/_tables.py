@@ -395,11 +395,11 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
             Each dict has the following keys:
 
             'id': int
-                File ID.
+                File ID
             'name': str
                 Filename
             'size': int
-                File size
+                File size in bytes
             'url': str
                 Unsigned S3 URL ('s3://...')
             'url_signed': str
