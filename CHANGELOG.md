@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   CivisML (#131).
 - Make the `PaginatedResponse` returned by LIST endpoints a full iterator.
   This also makes the `iterator=True` parameter work in Python 2.
+- When using ``civis.io.civis_to_csv``, emit a warning on SQL queries which
+  return no results instead of allowing a cryptic ``IndexError`` to surface (#135).
 
 ### Added
 - Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
