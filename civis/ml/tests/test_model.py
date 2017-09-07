@@ -648,6 +648,23 @@ def test_modelpipeline_classmethod_constructor_defaults(
     assert mp.parameters == {}
 
 
+@mock.patch.object(_model, 'ModelFuture', mock.Mock())
+def test_modelpipeline_classmethod_constructor_future_train_version():
+    # Test handling attempts to restore a model created with a newer
+    # version of CivisML.
+    current_max_template = max(_model._PRED_TEMPLATES)
+    cont = container_response_stub(current_max_template + 1000)
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = cont
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
+
+    # test everything is working fine
+    with pytest.warns(RuntimeWarning):
+        mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    exp_p_id = _model._PRED_TEMPLATES[current_max_template]
+    assert mp.predict_template_id == exp_p_id
+
+
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 def test_modelpipeline_classmethod_constructor_nonint_id():
     # Verify that we can still JSON-serialize job and run IDs even

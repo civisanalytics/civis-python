@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `ResourceWarning` for Python 2.7 (#128).
 - Added `TypeError` for multi-indexed dataframes when used as input to
   CivisML (#131).
+- ``ModelPipeline.from_existing`` will warn if users attempt to recreate
+  a model trained with a newer version of CivisML, and fall back on the
+  most recent prediction template it knows of (#134).
 - Make the `PaginatedResponse` returned by LIST endpoints a full iterator.
   This also makes the `iterator=True` parameter work in Python 2.
 - When using ``civis.io.civis_to_csv``, emit a warning on SQL queries which
