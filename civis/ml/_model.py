@@ -761,7 +761,8 @@ class ModelPipeline:
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None):
+              polling_interval=None, validate=True, n_jobs=None,
+              etl=None):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -819,6 +820,13 @@ class ModelPipeline:
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
+        validate : bool, optional
+            If False, validation will be skipped.
+        n_jobs : int, optional
+            Number of jobs to use for training and validation.
+        etl : Estimator, optional
+            Custom ETL estimator which overrides the default ETL, and
+            is run before training and validation.
 
         Returns
         -------
@@ -841,7 +849,8 @@ class ModelPipeline:
                       'PARAMS': json.dumps(self.parameters),
                       'CVPARAMS': json.dumps(self.cv_params),
                       'CALIBRATION': self.calibration,
-                      'IF_EXISTS': if_exists}
+                      'IF_EXISTS': if_exists,
+                      'VALIDATE': validate}
         if oos_scores:
             train_args['OOSTABLE'] = oos_scores
         if oos_scores_db:
@@ -857,6 +866,8 @@ class ModelPipeline:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
+        if n_jobs:
+            train_args['N_JOBS'] = n_jobs
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
@@ -869,6 +880,18 @@ class ModelPipeline:
                         _fout, 'Estimator for ' + n, client=self._client)
                 self._input_model = self.model  # Keep the estimator
                 self.model = str(estimator_file_id)
+            finally:
+                shutil.rmtree(tempdir)
+        if HAS_SKLEARN and isinstance(etl, BaseEstimator):
+            try:
+                tempdir = tempfile.mkdtemp()
+                fout = os.path.join(tempdir, 'ETL.pkl')
+                joblib.dump(etl, fout, compress=3)
+                with open(fout, 'rb') as _fout:
+                    etl_file_id = cio.file_to_civis(
+                        _fout, 'ETL Estimator', client=self._client)
+                self._etl_train = etl  # Keep the estimator
+                train_args['ETL'] = str(etl_file_id)
             finally:
                 shutil.rmtree(tempdir)
         train_args['MODEL'] = self.model
@@ -1100,6 +1123,6 @@ class ModelPipeline:
             file_id=file_id,
             args=predict_args,
             resources=resources,
-            polling_interval=polling_interval)
+            polling_ipnterval=polling_interval)
 
         return result
