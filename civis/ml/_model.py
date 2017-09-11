@@ -1123,6 +1123,6 @@ class ModelPipeline:
             file_id=file_id,
             args=predict_args,
             resources=resources,
-            polling_ipnterval=polling_interval)
+            polling_interval=polling_interval)
 
         return result
