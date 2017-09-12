@@ -531,14 +531,14 @@ class ModelPipeline:
     notifications : dict
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
-     dependencies : array, optional
-         List of packages to install from PyPI or git repository (i.e., Github
-         or Bitbucket). If a private repo is specificed, please include a
-         ``git_token_name`` argument as well (see below).
-     git_token_name : str, optional
-         Name of remote git API token stored in platform as the password field
-         in a custom platform credential. Used only when installing private git
-         repositories.
+    dependencies : array, optional
+        List of packages to install from PyPI or git repository (i.e., Github
+        or Bitbucket). If a private repo is specificed, please include a
+        ``git_token_name`` argument as well (see below).
+    git_token_name : str, optional
+        Name of remote git API token stored in platform as the password field
+        in a custom platform credential. Used only when installing private git
+        repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
