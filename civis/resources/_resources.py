@@ -239,6 +239,7 @@ def create_method(params, verb, method_name, path, doc):
         raise_for_unexpected_kwargs(method_name, kwargs, sig_args,
                                     sig_opt_args, is_iterable)
 
+        iterator = kwargs.pop('iterator', False)
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
@@ -246,7 +247,6 @@ def create_method(params, verb, method_name, path, doc):
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        iterator = arguments.get('iterator', False)
         return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method

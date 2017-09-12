@@ -42,6 +42,20 @@ updated_at : string/time
     The last modification time for this credential.""")  # noqa: E122
 
 
+def test_create_method_iterator_kwarg():
+    args = [{"name": 'limit', "in": 'query', "required": False, "doc": ""},
+            {"name": 'page_num', "in": 'query', "required": False, "doc": ""},
+            {"name": 'order', "in": 'query', "required": False, "doc": ""},
+            {"name": 'order_by', "in": 'query', "required": False, "doc": ""}]
+    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
+                                      'fake_doc')
+    mock_endpoint = mock.MagicMock()
+
+    method(mock_endpoint, iterator=True)
+    mock_endpoint._call_api.assert_called_once_with(
+        'get', '/objects', {}, {}, iterator=True)
+
+
 def test_create_method_no_iterator_kwarg():
 
     # Test that dynamically-created function errors when an
