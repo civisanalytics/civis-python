@@ -761,7 +761,7 @@ class ModelPipeline:
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None, validate=True, n_jobs=None,
+              polling_interval=None, validate=True, n_jobs=1,
               etl=None):
         """Start a Civis Platform job to train your model
 
