@@ -638,6 +638,7 @@ class ModelPipeline:
             client = APIClient(resources='all')
         self._client = client
         self.train_result_ = None
+        self._etl_train = None
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -740,6 +741,7 @@ class ModelPipeline:
                     git_token_name=git_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
+        klass._etl_train = args.get('ETL', None)
 
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
@@ -890,10 +892,10 @@ class ModelPipeline:
                 with open(fout, 'rb') as _fout:
                     etl_file_id = cio.file_to_civis(
                         _fout, 'ETL Estimator', client=self._client)
-                self._etl_train = etl  # Keep the estimator
                 train_args['ETL'] = str(etl_file_id)
             finally:
                 shutil.rmtree(tempdir)
+        self._etl_train = etl  # Keep the estimator
         train_args['MODEL'] = self.model
 
         name = self.model_name + ' Train' if self.model_name else None
