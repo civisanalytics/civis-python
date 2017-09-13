@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Optional arguments to API endpoints now display in function signatures.
+  Function signatures show a default value of "DEFAULT"; arguments will still
+  only be transmitted to the Civis Platform API when explicitly provided. (#140)
 
 
 ## 1.6.2 - 2017-09-08

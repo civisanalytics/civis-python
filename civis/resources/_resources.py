@@ -9,6 +9,7 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
+import six
 
 from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
@@ -145,7 +146,7 @@ def iterable_method(method, params):
     return (method.lower() == 'get' and params_present)
 
 
-def create_signature(args, kwargs):
+def create_signature(args, optional_args):
     """ Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -156,7 +157,7 @@ def create_signature(args, kwargs):
     ----------
     args : list
         List of strings that name the required arguments of a function.
-    kwargs : list
+    optional_args : list
         List of strings that name the optional arguments of a function.
 
     Returns
@@ -166,14 +167,18 @@ def create_signature(args, kwargs):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    if kwargs:
-        p.append(Parameter('kwargs', Parameter.VAR_KEYWORD))
+    if six.PY3:
+        opt_par_type = Parameter.KEYWORD_ONLY
+    else:
+        opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
+    p += [Parameter(x, opt_par_type, default='DEFAULT')
+          for x in optional_args]
     return Signature(p)
 
 
 def split_method_params(params):
     args = []
-    kwargs = []
+    optional_args = []
     body_params = []
     query_params = []
     path_params = []
@@ -182,14 +187,14 @@ def split_method_params(params):
         if param["required"]:
             args.append(name)
         else:
-            kwargs.append(name)
+            optional_args.append(name)
         if param["in"] == "body":
             body_params.append(name)
         elif param["in"] == "query":
             query_params.append(name)
         elif param["in"] == "path":
             path_params.append(name)
-    return args, kwargs, body_params, query_params, path_params
+    return args, optional_args, body_params, query_params, path_params
 
 
 def create_method(params, verb, method_name, path, doc):
@@ -222,25 +227,26 @@ def create_method(params, verb, method_name, path, doc):
         A function which will make an API call
     """
     elements = split_method_params(params)
-    sig_args, sig_kwargs, body_params, query_params, path_params = elements
-    sig = create_signature(sig_args, sig_kwargs)
+    sig_args, sig_opt_args, body_params, query_params, path_params = elements
+    sig = create_signature(sig_args, sig_opt_args)
     is_iterable = iterable_method(verb, query_params)
 
     def f(self, *args, **kwargs):
+        raise_for_unexpected_kwargs(method_name, kwargs, sig_args,
+                                    sig_opt_args, is_iterable)
+
+        iterator = kwargs.pop('iterator', False)
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
-        raise_for_unexpected_kwargs(method_name, arguments, sig_args,
-                                    sig_kwargs, is_iterable)
         body = {x: arguments[x] for x in body_params if x in arguments}
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        iterator = arguments.get('iterator', False)
         return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(["self"] + sig_args, sig_kwargs)
+    sig_self = create_signature(["self"] + sig_args, sig_opt_args)
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
