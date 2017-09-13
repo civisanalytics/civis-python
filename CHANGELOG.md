@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
 ### Changed
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
@@ -13,7 +14,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
-
+- Added `etl`, `n_jobs`, and `validation_data` arguments to
+  ModelPipeline.train (#139).
+- Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict(#139).
 
 ## 1.6.2 - 2017-09-08
 ### Changed

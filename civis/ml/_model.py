@@ -763,7 +763,7 @@ class ModelPipeline:
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None, validate=True, n_jobs=1,
+              polling_interval=None, validation_data='train', n_jobs=1,
               etl=None):
         """Start a Civis Platform job to train your model
 
@@ -822,8 +822,10 @@ class ModelPipeline:
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
-        validate : bool, optional
-            If False, validation will be skipped.
+        validation_data : str, optional
+            Source for validation data. There are currently two options:
+            `train` (the default), which uses training data for validation;
+            and None, which skips the validation step.
         n_jobs : int, optional
             Number of jobs to use for training and validation.
         etl : Estimator, optional
@@ -851,8 +853,7 @@ class ModelPipeline:
                       'PARAMS': json.dumps(self.parameters),
                       'CVPARAMS': json.dumps(self.cv_params),
                       'CALIBRATION': self.calibration,
-                      'IF_EXISTS': if_exists,
-                      'VALIDATE': validate}
+                      'IF_EXISTS': if_exists}
         if oos_scores:
             train_args['OOSTABLE'] = oos_scores
         if oos_scores_db:
@@ -870,6 +871,8 @@ class ModelPipeline:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
         if n_jobs:
             train_args['N_JOBS'] = n_jobs
+        if validation_data:
+            train_args['VALIDATION_DATA'] = validation_data
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
