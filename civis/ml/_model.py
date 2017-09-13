@@ -824,8 +824,8 @@ class ModelPipeline:
             Do not set if using the notifications endpoint.
         validation_data : str, optional
             Source for validation data. There are currently two options:
-            `train` (the default), which uses training data for validation;
-            and None, which skips the validation step.
+            `'train'` (the default), which uses training data for validation;
+            and `'skip'`, which skips the validation step.
         n_jobs : int, optional
             Number of jobs to use for training and validation.
         etl : Estimator, optional
@@ -853,7 +853,8 @@ class ModelPipeline:
                       'PARAMS': json.dumps(self.parameters),
                       'CVPARAMS': json.dumps(self.cv_params),
                       'CALIBRATION': self.calibration,
-                      'IF_EXISTS': if_exists}
+                      'IF_EXISTS': if_exists,
+                      'VALIDATION_DATA': validation_data}
         if oos_scores:
             train_args['OOSTABLE'] = oos_scores
         if oos_scores_db:
@@ -871,8 +872,6 @@ class ModelPipeline:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
         if n_jobs:
             train_args['N_JOBS'] = n_jobs
-        if validation_data:
-            train_args['VALIDATION_DATA'] = validation_data
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
