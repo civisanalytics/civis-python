@@ -1,12 +1,16 @@
 """Mock client creation and tooling
 """
+import os
 
 from civis import APIClient
 from civis.compat import mock
-from civis.resources import CACHED_SPEC_PATH
 
 
-def create_client_mock(cache=CACHED_SPEC_PATH):
+TEST_SPEC = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                         "civis_api_spec.json")
+
+
+def create_client_mock(cache=TEST_SPEC):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters

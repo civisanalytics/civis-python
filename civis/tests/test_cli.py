@@ -5,6 +5,7 @@ import os
 from civis.cli.__main__ import generate_cli, invoke
 from civis.compat import mock
 from civis.resources._resources import BASE_RESOURCES_V1
+from civis.tests import TEST_SPEC
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -30,7 +31,7 @@ def test_generate_cli_petstore(mock_retrieve_spec_dict,
 @mock.patch("civis.cli.__main__.retrieve_spec_dict")
 def test_generate_cli_civis(mock_retrieve_spec_dict):
     """Test loading the Civis API spec as of 2017-02-02."""
-    with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+    with open(TEST_SPEC) as f:
         civis_spec = json.load(f, object_pairs_hook=OrderedDict)
     mock_retrieve_spec_dict.return_value = civis_spec
 

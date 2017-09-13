@@ -1,5 +1,4 @@
 from collections import OrderedDict
-import os
 import json
 import six
 
@@ -7,10 +6,10 @@ from civis import APIClient
 from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import CivisVCRTestCase
+from civis.tests import TEST_SPEC
 
 api_import_str = 'civis.resources._resources.get_api_spec'
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+with open(TEST_SPEC) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
 
 
