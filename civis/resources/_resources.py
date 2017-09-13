@@ -146,7 +146,7 @@ def iterable_method(method, params):
     return (method.lower() == 'get' and params_present)
 
 
-def create_signature(args, optional_args, kwargs=False):
+def create_signature(args, optional_args):
     """ Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -159,8 +159,6 @@ def create_signature(args, optional_args, kwargs=False):
         List of strings that name the required arguments of a function.
     optional_args : list
         List of strings that name the optional arguments of a function.
-    kwargs : bool, optional
-        If True, the function can also accept arbitrary keyword arguments
 
     Returns
     -------
@@ -175,8 +173,6 @@ def create_signature(args, optional_args, kwargs=False):
         opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
     p += [Parameter(x, opt_par_type, default='DEFAULT')
           for x in optional_args]
-    if kwargs:
-        p.append(Parameter('kwargs', Parameter.VAR_KEYWORD))
     return Signature(p)
 
 
