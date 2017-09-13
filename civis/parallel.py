@@ -12,7 +12,8 @@ import time
 
 import cloudpickle
 import joblib
-from joblib._parallel_backends import ParallelBackendBase
+from joblib._parallel_backends import (ParallelBackendBase, FallbackToBackend,
+                                       SequentialBackend)
 from joblib.my_exceptions import TransportableException
 import requests
 
@@ -699,6 +700,20 @@ class _CivisBackend(ParallelBackendBase):
         self.setup_cmd = setup_cmd
         self.max_submit_retries = max_submit_retries
         self.using_template = (from_template_id is not None)
+        self.parallel = None
+
+    def configure(self, n_jobs=1, parallel=None, **backend_args):
+        """Reconfigure the backend and return the number of workers.
+
+        This makes it possible to reuse an existing backend instance for
+        successive independent calls to Parallel with different parameters.
+        """
+        n_jobs = self.effective_n_jobs(n_jobs)
+        if n_jobs == 1:
+            raise FallbackToBackend(SequentialBackend())
+
+        self.parallel = parallel
+        return n_jobs
 
     def effective_n_jobs(self, n_jobs):
         if n_jobs == -1:
