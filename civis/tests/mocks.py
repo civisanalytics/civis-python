@@ -8,9 +8,11 @@ from civis.compat import mock
 
 TEST_SPEC = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                          "civis_api_spec.json")
+TEST_SPEC_ALL = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                             "civis_api_spec_channels.json")
 
 
-def create_client_mock(cache=TEST_SPEC):
+def create_client_mock(cache=TEST_SPEC_ALL):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters
