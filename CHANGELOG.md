@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- The Civis ``joblib`` backend will now fall back to a ``SequentialBackend``
+  (running jobs locally rather than on Civis Platform) when ``n_jobs=1``.
 
 
 ## 1.6.2 - 2017-09-08
