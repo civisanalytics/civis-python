@@ -32,11 +32,29 @@ DELIMITERS = {
     '|': 'pipe',
 }
 
+SQL_PANDAS_MAP = {
+                  'numeric' : np.float,
+                  'real': np.float,
+                  'smallint': np.int, 
+                  'integer' : np.int,
+                  'bigint' : np.int,
+                  'deicmal':np.float,
+                  'real':np.float,
+                  'double':np.float,a
+                  'boolean' : np.bool,
+                  'char': np.str,
+                  'character varying': np.str
+}
+
+# Checkout timestamptz
+DATE_TYPES = ['date', 'timestamp', 'timestamptz']
+
 
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, client=None, credential_id=None,
-               polling_interval=None, archive=False, hidden=True, **kwargs):
+               polling_interval=None, archive=False, hidden=True,
+               pandas_kwargs=None, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -115,9 +133,14 @@ def read_civis(table, database, columns=None, use_pandas=False,
     if client is None:
         # Instantiate client here in case users provide a (deprecated) api_key
         client = APIClient(api_key=api_key, resources='all')
+
+    
+    table_id = client.get_table_id(table=table, database=database)
+
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, client=client,
+                          job_name=job_name, client=client, 
+                          table_id=table_id,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
@@ -126,9 +149,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
 
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
-                   api_key=None, client=None, credential_id=None,
-                   polling_interval=None, archive=False,
-                   hidden=True, **kwargs):
+                   api_key=None, client=None, table_id=None,
+                   credential_id=None, polling_interval=None, 
+                   archive=False, hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -224,7 +247,22 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
-        data = pd.read_csv(url, **kwargs)
+        table_meta = client.tables.get(table_id)
+        # The split is to handle e.g. DECIMAL(17,9)
+        redshift_types = {col['name']: col['sql_type'].split('(')[0]
+                              for col in table_meta['columns']}
+        py_types = {name : SQL_PANDAS_MAP[type_]
+                    for (name, type_) in redshift_types 
+                    if type_ not in DATE_TYPES}
+        date_cols = [name for (name, type_) in redshift_types 
+                     if type_ in DATE_TYPES]
+                     
+        sortkeys = table_meta['sortkeys'].split(',')
+        # Not sure about the best way to handle null fields
+        # or how they may appear
+        data = pd.read_csv(url, parse_dates=date_cols,
+                                index_col=sort_keys,
+                                converters=py_types)
     else:
         r = requests.get(url)
         r.raise_for_status()
