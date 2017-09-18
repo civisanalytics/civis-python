@@ -146,7 +146,27 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas(self, *mocks):
-        expected = pd.DataFrame([[1, 2, 3]], columns=['a', 'b', 'c'])
+        col_types = {
+                  'numeric' : np.float,
+                  'real': np.float,
+                  'smallint': np.int, 
+                  'integer' : np.int,
+                  'bigint' : np.int,
+                  'deicmal':np.float,
+                  'real':np.float,
+                  'double':np.float,
+                  'boolean' : np.bool,
+                  'char': np.str,
+                  'character varying': np.str
+                  }
+        expected = pd.DataFrame([[1., 2., 3, 4, 5, 6., 7., 8., True, 'f', 'bar', '05/07/1995']], 
+                                 columns=['numeric', 'real', 'smallint', 
+                                 'integer', 'bigint', 'deicmal', 'real', 
+                                 'double', 'boolean', 'char', 
+                                 'character varying', 'date'
+                                 ],
+                     parse_dates=['date'],
+                     converters=col_types)
         df = civis.io.read_civis('scratch.api_client_test_fixture',
                                  'redshift-general', use_pandas=True,
                                  polling_interval=POLL_INTERVAL)
