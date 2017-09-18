@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from builtins import super
-
+import os
 import re
 import uuid
 
@@ -29,6 +29,19 @@ def camel_to_snake(word):
 
 def to_camelcase(s):
     return re.sub(r'(^|_)([a-zA-Z])', lambda m: m.group(2).upper(), s)
+
+
+def get_api_key(api_key):
+    """Pass-through if `api_key` is not None otherwise tries the CIVIS_API_KEY
+    environmental variable.
+    """
+    if api_key is not None:  # always prefer user given one
+        return api_key
+    api_key = os.environ.get("CIVIS_API_KEY", None)
+    if api_key is None:
+        raise EnvironmentError("No Civis API key found. Please store in "
+                               "CIVIS_API_KEY environment variable")
+    return api_key
 
 
 def open_session(api_key, max_retries=5, user_agent="civis-python"):
