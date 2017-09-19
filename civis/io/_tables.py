@@ -147,9 +147,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
         # Instantiate client here in case users provide a (deprecated) api_key
         client = APIClient(api_key=api_key, resources='all')
 
-
     table_id = client.get_table_id(table=table, database=database)
-
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
                           job_name=job_name, client=client, 
@@ -260,7 +258,6 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
-
         sortkeys, py_types, date_cols = _redshift_to_py(client, table_id)
         # Not sure about the best way to handle null fields
         data = pd.read_csv(url, parse_dates=date_cols,
