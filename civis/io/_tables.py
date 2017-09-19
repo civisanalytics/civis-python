@@ -67,8 +67,7 @@ DATE_TYPES = ['date', 'timestamp',
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, client=None, credential_id=None,
-               polling_interval=None, archive=False, hidden=True,
-               pandas_kwargs=None, **kwargs):
+               polling_interval=None, archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
 
     Parameters
