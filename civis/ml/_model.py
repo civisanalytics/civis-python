@@ -751,7 +751,7 @@ class ModelPipeline:
         if p_id is None:
             warnings.warn('Model %s was trained with a newer version of '
                           'CivisML than is available in the API client '
-                          'version %s. Please update your API client version .'
+                          'version %s. Please update your API client version. '
                           'Attempting to use an older version of the '
                           'prediction code. Prediction will either fail '
                           'immediately or succeed.'
@@ -992,7 +992,8 @@ class ModelPipeline:
                 table_name=None, database_name=None,
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
-                if_exists='fail', n_jobs=None, polling_interval=None):
+                if_exists='fail', n_jobs=None, polling_interval=None,
+                cpu=None, memory=None, disk=None):
         """Make predictions on a trained model
 
         Provide input through one of
@@ -1066,6 +1067,12 @@ class ModelPipeline:
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
+        cpu : int, optional
+            CPU shares requested by the user for a single job.
+        memory : int, optional
+            RAM requested by the user for a single job.
+        disk : int, optional
+            disk space requested by the user for a single job.
 
         Returns
         -------
@@ -1110,15 +1117,12 @@ class ModelPipeline:
             predict_args['LIMITSQL'] = sql_limit
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
-
-        # If n_jobs is 1, we'll do computation in the leader job.
-        # Otherwise, rely on the default resources in the template.
-        if n_jobs == 1:
-            resources = {'REQUIRED_CPU': 1024,
-                         'REQUIRED_MEMORY': 3000,
-                         'REQUIRED_DISK_SPACE': 30}
-        else:
-            resources = None
+        if cpu:
+            predict_args['CPU'] = n_jobs
+        if memory:
+            predict_args['MEMORY'] = n_jobs
+        if disk:
+            predict_args['DISK'] = n_jobs
 
         name = self.model_name + ' Predict' if self.model_name else None
         result, container, run = self._create_custom_run(
@@ -1128,7 +1132,6 @@ class ModelPipeline:
             database_name=database_name,
             file_id=file_id,
             args=predict_args,
-            resources=resources,
             polling_interval=polling_interval)
 
         return result
