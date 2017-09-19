@@ -10,6 +10,8 @@ from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
 from civis.utils._deprecation import deprecate_param
+import numpy as np
+from pprint import pprint
 
 import requests
 
@@ -32,22 +34,35 @@ DELIMITERS = {
     '|': 'pipe',
 }
 
-SQL_PANDAS_MAP = {
-                  'numeric' : np.float,
-                  'real': np.float,
-                  'smallint': np.int, 
-                  'integer' : np.int,
-                  'bigint' : np.int,
-                  'deicmal':np.float,
-                  'real':np.float,
-                  'double':np.float,a
-                  'boolean' : np.bool,
-                  'char': np.str,
-                  'character varying': np.str
-}
+
+SQL_PANDAS_MAP = {'smallint': np.int,
+               'int': np.int,
+               'integer': np.int,
+               'bigint': np.int,
+               'decimal': np.float,
+               'numeric': np.float,
+               'float': np.float,
+               'float4': np.float,
+               'float8': np.float,
+               'real': np.float,
+               'double precision': np.float,
+               'boolean': np.bool,
+               'bool': np.bool,
+               'int2': np.int,
+               'int4': np.int,
+               'int8': np.int,
+               'char': np.str,
+               'character': np.str,
+               'nchar': np.str,
+               'bpchar': np.str,
+               'varchar': np.str,
+               'character varying': np.str,
+               'nvarchar': np.str,
+               'text': np.str}
 
 # Checkout timestamptz
-DATE_TYPES = ['date', 'timestamp', 'timestamptz']
+DATE_TYPES = ['date', 'timestamp', 
+              'timestamptz', 'timestamp without time zone']
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -134,7 +149,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
         # Instantiate client here in case users provide a (deprecated) api_key
         client = APIClient(api_key=api_key, resources='all')
 
-    
+
     table_id = client.get_table_id(table=table, database=database)
 
     sql = _get_sql_select(table, columns)
@@ -247,22 +262,13 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
-        table_meta = client.tables.get(table_id)
-        # The split is to handle e.g. DECIMAL(17,9)
-        redshift_types = {col['name']: col['sql_type'].split('(')[0]
-                              for col in table_meta['columns']}
-        py_types = {name : SQL_PANDAS_MAP[type_]
-                    for (name, type_) in redshift_types 
-                    if type_ not in DATE_TYPES}
-        date_cols = [name for (name, type_) in redshift_types 
-                     if type_ in DATE_TYPES]
-                     
-        sortkeys = table_meta['sortkeys'].split(',')
+
+        sortkeys, py_types, date_cols = _redshift_to_py(client, table_id)
         # Not sure about the best way to handle null fields
-        # or how they may appear
         data = pd.read_csv(url, parse_dates=date_cols,
-                                index_col=sort_keys,
-                                converters=py_types)
+                                index_col=sortkeys,
+                                converters=py_types,
+                                engine='python')
     else:
         r = requests.get(url)
         r.raise_for_status()
@@ -765,3 +771,17 @@ def _import_bytes(buf, database, table, client, max_errors,
 
         fut.add_done_callback(f)
     return fut
+
+def _redshift_to_py(civ_client, tableid):
+        table_meta = civ_client.tables.get(tableid)
+        # The split is to handle e.g. DECIMAL(17,9)
+        redshift_types = {col['name']: col['sql_type'].split('(')[0]
+                              for col in table_meta['columns']}
+        py_types = {name : SQL_PANDAS_MAP[type_]
+                    for (name, type_) in redshift_types.items() 
+                    if type_ not in DATE_TYPES}
+        date_cols = [name for (name, type_) in redshift_types.items() 
+                     if type_ in DATE_TYPES]
+
+        sortkeys = table_meta['sortkeys'].split(',')
+        return sortkeys, py_types, date_cols

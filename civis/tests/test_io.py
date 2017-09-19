@@ -159,14 +159,16 @@ class ImportTests(CivisVCRTestCase):
                   'char': np.str,
                   'character varying': np.str
                   }
-        expected = pd.DataFrame([[1., 2., 3, 4, 5, 6., 7., 8., True, 'f', 'bar', '05/07/1995']], 
-                                 columns=['numeric', 'real', 'smallint', 
+        expected = pd.DataFrame(data=[[1., 2., 3, 4, 5, 6., 7., 8.,
+                                  True, 'f', 'bar', '05/07/1995']], 
+                                columns=['numeric', 'real', 'smallint', 
                                  'integer', 'bigint', 'deicmal', 'real', 
                                  'double', 'boolean', 'char', 
                                  'character varying', 'date'
                                  ],
-                     parse_dates=['date'],
-                     converters=col_types)
+                                parse_dates=['date'],
+                                converters=col_types)
+        
         df = civis.io.read_civis('scratch.api_client_test_fixture',
                                  'redshift-general', use_pandas=True,
                                  polling_interval=POLL_INTERVAL)
