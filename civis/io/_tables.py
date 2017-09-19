@@ -33,35 +33,32 @@ DELIMITERS = {
     '|': 'pipe',
 }
 
-
 SQL_PANDAS_MAP = {'smallint': np.int,
-               'int': np.int,
-               'integer': np.int,
-               'bigint': np.int,
-               'decimal': np.float,
-               'numeric': np.float,
-               'float': np.float,
-               'float4': np.float,
-               'float8': np.float,
-               'real': np.float,
-               'double precision': np.float,
-               'boolean': np.bool,
-               'bool': np.bool,
-               'int2': np.int,
-               'int4': np.int,
-               'int8': np.int,
-               'char': np.str,
-               'character': np.str,
-               'nchar': np.str,
-               'bpchar': np.str,
-               'varchar': np.str,
-               'character varying': np.str,
-               'nvarchar': np.str,
-               'text': np.str}
+                   'int': np.int,
+                   'integer': np.int,
+                   'bigint': np.int,
+                   'decimal': np.float,
+                   'numeric': np.float,
+                   'float': np.float,
+                   'float4': np.float,
+                   'float8': np.float,
+                   'real': np.float,
+                   'double precision': np.float,
+                   'boolean': np.bool,
+                   'bool': np.bool,
+                   'int2': np.int,
+                   'int4': np.int,
+                   'int8': np.int,
+                   'char': np.str,
+                   'character': np.str,
+                   'nchar': np.str,
+                   'bpchar': np.str,
+                   'varchar': np.str,
+                   'character varying': np.str,
+                   'nvarchar': np.str,
+                   'text': np.str}
 
-# Checkout timestamptz
-DATE_TYPES = ['date', 'timestamp', 
-              'timestamptz', 'timestamp without time zone']
+DATE_TYPES = ['date', 'timestamp', 'timestamptz', 'timestamp without time zone']
 
 
 @deprecate_param('v2.0.0', 'api_key')
