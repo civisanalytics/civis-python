@@ -3,6 +3,7 @@ import csv
 import io
 import six
 import warnings
+import numpy as np
 
 from civis import APIClient
 from civis.io import civis_to_file
@@ -10,8 +11,6 @@ from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
 from civis.utils._deprecation import deprecate_param
-import numpy as np
-from pprint import pprint
 
 import requests
 
