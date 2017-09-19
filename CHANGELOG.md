@@ -8,6 +8,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
 
+### Added
+- ``civis.resources.cache_api_spec`` function to make it easier to record the
+  current API spec locally (#141).
+- Autospecced mock of the ``APIClient`` for use in testing third-party code which
+  uses this library (#141).
+
 
 ## 1.6.2 - 2017-09-08
 ### Changed
