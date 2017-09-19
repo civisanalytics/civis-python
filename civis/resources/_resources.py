@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import json
+import os
 import re
 import textwrap
 try:
@@ -13,7 +14,8 @@ import six
 
 from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
-from civis._utils import camel_to_snake, to_camelcase, open_session
+from civis._utils import (camel_to_snake, to_camelcase,
+                          open_session, get_api_key)
 
 
 API_VERSIONS = ["1.0"]
@@ -27,6 +29,8 @@ ITERATOR_PARAM_DESC = (
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
 MAX_RETRIES = 10
+CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
+                                ".civis_api_spec.json")
 
 
 def exclude_resource(path, api_version, resources):
@@ -498,6 +502,26 @@ def generate_classes(api_key, api_version="1.0", resources="base"):
     raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
+
+
+def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
+    """Cache a local copy of the Civis Data Science API spec
+
+    Parameters
+    ----------
+    cache : str, optional
+        File in which to store the cache of the API spec
+    api_key : str, optional
+        Your API key obtained from the Civis Platform. If not given, the
+        client will use the :envvar:`CIVIS_API_KEY` environment variable.
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions.  Currently only "1.0" is supported.
+    """
+    api_key = get_api_key(api_key)
+    spec = get_api_spec(api_key, api_version=api_version)
+    with open(cache, "wt") as _fout:
+        json.dump(spec, _fout)
 
 
 def generate_classes_maybe_cached(cache, api_key, api_version, resources):

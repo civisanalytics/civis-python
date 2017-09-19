@@ -25,7 +25,7 @@ from jsonref import JsonRef
 import yaml
 from civis.cli._cli_commands import \
     civis_ascii_art, files_download_cmd, files_upload_cmd
-from civis.resources import get_api_spec
+from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis._utils import open_session
 from civis.compat import FileNotFoundError
 
@@ -33,8 +33,6 @@ from civis.compat import FileNotFoundError
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
 _API_URL = "https://api.civisanalytics.com"
 _OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
-_CACHED_SPEC_PATH = \
-    os.path.join(os.path.expanduser('~'), ".civis_api_spec.json")
 CLI_USER_AGENT = 'civis-cli'
 
 
@@ -198,10 +196,10 @@ def retrieve_spec_dict(api_version="1.0"):
 
     try:
         # If the cached spec is from the last 24 hours, use it.
-        modified_time = os.path.getmtime(_CACHED_SPEC_PATH)
+        modified_time = os.path.getmtime(CACHED_SPEC_PATH)
         if now_timestamp - modified_time < 24 * 3600:
             refresh_spec = False
-            with open(_CACHED_SPEC_PATH) as f:
+            with open(CACHED_SPEC_PATH) as f:
                 spec_dict = json.load(f, object_pairs_hook=OrderedDict)
     except (FileNotFoundError, ValueError):
         # If the file doesn't exist or we can't parse it, just keep going.
@@ -211,7 +209,7 @@ def retrieve_spec_dict(api_version="1.0"):
     if refresh_spec:
         spec_dict = get_api_spec(get_api_key(), api_version=api_version,
                                  user_agent=CLI_USER_AGENT)
-        with open(_CACHED_SPEC_PATH, "w") as f:
+        with open(CACHED_SPEC_PATH, "w") as f:
             json.dump(spec_dict, f)
     return spec_dict
 

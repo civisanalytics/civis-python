@@ -1,3 +1,5 @@
+from glob import glob
+import os
 import re
 import setuptools
 from setuptools import find_packages, setup
@@ -41,6 +43,8 @@ def main():
         url="https://www.civisanalytics.com",
         description="Access the Civis Platform API",
         packages=find_packages(),
+        data_files=[(os.path.join('civis', 'tests'),
+                     glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
         install_requires=[
             'pyyaml>=3.0,<=3.99',

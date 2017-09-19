@@ -16,13 +16,14 @@ from civis.futures import (ContainerFuture,
 from civis.futures import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
+from civis.tests import TEST_SPEC
 from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+with open(TEST_SPEC) as f:
     civis_api_spec_base = json.load(f, object_pairs_hook=OrderedDict)
 
 with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
