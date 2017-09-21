@@ -11,7 +11,6 @@ import pickle
 import time
 
 import cloudpickle
-import joblib
 from joblib._parallel_backends import ParallelBackendBase
 from joblib.my_exceptions import TransportableException
 from joblib import register_parallel_backend as _joblib_reg_para_backend
