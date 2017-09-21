@@ -56,6 +56,7 @@ def worker_func(func_file_id, remote_backend):
                     result = func()
         else:
             with _joblib_para_backend(_backend):
+                print(_backend, flush=True)
                 result = func()
     except Exception:
         print("Error! Attempting to record exception.")
