@@ -561,7 +561,7 @@ def _setup_remote_backend(remote_backend):
     """
 
     if remote_backend == 'civis':
-        backend_factory = infer_backend_factory()
+        backend_factory = infer_backend_factory(hidden=False)
         _joblib_reg_para_backend('civis', backend_factory)
         if _sklearn_reg_para_backend:
             _sklearn_reg_para_backend('civis', backend_factory)
