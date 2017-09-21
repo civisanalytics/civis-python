@@ -19,11 +19,19 @@ import civis
 import cloudpickle
 from joblib.my_exceptions import TransportableException
 from joblib.format_stack import format_exc
+from joblib import parallel_backend as _joblib_para_backend
 
-from civis.parallel import _robust_pickle_download, _robust_file_to_civis
+try:
+    from sklearn.externals.joblib import (
+        parallel_backend as _sklearn_para_backend)
+except ImportError:
+    _sklearn_para_backend = None
+
+from civis.parallel import (
+    _robust_pickle_download, _robust_file_to_civis, _setup_remote_backend)
 
 
-def worker_func(func_file_id):
+def worker_func(func_file_id, remote_backend):
     # Have the output File expire in 7 days.
     expires_at = (datetime.now() + timedelta(days=7)).isoformat()
 
@@ -39,7 +47,16 @@ def worker_func(func_file_id):
     try:
         func = _robust_pickle_download(func_file_id, client=client,
                                        n_retries=5, delay=0.5)
-        result = func()
+        _backend = _setup_remote_backend(remote_backend)
+        # graceful nested context managers are ~hard across python versions,
+        # this just works...
+        if _sklearn_para_backend:
+            with _sklearn_para_backend(_backend):
+                with _joblib_para_backend(_backend):
+                    result = func()
+        else:
+            with _joblib_para_backend(_backend):
+                result = func()
     except Exception:
         print("Error! Attempting to record exception.")
         # Wrap the exception in joblib's TransportableException
@@ -70,11 +87,13 @@ def worker_func(func_file_id):
 def main():
     if len(sys.argv) > 1:
         func_file_id = sys.argv[1]
+        remote_backend = sys.argv[2]
     else:
         # If the file ID to download isn't given as a command-line
         # argument, assume that it's in an environment variable.
         func_file_id = os.environ['JOBLIB_FUNC_FILE_ID']
-    worker_func(func_file_id=func_file_id)
+        remote_backend = os.environ['JOBLIB_REMOTE_BACKEND']
+    worker_func(func_file_id=func_file_id, remote_backend=remote_backend)
 
 
 if __name__ == '__main__':

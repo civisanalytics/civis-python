@@ -14,6 +14,7 @@ import cloudpickle
 import joblib
 from joblib._parallel_backends import ParallelBackendBase
 from joblib.my_exceptions import TransportableException
+from joblib import register_parallel_backend as _joblib_reg_para_backend
 import requests
 
 import civis
@@ -21,6 +22,12 @@ from civis.base import CivisAPIError
 
 from civis.compat import TemporaryDirectory
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
+
+try:
+    from sklearn.externals.joblib import (
+        register_parallel_backend as _sklearn_reg_para_backend)
+except ImportError:
+    _sklearn_reg_para_backend = None
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -44,6 +51,7 @@ def infer_backend_factory(required_resources=None,
                           max_submit_retries=0,
                           max_job_retries=0,
                           hidden=True,
+                          remote_backend='civis',
                           **kwargs):
     """Infer the container environment and return a backend factory.
 
@@ -124,6 +132,10 @@ def infer_backend_factory(required_resources=None,
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    remote_backend : str, optional
+        The joblib backend to use when executing code within joblib in the
+        container. The default of 'civis' infers a new Civis joblib backend
+        instance.
     **kwargs:
         Additional keyword arguments will be passed directly to
         :func:`~civis.APIClient.scripts.post_containers`, potentially
@@ -194,6 +206,7 @@ def infer_backend_factory(required_resources=None,
                                 max_submit_retries=max_submit_retries,
                                 max_job_retries=max_job_retries,
                                 hidden=hidden,
+                                remote_backend=remote_backend,
                                 **kwargs)
 
 
@@ -207,6 +220,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          max_submit_retries=0,
                          max_job_retries=0,
                          hidden=True,
+                         remote_backend='civis',
                          **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
 
@@ -262,6 +276,10 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    remote_backend : str, optional
+        The joblib backend to use when executing code within joblib in the
+        container. The default of 'civis' infers a new Civis joblib backend
+        instance.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -351,6 +369,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                              max_submit_retries=max_submit_retries,
                              max_n_retries=max_job_retries,
                              hidden=hidden,
+                             remote_backend=remote_backend,
                              **kwargs)
 
     return backend_factory
@@ -526,6 +545,31 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
             return file_id
 
 
+def _setup_remote_backend(remote_backend):
+    """Setup the remote backend while in a Civis container.
+
+    Parameters
+    ----------
+    remote_backend : str
+        The name of the backend. If 'civis', then `infer_backend_factory`
+        is used to infer the backend and the backend is registed with joblib
+        via `register_parallel_backend`.
+
+    Returns
+    -------
+    backend : str
+        The name of the backend to use.
+    """
+
+    if remote_backend == 'civis':
+        backend_factory = infer_backend_factory()
+        _joblib_reg_para_backend('civis', backend_factory)
+        if _sklearn_reg_para_backend:
+            _sklearn_reg_para_backend('civis', backend_factory)
+    else:
+        return remote_backend
+
+
 class _CivisBackendResult:
     """A wrapper for results of joblib tasks
 
@@ -680,6 +724,7 @@ class _CivisBackend(ParallelBackendBase):
                  from_template_id=None,
                  max_submit_retries=0,
                  client=None,
+                 remote_backend='civis',
                  **executor_kwargs):
         if max_submit_retries < 0:
             raise ValueError(
@@ -699,6 +744,7 @@ class _CivisBackend(ParallelBackendBase):
         self.setup_cmd = setup_cmd
         self.max_submit_retries = max_submit_retries
         self.using_template = (from_template_id is not None)
+        self.remote_backend = remote_backend
 
     def effective_n_jobs(self, n_jobs):
         if n_jobs == -1:
@@ -743,23 +789,27 @@ class _CivisBackend(ParallelBackendBase):
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
             runner_remote_path = "civis_joblib_worker"
-            cmd = ("{setup_cmd} && "
-                   "if command -v {runner_remote_path} >/dev/null; "
-                   "then exec {runner_remote_path} {func_file_id}; "
-                   "else pip install civis=={civis_version} && "
-                   "exec {runner_remote_path} {func_file_id}; fi"
-                   .format(jl_version=joblib.__version__,
-                           civis_version=civis.__version__,
-                           runner_remote_path=runner_remote_path,
-                           func_file_id=func_file_id,
-                           setup_cmd=self.setup_cmd))
+            cmd = (
+                "{setup_cmd} && "
+                "if command -v {runner_remote_path} >/dev/null; "
+                "then exec {runner_remote_path} {func_file_id} "
+                "{remote_backend}; "
+                "else pip install civis=={civis_version} && "
+                "exec {runner_remote_path} {func_file_id} {remote_backend}; fi"
+                .format(civis_version=civis.__version__,
+                        runner_remote_path=runner_remote_path,
+                        func_file_id=func_file_id,
+                        setup_cmd=self.setup_cmd,
+                        remote_backend=self.remote_backend))
 
             # Try to submit the command, with optional retrying for certain
             # error types.
             for n_retries in range(1 + self.max_submit_retries):
                 try:
                     if self.using_template:
-                        args = {'JOBLIB_FUNC_FILE_ID': func_file_id}
+                        args = {
+                            'JOBLIB_FUNC_FILE_ID': func_file_id,
+                            'JOBLIB_REMOTE_BACKEND': self.remote_backend}
                         future = self.executor.submit(**args)
                         log.debug("Started custom script from template "
                                   "%s with arguments %s",
