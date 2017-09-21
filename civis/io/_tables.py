@@ -58,13 +58,15 @@ SQL_PANDAS_MAP = {'smallint': np.int,
                    'nvarchar': np.str,
                    'text': np.str}
 
-DATE_TYPES = ['date', 'timestamp', 'timestamptz', 'timestamp without time zone']
+DATE_TYPES = ['date', 'timestamp', 'timestamptz',
+ 'timestamp without time zone']
 
 
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
                job_name=None, api_key=None, client=None, credential_id=None,
-               polling_interval=None, archive=False, hidden=True, **kwargs):
+               polling_interval=None, archive=False, hidden=True,
+               dtype=None, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -98,6 +100,10 @@ def read_civis(table, database, columns=None, use_pandas=False,
         If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
+    dtype : str or dict, optional
+        If 'redshift' get column types for pandas from redshift or dict of user
+        specified column types. If None use default
+         :func:`pandas:pandas.read_csv` functionality
     **kwargs : kwargs
         Extra keyword arguments are passed into
         :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
@@ -143,8 +149,20 @@ def read_civis(table, database, columns=None, use_pandas=False,
     if client is None:
         # Instantiate client here in case users provide a (deprecated) api_key
         client = APIClient(api_key=api_key, resources='all')
+    if use_pandas == True:
+        if dtype == 'redshift':
+            table_id = client.get_table_id(table=table, database=database)
+            py_types, date_cols = _redshift_to_py(client, table_id)
+            pd_kwargs = {'parse_dates': date_cols,
+                         'dtype': py_types,
+                         'engine': 'python',
+                         'infer_datetime_format': True}
+            kwargs = kwargs.update(pd_kwargs)
+        elif type(dtype) == dict:
+            kwargs = kwargs.update(pd_kwargs)
+        else: 
+            continue
 
-    table_id = client.get_table_id(table=table, database=database)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
                           job_name=job_name, client=client, 
@@ -157,9 +175,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
 
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
-                   api_key=None, client=None, table_id=None,
-                   credential_id=None, polling_interval=None, 
-                   archive=False, hidden=True, **kwargs):
+                   api_key=None, client=None, credential_id=None,
+                   polling_interval=None, archive=False, 
+                   hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
     Parameters
@@ -255,12 +273,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
-        sortkeys, py_types, date_cols = _redshift_to_py(client, table_id)
-        # Not sure about the best way to handle null fields
-        data = pd.read_csv(url, parse_dates=date_cols,
-                                index_col=sortkeys,
-                                converters=py_types,
-                                engine='python')
+        data = pd.read_csv(url, **kwargs)
     else:
         r = requests.get(url)
         r.raise_for_status()
@@ -775,5 +788,4 @@ def _redshift_to_py(civ_client, tableid):
         date_cols = [name for (name, type_) in redshift_types.items() 
                      if type_ in DATE_TYPES]
 
-        sortkeys = table_meta['sortkeys'].split(',')
-        return sortkeys, py_types, date_cols
+        return py_types, date_cols
