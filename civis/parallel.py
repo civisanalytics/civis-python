@@ -565,8 +565,7 @@ def _setup_remote_backend(remote_backend):
         _joblib_reg_para_backend('civis', backend_factory)
         if _sklearn_reg_para_backend:
             _sklearn_reg_para_backend('civis', backend_factory)
-    else:
-        return remote_backend
+    return remote_backend
 
 
 class _CivisBackendResult:
