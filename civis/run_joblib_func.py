@@ -54,6 +54,7 @@ def worker_func(func_file_id, remote_backend):
         if _sklearn_para_backend:
             with _sklearn_para_backend(_backend):
                 with _joblib_para_backend(_backend):
+                    print(_backend, BACKENDS, flush=True)
                     result = func()
         else:
             with _joblib_para_backend(_backend):
