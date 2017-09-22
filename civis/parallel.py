@@ -798,17 +798,15 @@ class _CivisBackend(ParallelBackendBase):
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
             runner_remote_path = "civis_joblib_worker"
-
-            cmd = (
-                "{setup_cmd} && "
-                "if command -v {runner_remote_path} >/dev/null; "
-                "then exec {runner_remote_path} {func_file_id}; "
-                "else pip install civis=={civis_version} && "
-                "exec {runner_remote_path} {func_file_id}; fi "
-                .format(civis_version=civis.__version__,
-                        runner_remote_path=runner_remote_path,
-                        func_file_id=func_file_id,
-                        setup_cmd=self.setup_cmd))
+            cmd = ("{setup_cmd} && "
+                   "if command -v {runner_remote_path} >/dev/null; "
+                   "then exec {runner_remote_path} {func_file_id}; "
+                   "else pip install civis=={civis_version} && "
+                   "exec {runner_remote_path} {func_file_id}; fi "
+                   .format(civis_version=civis.__version__,
+                           runner_remote_path=runner_remote_path,
+                           func_file_id=func_file_id,
+                           setup_cmd=self.setup_cmd))
 
             # Try to submit the command, with optional retrying for certain
             # error types.
