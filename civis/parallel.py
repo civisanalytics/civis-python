@@ -553,6 +553,10 @@ def _setup_remote_backend(remote_backend, remote_backend_kwargs):
         The name of the backend. If 'civis', then `infer_backend_factory`
         is used to infer the backend and the backend is registed with joblib
         via `register_parallel_backend`.
+    remote_backend_kwargs : dict
+        Keyword arguments needed to instanitate `_CivisBackend`. You can get
+        them from an existing `_CivisBackend` via the `_backend_kwargs`
+        attribute.
 
     Returns
     -------
