@@ -9,7 +9,6 @@ import logging
 import os
 import pickle
 import time
-import json
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
@@ -779,7 +778,10 @@ class _CivisBackend(ParallelBackendBase):
         with TemporaryDirectory() as tempdir:
             temppath = os.path.join(tempdir, "civis_joblib_backend_func")
             with open(temppath, "wb") as tmpfile:
-                cloudpickle.dump(func, tmpfile, pickle.HIGHEST_PROTOCOL)
+                cloudpickle.dump(
+                    (func, self.remote_backend, self._backend_kwargs),
+                    tmpfile,
+                    pickle.HIGHEST_PROTOCOL)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
                     _robust_file_to_civis(tmpfile,
@@ -796,31 +798,24 @@ class _CivisBackend(ParallelBackendBase):
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
             runner_remote_path = "civis_joblib_worker"
-            remote_backend_kwargs = json.dumps(self._backend_kwargs)
+
             cmd = (
-                '{setup_cmd} && '
-                'if command -v {runner_remote_path} >/dev/null; '
-                'then exec {runner_remote_path} {func_file_id} '
-                '{remote_backend} \'{remote_backend_kwargs}\'; '
-                'else pip install civis=={civis_version} && '
-                'exec {runner_remote_path} {func_file_id} {remote_backend} '
-                '\'{remote_backend_kwargs}\'; fi'
+                "{setup_cmd} && "
+                "if command -v {runner_remote_path} >/dev/null; "
+                "then exec {runner_remote_path} {func_file_id}; "
+                "else pip install civis=={civis_version} && "
+                "exec {runner_remote_path} {func_file_id}; fi "
                 .format(civis_version=civis.__version__,
                         runner_remote_path=runner_remote_path,
                         func_file_id=func_file_id,
-                        setup_cmd=self.setup_cmd,
-                        remote_backend=self.remote_backend,
-                        remote_backend_kwargs=remote_backend_kwargs))
+                        setup_cmd=self.setup_cmd))
 
             # Try to submit the command, with optional retrying for certain
             # error types.
             for n_retries in range(1 + self.max_submit_retries):
                 try:
                     if self.using_template:
-                        args = {
-                            'JOBLIB_FUNC_FILE_ID': func_file_id,
-                            'JOBLIB_REMOTE_BACKEND': self.remote_backend,
-                            'JOBLIB_REMOTE_BACKEND_KWARGS': remote_backend_kwargs}
+                        args = {'JOBLIB_FUNC_FILE_ID': func_file_id}
                         future = self.executor.submit(**args)
                         log.debug("Started custom script from template "
                                   "%s with arguments %s",
