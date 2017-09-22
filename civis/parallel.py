@@ -131,10 +131,11 @@ def infer_backend_factory(required_resources=None,
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
-    remote_backend : str, optional
-        The joblib backend to use when executing code within joblib in the
-        container. The default of 'civis' infers a new Civis joblib backend
-        instance.
+    remote_backend : str or object, optional
+        The name of a joblib backend or a joblib backend itself. This parameter
+        is the joblib backend to use when executing code within joblib in the
+        container. The default of 'civis' uses an exact copy of the Civis
+        joblib backend that launched the container.
     **kwargs:
         Additional keyword arguments will be passed directly to
         :func:`~civis.APIClient.scripts.post_containers`, potentially
@@ -275,10 +276,11 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
-    remote_backend : str, optional
-        The joblib backend to use when executing code within joblib in the
-        container. The default of 'civis' infers a new Civis joblib backend
-        instance.
+    remote_backend : str or object, optional
+        The name of a joblib backend or a joblib backend itself. This parameter
+        is the joblib backend to use when executing code within joblib in the
+        container. The default of 'civis' uses an exact copy of the Civis
+        joblib backend that launched the container.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -550,8 +552,8 @@ def _setup_remote_backend(remote_backend):
     Parameters
     ----------
     remote_backend : str or object
-        The name of the backend or a backend itself. If the object is an
-        instance of `_CivisBackend`, it is registered with joblib.
+        The name of a joblib backend or a joblib backend itself. If the object
+        is an instance of `_CivisBackend`, it is registered with joblib.
 
     Returns
     -------
