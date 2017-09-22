@@ -45,10 +45,10 @@ def worker_func(func_file_id):
     # Run the function.
     result = None
     try:
-        func, remote_backend, remote_backend_kwargs = _robust_pickle_download(
+        func, remote_backend = _robust_pickle_download(
             func_file_id, client=client, n_retries=5, delay=0.5)
 
-        _backend = _setup_remote_backend(remote_backend, remote_backend_kwargs)
+        _backend = _setup_remote_backend(remote_backend)
 
         # graceful nested context managers are ~hard across python versions,
         # this just works...
