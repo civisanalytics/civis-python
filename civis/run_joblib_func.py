@@ -20,7 +20,6 @@ import cloudpickle
 from joblib.my_exceptions import TransportableException
 from joblib.format_stack import format_exc
 from joblib import parallel_backend as _joblib_para_backend
-from joblib.parallel import BACKENDS
 
 try:
     from sklearn.externals.joblib import (
@@ -56,11 +55,9 @@ def worker_func(func_file_id):
         if _sklearn_para_backend:
             with _sklearn_para_backend(_backend):
                 with _joblib_para_backend(_backend):
-                    print(_backend, BACKENDS, flush=True)
                     result = func()
         else:
             with _joblib_para_backend(_backend):
-                print(_backend, BACKENDS, flush=True)
                 result = func()
     except Exception:
         print("Error! Attempting to record exception.")
