@@ -791,7 +791,11 @@ class _CivisBackend(ParallelBackendBase):
             temppath = os.path.join(tempdir, "civis_joblib_backend_func")
             with open(temppath, "wb") as tmpfile:
                 cloudpickle.dump(
-                    (func, self), tmpfile, pickle.HIGHEST_PROTOCOL)
+                    (func,
+                     self if self.remote_backend == 'civis'
+                     else self.remote_backend),
+                    tmpfile,
+                    pickle.HIGHEST_PROTOCOL)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
                     _robust_file_to_civis(tmpfile,
