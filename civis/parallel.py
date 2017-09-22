@@ -9,6 +9,7 @@ import logging
 import os
 import pickle
 import time
+import json
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
@@ -544,7 +545,7 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
             return file_id
 
 
-def _setup_remote_backend(remote_backend):
+def _setup_remote_backend(remote_backend, remote_backend_kwargs):
     """Setup the remote backend while in a Civis container.
 
     Parameters
@@ -561,7 +562,8 @@ def _setup_remote_backend(remote_backend):
     """
 
     if remote_backend == 'civis':
-        backend_factory = infer_backend_factory(hidden=False, name='launched again')
+        def backend_factory():
+            return _CivisBackend(**remote_backend_kwargs)
         _joblib_reg_para_backend('civis', backend_factory)
         if _sklearn_reg_para_backend:
             _sklearn_reg_para_backend('civis', backend_factory)
@@ -724,6 +726,13 @@ class _CivisBackend(ParallelBackendBase):
                  client=None,
                  remote_backend='civis',
                  **executor_kwargs):
+        self._backend_kwargs = {
+                'setup_cmd': setup_cmd,
+                'from_template_id': from_template_id,
+                'max_submit_retries': max_submit_retries,
+                'remote_backend': remote_backend}
+        self._backend_kwargs.update(executor_kwargs)
+
         if max_submit_retries < 0:
             raise ValueError(
                 "max_submit_retries cannot be negative (value = %d)" %
@@ -787,18 +796,21 @@ class _CivisBackend(ParallelBackendBase):
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
             runner_remote_path = "civis_joblib_worker"
+            remote_backend_kwargs = json.dumps(self._backend_kwargs)
             cmd = (
-                "{setup_cmd} && "
-                "if command -v {runner_remote_path} >/dev/null; "
-                "then exec {runner_remote_path} {func_file_id} "
-                "{remote_backend}; "
-                "else pip install civis=={civis_version} && "
-                "exec {runner_remote_path} {func_file_id} {remote_backend}; fi"
+                '{setup_cmd} && '
+                'if command -v {runner_remote_path} >/dev/null; '
+                'then exec {runner_remote_path} {func_file_id} '
+                '{remote_backend} \'{remote_backend_kwargs}\'; '
+                'else pip install civis=={civis_version} && '
+                'exec {runner_remote_path} {func_file_id} {remote_backend} '
+                '\'{remote_backend_kwargs}\'; fi'
                 .format(civis_version=civis.__version__,
                         runner_remote_path=runner_remote_path,
                         func_file_id=func_file_id,
                         setup_cmd=self.setup_cmd,
-                        remote_backend=self.remote_backend))
+                        remote_backend=self.remote_backend,
+                        remote_backend_kwargs=remote_backend_kwargs))
 
             # Try to submit the command, with optional retrying for certain
             # error types.
@@ -807,7 +819,8 @@ class _CivisBackend(ParallelBackendBase):
                     if self.using_template:
                         args = {
                             'JOBLIB_FUNC_FILE_ID': func_file_id,
-                            'JOBLIB_REMOTE_BACKEND': self.remote_backend}
+                            'JOBLIB_REMOTE_BACKEND': self.remote_backend,
+                            'JOBLIB_REMOTE_BACKEND_KWARGS': remote_backend_kwargs}
                         future = self.executor.submit(**args)
                         log.debug("Started custom script from template "
                                   "%s with arguments %s",

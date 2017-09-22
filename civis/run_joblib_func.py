@@ -32,7 +32,7 @@ from civis.parallel import (
     _robust_pickle_download, _robust_file_to_civis, _setup_remote_backend)
 
 
-def worker_func(func_file_id, remote_backend):
+def worker_func(func_file_id, remote_backend, remote_backend_kwargs):
     # Have the output File expire in 7 days.
     expires_at = (datetime.now() + timedelta(days=7)).isoformat()
 
@@ -48,7 +48,7 @@ def worker_func(func_file_id, remote_backend):
     try:
         func = _robust_pickle_download(func_file_id, client=client,
                                        n_retries=5, delay=0.5)
-        _backend = _setup_remote_backend(remote_backend)
+        _backend = _setup_remote_backend(remote_backend, remote_backend_kwargs)
         # graceful nested context managers are ~hard across python versions,
         # this just works...
         if _sklearn_para_backend:
@@ -91,12 +91,14 @@ def main():
     if len(sys.argv) > 1:
         func_file_id = sys.argv[1]
         remote_backend = sys.argv[2]
+        remote_backend_kwargs = json.loads(sys.argv[3])
     else:
         # If the file ID to download isn't given as a command-line
         # argument, assume that it's in an environment variable.
         func_file_id = os.environ['JOBLIB_FUNC_FILE_ID']
         remote_backend = os.environ['JOBLIB_REMOTE_BACKEND']
-    worker_func(func_file_id=func_file_id, remote_backend=remote_backend)
+        remote_backend_kwargs = json.loads(os.environ['JOBLIB_REMOTE_BACKEND_KWARGS'])
+    worker_func(func_file_id=func_file_id, remote_backend=remote_backend, remote_backend_kwargs=remote_backend_kwargs)
 
 
 if __name__ == '__main__':
