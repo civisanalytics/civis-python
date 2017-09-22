@@ -866,9 +866,10 @@ class _CivisBackend(ParallelBackendBase):
             state['client'] = None
         if 'executor' in state:
             del state['executor']
+        # the parallel attribute gets added by the parent class when the
+        # backend is in use.
         if 'parallel' in state:
             state['parallel'] = None
-        print(state)
         return state
 
     def __setstate__(self, state):
