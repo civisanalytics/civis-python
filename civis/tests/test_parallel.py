@@ -201,6 +201,7 @@ def test_infer(mock_make_factory, mock_job):
         max_submit_retries=0,
         max_job_retries=0,
         hidden=True,
+        remote_backend='civis',
         **expected)
 
 
@@ -310,7 +311,8 @@ def test_infer_from_custom_job(mock_make_factory):
                        'setup_cmd': None,
                        'max_submit_retries': mock.ANY,
                        'max_job_retries': mock.ANY,
-                       'hidden': True}
+                       'hidden': True,
+                       'remote_backend': 'civis'}
     for key in civis.parallel.KEYS_TO_INFER:
         expected_kwargs[key] = mock_script[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
