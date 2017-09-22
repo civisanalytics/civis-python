@@ -24,8 +24,9 @@ from joblib import parallel_backend as _joblib_para_backend
 try:
     from sklearn.externals.joblib import (
         parallel_backend as _sklearn_para_backend)
+    NO_SKLEARN = False
 except ImportError:
-    _sklearn_para_backend = None
+    NO_SKLEARN = True
 
 from civis.parallel import (
     _robust_pickle_download, _robust_file_to_civis, _setup_remote_backend)
@@ -52,13 +53,13 @@ def worker_func(func_file_id):
 
         # graceful nested context managers are ~hard across python versions,
         # this just works...
-        if _sklearn_para_backend:
+        if NO_SKLEARN:
+            with _joblib_para_backend(_backend):
+                result = func()
+        else:
             with _sklearn_para_backend(_backend):
                 with _joblib_para_backend(_backend):
                     result = func()
-        else:
-            with _joblib_para_backend(_backend):
-                result = func()
     except Exception:
         print("Error! Attempting to record exception.")
         # Wrap the exception in joblib's TransportableException

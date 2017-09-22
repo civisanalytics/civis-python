@@ -1,4 +1,5 @@
 from math import sqrt
+import io
 import pickle
 from civis.compat import mock
 
@@ -439,3 +440,66 @@ def test_result_eventual_failure(mock_civis):
     with pytest.raises(requests.ConnectionError):
         res.get()
     assert callback.call_count == 0
+
+
+@mock.patch.object(civis.parallel, 'civis')
+@mock.patch.object(civis.parallel, '_sklearn_reg_para_backend')
+@mock.patch.object(civis.parallel, '_joblib_reg_para_backend')
+def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
+    # Test that the civis backend is properly registered w/ joblib and sklearn.
+    for no_sk in [True, False]:
+        with mock.patch.object(civis.parallel, 'NO_SKLEARN', no_sk):
+            backend = civis.parallel._CivisBackend()
+            backend_name = civis.parallel._setup_remote_backend(backend)
+            assert backend_name == 'civis'
+            assert mock_jl.call_count == 1
+            if no_sk:
+                assert mock_sk.call_count == 0
+            else:
+                assert mock_sk.call_count == 1
+            mock_jl.reset_mock()
+            mock_sk.reset_mock()
+
+
+def test_civis_backend_from_existing():
+    # Test to make sure that making a new backend from an existing one makes
+    # an exact copy.
+    backend = civis.parallel._CivisBackend(
+        setup_cmd='blah',
+        from_template_id=-1,
+        max_submit_retries=10,
+        client='ha',
+        remote_backend='cool',
+        hidden=False)
+
+    new_backend = civis.parallel._CivisBackend.from_existing(backend)
+
+    assert new_backend.setup_cmd == 'blah'
+    assert new_backend.from_template_id == -1
+    assert new_backend.max_submit_retries == 10
+    assert new_backend.client == 'ha'
+    assert new_backend.remote_backend == 'cool'
+    assert new_backend.executor_kwargs == {'hidden': False}
+
+
+@mock.patch.object(civis.parallel, 'civis')
+def test_civis_backend_pickles(mock_civis):
+    # Test to make sure the backend will pickle.
+    backend = civis.parallel._CivisBackend(
+        setup_cmd='blah',
+        from_template_id=-1,
+        max_submit_retries=10,
+        client='ha',
+        remote_backend='cool',
+        hidden=False)
+
+    with parallel_backend(backend):
+        Parallel(n_jobs=-1)([])
+
+    buff = io.BytesIO()
+    pickle.dump(backend, buff)
+    buff.seek(0)
+    new_backend = pickle.load(buff)
+
+    with parallel_backend(new_backend):
+        Parallel(n_jobs=-1)([])

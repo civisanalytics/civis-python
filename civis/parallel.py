@@ -25,8 +25,9 @@ from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 try:
     from sklearn.externals.joblib import (
         register_parallel_backend as _sklearn_reg_para_backend)
+    NO_SKLEARN = False
 except ImportError:
-    _sklearn_reg_para_backend = None
+    NO_SKLEARN = True
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -564,7 +565,7 @@ def _setup_remote_backend(remote_backend):
         def backend_factory():
             return _CivisBackend.from_existing(remote_backend)
         _joblib_reg_para_backend('civis', backend_factory)
-        if _sklearn_reg_para_backend:
+        if not NO_SKLEARN:
             _sklearn_reg_para_backend('civis', backend_factory)
         return 'civis'
     else:
