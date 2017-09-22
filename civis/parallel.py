@@ -731,6 +731,7 @@ class _CivisBackend(ParallelBackendBase):
         self.client = client
         self.remote_backend = remote_backend
         self.executor_kwargs = executor_kwargs
+        self._init_civis_backend()
 
     @classmethod
     def from_existing(cls, klass):
@@ -865,6 +866,9 @@ class _CivisBackend(ParallelBackendBase):
             state['client'] = None
         if 'executor' in state:
             del state['executor']
+        if 'parallel' in state:
+            state['parallel'] = None
+        print(state)
         return state
 
     def __setstate__(self, state):
