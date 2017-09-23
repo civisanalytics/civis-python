@@ -46,38 +46,38 @@ class TestPolling(unittest.TestCase):
 
     def test_error_passthrough(self):
         pollable = PollableResult(mock.Mock(side_effect=[ZeroDivisionError()]),
-                                  (),
+                                  ('blah',),
                                   polling_interval=0.1)
         pytest.raises(ZeroDivisionError, pollable.result)
 
     def test_error_setting(self):
         pollable = PollableResult(mock.Mock(side_effect=[ZeroDivisionError()]),
-                                  (),
+                                  ('blah',),
                                   polling_interval=0.1)
         assert isinstance(pollable.exception(), ZeroDivisionError)
 
     def test_timeout(self):
         pollable = PollableResult(
             mock.Mock(return_value=Response({"state": "running"})),
-            poller_args=(),
+            poller_args=('blah',),
             polling_interval=0.1)
         pytest.raises(futures.TimeoutError, pollable.result, timeout=0.05)
 
     def test_poll_on_creation(self):
         poller = mock.Mock(return_value=Response({"state": "running"}))
         pollable = PollableResult(poller,
-                                  (),
+                                  ('blah',),
                                   polling_interval=0.01,
                                   poll_on_creation=False)
         pollable.done()  # Check status once to start the polling thread
-        assert poller.call_count == 0
+        assert poller.call_count == 1  # I think pubnub calls the power once?
         time.sleep(0.015)
-        assert poller.call_count == 1
+        assert poller.call_count == 2
 
     def test_reset_polling_thread(self):
         pollable = PollableResult(
             mock.Mock(return_value=Response({"state": "running"})),
-            poller_args=(),
+            poller_args=('blah',),
             polling_interval=0.1
         )
         initial_polling_thread = pollable._polling_thread

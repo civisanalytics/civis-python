@@ -13,7 +13,7 @@ from civis.futures import (ContainerFuture,
                            CustomScriptExecutor,
                            _create_docker_command)
 
-from civis.futures import (CivisFuture,
+from civis.polling import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
 from civis.tests import TEST_SPEC
