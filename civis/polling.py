@@ -362,9 +362,4 @@ class CivisFuture(futures.Future):
 
 
 # keep this for backwards compatibility
-class PollableResult(CivisFuture):
-    def __init__(self, *args, **kwargs):
-        if ('polling_interval' not in kwargs or
-                kwargs['polling_interval'] is None):
-            kwargs['polling_interval'] = _DEFAULT_POLLING_INTERVAL
-        super().__init__(*args, **kwargs)
+PollableResult = CivisFuture
