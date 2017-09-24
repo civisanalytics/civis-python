@@ -412,7 +412,6 @@ class _CivisExecutor(Executor):
             self._worker_thread.start()
 
     def _wakeup_worker(self):
-        """Submit a future to the worker thread."""
         with self._submit_condition:
             self._submit_condition.notify()
 
@@ -477,8 +476,8 @@ class _CivisExecutor(Executor):
                 poll_on_creation=False)
 
             self._futures.append(future)
-            self._submitted.append(future)
             if self.n_jobs > 0:
+                self._submitted.append(future)
                 self._start_worker_if_needed()
                 self._wakeup_worker()
             else:
@@ -508,14 +507,16 @@ class _CivisExecutor(Executor):
     def cancel_all(self):
         """Send cancel requests for all running Civis jobs."""
 
-        # clear the queue of submitted things
-        # should cause the worker thread to die...eventually
-        self._submitted.clear()
-        self._wakeup_worker()
+        if self.n_jobs > 0:
+            # clear the queue of submitted things
+            # should cause the worker thread to die...eventually
+            self._submitted.clear()
+            self._wakeup_worker()
 
-        # make sure the worker thread is really dead
-        if self._worker_thread is not None and self._worker_thread.is_alive():
-            self._worker_thread.join()
+            # make sure the worker thread is really dead
+            if (self._worker_thread is not None and
+                    self._worker_thread.is_alive():
+                self._worker_thread.join()
 
         # now cancel
         for f in self._futures:
