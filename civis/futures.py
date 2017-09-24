@@ -370,6 +370,10 @@ class _CivisExecutor(Executor):
         self._worker_thread = None
 
     def _worker(self):
+        """worker thread to control the number of running jobs"""
+
+        # this call back makes each future remove itself from the
+        # queue and wakeup the worker
         def _make_callback(_deque, _lock):
             def _callback(fut):
                 with _lock:
@@ -380,10 +384,13 @@ class _CivisExecutor(Executor):
                     _lock.notify()
             return _callback
 
+        # the worker will exit when the submitted queue is empty
+        # if another container is made afterwards, a new worker
+        # thread will be created
         done = False
         while not done:
             with self._submit_condition:
-                self._submit_condition.wait()
+                self._submit_condition.wait(timeout=5.0)
 
                 for _ in range(self.n_jobs - len(self._running)):
                     try:
@@ -404,10 +411,9 @@ class _CivisExecutor(Executor):
             self._worker_thread = threading.Thread(target=self._worker)
             self._worker_thread.start()
 
-    def _submit_future_to_worker(self, fut):
+    def _wakeup_worker(self):
         """Submit a future to the worker thread."""
         with self._submit_condition:
-            self._submitted.append(fut)
             self._submit_condition.notify()
 
     def submit(self, fn, *args, **kwargs):
@@ -471,9 +477,10 @@ class _CivisExecutor(Executor):
                 poll_on_creation=False)
 
             self._futures.append(future)
+            self._submitted.append(future)
             if self.n_jobs > 0:
                 self._start_worker_if_needed()
-                self._submit_future_to_worker(future)
+                self._wakeup_worker()
             else:
                 future._start_container()
 
@@ -503,9 +510,8 @@ class _CivisExecutor(Executor):
 
         # clear the queue of submitted things
         # should cause the worker thread to die...eventually
-        with self._submit_condition:
-            self._submitted.clear()
-            self._submit_condition.notify()
+        self._submitted.clear()
+        self._wakeup_worker()
 
         # make sure the worker thread is really dead
         if self._worker_thread is not None and self._worker_thread.is_alive():
