@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
 
+### Fixed
+- The joblib backend now respects the ``n_jobs`` parameter (#146).
 
 ## 1.6.2 - 2017-09-08
 ### Changed
