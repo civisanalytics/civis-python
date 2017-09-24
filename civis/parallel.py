@@ -564,6 +564,18 @@ def _setup_remote_backend(remote_backend):
     if isinstance(remote_backend, _CivisBackend):
         def backend_factory():
             return _CivisBackend.from_existing(remote_backend)
+        # joblib and global state: fun!
+        #
+        # joblib internally maintains a global list of backends and
+        # specifically tracks which backend is currently in use. Further,
+        # sklearn ships its own COPY of the entire joblib package at
+        # `sklearn.externals.joblib`. Thus there are TWO copies of joblib
+        # in use (the joblib package and the one in sklearn) and thus different
+        # global states that need to be handeled. Whew.
+        #
+        # Therefore, we have to register our backend with both copies in order
+        # to allow our containers to run `Parallel` objects from both copies
+        # of joblib. Yay!
         _joblib_reg_para_backend('civis', backend_factory)
         if not NO_SKLEARN:
             _sklearn_reg_para_backend('civis', backend_factory)

@@ -57,6 +57,13 @@ def worker_func(func_file_id):
             with _joblib_para_backend(_backend):
                 result = func()
         else:
+            # we are using the nested context managers to set the joblib
+            # backend to the requested one in both copes of joblib, the
+            # package and the copy shipped by sklearn at
+            # `sklearn.externals.joblib`. joblib maintains the current
+            # backend as global state in the package and thus there are
+            # two backends to set when you have two copies of the package
+            # in play.
             with _sklearn_para_backend(_backend):
                 with _joblib_para_backend(_backend):
                     result = func()
