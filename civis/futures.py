@@ -10,6 +10,8 @@ import logging
 import time
 import threading
 from collections import deque
+import atexit
+import weakref
 
 import six
 
@@ -364,14 +366,49 @@ class _CivisExecutor(Executor):
 
         # A list of ContainerFuture objects for submitted jobs.
         self._futures = []
+        if self.n_jobs > 0:
+            self._init_worker()
+
+    def __del__(self):
+        """Make sure to kill the daemon if we are being GC'ed"""
+        if self.n_jobs > 0:
+            self._submitted.append(None)
+            self._wakeup_worker()
+
+    def _init_worker(self):
+        """start the worker and attach an exit handler"""
         self._submitted = deque()
-        self._running = deque()
         self._submit_condition = threading.Condition()
-        self._worker_thread = None
+        self._worker_thread = threading.Thread(target=self._worker)
+        self._worker_thread.daemon = True
+        self._worker_thread.start()
+
+        # kill the daemon when exiting
+        def _make_kill_me(submitted_wr, worker_wr, submit_condition_wr):
+            def _kill_me():
+                submitted = submitted_wr()
+                if submitted is not None:
+                    submitted.append(None)
+                submit_condition = submit_condition_wr()
+                if submit_condition is not None:
+                    with submit_condition:
+                        submit_condition.notify()
+                worker = worker_wr()
+                if worker is not None and worker.is_alive():
+                    worker.join()
+            return _kill_me
+
+        atexit.register(_make_kill_me(
+            weakref.ref(self._submitted),
+            weakref.ref(self._worker_thread),
+            weakref.ref(self._submit_condition)))
+
+    def _wakeup_worker(self):
+        with self._submit_condition:
+            self._submit_condition.notify()
 
     def _worker(self):
         """worker thread to control the number of running jobs"""
-
         # this call back makes each future remove itself from the
         # queue and wakeup the worker
         def _make_callback(_deque, _lock):
@@ -384,36 +421,31 @@ class _CivisExecutor(Executor):
                     _lock.notify()
             return _callback
 
-        # the worker will exit when the submitted queue is empty
-        # if another container is made afterwards, a new worker
-        # thread will be created
-        done = False
-        while not done:
+        _running = deque()
+
+        # the worker will exit when it gets None
+        while True:
             with self._submit_condition:
-                self._submit_condition.wait(timeout=5.0)
+                self._submit_condition.wait(timeout=15.0)
+                try:
+                    # test once for None
+                    fut = self._submitted.popleft()
+                    if fut is None:
+                        return
+                    else:
+                        self._submitted.appendleft(fut)
 
-                for _ in range(self.n_jobs - len(self._running)):
-                    try:
+                    while len(_running) < self.n_jobs:
                         fut = self._submitted.popleft()
+                        if fut is None:
+                            return
                         fut._start_container()
-                        self._running.append(fut)
+                        _running.append(fut)
                         fut.add_done_callback(_make_callback(
-                            self._running,
+                            _running,
                             self._submit_condition))
-                    except IndexError:
-                        # nothing left so return
-                        done = True
-                        break
-
-    def _start_worker_if_needed(self):
-        """Start the worker thread if needed."""
-        if self._worker_thread is None or not self._worker_thread.is_alive():
-            self._worker_thread = threading.Thread(target=self._worker)
-            self._worker_thread.start()
-
-    def _wakeup_worker(self):
-        with self._submit_condition:
-            self._submit_condition.notify()
+                except IndexError:
+                    pass
 
     def submit(self, fn, *args, **kwargs):
         """Submits a callable to be executed with the given arguments.
@@ -447,8 +479,8 @@ class _CivisExecutor(Executor):
         arguments = kwargs.pop('arguments', None)
         with self._shutdown_lock:
             if self._shutdown_thread:
-                raise RuntimeError('cannot schedule new '
-                                   'futures after shutdown')
+                raise RuntimeError(
+                'cannot schedule new futures after shutdown')
 
             if isinstance(fn, six.string_types):
                 cmd = fn
@@ -478,7 +510,6 @@ class _CivisExecutor(Executor):
             self._futures.append(future)
             if self.n_jobs > 0:
                 self._submitted.append(future)
-                self._start_worker_if_needed()
                 self._wakeup_worker()
             else:
                 future._start_container()
@@ -501,24 +532,22 @@ class _CivisExecutor(Executor):
         with self._shutdown_lock:
             self._shutdown_thread = True
 
+        # tell the worker to stop
+        if self.n_jobs > 0:
+            self._submitted.append(None)
+            self._wakeup_worker()
+
         if wait:
             futures.wait(self._futures)
 
     def cancel_all(self):
         """Send cancel requests for all running Civis jobs."""
-
+        # clear the queue of submitted things
         if self.n_jobs > 0:
-            # clear the queue of submitted things
-            # should cause the worker thread to die...eventually
             self._submitted.clear()
             self._wakeup_worker()
 
-            # make sure the worker thread is really dead
-            if (self._worker_thread is not None and
-                    self._worker_thread.is_alive()):
-                self._worker_thread.join()
-
-        # now cancel
+        # and now cancel
         for f in self._futures:
             # The ContainerFuture is smart enough to only cancel the run
             # if the run is still in progress.
