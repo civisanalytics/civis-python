@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
+- Refactored ``civis.polling.PollableResult``, ``civis.base.CivisAsyncResultBase``,
+  and ``civis.futures.CivisFuture`` into a single class ``civis.futures.CivisFuture``. (#148)
+- Added an alias pointing ``civis.polling.PollableResult`` to ``CivisFuture``. (#148)
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
@@ -14,6 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
 
+### Removed
+- ``civis.base.CivisAsyncResultBase`` (#148).
 
 ## 1.6.2 - 2017-09-08
 ### Changed
