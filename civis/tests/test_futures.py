@@ -240,16 +240,18 @@ class CivisFutureTests(CivisVCRTestCase):
         clear_lru_cache()
 
 
-def _check_executor(from_template_id=None):
+def _check_executor(from_template_id=None, n_jobs=-1):
     job_id, run_id = 42, 43
     c = _setup_client_mock(job_id, run_id, n_failures=0)
     mock_run = c.scripts.post_containers_runs()
     if from_template_id:
         bpe = CustomScriptExecutor(from_template_id=from_template_id,
-                                   client=c, polling_interval=0.01)
+                                   client=c, polling_interval=0.01,
+                                   n_jobs=n_jobs)
         future = bpe.submit(my_param='spam')
     else:
-        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01)
+        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01,
+                                      n_jobs=n_jobs)
         future = bpe.submit("foo")
 
     # Mock and test running, future.job_id, and done()
@@ -280,14 +282,16 @@ def _check_executor(from_template_id=None):
     return c
 
 
-def test_container_scripts():
-    c = _check_executor()
+@pytest.mark.parametrize('n_jobs', [-1, 1, 5])
+def test_container_scripts(n_jobs):
+    c = _check_executor(n_jobs=n_jobs)
     assert c.scripts.post_custom.call_count == 0
     assert c.scripts.post_containers.call_count > 0
 
 
-def test_custom_scripts():
-    c = _check_executor(133)
+@pytest.mark.parametrize('n_jobs', [-1, 1, 5])
+def test_custom_scripts(n_jobs):
+    c = _check_executor(from_template_id=133, n_jobs=n_jobs)
     assert c.scripts.post_custom.call_count > 0
     assert c.scripts.post_containers.call_count == 0
 
