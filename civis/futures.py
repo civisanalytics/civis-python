@@ -461,7 +461,7 @@ class _CivisExecutor(Executor):
                         _running.append(fut)
                         fut.add_done_callback(_make_callback(
                             weakref.ref(_running),
-                            wekref.ref(self._submit_condition)))
+                            weakref.ref(self._submit_condition)))
                 except IndexError:
                     pass
 
