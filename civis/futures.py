@@ -498,7 +498,7 @@ class _CivisExecutor(Executor):
         with self._shutdown_lock:
             if self._shutdown_thread:
                 raise RuntimeError(
-                'cannot schedule new futures after shutdown')
+                    'cannot schedule new futures after shutdown')
 
             if isinstance(fn, six.string_types):
                 cmd = fn
