@@ -105,6 +105,8 @@ class CivisFuture(futures.Future):
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
     client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
     poll_on_creation : bool, optional
         If ``True`` (the default), it will poll upon calling ``result()`` the
         first time. If ``False``, it will wait the number of seconds specified
