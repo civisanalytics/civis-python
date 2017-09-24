@@ -371,6 +371,8 @@ class _CivisExecutor(Executor):
 
     def __del__(self):
         """Make sure to kill the daemon if we are being GC'ed"""
+        # it is not 100% clear when this will get called, if ever,
+        # but we have the exit handler to help out too
         if self.n_jobs > 0:
             self._submitted.append(None)
             self._wakeup_worker()
@@ -384,6 +386,9 @@ class _CivisExecutor(Executor):
         self._worker_thread.start()
 
         # kill the daemon when exiting
+        # if daemonic threadsa are not killed, they can throw weird errors
+        # when python is shutting down
+        # using werak references to let stuff get GC'ed and fail nicely
         def _make_kill_me(submitted_wr, worker_wr, submit_condition_wr):
             def _kill_me():
                 submitted = submitted_wr()
@@ -404,6 +409,7 @@ class _CivisExecutor(Executor):
             weakref.ref(self._submit_condition)))
 
     def _wakeup_worker(self):
+        """Tell the worker to work if it is sleeping."""
         with self._submit_condition:
             self._submit_condition.notify()
 
@@ -411,14 +417,23 @@ class _CivisExecutor(Executor):
         """worker thread to control the number of running jobs"""
         # this call back makes each future remove itself from the
         # queue and wakeup the worker
-        def _make_callback(_deque, _lock):
+        # uses weakref's to make sure if things are GC'ed we don't throw
+        # an error
+        def _make_callback(_deque_wr, _lock_wr):
             def _callback(fut):
-                with _lock:
+                # remove self from running queue
+                _deque = _deque_wr()
+                if _deque is not None:
                     try:
                         _deque.remove(fut)
                     except ValueError:
                         pass
-                    _lock.notify()
+
+                # tell the worker to work!
+                _lock = _lock_wr()
+                if _lock is not None:
+                    with _lock:
+                        _lock.notify()
             return _callback
 
         _running = deque()
@@ -426,6 +441,7 @@ class _CivisExecutor(Executor):
         # the worker will exit when it gets None
         while True:
             with self._submit_condition:
+                # use a timeout here as a failsafe
                 self._submit_condition.wait(timeout=15.0)
                 try:
                     # test once for None
@@ -433,8 +449,10 @@ class _CivisExecutor(Executor):
                     if fut is None:
                         return
                     else:
+                        # put it back if not None
                         self._submitted.appendleft(fut)
 
+                    # now try and run stuff
                     while len(_running) < self.n_jobs:
                         fut = self._submitted.popleft()
                         if fut is None:
@@ -442,8 +460,8 @@ class _CivisExecutor(Executor):
                         fut._start_container()
                         _running.append(fut)
                         fut.add_done_callback(_make_callback(
-                            _running,
-                            self._submit_condition))
+                            weakref.ref(_running),
+                            wekref.ref(self._submit_condition)))
                 except IndexError:
                     pass
 
