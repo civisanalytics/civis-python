@@ -221,40 +221,39 @@ class ContainerFuture(CivisFuture):
                  poll_on_creation=True):
         Future.__init__(self)
         self.client = client or APIClient(resources='all')
-        self._job_id = int(job_id)
-        self._run_id = run_id
+        self.poller_args = [int(job_id), run_id]
         self._polling_interval = polling_interval
         self._poll_on_creation = poll_on_creation
         self._max_n_retries = max_n_retries
 
         if run_id is not None:
-            self._run_id = int(self._run_id)
+            self.poller_args[1] = int(run_id)
             self._init_polling_pubnubbing()
 
     def _init_polling_pubnubbing(self):
         super().__init__(self.client.scripts.get_containers_runs,
-                         [self._job_id, self._run_id],
+                         self.poller_args,
                          polling_interval=self._polling_interval,
                          client=self.client,
                          poll_on_creation=self._poll_on_creation)
 
     def _start_container(self):
         if not self.cancelled() and not self.done():
-            run = self.client.jobs.post_runs(self._job_id)
-            self._run_id = int(run.id)
+            run = self.client.jobs.post_runs(self.job_id)
+            self.poller_args[1] = int(run.id)
             self._init_polling_pubnubbing()
 
     @property
     def job_id(self):
-        return self._job_id
+        return self.poller_args[0]
 
     @property
     def run_id(self):
-        return self._run_id
+        return self.poller_args[1]
 
     def _check_result(self):
         with self._condition:
-            if self._run_id is None:
+            if self.run_id is None:
                 if hasattr(self, '_result') and self._result is not None:
                     return self._result
                 else:
@@ -270,10 +269,9 @@ class ContainerFuture(CivisFuture):
                 # Start a new run of the script and update
                 # the run ID used by the poller.
                 self.cleanup()
-                self._last_result = self.client.jobs.post_runs(self._job_id)
-                orig_run_id = self._run_id
+                self._last_result = self.client.jobs.post_runs(self.job_id)
+                orig_run_id = self.run_id
                 self.poller_args[1] = self._last_result.id
-                self._run_id = self.poller_args[1]
                 self._max_n_retries -= 1
                 self._last_polled = time.time()
 
@@ -292,8 +290,8 @@ class ContainerFuture(CivisFuture):
                     self._pubnub = self._subscribe(*self._pubnub_config())
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',
-                          self._job_id, orig_run_id,
-                          self._run_id, self._max_n_retries)
+                          self.job_id, orig_run_id,
+                          self.run_id, self._max_n_retries)
             else:
                 super()._set_api_exception(exc=exc, result=result)
 
@@ -311,15 +309,15 @@ class ContainerFuture(CivisFuture):
             elif not self.done():
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
-                if self._run_id is None:
+                if self.run_id is None:
                     self._result = Response({'state': CANCELLED[0]})
                 else:
                     self._result = self.client.scripts.post_cancel(
-                        self._job_id)
+                        self.job_id)
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
-                if self._run_id is not None:
+                if self.run_id is not None:
                     self.cleanup()
                 self._invoke_callbacks()
                 return self.cancelled()
