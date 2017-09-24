@@ -14,7 +14,7 @@ from collections import deque
 import six
 
 from civis import APIClient
-from civis.base import DONE, NOT_FINISHED, CANCELLED
+from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError
 from civis.polling import PollableResult, _ResultPollingThread
 from civis.response import Response
 
@@ -309,11 +309,11 @@ class ContainerFuture(CivisFuture):
             elif not self.done():
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
-                if self.run_id is None:
-                    self._result = Response({'state': CANCELLED[0]})
-                else:
+                try:
                     self._result = self.client.scripts.post_cancel(
                         self.job_id)
+                except CivisAPIError:
+                    self._result = Response({'state': CANCELLED[0]})
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
@@ -515,7 +515,7 @@ class _CivisExecutor(Executor):
 
             # make sure the worker thread is really dead
             if (self._worker_thread is not None and
-                    self._worker_thread.is_alive():
+                    self._worker_thread.is_alive()):
                 self._worker_thread.join()
 
         # now cancel
