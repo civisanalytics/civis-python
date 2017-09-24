@@ -39,7 +39,8 @@ class State:
 
 @mock.patch(api_import_str, return_value=civis_api_spec_base)
 @mock.patch.object(CivisFuture, '_subscribe')
-def create_civis_future(sub_mock, api_mock, state, exception=None, result=None):
+def create_civis_future(
+        sub_mock, api_mock, state, exception=None, result=None):
     f = CivisFuture(State, (state, ), polling_interval=0.001)
     f._exception = exception
     f._result = result
