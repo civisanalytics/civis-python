@@ -57,7 +57,6 @@ def main():
             'pubnub>=4.0,<=4.99',
             'cloudpickle>=0.2.0,<=0.3.99',
             'backports.weakref==1.0rc1 ; python_version < "3.4"',
-            'backports==1.0'
         ],
         extras_require={
             ':python_version=="2.7"': [

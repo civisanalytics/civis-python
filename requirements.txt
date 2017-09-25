@@ -12,4 +12,3 @@ joblib~=0.11
 pubnub~=4
 cloudpickle~=0.2
 backports.weakref==1.0rc1 ; python_version < '3.4'
-backports==1.0
