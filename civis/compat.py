@@ -90,7 +90,7 @@ else:
 
     # Backport weakref.finalize since only in python 3.4 or greater
     # straight copy paste from the stdlib
-    class finalize:
+    class _finalize:
         """Class for finalization of weakrefable objects
 
         finalize(obj, func, *args, **kwargs) returns a callable finalizer
@@ -125,7 +125,7 @@ else:
                 # of a thread race, but that is harmless
                 import atexit
                 atexit.register(self._exitfunc)
-                finalize._registered_with_atexit = True
+                _finalize._registered_with_atexit = True
             info = self._Info()
             info.weakref = weakref.ref(obj, self)
             info.func = func
@@ -134,7 +134,7 @@ else:
             info.atexit = True
             info.index = next(self._index_iter)
             self._registry[self] = info
-            finalize._dirty = True
+            _finalize._dirty = True
 
         def __call__(self, _=None):
             """If alive then mark as dead and return func(*args, **kwargs);
@@ -207,9 +207,9 @@ else:
                         gc.disable()
                     pending = None
                     while True:
-                        if pending is None or finalize._dirty:
+                        if pending is None or _finalize._dirty:
                             pending = cls._select_for_exit()
-                            finalize._dirty = False
+                            _finalize._dirty = False
                         if not pending:
                             break
                         f = pending.pop()
@@ -224,9 +224,8 @@ else:
                         assert f not in cls._registry
             finally:
                 # prevent any more finalizers from executing during shutdown
-                finalize._shutdown = True
+                _finalize._shutdown = True
                 if reenable_gc:
                     gc.enable()
 
-    weakref_finalize = finalize
-    del finalize
+    weakref_finalize = _finalize
