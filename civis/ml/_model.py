@@ -1121,7 +1121,7 @@ class ModelPipeline:
             predict_args['CPU'] = cpu
         if memory:
             predict_args['MEMORY'] = memory
-        if disk:
+        if disk_space:
             predict_args['DISK_SPACE'] = disk_space
 
         name = self.model_name + ' Predict' if self.model_name else None
