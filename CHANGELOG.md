@@ -15,7 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   uses this library (#141).
 
 ### Fixed
-- The joblib backend now respects the ``n_jobs`` parameter (#146).
+- The joblib backend now respects the ``n_jobs`` parameter (#147).
+- Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
+  and ``civis.parallel.infer_backend_factory`` in order to set the joblib
+  backend in the container for nested calls to ``joblib.Parallel`` (#146).
 
 ## 1.6.2 - 2017-09-08
 ### Changed
