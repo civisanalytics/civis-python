@@ -19,8 +19,17 @@ import civis
 import cloudpickle
 from joblib.my_exceptions import TransportableException
 from joblib.format_stack import format_exc
+from joblib import parallel_backend as _joblib_para_backend
 
-from civis.parallel import _robust_pickle_download, _robust_file_to_civis
+try:
+    from sklearn.externals.joblib import (
+        parallel_backend as _sklearn_para_backend)
+    NO_SKLEARN = False
+except ImportError:
+    NO_SKLEARN = True
+
+from civis.parallel import (
+    _robust_pickle_download, _robust_file_to_civis, _setup_remote_backend)
 
 
 def worker_func(func_file_id):
@@ -37,9 +46,27 @@ def worker_func(func_file_id):
     # Run the function.
     result = None
     try:
-        func = _robust_pickle_download(func_file_id, client=client,
-                                       n_retries=5, delay=0.5)
-        result = func()
+        func, remote_backend = _robust_pickle_download(
+            func_file_id, client=client, n_retries=5, delay=0.5)
+
+        _backend = _setup_remote_backend(remote_backend)
+
+        # graceful nested context managers are ~hard across python versions,
+        # this just works...
+        if NO_SKLEARN:
+            with _joblib_para_backend(_backend):
+                result = func()
+        else:
+            # we are using the nested context managers to set the joblib
+            # backend to the requested one in both copes of joblib, the
+            # package and the copy shipped by sklearn at
+            # `sklearn.externals.joblib`. joblib maintains the current
+            # backend as global state in the package and thus there are
+            # two backends to set when you have two copies of the package
+            # in play.
+            with _sklearn_para_backend(_backend):
+                with _joblib_para_backend(_backend):
+                    result = func()
     except Exception:
         print("Error! Attempting to record exception.")
         # Wrap the exception in joblib's TransportableException
