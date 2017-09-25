@@ -90,7 +90,7 @@ else:
 
     # Backport weakref.finalize since only in python 3.4 or greater
     # straight copy paste from the stdlib
-    class finalize(object):
+    class finalize:
         """Class for finalization of weakrefable objects
 
         finalize(obj, func, *args, **kwargs) returns a callable finalizer
@@ -115,7 +115,7 @@ else:
         _dirty = False
         _registered_with_atexit = False
 
-        class _Info(object):
+        class _Info:
             __slots__ = (
                 "weakref", "func", "args", "kwargs", "atexit", "index")
 
