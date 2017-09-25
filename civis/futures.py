@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from abc import ABCMeta, abstractmethod
 from builtins import super
-from concurrent.futures import Executor, Future
+from concurrent.futures import Executor, Future, ThreadPoolExecutor
 from concurrent import futures
 import copy
 import datetime
@@ -10,8 +10,8 @@ import logging
 import time
 import threading
 from collections import deque
-import atexit
 import weakref
+import atexit
 
 import six
 
@@ -26,6 +26,16 @@ from pubnub.enums import PNStatusCategory
 from pubnub.callbacks import SubscribeCallback
 
 log = logging.getLogger(__name__)
+
+_SHUTDOWN_WORKER = False
+
+
+def _worker_exit():
+    global _SHUTDOWN_WORKER
+    _SHUTDOWN_WORKER = True
+
+
+atexit.register(_worker_exit)
 
 # Pubnub connections can recover missed messages upon reconnecting for up to 10
 # minutes from the disconnect. Polling on a 9.5 minute interval is used as a
@@ -369,44 +379,13 @@ class _CivisExecutor(Executor):
         if self.n_jobs > 0:
             self._init_worker()
 
-    def __del__(self):
-        """Make sure to kill the daemon if we are being GC'ed"""
-        # it is not 100% clear when this will get called, if ever,
-        # but we have the exit handler to help out too
-        if self.n_jobs > 0:
-            self._submitted.append(None)
-            self._wakeup_worker()
-
     def _init_worker(self):
         """start the worker and attach an exit handler"""
         self._submitted = deque()
         self._submit_condition = threading.Condition()
-        self._worker_thread = threading.Thread(target=self._worker)
-        self._worker_thread.daemon = True
-        self._worker_thread.start()
-
-        # kill the daemon when exiting
-        # if daemonic threadsa are not killed, they can throw weird errors
-        # when python is shutting down
-        # using werak references to let stuff get GC'ed and fail nicely
-        def _make_kill_me(submitted_wr, worker_wr, submit_condition_wr):
-            def _kill_me():
-                submitted = submitted_wr()
-                if submitted is not None:
-                    submitted.append(None)
-                submit_condition = submit_condition_wr()
-                if submit_condition is not None:
-                    with submit_condition:
-                        submit_condition.notify()
-                worker = worker_wr()
-                if worker is not None and worker.is_alive():
-                    worker.join()
-            return _kill_me
-
-        atexit.register(_make_kill_me(
-            weakref.ref(self._submitted),
-            weakref.ref(self._worker_thread),
-            weakref.ref(self._submit_condition)))
+        self._worker_exc = ThreadPoolExecutor(max_workers=1)
+        self._worker_exc.submit(self._worker)
+        self._worker_exc.shutdown(wait=False)
 
     def _wakeup_worker(self):
         """Tell the worker to work if it is sleeping."""
@@ -415,8 +394,8 @@ class _CivisExecutor(Executor):
 
     def _worker(self):
         """worker thread to control the number of running jobs"""
-        # this call back makes each future remove itself from the
-        # queue and wakeup the worker
+        # this callback makes each future remove itself from the
+        # running deque and notify the worker
         # uses weakref's to make sure if things are GC'ed we don't throw
         # an error
         def _make_callback(_deque_wr, _lock_wr):
@@ -442,26 +421,23 @@ class _CivisExecutor(Executor):
         while True:
             with self._submit_condition:
                 # use a timeout here as a failsafe
-                self._submit_condition.wait(timeout=15.0)
+                self._submit_condition.wait_for(
+                    lambda: len(_running) < self.n_jobs and len(self._submitted) > 0)
+
                 try:
-                    # test once for None
                     fut = self._submitted.popleft()
                     if fut is None:
                         return
-                    else:
-                        # put it back if not None
-                        self._submitted.appendleft(fut)
-
-                    # now try and run stuff
-                    while len(_running) < self.n_jobs:
-                        fut = self._submitted.popleft()
-                        if fut is None:
-                            return
+                    elif fut.cancelled() or fut.done():
+                        continue
+                    elif len(_running) < self.n_jobs:
                         fut._start_container()
                         _running.append(fut)
                         fut.add_done_callback(_make_callback(
                             weakref.ref(_running),
                             weakref.ref(self._submit_condition)))
+                    else:
+                        self._submitted.appendleft(fut)
                 except IndexError:
                     pass
 
@@ -560,12 +536,6 @@ class _CivisExecutor(Executor):
 
     def cancel_all(self):
         """Send cancel requests for all running Civis jobs."""
-        # clear the queue of submitted things
-        if self.n_jobs > 0:
-            self._submitted.clear()
-            self._wakeup_worker()
-
-        # and now cancel
         for f in self._futures:
             # The ContainerFuture is smart enough to only cancel the run
             # if the run is still in progress.
