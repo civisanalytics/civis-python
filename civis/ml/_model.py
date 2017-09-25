@@ -993,7 +993,7 @@ class ModelPipeline:
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
                 if_exists='fail', n_jobs=None, polling_interval=None,
-                cpu=None, memory=None, disk=None):
+                cpu=None, memory=None, disk_space=None):
         """Make predictions on a trained model
 
         Provide input through one of
@@ -1071,7 +1071,7 @@ class ModelPipeline:
             CPU shares requested by the user for a single job.
         memory : int, optional
             RAM requested by the user for a single job.
-        disk : int, optional
+        disk_space : float, optional
             disk space requested by the user for a single job.
 
         Returns
@@ -1118,11 +1118,11 @@ class ModelPipeline:
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
         if cpu:
-            predict_args['CPU'] = n_jobs
+            predict_args['CPU'] = cpu
         if memory:
-            predict_args['MEMORY'] = n_jobs
+            predict_args['MEMORY'] = memory
         if disk:
-            predict_args['DISK'] = n_jobs
+            predict_args['DISK_SPACE'] = disk_space
 
         name = self.model_name + ' Predict' if self.model_name else None
         result, container, run = self._create_custom_run(
