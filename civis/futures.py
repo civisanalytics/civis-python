@@ -11,6 +11,7 @@ import time
 import threading
 from collections import deque
 import weakref
+from civis.compat import weakref_finalize
 
 import six
 
@@ -383,7 +384,7 @@ class _CivisExecutor(Executor):
             self._submitted.append(None)
             self._wakeup_worker()
 
-        self._finalize_worker_exc = weakref.finalize(self, _finalize)
+        self._finalize_worker_exc = weakref_finalize(self, _finalize)
 
     def _wakeup_worker(self):
         """Tell the worker to work if it is sleeping."""
