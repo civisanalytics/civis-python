@@ -13,7 +13,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
-
+- Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
+  and ``civis.parallel.infer_backend_factory`` in order to set the joblib
+  backend in the container for nested calls to ``joblib.Parallel``.
 
 ## 1.6.2 - 2017-09-08
 ### Changed
