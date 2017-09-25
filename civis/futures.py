@@ -319,6 +319,8 @@ class ContainerFuture(CivisFuture):
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
                 if self.run_id is not None:
+                    # if no run_id is set, then the polling thread and
+                    # pubnub were never started, so we skip this
                     self.cleanup()
                 self._invoke_callbacks()
                 return self.cancelled()
@@ -376,6 +378,7 @@ class _CivisExecutor(Executor):
         self._worker_exc.submit(self._worker)
         self._worker_exc.shutdown(wait=False)
 
+        # use this function to shutdown any workers
         def _finalize():
             self._submitted.append(None)
             self._wakeup_worker()
