@@ -240,7 +240,7 @@ class ContainerFuture(CivisFuture):
                          poll_on_creation=self._poll_on_creation)
 
     def _start_container(self):
-        if not self.cancelled() and not self.done():
+        if not self.done():
             run = self.client.jobs.post_runs(self.job_id)
             self.poller_args[1] = int(run.id)
             self._init_polling_pubnubbing()
@@ -429,7 +429,7 @@ class _CivisExecutor(Executor):
                     fut = self._submitted.popleft()
                     if fut is None:
                         return
-                    elif fut.cancelled() or fut.done():
+                    elif fut.done():
                         continue
                     elif len(_running) < self.n_jobs:
                         fut._start_container()
