@@ -11,7 +11,6 @@ import time
 import threading
 from collections import deque
 import weakref
-import atexit
 
 import six
 
@@ -26,16 +25,6 @@ from pubnub.enums import PNStatusCategory
 from pubnub.callbacks import SubscribeCallback
 
 log = logging.getLogger(__name__)
-
-_SHUTDOWN_WORKER = False
-
-
-def _worker_exit():
-    global _SHUTDOWN_WORKER
-    _SHUTDOWN_WORKER = True
-
-
-atexit.register(_worker_exit)
 
 # Pubnub connections can recover missed messages upon reconnecting for up to 10
 # minutes from the disconnect. Polling on a 9.5 minute interval is used as a
@@ -387,6 +376,12 @@ class _CivisExecutor(Executor):
         self._worker_exc.submit(self._worker)
         self._worker_exc.shutdown(wait=False)
 
+        def _finalize():
+            self._submitted.append(None)
+            self._wakeup_worker()
+
+        self._finalize_worker_exc = weakref.finalize(self, _finalize)
+
     def _wakeup_worker(self):
         """Tell the worker to work if it is sleeping."""
         with self._submit_condition:
@@ -395,7 +390,7 @@ class _CivisExecutor(Executor):
     def _worker(self):
         """worker thread to control the number of running jobs"""
         # this callback makes each future remove itself from the
-        # running deque and notify the worker
+        # `_running` deque and notify the worker
         # uses weakref's to make sure if things are GC'ed we don't throw
         # an error
         def _make_callback(_deque_wr, _lock_wr):
@@ -420,9 +415,8 @@ class _CivisExecutor(Executor):
         # the worker will exit when it gets None
         while True:
             with self._submit_condition:
-                # use a timeout here as a failsafe
-                self._submit_condition.wait_for(
-                    lambda: len(_running) < self.n_jobs and len(self._submitted) > 0)
+                self._submit_condition.wait_for(lambda: (
+                    len(_running) < self.n_jobs and len(self._submitted) > 0))
 
                 try:
                     fut = self._submitted.popleft()
@@ -536,6 +530,10 @@ class _CivisExecutor(Executor):
 
     def cancel_all(self):
         """Send cancel requests for all running Civis jobs."""
+        # prevent the worker from submitting any more jobs
+        if self.n_jobs > 0:
+            self._submitted.clear()
+
         for f in self._futures:
             # The ContainerFuture is smart enough to only cancel the run
             # if the run is still in progress.
