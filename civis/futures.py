@@ -419,8 +419,11 @@ class _CivisExecutor(Executor):
         # the worker will exit when it gets None
         while True:
             with self._submit_condition:
-                self._submit_condition.wait_for(lambda: (
-                    len(_running) < self.n_jobs and len(self._submitted) > 0))
+                # use a timeout to make sure we never don't submit stuff
+                self._submit_condition.wait_for(
+                    lambda: (len(_running) < self.n_jobs and
+                             len(self._submitted) > 0),
+                    timeout=15.0)
 
                 try:
                     fut = self._submitted.popleft()
