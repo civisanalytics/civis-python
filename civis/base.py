@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from builtins import super
 import os
 from posixpath import join
 import threading
@@ -8,6 +7,7 @@ import six
 import warnings
 
 from civis.response import PaginatedResponse, convert_response_data_type
+from civis.utils._deprecation import deprecate
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -118,6 +118,7 @@ class Endpoint(object):
             return resp
 
 
+@deprecate("v2.0.0")
 class CivisAsyncResultBase(futures.Future):
     """A base class for tracking asynchronous results.
 

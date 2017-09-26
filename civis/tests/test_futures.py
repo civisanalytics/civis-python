@@ -1,12 +1,14 @@
 import os
 import json
 from collections import OrderedDict
-
+from concurrent import futures
+import time
 import pytest
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock
+from civis.response import Response
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
@@ -28,6 +30,26 @@ with open(TEST_SPEC) as f:
 
 with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
     civis_api_spec_channels = json.load(f, object_pairs_hook=OrderedDict)
+
+
+class State:
+    def __init__(self, state):
+        self.state = state
+
+
+@mock.patch(api_import_str, return_value=civis_api_spec_base)
+@mock.patch.object(CivisFuture, '_subscribe')
+def create_civis_future(
+        sub_mock, api_mock, state, exception=None, result=None):
+    f = CivisFuture(State, (state, ), polling_interval=0.001)
+    f._exception = exception
+    f._result = result
+    return f
+
+
+CANCELLED_FUTURE = create_civis_future(state='cancelled')
+FINISHED_FUTURE = create_civis_future(state='success')
+QUEUED_FUTURE = create_civis_future(state='queued')
 
 
 def clear_lru_cache():
@@ -237,6 +259,100 @@ class CivisFutureTests(CivisVCRTestCase):
         assert future.polling_interval == polling_interval
         assert hasattr(future, '_pubnub') is False
 
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_as_completed(self, *mocks):
+        clear_lru_cache()
+        my_futures = [QUEUED_FUTURE, CANCELLED_FUTURE, FINISHED_FUTURE]
+        fs = futures.as_completed(my_futures)
+        f1 = next(fs)
+        f2 = next(fs)
+        finished_futures = set([f1, f2])
+
+        self.assertEqual(finished_futures,
+                         set([FINISHED_FUTURE, CANCELLED_FUTURE]))
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_wait(self, *mocks):
+        clear_lru_cache()
+        done, not_done = futures.wait([QUEUED_FUTURE, FINISHED_FUTURE],
+                                      return_when=futures.FIRST_COMPLETED)
+        self.assertEqual(set([FINISHED_FUTURE]), done)
+        self.assertEqual(set([QUEUED_FUTURE]), not_done)
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_error_passthrough(self, *mocks):
+        clear_lru_cache()
+        pollable = CivisFuture(
+            mock.Mock(side_effect=[ZeroDivisionError()]),
+            (),
+            polling_interval=0.1)
+        pytest.raises(ZeroDivisionError, pollable.result)
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_error_setting(self, *mocks):
+        clear_lru_cache()
+        pollable = CivisFuture(
+            mock.Mock(side_effect=[ZeroDivisionError()]),
+            (),
+            polling_interval=0.1)
+        assert isinstance(pollable.exception(), ZeroDivisionError)
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_timeout(self, *mocks):
+        clear_lru_cache()
+        pollable = CivisFuture(
+            mock.Mock(return_value=Response({"state": "running"})),
+            poller_args=(),
+            polling_interval=0.1)
+        pytest.raises(futures.TimeoutError, pollable.result, timeout=0.05)
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_poll_on_creation(self, *mocks):
+        clear_lru_cache()
+        poller = mock.Mock(return_value=Response({"state": "running"}))
+        pollable = CivisFuture(
+            poller,
+            (),
+            polling_interval=0.01,
+            poll_on_creation=False)
+        pollable.done()  # Check status once to start the polling thread
+        assert poller.call_count == 0
+        time.sleep(0.015)
+        assert poller.call_count == 1
+        clear_lru_cache()
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch.object(CivisFuture, '_subscribe')
+    def test_reset_polling_thread(self, *mocks):
+        clear_lru_cache()
+        pollable = CivisFuture(
+            mock.Mock(return_value=Response({"state": "running"})),
+            poller_args=(),
+            polling_interval=0.1)
+        initial_polling_thread = pollable._polling_thread
+        assert pollable.polling_interval == 0.1
+        assert pollable._polling_thread.polling_interval == 0.1
+        pollable._reset_polling_thread(0.2)
+        # Check that the polling interval was updated
+        assert pollable.polling_interval == 0.2
+        assert pollable._polling_thread.polling_interval == 0.2
+        # Check that the _polling_thread is a new thread
+        assert pollable._polling_thread != initial_polling_thread
+        # Check that the old thread was stopped
+        assert not initial_polling_thread.is_alive()
         clear_lru_cache()
 
 

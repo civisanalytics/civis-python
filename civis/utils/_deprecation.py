@@ -70,3 +70,54 @@ def deprecate_param(version_removed, parameter_name):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+def deprecate(version_removed):
+    """Create a decorator which warns of deprecation for a function or class.
+
+    Use this to create a decorator which will watch for use of a
+    deprecated class or function and issue a ``FutureWarning`` if
+    the parameter is used. (We use a ``FutureWarning`` because Python
+    does not display ``DeprecationWarning`` by default.)
+
+    Parameters
+    ----------
+    version_removed: str
+        The version in which this function or class will no longer be
+        present, e.g. "v2.0.0".
+
+    Returns
+    -------
+    A decorator function
+
+    Examples
+    --------
+    >>> @deprecate("v2.0.0")
+    ... def adder(a, b):
+    ...     return a + b
+    >>> adder(1, 1)
+    /Users/username/src/civis-python/civis/utils/_deprecation.py:111:
+    FutureWarning: "__main__.adder" is deprecated and will be removed
+    in v2.0.0.
+      FutureWarning)
+    2
+    >>> @deprecate("v2.0.0")
+    ... class adder(object):
+    ...     pass
+    >>> a = adder()
+    /Users/username/src/civis-python/civis/utils/_deprecation.py:111:
+    FutureWarning: "__main__.adder" is deprecated and will be removed
+    in v2.0.0.
+      FutureWarning)
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            f_name = '{}.{}'.format(func.__module__, func.__name__)
+            warnings.warn(
+                '"{}" is deprecated and will be removed in {}.'.format(
+                    f_name, version_removed),
+                FutureWarning)
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
