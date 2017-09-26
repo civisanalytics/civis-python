@@ -7,6 +7,7 @@ from civis.futures import (  # noqa
     CivisFuture,
     _DEFAULT_POLLING_INTERVAL)
 
+
 # keep this for backwards compatibility
 @deprecate("v2.0.0")
 class PollableResult(CivisFuture):
