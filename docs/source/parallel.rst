@@ -110,8 +110,6 @@ uses joblib internally, such as scikit-learn::
     ...     "max_features": ["sqrt", "log2", None],
     ...     "learning_rate": [0.1, 0.01, 0.001]
     ... }
-    >>> # Note: n_jobs and pre_dispatch specify the maximum number of
-    >>> # concurrent jobs.
     >>> gs = GridSearchCV(GradientBoostingClassifier(n_estimators=1000,
     ...                                              random_state=42),
     ...                   param_grid=param_grid,
