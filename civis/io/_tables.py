@@ -3,7 +3,6 @@ import csv
 import io
 import six
 import warnings
-import numpy as np
 
 from civis import APIClient
 from civis.io import civis_to_file
@@ -18,11 +17,18 @@ try:
     from io import StringIO
 except ImportError:
     from cStringIO import StringIO
+
 try:
     import pandas as pd
     NO_PANDAS = False
 except ImportError:
     NO_PANDAS = True
+
+try:
+    import numpy as np
+    NO_NUMPY = False
+except ImportError:
+    NO_NUMPY = True
 
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis']
@@ -32,34 +38,6 @@ DELIMITERS = {
     '\t': 'tab',
     '|': 'pipe',
 }
-
-SQL_PANDAS_MAP = {'smallint': np.int,
-                   'int': np.int,
-                   'integer': np.int,
-                   'bigint': np.int,
-                   'decimal': np.float,
-                   'numeric': np.float,
-                   'float': np.float,
-                   'float4': np.float,
-                   'float8': np.float,
-                   'real': np.float,
-                   'double precision': np.float,
-                   'boolean': np.bool,
-                   'bool': np.bool,
-                   'int2': np.int,
-                   'int4': np.int,
-                   'int8': np.int,
-                   'char': np.str,
-                   'character': np.str,
-                   'nchar': np.str,
-                   'bpchar': np.str,
-                   'varchar': np.str,
-                   'character varying': np.str,
-                   'nvarchar': np.str,
-                   'text': np.str}
-
-DATE_TYPES = ['date', 'timestamp', 'timestamptz',
- 'timestamp without time zone']
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -149,24 +127,25 @@ def read_civis(table, database, columns=None, use_pandas=False,
     if client is None:
         # Instantiate client here in case users provide a (deprecated) api_key
         client = APIClient(api_key=api_key, resources='all')
+
     if use_pandas == True:
         if dtype == 'redshift':
-            table_id = client.get_table_id(table=table, database=database)
-            py_types, date_cols = _redshift_to_py(client, table_id)
-            pd_kwargs = {'parse_dates': date_cols,
-                         'dtype': py_types,
-                         'engine': 'python',
-                         'infer_datetime_format': True}
-            kwargs = kwargs.update(pd_kwargs)
+            if NO_NUMPY:
+                raise ImportError("`dtype='redshift'` specified but numpy not installed.")
+            else:
+                table_id = client.get_table_id(table=table, database=database)
+                py_types, date_cols = _redshift_to_py(client, table_id)
+                pd_kwargs = {'parse_dates': date_cols,
+                             'dtype': py_types,
+                             'engine': 'python',
+                             'infer_datetime_format': True}
+                kwargs.update(pd_kwargs)
         elif type(dtype) == dict:
-            kwargs = kwargs.update(pd_kwargs)
-        else: 
-            continue
+            kwargs['dtype'] = dtype
 
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, client=client, 
-                          table_id=table_id,
+                          job_name=job_name, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
@@ -176,7 +155,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
-                   polling_interval=None, archive=False, 
+                   polling_interval=None, archive=False,
                    hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
@@ -778,14 +757,44 @@ def _import_bytes(buf, database, table, client, max_errors,
     return fut
 
 def _redshift_to_py(civ_client, tableid):
-        table_meta = civ_client.tables.get(tableid)
-        # The split is to handle e.g. DECIMAL(17,9)
-        redshift_types = {col['name']: col['sql_type'].split('(')[0]
-                              for col in table_meta['columns']}
-        py_types = {name : SQL_PANDAS_MAP[type_]
-                    for (name, type_) in redshift_types.items() 
-                    if type_ not in DATE_TYPES}
-        date_cols = [name for (name, type_) in redshift_types.items() 
-                     if type_ in DATE_TYPES]
 
-        return py_types, date_cols
+    SQL_PANDAS_MAP = {
+        'smallint': np.int16,
+        'int': np.int32,
+        'integer': np.int32,
+        'bigint': np.int64,
+        'decimal': np.float64,
+        'numeric': np.float64,
+        'float': np.float64,
+        'float4': np.float32,
+        'float8': np.float64,
+        'real': np.float32,
+        'double precision': np.float64,
+        'boolean': np.bool,
+        'bool': np.bool,
+        'int2': np.int16,
+        'int4': np.int32,
+        'int8': np.int64,
+        'char': np.str,
+        'character': np.str,
+        'nchar': np.str,
+        'bpchar': np.str,
+        'varchar': np.str,
+        'character varying': np.str,
+        'nvarchar': np.str,
+        'text': np.str}
+
+    DATE_TYPES = ['date', 'timestamp', 'timestamptz',
+                  'timestamp without time zone']
+
+    table_meta = civ_client.tables.get(tableid)
+    # The split is to handle e.g. DECIMAL(17,9)
+    redshift_types = {col['name']: col['sql_type'].split('(')[0]
+                          for col in table_meta['columns']}
+    py_types = {name : SQL_PANDAS_MAP[type_]
+                for (name, type_) in redshift_types.items()
+                if type_ not in DATE_TYPES}
+    date_cols = [name for (name, type_) in redshift_types.items()
+                 if type_ in DATE_TYPES]
+
+    return py_types, date_cols

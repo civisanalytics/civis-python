@@ -14,6 +14,12 @@ try:
 except ImportError:
     has_pandas = False
 
+try:
+    import numpy as np
+    has_numpy = True
+except ImportError:
+    has_numpy = False
+
 import civis
 from civis.compat import mock, FileNotFoundError
 from civis.response import Response
@@ -31,6 +37,7 @@ with open(TEST_SPEC) as f:
 
 class MockAPIError(CivisAPIError):
     """A fake API error with only a status code"""
+
     def __init__(self, sc):
         self.status_code = sc
 
@@ -146,32 +153,66 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas(self, *mocks):
-        col_types = {
-                  'numeric' : np.float,
-                  'real': np.float,
-                  'smallint': np.int, 
-                  'integer' : np.int,
-                  'bigint' : np.int,
-                  'deicmal':np.float,
-                  'real':np.float,
-                  'double':np.float,
-                  'boolean' : np.bool,
-                  'char': np.str,
-                  'character varying': np.str
-                  }
-        expected = pd.DataFrame(data=[[1., 2., 3, 4, 5, 6., 7., 8.,
-                                  True, 'f', 'bar', '05/07/1995']], 
-                                columns=['numeric', 'real', 'smallint', 
-                                 'integer', 'bigint', 'deicmal', 'real', 
-                                 'double', 'boolean', 'char', 
-                                 'character varying', 'date'
-                                 ],
-                                parse_dates=['date'],
-                                converters=col_types)
-        
+        expected = pd.DataFrame([[1, 2, 3]], columns=['a', 'b', 'c'])
         df = civis.io.read_civis('scratch.api_client_test_fixture',
                                  'redshift-general', use_pandas=True,
                                  polling_interval=POLL_INTERVAL)
+        assert df.equals(expected)
+
+    @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+    @pytest.mark.skipif(not has_numpy, reason="numpy not installed")
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_read_civis_pandas_redshift_types(self, *mocks):
+        # TODO: include nulls
+        SQL_PANDAS_MAP = {
+            'smallint': np.int16,
+            'int': np.int32,
+            'integer': np.int32,
+            'bigint': np.int64,
+            'decimal': np.float64,
+            'numeric': np.float64,
+            'float': np.float64,
+            'float4': np.float32,
+            'float8': np.float64,
+            'real': np.float32,
+            'double precision': np.float64,
+            'boolean': np.bool,
+            'bool': np.bool,
+            'int2': np.int16,
+            'int4': np.int32,
+            'int8': np.int64,
+            'char': np.str,
+            'character': np.str,
+            'nchar': np.str,
+            'bpchar': np.str,
+            'varchar': np.str,
+            'character varying': np.str,
+            'nvarchar': np.str,
+            'text': np.str}
+
+        DATE_TYPES = ['date', 'timestamp', 'timestamptz',
+                      'timestamp without time zone']
+
+        # Construct all of these column types
+
+        pd_data = {}
+        for num, (name, type) in enumerate(SQL_PANDAS_MAP.items()):
+            if name in ['boolean', 'bool']:
+                value = [True]
+            elif name in ['char', 'character', 'nchar', 'bpchar', 'varchar',
+                          'character varying', 'nvarchar', 'text']:
+                value = ['foo']
+            elif name in DATE_TYPES:
+                value = ['05/07/1995']
+            else:
+                value = [num]
+            pd_data[name] = value
+
+        expected = pd.DataFrame
+
+        df = civis.io.read_civis('scratch.api_client_test_fixture',
+                                 'redshift-general', use_pandas=True,
+                                 dtype='redshift', polling_interval=POLL_INTERVAL)
         assert df.equals(expected)
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
@@ -305,7 +346,7 @@ def test_file_id_from_run_output_no_file():
 def test_file_id_from_run_output_no_run():
     # Get an IOError if we request a file from a run which doesn't exist
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.side_effect =\
+    m_client.scripts.list_containers_runs_outputs.side_effect = \
         MockAPIError(404)  # Mock a run which doesn't exist
 
     with pytest.raises(IOError) as err:
@@ -316,7 +357,7 @@ def test_file_id_from_run_output_no_run():
 def test_file_id_from_run_output_platform_error():
     # Make sure we don't swallow real Platform errors
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.side_effect =\
+    m_client.scripts.list_containers_runs_outputs.side_effect = \
         MockAPIError(500)  # Mock a platform error
     with pytest.raises(CivisAPIError):
         civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
@@ -360,6 +401,7 @@ def test_load_json(mock_c2f):
 
     def _dump_json(file_id, buf, *args, **kwargs):
         buf.write(json.dumps(obj).encode())
+
     mock_c2f.side_effect = _dump_json
     out = civis.io.file_to_json(13, client=mock.Mock())
     assert out == obj
