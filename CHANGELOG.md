@@ -9,19 +9,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
 - Refactored ``civis.polling.PollableResult``, ``civis.base.CivisAsyncResultBase``,
   and ``civis.futures.CivisFuture`` into a single class ``civis.futures.CivisFuture``. (#148)
-- Added an alias pointing ``civis.polling.PollableResult`` to ``CivisFuture``. (#148)
+- Added an alias pointing ``civis.polling.PollableResult`` to
+  ``civis.futures.CivisFuture``. (#148)
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
-
-### Removed
-- ``civis.base.CivisAsyncResultBase`` (#148).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
-  backend in the container for nested calls to ``joblib.Parallel`` (#146).
+  backend in the container for nested calls to ``joblib.Parallel``. (#146)
+
+### Deprecated
+- ``civis.base.CivisAsyncResultBase`` and ``civis.polling.PollableResult`` are
+  to be removed in v2.0.0. (#148)
 
 ## 1.6.2 - 2017-09-08
 ### Changed
