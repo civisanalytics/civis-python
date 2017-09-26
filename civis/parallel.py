@@ -760,7 +760,7 @@ class _CivisBackend(ParallelBackendBase):
 
         self.client = self.client or civis.APIClient(resources='all')
 
-        exec_kwargs = {**self.executor_kwargs}
+        exec_kwargs = dict(**self.executor_kwargs)
         if 'n_jobs' in exec_kwargs:
             exec_kwargs['max_workers'] = exec_kwargs['n_jobs']
             del exec_kwargs['n_jobs']
