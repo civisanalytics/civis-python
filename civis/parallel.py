@@ -229,13 +229,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
               calls on this backend must be less than 5 GB due to
               AWS file size limits.
 
-    .. note:: The maximum number of concurrent jobs in the Civis Platform
-              is controlled by both the ``n_jobs`` and ``pre_dispatch``
-              parameters of ``joblib.Parallel``.
-              Set ``pre_dispatch="n_jobs"`` to have a maximum of
-              ``n_jobs`` processes running at once.
-              (The default is ``pre_dispatch="2*n_jobs"``.)
-
     Parameters
     ----------
     docker_image_name : str, optional
@@ -306,7 +299,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
     >>> with parallel_backend('civis'):
-    ...    parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+    ...    parallel = Parallel(n_jobs=5)
     ...    print(parallel(delayed(sqrt)(i ** 2) for i in range(10)))
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
 
@@ -324,12 +317,9 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     ...     "max_features": ["sqrt", "log2", None],
     ...     "learning_rate": [0.1, 0.01, 0.001]
     ... }
-    >>> # Note: n_jobs and pre_dispatch specify the maximum number of
-    >>> # concurrent jobs.
     >>> gs = GridSearchCV(GradientBoostingClassifier(n_estimators=1000,
     ...                                              random_state=42),
-    ...                   param_grid=param_grid,
-    ...                   n_jobs=5, pre_dispatch="n_jobs")
+    ...                   param_grid=param_grid, n_jobs=5)
     >>> sklearn_register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
     >>> with sklearn_parallel_backend('civis'):
