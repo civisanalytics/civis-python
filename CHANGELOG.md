@@ -15,7 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   uses this library (#141).
 
 ### Fixed
-- The joblib backend now respects the ``n_jobs`` parameter (#147).
+- The `_CivisExecutor` now takes an ``n_jobs`` parameter to control the number of simultaneous 
+  jobs running in Civis Platform (#147).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel`` (#146).
