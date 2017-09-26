@@ -759,6 +759,12 @@ class _CivisBackend(ParallelBackendBase):
                 self.max_submit_retries)
 
         self.client = self.client or civis.APIClient(resources='all')
+
+        exec_kwargs = {**self.executor_kwargs}
+        if 'n_jobs' in exec_kwargs:
+            exec_kwargs['max_workers'] = exec_kwargs['n_jobs']
+            del exec_kwargs['n_jobs']
+
         if self.from_template_id:
             self.executor = CustomScriptExecutor(self.from_template_id,
                                                  client=self.client,

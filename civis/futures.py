@@ -357,11 +357,11 @@ class _CivisExecutor(Executor):
                  client=None,
                  polling_interval=None,
                  inc_script_names=False,
-                 n_jobs=-1):
+                 max_workers=-1):
         self.max_n_retries = max_n_retries
         self.hidden = hidden
         self.name = name
-        self.n_jobs = n_jobs or -1
+        self.max_workers = max_workers if max_workers is not None else -1
         self.polling_interval = polling_interval
         self.inc_script_names = inc_script_names
         self._script_name_counter = 0
@@ -373,10 +373,10 @@ class _CivisExecutor(Executor):
 
         # A list of ContainerFuture objects for submitted jobs.
         self._futures = []
-        if self.n_jobs > 0:
+        if self.max_workers > 0:
             self._init_worker()
-        elif n_jobs == 0:
-            raise ValueError("`n_jobs` cannot be zero!")
+        elif self.max_workers == 0:
+            raise ValueError("`max_workers` cannot be zero!")
 
     def _init_worker(self):
         """start the worker and attach an exit handler"""
@@ -428,7 +428,7 @@ class _CivisExecutor(Executor):
             with self._submit_condition:
                 # use a timeout to make sure we never don't submit stuff
                 self._submit_condition.wait_for(
-                    lambda: (len(_running) < self.n_jobs and
+                    lambda: (len(_running) < self.max_workers and
                              len(self._submitted) > 0),
                     timeout=15.0)
 
@@ -438,7 +438,7 @@ class _CivisExecutor(Executor):
                         return
                     elif fut.done():
                         continue
-                    elif len(_running) < self.n_jobs:
+                    elif len(_running) < self.max_workers:
                         fut._start_container()
                         _running.append(fut)
                         fut.add_done_callback(_make_callback(
@@ -510,7 +510,7 @@ class _CivisExecutor(Executor):
                 poll_on_creation=False)
 
             self._futures.append(future)
-            if self.n_jobs > 0:
+            if self.max_workers > 0:
                 self._submitted.append(future)
                 self._wakeup_worker()
             else:
@@ -535,7 +535,7 @@ class _CivisExecutor(Executor):
             self._shutdown_thread = True
 
         # tell the worker to stop
-        if self.n_jobs > 0:
+        if self.max_workers > 0:
             self._submitted.append(None)
             self._wakeup_worker()
 
@@ -545,7 +545,7 @@ class _CivisExecutor(Executor):
     def cancel_all(self):
         """Send cancel requests for all running Civis jobs."""
         # prevent the worker from submitting any more jobs
-        if self.n_jobs > 0:
+        if self.max_workers > 0:
             self._submitted.clear()
 
         for f in self._futures:
@@ -607,9 +607,9 @@ class _ContainerShellExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
-    n_jobs : int
+    max_workers : int
         The maximum number of containers allowed to run simultaneously. If
-        ``n_jobs`` < 0, then no maximum is set.
+        ``max_workers`` < 0, then no maximum is set.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -626,7 +626,7 @@ class _ContainerShellExecutor(_CivisExecutor):
                  client=None,
                  polling_interval=None,
                  inc_script_names=False,
-                 n_jobs=-1,
+                 max_workers=-1,
                  **kwargs):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
@@ -645,7 +645,7 @@ class _ContainerShellExecutor(_CivisExecutor):
                          max_n_retries=max_n_retries,
                          polling_interval=polling_interval,
                          inc_script_names=inc_script_names,
-                         n_jobs=n_jobs)
+                         max_workers=max_workers)
 
     def _create_job(self, name, arguments=None, cmd=None):
         # Combine instance and input arguments into one dictionary.
@@ -712,9 +712,9 @@ class CustomScriptExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
-    n_jobs : int
+    max_workers : int
         The maximum number of containers allowed to run simultaneously. If
-        ``n_jobs`` < 0, then no maximum is set.
+        ``max_workers`` < 0, then no maximum is set.
 
     See Also
     --------
@@ -728,7 +728,7 @@ class CustomScriptExecutor(_CivisExecutor):
                  client=None,
                  polling_interval=None,
                  inc_script_names=False,
-                 n_jobs=-1):
+                 max_workers=-1):
         self.from_template_id = from_template_id
         self.arguments = arguments
 
@@ -742,7 +742,7 @@ class CustomScriptExecutor(_CivisExecutor):
                          max_n_retries=max_n_retries,
                          polling_interval=polling_interval,
                          inc_script_names=inc_script_names,
-                         n_jobs=n_jobs)
+                         max_workers=max_workers)
 
     def submit(self, **arguments):
         """Submit a Custom Script with the given arguments
