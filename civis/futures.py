@@ -16,7 +16,7 @@ from civis.compat import weakref_finalize
 import six
 
 from civis import APIClient
-from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError
+from civis.base import DONE, NOT_FINISHED, CANCELLED
 from civis.polling import PollableResult, _ResultPollingThread
 from civis.response import Response
 
