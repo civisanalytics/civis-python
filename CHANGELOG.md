@@ -13,10 +13,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
-
-### Fixed
-- The `_CivisExecutor` now takes an ``n_jobs`` parameter to control the number of simultaneous 
-  jobs running in Civis Platform (#147).
+- The `_CivisExecutor` now takes an ``n_jobs`` parameter to control the number of
+  simultaneous jobs running in Civis Platform (#147).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel`` (#146).

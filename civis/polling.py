@@ -184,7 +184,8 @@ class PollableResult(CivisAsyncResultBase):
         # This gets called after the result is set.
         # Ensure that the polling thread shuts down when it's no longer needed.
         with self._condition:
-            if self._polling_thread.is_alive():
+            if (hasattr(self, '_polling_thread') and
+                    self._polling_thread.is_alive()):
                 self._polling_thread.cancel()
 
     def _reset_polling_thread(self,
