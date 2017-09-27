@@ -82,7 +82,7 @@ parameter "JOBLIB_FUNC_FILE_ID". The Civis joblib backend will use this paramete
 to transport your remote work.
 
 Examples
---------
+-------- 
 Parallel computation using the default joblib backend
 (this uses processes on your local computer)::
 
@@ -140,23 +140,23 @@ a ``max_job_retries`` value above 0 when creating your backend factory.
 This will automatically retry a job (potentially more than once) before giving
 up and keeping an exception.
 
-Logging: The Civis joblib backend uses the standard library
-`logging module <https://docs.python.org/3/library/logging.html>`_,
+Logging: The Civis joblib backend uses the standard library 
+`logging module <https://docs.python.org/3/library/logging.html>`_, 
 with debug emits for events which might help you diagnose errors.
 See also the "verbose" argument to :class:`joblib.Parallel`, which
 prints information to either stdout or stderr.
 
 Mismatches between your local environment and the environment in the
 Civis container script jobs are a common source of errors.
-To run a function in the Civis platform, any modules called by
-that function must be importable from a Python interpreter running
+To run a function in the Civis platform, any modules called by 
+that function must be importable from a Python interpreter running 
 in the container script. For example, if you use :class:`joblib.Parallel`
 with :func:`numpy.sqrt`, the joblib backend must be set to run
 your function in a container which has :mod:`numpy` installed.
 If you see an error such as::
 
     ModuleNotFoundError: No module named 'numpy'
-
+    
 this signifies that the function you're trying to run doesn't exist
 in the remote environment. Select a Docker container with the module installed,
 or install it in your remote environment by using the ``repo_http_uri``
