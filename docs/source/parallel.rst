@@ -42,7 +42,7 @@ context::
     >>> with parallel_backend('civis'):
     ...     # Do joblib parallel computation here.
 
-You can find more about custom joblib backends in the
+You can find more about custom joblib backends in the 
 `joblib documentation <http://pythonhosted.org/joblib/parallel.html#custom-backend-api-experimental>`_.
 
 Note that :class:`joblib.Parallel` takes both a ``n_jobs`` and ``pre_dispatch``
@@ -76,7 +76,7 @@ Instead of defining and creating new container scripts with
 :func:`~civis.parallel.make_backend_factory`, you can use
 :func:`~civis.parallel.make_backend_template_factory` to launch custom scripts from
 a templated script. To use the template factory, your backing container script must
-have the Civis Python client installed, and its run command must finish
+have the Civis Python client installed, and its run command must finish 
 by calling ``civis_joblib_worker`` with no arguments. The template must accept the
 parameter "JOBLIB_FUNC_FILE_ID". The Civis joblib backend will use this parameter
 to transport your remote work.
