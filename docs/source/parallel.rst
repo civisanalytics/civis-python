@@ -10,14 +10,14 @@ Joblib backend
 ==============
 `joblib <https://pythonhosted.org/joblib/index.html>`_ is a tool which facilitates
 parallel processing in Python. The :func:`~civis.parallel.make_backend_factory`,
-:func:`~civis.parallel.infer_backend_factory`, and
+:func:`~civis.parallel.infer_backend_factory`, and 
 :func:`~civis.parallel.make_backend_template_factory` functions allow you
 to define a "civis" parallel computation backend which will transparently
 distribute computation in cloud resources managed by the Civis Platform.
 
 How to use
 ----------
-Begin by defining the backend. The Civis joblib backend creates and runs
+Begin by defining the backend. The Civis joblib backend creates and runs 
 Container Scripts, and the :func:`~civis.parallel.make_backend_factory`
 function accepts several arguments which will be passed to
 :func:`~civis.resources._resources.Scripts.post_containers`.
@@ -34,7 +34,7 @@ function. For example::
     >>> from civis.parallel import make_backend_factory
     >>> be_factory = make_backend_factory()
     >>> register_parallel_backend('civis', be_factory)
-
+    
 Direct ``joblib`` to use a custom backend by entering a :func:`joblib.parallel_backend`
 context::
 
