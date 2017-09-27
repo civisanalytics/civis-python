@@ -82,8 +82,8 @@ parameter "JOBLIB_FUNC_FILE_ID". The Civis joblib backend will use this paramete
 to transport your remote work.
 
 Examples
--------- 
-Parallel computation using the default joblib backend
+--------
+Parallel computation using the default joblib backend 
 (this uses processes on your local computer)::
 
     >>> from joblib import delayed, Parallel
