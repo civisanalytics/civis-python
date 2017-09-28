@@ -14,7 +14,7 @@ from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
-from civis.utils._jobs import retry
+from civis._utils import retry
 try:
     from requests_toolbelt.multipart.encoder import MultipartEncoder
     HAS_TOOLBELT = True
@@ -26,9 +26,9 @@ try:
 except ImportError:
     HAS_PANDAS = False
 
-MIN_PART_SIZE = 5 * 2 ** 20 # 5MB
-MAX_FILE_SIZE = 5 * 2 ** 40 # 5TB
-MAX_PART_SIZE = 5 * 2 ** 30 # 5GB
+MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
+MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
+MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
 RETRY_EXCEPTIONS = (requests.HTTPError, requests.ConnectionError, requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
@@ -119,7 +119,7 @@ def _legacy_upload(buf, name, client, **kwargs):
     return file_response.id
 
 
-def _single_upload(buf, name, file_pos, client, **kwargs):
+def _single_upload(buf, name, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -132,8 +132,7 @@ def _single_upload(buf, name, file_pos, client, **kwargs):
     form_key.update(form)
 
     def _post():
-        if file_pos:
-            buf.seek(file_pos)
+        buf.seek(0)
         form_key['file'] = buf
         response = requests.post(url, files=form_key)
 
@@ -142,7 +141,7 @@ def _single_upload(buf, name, file_pos, client, **kwargs):
             raise HTTPError(msg, response=response)
 
     # we can only retry if the buffer is seekable
-    if buf.seekable() and file_pos:
+    if buf.seekable():
         retry(RETRY_EXCEPTIONS)(_post())
     else:
         _post()
@@ -150,7 +149,7 @@ def _single_upload(buf, name, file_pos, client, **kwargs):
     return file_response.id
 
 
-def _multipart_upload(buf, name, file_pos, file_size, client, **kwargs):
+def _multipart_upload(buf, name, file_size, client, **kwargs):
     # scale the part size based on file size
     part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)), MIN_PART_SIZE)
     num_parts = int(math.ceil(file_size / float(part_size)))
@@ -162,18 +161,17 @@ def _multipart_upload(buf, name, file_pos, file_size, client, **kwargs):
 
     @retry(RETRY_EXCEPTIONS)
     def _upload_part(i, url):
-        offset = part_size * i + file_pos
+        offset = part_size * i
         num_bytes = min(part_size, file_size - offset)
         buf.seek(offset)
-        part_response = requests.post(url, data=buf.read(num_bytes)) # >>> add retry
+        part_response = requests.post(url, data=buf.read(num_bytes))
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
             raise HTTPError(msg, response=part_response)
 
-    # upload each part; always signal completion so that the multipart upload
-    # can be completed or aborted as necessary
-    # >>> verify complete call
+    # upload each part and always complete the upload
+    # API will trigger an abort if 1 or more parts are < 5MB
     try:
         [_upload_part(i + 1, url) for i, url in enumerate(urls)]
     finally:
@@ -239,12 +237,10 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     if not hasattr('client.files', 'post_multipart'):
         return _legacy_upload(buf, name, client, **kwargs)
 
-    # account for the scenario where buf is not at 0
-    file_pos = getattr(buf, 'tell', lambda: None)()
-    file_size = (_buf_len(buf) or 0) - (file_pos or 0)
+    file_size = _buf_len(buf)
 
-    if not file_size or not file_pos:
-        return _single_upload(buf, name, file_pos, client, **kwargs)
+    if not file_size:
+        return _single_upload(buf, name, client, **kwargs)
     elif file_size > MAX_FILE_SIZE:
         msg = "File is greater than the maximum allowable file size (5TB)"
         raise ValueError(msg)
@@ -253,9 +249,9 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
               "File is greater than the maximum allowable part size (5GB)"
         raise ValueError(msg)
     elif file_size <= MIN_PART_SIZE or not buf.seekable():
-        return _single_upload(buf, name, file_pos, client, **kwargs)
+        return _single_upload(buf, name, client, **kwargs)
     else:
-        return _multipart_upload(buf, name, file_pos, file_size, client, **kwargs)
+        return _multipart_upload(buf, name, file_size, client, **kwargs)
 
 
 @deprecate_param('v2.0.0', 'api_key')

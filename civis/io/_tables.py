@@ -1,5 +1,6 @@
 import json
 import csv
+from os import path
 import io
 import six
 import warnings
@@ -266,7 +267,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
         ``'gzip'``. Default ``'none'``.
-    delimiter, str: optional
+    delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``','``.
     unquoted: bool, optional
@@ -368,7 +369,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
         ``'gzip'``. Default ``'none'``.
-    delimiter, str: optional
+    delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``'|'``.
     unquoted: bool, optional
