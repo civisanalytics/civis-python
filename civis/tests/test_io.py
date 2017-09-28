@@ -143,6 +143,18 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result.id, int)
         assert result.state == 'succeeded'
 
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_civisfile_to_civis(self, *mocks):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        result = civis.io.civisfile_to_civis(self.file_id, database, table,
+                                             existing_table_rows='truncate',
+                                             polling_interval=POLL_INTERVAL)
+        result = result.result()  # block until done
+
+        assert isinstance(result.id, int)
+        assert result.state == 'succeeded'
+
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas(self, *mocks):
