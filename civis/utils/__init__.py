@@ -1,3 +1,3 @@
-from ._jobs import run_job, retry
+from ._jobs import run_job
 
-__all__ = ["run_job", "retry"]
+__all__ = ["run_job"]
