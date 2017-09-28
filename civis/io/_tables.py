@@ -551,11 +551,14 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     delimiter = ','
     name = table.split('.')[-1]
     file_id = file_to_civis(buf, name, api_key=api_key, client=client)
-    fut = civisfile_to_civis(file_id, database, table, api_key=api_key, client=client,
-                             max_errors=max_errors, existing_table_rows=existing_table_rows,
-                             distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
+    fut = civisfile_to_civis(file_id, database, table, api_key=api_key,
+                             client=client, max_errors=max_errors,
+                             existing_table_rows=existing_table_rows,
+                             distkey=distkey,
+                             sortkey1=sortkey1, sortkey2=sortkey2,
                              delimiter=delimiter, headers=headers,
-                             credential_id=credential_id, archive=archive, hidden=hidden)
+                             credential_id=credential_id,
+                             archive=archive, hidden=hidden)
 
     return fut
 
@@ -640,11 +643,14 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     name = path.basename(filename)
     with open(filename, "rb") as data:
         file_id = file_to_civis(data, name, api_key=api_key, client=client)
-        fut = civisfile_to_civis(file_id, database, table, api_key=api_key, client=client,
-                                 max_errors=max_errors, existing_table_rows=existing_table_rows,
-                                 distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
+        fut = civisfile_to_civis(file_id, database, table, api_key=api_key,
+                                 client=client, max_errors=max_errors,
+                                 existing_table_rows=existing_table_rows,
+                                 distkey=distkey,
+                                 sortkey1=sortkey1, sortkey2=sortkey2,
                                  delimiter=delimiter, headers=headers,
-                                 credential_id=credential_id, archive=archive, hidden=hidden)
+                                 credential_id=credential_id,
+                                 archive=archive, hidden=hidden)
     return fut
 
 
@@ -726,10 +732,13 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
 
     destination = dict(remote_host_id=db_id, credential_id=cred_id)
     import_name = 'CSV import to {}.{}'.format(schema, table)
-    import_job = client.imports.post(import_name, 'AutoImport', is_outbound=False,
-                                     destination=destination, hidden=hidden)
+    import_job = client.imports.post(import_name, 'AutoImport',
+                                     is_outbound=False,
+                                     destination=destination,
+                                     hidden=hidden)
 
-    options = dict(max_errors=max_errors, existing_table_rows=existing_table_rows,
+    options = dict(max_errors=max_errors,
+                   existing_table_rows=existing_table_rows,
                    distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
                    column_delimiter=delimiter, first_row_is_header=headers)
 

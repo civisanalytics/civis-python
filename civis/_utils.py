@@ -118,7 +118,8 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                 except exceptions as exc:
                     if n_failed < retries:
                         n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
+                        msg = "%s, Retrying in %d seconds..." % \
+                              (str(exc), new_delay)
                         log.debug(msg)
                         time.sleep(new_delay)
                         new_delay *= backoff

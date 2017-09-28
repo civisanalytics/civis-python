@@ -29,7 +29,9 @@ except ImportError:
 MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
 MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
 MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
-RETRY_EXCEPTIONS = (requests.HTTPError, requests.ConnectionError, requests.ConnectTimeout)
+RETRY_EXCEPTIONS = (requests.HTTPError,
+                    requests.ConnectionError,
+                    requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
@@ -151,13 +153,16 @@ def _single_upload(buf, name, client, **kwargs):
 
 def _multipart_upload(buf, name, file_size, client, **kwargs):
     # scale the part size based on file size
-    part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)), MIN_PART_SIZE)
+    part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)),
+                    MIN_PART_SIZE)
     num_parts = int(math.ceil(file_size / float(part_size)))
-    file_response = client.files.post_multipart(name=name, num_parts=num_parts, **kwargs)
+    file_response = client.files.post_multipart(name=name, num_parts=num_parts,
+                                                **kwargs)
 
     # Platform will give us a URL for each file part
     urls = file_response.upload_urls
-    assert num_parts == len(urls), "There are {} file parts but only {} urls".format(num_parts, len(urls))
+    assert num_parts == len(urls), \
+        "There are {} file parts but only {} urls".format(num_parts, len(urls))
 
     @retry(RETRY_EXCEPTIONS)
     def _upload_part(i, url):
