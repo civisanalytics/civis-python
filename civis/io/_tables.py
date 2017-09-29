@@ -11,7 +11,6 @@ from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
 from civis.utils._deprecation import deprecate_param
-from civis.utils._jobs import run_job
 
 import requests
 
@@ -26,7 +25,8 @@ except ImportError:
     NO_PANDAS = True
 
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
-           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis']
+           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
+           'civisfile_to_civis']
 
 DELIMITERS = {
     ',': 'comma',
@@ -650,6 +650,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                                  sortkey1=sortkey1, sortkey2=sortkey2,
                                  delimiter=delimiter, headers=headers,
                                  credential_id=credential_id,
+                                 polling_interval=polling_interval,
                                  archive=archive, hidden=hidden)
     return fut
 
@@ -659,7 +660,8 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        distkey=None, sortkey1=None, sortkey2=None,
                        delimiter=",", headers=None,
-                       credential_id=None, archive=False, hidden=True):
+                       credential_id=None, polling_interval=None,
+                       archive=False, hidden=True):
     """Upload the contents of a Civis file to a Civis table.
 
     Parameters
@@ -699,6 +701,8 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
+    polling_interval : int or float, optional
+        Number of seconds to wait between checks for job completion.
     archive : bool, optional (deprecated)
         If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
@@ -748,7 +752,12 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
         destination=dict(database_table=dict(schema=schema, table=table)),
         advanced_options=options)
 
-    fut = run_job(import_job.id, api_key=api_key, client=client)
+    run = client.jobs.post_runs(import_job.id)
+    fut = CivisFuture(client.jobs.get_runs,
+                      (import_job.id, run['id']),
+                      polling_interval=polling_interval,
+                      client=client,
+                      poll_on_creation=False)
 
     if archive:
 

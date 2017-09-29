@@ -1,7 +1,10 @@
 from requests import ConnectionError, ConnectTimeout
+
 from civis.compat import mock
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
+
+import pytest
 
 
 def test_camel_to_snake():
@@ -37,65 +40,67 @@ def test_maybe_random_name_not_random():
     assert maybe_get_random_name(given_name) == given_name
 
 
-class TestRetry:
-    """Test class for retry decorator"""
+def test_no_retry_required():
+    @retry(ConnectionError, retries=4, delay=0.1)
+    def succeeds():
+        counter['i'] += 1
+        return 'success'
 
-    def setUp(self):
-        self.counter = 0
+    counter = dict(i=0)
+    test_result = succeeds()
 
-    def test_no_retry_required(self):
-        @retry(ConnectionError, retries=4, delay=0.1)
-        def succeeds():
-            self.counter += 1
+    assert test_result == 'success'
+    assert counter['i'] == 1
+
+
+def test_retries_once():
+    @retry(ConnectionError, retries=4, delay=0.1)
+    def fails_once():
+        counter['i'] += 1
+        if counter['i'] < 2:
+            raise ConnectionError('failed')
+        else:
             return 'success'
 
-        test_result = succeeds()
+    counter = dict(i=0)
+    test_result = fails_once()
 
-        assert test_result == 'success'
-        assert self.counter == 1
+    assert test_result == 'success'
+    assert counter['i'] == 2
 
-    def test_retries_once(self):
-        @retry(ConnectionError, retries=4, delay=0.1)
-        def fails_once():
-            self.counter += 1
-            if self.counter < 2:
-                raise ConnectionError('failed')
-            else:
-                return 'success'
 
-        test_result = fails_once()
+def test_limit_is_reached():
+    @retry(ConnectionError, retries=4, delay=0.1)
+    def always_fails():
+        counter['i'] += 1
+        raise ConnectionError('failed')
 
-        assert test_result == 'success'
-        assert self.counter == 2
+    counter = dict(i=0)
+    pytest.raises(ConnectionError, always_fails)
+    assert counter['i'] == 5
 
-    def test_limit_is_reached(self):
-        @retry(ConnectionError, retries=4, delay=0.1)
-        def always_fails():
-            self.counter += 1
-            raise ConnectionError('failed')
 
-        assert isinstance(always_fails(), ConnectionError)
-        assert self.counter == 5
+def test_multiple_exception_types():
+    @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
+    def raise_multiple_exceptions():
+        counter['i'] += 1
+        if counter['i'] == 1:
+            raise ConnectionError('one error')
+        elif counter['i'] == 2:
+            raise ConnectTimeout('another error')
+        else:
+            return 'success'
 
-    def test_multiple_exception_types(self):
-        @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
-        def raise_multiple_exceptions():
-            self.counter += 1
-            if self.counter == 1:
-                raise ConnectionError('one error')
-            elif self.counter == 2:
-                raise ConnectTimeout('another error')
-            else:
-                return 'success'
+    counter = dict(i=0)
+    test_result = raise_multiple_exceptions()
 
-        test_result = raise_multiple_exceptions()
+    assert test_result == 'success'
+    assert counter['i'] == 3
 
-        assert test_result == 'success'
-        assert self.counter == 3
 
-    def test_unexpected_exception_does_not_retry(self):
-        @retry(ConnectionError, retries=4, delay=0.1)
-        def raise_unexpected_error():
-            raise ValueError('unexpected error')
+def test_unexpected_exception_does_not_retry():
+    @retry(ConnectionError, retries=4, delay=0.1)
+    def raise_unexpected_error():
+        raise ValueError('unexpected error')
 
-        assert isinstance(raise_unexpected_error(), ValueError)
+    pytest.raises(ValueError, raise_unexpected_error)
