@@ -252,7 +252,14 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
+        user_dtypes = kwargs.pop('dtype')
+        # Only for types for str and bool
+        kwargs['dtype'] = {k:v for k,v in user_dtypes.items()
+                           if v in [np.str, np.bool]}
         data = pd.read_csv(url, **kwargs)
+        dtype_cols = [c for c in list(data) if c in set(user_dtypes.keys())]
+        for col in dtype_cols:
+            data[col] = data[col].astype(user_dtypes[col])
     else:
         r = requests.get(url)
         r.raise_for_status()
@@ -756,6 +763,7 @@ def _import_bytes(buf, database, table, client, max_errors,
         fut.add_done_callback(f)
     return fut
 
+
 def _redshift_to_py(civ_client, tableid):
 
     SQL_PANDAS_MAP = {
@@ -783,6 +791,7 @@ def _redshift_to_py(civ_client, tableid):
         'character varying': np.str,
         'nvarchar': np.str,
         'text': np.str}
+
 
     DATE_TYPES = ['date', 'timestamp', 'timestamptz',
                   'timestamp without time zone']
