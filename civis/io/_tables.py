@@ -450,6 +450,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
+
     outputs = fut.result()["output"]
     if not outputs:
         raise EmptyResultError("Unload query {} returned no manifest."
@@ -558,6 +559,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                              sortkey1=sortkey1, sortkey2=sortkey2,
                              delimiter=delimiter, headers=headers,
                              credential_id=credential_id,
+                             polling_interval=polling_interval,
                              archive=archive, hidden=hidden)
 
     return fut
