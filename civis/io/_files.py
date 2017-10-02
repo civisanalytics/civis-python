@@ -79,8 +79,7 @@ def _buf_len(buf):
         # e.g. BytesIO, cStringIO.StringIO
         return len(buf.getvalue())
 
-    log.warning('Could not determine length of file. Defaulting to single put '
-                'instead of multipart upload. If file is >5GB put will fail.')
+    return None
 
 
 def _legacy_upload(buf, name, client, **kwargs):
@@ -243,6 +242,8 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         return _legacy_upload(buf, name, client, **kwargs)
 
     file_size = _buf_len(buf)
+    log.warning('Could not determine length of file. Defaulting to single put '
+                'instead of multipart upload. If file is >5GB put will fail.')
 
     if not file_size:
         return _single_upload(buf, name, client, **kwargs)

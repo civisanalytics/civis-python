@@ -26,7 +26,7 @@ except ImportError:
 
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
-           'civisfile_to_civis']
+           'civis_file_to_table']
 
 DELIMITERS = {
     ',': 'comma',
@@ -552,15 +552,15 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     delimiter = ','
     name = table.split('.')[-1]
     file_id = file_to_civis(buf, name, api_key=api_key, client=client)
-    fut = civisfile_to_civis(file_id, database, table, api_key=api_key,
-                             client=client, max_errors=max_errors,
-                             existing_table_rows=existing_table_rows,
-                             distkey=distkey,
-                             sortkey1=sortkey1, sortkey2=sortkey2,
-                             delimiter=delimiter, headers=headers,
-                             credential_id=credential_id,
-                             polling_interval=polling_interval,
-                             archive=archive, hidden=hidden)
+    fut = civis_file_to_table(file_id, database, table, api_key=api_key,
+                              client=client, max_errors=max_errors,
+                              existing_table_rows=existing_table_rows,
+                              distkey=distkey,
+                              sortkey1=sortkey1, sortkey2=sortkey2,
+                              delimiter=delimiter, headers=headers,
+                              credential_id=credential_id,
+                              polling_interval=polling_interval,
+                              hidden=hidden)
 
     return fut
 
@@ -645,25 +645,25 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     name = path.basename(filename)
     with open(filename, "rb") as data:
         file_id = file_to_civis(data, name, api_key=api_key, client=client)
-        fut = civisfile_to_civis(file_id, database, table, api_key=api_key,
-                                 client=client, max_errors=max_errors,
-                                 existing_table_rows=existing_table_rows,
-                                 distkey=distkey,
-                                 sortkey1=sortkey1, sortkey2=sortkey2,
-                                 delimiter=delimiter, headers=headers,
-                                 credential_id=credential_id,
-                                 polling_interval=polling_interval,
-                                 archive=archive, hidden=hidden)
+        fut = civis_file_to_table(file_id, database, table, api_key=api_key,
+                                  client=client, max_errors=max_errors,
+                                  existing_table_rows=existing_table_rows,
+                                  distkey=distkey,
+                                  sortkey1=sortkey1, sortkey2=sortkey2,
+                                  delimiter=delimiter, headers=headers,
+                                  credential_id=credential_id,
+                                  polling_interval=polling_interval,
+                                  hidden=hidden)
     return fut
 
 
 @deprecate_param('v2.0.0', 'api_key')
-def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
-                       max_errors=None, existing_table_rows="fail",
-                       distkey=None, sortkey1=None, sortkey2=None,
-                       delimiter=",", headers=None,
-                       credential_id=None, polling_interval=None,
-                       archive=False, hidden=True):
+def civis_file_to_table(file_id, database, table, api_key=None, client=None,
+                        max_errors=None, existing_table_rows="fail",
+                        distkey=None, sortkey1=None, sortkey2=None,
+                        delimiter=",", headers=None,
+                        credential_id=None, polling_interval=None,
+                        hidden=True):
     """Upload the contents of a Civis file to a Civis table.
 
     Parameters
@@ -705,8 +705,6 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
         credential will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
 
@@ -726,9 +724,6 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
     """
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
 
     schema, table = table.split(".", 1)
     db_id = client.get_database_id(database)
@@ -760,13 +755,6 @@ def civisfile_to_civis(file_id, database, table, api_key=None, client=None,
                       polling_interval=polling_interval,
                       client=client,
                       poll_on_creation=False)
-
-    if archive:
-
-        def f(x):
-            return client.imports.put_archive(import_job.id, True)
-
-        fut.add_done_callback(f)
 
     return fut
 
