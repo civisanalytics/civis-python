@@ -138,7 +138,8 @@ def read_civis(table, database, columns=None, use_pandas=False,
                 pd_kwargs = {'parse_dates': date_cols,
                              'dtype': py_types,
                              'engine': 'python',
-                             'infer_datetime_format': True}
+                             'infer_datetime_format': True,
+                             'encoding': 'utf8'}
                 kwargs.update(pd_kwargs)
         elif type(dtype) == dict:
             kwargs['dtype'] = dtype
