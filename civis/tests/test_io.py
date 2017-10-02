@@ -97,7 +97,8 @@ class ImportTests(CivisVCRTestCase):
     def test_get_url_from_file_id(self, *mocks):
         client = civis.APIClient()
         url = civis.io._files._get_url_from_file_id(self.file_id, client)
-        assert url.startswith('https://civis-console.s3.amazonaws.com/orgs/tgtg/files/')
+        assert url.startswith(
+            'https://civis-console.s3.amazonaws.com/orgs/tgtg/files/')
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
