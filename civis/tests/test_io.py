@@ -97,7 +97,7 @@ class ImportTests(CivisVCRTestCase):
     def test_get_url_from_file_id(self, *mocks):
         client = civis.APIClient()
         url = civis.io._files._get_url_from_file_id(self.file_id, client)
-        assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
+        assert url.startswith('https://civis-console.s3.amazonaws.com/orgs/tgtg/files/')
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
@@ -144,12 +144,12 @@ class ImportTests(CivisVCRTestCase):
         assert result.state == 'succeeded'
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_civisfile_to_civis(self, *mocks):
+    def test_civis_file_to_table(self, *mocks):
         table = "scratch.api_client_test_fixture"
         database = 'redshift-general'
-        result = civis.io.civisfile_to_civis(self.file_id, database, table,
-                                             existing_table_rows='truncate',
-                                             polling_interval=POLL_INTERVAL)
+        result = civis.io.civis_file_to_table(self.file_id, database, table,
+                                              existing_table_rows='truncate',
+                                              polling_interval=POLL_INTERVAL)
         result = result.result()  # block until done
 
         assert isinstance(result.id, int)
