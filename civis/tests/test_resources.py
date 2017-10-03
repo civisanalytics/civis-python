@@ -1,6 +1,5 @@
 from collections import defaultdict, OrderedDict
 import json
-import os
 import pytest
 import six
 
@@ -9,9 +8,9 @@ from requests.exceptions import HTTPError
 
 from civis.compat import mock
 from civis.resources import _resources
+from civis.tests import TEST_SPEC
 
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+with open(TEST_SPEC) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
 
 MOCKED_OPEN = 'builtins.open' if six.PY3 else '__builtin__.open'
@@ -231,12 +230,17 @@ def test_expired_api_key(mock_response):
     assert http_error_raised
 
 
-def test_create_method_unexpected_kwargs():
+def _create_mock_endpoint():
     args = [{"name": 'foo', "in": 'query', "required": True, "doc": ""},
             {"name": 'bar', "in": 'query', "required": False, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
                                       'fake_doc')
     mock_endpoint = mock.MagicMock()
+    return mock_endpoint, method
+
+
+def test_create_method_unexpected_kwargs():
+    mock_endpoint, method = _create_mock_endpoint()
 
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
@@ -253,6 +257,36 @@ def test_create_method_unexpected_kwargs():
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
+
+
+def test_create_method_too_many_pos_args():
+    mock_endpoint, method = _create_mock_endpoint()
+
+    # Method raises TypeError with too many arguments
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, 0, 0)
+    assert str(excinfo.value) == "too many positional arguments"
+
+
+def test_create_method_multiple_values():
+    mock_endpoint, method = _create_mock_endpoint()
+
+    # Method raises TypeError with multiple values for arguments
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, foo=0)
+    assert str(excinfo.value) == "multiple values for argument 'foo'"
+
+
+@pytest.mark.skipif(six.PY2, reason='Keyword-only parameters are '
+                                    'not in Python 2')
+def test_create_method_keyword_only():
+    # Verify that optional arguments are keyword-only
+    # (This language feature is only present in Python 3)
+    mock_endpoint, method = _create_mock_endpoint()
+
+    with pytest.raises(TypeError) as excinfo:
+        method(mock_endpoint, 0, 0)
+    assert str(excinfo.value) == "too many positional arguments"
 
 
 @mock.patch(MOCKED_OPEN, new_callable=mock.mock_open,
