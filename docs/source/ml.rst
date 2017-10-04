@@ -52,27 +52,28 @@ gradient_boosting_classifier      classification      `GradientBoostingClassifie
 random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
 extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
 multilayer_perceptron_classifier  classification      `MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
-stacking_classifier               classification      `StackedClassifier <GET_LINK_FROM_CIVISMLEXT>`_ 
+stacking_classifier               classification      `StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_ 
 sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
 sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
 gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
 random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
 extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
 multilayer_perceptron_regressor   regression          `MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
-stacking_regressor                regression          `StackedRegressor <GET_LINK_FROM_CIVISMLEXT>`_ 
+stacking_regressor                regression          `StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_ 
 ================================  ================    ==================================================================================================================================   ==================================
 
 The "stacking_classifier" model stacks
 together the "sparse_logistic", "gradient_boosting_classifier",
 and "random_forest_classifier" models, using altered defaults as
-listed for each in "Altered Defaults". The models are combined using a
+listed for each in the "Altered Defaults" column of the table
+above. The models are combined using a
 :class:`~sklearn.pipeline.Pipeline` containing a `Normalizer <http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer>`_
 step, followed by `LogisticRegressionCV <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html>`_
 with ``penalty='l2'`` and ``tol=1e-08``. The
 "stacking_regressor" works similarly, stacking together the
 "sparse_linear_regressor", "gradient_boosting_regressor",
 and "random_forest_regressor" models, and combining them using
-`NonNegativeLinearRegression <GET_LINK_FROM_CIVISMLEXT>`_.
+`NonNegativeLinearRegression <https://github.com/civisanalytics/civisml-extensions>`_.
 
 Custom Models
 -------------
@@ -137,13 +138,18 @@ Custom Dependencies
 -------------------
 
 Installing packages from PyPI is straightforward. You can specify a `dependencies`
-argument to `~civis.ml.ModelPipeline` which will install the dependencies in your runtime
-environment. VCS support is also enabled (see `docs <https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_.)
+argument to :class:`~civis.ml.ModelPipeline` which will install the
+dependencies in your runtime environment. VCS support is also enabled
+(see `docs
+<https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_.)
 Installing a remote git repository from, say, Github only requires passing the HTTPS 
-URL in the form of, for example, `git+https://github.com/scikit-learn/scikit-learn`.
+URL in the form of, for example, ``git+https://github.com/scikit-learn/scikit-learn``.
 
-CivisML will run `pip install [your package here]`. We strongly encourage you to pin
-package versions for consistency. Example code looks like:::
+CivisML will run ``pip install [your package here]``. We strongly encourage you to pin
+package versions for consistency. Example code looks like:
+
+
+.. code-block:: python
 
   from civis.ml import ModelPipeline
   from pyearth import Earth
@@ -152,13 +158,17 @@ package versions for consistency. Example code looks like:::
   model = ModelPipeline(est, dependent_variable='age', dependencies=deps)
   train = model.train(table_name='donors.from_march', database_name='client')
 
+
 Additionally, you can store a remote git host's API token in the Civis Platform as a
 credential to use for installing private git repositores. For example, you can go to
-Github at the `https://github.com/settings/tokens` URL, copy your token into the
-password field of a credential, and pass the credential name to the `git_token_name`
-argument in `~civis.ml.ModelPipeline`. This also works with other hosting services.
-A simple example of how to do this with API looks as follows::
+Github at the ``https://github.com/settings/tokens`` URL, copy your token into the
+password field of a credential, and pass the credential name to the ``git_token_name``
+argument in :class:`~civis.ml.ModelPipeline`. This also works with other hosting services.
+A simple example of how to do this with API looks as follows
 
+
+.. code-block:: python
+		
   import civis
   password = 'abc123'  # token copied from https://github.com/settings/tokens
   username = 'user123'  # Github username
@@ -171,6 +181,7 @@ A simple example of how to do this with API looks as follows::
                                        type="Custom")
 
   pipeline = civis.ml.ModelPipeline(..., git_token_name=git_token_name)
+
 
 Note, installing private dependencies with submodules is not supported.
 
@@ -215,7 +226,10 @@ Examples
 :meth:`~concurrent.futures.Future.add_done_callback`.
 This is called as soon as the run completes. It takes a single argument, the
 :class:`~concurrent.futures.Future` for the completed job.
-You can use this method to chain jobs together::
+You can use this method to chain jobs together:
+
+
+.. code-block:: python
 
   from concurrent import futures
   from civis.ml import ModelPipeline
@@ -228,8 +242,12 @@ You can use this method to chain jobs together::
   futures.wait(training)  # Blocks until all training jobs complete
   futures.wait(predictions)  # Blocks until all prediction jobs complete
 
+
 You can create and train multiple models at once to find the best approach
-for solving a problem. For example::
+for solving a problem. For example:
+
+
+.. code-block:: python
 
   from civis.ml import ModelPipeline
   algorithms = ['gradient_boosting_classifier', 'sparse_logistic', 'random_forest_classifier']
@@ -238,6 +256,7 @@ for solving a problem. For example::
   models = [ModelPipeline(alg, primary_key=pkey, dependent_variable=depvar) for alg in algorithms]
   train = [model.train(table_name='schema.name', database_name='My DB') for model in models]
   aucs = [tr.metrics['roc_auc'] for tr in train]  # Code blocks here
+
 
 Optional dependencies
 =====================
