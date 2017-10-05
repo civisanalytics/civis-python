@@ -1,28 +1,31 @@
 from builtins import super
 from collections import namedtuple
+from concurrent.futures import CancelledError
 from six import BytesIO
 import json
 import os
 import pickle
 import tempfile
 
+import joblib
 try:
     import pandas as pd
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
 try:
-    import joblib
-    HAS_JOBLIB = True
-except ImportError:
-    HAS_JOBLIB = False
-try:
     from sklearn.linear_model import LogisticRegression
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
 
 from civis import APIClient
+from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock, FileNotFoundError
 from civis.response import Response
@@ -143,6 +146,18 @@ def test_stash_local_data_from_file(mock_file):
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
+@pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
+def test_stash_local_dataframe_multiindex_err():
+    arrays = [np.array(['bar', 'bar', 'baz', 'baz',
+                        'foo', 'foo', 'qux', 'qux']),
+              np.array(['one', 'two', 'one', 'two',
+                        'one', 'two', 'one', 'two'])]
+    df = pd.DataFrame(np.random.randn(8, 4), index=arrays)
+    with pytest.raises(TypeError):
+        _model._stash_local_dataframe(df)
+
+
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_dataframe(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
@@ -152,7 +167,6 @@ def test_stash_local_data_from_dataframe(mock_file):
     assert isinstance(mock_file.call_args[0][0], BytesIO)
 
 
-@pytest.mark.skipif(not HAS_JOBLIB, reason="joblib not installed")
 @mock.patch.object(_model, '_retrieve_file', autospec=True)
 def test_load_estimator(mock_retrieve):
     obj = {'spam': 'eggs'}
@@ -224,8 +238,13 @@ def test_set_model_exception_metadata_exception():
             raise self.__exc('What a spectacular failure, you say!')
 
     # exception types get caught!
-    for exc in [FileNotFoundError, CivisJobFailure, KeyError]:
+    for exc in [FileNotFoundError, CivisJobFailure, CancelledError]:
         fut = ModelFutureRaiseExc(exc, 1, 2, client=mock_client)
+        _model.ModelFuture._set_model_exception(fut)
+
+    with pytest.warns(UserWarning):
+        # The KeyError is caught, but sends a warning
+        fut = ModelFutureRaiseExc(KeyError, 1, 2, client=mock_client)
         _model.ModelFuture._set_model_exception(fut)
 
     fut = ModelFutureRaiseExc(RuntimeError, 1, 2, client=mock_client)
@@ -280,6 +299,19 @@ def test_set_model_exception_unknown_error():
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
     assert str(err.value).startswith(err_msg)
+
+
+@mock.patch.object(_model.cio, "file_to_json", autospec=True,
+                   return_value={'run': {'status': 'succeeded',
+                                         'stack_trace': None}})
+def test_set_model_exception_no_exception(mock_f2j):
+    # If nothing went wrong, we shouldn't set an exception
+    ro = [{'name': 'model_info.json', 'object_id': 137, 'object_type': 'File'},
+          {'name': 'metrics.json', 'object_id': 139, 'object_type': 'File'}]
+    ro = [Response(o) for o in ro]
+    mock_client = setup_client_mock(1, 2, state='succeeded', run_outputs=ro)
+    fut = _model.ModelFuture(1, 2, client=mock_client)
+    assert fut.exception() is None
 
 
 class ModelFutureStub:
@@ -406,7 +438,8 @@ def test_train_data_(mock_cio):
     mock_client.scripts.get_containers_runs = poller
 
     path = '/green/eggs/and/ham'
-    training_meta = {'run': {'configuration': {'data': {'location': path}}}}
+    training_meta = {'run': {'configuration': {'data': {'location': path}},
+                             'status': 'succeeded'}}
     mock_cio.file_to_json.return_value = training_meta
 
     mf = _model.ModelFuture(job_id=1, run_id=2, train_job_id=11,
@@ -447,26 +480,66 @@ def test_estimator(mock_le):
         "The Estimator is only downloaded once and cached."
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output",
-                   mock.Mock(return_value=11, spec_set=True))
-@mock.patch.object(_model.cio, "file_to_json", return_value='foo')
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo',
+                   autospec=True)
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
-def test_validation_metadata(mock_spe, mock_f2f):
+def test_validation_metadata_training(mock_spe, mock_f2f,
+                                      mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
+
     assert mf.validation_metadata == 'foo'
     mock_f2f.assert_called_once_with(11, client=c)
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
 
 
-@mock.patch.object(_model.cio, "file_id_from_run_output",
-                   mock.Mock(return_value=11, spec_set=True))
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json", return_value='foo',
+                   autospec=True)
+@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+def test_validation_metadata_prediction(mock_spe, mock_f2f,
+                                        mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(1, 2, 3, 7, client=c)
+
+    assert mf.validation_metadata == 'foo'
+    mock_f2f.assert_called_once_with(11, client=c)
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json",
-                   mock.MagicMock(return_value={'metrics': 'foo'}))
-def test_metrics():
+                   mock.MagicMock(
+                       return_value={'metrics': 'foo',
+                                     'run': {'status': 'succeeded'}}))
+def test_metrics_training(mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json",
+                   mock.MagicMock(
+                       return_value={'metrics': 'foo',
+                                     'run': {'status': 'succeeded'}}))
+def test_metrics_prediction(mock_file_id_from_run_output):
+    mock_file_id_from_run_output.return_value = 11
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(1, 2, 3, 7, client=c)
+
+    assert mf.metrics == 'foo'
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
 
 
 #####################################
@@ -502,9 +575,22 @@ def container_response_stub(from_template_id=8387):
         'PARAMS': '{}',
         'REQUIRED_CPU': 1000,
         'REQUIRED_MEMORY': 9999,
-        'REQUIRED_DISK_SPACE': -20
+        'REQUIRED_DISK_SPACE': -20,
+        'DEPENDENCIES': 'A B C D',
+        'GIT_CRED': 9876
+    }
+    notifications = {
+        'urls': [],
+        'failureEmailAddresses': [],
+        'failureOn': True,
+        'stallWarningMinutes': None,
+        'successEmailAddresses': [],
+        'successEmailBody': None,
+        'successEmailSubject': None,
+        'successOn': True
     }
     return Response(dict(arguments=arguments,
+                         notifications=notifications,
                          required_resources={},
                          docker_image_tag=None,
                          docker_command=None,
@@ -521,6 +607,7 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = \
         container = container_response_stub
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
 
     resources = {'REQUIRED_CPU': 1000,
                  'REQUIRED_MEMORY': 9999,
@@ -539,6 +626,59 @@ def test_modelpipeline_classmethod_constructor(mock_future,
     assert mp.parameters == json.loads(container.arguments['PARAMS'])
     assert mp.job_resources == resources
     assert mp.model_name == container.name[:-6]
+    assert mp.notifications == {camel_to_snake(key): val for key, val
+                                in container.notifications.items()}
+    deps = container.arguments.get('DEPENDENCIES', None)
+    assert mp.dependencies == deps.split() if deps else None
+    assert mp.git_token_name == 'Token'
+
+
+@mock.patch.object(_model, 'ModelFuture')
+def test_modelpipeline_classmethod_constructor_defaults(
+        mock_future, container_response_stub):
+    del container_response_stub.arguments['PARAMS']
+    del container_response_stub.arguments['CVPARAMS']
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = container_response_stub
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
+
+    # test everything is working fine
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    assert mp.cv_params == {}
+    assert mp.parameters == {}
+
+
+@mock.patch.object(_model, 'ModelFuture', mock.Mock())
+def test_modelpipeline_classmethod_constructor_future_train_version():
+    # Test handling attempts to restore a model created with a newer
+    # version of CivisML.
+    current_max_template = max(_model._PRED_TEMPLATES)
+    cont = container_response_stub(current_max_template + 1000)
+    mock_client = mock.Mock()
+    mock_client.scripts.get_containers.return_value = cont
+    mock_client.credentials.get.return_value = Response({'name': 'Token'})
+
+    # test everything is working fine
+    with pytest.warns(RuntimeWarning):
+        mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    exp_p_id = _model._PRED_TEMPLATES[current_max_template]
+    assert mp.predict_template_id == exp_p_id
+
+
+@pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
+def test_modelpipeline_classmethod_constructor_nonint_id():
+    # Verify that we can still JSON-serialize job and run IDs even
+    # if they're entered in a non-JSON-able format.
+    # We need to turn them into JSON to set them as script arguments.
+    mock_client = setup_client_mock(1, 2)
+    mock_client.scripts.get_containers.return_value = container_response_stub()
+
+    mp = _model.ModelPipeline.from_existing(np.int64(1), np.int64(2),
+                                            client=mock_client)
+
+    out = json.dumps({'job': mp.train_result_.job_id,
+                      'run': mp.train_result_.run_id})
+    assert out == '{"job": 1, "run": 2}' or out == '{"run": 2, "job": 1}'
 
 
 @mock.patch.object(_model, 'ModelFuture', autospec=True)
@@ -549,7 +689,7 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
     mock_client.scripts.get_containers.return_value = \
         container_response_stub(from_template_id=8387)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    assert mp.predict_template_id == 8388, "Predict template v1.0"
+    assert mp.predict_template_id == 9113, "Predict template v1.1"
 
     # v0.5 training
     mock_client.scripts.get_containers.return_value = \

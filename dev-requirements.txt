@@ -1,7 +1,9 @@
-pytest~=2.8.0
+pytest>=3,<4
 sphinx>=1.4.6,==1.*
 flake8>=3.0.4,==3.*
 mock==2.0.0 ; python_version == '2.7'
 pytest-cov>=2.4.0,==2.*
-vcrpy>=1.10.0,<=1.10.9
+vcrpy>=1.11.0,<=1.11.99
 vcrpy-unittest==0.1.6
+sphinx_rtd_theme>=0.2.4,<=0.2.99
+numpydoc>=0.7.0,<=0.7.99

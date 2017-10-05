@@ -14,22 +14,19 @@ import warnings
 from concurrent import futures
 from functools import wraps
 
-try:
-    import joblib
-    HAS_JOBLIB = True
-except ImportError:
-    HAS_JOBLIB = False
+import joblib
 try:
     from sklearn.base import BaseEstimator
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
 
-from civis import APIClient, find_one
+from civis import APIClient, find, find_one, __version__
+from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
 import civis.io as cio
-from civis.futures import CivisFuture
+from civis.futures import ContainerFuture
 from civis.polling import _ResultPollingThread
 
 __all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
@@ -40,7 +37,8 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {8387: 8388,  # v1.0
+_PRED_TEMPLATES = {9112: 9113,  # v1.1
+                   8387: 9113,  # v1.0
                    7020: 7021,  # v0.5
                    }
 
@@ -85,6 +83,13 @@ def _block_and_handle_missing(method):
 
 def _stash_local_dataframe(df, client=None):
     """Store data in a temporary Civis File and return the file ID"""
+    # Standard dataframe indexes do not have a "levels" attribute,
+    # but multiindexes do. Checking for this attribute means we don't
+    # need to import pandas to do error handling here.
+    if getattr(getattr(df, "index", None), "levels", None) is not None:
+        raise TypeError("CivisML does not support multi-indexed data frames. "
+                        "Try calling `.reset_index` on your data to convert "
+                        "it into a CivisML-friendly format.")
     civis_fname = 'modelpipeline_data.csv'
     buf = six.BytesIO()
     if six.PY3:
@@ -113,7 +118,7 @@ def _decode_train_run(train_job_id, train_run_id, client):
     try:
         return int(train_run_id)
     except ValueError:
-        container = client.scripts.get_containers(train_job_id)
+        container = client.scripts.get_containers(int(train_job_id))
         if train_run_id == 'active':
             train_run_id = container.arguments.get('ACTIVE_BUILD', find_one(
                 container.params, name='ACTIVE_BUILD'))['default']
@@ -154,9 +159,6 @@ def _load_table_from_outputs(job_id, run_id, filename, client=None,
 
 def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     """Load a joblib-serialized Estimator from run outputs"""
-    if not HAS_JOBLIB:
-        raise ImportError('Install joblib to download models '
-                          'from Civis Platform.')
     try:
         tempdir = tempfile.mkdtemp()
         path = _retrieve_file(filename, job_id, run_id, tempdir, client=client)
@@ -191,7 +193,7 @@ def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
     return exc
 
 
-class ModelFuture(CivisFuture):
+class ModelFuture(ContainerFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
     This object knows where to find modeling outputs
@@ -276,14 +278,12 @@ class ModelFuture(CivisFuture):
     See Also
     --------
     civis.futures.CivisFuture
+    civis.futures.ContainerFuture
     concurrent.futures.Future
     """
     def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
                  polling_interval=None, client=None, poll_on_creation=True):
-        if client is None:
-            client = APIClient(resources='all')
-        super().__init__(client.scripts.get_containers_runs,
-                         [job_id, run_id],
+        super().__init__(job_id, run_id,
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
@@ -302,21 +302,13 @@ class ModelFuture(CivisFuture):
         self._exception_handled = False
         self.add_done_callback(self._set_model_exception)
 
-    @property
-    def job_id(self):
-        return self.poller_args[0]
-
-    @property
-    def run_id(self):
-        return self.poller_args[1]
-
     @staticmethod
     def _set_model_exception(fut):
         """Callback: On job completion, check the metadata.
         If it indicates an exception, replace the generic
         ``CivisJobFailure`` by a more informative ``ModelError``.
         """
-        # Prevent inifinite recursion: this function calls `set_exception`,
+        # Prevent infinite recursion: this function calls `set_exception`,
         # which triggers callbacks (i.e. re-calls this function).
         if fut._exception_handled:
             return
@@ -328,54 +320,31 @@ class ModelFuture(CivisFuture):
             if fut.is_training and meta['run']['status'] == 'succeeded':
                 # if training job and job succeeded, check validation job
                 meta = fut.validation_metadata
-            try:
-                # This will fail if the user doesn't have joblib installed
-                est = fut.estimator
-            except Exception:  # NOQA
-                est = None
-            fut.set_exception(
-                  ModelError('Model run failed with stack trace:\n'
-                             '{}'.format(meta['run']['stack_trace']),
-                             est, meta))
+            if meta['run']['status'] == 'exception':
+                try:
+                    # This will fail if the user doesn't have joblib installed
+                    est = fut.estimator
+                except Exception:  # NOQA
+                    est = None
+                fut.set_exception(
+                      ModelError('Model run failed with stack trace:\n'
+                                 '{}'.format(meta['run']['stack_trace']),
+                                 est, meta))
         except (FileNotFoundError, CivisJobFailure) as exc:
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
             # check the tail of the log for a clearer exception.
             exc = _exception_from_logs(exc, fut.job_id, fut.run_id, fut.client)
             fut.set_exception(exc)
+        except futures.CancelledError:
+            # We don't need to change the exception if the run was cancelled
+            pass
         except KeyError:
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
             # mask the real error.
             warnings.warn("Received malformed metadata from Civis Platform. "
                           "Something went wrong with job execution.")
-
-    def cancel(self):
-        """Submit a request to cancel the container/script/run.
-
-        .. note:: If this object represents a prediction run,
-                  ``cancel`` will only cancel the parent job.
-                  Child jobs will remain active.
-
-        Returns
-        -------
-        bool
-            Whether or not the run is in a cancelled state.
-        """
-        with self._condition:
-            if self.cancelled():
-                return True
-            elif not self.done():
-                # Cancel the job and store the result of the cancellation in
-                # the "finished result" attribute, `_result`.
-                self._result = self.client.scripts.post_cancel(self.job_id)
-                for waiter in self._waiters:
-                    waiter.add_cancelled(self)
-                self._condition.notify_all()
-                self._invoke_callbacks()
-                self.cleanup()
-                return self.cancelled()
-            return False
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -392,6 +361,7 @@ class ModelFuture(CivisFuture):
 
     def __setstate__(self, state):
         self.__dict__ = state
+        self._condition = threading.Condition()
         self.client = APIClient(resources='all')
         if getattr(self, '_pubnub', None) is True:
             # Re-subscribe to notifications channel
@@ -399,7 +369,6 @@ class ModelFuture(CivisFuture):
         self._polling_thread = _ResultPollingThread(self._check_result, (),
                                                     self.polling_interval)
         self.poller = self.client.scripts.get_containers_runs
-        self._condition = threading.Condition()
         self.add_done_callback(self._set_model_exception)
 
     @property
@@ -490,8 +459,10 @@ class ModelFuture(CivisFuture):
     @_block_and_handle_missing
     def validation_metadata(self):
         if self._val_metadata is None:
-            fid = cio.file_id_from_run_output('metrics.json', self.job_id,
-                                              self.run_id, client=self.client)
+            fid = cio.file_id_from_run_output('metrics.json',
+                                              self.train_job_id,
+                                              self.train_run_id,
+                                              client=self.client)
             self._val_metadata = cio.file_to_json(fid, client=self.client)
         return self._val_metadata
 
@@ -557,6 +528,17 @@ class ModelPipeline:
         Memory requested from Civis Platform for training jobs, in MiB
     disk_requested : float, optional
         Disk space requested on Civis Platform for training jobs, in GB
+    notifications : dict
+        See :func:`~civis.resources._resources.Scripts.post_custom` for
+        further documentation about email and URL notification.
+     dependencies : array, optional
+         List of packages to install from PyPI or git repository (i.e., Github
+         or Bitbucket). If a private repo is specificed, please include a
+         ``git_token_name`` argument as well (see below).
+     git_token_name : str, optional
+         Name of remote git API token stored in platform as the password field
+         in a custom platform credential. Used only when installing private git
+         repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
@@ -619,16 +601,17 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    # These are the v1.0 templates
-    train_template_id = 8387
-    predict_template_id = 8388
+    # These are the v1.1 templates
+    train_template_id = 9112
+    predict_template_id = 9113
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
-                 disk_requested=None, verbose=False):
+                 disk_requested=None, notifications=None,
+                 dependencies=None, git_token_name=None, verbose=False):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -646,6 +629,9 @@ class ModelPipeline:
         self.job_resources = {'REQUIRED_CPU': cpu_requested,
                               'REQUIRED_MEMORY': memory_requested,
                               'REQUIRED_DISK_SPACE': disk_requested}
+        self.notifications = notifications or {}
+        self.dependencies = dependencies
+        self.git_token_name = git_token_name
         self.verbose = verbose
 
         if client is None:
@@ -694,6 +680,7 @@ class ModelPipeline:
         >>> model.train_result_.metrics['roc_auc']
         0.843
         """
+        train_job_id = int(train_job_id)  # Convert np.int to int
         if client is None:
             client = APIClient(resources='all')
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
@@ -714,8 +701,8 @@ class ModelPipeline:
         model = args.get('MODEL', args.get('WORKFLOW'))
         dependent_variable = args['TARGET_COLUMN'].split()
         primary_key = args.get('PRIMARY_KEY')
-        parameters = json.loads(args.get('PARAMS', {}))
-        cross_validation_parameters = json.loads(args.get('CVPARAMS', {}))
+        parameters = json.loads(args.get('PARAMS', "{}"))
+        cross_validation_parameters = json.loads(args.get('CVPARAMS', "{}"))
         calibration = args.get('CALIBRATION')
         excluded_columns = args.get('EXCLUDE_COLS', None)
         if excluded_columns:
@@ -727,6 +714,14 @@ class ModelPipeline:
         if name.endswith(' Train'):
             # Strip object-applied suffix
             name = name[:-len(' Train')]
+        notifications = {camel_to_snake(key): val for key, val
+                         in container.notifications.items()}
+        dependencies = args.get('DEPENDENCIES', None)
+        if dependencies:
+            dependencies = dependencies.split()
+        git_token_name = args.get('GIT_CRED', None)
+        if git_token_name:
+            git_token_name = client.credentials.get(git_token_name).name
 
         klass = cls(model=model,
                     dependent_variable=dependent_variable,
@@ -740,12 +735,25 @@ class ModelPipeline:
                     cpu_requested=cpu_requested,
                     disk_requested=disk_requested,
                     memory_requested=memory_requested,
+                    notifications=notifications,
+                    dependencies=dependencies,
+                    git_token_name=git_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
-        klass.predict_template_id = _PRED_TEMPLATES.get(template_id)
+        p_id = _PRED_TEMPLATES.get(template_id)
+        if p_id is None:
+            warnings.warn('Model %s was trained with a newer version of '
+                          'CivisML than is available in the API client '
+                          'version %s. Please update your API client version .'
+                          'Attempting to use an older version of the '
+                          'prediction code. Prediction will either fail '
+                          'immediately or succeed.'
+                          % (train_job_id, __version__), RuntimeWarning)
+            p_id = max(_PRED_TEMPLATES.values())
+        klass.predict_template_id = p_id
 
         return klass
 
@@ -847,9 +855,10 @@ class ModelPipeline:
             train_args['EXCLUDE_COLS'] = ' '.join(self.excluded_columns)
         if fit_params:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
+        if self.dependencies:
+            train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
 
-        if (HAS_SKLEARN and HAS_JOBLIB and
-                isinstance(self.model, BaseEstimator)):
+        if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
                 tempdir = tempfile.mkdtemp()
                 fout = os.path.join(tempdir, 'estimator.pkl')
@@ -885,26 +894,41 @@ class ModelPipeline:
     def _create_custom_run(self, template_id, job_name=None, table_name=None,
                            database_name=None, file_id=None, args=None,
                            resources=None, polling_interval=None):
-
+        # Handle int-like but non-Python-integer types such as np.int64
+        file_id = int(file_id) if file_id is not None else file_id
         script_arguments = {'TABLE_NAME': table_name,
                             'CIVIS_FILE_ID': file_id,
                             'DEBUG': self.verbose}
         if database_name:
-            db_id = self._client.get_database_id(database_name)
-            script_arguments['DB'] = {'database': db_id}
+            if template_id < 8000:
+                # v0 jobs used a different database parameter
+                script_arguments['DB_NAME'] = database_name
+            else:
+                db_id = self._client.get_database_id(database_name)
+                script_arguments['DB'] = {'database': db_id}
         resources = resources or {}
         for key, value in resources.items():
             if value:
                 # Default resources are set on the template. Only
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
+        if self.git_token_name:
+            creds = find(self._client.credentials.list(),
+                         name=self.git_token_name,
+                         type='Custom')
+            if len(creds) > 1:
+                raise ValueError("Unique credential with name '{}' for "
+                                 "remote git hosting service not found!"
+                                 .format(self.git_token_name))
+            script_arguments['GIT_CRED'] = creds[0].id
 
         script_arguments.update(args or {})
 
         container = self._client.scripts.post_custom(
             from_template_id=template_id,
             name=job_name,
-            arguments=script_arguments)
+            arguments=script_arguments,
+            notifications=self.notifications)
         log.info('Created custom script %s.', container.id)
 
         run = self._client.scripts.post_custom_runs(container.id)
@@ -1043,8 +1067,12 @@ class ModelPipeline:
         if output_table:
             predict_args['OUTPUT_TABLE'] = output_table
         if output_db:
-            output_db_id = self._client.get_database_id(output_db)
-            predict_args['OUTPUT_DB'] = {'database': output_db_id}
+            if self.predict_template_id == 7021:
+                # v0 jobs used a different database parameter
+                predict_args['OUTPUT_DB'] = output_db
+            else:
+                output_db_id = self._client.get_database_id(output_db)
+                predict_args['OUTPUT_DB'] = {'database': output_db_id}
         if manifest:
             predict_args['MANIFEST'] = manifest
         if sql_where:

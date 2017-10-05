@@ -126,12 +126,12 @@ class PollableResult(CivisAsyncResultBase):
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
         result and never poll again."""
-        # Start a single thread continuously polling.
-        # It will stop once the job completes.
-        if not self._polling_thread.is_alive() and self._result is None:
-            self._polling_thread.start()
-
         with self._condition:
+            # Start a single thread continuously polling.
+            # It will stop once the job completes.
+            if not self._polling_thread.is_alive() and self._result is None:
+                self._polling_thread.start()
+
             if self._result is not None:
                 # If the job is already completed, just return the stored
                 # result.
@@ -183,13 +183,15 @@ class PollableResult(CivisAsyncResultBase):
     def cleanup(self):
         # This gets called after the result is set.
         # Ensure that the polling thread shuts down when it's no longer needed.
-        if self._polling_thread.is_alive():
-            self._polling_thread.cancel()
+        with self._condition:
+            if self._polling_thread.is_alive():
+                self._polling_thread.cancel()
 
     def _reset_polling_thread(self,
                               polling_interval=_DEFAULT_POLLING_INTERVAL):
-        if self._polling_thread.is_alive():
-            self._polling_thread.cancel()
-        self.polling_interval = polling_interval
-        self._polling_thread = _ResultPollingThread(self._check_result, (),
-                                                    polling_interval)
+        with self._condition:
+            if self._polling_thread.is_alive():
+                self._polling_thread.cancel()
+            self.polling_interval = polling_interval
+            self._polling_thread = _ResultPollingThread(self._check_result, (),
+                                                        polling_interval)

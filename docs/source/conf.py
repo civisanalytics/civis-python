@@ -42,8 +42,9 @@ autosummary_generate = True
 intersphinx_mapping = {
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable', None),
     'python': ('https://docs.python.org/3.4', None),
-    'requests': ('https://requests.readthedocs.org/en/latest/', None),
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
     'sklearn': ('http://scikit-learn.org/stable', None),
+    'joblib': ('http://pythonhosted.org/joblib', None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -378,7 +379,7 @@ if _test_build:
     api_path = os.path.join(test_dir, 'civis_api_spec.json')
     with open(api_path) as _raw:
         api_spec = JsonRef.replace_refs(
-            json.load(_raw, object_hook=OrderedDict))
+            json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
         api_spec, '1.0', 'base')
 else:

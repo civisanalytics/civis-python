@@ -2,7 +2,86 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## Unreleased
+### Changed
+- Optional arguments to API endpoints now display in function signatures.
+  Function signatures show a default value of "DEFAULT"; arguments will still
+  only be transmitted to the Civis Platform API when explicitly provided. (#140)
+
+### Added
+- ``civis.resources.cache_api_spec`` function to make it easier to record the
+  current API spec locally (#141).
+- Autospecced mock of the ``APIClient`` for use in testing third-party code which
+  uses this library (#141).
+- Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
+  and ``civis.parallel.infer_backend_factory`` in order to set the joblib
+  backend in the container for nested calls to ``joblib.Parallel``.
+
+## 1.6.2 - 2017-09-08
+### Changed
+- Added explanatory text to CivisML_parallel_training.ipynb (#126).
+
+### Fixed
+- Added `ResourceWarning` for Python 2.7 (#128).
+- Added `TypeError` for multi-indexed dataframes when used as input to
+  CivisML (#131).
+- ``ModelPipeline.from_existing`` will warn if users attempt to recreate
+  a model trained with a newer version of CivisML, and fall back on the
+  most recent prediction template it knows of (#134).
+- Make the `PaginatedResponse` returned by LIST endpoints a full iterator.
+  This also makes the `iterator=True` parameter work in Python 2.
+- When using ``civis.io.civis_to_csv``, emit a warning on SQL queries which
+  return no results instead of allowing a cryptic ``IndexError`` to surface (#135).
+- Fixed the example code snippet for ``civis.io.civis_to_multifile_csv``.
+  Also provided more details on its return dict in the docstring.
+- Pinned down `sphinx_rtd_theme` and `numpydoc` in `dev-requirements.txt`
+  for building the documentation.
+
+### Added
+- Jupyter notebook with demonstrations of use patterns and abstractions in the Python API client (#127).
+
+## 1.6.1 - 2017-08-22
+### Changed
+- Catch unnecessary warning while importing xgboost in CivisML_parallel_training.ipynb (#121)
+
+### Fixed
+- Fixed bug where instantiating a new model via ``ModelPipeline.from_existing`` from an existing model with empty "PARAMS" and "CV_PARAMS" boxes fails (#122).
+- Users can now access the ``ml`` and ``parallel`` namespaces from the base ``civis`` namespace (#123).
+- Parameters in the Civis API documentation now display in the proper order (#124).
+
+## 1.6.0 - 2017-07-27
+### Changed
+- Edited example for safer null value handling
+- Make ``pubnub`` and ``joblib`` hard dependencies instead of optional dependencies (#110).
+- Retry network errors and wait for API rate limit refresh when using the CLI (#117).
+- The CLI now provides a User-Agent header which starts with "civis-cli" (#117)
+- Include ``pandas`` and ``sklearn``-dependent code in Travis CI tests.
+
+### Added
+- Version 1.1 of CivisML, with custom dependency installation from remote git hosting services (i.e., Github, Bitbucket).
+- Added email notifications option to ``ModelPipeline``.
+- Added custom ``joblib`` backend for multiprocessing in the Civis Platform. Public-facing functions are ``make_backend_factory``, ``make_backend_template_factory``, and ``infer_backend_factory``. Includes a new hard dependency on ``cloudpickle`` to facilitate code transport.
+
+### Fixed
+- Fixed a bug where the version of a dependency for Python 2.7 usage was incorrectly specified.
+- Non-seekable file-like objects can now be provided to ``civis.io.file_to_civis``. Only seekable file-like objects will be streamed.
+- The ``civis.ml.ModelFuture`` no longer raises an exception if its model job is cancelled.
+- The CLI's API spec cache now expires after 24 hours instead of 10 seconds.
+
+## 1.5.2 - 2017-05-17
+### Fixed
+- Fixed a bug where ``ModelFuture.validation_metadata`` would not source training job metadata for a ``ModelFuture`` corresponding to prediction job (#90).
+- Added more locks to improve thread safety in the ``PollableResult`` and ``CivisFuture``.
+- Fix issue with Python 2/3 dependency management (#89).
+
+## 1.5.1 - 2017-05-15
+### Fixed
+- Fixed a bug which caused an exception to be set on all ``ModelFuture`` objects, regardless of job status (#86).
+- Fixed a bug which made the ``ModelPipeline`` unable to generate prediction jobs for models trained with v0.5 templates (#84).
+- Handle the case when inputs to ``ModelFuture`` are ``numpy.int64`` (or other non-``integer`` ints) (#85).
+
+### Changed
+- Convert `README.md` (Markdown) to `README.rst` (reStructuredText).
 
 ## 1.5.0 - 2017-05-11
 ### Added

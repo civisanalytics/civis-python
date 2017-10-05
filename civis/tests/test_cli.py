@@ -5,6 +5,7 @@ import os
 from civis.cli.__main__ import generate_cli, invoke
 from civis.compat import mock
 from civis.resources._resources import BASE_RESOURCES_V1
+from civis.tests import TEST_SPEC
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -30,7 +31,7 @@ def test_generate_cli_petstore(mock_retrieve_spec_dict,
 @mock.patch("civis.cli.__main__.retrieve_spec_dict")
 def test_generate_cli_civis(mock_retrieve_spec_dict):
     """Test loading the Civis API spec as of 2017-02-02."""
-    with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+    with open(TEST_SPEC) as f:
         civis_spec = json.load(f, object_pairs_hook=OrderedDict)
     mock_retrieve_spec_dict.return_value = civis_spec
 
@@ -69,53 +70,38 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
             assert p.required
 
 
-@mock.patch("civis.cli.__main__.make_api_request_headers")
-@mock.patch("civis.cli.__main__.yaml")
-@mock.patch("civis.cli.__main__.requests.request")
-def test_blank_output(mock_request, mock_yaml, mock_make_api_request_headers):
+@mock.patch("civis.cli.__main__.open_session", autospec=True)
+def test_blank_output(mock_session):
     """
     Test that endpoints that return blank results don't cause exceptions.
-
-    We mock make_api_request_headers because the invoke function get the API
-    key from that, so this test will fail in environments where an API key
-    isn't in the env (e.g., travis).
-
-    We mock yaml because otherwise yaml will complain about being able to
-    serialize the mock response object.
     """
-
-    mock_make_api_request_headers.return_value = {}
-
     # The response object's json method will raise a ValueError when the output
     # is blank.
-    mock_request.return_value.json.side_effect = ValueError()
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.request.return_value.json.side_effect = ValueError()
 
     op = {"parameters": []}
     invoke("WIBBLE", "/wobble/wubble", op)
 
 
-@mock.patch("civis.cli.__main__.make_api_request_headers")
-@mock.patch("civis.cli.__main__.yaml")
-@mock.patch("civis.cli.__main__.requests.request")
-def test_parameter_case(mock_request, mock_yaml,
-                        mock_make_api_request_headers):
+@mock.patch("civis.cli.__main__.open_session", autospec=True)
+def test_parameter_case(mock_session):
     """
     Test that parameter names are sent in camelCase rather than snake_case.
-
-    We mock yaml because otherwise yaml will complain about being able to
-    serialize the mock response object.
     """
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.request.return_value.json.return_value = api_response
 
     # To avoid needing CIVIS_API_KEY set in the environment.
-    mock_make_api_request_headers.return_value = {}
     op = {"parameters": [{'name': 'firstParameter', 'in': 'query'},
                          {'name': 'secondParameter', 'in': 'query'}]}
     invoke("WIBBLE", "/wobble/wubble", op,
            first_parameter='a', second_parameter='b')
 
-    mock_request.assert_called_with(
+    mock_session.call_args[1]['user_agent'] = 'civis-cli'
+    session_context.request.assert_called_with(
         url='https://api.civisanalytics.com/wobble/wubble',
-        headers={},
         json={},
         params={'firstParameter': 'a', 'secondParameter': 'b'},
         method='WIBBLE')

@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import json
+import os
 import re
 import textwrap
 try:
@@ -9,12 +10,12 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
-from requests.adapters import HTTPAdapter
+import six
 
-import civis
-from civis.base import AggressiveRetry, Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
-from civis._utils import camel_to_snake, to_camelcase
+from civis._utils import (camel_to_snake, to_camelcase,
+                          open_session, get_api_key)
 
 
 API_VERSIONS = ["1.0"]
@@ -28,6 +29,8 @@ ITERATOR_PARAM_DESC = (
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
 MAX_RETRIES = 10
+CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
+                                ".civis_api_spec.json")
 
 
 def exclude_resource(path, api_version, resources):
@@ -147,7 +150,7 @@ def iterable_method(method, params):
     return (method.lower() == 'get' and params_present)
 
 
-def create_signature(args, kwargs):
+def create_signature(args, optional_args):
     """ Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -158,7 +161,7 @@ def create_signature(args, kwargs):
     ----------
     args : list
         List of strings that name the required arguments of a function.
-    kwargs : list
+    optional_args : list
         List of strings that name the optional arguments of a function.
 
     Returns
@@ -168,14 +171,18 @@ def create_signature(args, kwargs):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    if kwargs:
-        p.append(Parameter('kwargs', Parameter.VAR_KEYWORD))
+    if six.PY3:
+        opt_par_type = Parameter.KEYWORD_ONLY
+    else:
+        opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
+    p += [Parameter(x, opt_par_type, default='DEFAULT')
+          for x in optional_args]
     return Signature(p)
 
 
 def split_method_params(params):
     args = []
-    kwargs = []
+    optional_args = []
     body_params = []
     query_params = []
     path_params = []
@@ -184,14 +191,14 @@ def split_method_params(params):
         if param["required"]:
             args.append(name)
         else:
-            kwargs.append(name)
+            optional_args.append(name)
         if param["in"] == "body":
             body_params.append(name)
         elif param["in"] == "query":
             query_params.append(name)
         elif param["in"] == "path":
             path_params.append(name)
-    return args, kwargs, body_params, query_params, path_params
+    return args, optional_args, body_params, query_params, path_params
 
 
 def create_method(params, verb, method_name, path, doc):
@@ -224,25 +231,26 @@ def create_method(params, verb, method_name, path, doc):
         A function which will make an API call
     """
     elements = split_method_params(params)
-    sig_args, sig_kwargs, body_params, query_params, path_params = elements
-    sig = create_signature(sig_args, sig_kwargs)
+    sig_args, sig_opt_args, body_params, query_params, path_params = elements
+    sig = create_signature(sig_args, sig_opt_args)
     is_iterable = iterable_method(verb, query_params)
 
     def f(self, *args, **kwargs):
+        raise_for_unexpected_kwargs(method_name, kwargs, sig_args,
+                                    sig_opt_args, is_iterable)
+
+        iterator = kwargs.pop('iterator', False)
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
-        raise_for_unexpected_kwargs(method_name, arguments, sig_args,
-                                    sig_kwargs, is_iterable)
         body = {x: arguments[x] for x in body_params if x in arguments}
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        iterator = arguments.get('iterator', False)
         return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(["self"] + sig_args, sig_kwargs)
+    sig_self = create_signature(["self"] + sig_args, sig_opt_args)
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
@@ -435,7 +443,7 @@ def parse_api_spec(api_spec, api_version, resources):
 
 
 @lru_cache(maxsize=4)
-def get_api_spec(api_key, api_version="1.0"):
+def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """Download the Civis API specification.
 
     Parameters
@@ -445,19 +453,13 @@ def get_api_spec(api_key, api_version="1.0"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
+    user_agent : string, optional
+        Provide this user agent to the the Civis API, along with an
+        API client version tag and ``requests`` version tag.
     """
-    civis_version = civis.__version__
-    session = requests.Session()
-    session.auth = (api_key, '')
-    session_agent = session.headers.get('User-Agent', '')
-    user_agent = "civis-python/{} {}".format(civis_version, session_agent)
-    session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = AggressiveRetry(MAX_RETRIES, backoff_factor=.75,
-                                  status_forcelist=civis.civis.RETRY_CODES)
-    adapter = HTTPAdapter(max_retries=max_retries)
-    session.mount("https://", adapter)
     if api_version == "1.0":
-        response = session.get("{}endpoints".format(get_base_url()))
+        with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
+            response = sess.get("{}endpoints".format(get_base_url()))
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
@@ -500,6 +502,26 @@ def generate_classes(api_key, api_version="1.0", resources="base"):
     raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
+
+
+def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
+    """Cache a local copy of the Civis Data Science API spec
+
+    Parameters
+    ----------
+    cache : str, optional
+        File in which to store the cache of the API spec
+    api_key : str, optional
+        Your API key obtained from the Civis Platform. If not given, the
+        client will use the :envvar:`CIVIS_API_KEY` environment variable.
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions.  Currently only "1.0" is supported.
+    """
+    api_key = get_api_key(api_key)
+    spec = get_api_spec(api_key, api_version=api_version)
+    with open(cache, "wt") as _fout:
+        json.dump(spec, _fout)
 
 
 def generate_classes_maybe_cached(cache, api_key, api_version, resources):
