@@ -260,7 +260,9 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         data = pd.read_csv(url, **kwargs)
         dtype_cols = [c for c in list(data) if c in set(user_dtypes.keys())]
         for col in dtype_cols:
-            data[col] = data[col].astype(user_dtypes[col])
+            num_nulls = data[col].isnull().sum()
+            if num_nulls == 0:
+                data[col] = data[col].astype(user_dtypes[col])
     else:
         r = requests.get(url)
         r.raise_for_status()
