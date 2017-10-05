@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel``.
+- Added the PyPI trove classifiers for Python 3.4 and 3.6 (#152).
 
 ## 1.6.2 - 2017-09-08
 ### Changed
