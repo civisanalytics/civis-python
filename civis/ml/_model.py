@@ -320,7 +320,7 @@ class ModelFuture(ContainerFuture):
             if fut.is_training and meta['run']['status'] == 'succeeded':
                 # if training job and job succeeded, check validation job
                 meta = fut.validation_metadata
-            if meta['run']['status'] == 'exception':
+            if meta is not None and meta['run']['status'] == 'exception':
                 try:
                     # This will fail if the user doesn't have joblib installed
                     est = fut.estimator
