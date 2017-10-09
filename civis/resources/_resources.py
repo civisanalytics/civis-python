@@ -396,7 +396,7 @@ def parse_path(path, operations, api_version, resources):
     attached to the class as a method.
     """
     path = path.strip('/')
-    base_path = path.split('/')[0]
+    base_path = path.split('/')[0].lower()
     methods = []
     if exclude_resource(path, api_version, resources):
         return base_path, methods
