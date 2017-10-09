@@ -561,4 +561,3 @@ def add_no_underscore_compatibility(classes):
         if class_name == "feature_flags":
             classes.pop(class_name)
     return classes
-
