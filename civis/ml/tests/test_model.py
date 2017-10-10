@@ -404,6 +404,18 @@ def test_table(mock_res, mock_lt):
                                     index_col=0, client=c)
 
 
+@mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
+@mock.patch.object(_model.ModelFuture, "result")
+@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+def test_table_None(mock_res, mock_lt):
+    mock_lt.side_effect = FileNotFoundError()
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
+    assert mf.table is None
+    mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
+                                    index_col=0, client=c)
+
+
 @mock.patch.object(_model.cio, "file_id_from_run_output",
                    mock.Mock(return_value=11, spec_set=True))
 @mock.patch.object(_model.cio, "file_to_json", return_value='bar')
@@ -523,6 +535,25 @@ def test_metrics_training(mock_file_id_from_run_output):
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
+    mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
+                                                    client=mock.ANY)
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json")
+def test_metrics_training_None(mock_file_to_json, mock_file_id_from_run_output):
+    mock_file_to_json.return_value = mock.MagicMock(
+        return_value={'metrics': 'foo',
+                      'run': {'status': 'succeeded'}})
+    mock_file_id_from_run_output.return_value = 11
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
+    # override validation metadata to be None, as though we ran
+    # a train job without validation
+    mf._val_metadata = None
+
+    mock_file_to_json.return_value = None
+    assert mf.metrics is None
     mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
                                                     client=mock.ANY)
 

@@ -419,12 +419,17 @@ class ModelFuture(ContainerFuture):
         self.result()  # Block and raise errors if any
         if self._table is None:
             if self.is_training:
-                # Training jobs only have one output table, the OOS scores
-                self._table = _load_table_from_outputs(self.job_id,
-                                                       self.run_id,
-                                                       self.table_fname,
-                                                       index_col=0,
-                                                       client=self.client)
+                try:
+                    # Training jobs only have one output table, the OOS scores
+                    self._table = _load_table_from_outputs(self.job_id,
+                                                           self.run_id,
+                                                           self.table_fname,
+                                                           index_col=0,
+                                                           client=self.client)
+                except FileNotFoundError:
+                    # Just pass here, because we want the table to stay None
+                    # if it does not exist
+                    pass
             else:
                 # Prediction jobs may have many output tables.
                 output_ids = self.metadata['output_file_ids']
@@ -468,7 +473,10 @@ class ModelFuture(ContainerFuture):
 
     @property
     def metrics(self):
-        return self.validation_metadata['metrics']
+        if self.validation_metadata is not None:
+            return self.validation_metadata['metrics']
+        else:
+            return None
 
     @property
     @_block_and_handle_missing
