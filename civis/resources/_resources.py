@@ -538,11 +538,11 @@ def generate_classes_maybe_cached(cache, api_key, api_version, resources):
             raise ValueError(msg.format(type(cache)))
         spec = JsonRef.replace_refs(raw_spec)
         classes = parse_api_spec(spec, api_version, resources)
-    classes = add_no_underscore_compatibility(classes)
-    return classes
+    classes_ = _add_no_underscore_compatibility(classes)
+    return classes_
 
 
-def add_no_underscore_compatibility(classes):
+def _add_no_underscore_compatibility(classes):
     """ Add class names without underscores for compatibility.
 
     Previously, no resources had underscores in APIClient.  Parsing of
@@ -553,11 +553,12 @@ def add_no_underscore_compatibility(classes):
     be removed in v2.0.0.
     """
     new = ["bocce_clusters", "match_targets", "remote_hosts", "feature_flags"]
+    classes_ = {}
     class_names = list(classes.keys())
     for class_name in class_names:
+        if class_name != "feature_flags":
+            classes_[class_name] = classes[class_name]
         if class_name in new:
             class_name_no_us = "".join(class_name.split("_"))
-            classes[class_name_no_us] = classes[class_name]
-        if class_name == "feature_flags":
-            classes.pop(class_name)
-    return classes
+            classes_[class_name_no_us] = classes[class_name]
+    return classes_
