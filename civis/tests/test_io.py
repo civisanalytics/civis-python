@@ -163,7 +163,6 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.skipif(not has_numpy, reason="numpy not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas_redshift_types(self, *mocks):
-        # TODO: include nulls
         SQL_PANDAS_MAP = {
             'smallint': np.int16,
             'int': np.int32,
