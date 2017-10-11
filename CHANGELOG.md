@@ -7,6 +7,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
+- ``APIClient.feature_flags`` has been deprecated to avoid a name collision
+   with the feature_flags endpoint. In v2.0.0, ``APIClient.featureflags``
+   will be renamed to ``APIClient.feature_flags``.
+- The following APIClient attributes have been deprecated in favor of the
+  attribute that includes underscores:
+  ``APIClient.bocceclusters`` -> ``APIClient.bocce_clusters``
+  ``APIClient.matchtargets`` -> ``APIClient.match_targets``
+  ``APIClient.remotehosts`` -> ``APIClient.remote_hosts``
+
+### Fixed
+- Fixed parsing of multiword endpoints. Parsing no longer removes underscores
+  in endpoint names.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
