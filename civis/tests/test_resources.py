@@ -341,7 +341,7 @@ def test_parse_api_spec_names(mock_method):
 def test_add_no_underscore_compatibility():
     classes = dict(bocce_clusters=1,
                    feature_flags=2)
-    new_classes = _resources.add_no_underscore_compatibility(classes)
+    new_classes = _resources._add_no_underscore_compatibility(classes)
     assert new_classes["bocceclusters"] == 1
     assert new_classes["bocce_clusters"] == 1
     assert new_classes.get("feature_flags") is None
