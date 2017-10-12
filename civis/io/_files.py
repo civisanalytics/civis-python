@@ -257,7 +257,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
               "File is greater than the maximum allowable part size (5GB)"
         raise ValueError(msg)
     elif file_size <= MIN_MULTIPART_SIZE or not is_seekable:
-        return _single_upload(buf, name, client, **kwargs)
+        return _single_upload(buf, name, is_seekable, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
