@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"name": "/var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmpen3eqo_o"}'
+    body: '{"name": "/var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmp5ktuj7qh"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -13,66 +13,66 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
-      Content-Length: ['784']
+      Content-Length: ['782']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 12 Oct 2017 17:44:26 GMT']
-      ETag: [W/"36fdaab1fb2a5099f13f724776511504"]
+      Date: ['Thu, 12 Oct 2017 18:44:40 GMT']
+      ETag: [W/"15b6d6e41a5e1d0a6e59991f700a553b"]
       Server: [nginx/1.13.5]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['945']
-      X-Request-Id: [e2cd3171-a1f3-42a5-b796-1afe9601a904]
-      X-Runtime: ['0.064375']
+      X-RateLimit-Remaining: ['954']
+      X-Request-Id: [fc2218d0-da4b-4fa8-85d0-9ab1bbd1452a]
+      X-Runtime: ['0.120440']
       X-XSS-Protection: [1; mode=block]
     status: {code: 201, message: Created}
 - request:
-    body: "--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition: form-data; name=\"key\";
-      filename=\"key\"\r\n\r\norgs/tgtg/files/e764b83b-cfb9-4c75-88aa-a789a8c62b10//var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmpen3eqo_o\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"policy\"; filename=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjoiMjAxNy0xMC0xMlQxODo0NDoyNloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJjaXZpcy1jb25zb2xlIn0seyJrZXkiOiJvcmdzL3RndGcvZmlsZXMvZTc2NGI4M2ItY2ZiOS00Yzc1LTg4YWEtYTc4OWE4YzYyYjEwLy92YXIvZm9sZGVycy9yYi9ybXRuOHh2OTBxMWN2YzRjX3I0ZHpuMXIwMDAwZ24vVC90bXBlbjNlcW9fbyJ9LHsieC1hbXotY3JlZGVudGlhbCI6IkFLSUFJS0VVTUNSWUJDQlhKTFBRLzIwMTcxMDEyL3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSx7IngtYW16LWFsZ29yaXRobSI6IkFXUzQtSE1BQy1TSEEyNTYifSx7IngtYW16LWRhdGUiOiIyMDE3MTAxMlQxNzQ0MjZaIn1dfQ==\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"x-amz-signature\"; filename=\"x-amz-signature\"\r\n\r\nbedfd5e158ff8829ea8bd8c280dfdd9d3ed84ea2abe041b9ed2942b504f3d50f\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"x-amz-credential\"; filename=\"x-amz-credential\"\r\n\r\nAKIAIKEUMCRYBCBXJLPQ/20171012/us-east-1/s3/aws4_request\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"x-amz-date\"; filename=\"x-amz-date\"\r\n\r\n20171012T174426Z\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"x-amz-algorithm\"; filename=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--f7b395683e2f4324a6d68c7a33d055e3\r\nContent-Disposition:
-      form-data; name=\"file\"; filename=\"tmpen3eqo_o\"\r\n\r\na,b,c\n1,2,3\r\n--f7b395683e2f4324a6d68c7a33d055e3--\r\n"
+    body: "--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition: form-data; name=\"key\";
+      filename=\"key\"\r\n\r\norgs/tgtg/files/2928616e-1e8d-4363-a71e-a5fdfe5872f7//var/folders/rb/rmtn8xv90q1cvc4c_r4dzn1r0000gn/T/tmp5ktuj7qh\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"; filename=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"; filename=\"x-amz-date\"\r\n\r\n20171012T184440Z\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"policy\"; filename=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjoiMjAxNy0xMC0xMlQxOTo0NDo0MFoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJjaXZpcy1jb25zb2xlIn0seyJrZXkiOiJvcmdzL3RndGcvZmlsZXMvMjkyODYxNmUtMWU4ZC00MzYzLWE3MWUtYTVmZGZlNTg3MmY3Ly92YXIvZm9sZGVycy9yYi9ybXRuOHh2OTBxMWN2YzRjX3I0ZHpuMXIwMDAwZ24vVC90bXA1a3R1ajdxaCJ9LHsieC1hbXotY3JlZGVudGlhbCI6IkFLSUFJS0VVTUNSWUJDQlhKTFBRLzIwMTcxMDEyL3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSx7IngtYW16LWFsZ29yaXRobSI6IkFXUzQtSE1BQy1TSEEyNTYifSx7IngtYW16LWRhdGUiOiIyMDE3MTAxMlQxODQ0NDBaIn1dfQ==\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"; filename=\"x-amz-credential\"\r\n\r\nAKIAIKEUMCRYBCBXJLPQ/20171012/us-east-1/s3/aws4_request\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"; filename=\"x-amz-signature\"\r\n\r\nc959613422e78614fdeed08952fb80a0e78f1f3b53458ddbc0102e3235738456\r\n--35a6450cf1fd48c298f161573b6a2657\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"tmp5ktuj7qh\"\r\n\r\na,b,c\n1,2,3\r\n--35a6450cf1fd48c298f161573b6a2657--\r\n"
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['1592']
-      Content-Type: [multipart/form-data; boundary=f7b395683e2f4324a6d68c7a33d055e3]
+      Content-Type: [multipart/form-data; boundary=35a6450cf1fd48c298f161573b6a2657]
       User-Agent: [python-requests/2.18.1]
     method: POST
     uri: https://civis-console.s3.amazonaws.com/
   response:
     body: {string: ''}
     headers:
-      Date: ['Thu, 12 Oct 2017 17:44:27 GMT']
+      Date: ['Thu, 12 Oct 2017 18:44:41 GMT']
       ETag: ['"1a477f6d2f9c9fc827fa46b5ace1a145"']
-      Location: ['https://civis-console.s3.amazonaws.com/orgs%2Ftgtg%2Ffiles%2Fe764b83b-cfb9-4c75-88aa-a789a8c62b10%2F%2Fvar%2Ffolders%2Frb%2Frmtn8xv90q1cvc4c_r4dzn1r0000gn%2FT%2Ftmpen3eqo_o']
+      Location: ['https://civis-console.s3.amazonaws.com/orgs%2Ftgtg%2Ffiles%2F2928616e-1e8d-4363-a71e-a5fdfe5872f7%2F%2Fvar%2Ffolders%2Frb%2Frmtn8xv90q1cvc4c_r4dzn1r0000gn%2FT%2Ftmp5ktuj7qh']
       Server: [AmazonS3]
-      x-amz-id-2: [bILBt5ElSlM+n7RC/WN7tgkEFbWuy41rFTAURcwnZ+/iMw7VJ/5++u8H2AfyKV06WIhM0JhrBXU=]
-      x-amz-request-id: [0B9ABC268CC91B86]
+      x-amz-id-2: [UfGbQ5D63yqtN9vZiPxVYHzqj7wpJOFD5ZBUTmCYwCi2OA7di+bq568iH2l+2idSxzk7bDDwhlE=]
+      x-amz-request-id: [124B2E9FDBF63ACD]
     status: {code: 204, message: No Content}
 version: 1
