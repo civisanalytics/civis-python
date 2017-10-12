@@ -82,7 +82,7 @@ def _buf_len(buf):
     return None
 
 
-def _single_upload(buf, name, client, **kwargs):
+def _single_upload(buf, name, is_seekable, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -95,7 +95,7 @@ def _single_upload(buf, name, client, **kwargs):
     form_key.update(form)
 
     def _post():
-        if buf.seekable():
+        if is_seekable:
             buf.seek(0)
         form_key['file'] = buf
         # requests will not stream multipart/form-data, but _single_upload
@@ -108,7 +108,7 @@ def _single_upload(buf, name, client, **kwargs):
             raise HTTPError(msg, response=response)
 
     # we can only retry if the buffer is seekable
-    if buf.seekable():
+    if is_seekable:
         retry(RETRY_EXCEPTIONS)(_post())
     else:
         _post()
@@ -240,16 +240,23 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         log.warning('Could not determine file size; defaulting to '
                     'single post. Files over 5GB will fail.')
 
+    # determine if file-like object is seekable
+    try:
+        buf.seek(buf.tell())
+        is_seekable = True
+    except io.UnsupportedOperation:
+        is_seekable = False
+
     if not file_size:
-        return _single_upload(buf, name, client, **kwargs)
+        return _single_upload(buf, name, is_seekable, client, **kwargs)
     elif file_size > MAX_FILE_SIZE:
         msg = "File is greater than the maximum allowable file size (5TB)"
         raise ValueError(msg)
-    elif not buf.seekable() and file_size > MAX_PART_SIZE:
+    elif not is_seekable and file_size > MAX_PART_SIZE:
         msg = "Cannot perform multipart upload on non-seekable files. " \
               "File is greater than the maximum allowable part size (5GB)"
         raise ValueError(msg)
-    elif file_size <= MIN_MULTIPART_SIZE or not buf.seekable():
+    elif file_size <= MIN_MULTIPART_SIZE or not is_seekable:
         return _single_upload(buf, name, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
