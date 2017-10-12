@@ -23,7 +23,7 @@ try:
 except ImportError:
     HAS_PANDAS = False
 
-MIN_MULTIPART_SIZE = 40 * 2 ** 20  # 40MB
+MIN_MULTIPART_SIZE = 50 * 2 ** 20  # 50MB
 MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
 MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
 MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
@@ -95,7 +95,8 @@ def _single_upload(buf, name, client, **kwargs):
     form_key.update(form)
 
     def _post():
-        buf.seek(0)
+        if buf.seekable():
+            buf.seek(0)
         form_key['file'] = buf
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
