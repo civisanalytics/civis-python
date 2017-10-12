@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
+- ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis`` functions now use
+  ``civis.io.file_to_civis`` and ``civis.io.civis_file_to_table`` functions instead
+  of separate logic
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
@@ -16,6 +19,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel``.
+- ``civis.io.civis_file_to_table`` function to import an existing Civis file
+  to a table
+- ``civis.io.file_to_civis`` function will now automatically retry uploads to
+  the Civis Platform up to 5 times if is there is an HTTPError, ConnectionError
+  or ConnectionTimeout
+
+### Performance Enhancements
+- ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk
+  files and perform I/O in parallel
 
 ## 1.6.2 - 2017-09-08
 ### Changed
