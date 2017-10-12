@@ -1,3 +1,4 @@
+import datetime
 from collections import OrderedDict
 import io
 import json
@@ -6,7 +7,7 @@ import math
 import os
 import re
 import six
-
+import time
 import requests
 from requests import HTTPError
 
@@ -15,20 +16,21 @@ from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
 from civis._utils import retry
-try:
-    from requests_toolbelt.multipart.encoder import MultipartEncoder
-    HAS_TOOLBELT = True
-except ImportError:
-    HAS_TOOLBELT = False
+import tempfile
+from multiprocessing.dummy import Pool
+
 try:
     import pandas as pd
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
 
+MIN_MULTIPART_SIZE = 40 * 2 ** 20  # 40MB
 MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
-MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
 MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
+MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
+MAX_THREADS = 4
+
 RETRY_EXCEPTIONS = (requests.HTTPError,
                     requests.ConnectionError,
                     requests.ConnectTimeout)
@@ -82,44 +84,6 @@ def _buf_len(buf):
     return None
 
 
-def _legacy_upload(buf, name, client, **kwargs):
-    file_response = client.files.post(name, **kwargs)
-
-    # Platform has given us a URL to which we can upload a file.
-    # The file must be uploaded with a POST formatted as per
-    # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html
-    # Note that the payload must have "key" first and "file" last.
-    form = file_response.upload_fields
-    form_key = OrderedDict(key=form.pop('key'))
-    form_key.update(form)
-    form_key['file'] = buf
-
-    url = file_response.upload_url
-    if HAS_TOOLBELT and buf.seekable():
-        # This streams from the open file buffer without holding the
-        # contents in memory.
-        en = MultipartEncoder(fields=form_key)
-        # The refusal error from AWS states 5368730624 is the max size allowed
-        if en.len >= 5 * 2 ** 30:  # 5 GB
-            msg = "Cannot upload files greater than 5GB. Got {:d}."
-            raise ValueError(msg.format(en.len))
-        elif en.len <= 100 * 2 ** 20:  # 100 MB
-            # Semi-arbitrary cutoff for "small" files.
-            # Send these with requests directly because that uses less CPU
-            response = requests.post(url, files=form_key)
-        else:
-            response = requests.post(url, data=en,
-                                     headers={'Content-Type': en.content_type})
-    else:
-        response = requests.post(url, files=form_key)
-
-    if not response.ok:
-        msg = _get_aws_error_message(response)
-        raise HTTPError(msg, response=response)
-
-    return file_response.id
-
-
 def _single_upload(buf, name, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
@@ -135,6 +99,9 @@ def _single_upload(buf, name, client, **kwargs):
     def _post():
         buf.seek(0)
         form_key['file'] = buf
+        # requests will not stream multipart/form-data, but _single_upload
+        # is only used for small file objects or non-seekable file objects
+        # which can't be streamed with using requests-toolbelt anyway
         response = requests.post(url, files=form_key)
 
         if not response.ok:
@@ -154,36 +121,65 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     # scale the part size based on file size
     part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)),
                     MIN_PART_SIZE)
-    num_parts = int(math.ceil(file_size / float(part_size)))
-    file_response = client.files.post_multipart(name=name, num_parts=num_parts,
-                                                **kwargs)
+    num_parts = int(math.ceil((file_size) / float(part_size)))
+
+    print('file_size: {}, part_size: {}, num_parts: {}'.format(file_size, part_size, num_parts))
+    file_response = client.files.post_multipart(name=name, num_parts=num_parts, **kwargs)
 
     # Platform will give us a URL for each file part
     urls = file_response.upload_urls
     assert num_parts == len(urls), \
         "There are {} file parts but only {} urls".format(num_parts, len(urls))
 
+    # generate for writing a specific number of bytes from the buffer
+    def _gen_chunks(part_buf, max_bytes, chunk_size=32 * 1024):
+        bytes_read = 0
+        while True:
+            length = min(chunk_size, max_bytes - bytes_read)
+            if length <= 0:
+                break
+            bytes_read += length
+            data = part_buf.read(length)
+            yield data
+
+    # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part(i, url):
-        offset = part_size * i
-        num_bytes = min(part_size, file_size - offset)
-        buf.seek(offset)
-        part_response = requests.post(url, data=buf.read(num_bytes))
+    def _upload_part(item):
+        part_num, part_url = item[0], item[1]
+        print('start: {}, posting part {}, offset {}, num_bytes {}'.format(datetime.datetime.now(),
+                                                                           part_num, offset, num_bytes))
+        file_out = os.path.join(tmp_dir, str(part_num) + '.csv')
+        with open(file_out, 'rb') as fout:
+            part_response = requests.put(part_url, data=fout)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
+            print(msg)
             raise HTTPError(msg, response=part_response)
+        print('part {} {}'.format(part_num, datetime.datetime.now()))
 
-    # upload each part and always complete the upload
-    # API will trigger an abort if 1 or more parts are < 5MB
+    # upload each part
     try:
-        [_upload_part(i + 1, url) for i, url in enumerate(urls)]
-    finally:
-        response = client.files.multipart_complete(file_response.id)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            for i in range(0, num_parts):
+                offset = part_size * i
+                num_bytes = min(part_size, file_size - offset)
+                buf.seek(offset)
 
-    if not response.ok:
-        msg = _get_aws_error_message(response)
-        raise HTTPError(msg, response=response)
+                # write part to disk so that we can stream it
+                file_in = os.path.join(tmp_dir, str(i) + '.csv')
+                with open(file_in, 'wb') as fin:
+                    for x in _gen_chunks(buf, num_bytes):
+                        fin.write(x)
+
+            with Pool(MAX_THREADS) as pool:
+                pool.map(_upload_part, enumerate(urls))
+
+    # complete the multipart upload; an abort will be triggered
+    # if any part except the last failed to upload at least 5MB
+    finally:
+        print('final {}'.format(datetime.datetime.now()))
+        client.files.post_multipart_complete(file_response.id)
 
     return file_response.id
 
@@ -228,22 +224,22 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     pass to this function, do so using the ``'rb'`` (read binary)
     mode (e.g., ``open('myfile.zip', 'rb')``).
 
-    If you have the `requests-toolbelt` package installed
-    (`pip install requests-toolbelt`) and the file-like object is seekable,
-    then this function will stream from the open file pointer into Platform.
-    If `requests-toolbelt` is not installed or the file-like object is not
-    seekable, then it will need to read the entire buffer into memory before
-    writing.
+    Warning: If the file-like object is seekable, the current
+    position will be reset to 0.
+
+    This facilitates retries and is used to chunk files for multipart
+    uploads for improved performance.
+
+    Small or non-seekable file-like objects will be uploaded with a
+    single post.
     """
     if client is None:
         client = APIClient(api_key=api_key)
 
-    if not hasattr('client.files', 'post_multipart'):
-        return _legacy_upload(buf, name, client, **kwargs)
-
     file_size = _buf_len(buf)
-    log.warning('Could not determine length of file. Defaulting to single put '
-                'instead of multipart upload. If file is >5GB put will fail.')
+    if not file_size:
+        log.warning('Could not determine file size; defaulting to single post. '
+                    'Files over 5GB will fail.')
 
     if not file_size:
         return _single_upload(buf, name, client, **kwargs)
@@ -254,7 +250,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         msg = "Cannot perform multipart upload on non-seekable files. " \
               "File is greater than the maximum allowable part size (5GB)"
         raise ValueError(msg)
-    elif file_size <= MIN_PART_SIZE or not buf.seekable():
+    elif file_size <= MIN_MULTIPART_SIZE or not buf.seekable():
         return _single_upload(buf, name, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
