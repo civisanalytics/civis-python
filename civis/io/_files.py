@@ -1,23 +1,21 @@
-import datetime
 from collections import OrderedDict
 import io
 import json
 import logging
 import math
+from multiprocessing.dummy import Pool
 import os
 import re
 import six
-import time
 import requests
 from requests import HTTPError
+import tempfile
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
 from civis._utils import retry
-import tempfile
-from multiprocessing.dummy import Pool
 
 try:
     import pandas as pd
@@ -123,8 +121,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
                     MIN_PART_SIZE)
     num_parts = int(math.ceil((file_size) / float(part_size)))
 
-    print('file_size: {}, part_size: {}, num_parts: {}'.format(file_size, part_size, num_parts))
-    file_response = client.files.post_multipart(name=name, num_parts=num_parts, **kwargs)
+    log.debug('Uploading file with %s bytes using %s file parts with a part '
+              'size of %s bytes', file_size, part_size, num_parts)
+    file_response = client.files.post_multipart(name=name, num_parts=num_parts,
+                                                **kwargs)
 
     # Platform will give us a URL for each file part
     urls = file_response.upload_urls
@@ -146,17 +146,16 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     @retry(RETRY_EXCEPTIONS)
     def _upload_part(item):
         part_num, part_url = item[0], item[1]
-        print('start: {}, posting part {}, offset {}, num_bytes {}'.format(datetime.datetime.now(),
-                                                                           part_num, offset, num_bytes))
+        log.debug('Uploading file part %s', part_num)
         file_out = os.path.join(tmp_dir, str(part_num) + '.csv')
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
-            print(msg)
             raise HTTPError(msg, response=part_response)
-        print('part {} {}'.format(part_num, datetime.datetime.now()))
+
+        log.debug('Completed upload of file part', part_num)
 
     # upload each part
     try:
@@ -178,7 +177,6 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     # complete the multipart upload; an abort will be triggered
     # if any part except the last failed to upload at least 5MB
     finally:
-        print('final {}'.format(datetime.datetime.now()))
         client.files.post_multipart_complete(file_response.id)
 
     return file_response.id
@@ -238,8 +236,8 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
 
     file_size = _buf_len(buf)
     if not file_size:
-        log.warning('Could not determine file size; defaulting to single post. '
-                    'Files over 5GB will fail.')
+        log.warning('Could not determine file size; defaulting to '
+                    'single post. Files over 5GB will fail.')
 
     if not file_size:
         return _single_upload(buf, name, client, **kwargs)
