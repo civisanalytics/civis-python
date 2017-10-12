@@ -396,17 +396,16 @@ def parse_path(path, operations, api_version, resources):
     attached to the class as a method.
     """
     path = path.strip('/')
-    base_path = path.split('/')[0]
-    class_name = to_camelcase(base_path)
+    base_path = path.split('/')[0].lower()
     methods = []
     if exclude_resource(path, api_version, resources):
-        return class_name, methods
+        return base_path, methods
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
         if method is None:
             continue
         methods.append(method)
-    return class_name, methods
+    return base_path, methods
 
 
 def parse_api_spec(api_spec, api_version, resources):
@@ -433,12 +432,12 @@ def parse_api_spec(api_spec, api_version, resources):
     paths = api_spec['paths']
     classes = {}
     for path, ops in paths.items():
-        class_name, methods = parse_path(path, ops, api_version, resources)
-        class_name_lower = class_name.lower()
-        if methods and classes.get(class_name_lower) is None:
-            classes[class_name_lower] = type(str(class_name), (Endpoint,), {})
+        base_path, methods = parse_path(path, ops, api_version, resources)
+        class_name = to_camelcase(base_path)
+        if methods and classes.get(base_path) is None:
+            classes[base_path] = type(str(class_name), (Endpoint,), {})
         for method_name, method in methods:
-            setattr(classes[class_name_lower], method_name, method)
+            setattr(classes[base_path], method_name, method)
     return classes
 
 
@@ -539,4 +538,27 @@ def generate_classes_maybe_cached(cache, api_key, api_version, resources):
             raise ValueError(msg.format(type(cache)))
         spec = JsonRef.replace_refs(raw_spec)
         classes = parse_api_spec(spec, api_version, resources)
-    return classes
+    classes_ = _add_no_underscore_compatibility(classes)
+    return classes_
+
+
+def _add_no_underscore_compatibility(classes):
+    """ Add class names without underscores for compatibility.
+
+    Previously, no resources had underscores in APIClient.  Parsing of
+    resources has been fixed so now these resources will have underscores.
+    This adds an extra class for those resources without an underscore
+    for compatibility. Additionally, this removes the resource "feature_flags"
+    as APIClient has a name collision with this resource. This will
+    be removed in v2.0.0.
+    """
+    new = ["bocce_clusters", "match_targets", "remote_hosts", "feature_flags"]
+    classes_ = {}
+    class_names = list(classes.keys())
+    for class_name in class_names:
+        if class_name != "feature_flags":
+            classes_[class_name] = classes[class_name]
+        if class_name in new:
+            class_name_no_us = "".join(class_name.split("_"))
+            classes_[class_name_no_us] = classes[class_name]
+    return classes_

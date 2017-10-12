@@ -7,9 +7,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
+- ``APIClient.feature_flags`` has been deprecated to avoid a name collision
+   with the feature_flags endpoint. In v2.0.0, ``APIClient.featureflags``
+   will be renamed to ``APIClient.feature_flags``.
+- The following APIClient attributes have been deprecated in favor of the
+  attribute that includes underscores:
+  ``APIClient.bocceclusters`` -> ``APIClient.bocce_clusters``
+  ``APIClient.matchtargets`` -> ``APIClient.match_targets``
+  ``APIClient.remotehosts`` -> ``APIClient.remote_hosts``
 - ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis`` functions now use
   ``civis.io.file_to_civis`` and ``civis.io.civis_file_to_table`` functions instead
   of separate logic
+
+### Fixed
+- Fixed parsing of multiword endpoints. Parsing no longer removes underscores
+  in endpoint names.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
@@ -19,6 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel``.
+- Added the PyPI trove classifiers for Python 3.4 and 3.6 (#152).
 - ``civis.io.civis_file_to_table`` function to import an existing Civis file
   to a table
 - ``civis.io.file_to_civis`` function will now automatically retry uploads to
