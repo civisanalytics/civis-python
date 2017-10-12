@@ -125,8 +125,8 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_large_file_to_civis(self, *mocks):
         with tempfile.NamedTemporaryFile() as tmp:
-            tmp.seek(MIN_PART_SIZE * 2)
-            tmp.write(b'1,2,3')
+            tmp.seek(MIN_PART_SIZE + 1)
+            tmp.write(b'\0')
             tmp.flush()
             tmp.seek(0)
             result = civis.io.file_to_civis(tmp, tmp.name)
