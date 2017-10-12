@@ -210,7 +210,8 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         result = civis.io.civis_to_multifile_csv(
             sql, database='redshift-general', polling_interval=POLL_INTERVAL)
-        assert set(result.keys()) == {'entries', 'query', 'header'}
+        assert set(result.keys()) == {'entries', 'query', 'header',
+                                      'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql
         assert result['header'] == ['a', 'b', 'c']
         assert isinstance(result['entries'], list)
@@ -246,9 +247,9 @@ class ImportTests(CivisVCRTestCase):
 
     def test_download_file(self, *mocks):
         url = "https://httpbin.org/stream/3"
-        x = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 0, "origin": "108.211.184.39"}\n'  # noqa: E501
-        y = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 1, "origin": "108.211.184.39"}\n'  # noqa: E501
-        z = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 2, "origin": "108.211.184.39"}\n'  # noqa: E501
+        x = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 0, "origin": "50.202.212.3"}\n'  # noqa: E501
+        y = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 1, "origin": "50.202.212.3"}\n'  # noqa: E501
+        z = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 2, "origin": "50.202.212.3"}\n'  # noqa: E501
         expected = x + y + z
         with tempfile.NamedTemporaryFile() as tmp:
             civis.io._tables._download_file(url, tmp.name)
