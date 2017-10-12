@@ -18,6 +18,7 @@ import civis
 from civis.compat import mock, FileNotFoundError
 from civis.response import Response
 from civis.base import CivisAPIError
+from civis.io._files import MIN_PART_SIZE
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -115,6 +116,17 @@ class ImportTests(CivisVCRTestCase):
     def test_file_to_civis(self, *mocks):
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(b'a,b,c\n1,2,3')
+            tmp.flush()
+            tmp.seek(0)
+            result = civis.io.file_to_civis(tmp, tmp.name)
+
+        assert isinstance(result, int)
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_large_file_to_civis(self, *mocks):
+        with tempfile.NamedTemporaryFile() as tmp:
+            tmp.seek(MIN_PART_SIZE * 2)
+            tmp.write(b'1,2,3')
             tmp.flush()
             tmp.seek(0)
             result = civis.io.file_to_civis(tmp, tmp.name)
