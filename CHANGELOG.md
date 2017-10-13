@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis`` functions now use
   ``civis.io.file_to_civis`` and ``civis.io.civis_file_to_table`` functions instead
   of separate logic
+- ``civis.io.file_to_civis``, ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis``
+  now support files over 5GB
 
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
