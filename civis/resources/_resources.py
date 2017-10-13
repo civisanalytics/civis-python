@@ -32,6 +32,7 @@ BASE_RESOURCES_V1 = [
     "reports",
     "scripts",
     "tables",
+    "templates",
     "users"
 ]
 
