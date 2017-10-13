@@ -7,7 +7,9 @@ Additional commands to add to the CLI beyond the OpenAPI spec.
 import os
 
 import click
+import requests
 
+import civis
 from civis.io import file_to_civis, civis_to_file
 
 
@@ -62,9 +64,25 @@ def files_upload_cmd(path, name, expires_at):
 @click.argument('file_id', type=int)
 @click.argument('path')
 def files_download_cmd(file_id, path):
-    """Download a Civis File to the specified local path."""
+    """Download a Civis File to a specified local path."""
     with open(path, 'wb') as f:
         civis_to_file(file_id, f)
+
+
+@click.command('download')
+@click.argument('notebook_id', type=int)
+@click.argument('path')
+def notebooks_download_cmd(notebook_id, path=None):
+    """Download a notebook to a specified local path."""
+    client = civis.APIClient()
+    info = client.notebooks.get(notebook_id)
+    response = requests.get(info['notebook_url'], stream=True)
+    response.raise_for_status()
+    chunk_size = 32 * 1024
+    chunked = response.iter_content(chunk_size)
+    with open(path, 'wb') as f:
+        for lines in chunked:
+            f.write(lines)
 
 
 @click.command('civis', help="Print Civis")
