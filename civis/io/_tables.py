@@ -554,7 +554,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     delimiter = ','
     name = table.split('.')[-1]
     file_id = file_to_civis(buf, name, api_key=api_key, client=client)
-    fut = civis_file_to_table(file_id, database, table, api_key=api_key,
+    fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
                               distkey=distkey,
@@ -648,7 +648,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     with open(filename, "rb") as data:
         file_id = file_to_civis(data, name, api_key=api_key, client=client)
         log.info('Uploaded file %s to Civis file %s', filename, file_id)
-        fut = civis_file_to_table(file_id, database, table, api_key=api_key,
+        fut = civis_file_to_table(file_id, database, table,
                                   client=client, max_errors=max_errors,
                                   existing_table_rows=existing_table_rows,
                                   distkey=distkey,
@@ -660,8 +660,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     return fut
 
 
-@deprecate_param('v2.0.0', 'api_key')
-def civis_file_to_table(file_id, database, table, api_key=None, client=None,
+def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         distkey=None, sortkey1=None, sortkey2=None,
                         delimiter=",", headers=None,
@@ -678,9 +677,6 @@ def civis_file_to_table(file_id, database, table, api_key=None, client=None,
     table : str
         The schema and table you want to upload to. E.g.,
         ``'scratch.table'``.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -726,7 +722,7 @@ def civis_file_to_table(file_id, database, table, api_key=None, client=None,
     >>> fut.result()
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(resources='all')
 
     schema, table = table.split(".", 1)
     db_id = client.get_database_id(database)
