@@ -1,7 +1,9 @@
 from __future__ import absolute_import
 from builtins import super
+import logging
 import os
 import re
+import time
 import uuid
 
 import requests
@@ -11,6 +13,7 @@ from requests.packages.urllib3.util import Retry
 import civis
 
 
+log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
 
@@ -80,3 +83,49 @@ class AggressiveRetry(Retry):
         else:
             return super().is_retry(method=method, status_code=status_code,
                                     has_retry_after=has_retry_after)
+
+
+def retry(exceptions, retries=5, delay=0.5, backoff=2):
+    """
+    Retry decorator
+
+    Parameters
+    ----------
+    exceptions: Exception
+        exceptions to trigger retry
+    retries: int, optional
+        number of retries to perform
+    delay: float, optional
+        delay before next retry
+    backoff: int, optional
+        factor used to increase delay after each retry
+
+    Returns
+    -------
+    retry decorator
+
+    Raises
+    ------
+    exception raised by decorator function
+    """
+    def deco_retry(f):
+        def f_retry(*args, **kwargs):
+            n_failed = 0
+            new_delay = delay
+            while True:
+                try:
+                    return f(*args, **kwargs)
+                except exceptions as exc:
+                    if n_failed < retries:
+                        n_failed += 1
+                        msg = "%s, Retrying in %d seconds..." % \
+                              (str(exc), new_delay)
+                        log.debug(msg)
+                        time.sleep(new_delay)
+                        new_delay *= backoff
+                    else:
+                        raise exc
+
+        return f_retry
+
+    return deco_retry

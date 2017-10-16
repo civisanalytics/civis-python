@@ -2,27 +2,36 @@ from collections import OrderedDict
 import io
 import json
 import logging
+import math
+from multiprocessing.dummy import Pool
 import os
 import re
 import six
-
 import requests
 from requests import HTTPError
+import tempfile
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
-try:
-    from requests_toolbelt.multipart.encoder import MultipartEncoder
-    HAS_TOOLBELT = True
-except ImportError:
-    HAS_TOOLBELT = False
+from civis._utils import retry
+
 try:
     import pandas as pd
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
+
+MIN_MULTIPART_SIZE = 50 * 2 ** 20  # 50MB
+MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
+MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
+MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
+MAX_THREADS = 4
+
+RETRY_EXCEPTIONS = (requests.HTTPError,
+                    requests.ConnectionError,
+                    requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
@@ -30,6 +39,8 @@ __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
 
 
 def _get_aws_error_message(response):
+    # Amazon gives back informative error messages
+    # http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
     # NOTE: This is cribbed from response.raise_for_status with AWS
     # message appended
     msg = ''
@@ -47,6 +58,129 @@ def _get_aws_error_message(response):
     msg += '\nAWS Content: %s' % response.content
 
     return msg
+
+
+def _buf_len(buf):
+    if hasattr(buf, '__len__'):
+        return len(buf)
+
+    if hasattr(buf, 'len'):
+        return buf.len
+
+    if hasattr(buf, 'fileno'):
+        try:
+            fileno = buf.fileno()
+        except io.UnsupportedOperation:
+            pass
+        else:
+            return os.fstat(fileno).st_size
+
+    if hasattr(buf, 'getvalue'):
+        # e.g. BytesIO, cStringIO.StringIO
+        return len(buf.getvalue())
+
+    return None
+
+
+def _single_upload(buf, name, is_seekable, client, **kwargs):
+    file_response = client.files.post(name, **kwargs)
+
+    # Platform has given us a URL to which we can upload a file.
+    # The file must be uploaded with a POST formatted as per
+    # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html
+    # Note that the payload must have "key" first and "file" last.
+    url = file_response.upload_url
+    form = file_response.upload_fields
+    form_key = OrderedDict(key=form.pop('key'))
+    form_key.update(form)
+
+    def _post():
+        if is_seekable:
+            buf.seek(0)
+        form_key['file'] = buf
+        # requests will not stream multipart/form-data, but _single_upload
+        # is only used for small file objects or non-seekable file objects
+        # which can't be streamed with using requests-toolbelt anyway
+        response = requests.post(url, files=form_key)
+
+        if not response.ok:
+            msg = _get_aws_error_message(response)
+            raise HTTPError(msg, response=response)
+
+    # we can only retry if the buffer is seekable
+    if is_seekable:
+        retry(RETRY_EXCEPTIONS)(_post())
+    else:
+        _post()
+
+    return file_response.id
+
+
+def _multipart_upload(buf, name, file_size, client, **kwargs):
+    # scale the part size based on file size
+    part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)),
+                    MIN_PART_SIZE)
+    num_parts = int(math.ceil((file_size) / float(part_size)))
+
+    log.debug('Uploading file with %s bytes using %s file parts with a part '
+              'size of %s bytes', file_size, part_size, num_parts)
+    file_response = client.files.post_multipart(name=name, num_parts=num_parts,
+                                                **kwargs)
+
+    # Platform will give us a URL for each file part
+    urls = file_response.upload_urls
+    assert num_parts == len(urls), \
+        "There are {} file parts but only {} urls".format(num_parts, len(urls))
+
+    # generate for writing a specific number of bytes from the buffer
+    def _gen_chunks(part_buf, max_bytes, chunk_size=32 * 1024):
+        bytes_read = 0
+        while True:
+            length = min(chunk_size, max_bytes - bytes_read)
+            if length <= 0:
+                break
+            bytes_read += length
+            data = part_buf.read(length)
+            yield data
+
+    # upload function wrapped with a retry decorator
+    @retry(RETRY_EXCEPTIONS)
+    def _upload_part(item):
+        part_num, part_url = item[0], item[1]
+        log.debug('Uploading file part %s', part_num)
+        file_out = os.path.join(tmp_dir, str(part_num) + '.csv')
+        with open(file_out, 'rb') as fout:
+            part_response = requests.put(part_url, data=fout)
+
+        if not part_response.ok:
+            msg = _get_aws_error_message(part_response)
+            raise HTTPError(msg, response=part_response)
+
+        log.debug('Completed upload of file part', part_num)
+
+    # upload each part
+    try:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            for i in range(0, num_parts):
+                offset = part_size * i
+                num_bytes = min(part_size, file_size - offset)
+                buf.seek(offset)
+
+                # write part to disk so that we can stream it
+                file_in = os.path.join(tmp_dir, str(i) + '.csv')
+                with open(file_in, 'wb') as fin:
+                    for x in _gen_chunks(buf, num_bytes):
+                        fin.write(x)
+
+            with Pool(MAX_THREADS) as pool:
+                pool.map(_upload_part, enumerate(urls))
+
+    # complete the multipart upload; an abort will be triggered
+    # if any part except the last failed to upload at least 5MB
+    finally:
+        client.files.post_multipart_complete(file_response.id)
+
+    return file_response.id
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -89,52 +223,43 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     pass to this function, do so using the ``'rb'`` (read binary)
     mode (e.g., ``open('myfile.zip', 'rb')``).
 
-    If you have the `requests-toolbelt` package installed
-    (`pip install requests-toolbelt`) and the file-like object is seekable,
-    then this function will stream from the open file pointer into Platform.
-    If `requests-toolbelt` is not installed or the file-like object is not
-    seekable, then it will need to read the entire buffer into memory before
-    writing.
+    Warning: If the file-like object is seekable, the current
+    position will be reset to 0.
+
+    This facilitates retries and is used to chunk files for multipart
+    uploads for improved performance.
+
+    Small or non-seekable file-like objects will be uploaded with a
+    single post.
     """
     if client is None:
         client = APIClient(api_key=api_key)
-    file_response = client.files.post(name, **kwargs)
 
-    # Platform has given us a URL to which we can upload a file.
-    # The file must be uploaded with a POST formatted as per
-    # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html
-    # Note that the payload must have "key" first and "file" last.
-    form = file_response.upload_fields
-    form_key = OrderedDict(key=form.pop('key'))
-    form_key.update(form)
-    form_key['file'] = buf
+    file_size = _buf_len(buf)
+    if not file_size:
+        log.warning('Could not determine file size; defaulting to '
+                    'single post. Files over 5GB will fail.')
 
-    url = file_response.upload_url
-    if HAS_TOOLBELT and buf.seekable():
-        # This streams from the open file buffer without holding the
-        # contents in memory.
-        en = MultipartEncoder(fields=form_key)
-        # The refusal error from AWS states 5368730624 is the max size allowed
-        if en.len >= 5 * 2 ** 30:  # 5 GB
-            msg = "Cannot upload files greater than 5GB. Got {:d}."
-            raise ValueError(msg.format(en.len))
-        elif en.len <= 100 * 2 ** 20:  # 100 MB
-            # Semi-arbitrary cutoff for "small" files.
-            # Send these with requests directly because that uses less CPU
-            response = requests.post(url, files=form_key)
-        else:
-            response = requests.post(url, data=en,
-                                     headers={'Content-Type': en.content_type})
+    # determine if file-like object is seekable
+    try:
+        buf.seek(buf.tell())
+        is_seekable = True
+    except io.UnsupportedOperation:
+        is_seekable = False
+
+    if not file_size:
+        return _single_upload(buf, name, is_seekable, client, **kwargs)
+    elif file_size > MAX_FILE_SIZE:
+        msg = "File is greater than the maximum allowable file size (5TB)"
+        raise ValueError(msg)
+    elif not is_seekable and file_size > MAX_PART_SIZE:
+        msg = "Cannot perform multipart upload on non-seekable files. " \
+              "File is greater than the maximum allowable part size (5GB)"
+        raise ValueError(msg)
+    elif file_size <= MIN_MULTIPART_SIZE or not is_seekable:
+        return _single_upload(buf, name, is_seekable, client, **kwargs)
     else:
-        response = requests.post(url, files=form_key)
-
-    if not response.ok:
-        # Amazon gives back informative error messages
-        # http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
-        msg = _get_aws_error_message(response)
-        raise HTTPError(msg, response=response)
-
-    return file_response.id
+        return _multipart_upload(buf, name, file_size, client, **kwargs)
 
 
 @deprecate_param('v2.0.0', 'api_key')
