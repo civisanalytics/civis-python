@@ -1,11 +1,17 @@
 import json
 import csv
 import io
+import logging
 import six
+import tempfile
 import warnings
+import zlib
+
+import gzip
+import zipfile
 
 from civis import APIClient
-from civis.io import civis_to_file
+from civis.io import civis_to_file, query_civis
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
@@ -22,6 +28,8 @@ try:
     NO_PANDAS = False
 except ImportError:
     NO_PANDAS = True
+
+log = logging.getLogger(__name__)
 
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis']
@@ -205,8 +213,23 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
+
+    if isinstance(database, str):
+        database = client.get_database_id(database)
+    credential_id = credential_id or client.default_credential
+
+    delimiter = ','
+    headers = _get_headers(client, sql, database, credential_id)
+
+    csv_settings = dict(include_header=False,
+                        compression='gzip',
+                        column_delimiter=delimiter,
+                        filename_prefix=None,
+                        force_multifile=False)
+
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
+                                    csv_settings=csv_settings,
                                     hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
@@ -222,13 +245,21 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if not outputs:
         raise EmptyResultError("Query {} returned no output."
                                .format(script_id))
+
     url = outputs[0]["path"]
+    file_id = outputs[0]["file_id"]
+    log.info('Exported results to Civis file %s (%s)',
+             outputs[0]["output_name"], file_id)
+
     if use_pandas:
-        data = pd.read_csv(url, **kwargs)
+        data = pd.read_csv(url, names=headers, compression='gzip', **kwargs)
     else:
         r = requests.get(url)
         r.raise_for_status()
-        data = list(csv.reader(StringIO(r.text), **kwargs))
+        headers = delimiter.join(headers) + '\n'
+        raw_data = zlib.decompress(r.content, zlib.MAX_WBITS | 32)
+        raw_data = StringIO(headers + raw_data.decode('utf-8'))
+        data = list(csv.reader(raw_data, **kwargs))
     return data
 
 
@@ -303,8 +334,20 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if not delimiter:
         raise ValueError("delimiter must be one of {}"
                          .format(DELIMITERS.keys()))
-    csv_settings = dict(include_header=include_header,
-                        compression=compression,
+
+    if isinstance(database, str):
+        database = client.get_database_id(database)
+    credential_id = credential_id or client.default_credential
+
+    if include_header:
+        headers = _get_headers(client, sql, database, credential_id)
+        headers = delimiter.join(headers) + '\n'
+        headers = headers.encode('utf-8')
+    else:
+        headers = b''
+
+    csv_settings = dict(include_header=False,
+                        compression='gzip',
                         column_delimiter=delimiter,
                         unquoted=unquoted,
                         filename_prefix=None,
@@ -316,7 +359,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
-    download = _download_callback(script_id, run_id, client, filename)
+    download = _download_callback(script_id, run_id, client, filename,
+                                  headers, compression)
     fut.add_done_callback(download)
     if archive:
 
@@ -640,12 +684,13 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
 def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                 csv_settings=None):
     job_name = maybe_get_random_name(job_name)
-    db_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
+    if isinstance(database, str):
+        database = client.get_database_id(database)
+    credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
     export_job = client.scripts.post_sql(job_name,
-                                         remote_host_id=db_id,
-                                         credential_id=cred_id,
+                                         remote_host_id=database,
+                                         credential_id=credential_id,
                                          sql=sql,
                                          hidden=hidden,
                                          csv_settings=csv_settings)
@@ -661,18 +706,52 @@ def _get_sql_select(table, columns=None):
     return sql
 
 
-def _download_file(url, local_path):
+def _get_headers(client, sql, database, credential_id):
+    sql = 'select * from ({}) limit 1'.format(sql)
+    fut = query_civis(sql, database, client=client,
+                      credential_id=credential_id)
+    return fut.result()['result_columns']
+
+
+def _download_file(url, local_path, headers, compression):
     response = requests.get(url, stream=True)
     response.raise_for_status()
-
+    decompress = zlib.decompressobj(zlib.MAX_WBITS | 32)
     chunk_size = 32 * 1024
-    with open(local_path, 'wb') as fout:
-        chunk = response.iter_content(chunk_size)
-        for lines in chunk:
-            fout.write(lines)
+
+    def _write_file(buf):
+        buf.write(headers)
+        chunks = response.iter_content(chunk_size)
+        for chunk in chunks:
+            fout.write(decompress.decompress(chunk))
+
+    def _read_file(buf):
+        while True:
+            data = buf.read(chunk_size)
+            if not data:
+                break
+            yield data
+
+    if compression == 'none':
+        with open(local_path, 'wb') as fout:
+            _write_file(fout)
+            return
+
+    with tempfile.NamedTemporaryFile() as temp:
+        _write_file(temp)
+        with open(temp.name, 'rb') as fin:
+            if compression == 'gzip':
+                with gzip.open(local_path, 'wb') as fout:
+                    for chunk in _read_file(fin):
+                        fout.write(chunk)
+            elif compression == 'zip':
+                with zipfile.ZipFile(local_path, 'w',
+                                     compression=zipfile.ZIP_DEFLATED) as fout:
+                    for chunk in _read_file(fin):
+                        fout.write(chunk)
 
 
-def _download_callback(job_id, run_id, client, filename):
+def _download_callback(job_id, run_id, client, filename, headers, compression):
 
     def callback(future):
         outputs = client.scripts.get_sql_runs(job_id, run_id)["output"]
@@ -687,7 +766,11 @@ def _download_callback(job_id, run_id, client, filename):
             return
         else:
             url = outputs[0]["path"]
-            return _download_file(url, filename)
+            file_id = outputs[0]["file_id"]
+            output_name = outputs[0]["output_name"]
+            log.info('Exported results to Civis file %s (%s)',
+                     output_name, file_id)
+            return _download_file(url, filename, headers, compression)
 
     return callback
 
