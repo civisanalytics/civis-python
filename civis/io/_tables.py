@@ -3,6 +3,7 @@ import csv
 from os import path
 import io
 import logging
+import shutil
 import six
 import tempfile
 import warnings
@@ -331,11 +332,6 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
 
-    delimiter = DELIMITERS.get(delimiter)
-    if not delimiter:
-        raise ValueError("delimiter must be one of {}"
-                         .format(DELIMITERS.keys()))
-
     if isinstance(database, str):
         database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
@@ -346,6 +342,11 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         headers = headers.encode('utf-8')
     else:
         headers = b''
+
+    delimiter = DELIMITERS.get(delimiter)
+    if not delimiter:
+        raise ValueError("delimiter must be one of {}"
+                         .format(DELIMITERS.keys()))
 
     csv_settings = dict(include_header=False,
                         compression='gzip',
@@ -840,7 +841,7 @@ def _download_file(url, local_path, headers, compression):
         buf.write(headers)
         chunks = response.iter_content(chunk_size)
         for chunk in chunks:
-            fout.write(decompress.decompress(chunk))
+            buf.write(decompress.decompress(chunk))
 
     def _read_file(buf):
         while True:
@@ -856,16 +857,19 @@ def _download_file(url, local_path, headers, compression):
 
     with tempfile.NamedTemporaryFile() as temp:
         _write_file(temp)
-        with open(temp.name, 'rb') as fin:
-            if compression == 'gzip':
+        temp.flush()
+        if compression == 'gzip':
+            with open(temp.name, 'rb') as fin:
                 with gzip.open(local_path, 'wb') as fout:
+                    #shutil.copyfileobj(fin, fout, chunk_size)
                     for chunk in _read_file(fin):
                         fout.write(chunk)
-            elif compression == 'zip':
-                with zipfile.ZipFile(local_path, 'w',
-                                     compression=zipfile.ZIP_DEFLATED) as fout:
-                    for chunk in _read_file(fin):
-                        fout.write(chunk)
+        elif compression == 'zip':
+            with zipfile.ZipFile(local_path, 'w') as fout:
+                arcname = path.basename(local_path)
+                if arcname.split('.')[-1] == 'zip':
+                    arcname = arcname.split('.')[0] + '.csv'
+                fout.write(temp.name, arcname, zipfile.ZIP_DEFLATED)
 
 
 def _download_callback(job_id, run_id, client, filename, headers, compression):
