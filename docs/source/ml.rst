@@ -119,7 +119,7 @@ You can tune hyperparamters using one of two methods: grid search or
 hyperband. CivisML will perform grid search if you pass a dictionary
 of hyperparameters to the ``cross_validation_parameters`` parameter, where the keys are
 hyperparameter names, and the values are lists of hyperparameter
-values to grid search over. You can run grid search in parallel by
+values to grid search over. You can run hyperparameter tuning in parallel by
 setting the ``n_jobs``
 parameter to however many jobs you would like to run in
 parallel. ``n_jobs`` defaults to 1 (no parallelization). 
