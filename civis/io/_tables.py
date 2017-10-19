@@ -336,12 +336,12 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
+    # retrieve headers separately if requested
     if include_header:
         headers = _get_headers(client, sql, database, credential_id)
-        if unquoted:
-            headers = delimiter.join(headers) + '\n'
-        else:
-            headers = delimiter.join('"{0}"'.format(col) for col in headers) + '\n'
+        if not unquoted:
+            headers = ['"{}"'.format(x) for x in headers]
+        headers = delimiter.join(headers) + '\n'
         headers = headers.encode('utf-8')
     else:
         headers = b''
@@ -351,6 +351,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         raise ValueError("delimiter must be one of {}"
                          .format(DELIMITERS.keys()))
 
+    # always set include_header to False and compression to gzip to
+    # ensure the best performance when retrieving results
     csv_settings = dict(include_header=False,
                         compression='gzip',
                         column_delimiter=delimiter,
@@ -838,37 +840,51 @@ def _get_headers(client, sql, database, credential_id):
 def _download_file(url, local_path, headers, compression):
     response = requests.get(url, stream=True)
     response.raise_for_status()
-    decompress = zlib.decompressobj(zlib.MAX_WBITS | 32)
     chunk_size = 32 * 1024
 
-    def _write_file(buf):
+    # write compressed stream to a buffer with headers
+    def _decompress_stream(buf):
         buf.write(headers)
-        chunks = response.iter_content(chunk_size)
-        for chunk in chunks:
-            buf.write(decompress.decompress(chunk))
-        buf.flush()
 
-    def _read_file(buf):
-        while True:
-            data = buf.read(chunk_size)
-            if not data:
-                break
-            yield data
+        decompressor = zlib.decompressobj(zlib.MAX_WBITS | 32)
+        response_iter = response.iter_content(chunk_size)
+        chunk = next(response_iter, '')
 
+        # decompress as stream
+        while chunk or decompressor.unused_data:
+            if decompressor.unused_data:
+                to_decompress = decompressor.unused_data + chunk
+                decompressor = zlib.decompressobj(zlib.MAX_WBITS | 32)
+            else:
+                to_decompress = decompressor.unconsumed_tail + chunk
+            buf.write(decompressor.decompress(to_decompress))
+            chunk = next(response_iter, '')
+
+    # if headers are not requested then just write the stream
+    # to the local path since the stream is gzipped
+    if compression == 'gzip' and not headers:
+        with open(local_path, 'wb') as fout:
+            shutil.copyfileobj(response.raw, fout, chunk_size)
+
+        return
+
+    # for no compression, decompress the stream
     if compression == 'none':
         with open(local_path, 'wb') as fout:
-            _write_file(fout)
-            return
+            _decompress_stream(fout)
 
+        return
+
+    # if headers are requested or zip compression is requested
+    # first decompress the stream and write headers
+    # then re-compress the file contents
     with tempfile.NamedTemporaryFile() as temp:
-        _write_file(temp)
+        _decompress_stream(temp)
         if compression == 'gzip':
             with open(temp.name, 'rb') as fin:
                 with gzip.open(local_path, 'wb') as fout:
-                    #shutil.copyfileobj(fin, fout, chunk_size)
-                    for chunk in _read_file(fin):
-                        fout.write(chunk)
-                    fout.flush()
+                    shutil.copyfileobj(fin, fout, chunk_size)
+
         elif compression == 'zip':
             with zipfile.ZipFile(local_path, 'w') as fout:
                 arcname = path.basename(local_path)

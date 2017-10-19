@@ -6,6 +6,7 @@ import math
 from multiprocessing.dummy import Pool
 import os
 import re
+import shutil
 import six
 import requests
 from requests import HTTPError
@@ -301,9 +302,7 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     response = requests.get(url, stream=True)
     response.raise_for_status()
     chunk_size = 32 * 1024
-    chunked = response.iter_content(chunk_size)
-    for lines in chunked:
-        buf.write(lines)
+    shutil.copyfileobj(response.raw, buf, chunk_size)
 
 
 def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
