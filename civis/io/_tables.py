@@ -338,7 +338,10 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 
     if include_header:
         headers = _get_headers(client, sql, database, credential_id)
-        headers = delimiter.join(headers) + '\n'
+        if unquoted:
+            headers = delimiter.join(headers) + '\n'
+        else:
+            headers = delimiter.join('"{0}"'.format(col) for col in headers) + '\n'
         headers = headers.encode('utf-8')
     else:
         headers = b''
@@ -843,6 +846,7 @@ def _download_file(url, local_path, headers, compression):
         chunks = response.iter_content(chunk_size)
         for chunk in chunks:
             buf.write(decompress.decompress(chunk))
+        buf.flush()
 
     def _read_file(buf):
         while True:
@@ -858,13 +862,13 @@ def _download_file(url, local_path, headers, compression):
 
     with tempfile.NamedTemporaryFile() as temp:
         _write_file(temp)
-        temp.flush()
         if compression == 'gzip':
             with open(temp.name, 'rb') as fin:
                 with gzip.open(local_path, 'wb') as fout:
                     #shutil.copyfileobj(fin, fout, chunk_size)
                     for chunk in _read_file(fin):
                         fout.write(chunk)
+                    fout.flush()
         elif compression == 'zip':
             with zipfile.ZipFile(local_path, 'w') as fout:
                 arcname = path.basename(local_path)
