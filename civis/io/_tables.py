@@ -262,7 +262,8 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     return data
 
 
-@deprecate_param('v2.0.0', 'api_key')
+#@deprecate_param('v2.0.0', 'api_key')
+@profile
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                  client=None, credential_id=None, include_header=True,
                  compression='none', delimiter=',', unquoted=False,
@@ -857,13 +858,13 @@ def _decompress_stream(url, buf, chunk_size=32*1024, bytes=True):
 
 
 def _download_file(url, local_path, headers, compression):
-    response = requests.get(url, stream=True)
-    response.raise_for_status()
     chunk_size = 32 * 1024
 
     # if headers are not requested then just write the stream
     # to the local path since the stream is gzipped
     if compression == 'gzip' and not headers:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
         with open(local_path, 'wb') as fout:
             shutil.copyfileobj(response.raw, fout, chunk_size)
 
@@ -873,7 +874,7 @@ def _download_file(url, local_path, headers, compression):
     if compression == 'none':
         with open(local_path, 'wb') as fout:
             fout.write(headers)
-            _decompress_stream(fout)
+            _decompress_stream(url, fout)
 
         return
 
