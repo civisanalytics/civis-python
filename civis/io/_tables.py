@@ -134,7 +134,8 @@ def read_civis(table, database, columns=None, use_pandas=False,
     return data
 
 
-@deprecate_param('v2.0.0', 'api_key')
+#@deprecate_param('v2.0.0', 'api_key')
+@profile
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
@@ -218,16 +219,11 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     if isinstance(database, str):
         database = client.get_database_id(database)
+
     credential_id = credential_id or client.default_credential
-
-    delimiter = ','
     headers = _get_headers(client, sql, database, credential_id)
-
     csv_settings = dict(include_header=False,
-                        compression='gzip',
-                        column_delimiter=delimiter,
-                        filename_prefix=None,
-                        force_multifile=False)
+                        compression='gzip')
 
     script_id, run_id = _sql_script(client, sql, database,
                                     job_name, credential_id,
@@ -256,12 +252,13 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if use_pandas:
         data = pd.read_csv(url, names=headers, compression='gzip', **kwargs)
     else:
-        r = requests.get(url)
-        r.raise_for_status()
-        headers = delimiter.join(headers) + '\n'
-        raw_data = zlib.decompress(r.content, zlib.MAX_WBITS | 32)
-        raw_data = StringIO(headers + raw_data.decode('utf-8'))
-        data = list(csv.reader(raw_data, **kwargs))
+        headers = ','.join(headers) + '\n'
+        with StringIO() as buf:
+            buf.write(headers)
+            _decompress_stream(url, buf, bytes=False)
+            buf.seek(0)
+            data = list(csv.reader(buf, **kwargs))
+
     return data
 
 
@@ -836,28 +833,32 @@ def _get_headers(client, sql, database, credential_id):
     return fut.result()['result_columns']
 
 
+def _decompress_stream(url, buf, chunk_size=32*1024, bytes=True):
+    r = requests.get(url, stream=True)
+    r.raise_for_status()
+
+    d = zlib.decompressobj(zlib.MAX_WBITS | 32)
+    response_iter = r.iter_content(chunk_size)
+    chunk = next(response_iter, '')
+
+    # decompress as stream
+    while chunk or d.unused_data:
+        if d.unused_data:
+            to_decompress = d.unused_data + chunk
+            d = zlib.decompressobj(zlib.MAX_WBITS | 32)
+        else:
+            to_decompress = d.unconsumed_tail + chunk
+        if bytes:
+            buf.write(d.decompress(to_decompress))
+        else:
+            buf.write(d.decompress(to_decompress).decode('utf-8'))
+        chunk = next(response_iter, '')
+
+
 def _download_file(url, local_path, headers, compression):
     response = requests.get(url, stream=True)
     response.raise_for_status()
     chunk_size = 32 * 1024
-
-    # write compressed stream to a buffer with headers
-    def _decompress_stream(buf):
-        buf.write(headers)
-
-        decompressor = zlib.decompressobj(zlib.MAX_WBITS | 32)
-        response_iter = response.iter_content(chunk_size)
-        chunk = next(response_iter, '')
-
-        # decompress as stream
-        while chunk or decompressor.unused_data:
-            if decompressor.unused_data:
-                to_decompress = decompressor.unused_data + chunk
-                decompressor = zlib.decompressobj(zlib.MAX_WBITS | 32)
-            else:
-                to_decompress = decompressor.unconsumed_tail + chunk
-            buf.write(decompressor.decompress(to_decompress))
-            chunk = next(response_iter, '')
 
     # if headers are not requested then just write the stream
     # to the local path since the stream is gzipped
@@ -870,6 +871,7 @@ def _download_file(url, local_path, headers, compression):
     # for no compression, decompress the stream
     if compression == 'none':
         with open(local_path, 'wb') as fout:
+            fout.write(headers)
             _decompress_stream(fout)
 
         return
@@ -878,6 +880,7 @@ def _download_file(url, local_path, headers, compression):
     # first decompress the stream and write headers
     # then re-compress the file contents
     with tempfile.NamedTemporaryFile() as temp:
+        temp.write(headers)
         _decompress_stream(temp)
         if compression == 'gzip':
             with open(temp.name, 'rb') as fin:
