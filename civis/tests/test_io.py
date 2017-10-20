@@ -242,7 +242,8 @@ class ImportTests(CivisVCRTestCase):
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
         with tempfile.NamedTemporaryFile() as tmp:
-            civis.io._tables._download_file(self.export_url, tmp.name, b'', 'none')
+            civis.io._tables._download_file(self.export_url, tmp.name,
+                                            b'', 'none')
             with open(tmp.name, "r") as f:
                 data = f.read()
         assert data == expected
