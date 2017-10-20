@@ -134,8 +134,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
     return data
 
 
-#@deprecate_param('v2.0.0', 'api_key')
-@profile
+@deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
@@ -262,8 +261,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     return data
 
 
-#@deprecate_param('v2.0.0', 'api_key')
-@profile
+@deprecate_param('v2.0.0', 'api_key')
 def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                  client=None, credential_id=None, include_header=True,
                  compression='none', delimiter=',', unquoted=False,
@@ -337,6 +335,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # retrieve headers separately if requested
     if include_header:
         headers = _get_headers(client, sql, database, credential_id)
+
         if not unquoted:
             headers = ['"{}"'.format(x) for x in headers]
         headers = delimiter.join(headers) + '\n'
@@ -809,13 +808,16 @@ def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
         database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
+
     export_job = client.scripts.post_sql(job_name,
                                          remote_host_id=database,
                                          credential_id=credential_id,
                                          sql=sql,
                                          hidden=hidden,
                                          csv_settings=csv_settings)
+
     run_job = client.scripts.post_sql_runs(export_job.id)
+
     return export_job.id, run_job.id
 
 
@@ -912,9 +914,7 @@ def _download_callback(job_id, run_id, client, filename, headers, compression):
         else:
             url = outputs[0]["path"]
             file_id = outputs[0]["file_id"]
-            output_name = outputs[0]["output_name"]
-            log.info('Exported results to Civis file %s (%s)',
-                     output_name, file_id)
+            log.info('Exported results to Civis file %s', file_id)
             return _download_file(url, filename, headers, compression)
 
     return callback
