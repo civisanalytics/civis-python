@@ -90,16 +90,10 @@ class ImportTests(CivisVCRTestCase):
                 result = civis.io.civis_to_csv(tmp.name, sql, database,
                                                polling_interval=POLL_INTERVAL)
                 result = result.result()
+                cls.export_url = result['output'][0]['path']
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_get_url_from_file_id(self, *mocks):
-        client = civis.APIClient()
-        url = civis.io._files._get_url_from_file_id(self.file_id, client)
-        assert url.startswith(
-            'https://civis-console.s3.amazonaws.com/orgs/tgtg/files/')
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
@@ -246,13 +240,9 @@ class ImportTests(CivisVCRTestCase):
             civis.io._tables._get_sql_select(table, "column_a")
 
     def test_download_file(self, *mocks):
-        url = "https://httpbin.org/stream/3"
-        x = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 0, "origin": "50.202.212.3"}\n'  # noqa: E501
-        y = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 1, "origin": "50.202.212.3"}\n'  # noqa: E501
-        z = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 2, "origin": "50.202.212.3"}\n'  # noqa: E501
-        expected = x + y + z
+        expected = '"1","2","3"\n'
         with tempfile.NamedTemporaryFile() as tmp:
-            civis.io._tables._download_file(url, tmp.name)
+            civis.io._tables._download_file(self.export_url, tmp.name, b'', 'none')
             with open(tmp.name, "r") as f:
                 data = f.read()
         assert data == expected

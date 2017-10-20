@@ -7,31 +7,21 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://httpbin.org/stream/3
+    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/exports/7773519/62510599/8745c3bd561144c8af2088c14c72fbd5_recombined.csv.gz?AWSAccessKeyId=ASIAJYE6MCSMXYRU37NQ&Expires=1508668381&Signature=Y8Yg7TQZZywdryCb0mZJP2oyQkY%3D&response-content-disposition=attachment%3B%20filename%3D%228745c3bd561144c8af2088c14c72fbd5_recombined.csv.gz%22&response-content-type=application%2Fx-gzip&x-amz-security-token=FQoDYXdzEMj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDG2hlOuF0V56%2FCEgiiKsAbHtxPT9XzuF2z9EFLGZ1Wl6g4kg69M%2BvMuBgJoWyoJl2jkcefftbprYuO8bhdbQM3kzODZCtBdvgh80GKbsccNHHiANNaJ44ARhINvzHp4cUlvqPUWTr%2BuNETeoARYHppd2QY2lAFigXPtF%2B3ow8%2FcOJsnLCkgjWi9XQEbiyMKvP2BS%2FiP19teoHKRiL7RzKOopz%2BAVY479AhpwSq7FdPKHcFPpdk5VpEtfhVgonfOpzwU%3D
   response:
-    body: {string: '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent":
-        "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate",
-        "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 0, "origin":
-        "50.202.212.3"}
-
-        {"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1",
-        "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"},
-        "url": "https://httpbin.org/stream/3", "id": 1, "origin": "50.202.212.3"}
-
-        {"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1",
-        "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"},
-        "url": "https://httpbin.org/stream/3", "id": 2, "origin": "50.202.212.3"}
-
-'}
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA1MyVNJRMgJiYyUuAKSR3egMAAAA
     headers:
-      Access-Control-Allow-Credentials: ['true']
-      Access-Control-Allow-Origin: ['*']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      Date: ['Thu, 12 Oct 2017 18:44:38 GMT']
-      Server: [meinheld/0.6.1]
-      Via: [1.1 vegur]
-      X-Powered-By: [Flask]
-      X-Processed-Time: ['0.00158095359802']
+      Accept-Ranges: [bytes]
+      Content-Disposition: [attachment; filename="8745c3bd561144c8af2088c14c72fbd5_recombined.csv.gz"]
+      Content-Length: ['30']
+      Content-Type: [application/x-gzip]
+      Date: ['Fri, 20 Oct 2017 22:39:51 GMT']
+      ETag: ['"127be87edf89b6621c68647ed84e19fb"']
+      Last-Modified: ['Fri, 20 Oct 2017 22:33:00 GMT']
+      Server: [AmazonS3]
+      x-amz-id-2: [J3fO2uNXkCBSVnuW7ASpAmuhqVHil5t5lyKLaRTMO7FmguVMXF/XWoGyr4a67vub1QX/A7x1TTw=]
+      x-amz-request-id: [83C2719EBC6460E4]
     status: {code: 200, message: OK}
 version: 1
