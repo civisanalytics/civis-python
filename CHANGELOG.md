@@ -39,6 +39,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   underscores.
 - Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
   compatible with Python 2.7
+- Example in ``civis.io.civis_file_to_table`` docstring
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
