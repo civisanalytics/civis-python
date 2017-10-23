@@ -9,11 +9,10 @@ import re
 import six
 import requests
 from requests import HTTPError
-import tempfile
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis.compat import FileNotFoundError
+from civis.compat import FileNotFoundError, TemporaryDirectory
 from civis.utils._deprecation import deprecate_param
 from civis._utils import retry
 
@@ -148,7 +147,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     def _upload_part(item):
         part_num, part_url = item[0], item[1]
         log.debug('Uploading file part %s', part_num)
-        file_out = os.path.join(tmp_dir, str(part_num) + '.csv')
+        file_out = os.path.join(tmp_path, str(part_num) + '.csv')
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
@@ -160,14 +159,15 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload each part
     try:
-        with tempfile.TemporaryDirectory() as tmp_dir:
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis')
             for i in range(0, num_parts):
                 offset = part_size * i
                 num_bytes = min(part_size, file_size - offset)
                 buf.seek(offset)
 
                 # write part to disk so that we can stream it
-                file_in = os.path.join(tmp_dir, str(i) + '.csv')
+                file_in = os.path.join(tmp_path, str(i) + '.csv')
                 with open(file_in, 'wb') as fin:
                     for x in _gen_chunks(buf, num_bytes):
                         fin.write(x)

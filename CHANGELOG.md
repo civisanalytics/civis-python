@@ -24,6 +24,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
   in endpoint names.
+- Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
+  compatible with Python 2.7
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
