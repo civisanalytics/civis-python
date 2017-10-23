@@ -714,11 +714,10 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     Examples
     --------
-    >>> with open('input_file.csv', 'w') as _input:
-    ...     _input.write('a,b,c\\n1,2,3')
-    >>> fut = civis.io.csv_to_civis('input_file.csv',
-    ...                             'my-database',
-    ...                             'scratch.my_data')
+    >>> file_id = 100
+    >>> fut = civis.io.civis_file_to_table(file_id,
+    ...                                    'my-database',
+    ...                                    'scratch.my_data')
     >>> fut.result()
     """
     if client is None:
