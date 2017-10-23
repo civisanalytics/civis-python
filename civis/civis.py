@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import logging
-import warnings
 
 from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
@@ -293,12 +292,6 @@ class APIClient(MetaMixin):
 
     @property
     def feature_flags(self):
-        msg = ("The property APIClient.feature_flags is deprecated "
-               "and will be replaced with a FeatureFlags object to access the "
-               "feature_flags endpoint in v2.0.0.  To access the "
-               "FeatureFlags endpoint in this version please use "
-               "APIClient.featureflags.")
-        warnings.warn(msg)
         if self._feature_flags:
             return self._feature_flags
         me = self.users.list_me()
