@@ -37,6 +37,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
 - Fixed parsing of endpoints containing hyphens.  Hyphens are replaced with
   underscores.
+- Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
+  compatible with Python 2.7
+
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
