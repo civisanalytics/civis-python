@@ -163,7 +163,7 @@ class PollableResult(CivisAsyncResultBase):
             if result.state in FAILED:
                 try:
                     err_msg = str(result['error'])
-                except:
+                except:  # NOQA
                     err_msg = str(result)
                 self._set_api_exception(exc=CivisJobFailure(err_msg, result),
                                         result=result)
