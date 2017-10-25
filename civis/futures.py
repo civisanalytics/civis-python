@@ -13,7 +13,7 @@ import threading
 import six
 
 from civis import APIClient
-from civis.base import DONE
+from civis.base import CivisAPIError, DONE
 from civis.polling import PollableResult, _ResultPollingThread
 
 from pubnub.pubnub import PubNub
@@ -279,7 +279,15 @@ class ContainerFuture(CivisFuture):
             elif not self.done():
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
-                self._result = self.client.scripts.post_cancel(self.job_id)
+                try:
+                    self._result = self.client.scripts.post_cancel(self.job_id)
+                except CivisAPIError as exc:
+                    if exc.status_code == 404:
+                        # The most likely way to get this error
+                        # is for the job to already be completed.
+                        return False
+                    else:
+                        raise
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
