@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
   in endpoint names.
+- Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
