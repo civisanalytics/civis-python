@@ -9,6 +9,7 @@ import datetime
 import logging
 import time
 import threading
+import warnings
 
 import six
 
@@ -287,7 +288,10 @@ class ContainerFuture(CivisFuture):
                         # is for the job to already be completed.
                         return False
                     else:
-                        raise
+                        warnings.warn("Unexpected error when attempting to "
+                                      "cancel job ID %d / run ID %d:\n%s" %
+                                      (self.job_id, self.run_id, str(exc)))
+                        return False
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
