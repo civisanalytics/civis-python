@@ -553,7 +553,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     buf.seek(0)
     delimiter = ','
     name = table.split('.')[-1]
-    file_id = file_to_civis(buf, name, api_key=api_key, client=client)
+    file_id = file_to_civis(buf, name, client=client)
     fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
@@ -646,7 +646,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
 
     name = path.basename(filename)
     with open(filename, "rb") as data:
-        file_id = file_to_civis(data, name, api_key=api_key, client=client)
+        file_id = file_to_civis(data, name, client=client)
         log.info('Uploaded file %s to Civis file %s', filename, file_id)
         fut = civis_file_to_table(file_id, database, table,
                                   client=client, max_errors=max_errors,
