@@ -8,6 +8,31 @@ and :mod:`civis.futures` modules.
 
 Joblib backend
 ==============
+If you can divide your work into multiple independent chunks, each of which takes
+at least several minutes to run, you can reduce the wall time of your job
+by running each chunk simultaneously in Civis Platform. The Civis joblib
+backend is a software tool which makes it easier to run many jobs simultaneously.
+
+Things to keep in mind when deciding if the Civis joblib backend is the right
+tool for your code:
+
+- Each function call which is parallelized with the Civis joblib backend will run
+  in a different Civis Platform script. Creating a new script comes with some overhead.
+  It will take between a few seconds an a few minutes for each script to start,
+  depending on whether Civis Platform needs to provision additional resources.
+  If you expect that each function call will complete quickly, instead consider either
+  running them in serial or using extra processes in the same Civis Platform script.
+- Because function calls run in different scripts, function inputs and outputs
+  must be uploaded to Civis Platform from their origin script and downloaded into
+  their destination. If your functions take very large inputs and/or produce very
+  large outputs, moving the data around will cause additional overhead.
+  Consider either using a different tool or refactoring your code so that
+  the function to be parallelized is no longer moving around large amounts of data.
+- Some open-source libraries, such as ``scikit-learn``, use ``joblib`` to do
+  computations in parallel. If you're working with such a library, the Civis
+  joblib backend provides an easy way to run these parallel computations in
+  different Civis Platform scripts.
+
 `joblib <https://pythonhosted.org/joblib/index.html>`_ is a tool which facilitates
 parallel processing in Python. The :func:`~civis.parallel.make_backend_factory`,
 :func:`~civis.parallel.infer_backend_factory`, and 
