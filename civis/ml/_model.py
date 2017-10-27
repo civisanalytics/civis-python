@@ -27,7 +27,6 @@ from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError
 import civis.io as cio
 from civis.futures import ContainerFuture
-from civis.polling import _ResultPollingThread
 
 __all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
 log = logging.getLogger(__name__)
@@ -363,13 +362,9 @@ class ModelFuture(ContainerFuture):
         self.__dict__ = state
         self._condition = threading.Condition()
         self.client = APIClient(resources='all')
-        if getattr(self, '_pubnub', None) is True:
-            # Re-subscribe to notifications channel
-            self._pubnub = self._subscribe(*self._pubnub_config())
-        self._polling_thread = _ResultPollingThread(self._check_result, (),
-                                                    self.polling_interval)
         self.poller = self.client.scripts.get_containers_runs
         self.add_done_callback(self._set_model_exception)
+        self._begin_tracking()
 
     @property
     def state(self):
