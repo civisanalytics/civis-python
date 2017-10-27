@@ -614,6 +614,9 @@ class ModelPipeline:
     # These are the v1.1 templates
     train_template_id = 9112
     predict_template_id = 9113
+    # These are the v1.1 templates
+    _train_template_id_fallback = 9112
+    _predict_template_id_fallback = 9113
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
@@ -648,7 +651,23 @@ class ModelPipeline:
             client = APIClient(resources='all')
         self._client = client
         self.train_result_ = None
-        self._etl_train = None
+
+        if '_NEWEST_CIVISML_VERSION' not in globals():
+            try:
+                self.templates.get(id=self.train_template_id)
+                self.templates.get(id=self.predict_template_id)
+            except:
+                global _NEWEST_CIVISML_VERSION = False
+            else:
+                global _NEWEST_CIVISML_VERSION = True
+
+        if NEWEST_CIVISML_VERSION:
+            self._etl_train = None
+        else:
+            # fall back to previous version templates
+            self.train_template_id = self._train_template_id_fallback
+            self.predict_template_id = self._predict_template_id_fallback
+
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -751,7 +770,6 @@ class ModelPipeline:
                     git_token_name=git_token_name,
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
-        klass._etl_train = args.get('ETL', None)
 
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
@@ -766,6 +784,14 @@ class ModelPipeline:
                           % (train_job_id, __version__), RuntimeWarning)
             p_id = max(_PRED_TEMPLATES.values())
         klass.predict_template_id = p_id
+
+        # The user might construct a model from an older version
+        # but still have access to the newest version, so we need
+        # to check the version separately in this function
+        is_newest_version = self.train_template_id == max(
+            _PRED_TEMPLATES.keys())
+        if is_newest_version:
+            klass._etl_train = args.get('ETL', None)
 
         return klass
 
@@ -863,8 +889,9 @@ class ModelPipeline:
                       'PARAMS': json.dumps(self.parameters),
                       'CVPARAMS': json.dumps(self.cv_params),
                       'CALIBRATION': self.calibration,
-                      'IF_EXISTS': if_exists,
-                      'VALIDATION_DATA': validation_data}
+                      'IF_EXISTS': if_exists}
+        if _NEWEST_CIVISML_VERSION:
+            train_args['VALIDATION_DATA'] = validation_data
         if oos_scores:
             train_args['OOSTABLE'] = oos_scores
         if oos_scores_db:
@@ -880,7 +907,7 @@ class ModelPipeline:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
-        if n_jobs:
+        if n_jobs and self.train_template_id == max(_PRED_TEMPLATES.keys()):
             train_args['N_JOBS'] = n_jobs
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
@@ -907,7 +934,8 @@ class ModelPipeline:
                 train_args['ETL'] = str(etl_file_id)
             finally:
                 shutil.rmtree(tempdir)
-        self._etl_train = etl  # Keep the estimator
+        if self.train_template_id == max(_PRED_TEMPLATES.keys()):
+            self._etl_train = etl  # Keep the estimator
         train_args['MODEL'] = self.model
 
         name = self.model_name + ' Train' if self.model_name else None
@@ -1117,6 +1145,7 @@ class ModelPipeline:
             else:
                 output_db_id = self._client.get_database_id(output_db)
                 predict_args['OUTPUT_DB'] = {'database': output_db_id}
+
         if manifest:
             predict_args['MANIFEST'] = manifest
         if sql_where:
@@ -1125,12 +1154,13 @@ class ModelPipeline:
             predict_args['LIMITSQL'] = sql_limit
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
-        if cpu:
-            predict_args['CPU'] = cpu
-        if memory:
-            predict_args['MEMORY'] = memory
-        if disk_space:
-            predict_args['DISK_SPACE'] = disk_space
+        if _NEWEST_CIVISML_VERSION:
+            if cpu:
+                predict_args['CPU'] = cpu
+            if memory:
+                predict_args['MEMORY'] = memory
+            if disk_space:
+                predict_args['DISK_SPACE'] = disk_space
 
         name = self.model_name + ' Predict' if self.model_name else None
         result, container, run = self._create_custom_run(
