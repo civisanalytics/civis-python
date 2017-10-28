@@ -32,6 +32,7 @@ try:
 except ImportError:
     NO_PANDAS = True
 
+CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
@@ -225,10 +226,10 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     # we start by assuming headers are requested
-    include_header, headers = _include_header(client, sql, True,
-                                              database, credential_id)
+    ovrd_include_header, headers = _include_header(client, sql, True,
+                                                   database, credential_id)
 
-    csv_settings = dict(include_header=include_header,
+    csv_settings = dict(include_header=ovrd_include_header,
                         compression='gzip')
 
     script_id, run_id = _sql_script(client, sql, database,
@@ -258,10 +259,13 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if use_pandas:
         data = pd.read_csv(url, names=headers, compression='gzip', **kwargs)
     else:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+
         with StringIO() as buf:
             if headers:
                 buf.write(','.join(headers) + '\n')
-            _decompress_stream(url, buf, bytes=False)
+            _decompress_stream(response, buf, bytes=False)
             buf.seek(0)
             data = list(csv.reader(buf, **kwargs))
 
@@ -341,8 +345,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
-    include_header, headers = _include_header(client, sql, include_header,
-                                              database, credential_id)
+    ovrd_include_header, headers = _include_header(client, sql, include_header,
+                                                   database, credential_id)
 
     # format headers so we can write them to the csv
     if headers:
@@ -360,7 +364,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
 
     # always set include_header to False and compression to gzip to
     # ensure the best performance when retrieving results
-    csv_settings = dict(include_header=include_header,
+    csv_settings = dict(include_header=ovrd_include_header,
                         compression='gzip',
                         column_delimiter=delimiter,
                         unquoted=unquoted,
@@ -840,8 +844,7 @@ def _get_sql_select(table, columns=None):
 
 
 def _get_headers(client, sql, database, credential_id):
-    # use 'begin read only;' to ensure we can't run sql
-    # that changes state when retrieving headers
+    # use 'begin read only;' to ensure we can't change state
     sql = 'begin read only; select * from ({}) limit 1'.format(sql)
     fut = query_civis(sql, database, client=client,
                       credential_id=credential_id)
@@ -851,15 +854,12 @@ def _get_headers(client, sql, database, credential_id):
 def _include_header(client, sql, include_header, database, credential_id):
     headers = None
 
-    # if headers aren't requested don't get headers
-    # if sql contains an order by then Platform can't do a parallel unload so
-    # no need to get headers separately
-    if not include_header or re.search('order by', sql, flags=re.I):
+    # can't do a parallel unload when sql contains an order by
+    if not include_header or re.search('order\s+by', sql, re.I | re.M):
         return include_header, headers
 
     try:
-        # if _get_headers throws an error then the sql is probably not
-        # read only so we can't get headers separately
+        # if _get_headers throws an error then assume sql is not read only
         headers = _get_headers(client, sql, database, credential_id)
         include_header = False
     except:  # NOQA
@@ -868,15 +868,15 @@ def _include_header(client, sql, include_header, database, credential_id):
     return include_header, headers
 
 
-def _decompress_stream(url, buf, chunk_size=32*1024, bytes=True):
-    r = requests.get(url, stream=True)
-    r.raise_for_status()
+def _decompress_stream(response, buf, bytes=True):
 
+    # use response.raw for a more consistent approach
+    # if content-encoding is specified in the headers
+    # then response.iter_content will decompress the stream
+    # however, our use of content-encoding is inconsistent
+    chunk = response.raw.read(CHUNK_SIZE)
     d = zlib.decompressobj(zlib.MAX_WBITS | 32)
-    response_iter = r.iter_content(chunk_size)
-    chunk = next(response_iter, '')
 
-    # decompress as stream
     while chunk or d.unused_data:
         if d.unused_data:
             to_decompress = d.unused_data + chunk
@@ -887,42 +887,38 @@ def _decompress_stream(url, buf, chunk_size=32*1024, bytes=True):
             buf.write(d.decompress(to_decompress))
         else:
             buf.write(d.decompress(to_decompress).decode('utf-8'))
-        chunk = next(response_iter, '')
+        chunk = response.raw.read(CHUNK_SIZE)
 
 
 def _download_file(url, local_path, headers, compression):
-    chunk_size = 32 * 1024
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
 
     # gzipped buffers can be concatenated so write headers as gzip
     if compression == 'gzip':
-        response = requests.get(url, stream=True)
-        response.raise_for_status()
         with open(local_path, 'wb') as fout:
             fout.write(gzip.compress(headers))
-            shutil.copyfileobj(response.raw, fout, chunk_size)
-
-        return
+            shutil.copyfileobj(response.raw, fout, CHUNK_SIZE)
 
     # write headers and decompress the stream
-    if compression == 'none':
+    elif compression == 'none':
         with open(local_path, 'wb') as fout:
             fout.write(headers)
-            _decompress_stream(url, fout)
-
-        return
+            _decompress_stream(response, fout)
 
     # decompress the stream, write headers, and zip the file
-    if compression == 'zip':
+    elif compression == 'zip':
         with TemporaryDirectory() as tmp_dir:
             tmp_path = path.join(tmp_dir, 'civis_to_csv.csv')
             with open(tmp_path, 'wb') as tmp_file:
                 tmp_file.write(headers)
-                _decompress_stream(tmp_file)
-                with zipfile.ZipFile(local_path, 'w') as fout:
-                    arcname = path.basename(local_path)
-                    if arcname.split('.')[-1] == 'zip':
-                        arcname = arcname.split('.')[0] + '.csv'
-                    fout.write(tmp_file.name, arcname, zipfile.ZIP_DEFLATED)
+                _decompress_stream(response, tmp_file)
+
+            with zipfile.ZipFile(local_path, 'w') as fout:
+                arcname = path.basename(local_path)
+                if arcname.split('.')[-1] == 'zip':
+                    arcname = arcname.split('.')[0] + '.csv'
+                fout.write(tmp_path, arcname, zipfile.ZIP_DEFLATED)
 
 
 def _download_callback(job_id, run_id, client, filename, headers, compression):
