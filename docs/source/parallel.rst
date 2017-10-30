@@ -9,7 +9,7 @@ and :mod:`civis.futures` modules.
 Joblib backend
 ==============
 If you can divide your work into multiple independent chunks, each of which takes
-at least several minutes to run, you can reduce the wall time of your job
+at least several minutes to run, you can reduce the time your job takes to finish
 by running each chunk simultaneously in Civis Platform. The Civis joblib
 backend is a software tool which makes it easier to run many jobs simultaneously.
 
