@@ -218,19 +218,19 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
 
-    database = client.get_database_id(database)
+    db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     # we start by assuming headers are requested
     ovrd_include_header, headers = _include_header(client, sql, True,
-                                                   database, credential_id)
+                                                   db_id, credential_id)
 
     csv_settings = dict(include_header=ovrd_include_header,
                         compression='gzip')
 
-    script_id, run_id = _sql_script(client, sql, database,
+    script_id, run_id = _sql_script(client, sql, db_id,
                                     job_name, credential_id,
                                     csv_settings=csv_settings,
                                     hidden=hidden)
@@ -251,11 +251,16 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     url = outputs[0]["path"]
     file_id = outputs[0]["file_id"]
-    log.info('Exported results to Civis file %s (%s)',
-             outputs[0]["output_name"], file_id)
+    log.debug('Exported results to Civis file %s (%s)',
+              outputs[0]["output_name"], file_id)
 
     if use_pandas:
-        data = pd.read_csv(url, names=headers, compression='gzip', **kwargs)
+        # allows users to enter their own names parameter
+        _kwargs = {'names': headers}
+        _kwargs.update(kwargs)
+        _kwargs['compression'] = 'gzip'
+
+        data = pd.read_csv(url, **_kwargs)
     else:
         response = requests.get(url, stream=True)
         response.raise_for_status()
@@ -263,7 +268,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         with StringIO() as buf:
             if headers:
                 buf.write(','.join(headers) + '\n')
-            _decompress_stream(response, buf, bytes=False)
+            _decompress_stream(response, buf, write_bytes=False)
             buf.seek(0)
             data = list(csv.reader(buf, **kwargs))
 
@@ -337,7 +342,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
 
-    database = client.get_database_id(database)
+    db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
     # don't fix bug that would cause breaking change for now
@@ -349,12 +354,12 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     ovrd_include_header, headers = _include_header(client, sql, include_header,
-                                                   database, credential_id)
+                                                   db_id, credential_id)
 
     # format headers so we can write them to the csv
     if headers:
         if not unquoted:
-            headers = ['"{}"'.format(x) for x in headers]
+            headers = ['"{}"'.format(x.replace('"', r'\"')) for x in headers]
         headers = delimiter.join(headers) + '\n'
         headers = headers.encode('utf-8')
     else:
@@ -374,7 +379,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                         filename_prefix=None,
                         force_multifile=False)
 
-    script_id, run_id = _sql_script(client, sql, database, job_name,
+    script_id, run_id = _sql_script(client, sql, db_id, job_name,
                                     credential_id, hidden=hidden,
                                     csv_settings=csv_settings)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
@@ -708,7 +713,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     name = path.basename(filename)
     with open(filename, "rb") as data:
         file_id = file_to_civis(data, name, client=client)
-        log.info('Uploaded file %s to Civis file %s', filename, file_id)
+        log.debug('Uploaded file %s to Civis file %s', filename, file_id)
         fut = civis_file_to_table(file_id, database, table,
                                   client=client, max_errors=max_errors,
                                   existing_table_rows=existing_table_rows,
@@ -821,12 +826,12 @@ def civis_file_to_table(file_id, database, table, client=None,
 def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                 csv_settings=None):
     job_name = maybe_get_random_name(job_name)
-    database = client.get_database_id(database)
+    db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
 
     export_job = client.scripts.post_sql(job_name,
-                                         remote_host_id=database,
+                                         remote_host_id=db_id,
                                          credential_id=credential_id,
                                          sql=sql,
                                          hidden=hidden,
@@ -864,13 +869,13 @@ def _include_header(client, sql, include_header, database, credential_id):
         # if _get_headers throws an error then assume sql is not read only
         headers = _get_headers(client, sql, database, credential_id)
         include_header = False
-    except:  # NOQA
-        pass
+    except Exception as exc:  # NOQA
+        log.debug("Failed to retrieve headers due to %s", str(exc))
 
     return include_header, headers
 
 
-def _decompress_stream(response, buf, bytes=True):
+def _decompress_stream(response, buf, write_bytes=True):
 
     # use response.raw for a more consistent approach
     # if content-encoding is specified in the headers
@@ -885,7 +890,7 @@ def _decompress_stream(response, buf, bytes=True):
             d = zlib.decompressobj(zlib.MAX_WBITS | 32)
         else:
             to_decompress = d.unconsumed_tail + chunk
-        if bytes:
+        if write_bytes:
             buf.write(d.decompress(to_decompress))
         else:
             buf.write(d.decompress(to_decompress).decode('utf-8'))
@@ -939,7 +944,7 @@ def _download_callback(job_id, run_id, client, filename, headers, compression):
         else:
             url = outputs[0]["path"]
             file_id = outputs[0]["file_id"]
-            log.info('Exported results to Civis file %s', file_id)
+            log.debug('Exported results to Civis file %s', file_id)
             return _download_file(url, filename, headers, compression)
 
     return callback
