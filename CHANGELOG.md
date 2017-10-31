@@ -24,6 +24,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
   in endpoint names.
+- In ``civis.futures.ContainerFuture``, return ``False`` when users attempt to cancel
+  an already-completed job. Previously, the object would sometimes give a ``CivisAPIError``
+  with a 404 status code. This fix affects the executors and joblib backend, which
+  use the ``ContainerFuture``.
+- Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
