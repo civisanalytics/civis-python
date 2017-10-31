@@ -40,7 +40,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
   compatible with Python 2.7
 
-
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
   current API spec locally (#141).
