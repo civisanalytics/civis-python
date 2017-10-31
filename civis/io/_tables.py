@@ -218,9 +218,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
 
-    if isinstance(database, str):
-        database = client.get_database_id(database)
-
+    database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
     # determine if we can request headers separately; if we can then Platform
@@ -339,8 +337,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if client is None:
         client = APIClient(api_key=api_key, resources='all')
 
-    if isinstance(database, str):
-        database = client.get_database_id(database)
+    database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
     # determine if we can request headers separately; if we can then Platform
