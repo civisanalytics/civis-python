@@ -143,6 +143,12 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                    hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
+    The custom SQL string will be executed twice; once to attempt to
+    retrieve headers and once to retrieve the data. This is done to
+    use a more performant method for retrieving the data. The first
+    execution of the custom SQL is controlled such that changes in
+    state cannot occur (e.g., INSERT, UPDATE, DELETE, etc.).
+
     Parameters
     ----------
     sql : str, optional
@@ -281,6 +287,12 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                  compression='none', delimiter=',', unquoted=False,
                  archive=False, hidden=True, polling_interval=None):
     """Export data from Civis to a local CSV file.
+
+    The custom SQL string will be executed twice; once to attempt to
+    retrieve headers and once to retrieve the data. This is done to
+    use a more performant method for retrieving the data. The first
+    execution of the custom SQL is controlled such that changes in
+    state cannot occur (e.g., INSERT, UPDATE, DELETE, etc.).
 
     Parameters
     ----------
