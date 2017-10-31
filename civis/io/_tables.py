@@ -340,6 +340,12 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
+    # don't fix bug that would cause breaking change for now
+    # when gzip compression is requested, a gzip file is not actually returned
+    # instead the gzip file is decompressed during download
+    if compression == 'gzip':
+        compression = 'none'
+
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     ovrd_include_header, headers = _include_header(client, sql, include_header,
