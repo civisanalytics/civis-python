@@ -821,8 +821,7 @@ def civis_file_to_table(file_id, database, table, client=None,
 def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                 csv_settings=None):
     job_name = maybe_get_random_name(job_name)
-    if isinstance(database, str):
-        database = client.get_database_id(database)
+    database = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
 
