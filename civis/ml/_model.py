@@ -534,7 +534,7 @@ class ModelPipeline:
         Number of CPU shares requested in the Civis Platform for
         training jobs. 1024 shares = 1 CPU.
     memory_requested : int, optional
-        Memory requested from Civis Platform for training jobs, in MB
+        Memory requested from Civis Platform for training jobs, in MiB
     disk_requested : float, optional
         Disk space requested on Civis Platform for training jobs, in GB
     notifications : dict
