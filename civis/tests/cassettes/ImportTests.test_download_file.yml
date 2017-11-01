@@ -5,30 +5,33 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic]
+      User-Agent: [python-requests/2.18.1]
     method: GET
     uri: https://httpbin.org/stream/3
   response:
-    body: {string: '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 0, "origin": "108.211.184.39"}
+    body: {string: '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent":
+        "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate",
+        "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 0, "origin":
+        "50.202.212.3"}
 
-        {"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 1, "origin": "108.211.184.39"}
+        {"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1",
+        "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"},
+        "url": "https://httpbin.org/stream/3", "id": 1, "origin": "50.202.212.3"}
 
-        {"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 2, "origin": "108.211.184.39"}
+        {"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1",
+        "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"},
+        "url": "https://httpbin.org/stream/3", "id": 2, "origin": "50.202.212.3"}
 
-        '}
+'}
     headers:
       Access-Control-Allow-Credentials: ['true']
       Access-Control-Allow-Origin: ['*']
       Connection: [keep-alive]
       Content-Type: [application/json]
-      Date: ['Tue, 25 Oct 2016 02:22:42 GMT']
-      Server: [nginx]
+      Date: ['Thu, 12 Oct 2017 18:44:38 GMT']
+      Server: [meinheld/0.6.1]
+      Via: [1.1 vegur]
+      X-Powered-By: [Flask]
+      X-Processed-Time: ['0.00158095359802']
     status: {code: 200, message: OK}
-recorded_with: VCR
 version: 1

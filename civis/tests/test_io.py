@@ -18,6 +18,7 @@ import civis
 from civis.compat import mock, FileNotFoundError
 from civis.response import Response
 from civis.base import CivisAPIError
+from civis.io._files import MIN_PART_SIZE
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -97,7 +98,8 @@ class ImportTests(CivisVCRTestCase):
     def test_get_url_from_file_id(self, *mocks):
         client = civis.APIClient()
         url = civis.io._files._get_url_from_file_id(self.file_id, client)
-        assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
+        assert url.startswith(
+            'https://civis-console.s3.amazonaws.com/orgs/tgtg/files/')
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
@@ -114,6 +116,17 @@ class ImportTests(CivisVCRTestCase):
     def test_file_to_civis(self, *mocks):
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(b'a,b,c\n1,2,3')
+            tmp.flush()
+            tmp.seek(0)
+            result = civis.io.file_to_civis(tmp, tmp.name)
+
+        assert isinstance(result, int)
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_large_file_to_civis(self, *mocks):
+        with tempfile.NamedTemporaryFile() as tmp:
+            tmp.seek(MIN_PART_SIZE + 1)
+            tmp.write(b'\0')
             tmp.flush()
             tmp.seek(0)
             result = civis.io.file_to_civis(tmp, tmp.name)
@@ -139,6 +152,18 @@ class ImportTests(CivisVCRTestCase):
                                            existing_table_rows='truncate',
                                            polling_interval=POLL_INTERVAL)
             result = result.result()  # block until done
+
+        assert isinstance(result.id, int)
+        assert result.state == 'succeeded'
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_civis_file_to_table(self, *mocks):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        result = civis.io.civis_file_to_table(self.file_id, database, table,
+                                              existing_table_rows='truncate',
+                                              polling_interval=POLL_INTERVAL)
+        result = result.result()  # block until done
 
         assert isinstance(result.id, int)
         assert result.state == 'succeeded'
@@ -185,7 +210,8 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         result = civis.io.civis_to_multifile_csv(
             sql, database='redshift-general', polling_interval=POLL_INTERVAL)
-        assert set(result.keys()) == {'entries', 'query', 'header'}
+        assert set(result.keys()) == {'entries', 'query', 'header',
+                                      'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql
         assert result['header'] == ['a', 'b', 'c']
         assert isinstance(result['entries'], list)
@@ -221,9 +247,9 @@ class ImportTests(CivisVCRTestCase):
 
     def test_download_file(self, *mocks):
         url = "https://httpbin.org/stream/3"
-        x = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 0, "origin": "108.211.184.39"}\n'  # noqa: E501
-        y = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 1, "origin": "108.211.184.39"}\n'  # noqa: E501
-        z = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 2, "origin": "108.211.184.39"}\n'  # noqa: E501
+        x = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 0, "origin": "50.202.212.3"}\n'  # noqa: E501
+        y = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 1, "origin": "50.202.212.3"}\n'  # noqa: E501
+        z = '{"args": {}, "headers": {"Host": "httpbin.org", "User-Agent": "python-requests/2.18.1", "Accept": "*/*", "Accept-Encoding": "gzip, deflate", "Connection": "close"}, "url": "https://httpbin.org/stream/3", "id": 2, "origin": "50.202.212.3"}\n'  # noqa: E501
         expected = x + y + z
         with tempfile.NamedTemporaryFile() as tmp:
             civis.io._tables._download_file(url, tmp.name)
