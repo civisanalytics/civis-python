@@ -547,12 +547,15 @@ class ModelPipeline:
         dependencies to a specific version, since dependecies will be
         reinstalled during every training and predict job.
     git_token_name : str, optional
-        Name of remote git API token stored in platform as the password field
-        in a custom platform credential. Used only when installing private git
-        repositories.
+        Name of remote git API token stored in Civis Platform as the password
+        field in a custom platform credential. Used only when installing
+        private git repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
+    etl : Estimator, optional
+        Custom ETL estimator which overrides the default ETL, and
+        is run before training and validation.
 
     Methods
     -------
@@ -619,13 +622,31 @@ class ModelPipeline:
     _train_template_id_fallback = 9112
     _predict_template_id_fallback = 9113
 
+    def _set_template_version(self, client):
+        """Determine which version of CivisML to use. If the user
+        has access to the newest templates, use them, otherwise
+        fall back to the previous version. Used for internal or limited
+        releases of new CivisML versions."""
+        if '_NEWEST_CIVISML_VERSION' not in globals():
+            global _NEWEST_CIVISML_VERSION
+            try:
+                newest_train = max(_PRED_TEMPLATES.keys())
+                # Check that we can access the newest templates
+                client.templates.get_scripts(id=newest_train)
+                client.templates.get_scripts(id=_PRED_TEMPLATES[newest_train])
+            except CivisAPIError:
+                _NEWEST_CIVISML_VERSION = False
+            else:
+                _NEWEST_CIVISML_VERSION = True
+
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
                  disk_requested=None, notifications=None,
-                 dependencies=None, git_token_name=None, verbose=False):
+                 dependencies=None, git_token_name=None, verbose=False,
+                 etl=None):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -653,18 +674,14 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
-        if '_NEWEST_CIVISML_VERSION' not in globals():
-            global _NEWEST_CIVISML_VERSION
-            try:
-                client.templates.get_scripts(id=self.train_template_id)
-                client.templates.get_scripts(id=self.predict_template_id)
-            except CivisAPIError:
-                _NEWEST_CIVISML_VERSION = False
-            else:
-                _NEWEST_CIVISML_VERSION = True
+        self._set_template_version(client)
 
         if _NEWEST_CIVISML_VERSION:
-            self._etl_train = None
+            self.etl = etl
+        elif not _NEWEST_CIVISML_VERSION and etl is not None:
+            raise NotImplementedError("The etl argument is not implemented"
+                                      " in this version of CivisML.")
+
         else:
             # fall back to previous version templates
             self.train_template_id = self._train_template_id_fallback
@@ -678,6 +695,7 @@ class ModelPipeline:
     def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient(resources='all')
+        self._set_template_version(self._client)
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
@@ -786,22 +804,13 @@ class ModelPipeline:
             p_id = max(_PRED_TEMPLATES.values())
         klass.predict_template_id = p_id
 
-        # The user might construct a model from an older version
-        # but still have access to the newest version, so we need
-        # to check the version separately in this function
-        is_newest_version = template_id == max(
-            _PRED_TEMPLATES.keys())
-        if is_newest_version:
-            klass._etl_train = args.get('ETL', None)
-
         return klass
 
     def train(self, df=None, csv_path=None, table_name=None,
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None, validation_data='train', n_jobs=1,
-              etl=None):
+              polling_interval=None, validation_data='train', n_jobs=4):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -861,13 +870,14 @@ class ModelPipeline:
             Do not set if using the notifications endpoint.
         validation_data : str, optional
             Source for validation data. There are currently two options:
-            `'train'` (the default), which uses training data for validation;
-            and `'skip'`, which skips the validation step.
+            `'train'` (the default), which cross-validates over training data
+            for validation; and `'skip'`, which skips the validation step.
         n_jobs : int, optional
-            Number of jobs to use for training and validation.
-        etl : Estimator, optional
-            Custom ETL estimator which overrides the default ETL, and
-            is run before training and validation.
+            Number of jobs to use for training and validation. Defaults to
+            4, which allows parallelization over the 4 cross validation folds.
+            Increase n_jobs to parallelize over many hyperparameter
+            combinations in grid search/hyperband, or decrease to use fewer
+            computational resources at once.
 
         Returns
         -------
@@ -891,8 +901,6 @@ class ModelPipeline:
                       'CVPARAMS': json.dumps(self.cv_params),
                       'CALIBRATION': self.calibration,
                       'IF_EXISTS': if_exists}
-        if _NEWEST_CIVISML_VERSION:
-            train_args['VALIDATION_DATA'] = validation_data
         if oos_scores:
             train_args['OOSTABLE'] = oos_scores
         if oos_scores_db:
@@ -908,8 +916,15 @@ class ModelPipeline:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
-        if n_jobs and self.train_template_id == max(_PRED_TEMPLATES.keys()):
-            train_args['N_JOBS'] = n_jobs
+        if _NEWEST_CIVISML_VERSION:
+            train_args['VALIDATION_DATA'] = validation_data
+        if n_jobs:
+            if _NEWEST_CIVISML_VERSION:
+                train_args['N_JOBS'] = n_jobs
+            else:
+                raise NotImplementedError("The n_jobs argument is not "
+                                          "implemented in this version "
+                                          "of CivisML.")
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
@@ -924,20 +939,20 @@ class ModelPipeline:
                 self.model = str(estimator_file_id)
             finally:
                 shutil.rmtree(tempdir)
-        if HAS_SKLEARN and isinstance(etl, BaseEstimator):
-            try:
-                tempdir = tempfile.mkdtemp()
-                fout = os.path.join(tempdir, 'ETL.pkl')
-                joblib.dump(etl, fout, compress=3)
-                with open(fout, 'rb') as _fout:
-                    etl_file_id = cio.file_to_civis(
-                        _fout, 'ETL Estimator', client=self._client)
-                train_args['ETL'] = str(etl_file_id)
-            finally:
-                shutil.rmtree(tempdir)
-        if self.train_template_id == max(_PRED_TEMPLATES.keys()):
-            self._etl_train = etl  # Keep the estimator
         train_args['MODEL'] = self.model
+
+        if HAS_SKLEARN and _NEWEST_CIVISML_VERSION:
+            if isinstance(self.etl, BaseEstimator):
+                try:
+                    tempdir = tempfile.mkdtemp()
+                    fout = os.path.join(tempdir, 'ETL.pkl')
+                    joblib.dump(self.etl, fout, compress=3)
+                    with open(fout, 'rb') as _fout:
+                        etl_file_id = cio.file_to_civis(
+                            _fout, 'ETL Estimator', client=self._client)
+                    train_args['ETL'] = str(etl_file_id)
+                finally:
+                    shutil.rmtree(tempdir)
 
         name = self.model_name + ' Train' if self.model_name else None
         # Clear the existing training result so we can make a new one.
