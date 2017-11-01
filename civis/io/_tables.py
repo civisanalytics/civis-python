@@ -1,11 +1,13 @@
 import json
 import csv
+from os import path
 import io
+import logging
 import six
 import warnings
 
 from civis import APIClient
-from civis.io import civis_to_file
+from civis.io import civis_to_file, file_to_civis
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError
 from civis.futures import CivisFuture
@@ -23,8 +25,10 @@ try:
 except ImportError:
     NO_PANDAS = True
 
+log = logging.getLogger(__name__)
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
-           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis']
+           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
+           'civis_file_to_table']
 
 DELIMITERS = {
     ',': 'comma',
@@ -265,7 +269,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
         ``'gzip'``. Default ``'none'``.
-    delimiter, str: optional
+    delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``','``.
     unquoted: bool, optional
@@ -367,7 +371,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
         ``'gzip'``. Default ``'none'``.
-    delimiter, str: optional
+    delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``'|'``.
     unquoted: bool, optional
@@ -448,6 +452,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
+
     outputs = fut.result()["output"]
     if not outputs:
         raise EmptyResultError("Unload query {} returned no manifest."
@@ -547,10 +552,19 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     txt.flush()
     buf.seek(0)
     delimiter = ','
-    return _import_bytes(buf, database, table, client, max_errors,
-                         existing_table_rows, distkey, sortkey1, sortkey2,
-                         delimiter, headers, credential_id, polling_interval,
-                         archive, hidden=hidden)
+    name = table.split('.')[-1]
+    file_id = file_to_civis(buf, name, client=client)
+    fut = civis_file_to_table(file_id, database, table,
+                              client=client, max_errors=max_errors,
+                              existing_table_rows=existing_table_rows,
+                              distkey=distkey,
+                              sortkey1=sortkey1, sortkey2=sortkey2,
+                              delimiter=delimiter, headers=headers,
+                              credential_id=credential_id,
+                              polling_interval=polling_interval,
+                              hidden=hidden)
+
+    return fut
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -629,11 +643,117 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
+
+    name = path.basename(filename)
     with open(filename, "rb") as data:
-        fut = _import_bytes(data, database, table, client, max_errors,
-                            existing_table_rows, distkey, sortkey1, sortkey2,
-                            delimiter, headers, credential_id,
-                            polling_interval, archive, hidden=hidden)
+        file_id = file_to_civis(data, name, client=client)
+        log.info('Uploaded file %s to Civis file %s', filename, file_id)
+        fut = civis_file_to_table(file_id, database, table,
+                                  client=client, max_errors=max_errors,
+                                  existing_table_rows=existing_table_rows,
+                                  distkey=distkey,
+                                  sortkey1=sortkey1, sortkey2=sortkey2,
+                                  delimiter=delimiter, headers=headers,
+                                  credential_id=credential_id,
+                                  polling_interval=polling_interval,
+                                  hidden=hidden)
+    return fut
+
+
+def civis_file_to_table(file_id, database, table, client=None,
+                        max_errors=None, existing_table_rows="fail",
+                        distkey=None, sortkey1=None, sortkey2=None,
+                        delimiter=",", headers=None,
+                        credential_id=None, polling_interval=None,
+                        hidden=True):
+    """Upload the contents of a Civis file to a Civis table.
+
+    Parameters
+    ----------
+    file_id : int
+        Civis file ID.
+    database : str or int
+        Upload data into this database. Can be the database name or ID.
+    table : str
+        The schema and table you want to upload to. E.g.,
+        ``'scratch.table'``.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    max_errors : int, optional
+        The maximum number of rows with errors to remove from the import
+        before failing.
+    existing_table_rows : str, optional
+        The behaviour if a table with the requested name already exists.
+        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
+        Defaults to ``'fail'``.
+    distkey : str, optional
+        The column to use as the distkey for the table.
+    sortkey1 : str, optional
+        The column to use as the sortkey for the table.
+    sortkey2 : str, optional
+        The second column in a compound sortkey for the table.
+    delimiter : string, optional
+        The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
+    headers : bool, optional
+        Whether or not the first row of the file should be treated as
+        headers. The default, ``None``, attempts to autodetect whether
+        or not the first row contains headers.
+    credential_id : str or int, optional
+        The ID of the database credential.  If ``None``, the default
+        credential will be used.
+    polling_interval : int or float, optional
+        Number of seconds to wait between checks for job completion.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
+
+    Returns
+    -------
+    results : :class:`~civis.futures.CivisFuture`
+        A `CivisFuture` object.
+
+    Examples
+    --------
+    >>> file_id = 100
+    >>> fut = civis.io.civis_file_to_table(file_id,
+    ...                                    'my-database',
+    ...                                    'scratch.my_data')
+    >>> fut.result()
+    """
+    if client is None:
+        client = APIClient(resources='all')
+
+    schema, table = table.split(".", 1)
+    db_id = client.get_database_id(database)
+    cred_id = credential_id or client.default_credential
+    delimiter = DELIMITERS.get(delimiter)
+    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+
+    destination = dict(remote_host_id=db_id, credential_id=cred_id)
+    import_name = 'CSV import to {}.{}'.format(schema, table)
+    import_job = client.imports.post(import_name, 'AutoImport',
+                                     is_outbound=False,
+                                     destination=destination,
+                                     hidden=hidden)
+
+    options = dict(max_errors=max_errors,
+                   existing_table_rows=existing_table_rows,
+                   distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
+                   column_delimiter=delimiter, first_row_is_header=headers)
+
+    client.imports.post_syncs(
+        import_job.id,
+        source=dict(file=dict(id=file_id)),
+        destination=dict(database_table=dict(schema=schema, table=table)),
+        advanced_options=options)
+
+    run = client.jobs.post_runs(import_job.id)
+    fut = CivisFuture(client.jobs.get_runs,
+                      (import_job.id, run['id']),
+                      polling_interval=polling_interval,
+                      client=client,
+                      poll_on_creation=False)
+
     return fut
 
 
@@ -690,40 +810,3 @@ def _download_callback(job_id, run_id, client, filename):
             return _download_file(url, filename)
 
     return callback
-
-
-def _import_bytes(buf, database, table, client, max_errors,
-                  existing_table_rows, distkey, sortkey1, sortkey2, delimiter,
-                  headers, credential_id, polling_interval, archive, hidden):
-    schema, table = table.split(".", 1)
-    db_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
-    delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
-
-    kwargs = dict(schema=schema, name=table, remote_host_id=db_id,
-                  credential_id=cred_id, max_errors=max_errors,
-                  existing_table_rows=existing_table_rows, distkey=distkey,
-                  sortkey1=sortkey1, sortkey2=sortkey2,
-                  column_delimiter=delimiter, first_row_is_header=headers,
-                  hidden=hidden)
-
-    import_job = client.imports.post_files(**kwargs)
-    put_response = requests.put(import_job.upload_uri, buf)
-
-    put_response.raise_for_status()
-    run_job_result = client._session.post(import_job.run_uri)
-    run_job_result.raise_for_status()
-    run_info = run_job_result.json()
-    fut = CivisFuture(client.imports.get_files_runs,
-                      (run_info['importId'], run_info['id']),
-                      polling_interval=polling_interval,
-                      client=client,
-                      poll_on_creation=False)
-    if archive:
-
-        def f(x):
-            return client.imports.put_archive(import_job.id, True)
-
-        fut.add_done_callback(f)
-    return fut
