@@ -319,7 +319,9 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         Default: ``True``.
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
-        ``'gzip'``. Default ``'none'``.
+        ``'gzip'``. Default ``'none'``. ``'gzip'`` currently returns a file
+        with no compression. In a future release, a ``'gzip'`` compressed
+        file will be returned.
     delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``','``.
