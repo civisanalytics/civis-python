@@ -37,7 +37,8 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {9112: 9113,  # v1.1
+_PRED_TEMPLATES = {9968: 9969,  # v2.0
+                   9112: 9113,  # v1.1
                    8387: 9113,  # v1.0
                    7020: 7021,  # v0.5
                    }
@@ -533,7 +534,7 @@ class ModelPipeline:
         Number of CPU shares requested in the Civis Platform for
         training jobs. 1024 shares = 1 CPU.
     memory_requested : int, optional
-        Memory requested from Civis Platform for training jobs, in MiB
+        Memory requested from Civis Platform for training jobs, in MB
     disk_requested : float, optional
         Disk space requested on Civis Platform for training jobs, in GB
     notifications : dict
@@ -611,9 +612,9 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    # These are the v1.1 templates
-    train_template_id = 9112
-    predict_template_id = 9113
+    # These are the v2.0 templates
+    train_template_id = 9968
+    predict_template_id = 9969
     # These are the v1.1 templates
     _train_template_id_fallback = 9112
     _predict_template_id_fallback = 9113
@@ -653,21 +654,21 @@ class ModelPipeline:
         self.train_result_ = None
 
         if '_NEWEST_CIVISML_VERSION' not in globals():
+            global _NEWEST_CIVISML_VERSION
             try:
-                self.templates.get(id=self.train_template_id)
-                self.templates.get(id=self.predict_template_id)
-            except:
-                global _NEWEST_CIVISML_VERSION = False
+                client.templates.get_scripts(id=self.train_template_id)
+                client.templates.get_scripts(id=self.predict_template_id)
+            except CivisAPIError:
+                _NEWEST_CIVISML_VERSION = False
             else:
-                global _NEWEST_CIVISML_VERSION = True
+                _NEWEST_CIVISML_VERSION = True
 
-        if NEWEST_CIVISML_VERSION:
+        if _NEWEST_CIVISML_VERSION:
             self._etl_train = None
         else:
             # fall back to previous version templates
             self.train_template_id = self._train_template_id_fallback
             self.predict_template_id = self._predict_template_id_fallback
-
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -788,7 +789,7 @@ class ModelPipeline:
         # The user might construct a model from an older version
         # but still have access to the newest version, so we need
         # to check the version separately in this function
-        is_newest_version = self.train_template_id == max(
+        is_newest_version = template_id == max(
             _PRED_TEMPLATES.keys())
         if is_newest_version:
             klass._etl_train = args.get('ETL', None)

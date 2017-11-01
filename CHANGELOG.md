@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Changed
+- Updated CivisML template ids to v2.0 (#139)
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
@@ -16,7 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   uses this library (#141).
 - Added `etl`, `n_jobs`, and `validation_data` arguments to
   ModelPipeline.train (#139).
-- Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict(#139).
+- Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict
+  (#139).
 
 ## 1.6.2 - 2017-09-08
 ### Changed
