@@ -755,7 +755,6 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
     assert mp.predict_template_id == 7021, "Predict template v0.5"
 
 
-
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train(mock_ccr, mp_setup):
     mp = mp_setup
