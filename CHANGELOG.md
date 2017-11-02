@@ -55,6 +55,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk
   files and perform I/O in parallel
+- ``civis.io.civis_to_csv`` and ``civis.io.read_civis_sql`` will always request
+  data with gzip compression to reduce I/O. Also, they will attempt to fetch
+  headers in a separate query so that data can be unloaded in parallel
+- ``civis.io.civis_to_csv`` with ``compression='gzip'`` currently returns a file
+  with no compression. In a future release, ``compression='gzip'`` will return a
+  gzip compressed file.
 
 ## 1.6.2 - 2017-09-08
 ### Changed

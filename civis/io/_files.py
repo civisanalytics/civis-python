@@ -292,7 +292,8 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     """
     if client is None:
         client = APIClient(api_key=api_key)
-    url = _get_url_from_file_id(file_id, client=client)
+    files_response = client.files.get(file_id)
+    url = files_response.file_url
     if not url:
         raise EmptyResultError('Unable to locate file {}. If it previously '
                                'existed, it may have '
@@ -303,12 +304,6 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     chunked = response.iter_content(chunk_size)
     for lines in chunked:
         buf.write(lines)
-
-
-def _get_url_from_file_id(file_id, client):
-    files_response = client.files.get(file_id)
-    url = files_response.file_url
-    return url
 
 
 def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
