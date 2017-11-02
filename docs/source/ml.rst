@@ -73,7 +73,11 @@ with ``penalty='l2'`` and ``tol=1e-08``. The
 "stacking_regressor" works similarly, stacking together the
 "sparse_linear_regressor", "gradient_boosting_regressor",
 and "random_forest_regressor" models, and combining them using
-`NonNegativeLinearRegression <https://github.com/civisanalytics/civisml-extensions>`_.
+`NonNegativeLinearRegression
+<https://github.com/civisanalytics/civisml-extensions>`_. The
+estimators that are being stacked have the same names as the
+associated pre-defined models, and the meta-estimator steps are named
+"meta-estimator".
 
 Custom Models
 -------------
