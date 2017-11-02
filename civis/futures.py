@@ -128,7 +128,7 @@ class CivisFuture(PollableResult):
             if hasattr(self.client, 'channels') and not self.subscribed:
                 config, channels = self._pubnub_config()
                 self._pubnub = self._subscribe(config, channels)
-            super()._begin_tracking()
+            super()._begin_tracking()  # The superclass starts the polling
 
     @property
     def subscribed(self):
