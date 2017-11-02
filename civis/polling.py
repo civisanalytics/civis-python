@@ -122,18 +122,23 @@ class PollableResult(CivisAsyncResultBase):
 
         self._begin_tracking()
 
-    def _begin_tracking(self):
+    def _begin_tracking(self, start_thread=False):
         """Start monitoring the Civis Platform job"""
         with self._condition:
             if getattr(self, 'poller', None) is None:
                 raise RuntimeError('Internal error: Must set polling '
                                    'function before initializing thread.')
-            self._reset_polling_thread(self.polling_interval)
+            self._reset_polling_thread(self.polling_interval, start_thread)
 
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
         result and never poll again."""
         with self._condition:
+            # Start a single thread continuously polling.
+            # It will stop once the job completes.
+            if not self._polling_thread.is_alive() and self._result is None:
+                self._polling_thread.start()
+
             if self._result is not None:
                 # If the job is already completed, just return the stored
                 # result.
@@ -190,7 +195,8 @@ class PollableResult(CivisAsyncResultBase):
                 self._polling_thread.cancel()
 
     def _reset_polling_thread(self,
-                              polling_interval=_DEFAULT_POLLING_INTERVAL):
+                              polling_interval=_DEFAULT_POLLING_INTERVAL,
+                              start_thread=False):
         with self._condition:
             if (getattr(self, '_polling_thread', None) is not None and
                     self._polling_thread.is_alive()):
@@ -198,4 +204,5 @@ class PollableResult(CivisAsyncResultBase):
             self.polling_interval = polling_interval
             self._polling_thread = _ResultPollingThread(self._check_result, (),
                                                         polling_interval)
-            self._polling_thread.start()
+            if start_thread:
+                self._polling_thread.start()

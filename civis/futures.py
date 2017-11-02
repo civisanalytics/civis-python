@@ -120,7 +120,7 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-    def _begin_tracking(self):
+    def _begin_tracking(self, start_thread=False):
         # Be sure to subscribe to the PubNub channel before polling.
         # Otherwise the job might complete after polling and before
         # we subscribe, causing us to miss the notification.
@@ -128,7 +128,7 @@ class CivisFuture(PollableResult):
             if hasattr(self.client, 'channels') and not self.subscribed:
                 config, channels = self._pubnub_config()
                 self._pubnub = self._subscribe(config, channels)
-            super()._begin_tracking()  # The superclass starts the polling
+            super()._begin_tracking(start_thread)  # superclass does polling
 
     @property
     def subscribed(self):
@@ -258,7 +258,7 @@ class ContainerFuture(CivisFuture):
                 # you shut down the old thread too soon after starting it.
                 # In practice this only happens when testing retries
                 # with extremely short polling intervals.
-                self._begin_tracking()
+                self._begin_tracking(start_thread=True)
 
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',

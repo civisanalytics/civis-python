@@ -363,8 +363,8 @@ class ModelFuture(ContainerFuture):
         self._condition = threading.Condition()
         self.client = APIClient(resources='all')
         self.poller = self.client.scripts.get_containers_runs
-        self.add_done_callback(self._set_model_exception)
         self._begin_tracking()
+        self.add_done_callback(self._set_model_exception)
 
     @property
     def state(self):
