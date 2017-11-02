@@ -917,14 +917,10 @@ class ModelPipeline:
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
         if _NEWEST_CIVISML_VERSION:
-            train_args['VALIDATION_DATA'] = validation_data
-        if n_jobs:
-            if _NEWEST_CIVISML_VERSION:
+            if validation_data:
+                train_args['VALIDATION_DATA'] = validation_data
+            if n_jobs:
                 train_args['N_JOBS'] = n_jobs
-            else:
-                raise NotImplementedError("The n_jobs argument is not "
-                                          "implemented in this version "
-                                          "of CivisML.")
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
