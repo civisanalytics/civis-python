@@ -584,6 +584,31 @@ def mp_setup():
     return mp
 
 
+@pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
+def test_modelpipeline_init_err():
+    mock_client = mock.MagicMock()
+    r = Response({'content': None, 'status_code': 9999, 'reason': None})
+    mock_client.templates.get_scripts.side_effect = CivisAPIError(r)
+    with pytest.raises(NotImplementedError):
+        _model.ModelPipeline(LogisticRegression(), 'test',
+                             etl=LogisticRegression(),
+                             client=mock_client)
+    # clean up
+    del _model._NEWEST_CIVISML_VERSION
+
+
+@pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
+def test_modelpipeline_init_newest():
+    mock_client = mock.MagicMock()
+    mock_client.templates.get_scripts.return_value = {}
+    etl = LogisticRegression()
+    mp = _model.ModelPipeline(LogisticRegression(), 'test', etl=etl,
+                              client=mock_client)
+    assert mp.etl == etl
+    # clean up
+    del _model._NEWEST_CIVISML_VERSION
+
+
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
     # catch 404 error if model isn't found and throw ValueError
@@ -728,6 +753,7 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
         container_response_stub(from_template_id=7020)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert mp.predict_template_id == 7021, "Predict template v0.5"
+
 
 
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
