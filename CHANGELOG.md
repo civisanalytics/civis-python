@@ -31,6 +31,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   with a 404 status code. This fix affects the executors and joblib backend, which
   use the ``ContainerFuture``.
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
+- Don't skip the first status poll of SQL scripts. Avoids a bug where completed scripts
+  could take 9.5 minutes to register an immediate failure.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
