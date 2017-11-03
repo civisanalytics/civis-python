@@ -404,7 +404,7 @@ def test_table(mock_res, mock_lt):
                                     index_col=0, client=c)
 
 
-@mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
+@mock.patch.object(_model, "_load_table_from_outputs")
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
 def test_table_None(mock_res, mock_lt):
