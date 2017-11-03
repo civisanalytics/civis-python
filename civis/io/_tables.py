@@ -39,6 +39,35 @@ DELIMITERS = {
     '|': 'pipe',
 }
 
+SQL_PANDAS_MAP = {
+    'smallint': np.int16,
+    'int': np.int32,
+    'integer': np.int32,
+    'bigint': np.int64,
+    'decimal': np.float64,
+    'numeric': np.float64,
+    'float': np.float64,
+    'float4': np.float32,
+    'float8': np.float64,
+    'real': np.float32,
+    'double precision': np.float64,
+    'boolean': np.bool,
+    'bool': np.bool,
+    'int2': np.int16,
+    'int4': np.int32,
+    'int8': np.int64,
+    'char': np.str,
+    'character': np.str,
+    'nchar': np.str,
+    'bpchar': np.str,
+    'varchar': np.str,
+    'character varying': np.str,
+    'nvarchar': np.str,
+    'text': np.str}
+
+DATE_TYPES = ['date', 'timestamp', 'timestamptz',
+              'timestamp without time zone']
+
 
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False,
@@ -79,7 +108,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
     dtype : str or dict, optional
-        If 'redshift' get column types for pandas from redshift or dict of user
+        If 'from_table' get column types for pandas from redshift or dict of user
         specified column types. If None use default
          :func:`pandas:pandas.read_csv` functionality
     **kwargs : kwargs
@@ -129,19 +158,16 @@ def read_civis(table, database, columns=None, use_pandas=False,
         client = APIClient(api_key=api_key, resources='all')
 
     if use_pandas == True:
-        if dtype == 'redshift':
-            if NO_NUMPY:
-                raise ImportError("`dtype='redshift'` specified but numpy not installed.")
-            else:
-                table_id = client.get_table_id(table=table, database=database)
-                py_types, date_cols = _redshift_to_py(client, table_id)
-                pd_kwargs = {'parse_dates': date_cols,
-                             'dtype': py_types,
-                             'engine': 'python',
-                             'infer_datetime_format': True,
-                             'encoding': 'utf8'}
-                kwargs.update(pd_kwargs)
-        elif type(dtype) == dict:
+        if dtype == 'from_table':
+            table_id = client.get_table_id(table=table, database=database)
+            py_types, date_cols = _redshift_to_py(client, table_id)
+            pd_kwargs = {'parse_dates': date_cols,
+                         'dtype': py_types,
+                         'engine': 'python',
+                         'infer_datetime_format': True,
+                         'encoding': 'utf8'}
+            kwargs.update(pd_kwargs)
+        else:
             kwargs['dtype'] = dtype
 
     sql = _get_sql_select(table, columns)
@@ -252,21 +278,24 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                .format(script_id))
     url = outputs[0]["path"]
     if use_pandas:
-        user_dtypes = kwargs.pop('dtype')
-        # Only for types for str and bool
-        kwargs['dtype'] = {k:v for k,v in user_dtypes.items()
-                           if v in [np.str, np.bool]}
-        data = pd.read_csv(url, **kwargs)
-        dtype_cols = [c for c in list(data) if c in set(user_dtypes.keys())]
-        for col in dtype_cols:
-            are_nulls = data[col].isnull().any()
-            if not are_nulls:
-                data[col] = data[col].astype(user_dtypes[col])
+        if 'dtype' in kwargs:
+            # Filter out integer columns because of NaN handling issues in pandas
+            int_dtypes = {k: v for k, v in kwargs['dtypes'].items() if (np.issubdtype(v, np.int))}
+            kwargs['dtype'] = {k: v for k, v in kwargs['dtypes'].items() if not np.issubdtype(v, np.int)}
+            data = pd.read_csv(url, **kwargs)
+            # for col in int_dtypes.keys():
+            #     are_nulls = data[col].isnull().any()
+            #     if not are_nulls:
+            #         data[col] = data[col].astype(np.int)
+        else:
+            data = pd.read_csv(url, **kwargs)
+
 
     else:
         r = requests.get(url)
         r.raise_for_status()
         data = list(csv.reader(StringIO(r.text), **kwargs))
+
     return data
 
 
@@ -767,39 +796,9 @@ def _import_bytes(buf, database, table, client, max_errors,
     return fut
 
 
-def _redshift_to_py(civ_client, tableid):
+def _redshift_to_py(client, tableid):
 
-    SQL_PANDAS_MAP = {
-        'smallint': np.int16,
-        'int': np.int32,
-        'integer': np.int32,
-        'bigint': np.int64,
-        'decimal': np.float64,
-        'numeric': np.float64,
-        'float': np.float64,
-        'float4': np.float32,
-        'float8': np.float64,
-        'real': np.float32,
-        'double precision': np.float64,
-        'boolean': np.bool,
-        'bool': np.bool,
-        'int2': np.int16,
-        'int4': np.int32,
-        'int8': np.int64,
-        'char': np.str,
-        'character': np.str,
-        'nchar': np.str,
-        'bpchar': np.str,
-        'varchar': np.str,
-        'character varying': np.str,
-        'nvarchar': np.str,
-        'text': np.str}
-
-
-    DATE_TYPES = ['date', 'timestamp', 'timestamptz',
-                  'timestamp without time zone']
-
-    table_meta = civ_client.tables.get(tableid)
+    table_meta = client.tables.get(tableid)
     # The split is to handle e.g. DECIMAL(17,9)
     redshift_types = {col['name']: col['sql_type'].split('(')[0]
                           for col in table_meta['columns']}
