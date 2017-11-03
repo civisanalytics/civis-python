@@ -141,6 +141,19 @@ class CivisFuture(PollableResult):
             if hasattr(self, '_pubnub'):
                 self._pubnub.unsubscribe_all()
 
+                # Pubnub doesn't close its open session, so that ourselves
+                # to free up sockets. We have to access a private attribute,
+                # but this exists at least in (4.0.0 <= versions <= 4.0.11).
+                # After closing the Session, remove it so that PubNub
+                # can't reopen it.
+                self._pubnub._request_handler.session.close()
+                del self._pubnub._request_handler.session
+
+                # The PubNub object is no longer usable.
+                # Note that it can't be garbage collected because of circular
+                # references, so this represents a (small) memory leak.
+                del self._pubnub
+
     def _subscribe(self, pnconfig, channels):
         listener = JobCompleteListener(self._check_message,
                                        self._poll_and_set_api_result,
