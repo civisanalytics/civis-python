@@ -783,6 +783,25 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     assert mock_f2c.call_count == 1  # Called once to store input Estimator
 
 
+@pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
+@mock.patch.object(_model, "APIClient", mock.Mock())
+@mock.patch.object(_model.cio, "file_to_civis")
+@mock.patch.object(_model.ModelPipeline, "_create_custom_run")
+def test_modelpipeline_train_custom_etl(mock_ccr, mock_f2c, mp_setup):
+    # Provide a custom ETL estimator and make sure we can train.
+    mock_api = setup_client_mock()
+    etl = LogisticRegression()
+    mp = _model.ModelPipeline('wf', 'dv', client=mock_api, etl=etl)
+    mock_f2c.return_value = -21
+
+    mock1, mock2 = mock.Mock(), mock.Mock()
+    mock_ccr.return_value = 'res', mock1, mock2
+
+    assert 'res' == mp.train(file_id=7)
+    assert mp.train_result_ == 'res'
+    assert mock_f2c.call_count == 1  # Called once to store input Estimator
+
+
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model, "_stash_local_dataframe", return_value=-11)
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
