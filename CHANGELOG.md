@@ -22,6 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   of separate logic
 - ``civis.io.file_to_civis``, ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis``
   now support files over 5GB
+- Refactor internals of ``CivisFuture`` and ``PollableResult`` to centralize handling
+  of threads and ``pubnub`` subscription.
 
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores

@@ -15,7 +15,7 @@ import six
 
 from civis import APIClient
 from civis.base import CivisAPIError, DONE
-from civis.polling import PollableResult, _ResultPollingThread
+from civis.polling import PollableResult
 
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
@@ -120,9 +120,15 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-        if hasattr(client, 'channels'):
-            config, channels = self._pubnub_config()
-            self._pubnub = self._subscribe(config, channels)
+    def _begin_tracking(self, start_thread=False):
+        # Be sure to subscribe to the PubNub channel before polling.
+        # Otherwise the job might complete after polling and before
+        # we subscribe, causing us to miss the notification.
+        with self._condition:
+            if hasattr(self.client, 'channels') and not self.subscribed:
+                config, channels = self._pubnub_config()
+                self._pubnub = self._subscribe(config, channels)
+            super()._begin_tracking(start_thread)  # superclass does polling
 
     @property
     def subscribed(self):
@@ -252,13 +258,8 @@ class ContainerFuture(CivisFuture):
                 # you shut down the old thread too soon after starting it.
                 # In practice this only happens when testing retries
                 # with extremely short polling intervals.
-                self._polling_thread = _ResultPollingThread(
-                    self._check_result, (), self.polling_interval)
-                self._polling_thread.start()
+                self._begin_tracking(start_thread=True)
 
-                if hasattr(self, '_pubnub'):
-                    # Subscribe to the new run's notifications endpoint
-                    self._pubnub = self._subscribe(*self._pubnub_config())
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',
                           self.job_id, orig_run_id,

@@ -214,8 +214,8 @@ def test_modelfuture_constructor(mock_adc, mock_spe):
                    mock.Mock(return_value=11, spec_set=True))
 @mock.patch.object(_model.cio, "file_to_json",
                    mock.Mock(return_value={'run': {'status': 'succeeded'}}))
-@mock.patch.object(_model, 'APIClient', setup_client_mock())
-def test_modelfuture_pickle_smoke():
+@mock.patch.object(_model, 'APIClient', return_value=setup_client_mock())
+def test_modelfuture_pickle_smoke(mock_client):
     mf = _model.ModelFuture(job_id=7, run_id=13, client=setup_client_mock())
     mf.result()
     mf_pickle = pickle.dumps(mf)
