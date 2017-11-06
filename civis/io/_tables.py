@@ -241,8 +241,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                     csv_settings=csv_settings,
                                     hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+                      polling_interval=polling_interval, client=client)
     if archive:
 
         def f(x):
@@ -397,8 +396,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
                                     credential_id, hidden=hidden,
                                     csv_settings=csv_settings)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+                      polling_interval=polling_interval, client=client)
     download = _download_callback(script_id, run_id, client, filename,
                                   headers, compression)
     fut.add_done_callback(download)
@@ -530,8 +528,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                                     csv_settings=csv_settings)
 
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+                      polling_interval=polling_interval, client=client)
 
     outputs = fut.result()["output"]
     if not outputs:
