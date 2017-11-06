@@ -323,3 +323,25 @@ def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
     with pytest.raises(ValueError):
         _resources.generate_classes_maybe_cached(bad_spec, api_key,
                                                  api_version, resources)
+
+
+@mock.patch('civis.resources._resources.parse_method', autospec=True)
+def test_parse_api_spec_names(mock_method):
+    """ Test that path parsing preserves underscore in resource name."""
+    mock_method.return_value = ("method_a", lambda x: x)
+    mock_ops = {"get": None, "post": None}
+    mock_paths = {"/two_words/": mock_ops, "/oneword/": mock_ops}
+    mock_api_spec = {"paths": mock_paths}
+    classes = _resources.parse_api_spec(mock_api_spec, "1.0", "all")
+    assert sorted(classes.keys()) == ["oneword", "two_words"]
+    assert classes["oneword"].__name__ == "Oneword"
+    assert classes["two_words"].__name__ == "TwoWords"
+
+
+def test_add_no_underscore_compatibility():
+    classes = dict(bocce_clusters=1,
+                   feature_flags=2)
+    new_classes = _resources._add_no_underscore_compatibility(classes)
+    assert new_classes["bocceclusters"] == 1
+    assert new_classes["bocce_clusters"] == 1
+    assert new_classes.get("feature_flags") is None

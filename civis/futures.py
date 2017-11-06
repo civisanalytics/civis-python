@@ -12,11 +12,12 @@ import threading
 from collections import deque
 import weakref
 from civis.compat import weakref_finalize
+import warnings
 
 import six
 
 from civis import APIClient
-from civis.base import DONE, NOT_FINISHED, CANCELLED
+from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError, DONE
 from civis.polling import PollableResult, _ResultPollingThread
 from civis.response import Response
 
@@ -123,9 +124,15 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-        if hasattr(client, 'channels'):
-            config, channels = self._pubnub_config()
-            self._pubnub = self._subscribe(config, channels)
+    def _begin_tracking(self, start_thread=False):
+        # Be sure to subscribe to the PubNub channel before polling.
+        # Otherwise the job might complete after polling and before
+        # we subscribe, causing us to miss the notification.
+        with self._condition:
+            if hasattr(self.client, 'channels') and not self.subscribed:
+                config, channels = self._pubnub_config()
+                self._pubnub = self._subscribe(config, channels)
+            super()._begin_tracking(start_thread)  # superclass does polling
 
     @property
     def subscribed(self):
@@ -155,7 +162,7 @@ class CivisFuture(PollableResult):
         pnconfig.cipher_key = channel_config['cipher_key']
         pnconfig.auth_key = channel_config['auth_key']
         pnconfig.ssl = True
-        pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
+        pnconfig.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
         return pnconfig, channels
 
     def _check_message(self, message):
@@ -291,13 +298,8 @@ class ContainerFuture(CivisFuture):
                 # you shut down the old thread too soon after starting it.
                 # In practice this only happens when testing retries
                 # with extremely short polling intervals.
-                self._polling_thread = _ResultPollingThread(
-                    self._check_result, (), self.polling_interval)
-                self._polling_thread.start()
+                self._begin_tracking(start_thread=True)
 
-                if hasattr(self, '_pubnub'):
-                    # Subscribe to the new run's notifications endpoint
-                    self._pubnub = self._subscribe(*self._pubnub_config())
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',
                           self.job_id, orig_run_id,
@@ -324,6 +326,18 @@ class ContainerFuture(CivisFuture):
                         self.job_id)
                 else:
                     self._result = Response({'state': CANCELLED[0]})
+                try:
+                    self._result = self.client.scripts.post_cancel(self.job_id)
+                except CivisAPIError as exc:
+                    if exc.status_code == 404:
+                        # The most likely way to get this error
+                        # is for the job to already be completed.
+                        return False
+                    else:
+                        warnings.warn("Unexpected error when attempting to "
+                                      "cancel job ID %d / run ID %d:\n%s" %
+                                      (self.job_id, self.run_id, str(exc)))
+                        return False
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()

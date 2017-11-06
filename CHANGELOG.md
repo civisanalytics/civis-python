@@ -3,10 +3,36 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
 ### Changed
+- Updated CivisML template ids to v2.0 (#139)
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
+- ``APIClient.feature_flags`` has been deprecated to avoid a name collision
+   with the feature_flags endpoint. In v2.0.0, ``APIClient.featureflags``
+   will be renamed to ``APIClient.feature_flags``.
+- The following APIClient attributes have been deprecated in favor of the
+  attribute that includes underscores:
+  ``APIClient.bocceclusters`` -> ``APIClient.bocce_clusters``
+  ``APIClient.matchtargets`` -> ``APIClient.match_targets``
+  ``APIClient.remotehosts`` -> ``APIClient.remote_hosts``
+- ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis`` functions now use
+  ``civis.io.file_to_civis`` and ``civis.io.civis_file_to_table`` functions instead
+  of separate logic
+- ``civis.io.file_to_civis``, ``civis.io.csv_to_civis`` and ``civis.io.dataframe_to_civis``
+  now support files over 5GB
+- Refactor internals of ``CivisFuture`` and ``PollableResult`` to centralize handling
+  of threads and ``pubnub`` subscription.
+
+### Fixed
+- Fixed parsing of multiword endpoints. Parsing no longer removes underscores
+  in endpoint names.
+- In ``civis.futures.ContainerFuture``, return ``False`` when users attempt to cancel
+  an already-completed job. Previously, the object would sometimes give a ``CivisAPIError``
+  with a 404 status code. This fix affects the executors and joblib backend, which
+  use the ``ContainerFuture``.
+- Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
@@ -15,10 +41,30 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   uses this library (#141).
 - The `_CivisExecutor` now takes a ``max_workers`` parameter to control the number of
   simultaneous jobs running in Civis Platform (#147).
+- Added `etl`, `n_jobs`, and `validation_data` arguments to
+  ModelPipeline.train (#139).
+- Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict
+  (#139).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel``.
 - Added the PyPI trove classifiers for Python 3.4 and 3.6 (#152).
+- ``civis.io.civis_file_to_table`` function to import an existing Civis file
+  to a table
+- ``civis.io.file_to_civis`` function will now automatically retry uploads to
+  the Civis Platform up to 5 times if is there is an HTTPError, ConnectionError
+  or ConnectionTimeout
+- Additional documentation about the use case for the Civis joblib backend.
+
+### Performance Enhancements
+- ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk
+  files and perform I/O in parallel
+- ``civis.io.civis_to_csv`` and ``civis.io.read_civis_sql`` will always request
+  data with gzip compression to reduce I/O. Also, they will attempt to fetch
+  headers in a separate query so that data can be unloaded in parallel
+- ``civis.io.civis_to_csv`` with ``compression='gzip'`` currently returns a file
+  with no compression. In a future release, ``compression='gzip'`` will return a
+  gzip compressed file.
 
 ## 1.6.2 - 2017-09-08
 ### Changed

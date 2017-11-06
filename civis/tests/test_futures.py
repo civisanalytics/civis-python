@@ -388,6 +388,28 @@ def _setup_client_mock(job_id=-10, run_id=100, n_failures=8,
     return c
 
 
+def test_cancel_finished_job():
+    # If we try to cancel a completed job, we get a 404 error.
+    # That shouldn't be sent to the user.
+
+    # Set up a mock client which will give an exception when
+    # you try to cancel any job.
+    c = _setup_client_mock()
+    err_resp = response.Response({
+        'status_code': 404,
+        'error': 'not_found',
+        'errorDescription': 'The requested resource could not be found.',
+        'content': True})
+    err_resp.json = lambda: err_resp.json_data
+    c.scripts.post_cancel.side_effect = CivisAPIError(err_resp)
+    c.scripts.post_containers_runs.return_value.state = 'running'
+
+    fut = ContainerFuture(-10, 100, polling_interval=1, client=c,
+                          poll_on_creation=False)
+    assert not fut.done()
+    assert fut.cancel() is False
+
+
 def test_future_no_retry_error():
     # Verify that with no retries, exceptions on job polling
     #  are raised to the user
