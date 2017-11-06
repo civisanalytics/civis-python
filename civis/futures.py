@@ -17,8 +17,8 @@ import warnings
 import six
 
 from civis import APIClient
-from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError, DONE
-from civis.polling import PollableResult, _ResultPollingThread
+from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError
+from civis.polling import PollableResult
 from civis.response import Response
 
 from pubnub.pubnub import PubNub
@@ -321,13 +321,12 @@ class ContainerFuture(CivisFuture):
             elif not self.done():
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
-                if self.run_id is not None:
-                    self._result = self.client.scripts.post_cancel(
-                        self.job_id)
-                else:
-                    self._result = Response({'state': CANCELLED[0]})
                 try:
-                    self._result = self.client.scripts.post_cancel(self.job_id)
+                    if self.run_id is not None:
+                        self._result = self.client.scripts.post_cancel(
+                            self.job_id)
+                    else:
+                        self._result = Response({'state': CANCELLED[0]})
                 except CivisAPIError as exc:
                     if exc.status_code == 404:
                         # The most likely way to get this error
