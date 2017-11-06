@@ -36,7 +36,8 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {9112: 9113,  # v1.1
+_PRED_TEMPLATES = {9968: 9969,  # v2.0
+                   9112: 9113,  # v1.1
                    8387: 9113,  # v1.0
                    7020: 7021,  # v0.5
                    }
@@ -319,7 +320,7 @@ class ModelFuture(ContainerFuture):
             if fut.is_training and meta['run']['status'] == 'succeeded':
                 # if training job and job succeeded, check validation job
                 meta = fut.validation_metadata
-            if meta['run']['status'] == 'exception':
+            if meta is not None and meta['run']['status'] == 'exception':
                 try:
                     # This will fail if the user doesn't have joblib installed
                     est = fut.estimator
@@ -414,12 +415,17 @@ class ModelFuture(ContainerFuture):
         self.result()  # Block and raise errors if any
         if self._table is None:
             if self.is_training:
-                # Training jobs only have one output table, the OOS scores
-                self._table = _load_table_from_outputs(self.job_id,
-                                                       self.run_id,
-                                                       self.table_fname,
-                                                       index_col=0,
-                                                       client=self.client)
+                try:
+                    # Training jobs only have one output table, the OOS scores
+                    self._table = _load_table_from_outputs(self.job_id,
+                                                           self.run_id,
+                                                           self.table_fname,
+                                                           index_col=0,
+                                                           client=self.client)
+                except FileNotFoundError:
+                    # Just pass here, because we want the table to stay None
+                    # if it does not exist
+                    pass
             else:
                 # Prediction jobs may have many output tables.
                 output_ids = self.metadata['output_file_ids']
@@ -463,7 +469,10 @@ class ModelFuture(ContainerFuture):
 
     @property
     def metrics(self):
-        return self.validation_metadata['metrics']
+        if self.validation_metadata is not None:
+            return self.validation_metadata['metrics']
+        else:
+            return None
 
     @property
     @_block_and_handle_missing
@@ -526,17 +535,22 @@ class ModelPipeline:
     notifications : dict
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
-     dependencies : array, optional
-         List of packages to install from PyPI or git repository (i.e., Github
-         or Bitbucket). If a private repo is specificed, please include a
-         ``git_token_name`` argument as well (see below).
-     git_token_name : str, optional
-         Name of remote git API token stored in platform as the password field
-         in a custom platform credential. Used only when installing private git
-         repositories.
+    dependencies : array, optional
+        List of packages to install from PyPI or git repository (i.e., Github
+        or Bitbucket). If a private repo is specified, please include a
+        ``git_token_name`` argument as well (see below). Make sure to pin
+        dependencies to a specific version, since dependecies will be
+        reinstalled during every training and predict job.
+    git_token_name : str, optional
+        Name of remote git API token stored in Civis Platform as the password
+        field in a custom platform credential. Used only when installing
+        private git repositories.
     verbose : bool, optional
         If True, supply debug outputs in Platform logs and make
         prediction child jobs visible.
+    etl : Estimator, optional
+        Custom ETL estimator which overrides the default ETL, and
+        is run before training and validation.
 
     Methods
     -------
@@ -596,9 +610,29 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
+    # These are the v2.0 templates
+    train_template_id = 9968
+    predict_template_id = 9969
     # These are the v1.1 templates
-    train_template_id = 9112
-    predict_template_id = 9113
+    _train_template_id_fallback = 9112
+    _predict_template_id_fallback = 9113
+
+    def _set_template_version(self, client):
+        """Determine which version of CivisML to use. If the user
+        has access to the newest templates, use them, otherwise
+        fall back to the previous version. Used for internal or limited
+        releases of new CivisML versions."""
+        if '_NEWEST_CIVISML_VERSION' not in globals():
+            global _NEWEST_CIVISML_VERSION
+            try:
+                newest_train = max(_PRED_TEMPLATES.keys())
+                # Check that we can access the newest templates
+                client.templates.get_scripts(id=newest_train)
+                client.templates.get_scripts(id=_PRED_TEMPLATES[newest_train])
+            except CivisAPIError:
+                _NEWEST_CIVISML_VERSION = False
+            else:
+                _NEWEST_CIVISML_VERSION = True
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
@@ -606,7 +640,8 @@ class ModelPipeline:
                  calibration=None, excluded_columns=None, client=None,
                  cpu_requested=None, memory_requested=None,
                  disk_requested=None, notifications=None,
-                 dependencies=None, git_token_name=None, verbose=False):
+                 dependencies=None, git_token_name=None, verbose=False,
+                 etl=None):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -634,6 +669,19 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
+        self._set_template_version(client)
+
+        if _NEWEST_CIVISML_VERSION:
+            self.etl = etl
+        elif not _NEWEST_CIVISML_VERSION and etl is not None:
+            raise NotImplementedError("The etl argument is not implemented"
+                                      " in this version of CivisML.")
+
+        else:
+            # fall back to previous version templates
+            self.train_template_id = self._train_template_id_fallback
+            self.predict_template_id = self._predict_template_id_fallback
+
     def __getstate__(self):
         state = self.__dict__.copy()
         del state['_client']
@@ -642,6 +690,7 @@ class ModelPipeline:
     def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient(resources='all')
+        self._set_template_version(self._client)
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
@@ -742,7 +791,7 @@ class ModelPipeline:
         if p_id is None:
             warnings.warn('Model %s was trained with a newer version of '
                           'CivisML than is available in the API client '
-                          'version %s. Please update your API client version .'
+                          'version %s. Please update your API client version. '
                           'Attempting to use an older version of the '
                           'prediction code. Prediction will either fail '
                           'immediately or succeed.'
@@ -756,7 +805,7 @@ class ModelPipeline:
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None):
+              polling_interval=None, validation_data='train', n_jobs=4):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -814,6 +863,16 @@ class ModelPipeline:
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
+        validation_data : str, optional
+            Source for validation data. There are currently two options:
+            `'train'` (the default), which cross-validates over training data
+            for validation; and `'skip'`, which skips the validation step.
+        n_jobs : int, optional
+            Number of jobs to use for training and validation. Defaults to
+            4, which allows parallelization over the 4 cross validation folds.
+            Increase n_jobs to parallelize over many hyperparameter
+            combinations in grid search/hyperband, or decrease to use fewer
+            computational resources at once.
 
         Returns
         -------
@@ -852,6 +911,11 @@ class ModelPipeline:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
+        if _NEWEST_CIVISML_VERSION:
+            if validation_data:
+                train_args['VALIDATION_DATA'] = validation_data
+            if n_jobs:
+                train_args['N_JOBS'] = n_jobs
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
@@ -867,6 +931,19 @@ class ModelPipeline:
             finally:
                 shutil.rmtree(tempdir)
         train_args['MODEL'] = self.model
+
+        if HAS_SKLEARN and _NEWEST_CIVISML_VERSION:
+            if isinstance(self.etl, BaseEstimator):
+                try:
+                    tempdir = tempfile.mkdtemp()
+                    fout = os.path.join(tempdir, 'ETL.pkl')
+                    joblib.dump(self.etl, fout, compress=3)
+                    with open(fout, 'rb') as _fout:
+                        etl_file_id = cio.file_to_civis(
+                            _fout, 'ETL Estimator', client=self._client)
+                    train_args['ETL'] = str(etl_file_id)
+                finally:
+                    shutil.rmtree(tempdir)
 
         name = self.model_name + ' Train' if self.model_name else None
         # Clear the existing training result so we can make a new one.
@@ -958,7 +1035,8 @@ class ModelPipeline:
                 table_name=None, database_name=None,
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
-                if_exists='fail', n_jobs=None, polling_interval=None):
+                if_exists='fail', n_jobs=None, polling_interval=None,
+                cpu=None, memory=None, disk_space=None):
         """Make predictions on a trained model
 
         Provide input through one of
@@ -1032,6 +1110,12 @@ class ModelPipeline:
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
+        cpu : int, optional
+            CPU shares requested by the user for a single job.
+        memory : int, optional
+            RAM requested by the user for a single job.
+        disk_space : float, optional
+            disk space requested by the user for a single job.
 
         Returns
         -------
@@ -1068,6 +1152,7 @@ class ModelPipeline:
             else:
                 output_db_id = self._client.get_database_id(output_db)
                 predict_args['OUTPUT_DB'] = {'database': output_db_id}
+
         if manifest:
             predict_args['MANIFEST'] = manifest
         if sql_where:
@@ -1076,15 +1161,13 @@ class ModelPipeline:
             predict_args['LIMITSQL'] = sql_limit
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
-
-        # If n_jobs is 1, we'll do computation in the leader job.
-        # Otherwise, rely on the default resources in the template.
-        if n_jobs == 1:
-            resources = {'REQUIRED_CPU': 1024,
-                         'REQUIRED_MEMORY': 3000,
-                         'REQUIRED_DISK_SPACE': 30}
-        else:
-            resources = None
+        if _NEWEST_CIVISML_VERSION:
+            if cpu:
+                predict_args['CPU'] = cpu
+            if memory:
+                predict_args['MEMORY'] = memory
+            if disk_space:
+                predict_args['DISK_SPACE'] = disk_space
 
         name = self.model_name + ' Predict' if self.model_name else None
         result, container, run = self._create_custom_run(
@@ -1094,7 +1177,6 @@ class ModelPipeline:
             database_name=database_name,
             file_id=file_id,
             args=predict_args,
-            resources=resources,
             polling_interval=polling_interval)
 
         return result

@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
 ### Changed
+- Updated CivisML template ids to v2.0 (#139)
 - Optional arguments to API endpoints now display in function signatures.
   Function signatures show a default value of "DEFAULT"; arguments will still
   only be transmitted to the Civis Platform API when explicitly provided. (#140)
@@ -37,6 +39,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
+- Added `etl`, `n_jobs`, and `validation_data` arguments to
+  ModelPipeline.train (#139).
+- Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict
+  (#139).
 - Added ``remote_backend`` keyword to the ``civis.parallel.make_backend_factory``
   and ``civis.parallel.infer_backend_factory`` in order to set the joblib
   backend in the container for nested calls to ``joblib.Parallel``.
