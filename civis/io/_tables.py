@@ -231,7 +231,8 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     # will perform a parallel unload which is significantly more performant
     # we start by assuming headers are requested
     ovrd_include_header, headers = _include_header(client, sql, True,
-                                                   db_id, credential_id)
+                                                   db_id, credential_id,
+                                                   polling_interval)
 
     csv_settings = dict(include_header=ovrd_include_header,
                         compression='gzip')
@@ -368,7 +369,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     ovrd_include_header, headers = _include_header(client, sql, include_header,
-                                                   db_id, credential_id)
+                                                   db_id, credential_id,
+                                                   polling_interval)
 
     # format headers so we can write them to the csv
     if headers:
@@ -864,15 +866,17 @@ def _get_sql_select(table, columns=None):
     return sql
 
 
-def _get_headers(client, sql, database, credential_id):
+def _get_headers(client, sql, database, credential_id, polling_interval=None):
     # use 'begin read only;' to ensure we can't change state
     sql = 'begin read only; select * from ({}) limit 1'.format(sql)
     fut = query_civis(sql, database, client=client,
-                      credential_id=credential_id)
+                      credential_id=credential_id,
+                      polling_interval=polling_interval)
     return fut.result()['result_columns']
 
 
-def _include_header(client, sql, include_header, database, credential_id):
+def _include_header(client, sql, include_header, database, credential_id,
+                    polling_interval=None):
     headers = None
 
     # can't do a parallel unload when sql contains an order by
@@ -881,7 +885,8 @@ def _include_header(client, sql, include_header, database, credential_id):
 
     try:
         # if _get_headers throws an error then assume sql is not read only
-        headers = _get_headers(client, sql, database, credential_id)
+        headers = _get_headers(client, sql, database, credential_id,
+                               polling_interval=polling_interval)
         include_header = False
     except Exception as exc:  # NOQA
         log.debug("Failed to retrieve headers due to %s", str(exc))
