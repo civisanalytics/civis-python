@@ -401,7 +401,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
-    download = _download_callback(script_id, run_id, client, filename,
+    download = _download_callback(script_id, run_id, filename,
                                   headers, compression)
     fut.add_done_callback(download)
     if archive:
@@ -947,18 +947,17 @@ def _download_file(url, local_path, headers, compression):
                 fout.write(tmp_path, arcname, zipfile.ZIP_DEFLATED)
 
 
-def _download_callback(job_id, run_id, client, filename, headers, compression):
+def _download_callback(job_id, run_id, filename, headers, compression):
 
     def callback(future):
-        outputs = client.scripts.get_sql_runs(job_id, run_id)["output"]
+        if not future.succeeded():
+            return
+        outputs = future.result().get("output")
         if not outputs:
-            if future.succeeded():
-                # Only warn if the job succeeded. Otherwise the user
-                # will see an error surfaced through the Future.
-                warnings.warn("Job %s, run %s does not have any output to "
-                              "download. Not creating file %s."
-                              % (job_id, run_id, filename),
-                              RuntimeWarning)
+            warnings.warn("Job %s, run %s does not have any output to "
+                          "download. Not creating file %s."
+                          % (job_id, run_id, filename),
+                          RuntimeWarning)
             return
         else:
             url = outputs[0]["path"]
