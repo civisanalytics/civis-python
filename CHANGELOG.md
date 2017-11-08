@@ -53,6 +53,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   the Civis Platform up to 5 times if is there is an HTTPError, ConnectionError
   or ConnectionTimeout
 - Additional documentation about the use case for the Civis joblib backend.
+- Add a note about serializing ``ModelPipeline`` ``APIClient`` objects to the docstring.
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk

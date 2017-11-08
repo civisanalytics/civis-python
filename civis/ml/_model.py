@@ -492,6 +492,11 @@ class ModelPipeline:
     Each ModelPipeline corresponds to a scikit-learn
     :class:`~sklearn.pipeline.Pipeline` which will run in Civis Platform.
 
+    Note that this object can be safely pickled and unpickled, but it
+    does not store the state of any attached :class:`~civis.APIClient` object.
+    An unpickled ModelPipeline will use the API key from the user's
+    environment.
+
     Parameters
     ----------
     model : string or Estimator
