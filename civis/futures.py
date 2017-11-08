@@ -147,7 +147,12 @@ class CivisFuture(PollableResult):
                                        self._reset_polling_thread)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
-        pubnub.subscribe().channels(channels).execute()
+
+        # Start our subscription 30 seconds in the past to catch any
+        # missed messages.
+        # https://www.pubnub.com/docs/python/api-reference-misc#time
+        token = int((time.time() - 30) * 10**7)
+        pubnub.subscribe().channels(channels).with_timetoken(token).execute()
         return pubnub
 
     def _pubnub_config(self):
