@@ -33,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   with a 404 status code. This fix affects the executors and joblib backend, which
   use the ``ContainerFuture``.
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
+- Correct treatment of ``FileNotFoundError`` in Python 2 (#176).
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
