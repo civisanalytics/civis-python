@@ -141,7 +141,7 @@ class CivisFuture(PollableResult):
             if hasattr(self, '_pubnub'):
                 self._pubnub.unsubscribe_all()
 
-                # Pubnub doesn't close its open session, so that ourselves
+                # Pubnub doesn't close its open session, so do that ourselves
                 # to free up sockets. We have to access a private attribute,
                 # but this exists at least in (4.0.0 <= versions <= 4.0.11).
                 # After closing the Session, remove it so that PubNub
