@@ -428,16 +428,16 @@ def parse_path(path, operations, api_version, resources):
     attached to the class as a method.
     """
     path = path.strip('/')
-    base_path = path.split('/')[0].lower()
+    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
     methods = []
     if exclude_resource(path, api_version, resources):
-        return base_path, methods
+        return modified_base_path, methods
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
         if method is None:
             continue
         methods.append(method)
-    return base_path, methods
+    return modified_base_path, methods
 
 
 def parse_api_spec(api_spec, api_version, resources):

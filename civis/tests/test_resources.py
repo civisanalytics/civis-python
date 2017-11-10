@@ -330,12 +330,15 @@ def test_parse_api_spec_names(mock_method):
     """ Test that path parsing preserves underscore in resource name."""
     mock_method.return_value = ("method_a", lambda x: x)
     mock_ops = {"get": None, "post": None}
-    mock_paths = {"/two_words/": mock_ops, "/oneword/": mock_ops}
+    mock_paths = {"/two_words/": mock_ops,
+                  "/oneword/": mock_ops,
+                  "/hyphen-words": mock_ops}
     mock_api_spec = {"paths": mock_paths}
     classes = _resources.parse_api_spec(mock_api_spec, "1.0", "all")
-    assert sorted(classes.keys()) == ["oneword", "two_words"]
+    assert sorted(classes.keys()) == ["hyphen_words", "oneword", "two_words"]
     assert classes["oneword"].__name__ == "Oneword"
     assert classes["two_words"].__name__ == "TwoWords"
+    assert classes["hyphen_words"].__name__ == "HyphenWords"
 
 
 def test_add_no_underscore_compatibility():
