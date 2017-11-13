@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import io
+from functools import partial
 import json
 import logging
 import math
@@ -9,11 +10,10 @@ import re
 import six
 import requests
 from requests import HTTPError
-import tempfile
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis.compat import FileNotFoundError
+from civis.compat import FileNotFoundError, TemporaryDirectory
 from civis.utils._deprecation import deprecate_param
 from civis._utils import retry
 
@@ -145,10 +145,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part(item):
+    def _upload_part_base(item, part_path):
         part_num, part_url = item[0], item[1]
         log.debug('Uploading file part %s', part_num)
-        file_out = os.path.join(tmp_dir, str(part_num) + '.csv')
+        file_out = part_path.format(i)
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
@@ -160,24 +160,27 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload each part
     try:
-        with tempfile.TemporaryDirectory() as tmp_dir:
+        pool = Pool(MAX_THREADS)
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis_{}.csv')
             for i in range(0, num_parts):
                 offset = part_size * i
                 num_bytes = min(part_size, file_size - offset)
                 buf.seek(offset)
 
                 # write part to disk so that we can stream it
-                file_in = os.path.join(tmp_dir, str(i) + '.csv')
+                file_in = tmp_path.format(i)
                 with open(file_in, 'wb') as fin:
                     for x in _gen_chunks(buf, num_bytes):
                         fin.write(x)
 
-            with Pool(MAX_THREADS) as pool:
-                pool.map(_upload_part, enumerate(urls))
+            _upload_part = partial(_upload_part_base, part_path=tmp_path)
+            pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
     # if any part except the last failed to upload at least 5MB
     finally:
+        pool.terminate()
         client.files.post_multipart_complete(file_response.id)
 
     return file_response.id

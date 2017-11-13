@@ -24,6 +24,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   now support files over 5GB
 - Refactor internals of ``CivisFuture`` and ``PollableResult`` to centralize handling
   of threads and ``pubnub`` subscription.
+- Updated API specification and base resources to include all general
+  availability endpoints.
 
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
@@ -35,8 +37,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
 - Close open sockets (in both the ``APIClient`` and ``CivisFuture``)  when they're no
   longer needed, so as to not use more system file handles than necessary (#173).
+- Correct treatment of ``FileNotFoundError`` in Python 2 (#176).
 - Fixed parsing of endpoints containing hyphens.  Hyphens are replaced with
   underscores.
+- Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
+  compatible with Python 2.7
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
@@ -57,6 +62,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   the Civis Platform up to 5 times if is there is an HTTPError, ConnectionError
   or ConnectionTimeout
 - Additional documentation about the use case for the Civis joblib backend.
+- Add a note about serializing ``ModelPipeline`` ``APIClient`` objects to the docstring.
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk
