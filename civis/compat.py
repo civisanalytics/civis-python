@@ -14,7 +14,7 @@ else:
         pass
     from functools32 import lru_cache  # noqa
     from funcsigs import signature  # noqa
-    FileNotFoundError = IOError
+    FileNotFoundError = OSError
 
 if six.PY3:
     from tempfile import TemporaryDirectory
