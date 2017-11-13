@@ -199,7 +199,10 @@ class ModelFuture(ContainerFuture):
     This object knows where to find modeling outputs
     from CivisML jobs. All data attributes are
     lazily retrieved and block on job completion.
-    This object can be pickled.
+
+    This object can be pickled, but it does not store the state
+    of the attached :class:`~civis.APIClient` object. An unpickled
+    ModelFuture will use the API key from the user's environment.
 
     Parameters
     ----------
