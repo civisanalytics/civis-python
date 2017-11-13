@@ -35,6 +35,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   with a 404 status code. This fix affects the executors and joblib backend, which
   use the ``ContainerFuture``.
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
+- Correct treatment of ``FileNotFoundError`` in Python 2 (#176).
 - Fixed parsing of endpoints containing hyphens.  Hyphens are replaced with
   underscores.
 - Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
@@ -60,6 +61,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   the Civis Platform up to 5 times if is there is an HTTPError, ConnectionError
   or ConnectionTimeout
 - Additional documentation about the use case for the Civis joblib backend.
+- Add a note about serializing ``ModelPipeline`` ``APIClient`` objects to the docstring.
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now takes advantage of multipart uploads to chunk
