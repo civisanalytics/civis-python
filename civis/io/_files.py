@@ -147,7 +147,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     def _upload_part(item):
         part_num, part_url = item[0], item[1]
         log.debug('Uploading file part %s', part_num)
-        file_out = ''.join([tmp_path, str(part_num), '.csv'])
+        file_out = tmp_path.format(i)
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
@@ -159,26 +159,27 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload each part
     try:
+        pool = Pool(MAX_THREADS)
         with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, 'file_to_civis')
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis_{}.csv')
             for i in range(0, num_parts):
                 offset = part_size * i
                 num_bytes = min(part_size, file_size - offset)
                 buf.seek(offset)
 
                 # write part to disk so that we can stream it
-                file_in = ''.join([tmp_path, str(i), '.csv'])
+                file_in = tmp_path.format(i)
                 with open(file_in, 'wb') as fin:
                     for x in _gen_chunks(buf, num_bytes):
                         fin.write(x)
 
-            with Pool(MAX_THREADS) as pool:
-                pool.map(_upload_part, enumerate(urls))
+            pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
     # if any part except the last failed to upload at least 5MB
     finally:
         client.files.post_multipart_complete(file_response.id)
+        pool.terminate()
 
     return file_response.id
 
