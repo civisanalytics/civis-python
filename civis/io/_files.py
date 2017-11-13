@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import io
+from functools import partial
 import json
 import logging
 import math
@@ -144,10 +145,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part(item):
+    def _upload_part_base(item, part_path):
         part_num, part_url = item[0], item[1]
         log.debug('Uploading file part %s', part_num)
-        file_out = tmp_path.format(i)
+        file_out = part_path.format(i)
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
@@ -173,6 +174,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
                     for x in _gen_chunks(buf, num_bytes):
                         fin.write(x)
 
+            _upload_part = partial(_upload_part_base, part_path=tmp_path)
             pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
