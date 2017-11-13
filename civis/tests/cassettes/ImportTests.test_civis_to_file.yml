@@ -7,33 +7,34 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.4]
     method: GET
-    uri: https://api.civisanalytics.com/files/6807835
+    uri: https://api.civisanalytics.com/files/7226869
   response:
     body:
       string: !!binary |
-        H4sIAPl66lkAA+xT2W6jMBT9F6S8hcRgshApGpGQpZOShTRdonlxbLO0gIltSkLVfx/TqDOVRtOX
-        mcdKPJjDPYd7r8950WKiDbp90OvDTlPLUEq1gSZYSt+OTQ1ziiQljlSwCYyebgDdBDemOYDGwLJb
-        AIC9KgvihG7jSpENo6nRUx5zKj6QDN2w/yARVmYJQ2THE23wogkc0bffR1LmQn0vBOXaICuSpKnl
-        SIiScfL+HjFRq+P4ORY6ZplgCW0J2EIpqliGStHCLFUaOeOqzrJgLSEjRWkzHoq2DGXYrrsWbUhB
-        34AG1jsGPujWwUK63e/YOg3MPjQCejhA0v6wkmNB+VkJOXdbB2MqxIKer8jQ2V45V92e6Vm+N/X9
-        mxWcOD8KAMzu5LKOodEB/Y4FbNO+4Ns4zJAsOB26I771d8dK4Cy4KlZda/I9J+w48h5AA7qXaqWQ
-        qzlpPa2kmdRJrAARy5hlQyQlwpFqUTbgqGGCerK6XcVumOZ78+r4Fy15zukQ5XkSY1QLNswpw5JK
-        XUhlgPTCOukorXRBccFjedYle6LZcLph7sM9qSbeoyJ98pQT5K4O67S3w8sbbky8hjkS6+2CO7c+
-        BbJ0UhEkMYQzQ66IBfLQ6HSJqnniz0TurMUsiE9KZnx/N2ZotKgVUX7CqsJxnm/sPub+DlQRdItZ
-        iGa0rLJ94BTr/XpcohOr9smYijD35Pk2QbJc1srTnqiUzpG4y2408297CgxJsGL3Ct0+nKPAFdNb
-        6Y8rsjz49pPlAVS6dOM7c3AH4/Hj8z6KNjbAvWrOckWWvSOUHbLx0tX9db1DLh7PG8CzQGS7VeWl
-        7vV1ZleOiObzqDo/dmyUrUeb+pagq6zFcqTc9e7xgKOwvtLfGeC/EvF6ydxbdC6BGbTbn6fh34z/
-        7cvuX3b/r3Z//QkAAP//AwD9qXW1fQYAAA==
+        H4sIAIbWCVoAA+yTXW/qOBCG/0sk7prifEKQ0FEgfARCCwca2mpvnNghLiFObAdIqvPfj1PU3V7s
+        rlba297Zk3nfzIyfeVcIUgY9Xbf7tnOn5PCElYHC6Ql/HO+UmGEoMHKFDOtA66mapmrGTusNNGsA
+        9HsAwKtMS0iGt6SRYk27U/C1IAzzLyL970SIXvKMQvTEMmXwrvA4xR+/T4UouPxeccyUQV5l2Z1S
+        QM4vlKHPe0p56x6TM+FqTHNOM3zPjXt4gg3N4YXfx/QkPQrKZJ5pGq2FSKWkS9mBd8VBHLpt1bwb
+        W0kPgwiqkeUYqmn2DNUxkaNCBBInjjSMYqv7ZSRlhVktjdz91o1jzPkS1z4aulvf9UfzpW26D665
+        XwXBzv2jAkC3J7dxDDVLA5ZjOX39Ft+SQw5FxfDwvMyCVfE2Bt5s1tFHu+oFuJfVnPuAsEPH8G75
+        0qOQneK2X4FzoSIiA5wIQvMhFALGqSxSdIxRRwdtb23BUt3R9c/y5fEfvERd4CEsiozEsDXs6FMa
+        CyxULiQCp5vqqsJTo3IcV4yIWhX0iPPhdEO9l2fUTLwV9JZSN5+Gb33qnpJdca698ZK5r+z153nW
+        i9Oj7A6s/Q0Ooxnso2pBXmypMI8Jmi3DTXh1wj059Q82bpbl1Kfx47Qp3UdX5jwG3mGPovri75AV
+        VWFp1kHFFkw7nhe67HG094LEKef8uDkH64drkk8mQVRg4kwf9inS0Tp8fKbmk6mnfjkd94vr2H9j
+        RoNZtfM2uW4l02o9SZvangPPTN+qStjXMJpcI+n9mpSZX66e7PFsNPm5WD2Uz6HWa2YgGq/XL0mA
+        rhNX2Jxt0WK8rMmMwWQz2rSzNzyJDC2gpOaT3YTBQ/tQf7HN/iT9122XPlbitgiDbvffKf9/QP/4
+        xvgb4/+E8a/fAAAA//8DAO0ciBItBgAA
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
+      Content-Length: ['708']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 20 Oct 2017 22:38:49 GMT']
-      ETag: [W/"e99b401f79a1d8f58d3d6ad85ecfc1b9"]
+      Date: ['Mon, 13 Nov 2017 17:29:42 GMT']
+      ETag: [W/"d71bd064b9947bda9f24a2fafd09d423"]
       Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
@@ -41,8 +42,8 @@ interactions:
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
       X-RateLimit-Remaining: ['999']
-      X-Request-Id: [e4a70f40-f491-42e6-8c43-755dad90fd8b]
-      X-Runtime: ['0.189211']
+      X-Request-Id: [4976f8ec-19ee-4635-8994-32df4827ca5c]
+      X-Runtime: ['0.274264']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -51,9 +52,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.18.1]
+      User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/files/3e08131c-51cb-4b4a-9859-ef2831febb3d/somename?AWSAccessKeyId=ASIAI672M4RMFRRTO3EA&Expires=1508540929&Signature=DBrSRUqzscnfIuO64EJpdoqBMY0%3D&response-content-disposition=attachment%3B%20filename%3D%22somename%22&response-content-type=application%2Foctet-stream&x-amz-security-token=FQoDYXdzEMj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDObPm7UcNTr1EM%2BsPSKrAVRe0twAmsfli33G1tOd40pg156d%2BkrvdtU4KGfix%2FCXWCoaBK%2Fwapxc%2BAAvT98crRU0zh3DuGgaGewznZfAuPZPCwaxozZlCesgpMtyVlatwN%2BkF7sz%2FqdDN6hGRV7%2BgdfOoX%2FSYyhfDsFVtRCzdNbR9k4M0awDeQRAH0W3iCjvZhhQ90c7zHop%2Bt7q3t5dQMmOXL%2ForsjyQ0rnfsnUOzMmDLLn9zAshHHhzyj59anPBQ%3D%3D
+    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/files/c5f7e0ba-b593-4473-94d9-ad0f9cb1edc5/somename?AWSAccessKeyId=ASIAIBHK64ANA4WMLLTA&Expires=1510595982&Signature=vKlLMpjC0DGG%2BTuY0AwMHsI0irg%3D&response-content-disposition=attachment%3B%20filename%3D%22somename%22&response-content-type=application%2Foctet-stream&x-amz-security-token=FQoDYXdzEDMaDK%2FHFVj8oAmfTpvyDCKrAZrZRvG7chk%2B0PIQeVbGa8duJiY6%2F4kfdGKVQVx9VWim8g6ezKqFIocOFzqAOA%2FOLDgWdbywITd5buVq4yLurJr1kvJ2D%2BWDLf9qHskQvLPNxfnEELbpei9FNWhd2dPVOXo4U42hIqFC8pxCIjr3zeruTDQn25fFuPEhzy6H0D4hjuut6xVbExb%2BZfqlIqMU6CGBERJMNqXV17zG0bCPPYfLdxEAt6srSdJCKyiGrafQBQ%3D%3D
   response:
     body: {string: 'a,b,c
 
@@ -63,11 +64,11 @@ interactions:
       Content-Disposition: [attachment; filename="somename"]
       Content-Length: ['11']
       Content-Type: [application/octet-stream]
-      Date: ['Fri, 20 Oct 2017 22:38:51 GMT']
+      Date: ['Mon, 13 Nov 2017 17:29:43 GMT']
       ETag: ['"1a477f6d2f9c9fc827fa46b5ace1a145"']
-      Last-Modified: ['Fri, 20 Oct 2017 22:31:51 GMT']
+      Last-Modified: ['Mon, 13 Nov 2017 17:15:03 GMT']
       Server: [AmazonS3]
-      x-amz-id-2: [BnTqisK1h4oNuQPIpyRSbiOEKPsZyMHHQCg3GowCtK1Ic+9ExnmWAcBoN6+EZsdmkhiI/zz0L0A=]
-      x-amz-request-id: [BC6998A636B35937]
+      x-amz-id-2: [u2fDBSgdaT7G3Pv2kPtlUvw6FeWbjsgQ7X0YFWE1A+zOJ3U2xb7GoQi96Q6Y3vsZOXBpsyIz8sc=]
+      x-amz-request-id: [BD9058A88721E573]
     status: {code: 200, message: OK}
 version: 1
