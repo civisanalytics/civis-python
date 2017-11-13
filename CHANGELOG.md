@@ -24,6 +24,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   now support files over 5GB
 - Refactor internals of ``CivisFuture`` and ``PollableResult`` to centralize handling
   of threads and ``pubnub`` subscription.
+- Updated API specification and base resources to include all general
+  availability endpoints.
 
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
