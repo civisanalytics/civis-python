@@ -19,9 +19,41 @@ from civis._utils import (camel_to_snake, to_camelcase,
 
 
 API_VERSIONS = ["1.0"]
-BASE_RESOURCES_V1 = ["credentials", "databases", "files", "imports",
-                     "jobs", "models", "predictions", "projects",
-                     "queries", "reports", "scripts", "tables", "users"]
+BASE_RESOURCES_V1 = [
+    'announcements',
+    'apps',
+    'civis',
+    'clusters',
+    'codes',
+    'credentials',
+    'databases',
+    'endpoints',
+    'enhancements',
+    'exports',
+    'files',
+    'groups',
+    'imports',
+    'jobs',
+    'match_targets',
+    'media',
+    'models',
+    'notebooks',
+    'notifications',
+    'ontology',
+    'predictions',
+    'projects',
+    'queries',
+    'remote_hosts',
+    'reports',
+    'results',
+    'scripts',
+    'search',
+    'tables',
+    'templates',
+    'users',
+    'workflows'
+]
+
 TYPE_MAP = {"array": "list", "object": "dict"}
 ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
