@@ -231,7 +231,8 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     # will perform a parallel unload which is significantly more performant
     # we start by assuming headers are requested
     ovrd_include_header, headers = _include_header(client, sql, True,
-                                                   db_id, credential_id)
+                                                   db_id, credential_id,
+                                                   polling_interval)
 
     csv_settings = dict(include_header=ovrd_include_header,
                         compression='gzip')
@@ -368,7 +369,8 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # determine if we can request headers separately; if we can then Platform
     # will perform a parallel unload which is significantly more performant
     ovrd_include_header, headers = _include_header(client, sql, include_header,
-                                                   db_id, credential_id)
+                                                   db_id, credential_id,
+                                                   polling_interval)
 
     # format headers so we can write them to the csv
     if headers:
@@ -399,7 +401,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
-    download = _download_callback(script_id, run_id, client, filename,
+    download = _download_callback(script_id, run_id, filename,
                                   headers, compression)
     fut.add_done_callback(download)
     if archive:
@@ -864,15 +866,17 @@ def _get_sql_select(table, columns=None):
     return sql
 
 
-def _get_headers(client, sql, database, credential_id):
+def _get_headers(client, sql, database, credential_id, polling_interval=None):
     # use 'begin read only;' to ensure we can't change state
     sql = 'begin read only; select * from ({}) limit 1'.format(sql)
     fut = query_civis(sql, database, client=client,
-                      credential_id=credential_id)
+                      credential_id=credential_id,
+                      polling_interval=polling_interval)
     return fut.result()['result_columns']
 
 
-def _include_header(client, sql, include_header, database, credential_id):
+def _include_header(client, sql, include_header, database, credential_id,
+                    polling_interval=None):
     headers = None
 
     # can't do a parallel unload when sql contains an order by
@@ -881,7 +885,8 @@ def _include_header(client, sql, include_header, database, credential_id):
 
     try:
         # if _get_headers throws an error then assume sql is not read only
-        headers = _get_headers(client, sql, database, credential_id)
+        headers = _get_headers(client, sql, database, credential_id,
+                               polling_interval=polling_interval)
         include_header = False
     except Exception as exc:  # NOQA
         log.debug("Failed to retrieve headers due to %s", str(exc))
@@ -942,18 +947,17 @@ def _download_file(url, local_path, headers, compression):
                 fout.write(tmp_path, arcname, zipfile.ZIP_DEFLATED)
 
 
-def _download_callback(job_id, run_id, client, filename, headers, compression):
+def _download_callback(job_id, run_id, filename, headers, compression):
 
     def callback(future):
-        outputs = client.scripts.get_sql_runs(job_id, run_id)["output"]
+        if not future.succeeded():
+            return
+        outputs = future.result().get("output")
         if not outputs:
-            if future.succeeded():
-                # Only warn if the job succeeded. Otherwise the user
-                # will see an error surfaced through the Future.
-                warnings.warn("Job %s, run %s does not have any output to "
-                              "download. Not creating file %s."
-                              % (job_id, run_id, filename),
-                              RuntimeWarning)
+            warnings.warn("Job %s, run %s does not have any output to "
+                          "download. Not creating file %s."
+                          % (job_id, run_id, filename),
+                          RuntimeWarning)
             return
         else:
             url = outputs[0]["path"]

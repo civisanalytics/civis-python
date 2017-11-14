@@ -42,6 +42,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   underscores.
 - Use ``civis.compat.TemporaryDirectory`` in ``civis.io.file_to_civis`` to be
   compatible with Python 2.7
+- Catch notifications sent up to 30 seconds before the ``CivisFuture`` connects.
+  Fixes a bug where we would sometimes miss an immediate error on SQL scripts (#174).
 
 ### Added
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
