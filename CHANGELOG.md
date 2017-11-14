@@ -35,6 +35,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   with a 404 status code. This fix affects the executors and joblib backend, which
   use the ``ContainerFuture``.
 - Tell ``flake8`` to ignore a broad except in a ``CivisFuture`` callback.
+- Close open sockets (in both the ``APIClient`` and ``CivisFuture``)  when they're no
+  longer needed, so as to not use more system file handles than necessary (#173).
 - Correct treatment of ``FileNotFoundError`` in Python 2 (#176).
 - Fixed parsing of endpoints containing hyphens.  Hyphens are replaced with
   underscores.
