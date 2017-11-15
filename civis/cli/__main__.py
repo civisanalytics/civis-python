@@ -23,8 +23,9 @@ from warnings import warn
 import click
 from jsonref import JsonRef
 import yaml
-from civis.cli._cli_commands import \
-    civis_ascii_art, files_download_cmd, files_upload_cmd
+from civis.cli._cli_commands import (
+    civis_ascii_art, files_download_cmd, files_upload_cmd,
+    notebooks_download_cmd)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis._utils import open_session
 from civis.compat import FileNotFoundError
@@ -219,6 +220,8 @@ def add_extra_commands(cli):
     files_cmd = cli.commands['files']
     files_cmd.add_command(files_download_cmd)
     files_cmd.add_command(files_upload_cmd)
+    notebooks_cmd = cli.commands['notebooks']
+    notebooks_cmd.add_command(notebooks_download_cmd)
     cli.add_command(civis_ascii_art)
 
 
