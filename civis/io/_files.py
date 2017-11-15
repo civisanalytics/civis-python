@@ -192,8 +192,9 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
 
     Parameters
     ----------
-    buf : file-like object
-        The file or other buffer that you wish to upload.
+    buf : file-like object or str
+        The file or other buffer that you wish to upload. Strings will be
+        treated as paths to local files to open.
     name : str
         The name you wish to give the file.
     api_key : DEPRECATED str, optional
@@ -213,6 +214,8 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
 
     Examples
     --------
+    >>> # Upload file at a given path on the local filesystem.
+    >>> file_id = file_to_civis("my_data.csv", 'my_data')
     >>> # Upload file which expires in 30 days
     >>> with open("my_data.csv", "r") as f:
     ...     file_id = file_to_civis(f, 'my_data')
@@ -235,6 +238,16 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     Small or non-seekable file-like objects will be uploaded with a
     single post.
     """
+    if isinstance(buf, six.string_types):
+        with open(buf, 'rb') as f:
+            return _file_to_civis(
+                f, name, api_key=api_key, client=client, **kwargs)
+    else:
+        return _file_to_civis(
+            buf, name, api_key=api_key, client=client, **kwargs)
+
+
+def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     if client is None:
         client = APIClient(api_key=api_key)
 
@@ -273,9 +286,9 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     ----------
     file_id : int
         The Civis file ID.
-    buf : file-like object
-        The file or other buffer to write the contents of the Civis file
-        into.
+    buf : file-like object or str
+        A buffer or path specifying where to write the contents of the Civis
+        file. Strings will be treated as paths to local files to open.
     api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
@@ -290,9 +303,26 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     Examples
     --------
     >>> file_id = 100
+    >>> # Download a file to a path on the local filesystem.
+    >>> civis_to_file(file_id, "my_file.txt")
+    >>> # Download a file to a file object.
     >>> with open("my_file.txt", "wb") as f:
     ...    civis_to_file(file_id, f)
+    >>> # Download a file as a bytes object.
+    >>> import io
+    >>> buf = io.BytesIO()
+    >>> civis_to_file(file_id, buf)
+    >>> # Note that s could be converted to a string with s.decode('utf-8').
+    >>> s = buf.read()
     """
+    if isinstance(buf, six.string_types):
+        with open(buf, 'wb') as f:
+            _civis_to_file(file_id, f, api_key=api_key, client=client)
+    else:
+        _civis_to_file(file_id, buf, api_key=api_key, client=client)
+
+
+def _civis_to_file(file_id, buf, api_key=None, client=None):
     if client is None:
         client = APIClient(api_key=api_key)
     files_response = client.files.get(file_id)

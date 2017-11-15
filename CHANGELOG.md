@@ -26,6 +26,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   of threads and ``pubnub`` subscription.
 - Updated API specification and base resources to include all general
   availability endpoints.
+- Changed ``civis.io.file_to_civis`` and ``civis.io.civis_to_file`` to allow
+  strings for paths to local files in addition to just file/buffer objects.
 
 ### Fixed
 - Fixed parsing of multiword endpoints. Parsing no longer removes underscores
