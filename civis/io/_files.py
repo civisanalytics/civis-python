@@ -148,7 +148,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     def _upload_part_base(item, part_path):
         part_num, part_url = item[0], item[1]
         log.debug('Uploading file part %s', part_num)
-        file_out = part_path.format(i)
+        file_out = part_path.format(part_num)
         with open(file_out, 'rb') as fout:
             part_response = requests.put(part_url, data=fout)
 
