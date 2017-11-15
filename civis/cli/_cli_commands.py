@@ -72,7 +72,7 @@ def files_download_cmd(file_id, path):
 @click.command('download')
 @click.argument('notebook_id', type=int)
 @click.argument('path')
-def notebooks_download_cmd(notebook_id, path=None):
+def notebooks_download_cmd(notebook_id, path):
     """Download a notebook to a specified local path."""
     client = civis.APIClient()
     info = client.notebooks.get(notebook_id)
