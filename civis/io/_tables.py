@@ -236,7 +236,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     # if we retrieved headers then we are performing a parallel unload
     # in which case we need to specify backslash as the escapechar
-    if headers:
+    if headers is not None:
         kwargs['escapechar'] = '\\'
 
     csv_settings = dict(include_header=ovrd_include_header,
