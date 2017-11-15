@@ -234,7 +234,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
                                                    db_id, credential_id,
                                                    polling_interval)
 
-    # if successfully retrieved headers then we are performing a parallel-unload
+    # if we retrieved headers then we are performing a parallel unload
     # in which case we need to specify backslash as the escapechar
     if headers:
         kwargs['escapechar'] = '\\'
