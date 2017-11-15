@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+- Specify escape character in ``civis.io.read_civis_sql`` when performing parallel unload
 - Issue uploading files in ``civis.io.file_to_civis``
 
 ## 1.7.0 - 2017-11-15
