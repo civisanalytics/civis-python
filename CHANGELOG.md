@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Specify escape character in ``civis.io.read_civis_sql`` when performing parallel unload
 
 ## 1.7.0 - 2017-11-15
 ### Changed
