@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.7.0 - 2017-11-15
 ### Changed
 - Updated CivisML template ids to v2.0 (#139)
 - Optional arguments to API endpoints now display in function signatures.
