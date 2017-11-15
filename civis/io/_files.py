@@ -238,7 +238,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     Small or non-seekable file-like objects will be uploaded with a
     single post.
     """
-    if isinstance(buf, str):
+    if isinstance(buf, six.string_types):
         with open(buf, 'rb') as f:
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
@@ -315,7 +315,7 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     >>> # Note that s could be converted to a string with s.decode('utf-8').
     >>> s = buf.read()
     """
-    if isinstance(buf, str):
+    if isinstance(buf, six.string_types):
         with open(buf, 'wb') as f:
             _civis_to_file(file_id, f, api_key=api_key, client=client)
     else:
