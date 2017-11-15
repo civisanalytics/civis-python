@@ -360,3 +360,24 @@ def test_load_json(mock_c2f):
     mock_c2f.side_effect = _dump_json
     out = civis.io.file_to_json(13, client=mock.Mock())
     assert out == obj
+
+
+@mock.patch('civis.io._files._civis_to_file')
+@mock.patch('%s.open' % __name__, create=True)
+def test_civis_to_file_local(mock_open, mock_civis_to_file_helper):
+    # Test that passing a path to civis_to_file opens a file.
+    civis.io.civis_to_file(123, "foo")
+    mock_open.return_value = mock_file = mock.Mock()
+    assert mock_open.called_once_with("foo", "wb")
+    assert mock_civis_to_file_helper.called_once_with(123, mock_file)
+
+
+@mock.patch('civis.io._files._file_to_civis')
+@mock.patch('%s.open' % __name__, create=True)
+def test_file_to_civis(mock_open, mock_file_to_civis_helper):
+    # Test that passing a path to file_to_civis opens a file.
+    civis.io.file_to_civis("foo", "foo_name")
+    mock_open.return_value = mock_file = mock.Mock()
+    assert mock_open.called_once_with("foo", "rb")
+    assert mock_file_to_civis_helper.called_once_with(
+        "foo", "foo_name", mock_file)
