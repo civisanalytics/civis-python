@@ -380,8 +380,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         raise ValueError("delimiter must be one of {}"
                          .format(DELIMITERS.keys()))
 
-    # always set include_header to False and compression to gzip to
-    # ensure the best performance when retrieving results
+    # always set compression to gzip to reduce I/O
     csv_settings = dict(include_header=include_header,
                         compression='gzip',
                         column_delimiter=delimiter,
