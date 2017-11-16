@@ -371,29 +371,17 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     if compression == 'gzip':
         compression = 'none'
 
-    # determine if we can request headers separately; if we can then Platform
-    # will perform a parallel unload which is significantly more performant
-    ovrd_include_header, headers = _include_header(client, sql, include_header,
-                                                   db_id, credential_id,
-                                                   polling_interval)
-
-    # format headers so we can write them to the csv
-    if headers:
-        if not unquoted:
-            headers = ['"{}"'.format(x.replace('"', r'\"')) for x in headers]
-        headers = delimiter.join(headers) + '\n'
-        headers = headers.encode('utf-8')
-    else:
-        headers = b''
+    # don't support parallel unload; the output format
+    # is different which would introduce a breaking change
+    headers = b''
 
     delimiter = DELIMITERS.get(delimiter)
     if not delimiter:
         raise ValueError("delimiter must be one of {}"
                          .format(DELIMITERS.keys()))
 
-    # always set include_header to False and compression to gzip to
-    # ensure the best performance when retrieving results
-    csv_settings = dict(include_header=ovrd_include_header,
+    # always set compression to gzip to reduce I/O
+    csv_settings = dict(include_header=include_header,
                         compression='gzip',
                         column_delimiter=delimiter,
                         unquoted=unquoted,
