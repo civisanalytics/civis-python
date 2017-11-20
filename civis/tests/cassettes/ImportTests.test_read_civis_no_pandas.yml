@@ -7,81 +7,34 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
-    method: GET
-    uri: https://api.civisanalytics.com/models/types
-  response:
-    body:
-      string: !!binary |
-        H4sIADn2EFgAA5zTTUsDMRAG4L8Sct6DsfWrN1tqLxXBFj2Ih6lJ14FsZplkbYv43w0IYsS2s14n
-        zMO8k+TpXaPVI1Np8DUxptdGj/SiBY5OzanGmPBFV9q+LXety0djDMC7XFljSNfe08bl/sSd+6i+
-        rNPSeqBNC149wmqF6bi0Bh+/qYF4rNvOJwzUIPiD4vBPcUIhd3fUxZ9mUd0b90w84x3bHPnwfOel
-        NmOw6EJSY6LMhVot2bnYc40XvVHpOi97y/uXWsBXJXwPwVKjbohd7PuIzInQkoY2RggKs5pfP2a6
-        TQz/umgzEEnioEMRdyzm8ycAAAD//wMANsHkm2UEAAA=
-    headers:
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Connection: [keep-alive]
-      Content-Encoding: [gzip]
-      Content-Length: ['260']
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:17 GMT']
-      ETag: [W/"ccbc43d66ecc4cb3d4b3f11a29b140a4"]
-      Server: [nginx/1.8.1]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['997']
-      X-Request-Id: [43768983-8f48-48ce-99f2-cde68bec36bb]
-      X-Runtime: ['0.184652']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: '{}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
     uri: https://api.civisanalytics.com/databases
   response:
     body:
       string: !!binary |
-        H4sIADn2EFgAA3RUXW+bMBT9K1aeGylAGkjfCEmzSmmK8rFpmvZg4IZYAxsZkyyd9t9n0o57s7JX
-        zvH1PR/m26+ByAYPXnA3kLyEwcPA9UdsazQ3kAuoB7/v3hnTSUcJZ+xJJnBC8N5BcL5lO82FFDJH
-        gu8iYbPtvjvuCL8Lncikg8YOOVKCFimX7BEysKsJJZk6sB3w9AiaLOnimVm0JPvhNTMuU8ViVTUF
-        1+QkyovESdRszg1PeA2EgiZFSumMuSNngrBzT+Cz0j+AjA/w7Dyy7hnQssemAH2cr6IIAa/7vpBa
-        FQV7twQZuP/CHC1SsEUBqbGkjuNO0J5loRLLeU/6wpZaNRVOGyPzaXEr1HXGHbYCnjfQZhEpWYM+
-        vWXzWZmbWHyUtQ434YogGMz6a0gS81HxGs4s5tpIOnNKRsJPswTJokKUVgxJvaO86JxL8Wq9Zgel
-        WZi2a3bEAInx05oN2UoktmbF9dbLVR2XPCNmu7hdzMsKNGQsOsKB7I8mxeoMegMnAWfc3wlQeawh
-        FXVrXN/DCyaEKJQWxsL7bXibijNG2gay+igOhs0U3NSL5N9xoucXjPbe+0AYbkOyi9/h2+f4nw0C
-        lLxVqeDFM2QCTXNJufXf4bYnmvqKSewanai2SMRTn6JSNSYO8Y24U1x+v2afRH60rSxLUbfWgr4m
-        v4FDkwOx1yFR7qUwNsgvwOYaeImTSX+v1b4WQ6Sieqt7BO17xpGTyUehaftTGWaiTtUJ9AVne/5H
-        cpYKoroHh1IhYeT2M4a2l8M6PaqCkzqN/jNvaLjOwdSllYYvY9pDRqVThJe2tzV7VI3M+M3j8nq2
-        y0G27wuv6TGsvCnPtGeKzKsTx4sc8uQ6TlUdcIjTp71u9AkupBCO11fTGk3xnJ5ntE9IA1y/Z10b
-        u3htjfn+BwAA//8DANIQCsV1BwAA
+        H4sIAHJU6lkAA2zQTQuCMBgH8K8ydlZQ8y1vpQQdosg6RYfVnuoB3WBbQkTfvUOyGXr+/57X05si
+        p8UsCT0qWAu0oIuqJgfFUKC404/Xgyi1oMQONamYYRemwZE8t6QqyVoYUGKiUxxZtpMNGryyxqZh
+        7ObsgesH3gxZSvjrkEZjU262FqSJ2+RYk5WUXLvqzGaqL/Y5tNKCLAqmhW9AG8vy+YRSg4eN4zsI
+        UINj83RsWuDI3DuCiW31U3XwcheF4WyMfruevwAAAP//AwCvCrbA4AEAAA==
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
+      Content-Length: ['214']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:17 GMT']
-      ETag: [W/"b10d1e7a1b0d01eccc8fe4cd28b9a7e9"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:26 GMT']
+      ETag: [W/"1afcf308ff1b98b22654b9c99b66d408"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['996']
-      X-Request-Id: [ef2876a8-e7d1-46ec-9437-f3fde6dcc379]
-      X-Runtime: ['0.285453']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [322dc10a-c2dd-4d4a-9000-4faa231f3c2b]
+      X-Runtime: ['0.198836']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -92,457 +45,82 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
     uri: https://api.civisanalytics.com/credentials?default=True
   response:
     body:
       string: !!binary |
-        H4sIADr2EFgAA9y9y3IbyZYt+CthOTnddgs68cSDowOClCiJICmCoo7y9jWZI+AAPBEIh+JBJLOt
-        zWpakzvpntS0RqXJHd0/4J/Ul7S7Bx6xES93pvjwLMs6ksiIBawVHtu3b997+3//v38hk1+OHMe0
-        /+WXEC3xL0e/XJzcnhkjFOB4SiMff45x9Mu//JLcr/gv9z83Nr9I2R+bO++m9Pd/hJO7+Rsazdiv
-        Jjj2I7JKCA3Zb9kP6Dpk9xyFaRD8yy8RXtIEn9E4eT8p/uxCQGY/9SOMEjzpJwzFNi2vZZktu31j
-        dY/MzpHXfWOa5q/8m6wm+cva/DLLurGtI7d3ZPayy/6ff8kou52es6O8IOEMRzENgj3TE5SgMYox
-        pAiuBPyyr7phCK97NFNBwfQ4Bcs5cu06ptllNtPEOWTq9nZM0TRpophdovLsXNsrEvql//bGaBl9
-        n0MYFzhZ02hh/FLC0ey17O6N5R459pHdq+TIL+vdWL0jzzmyzAOOrm3uOH5mTIzRHEV4suc6SOOE
-        LiHTlP2lQPXz9UXfGN6PPp3/tAHLvnu3ZTo3lse++JHp1VG0xGNkFB3rgKLX3b+jn1IUJBHxYyme
-        n6+/dVe/hVH7XXw7MK/QjfN0L2dGwuEvp9M98iwJrjZ78JCrY/W8HderAIUhnhhXjGiYzCmdsGF1
-        QaNkbgxQRAMiHuKG/m3/4uhoeH/Lvmj0lgQHQ7vXtdqK1B2vWzK2r67e9tm3YB9UHNDCPFn2je0c
-        mYydW61At2W1hQJt9t4ePG2nvR/Q70hylo6NG7rAocGMrzFE7FXqtN7VP/aSwb1BWnHTFKLAQL6P
-        49hIdshjEv49If4CJ60Ex0lrikiQRjg2/o/tZ/6fb4wRxsZvPmUfFcbirglO2HXxm585ijot2xZv
-        e+/IrtGw5LK9hvzZbcT48P66bwzYq8LGEGHM5WXM5OBqbMX4h0/uSIyYgPfsl/EbX9wClRaf5+8+
-        L36l6jouG6TN6uYu26prW6679xnw2hhwUYyr/tucnP3R6O8Xg8v+5sf5WcbyrXa367QmnoNbLrK7
-        LfZ2smnM8ju+Z3emk4n5lC4Eo2a5N1abvaBHXqdOAavHDbfDbLd3ML5sy9opcMMmE5omV/0Bswvv
-        +7IWyXPbTkfVJHHPpWCSDr6AwT63dLJtt+zOjc1mWmdndst4l1yW421W8D5/Wt52I+/zZt52nSNV
-        dtmOt+l0drxH1Odm5JzECQ6Zs2f0v4zYm7qkrRijyJ/vhegv0R/MA/qCx+zVju4Is7jGyIFy9D++
-        73+4PeucD09vBhfv3Osvl/2COoWPzH2c+Pg088h/mpHwWo7F335z742USVZy2V4ye+9ljxYkCKZp
-        wB/RbvKUGi1ur+0pT9xds2S05L9D6TDx+PPnjhqflus4Fy7bc7Y61ZwHBc4DtFwhMgtfkrInnl+b
-        WTkpygX327TtwzdjiCcEGSfs2xhwCVm+6uBj+Rv7ahMaBvffNiNZhbzVdcvIiy8jvkvN43b5uqmZ
-        O7gs97j3s8DF1/476SkQd6fWdNLttMauzaZArzdtjT3HbzkOth1zgnruuPukjjpjxRz1DpOOLRJr
-        yR9etnPUu+Z+bcl9mAAb/a1fVO9W7dynf8zQUtzJnGav94ag5ZtZnBlK5p7SNExKHayfKYTTspkv
-        4BzZ7do50RO+QIet4NiVB0K02+29vz4w3lE6k9fCZVO6Z5udtmt1W6s0uUvGwWT+22rmz+3xfObg
-        VS+xrd4kan8PrH9M8B0OKPPhn10nmy/Z+DBw2XJUQid3t/zZvy35SBN7W/bC3KBxgFFaDCttLnvK
-        98Dq8nUYjz/U0zq8bL9g9az6BevlnNDXvEw1a3k73Pixhbp3yLvb2c/vNyODOWNjylkZb2+ujPpB
-        LxZRbsLvuGN3POkTdsWIZM7+3osvZ2qKNYHTYf8dMO2Z++XOVToOiG8UHDIx2+0XmU1z3krAfONT
-        37NMdq4IoHX4AHZr/LmSy3Iq7J/31WCrgOB9GqCYm7pHur/vnc8fb9++//z+88nb839efXri8bCh
-        aNUaspLLdkrYTq/ujfcd9uKJ9294z3yh5RhHceH9L3f9LKttKq+NvF7d+z9ofP9r4q6ucH46PCh5
-        GGJxrG6tCs0SvCITWBNlcvl+A4/C95jJgxLsp33+UbLeveV53tONcEdEVy0+VdtebcDZ3fj+IhBy
-        OMLdTuMI7wfMri2lA7CPG9p/5rnaR2bN1MboW3y1z9Y0BdfWdtuN9E9wgNbsZ6+Xf+OrveXv9Ar8
-        a2Pwgv+QsB/HNHnFA0BeALMggNsowIAGNGKL1r8Af6s4AJxG/jf4dyRt1F8teXN3WY683Uj+fcg8
-        Lfndp9dM/9DPs93a9Yygfz2nE2y8j9mvJ38BDVynoIEpMf65AYyx/jOAWYhsMRe32+wARIS593+F
-        d8A+3IS2nWb/h298nTEXL56Tv4AXYBb2uJgIzV7QLY6WNEz+AvTNw7Ce7TQ7QSOaJnPjBC1eux9U
-        nSm108Ds7XZDcxo0+0GXEZ7R8C/A3i04Ak6zF3TFZoH4PrhDIfkrjIBC1Md2mp0hthKMF38F9od7
-        mIx9sy/0BceJcUuiGflrDAG74Aw5zc4QnwyH+Hfiv+7lkJwCViEcYjcH/LgCH3AU4/u/gAJmUYFm
-        f/ACj6O/hCHoFjc7bLvZIXw/QXP9h3/JTq9tNzuC5zQl8atfEssJUNgAsm2ZeFgc0zQir5p/zVZ/
-        jr9dcITsZjewHy1QGL/yiJAk/0I40G52BIdsGfTah78M/U4xwcG2m33AIfHnZIZe9zpAjr/VLfBv
-        9gJVNvlfMXezyL3Z+btcBGzme81bQfL8C6++1ez6cdPP/1ut9Lf+7ZKAsNXs+70NaEQm+o+AdiH1
-        l9GXcP2CgISU6D/5tY+cwvLPavb+ztAakb/C4C9kOdhWs+unxeK/JqM5x98qzP1Ws+s3RCR83RFw
-        OfJmwe+3mv2+x5WjvVoVvJIgsCXh/qHo/tVvBsrxd4smoNn9e4cpswF/hcdfYv/lwn9fabT4C/Av
-        zgBmswf4hcQ+DWPyupc/cgIU9wHNZv/vyz1dknCmPX2e6lyg3+z/DVEcI3/OGCbJ63YC5UQoZoSZ
-        zU7gBb5Dr3wJIMe+GP8yZbeCtfAD6pNCtyoUwyBmsyv4nq7/CtyLnqDZ7AmeFAv8dGNuHTmFBYDZ
-        7P19TtD8L8C9GPc1mz2/AWU/9hPip687C0ZOgsNSfyZBs/f3BcVzNvknrzwLREaBknxIqyex+SsW
-        gRrkAclpUJj+rV6zC/jx9W//yLEvVvj1mj3Aj+xfqb943Zv/cvwLNsDqNTt/AxSQKY1eexSsUQGe
-        L1gMAVi9WtdHNQXq9ZU4bZnbxWdf6/ioBz9fL3eryL3W9XlkCvDrFcAs9uJqKG1WqgF5rcRLEj6s
-        Xq3Xo5z3/Hqpl5R11k71j7H0r5d9ccR3a6f6R5S9vVbynWLVp9WtnefVM/xegrsjxb1Q0211G9oO
-        qrm3r5d5odRHNBSoY66yun+9vItefbfBs1Ff1r5W9iUBLavb4Ns8Lp75WhVwdrmfOQUanBvFAvfX
-        S71Q2GJ1G9ybR+1nvGIBDgN7Vqehd4VqOuPr5V6obbc6DQ6e2j7O62Ve2MCwOg3OneIu5ktQr+lR
-        lqN+2PKcUW9w7VTTt18rd7tYz291Glw71dT9V8y9+LI3OHeqccvXy71Qumh1Ghw8lc3K18u7xMBL
-        hK1UsnVeL/dC4xKr0+DUKRVpvV7ihyc9MOINLp1aiu5rZW4VS/OsdpMvp5Ke+nqJu4c781a7wZFT
-        zUp/vdwLWQlWu8GVe8yO7OvlbxeW7+0Gf+4RNSmvl37Rk283uHSqJUkvwb2+D+eWezFy025w6VQb
-        k71W7mYhZmP3mtxZxZ5Ez0Td7LXMrjhaoLersGigXtyZaDd4s4olWK/0qbu9kkhdu8GhfUQO1uul
-        X4zWtRt8WvnEw1fMurCKaTc4tKoNOF8v90LbGctrcGkf03/v9fIvTnFeg2erXG/xWsl3i+VWltfg
-        2irWGr1e6m7B0HsNXq1yz8VXTL5g8LwGn/YxzeZeL/9i2Mpr8O0UO2y8XurFqJXX4Ns9psvc6+Vf
-        3J3wGhw8tR6Dr+wQjTzz4kzf4OWoN1Z7rew7JRF6t8HPUe4q9XrJF508t3EfVrWj3OtlX8wrrj9h
-        QL2i/PVytwpL+frjBR7ZUvL1ClC0evXnCyi3V3+t1NvFxXw35+Kenhrv+rIHhWG23B3HLXF0Uosv
-        fmiA/4FWq3hFk2c/Dczdnq5u77YlyoXg5zyb/Oy8wjKnm3P3kjVJ2IP95jPe3xDzcuulGP729a67
-        OD/9su51b26Xnvfpy/Vt/PbzZQ3nn3Yse8bd8kTCfD33w8ty3J0C92bajtlu9yy707Vao4/Rqfnr
-        VYQ/nb7tE/v+15vg4vezXnvd/+Pq7aevftL+eH49GjyvHt1d49RaPbqF/qq59nKcbusMoyCZD5hB
-        uCV4fRkG98YsoumqdXKRi3RVHhpXvP3p3gWXnyC4OSPNPbJqE5PMDj+VhxeaHC59urnjNrLjA/c0
-        d//OMbS7jt1p26bbZmNhjlyrQ7/PloT0en7om/P2mI7J0iK25QUxecONxJuZgOEYzHYkuNxGZBQl
-        RojoilawnruvWjZIOPv2kbM/RalaJHBZTqT9MDnG4W/3xubUyc1AkBgZ4rYnNoxmmwf6uctTu7dV
-        uGzPM3f0QsZQgtnuwielJk7K9PaBmwpqh5flqO2dvtM7HN0n7NuJg87fpaExQlOc3EuQ3d361Hwt
-        MXm1d9kWFXwPL9vzzXVN/jzOn4RbyW1z2VMeeMqPbHZ53LXuPMSSy3a0nNyGxHr+LcTrVoQn8ZxM
-        k8LBiHvK5QchZvd/296vSP0RhyEyN84SZ772jlyv9uRfJoHJL/O8XcZp7smaOQkef/B32/Mu3rvX
-        o6Hzz/bo89OefOiIIw15h6MG2oXLckfd7gf0TYSYK8poGR/zK1TpQx9v3p79evGl7bhf3dvr2+KZ
-        5z+Tut2y2nzyZQO6zkdxNgODn/V3WBzVyYXl+aGXfoSY086XLcm9QadlWxKVL/n+fnE7neZvfsoB
-        wGZXZqo8u3ZyKrksp8LeU5mRZJ6Oc57K9t85pgvMfpiZgUd6Gny9VPQ0xEcZ/av3u71fER6s4Mw8
-        Ct7VoCY6WXLZzjvNR2dP+IPi04/MU85d+0QP1WNfW6yxss59NWtSR0zLPBhR3F9v98AB1m+Rj8eU
-        5tJDy1Yjdrfnuu2ey5YjnY6rWsiv+vryY8jbR6JHbzXHksv2HHOnld6MDD7N8oOK6zlm5xSnTz0l
-        2/yIYu5CWLWeRsllOXr7iMqArmm0YPw2I9PgyyAp58Pf3Pn0bPl6aX/MRCVbeFmO7f6NfEuY7/B5
-        dY3R5P6GvqMSNEtueWq6vLnQrq9YNV1w2Z5uPusJLVeYfX1jMMdThaXPanOfz257ar6dbcll7bta
-        uGzPNxcQuMZJGoVXKJkbI7n39YnZmV1xvn27dh1bctmOnZcLfAkzdNV/m6PVH43+fjG47G9+nGPX
-        tSaWbyGn1fa6bsvtTJ0WW/rzmOS45/W6tmNi9NTkxRxi2rsOQRXkDy/bk89FfrNHa/BnKzGAI3H1
-        Krv4STnaYmXu7k6FrOB4eNl+eZQvLI2on/LXNQtKNa2GygfwAYgR0JnwFOvC22bpoeCFb1NcHDFm
-        jnAUrNrQLltDiRHOlvkFf8LLNYwfcEbG+1OD36Zgr8R970/5XU/6vBkPEdJnqx27ZlFUclmObueA
-        7oDSaPIoxuLO5yRt1jjFJZflSO99xmEasmklupe2ZOZ4PO6Z00nLGk/8lutYvVZv3O22TIQnzFGz
-        OpPe005SGTNRGV93JlDJZTsB3FxjJOY0j/BsicOEJ6OKIbB5vs1v+7c0LnG4+A+NhBp+trrhf03m
-        2GAfFG8+aBdx8QM2EwqIOnvA4xXFZdT+e+e+YZlclstDAmandtYruWwvV66tTCziM9+WmwCNauCg
-        /eFdZzg4vbU/fP3y63ld4ODnbXJY250/rzaBe3dZu3iInJtrLTPsD64vh6f90efr01G9T/Pt+fjx
-        OdurDQ2UXLbnl6srf3fxvsFV23/zf4jXAG13QRv2Ln8qZYs/K56DKUO5WG3Y63n5vVxZ6zftTJCP
-        euPWdOyYLdfu+C3kOV6rgzvmZOzbmP3P01k/l29j2x3+nlpWg/nnMRHeOeXIOnTR3Vz9UWbwrtJx
-        QHz1NedK3Pftjl3/jZbt1W0RB8ziMUvFo8t8xyC7j5nBFY2S2FhjY41CYSjjOYrYvwjzlEIatvyA
-        sNvinzt9mNm+tlub8lZy2S6oZOZSvN9dXR3MFyMS3OFoRVdGUTAc0TiWeWn2INu7DRROjBWKY7bM
-        n7z5mVGoNo9C8QBrTYRGOJeWyYcUz4op2Md8m/kI+yRmNIxREjGMGcGxzFja3vaUEbcdCWd/XG4d
-        V6fkVF0n10764uT2zBihAMdsWPt4IIZrbijsfmPsfpVPChjevut9+PVb9ObTH9GoM/scTxYfvOHH
-        L4MTF51P57+euO/Xg8nZ++X6cw+RD8vf7ds/uh/epl+/ffT+GK7/2TmZme//OE3id2Ta71lvPffu
-        CXNHRBKNLWLxZs1WcPll+6bEuan088XZ4HpndvqTpVQEPg3nfvQNba4+MDhzZs64t1UCbWy8tZ+p
-        hnNjOmIvqmq9WX7ZXg3Pym0Yr4wbEgjXyeABrpZIn3jUDs2HTuf015Orr4N3N/av7qBuc+qX5QTN
-        GFcS0j8zK2cpVp7wIb3qWGj5ZTs9zNxxfZmr2Qq225GtCb5rcssr7qnmPsckWIpeQT9hd9LstWxh
-        Ss1udXy0/LL9jkXu6PobHEVIYRmakNk8CbKK+SfdtRBJM3bNyVyCJN/csERz9oMkKrvn7h/zLRZ1
-        n7t3Fc6mlVzvstuelGl3Y8f4LnLN49xd1imkTdi93Cnkp2HEXF+jv2Rf3Ufq7tZThggzGiIbwnJ2
-        LRYr2B5etmPbzRW6ej3TcYz/+tf/1zgeiD9GaRTh+//61//vAq/LGvMN0HKFyCyEpCVgqncny0Sx
-        22Vv9vnVQCSPDkrf6y4Pi/JoilOdeCEus0QjbrtTLH/u5sreOSc3z+kWhT5N2ZA2BsxLKKmLrNam
-        CUcTcTpAHK+c1CmKi0XC1dLUo2giTA8I0y6n9C5C4R0JApWBIwGlh0S5tkGcVyfPK2slkhXbMpNx
-        RdeYWeBrcpc3uI1SKUBqIhk0093yofCROVDxGhVLWKqVakbSRCBorHvltD6laBIVKx2q5WnCeV5x
-        qoKhjeIAY+2a5aREyau8Nk0wmkgDzLVrAU7ET2hUUhRUrUnV/XqI0QWG2bXzZLIyqe1TZnZ0lIa8
-        ZTM2BpTNz/wHGPGI4Ghxz36UMm9GwQ79lM/SROS9KW+zX2Uj5utN9ke6kPazK2/WRIa9wW5bWyYX
-        N/sZe80HAV9QE/4S4WJjtQpZZME0kWlvutv2jtnn7I80RHclXXgqhKm+XQ8pLDCLWWD6GdA18eco
-        ZKZhiAI0R9xInKNwNqVRsaq10gypgT6vbNXRbyBbpyAbmOEsMEOd4KCkvUW1PKU36yGDDeY2C8w3
-        bwOMkzWl2fIgSoyPbIUga3Dk0TQRCiw1LBDK+YiWAaWrmDG7mdPlKqb85RigiIxpsWdCtV5KoM8r
-        W9XudKNsYAFigSgPGwDsGyNhPRZY3TuSRNNEKGjGQcznI2XfJkQ8WDigQbocqzjfMlCaSARNNgj8
-        8PknEOHUfjDB0SyidwpBJCksPURyoEEHIR/RkJVmE3cSf08J+9vbCPE8rwEK71Vi2erAmsgHzTyI
-        A12gEJElFRZmch8viUpcQAZKE4mgSQexIN4vhi9TlyTkCYGM33HKRBirWHVpQE3kAobdBq50FoO9
-        XLDRMBMO9Wiexmu0kldLGu95xareNm8QC5h42yqS28U/FDRqgNFDGhcYdhv41lckSYwhRhO6joUR
-        XgXYuCaTmcIcqICoiWDAlNvAuRYLkCFbjGSOEJuxkgAtFcSSQ9NEKGDQbeBVX0Uk9HHW7xPzlRtG
-        Ps52ifjWNX+XmC7GNfUX8sGoP/8pmggLTT9wxK+JP1/ScKK8U94Eo4k00NAD//uUe5BLFIiINkIh
-        o8j/RulCRSYFyOeVrDYDp0YyD04AwAHfc3qXBtPNrq7K6yiHpolQ0PADx3u0wFgECY7TYMEWecwR
-        CIKS7obVSknCaSIVNP3A9c56/eacSbH/tA0gKCimhqqJcDDRxyxS3OV3fZmTBIu5S14zeUBN5ILp
-        P8AhHyX4jo0BET7YTWeKKVLSgHrI1YapQMAzz4aBeoJdLYgWsnRysrjdbdCuf5zN8BP2mNkzN4Yo
-        DMsO0CxXRgbnWcWpKV1pEMcB4nTKSZEgML6wlYqsbyAJpYlEHpCoW8pLrDrGuKTrb7VCzUiaCNQB
-        AvVKaYlyqLlfdsRRtUISUJpI1MtLtAm/HfLiPo28OPUgzytLdTVUvSwdYJo3EbcDRsLZS1C8IOuS
-        U1Oq5ZEC00QmYKQ3IbcNs7fMB54T+R32WgBN5AAGeRNU27HhQTV/yDyV7XblxOBbuwrySANqIhcw
-        z5sQ2oYdz3efYOMqQiQiWIRs/QUO/yAqeskjaiIYNNZenh5/8qXN/avlqbpfDzG60EQDr/ccJ/Nx
-        pLBhUI+giSDQGAM3l9dG+jy19kyktw1QNNmsKL+gKJTefXoM7vOKV9VEq1E8aLqBBwzD99yPCeSj
-        H/JomggFjTZwhK/xxDjBgteQ5yshEooySgWpZPE0EQsYbMesIHeOfLocK9gqCSQ9BOoBI+4A13iU
-        vDH6wRhH3LJs/WQFjaTANJEJmHYHuMmjOY54Hirvm7zgiUrcLxyxlQRK/DleIxXJlIE1kQ8Yd8eB
-        AyONZngb3uCbtbzvv5IjJQ/4vHHJqt7FjXIBE+8AL/orDgK6nmOkok81giaCgHC/CaLz/fGYJrFa
-        AUINghaCdE0Q0DdBLH6T0JYlJokirvslTRXym2ThNJEK7N6aThk3xZrMehBNZAE7tSZIn9kUBXDT
-        mU+kURBIEk4TqcDerAnyZcSOFwpAjiRZkmDBrsf8XxfEp4FCev1j4TWREhpykFMz4LFGskY+93XO
-        6EplvDUC6VEUZEGzDpJoBgE/eGGCArwpj+PpIQOSKGROyANqIhc07SCTZpc2uS0Pe0RWpgKiJoJB
-        o9+D9NJoW8ojFmohUVBKAkoLidq5zBLHszYlYZcX4g+eKCNdelB99zMKYR95kmu2w1Zk7VxyBKfi
-        ASqELyG46VAQoxpBE0EcIEgb0gknMeWLzRvsp8sYy3qTckjPu8qXnNyLAnlAoE4JLZWd7CYMTUTp
-        AFG6eUJfabRQS7xqgNBEEmhie4d8MifXpyqi1ILoIUsHGNxNEkf+MYsF5mbLQjoQKwmliUTABG8S
-        OTa8ztIlP3lmG/Q7Dpj/zxtsY9mNIjVETQTLBV7b27DXMIsDHvP9eLFVyEZDRKTTRCRwNBGnA8Sx
-        86QGcxQFON70l+CbFx/Ylbx0rR/HJCRjSnia/hlGEyJWTgrq/ekP0kTeHpDXgazTyOfLdEbtI8Zr
-        xNss04XRjxeyqw5VzOcVTXL5URAtn1TR3sbRNgRPULqaE/GirdF+e+MC4xVaSydPKqNqIpwDhPPy
-        FE+D5eb9umG2KlZJNZWD0kQiOBm087w+koDZ8CzAyGzQFUoDBYkkoDSRCE4JnTwvHvNBopz0nMQz
-        JJ2yI4GjiTjQoHcBKd7URByZpSBLNYIegvSgse7l6YwQCRPjmIZkinwsykT5D25JglTeLBXM5xVN
-        sn9FUTRgqDet4LYEcbAgYu32PkxwFKAFZ8lLrZbyaRSqoJrIBoy3BTzwLyQMyQrP1GIJEjCaSAOM
-        tmWXchLb1wrK1KNoIgww2JZTSkll77sZRQthOiYw3JZbTUn9lZIC00SmnKnubFf9o4/Zqh8lSYB5
-        0gxfq54H9H6y6akkq5USoiaCeUAwO09vcL+KcBwbZ7yihrdCiFCs1FZBDfF5BZNs21EUrAMEc/L0
-        TnAc4mT+8INnHxMRDFmteCe43UJf6cCCP4OviZg9IKYLxgqKAl4EyFatJBDuzyzASuFRRUg9JMsl
-        XHB+Xp7fkNIYGx/QetcCVFjvLFmCzOQd0scAayIfnCDaeZabXK8s51tBqloQTWSB00Anz+gaz0jW
-        VRav75TGUAOMJtJAg98t5fQp/Vt/tcLy5/ZIQj2vRJJdKYoSQTPeK+X1BcU+kg9jSuDoIY4NDPZm
-        ob8hlZVGULEVJXwhHqmVV0gOTBOZgGG2rCpmn0Pu4cTyWYTyaJoIBUy1ZZdSU+q/0IiiiTDAUFvA
-        c872eUVRIPdktqWBCgpJwmkiFTDYFnCSebZFVo87xIHKUXRySM8rkOSpYQWBHFBkaIK6wGMUTqd8
-        t5tEk0iluUATjCbSgMJC04aceEBktyM7iOh6SqlCIxhZOE2kAkWEJqj5O6ZrtWBAHYAmcoAiQROU
-        +A1QMEORYlO3ZhRNhAE136ZXSomGUzzBERJc5PWRAtNDJhca5XYZs7c04t00z9FaRSQJKE0kgsa5
-        U8brDEeEb+cr6NOE87ziSJ4TVhQHmuNuGakhmYRoRZVMUCOQJvJA89wrY3XB3V0evVeQpxFIE3mA
-        kbbMMla8I+290rEDklB6SOTB7qRWGa/RHK+QdOW7BIwm0sDepHYpJ0YfBYqvlwyUJhLB3qROKa/F
-        /Z1Sd6AmmFfZcrMoDexKCnzeXbdMVde5CUYTaaBZ9ko5veNHu46RL501IoWkhUAeKOcy26AW64Ig
-        9j4gtRq3eoznrYyU3NTxCqL0gCg9SMhf4MA4xoGKJjUQekgCirnMjgn5rES6wYxnkZMliRdoKd9h
-        XAFOE6kcIBUowRL5dqIMi+e1iJN8EhyNaUTT2Vwpde2R0JpI6AEJ7TzPS7RQiTvX3a+JGMBEd5wy
-        MrtuRsdpFLCXRaWeUglSE8mAAe+AtgWX8Vy+uqj6bj2E6EKzDVoWXCYJo6Jar90A8ryySO5wFWWB
-        Jho0LLiMgocfKJTNYqy7XxMxoLHtlDxe1YmpDkMTUaDR7RYJMct4i0IivUUjAaOJNNC49kqeNff2
-        Rc3lCkunhMli6SFSDxjeLnBwL39X6O5YfbcmQgBT2wUuK29kuunXdUaYk8r/rSCLDJYmIgET3LUP
-        iEWiGaNw6odpvKALBfdFDux5ZZLcvyrKBIxyF7itVzjadAAJlB1gCSRNBAKmuetCWvvlIO8owGwr
-        46kykiThtJCqbUIDDZzaKx6gibIIxOfflc59kMXSRCRovIGfe43DaYTXomfnPmBzhZfjSP4gWnVU
-        TYSDBh34w7sjFxW2chpBNJEFGnDgDvPyG6xmtqvu10QMaKyB78sbTQwQs6fMckgfG96M8rzCSG71
-        FYSxgGnuAe/3hs04YUJzvTj+61//XUEgSTRNhALmuQf84RGKQtFp6Rwtx0qvVSOOJuIAE9yzIak0
-        SPg5uG+MIZLP0pXB0UQcYIh7wP8d+Sjn2PVnJPR5/1sFjSThNJEKmOmeW8FNOY4qgaSHQDY01171
-        w3+XkmCiUMSkAPe8Uknuthelgga7XTUCVJp7SAFpIg802Z3qR3/N/sSK8SJpPE3Egia8WzUERNx9
-        rZTCIQemiUzQfEP/WDTUFQWR0g0vG0H0kMUBzXlNs8hI0QjVY2giCmjHa0I/eMUblqLtsWW8ek1B
-        GwkoTSQCPdFN6A0nNOKJcIzYSRpOUJy10E3mxrsAhzMeelaQ7BHQzyuh5LGqRQlBB3UTOsvpZJwq
-        yVRxuyZSgM7pJvCIb+Y0CucqIbIaAD3kcKFR9iAbNu5xZByLU0iuEQnvlSoElQA1kQua63Y1u1G6
-        whGhkfKcpoKpiWjQgAOf+IYseYcyRk707OZEFbSSgNJEImiggTO8iRgqn3LRgKKJMNBc90oo8Qka
-        hVPF16wZSQ+BPHjGEPCI981ExHozxorHDUmBvcqTh4oywZOHgHN8i9g6UzTb/kLpRHHvVQ5LE5Hg
-        6UPAHf6CeONfShWEqbpfEzHgqUPA6d3nafDcHyR6+IkWkgrqSANqIZcHxo7ZBs9etIaMY/Zq8BXo
-        UNCTj31IYT2vSJLNTYsiwdInp5rYiE3SOIkVyw4UEDURDJZFgcWWaqpnxd16CAGOEjTbHqSyXqJo
-        gXmoop9GNFLIsJJAepUCuQWBwD5HG6yithWBqvtlDSiaCAMNc6eM0lukMnc1gGghiwurC+H5bids
-        9r1lbPC96rZYI86ziuNK7q8WxQEvEzzSLUdKrUq3CUYTacDrZAPf5CSdTnniJW8NxhZHExUvRwJJ
-        E4GAj2M7kFY0lz49uvpuTYQAvosNvI/TGXP3M2//HK0jHPoK05IMlB4SwVpBG/gip8FMjP8hmUwC
-        HOPfOUEaqr1U8oiaCAYNM/BPTmNGSUGb0pufVwbJLcGiDNAIA3fkNKFj4tNdT3gFRZpwNBEHGuBu
-        KalN3/x4Lt9ZTBpME5mgee6VP3tV/68BRg9pYCWhA3zatwFa5vLhAhSOI0oVcqJk4TSRChhkB7i4
-        uzwBXk4SMTo04Qvr65TZWpUyDEVUTYQDJtwB3u+7FAcrhbeu4m5NhADm2gEe7xkKJmSZ9VZhJmRK
-        A5UXTQLqeSWS3OMqSgRMteMe8CLjNMoc4G1JoCGmI95IJKK+imSPgNZCQg/WHjoe5LkkgXLDNgkY
-        TaSBJrxdyomfdSmC6DTE90qHPqliaiIaNN+dUoKKpxpIAWkiDzTq3VJWmzYT/dBH/Ii+XaKhglzK
-        wJrIBw1+D7KMExLOxAGHOAzp7wab1Iz+ZKJagq8Kq4d0sJLRBc72WRqJuew4SlXiTfUgzyuL5PZ0
-        URZg5F3gUX9EIUqQCLWq1gM3A2kiDzDnLvCnP+JQaUux4m5NhACG2wUu9MesM8AmxUdBkHoUTYQB
-        Jtl1DynFfOLhJjOZY+O90qmsKnh6iAXrE10Pkkv8OWZfWdndbsTRRBxoitulpLgRZW4xGwUzFdMj
-        BaaJTNAkd8qfvahI4TljOF7hQKUznALi8+7om48VDJpu4BpvOgnwdTwWJT27PSAFweQRNREMmvQe
-        pBeiaMHrxXhmNA6Rz5lu7LKCZkqgesgG6hhNDzjH5xhPsnPEcSgy7XhD6TlNYz6TbWYxMatdkwlG
-        aRZMkpfz53yYJjKDacIDjna2a8sHEgp5d1yFSbQZSBN5wPTg2UVW2aaTspchA6WJRGBC8JwSXmoZ
-        THUQmkgCTL4HvO4hs81ztMwikul0qph7LAf2vDJZj5TJhSbeK2emXi4qBaWJRNA8t8t5fQ4ZC9WB
-        JIOliUjQSAOPe0jUyiAq7tZECGiKu5DKrkxBfbJqRtJEIGiYe1W0NntGA0oXqsUhaqB6yObBsgiz
-        giEjdxqRkL81SnnusniaiAVLJKxqco9IDZOF06I6wMklMdvuds3waZBxY2vXJZqFPAHn/G9snSXK
-        ZT6iJU0jflA9T8Yhd+ThPyPcmqStc5quJGX8SR/1rBI7kvEtpyBxD0hsQ95pmBjX9B7J+lYNEHpI
-        kkuH5nycPJ8Lyqaz1gn7bWuCW++ih//wsegYHidLTlVBJ1VcTcRzgHhunuRlmvBvpKRSJYAmcnhA
-        Di/P5gqtSIhRqqBG1f3PG0uXXPYWxYDmvA3IEBxFeMoW8zyWdkKDQP40WGkwTWSCJrkDmLHBT5Cv
-        IEzF7XpI0YOmuAu5REmI06noNON/T3HcGqAokT+XRw1RE8Gg+e3l6X1KH36MscrYqbhdEymA6d0s
-        IjZcrvGKLUwZZ9k2R/UImggCzG8buLjbUwV4vhrPrx1zv1ZBGykwTWQC5rdtQ2ZbN5/ZBr7sxK2H
-        /xlI7x2p4D2vWJKL2UOxXBMY6LZTTi5tXcifeyWDo4k4wBi3gSvLWzdt+lqeI36mDklw6wol8j3p
-        FSE1kQwabeDvDlHkt/pp9PCf7DXhDVSlU5oloTSRCJpx4PiOEAmT1tk98tmfc76CPEYzqrDekoXT
-        RCpoyjtFbh/ke9fUI+ghiAXNdbdI5xylEVZZodeDaCILNNS9EkYPP2jIFpF8J1X8YMh8HKwQFlMD
-        fV7ZJMOzRdmAse6YRYZDNhCIiGQN5kyZQL4KRQlQE7mA4e5YkF2AxjgrJx2lEX34XwqvoAyUJhIB
-        g90BvvJojqcKx6fW3a+HGDYw1h3ngEwkSrQVvMUaBE0EAWa6A5zfW5ROIpySIOsPH6BwprIskwPT
-        RCZoloHje8MDo2MahirjphpBE0Gg4QUu7k1ESdzaLjFVRkwDzPNK4zxWGmhwgX97K+IR4ngzUY7H
-        DxloXaZZVSMPU4ioxYjiNFLR7c98hh6iOtBwdyHhpULMsfReTUQAaQ7wHJT+b0gh47/0Xk1EAJln
-        8GSTfjCjy6x7bkgSNsuQrMHBKo0XiB9/q6CQMrAm8oF8NXjiSdYYlRG7RAueWj8T7SAeecTuY6A1
-        kRBktMFzUo5RlNnd92FI4ilREawRSA95YIoxPCdlx2q04sd4r1FWxH8Z0daQ94JMFPKyHoH8vAK6
-        jxUQmvk2pHlv0KnxKSVqWtWCaCILNPwgafgYI38uTArP+FQ7UEwKShOJoHEHKcTHEeP/mF44TTCa
-        SAONdq+UE3/iCsLUgughC0wzhuei7BgptgpsQNFEGGCE4VEoO0qiolhBmHoUTYQBZhgehbKjpFZ9
-        Vg/yvLJ4j5UFmF54BgpjFCY8TiqayyDprSApIE3kAebXgq4u77eTVfvyAPvlGot3IlQ42VoeUA+5
-        4KEYFvR00yhQ7QhVg6CJINAcA3eWsVY82qoGQBM5oBEGDuxgjpI5WrY23RvOMVoqDxdpQE3kgsYZ
-        OLQn6A6HK+abKMhTCfAqe60X5YDGGLixudMr1LzhJhgtpHFgspQFtmmORW1SrJDDWXn/81ZaSLp6
-        dkEMsMljgd2Z44gusWgOw+vhvqeUKMjSjKSJQGCrx+oc0GLPOpeJwvvqYGkzo4Knh1gwUcoC2zDX
-        ZEnTeEFaF5jMcJKIhi8PP5Yk9mmadR48FwffxryEQEHCP/cpmggL9vAtkBXF5u4owPGYmR7em+8M
-        pQluZeNn8ysFMdWRNREQGH0b5EgdY5TyyZ2nRz3870TUEoqfRQ8/NvupBnsn//0yCh5+IHFIc0b/
-        jhLZDbmf/qGayA6mF9uCo+vhPxLGeJaK88HPkU/lWwLIoz2vUJLua1EoMM3YNqRGmPFKyJJkm/1v
-        f1PK55ID00MmmNxlg9SsARUxJdG1h70wbDCoiCQBpYlEYKqwQYbWCY3uUJC9HnMSZmffxEjttZNH
-        1EQwODUAf/4kSpd891pBnqr7NREDGmzgxb9D8erhR7zJOYoNUXPF560AtYZoggNMVBLkHgeuiYzQ
-        nHcg00SxgL3y/ucVQ3LBXRADJnbZwF8/ozx3H0n3ya0F0EQOaKB7kE1ImQPYGuLIVyrJboLRRBpg
-        ih3gMJ+x78lLY++DpYow9SCayAKMsgP83g80IHydq6BI1f2aiAFMq2NDMuH3VOQSK8hRjaCHIC4w
-        rw5wZHlFK+UpQGIm/RufVBWUkYDSRCJgch33kFeEiFIFcQ2CJoJAQ+tBOn7rMWWeDSjPK4zkgXZF
-        YaCpbZdTOqcpUYiqNcFoIg00vB3IaYSyHt4P/7bMIti3OJqkKsNHGlAPuTxolruQnaj0JRORhHiO
-        xlhpCS4HpolM0DT3DpkRkeMr3pdNxYuCTnJomggFTLZrQmqbIMx24SyvUTOQJvIAw+0CH/echrN0
-        U5i42bhoneMhvVcJV6hAPq9kkqetFSUDBt0FfvD5w487IuwJTcYkVPSppbD0EKkNzLjrVA2CTdOP
-        VG3/VxpPE7GAMXehl8ydndYZ74ampFAtiCayQNPtFRk9souIDJQmEkHzDRxmXpDHd+9nKquROghN
-        JIHmGbjHw4cfjEpCfNFb+eHfIjRWcSDlwPSQqQMNNHCNhyTi7rCCMBW3v8q2uUUpoPkF3i/vxo0i
-        la77DRCaSAI7CZuHfHwULOX1qLxfCzHsnBiWs63huTgWf9zQMfmeiiQ95CfoeyrdLlcS6nklkuxp
-        VZQIzEMm8Pn7Y5KQMRH93AhufWCXca/2Ig3RHeEnw53ie6qwrfdI9OcVUrJ7SFFIMHuZdjnVTWqe
-        yDZPFQyTNJ4eYsHe+SZYFPTnaZjExN82VVY04XJgmsgE5jcTrAz6wTTCk9YVDgIVN7EeRBNZwBxn
-        gjVBP5qxZcBmTbnvb3qBBCd5mZRANZENmnqwXujfMRVEAhijN2TWJRazWYJCvPnL6uHHhChkLTwa
-        XxMxobmHae0Ypb6KySq/Ww8hYO99s3tIZZPze06WlARK3oIE1PNKJNk9pCgRNONgjXH88MNHIVuq
-        8zj9BVuzZ6cGjXg4Q2EdpwaqiWywbukgm5zN4/4cxfE2f+6UH4nN3CARdxUBWHn1HoWtiYiw3sk6
-        IErxNqK/HAcKHceagTSRB1Y72ZBVlMyzDbQhiheEzV+zhx8KGsmhaSGUAzv4W8DJvpk//Ige/jPG
-        rRNsHPNmu4o+uyycJlLB2iXgcGdHDrWOacosSrQxL6L5PvuWcbbp788Ve0z+mY/QQlLbsneS9vj/
-        CaKbstyL0+uBpFZV9wIRfvnlaSSwekdue1ee2ySBVZBgP6oscxtKuTjfeNcokF7dVN/9rGPBltz4
-        LgrhASHsPJVjyoNHsSh7PE4j0dHwhv1BEtm5TRFSE8k6QDInz29AeUswOuUd1ETRHe+BJXIixGGD
-        Bj9sUEG7x2BrImIPiOjmiZ6jcYQmVDZNu+5+PcTI1aVxMh4gwzwb45o3w87O9WQTuOxkJov1vCJJ
-        7tQVRYImu50nNkreGB/oPPxbrNKTQgJGE2mgEe9UcBJtxLjHLM6HvcIokl0Tq6NqIlzOlFvbifzq
-        NDO3KJoQ+aSBuvs1EaMHxLABGZ6kRpMEJ+yLKyhSC6KHLLn6M87IyTM6nSmcrFt9tyZCOEAIN09l
-        iIIV/i69B1d3vyZi5EyuvVsCjDZv/oottSOc1YAPUBhTWV3koJ5XIsl8gaJEHSCRDXhlvqtxQe9k
-        d0GaMDQRpQdEcQChlPfrCZA4xHNAA95lOJGuVlSA00OqXGUa5+bmuZ2giJ/RLhwPRg0bZyjijWYU
-        tJLF00QsB4jl5cmdoYBMpQ9/qLldEymgaW6XcFFpP9uEoYko0Bh38oQ+knAWiw5NYSK9tmwC0UQW
-        aI67eUYj5C9ErJyxuorYw87m4Dn+4w+c+JTKNpB/FPDzRpIlj20uyOdBE90DLLk5NUZzGolDF9iC
-        cYiiGWK+jMoYU4DURDJgqLepjxt+95NQNCS+JX5CI+kEESkgTeQBxtsCzjA3uIoeYzWAJnLkzLaz
-        WxtkibJ9H01Idj5wMk8j+QlNBkgTeXpAHjvPiue4xA8/flPwCush9JAkV3HG+Th5Pm8jPMERNwnS
-        MZx6CE0kcYAkLuCThpN745reI+lYaD3Eq0xUL0oCcvm3/v7xJhYzQWsUL/ge3TWzmGQmNr8V5JGE
-        00QqaILbgBuJ0JL4cyLOEmArbeMcSZ8OK4+miVDQGHcANRr6mZt7Te544jhes7+fELxaqcilgqmH
-        aB1orrt5ghd4zU+qCOM18ReZ87tWWLfKw2kiFTTjvTw3UbYqdqT4cKDJHMdIOklBFkwLmbptcyeT
-        19u26zrenD+d4LvtenN3tGLpjukt+9rRWyISxXJaKSGq6uXV6CW+T1wvmnNkyXUa3noSOdFsIJoN
-        KKZRhO+rTkWrEaoWRSdxXCCOU6TFc1DwusytrJGnAecFBJLr11kiUBsI5OaJ3YrUcTY/PWIANQHp
-        JFEXSOSVM1M1RfUwGsnTgUa7Xc6LO4XlycA1Gklg6SQUNNSdPDlxfqDxPt5seV3RNQ4CQziHKoIp
-        YOokHDTi3fJRIaL46xLXqUavZiidZIKmvFfO7VOKJlExDFkjUhPQC0gk1/2xRCJgyjcdwArMyk++
-        rFaoCUcjgbrAmLvAX66M7NcoUwWgkyTAbLvAMxZR+d0D5xs7bI3KTwPIMp75DzAyEmqMFsx/5lmG
-        kYp9+ikfppPUe0Pf3hUnfL3J/kgX8j565d06ibE35+1dgubFzX5q5xEQ4wZHEeFvVUmdUJU4smg6
-        ibU37O19Itrn7A/eSCSVds5r7tdIEAs4AyaYw5ltiBIciuOC+sGYMS+eb1dtlGSwXkAouZjTNtsi
-        JxRwCSwTklsTf45CUaoZoDkSVeconE3LziGqlkwNVSPxbOAuWGC2P8FBouIrlN+tkxjAUbDA3P02
-        wDhZU5otxKLE+MjWYtIWWx5OJ7nAqs4CIbWPaBlQuuJJWTdzulzFmxziiIxpMSG5RjUl1BcQT67Z
-        Rol4wLxbINrGxgL72uLAR7TAj3A7JeF0kgsaeRB7+0jpdgIb0CBdjpVWODJYGgnlQIMOAnB8igpw
-        NtFPcDSL6J1KNE8KTCepoLkHoTdx3C/NZvgk/p7ybfG3EYp5BByF90qbDerIOokIJwEQj7tAISJL
-        KgzP5D5eEqWgjAyWTkJBgw98cL47zoMDvDFNIiIDxylTYqxk86URX0A0uVYJJaIBs28DLzyLjl8u
-        2MCYCV98NE/jNVopaCYNqJFkLpgAbKvIcBeBUlGqAUcngYDZt4FbfkWSxBhiNKHrrK3dKsDGNZnM
-        VOZJBUidZAOG3gZ+uVjBDNlqJvOb2KSWBKjYnLhGMjk4neQC5t4GDvlVREIfG+8wjWaiDgMjH2f7
-        eqKhBnu5mDjGNfUXClHBP/8xOskLJwbgw+9SgZSTHppwNBLIg9MAcN1Pudu5REHWSZCfL8BLD0eU
-        lqSP1oilgPlqE45KhIPTA/Dd98TepcF0szOv9ILKwekkF5wWgM8+WmAcZt2WggVbKzKPIWB/qOgl
-        iaeTYHBiAF57VmOW80DFjuE2JqGimxqsTvLBXC6zyHOXzfdlThIspjcF5eQR9RGtk0vLdbvbiFc/
-        Szg+nfBGIDQ03vFNwzHypdfoclDPL5Mp1wqrRCYbyNQu5TZEYUjCmYpITUA6SeQCiTrlzEgQGF+Y
-        /y49NUpi6SRUGwjVLSUnfPExDqW3IuWgdJKpC2TqlXIbJRFK5j4NpeP6klgaCdUBJnwTuDokV9pZ
-        olqiepQXEEeuIVKJOMBwb2JVB7SE25Pwfs1rIh29l0bTSSxgwjfBqg29t8wnnBOFje1aBJ1EAeZ6
-        E47aUeLhKH/IvMDtxmBFrWWNSNKIOokGjPcm+LShKGpI8fZ0eRH49Bc4/KPkEOQa1eQhNZKtC005
-        cKH5IOBRABWRqgB0kgQacOAwn+NkPo5UYvD1EDrJAk018JCHeEJ8njt8JtLPeMfPTSnkFxSF8ps7
-        jwF+AQnlmiyVSAgNO3CeYUCcuz2BQrBAHk4nuaBJBz70NZ4YJzg792LTwdm4JXitIpgsoEaS9YA5
-        d8wKhufIp8uxig2TgNJJJmDiHeBV825aIveYG5yti62ilBSaTmIBw+8AD3s0xxHPHDWuUMQP1xTO
-        5Ig3OeFnG61LmkbXCKeMrJOIwPQ7DhwjaTTD27gJ3xxllBUdL3nEFwgVy/UrKhENTAAOcMC/4iCg
-        6zlGSipVQ+gjS9cE26kmyIbpj8c0iRUrCmogdJIFbJaaIPFlk3CWJQuJ2rb7ZVk/tBqNJPF0Egxs
-        l5pOGUHV6tV6FJ3EgSVPIJllk+Qvupbm0lpUZJLE00kwsBlqguyVbYfyfD4jWZJgwa7H/F/iNEmV
-        TPnH4mskqAXNPMhwGfCwJlkjn7tGZ7Skd1iNdI1IGtX9WNDog5SWQUCZ9zNBor/wpkTAGJQd2lUj
-        ljSiTqJBww/yWnYpjttisMekUCpA6iNbO5fn53jWhuPmyL8bGvGlnWKaXzPMc8tjH3mSAcLuoTy5
-        LD/Oq1fCi7clROGUO00qEjVDvYBMkivBokx2XqZNMe+G2+eQr9diZlBEw70Yc1OjoJQcmk5iuUAs
-        K0/vFqWzrPCZp2SoReVlwXSSqg2ksvPsvjCgKJAvdq0D0EkSYLA35btbRmzxT8JZtplwhgKebHCm
-        stushKiRaG1gxjfVu1uKc5LIF4JV366THNBce4AP4QEkVRtdDaGTLNAwtyGncBJTHna8wX66jLHK
-        ZC8B9QJhX8k1XFEmaJQ7JdyUEqWaQHSSBhpn4AZ/pdFC3ZWuw9BImA40wL1DUllww6dK0tSi6CQO
-        MMe2WXji21NYv4hmzAoSyWDpJBQw0DZwds/EgXi7zaHjAPnsVYkwls43UIPUSbbcPl17uzEy3JyC
-        wnO+hHfHBkZE5PMSJYB0kqgLJLLzzMTJtjjeNBMShyOzK3mtcT+OSUjGlPCaqTOMJkREz1Q0/NOf
-        9AIiS8aaCiLn8/La212VHfU08nnYlvH7iPEaJSSkdGH044V06zVVUJ2ks4F0bp7lCUpXcyLevDXa
-        b49fYLxCa/mMfmVYneRzgXxenudpsNy8cDfMhMVKVRByWDoJBaeKdp7cRxIwA59tRDHTdIXS4qlK
-        NUJJYOkkFJwwOnlyfD8AiY4A5ySeIflMUQkgjSTqQXPfBcx4N6vQnyuk0dZC6CQLNOW9PKfscJpj
-        GpIp8sUxmOIHtyQpOcGsRigV0BeQTrLFU1E6YMY3GwNbljhYELEEfB/yuC5acKr8sIilQsaeKqpO
-        4gHTbgHn/QsJQ7LCM8X4hASOTgIBk27ZpcQuVPb5mmH0kadjAnNuOaW8lFKrmmF0kgeYdcut5vWI
-        l0wKTSexcoa8sw0kjD5mgQSUJAHmqZp84Xse0PvJpsmetGJKkC8gm2TPoaJsbSCbnec4uF9FOI6z
-        3bn/EmdMxmrtc9QgdZKtC2Rz8hxPcBziZP7wg9fIEBFlWa14y9Bd7EDtjKE/8wEaSZrL4+OMXTBs
-        UCT2idkSmATCW5oFWC0Uq4ipk3A2EM7LkxxSGmPjA1rvOkkL056l5ZGZghv7GGSdRITTRztPdZNt
-        nNUnqQhWi6KTOHCS6ORpXeMZyRqV4/Wd2nhqwNFJIDgddEuJfUr/1l+tsMJxfJJYLyCUZFerglA2
-        NPK9UnJfUOwjhZCpBJBOEgFzvokdbJhlhX1U7IkJ14mHhhV0kkPTSSxgti2rit4+x1NFLTk4neQC
-        htyyS/mptSRqhNFJHmDGLeB0Z1vQouydOz7b4ncVnSTxNBLMAebcAv41Tw3JkjyHOFA6hVYO6gVk
-        kjsktEQmUEdvgsr3YxROp3w7nkSTSKnTThOOTgKB2nnThsR4pGW3WTyI6HpKqUrPNFk8nQQDdfIm
-        qGo/pmvFAEMdgk6igDp4ExSxD1AwQ9G9aqC0EUYjeVzQ9MT0SnnRcIonOEKCkIJKUmg6iQVNdruM
-        3lsa8abM52itJJUE1gsIJXfmZYlQ0HR3ysid4YjwrAMVlZqAdJIIGutuGbMhmYRoRdVMUyOSTiJB
-        490ro3bBPWW+daAiUiOSRiJ5sCm4WUaNtzq/VzsARxJLJ6FgW3CrjNxojldIvgGMBI5OAsGm4HYp
-        MTILUaD6wslg6SQUbArulJJb3N+pNdVrwnm9Xa6LAsF24MBd3vWnVna7m3D0EcgDlaJmG5R6XuAV
-        lt80qb79BUoiJRM1OgU5bCCHB/mslyhaYN4FsJ9GNJLeBJCD0kkmF8gEyj0vCGL2AimX/jXB6CRP
-        G8jTKeP1FinVqTeg6CROF4jTLaOlVk5bD/IC0kju1Bak6UBj3IOs/AUOjGMcKClTg6GTMMAsd0xI
-        aiXSjGa8CoUsSbxAS4XzdBTwdBIMGOgOKPMUubii1JPntolzHNl3GdOIprO5WkbrI7F1EhKY8g5o
-        qHKJFkpbR3UAOkkCDHjHKWO0a6p5nEabhioqKilgaiRcF5j3DnCWL+O5QvFi9e06yQGNOnCQL5OE
-        8VH3IetRXkAcyc3rojjQgAPX+DIKHn6gUMV7rATQSRJoijslT1p58qoD0UkaaJK7RVbMbN6ikMjv
-        u0rgaCRQD5reXslj58sFUe+tGPSQAtNJKmCWu8A3vvxdpSt59e06yQEMcRd4u7wj/6aR7Blh/i3/
-        t4o4MmA6SQUMdNc+YBeJHuJiVTBM4wVdqLg7cmgvIJbkHn5RLGCyu8DjvcLRpmdRoO48S0DpI1Pb
-        BIa760Ju+7Ul73jCDC8jqzSqJPF0Egyab+APX/H4T5SFNj7/rtptVQ5MJ6mgaQcu8jUOpxFei7bz
-        +3jQFV6OIyp/UKM6rE7yQXMPXOlr4s+XNJwo7c82ougkDjTvwJPmxX1Y0ahXAWgkiQVNOXCbeVOc
-        AWLGlhkUrLKwbYB5AXkk9/KL8gDD3QOO875f+rZ70H/967+ryCQJp5NcwHj3gCs9QlEoOsedo+VY
-        7UVrBNJJImCgezZklgYJe1/wG2OIFFL7ZYB0kgiY6R5wnUc+ynmD/RkJfZrK19gq4GkkmA2MeM+t
-        IKgeuZWA0kkmaMy96nHwLiXBRKVSUgHvBQSTzEMqCgbNebtqMCj1I5JC0kkkaNA71aPgmv2JVeNR
-        0oA6SQYNfLdqNIig/1ot7UQOTSOxHGjcoWstGo2LYmz5jr+NKDqJA7qWm2aRlqpxqgfRSRrQp9yE
-        LvSKN2/mPrQ4/ZdXy6ooJIGlk1DgKAkTOtIJjXgiMT8UKw0nKM5aiydz412AwxmPeKsI9wjs13tO
-        WVFIeIwb9LPTyThVE6vifo0EceHBbcCZvpnTKJwrBeJqEHQSBZpsD1JiLwKOjGMkTlZDJLxXK0xW
-        QtRJNGjM29UUR+kKR4RG6vOeCqhO0kHzDtzpG7LkPRgZQ3HGAWeropgElj5CeR6sHwCTvGgaGMco
-        naFN97Z4rlB6qoCnUdK8BysK7GqCQ3FonYpaMmA6SQXrC5xqdqMkwjiJVXN4FSD1kc0FtsuE9uYY
-        I38uzmXhncAVfXgprOcXypXMcmkXhALjCx79exyh5Uq9pFACRyOBwBnCJjz4d0eMP3wVeWpRdBIH
-        BIbhWb87WqpBzgYYneQBjgE83nfHSzXLtwHmBeSR3EIvygOMNDzed8dLsXiuHkUncYBhhuf68tPa
-        Ep58ystH+N9VBGpE0kgkWO8Nj/Y9jlJ/G5tlf1yucZjlWKqIJY2ok2jQaINV/6MKnGogdJIFGmuw
-        qB+gpXJ+YTWCTqJAEw1838Gc5yYtWx+xCMWeY1FZqjh0pBF1Eg2abuALn6A7HK6oUuJFNcILiCKZ
-        Q1AQBVaDw9N/T9gMfYvYIvNe1ZNuwtFJIGCW4dm/OWKq3nQjkE4SARMNj/vNMVN0GZtwdBIImGsb
-        +MIn6XTKM9x5I1YU4ImSnZaA0kkmYKBtB3KL2BSkIk357RrJASu5beDzns6YM5c1hD5H6wiHvooP
-        JIOlk1DQRAO39zSYiRdiSCaTAMf4d86ShoqvmTykTrJBsw384tOY8VJRqPTuFxBDMmmiKAY00cD/
-        PU3omPh0d8KPii5NQDpJBM1zt5TZI3fT5NA0EgvWgtu98mGg7DU24OgkEDDaDnCH3wZsWb5PNg5Q
-        OI4oVdkOksXTSTBgrh3gHe8SrHidX8Q40YSv1K9TZoiVSuMUYXWSDxh4BzjO71IcrFTew4rbdZID
-        GHMHOMtnKJiQZdZai1mWKQ2UXj0JrBcQSjKL5FAoD9aGO+4BOTJOo8x33lZyG2LGEoF76isJ9whs
-        nYSEBt+DZJckeNSWdhOOTgJBA98uJcYDaCIFhIb4Xu38T1VQnaSDxr1TylL1wCopJJ1Egia/W0pt
-        01OoH/qIH+W8y+VWEU0ZWSMRYX2504NU44SEM3EcNg5D+rvB5j2jP5ko77+o4uokIJgGXOCnn6WR
-        mO7Ejq6CXPUoLyBO77HigCnABc74RxSiBInYrnJnh2YknUQCxt4FrvhHHKq1TK+4XSc5gFl3gff9
-        MWv9covYylep31wDjEbywFpy1z3kFfO5idvTZI6N9zHvKKwy2UkD6iQZNNEeZJj4c8y+t7qr3gik
-        k0TQULdLmXELyzxqNiBmSiZJCk0nsaDB7pQPA5EpyfsS4niFA6UeogqQL5Asbz5WNmjYgVe9aRXD
-        QwNZUs5uM0pFNnlIjWSD9eVuD3IMUbTgpb28NxEOkc/pboy2inJKqDqJB0y/B/zqc4wncZZnGYra
-        E352wZymMZ/sNhOdmPiuyQSjNItVKYj6cz5NJ7HBJOIBHz3bUOZjCoW87brKRNuMpJNIYPLw7CK1
-        bPdL3R+RwdJJKDBdeE4JOcUMrDoMjYQBVeumBxz2ITPcc7TMgp/pdKpapieH9gJiWY8VC04AXjm9
-        RxT7S2HpJBQ03u1ycp9DRkV5UMmA6SQVNOHAWR8SxUriitt1kgMa6i7ksyv0fcSE1gylkUywwtPr
-        VXHbbF4NKF0oV1mroeokHjxi0qygyQukIxLy10jtnEBZQH0kc3Izn+1usxg+DTYrPOOKEra2a01w
-        K/jbw/+UH2WSWM8vlCOZN+oVhHKBUO4huQgRhV6v9RA6ydIGsniQk98aIfbQWx8Uzn1phnkBeSQT
-        jorydIE87XJe5zQl0oZIAkcjgXLzHSfWgcRGKAuBPPzbEomy4FscTVKloSSNqJNo0Gh3IcU0Yn4P
-        mYiMqXM0xgrOgTSaTmJBw907pEfEJoN4gXBLqWG3PJxOcgGDvskx2PG7Q4HIx4gNPoOr2KxmJJ1E
-        AmZ9k2ewpUbDWYpTwukN5jzXIG6d4yG9D1UGlgrmCwgnmQdTEK4NzP0mDWFL8uHHHRFmhiZjEpKH
-        /5RfB8qC6SQVMPKuUzUesqn/LB1j+TpuFUCdJAOm3oUONveNWmcPP1R1qkXRSRxo2L0irY0TmU35
-        KhJJYOkkFDTuwNceopD4NEUzpfVMHYZGwnSg8Qae9fDhB+OTEL4JfP63h3+L0FjJ7ZRD00ksaL6B
-        Vz0kEfekVeSpuP8FBJHMhykKAo0zcJyHNExQpBTHbMDQSRhgmD3zkJSPAukWAHUAOkkCTLBnHTJa
-        oll4L2zD+zjAiagVWtI0QvGCB2OvyZ1w+FqTlMdEVirq/YTP0kjoLjDpng3Jp2FiXNN7pGKp6jB0
-        EgaYbw84yxc0Yc/7hP2WB7PfRQ//ITqx8RyBJeeropYqsE4SAoPvAT/6Mk3411LTqhJBJ1GgsQee
-        8xVakRCjVEWTKoAXSJSVzFQpSgKNPfCVrwiOIjylociKO6FBgOQPSZdG00isHjTYwGu+Ym8DQb6K
-        PBX36yQINNRdSChKQpxORTd//3uK49YARQmRT7NWg9RJNmicgSf9KeXxDaVxVHG/ToIAw9wGTvQ1
-        XvFNEOYHKmhSA6GTLMA4t4F3vD1Dmte38jr9MXeJVRSSQtNHLNcExrltQ3rbdQIzGTxRBLdUt1Ck
-        AV9AMsn8k6JkwHy3nXKGaeuCKs37jUA6SQRMdRt4wdc0xpvTx3gGCU5IgltXKFHbxVTB1Ek4aNKB
-        qzxEkd/qp9HDf7L3hh95J98hQRJLJ6GgkQc+82Y36B757M85X44eoxlVWbfJ4mkkmAUNfadIUDHj
-        qQZCJ1mgMe8WOalvLtWj6CQONOO9EloPP2iYZSVlPxgyl0hpm0AN9QXEkzxCqSgeMOUds0hzyHNv
-        RLhsMEfLVaDQ8kYJUSfRgFnvWJBigMY4a3I3SiP68L9UXkoZLI2EsoE57wA3ezTH06ma81kJoJMk
-        wJR3nANGkWglqeJj1kDoJAsw4h3gN9+idBJtc2hoGqBwprS8k0PTSSxotIHPfMMjsWMaKiXF1UDo
-        JAs0y8A7vokoiVvb9arS6GnAeQGBnEcK5EBzDFzjWxHoEHm1In2UHyndukyzLms8/iHCISOK00hJ
-        vT/zITpJC816F7JeqsQ3S2/WSQpQymqC7gH935BKS5HSm3WSAh5QCjoE9IMZXWYH1oYkYRMRyVqz
-        rtJ4gWISzlR0UkbWSUR4eCnoItBnXnHEqV6iBW/dMRPlFNuIt3GmVlP+GGyNhISdC0x46h2KMqP8
-        PgxJPCVKsjUi6SQSKHU1vVJqo1XEXqM1w+U1KZcRbQ35+TiJSrHwI6Bf76GoRRnhJNCGXO8NOjU+
-        pURRsVoUfcRx4MaDBZYnWSpF65im/lwMAV7JIzYJ2HeKs7o6f67qxP6Zz3iBJCBJYd2CsGBhZIFV
-        zbFILYxV9lErAXSSBCyKLLCYOY7oEovWbLzi/ntKiYo4zVAayQQ3HqzOATf22HOBXt7bTq3YRRpQ
-        J8nAkscCq5ZrsqTM2yStC0xmOElEu7WHH0sS8wIN0S2Y25xjFPNMHxUh/9zH6CQvnCTABsSmVHHM
-        LBLvpHuG0gRvKoM2v1KRVB1aJxnBlGCD7YhjjFJ+xirfiXj431kLDfGz6OHHJiBhsJf03y+j4OEH
-        CuNdkegdJdLL2J/+qTqJDyYf24ID7eE/EkZ7liJRBYB8qlalIgn3AnJJHilckAtul9g25Mdr2xKy
-        JFnk7O1vansncmg6iQWmHxvsggzocpU1nx0l7A1i40JJKgksnYQCE4kNVgInNNr0C0D+nITZCXkx
-        UnwR5SF1kg1OHGApcBKlSx4EUhGpCkAnSaA5BwuAdyhePfyIN4H9TfMJ0ZMKtYZoggNMlLakHoeu
-        kZhwM8buQLqJasFKJcDr7XlVlASadODqn1GeXIPkW9/XIugkCjTfPUgppMxrbA1x5KsVXzTh6CQQ
-        7JQGfO0z9mV53vt9sFSSpx5FJ3FgnzTgMn+gAeGLZhVdqgA0ksSFndFsyCj8nqo2yKmB0EcWO7fx
-        YdnbPZ2LUeauoIgXyorTLwaUrU/PUMQjBLIiqQA+v2S2ZM1pUTIXSOblGfIDN6fym9019+skSBsI
-        0i4hpNQ1vglEJ2m6QJpOntXHzXF8ZyhMpCN3jSgaiZNrVslpdfO0RshfbE/s4KdGZ2vxwRz/8QdO
-        fIVzvB+F/AIGXLJIrigiNOA9QJXbWmPED74XgYw3vLZmhiKsNt4UMHUSDphxywQk7ych5gHFW+In
-        NCLSyw8pJJ1EAqbdsvLUuDU2LuidkjiVCDqJkjPqzjZb7eI4Sx/y0YRkZVjJPI0UJj0ZJI1EyrWm
-        5NTsPDW+7xE//PhNxZesx9BJGBsI4+RJvY3wBEfcUkhX2zRg6CSMC4RxAak0nNyrNU9qwHgBYSRL
-        3YrCtIEwXp7UEE3Qets7i5lTMhPpPSoiSeLpJBg00G1AkERoSfw5EcfC8bPf+KFvKnrJwWkkVwea
-        6g7gR0M/85CvyR2O7ghe814/BK9WSqKpgOokHTTm3TzLC7w2jqM0jNfEX2R+81plFSyPp5Ng0Mj3
-        8gRFvonxgc7FyKDJHMdIuoRCGk0nsYDh3y4sMno3dEy+pyL5DvkJ+p7Kd6qSxHoBoSRrwIpCgXi3
-        CcLV/TFJyJgIR5rg1gd2GY+XXKQhuiP8wNVTfE9V9tweCa+RnLCNpWmX892k3LHpjzc7VxFQFlAn
-        ycAmpglySfrzNExi4m9bm6k25pVD00kssLlpgkSSfjBlC5jWFQ4CpZYf9Sg6iQM2Nk2QQNKPZjhM
-        NmXM+25CF0gQUxBLCVUn8eBEALJJ+ndkFgqvk3EcMqMTiwkvQSHe/GX18GMiH+v7Mx+gkaSwRaYJ
-        U9oxSn0lU1Z+u05yQEPfPeSzyfE9J0tKAjW/QgLrBYSSLKkrCgWNPMg8OX744aPQpykvQ7ogPs06
-        gY94IyKVBj1qqDqJB0uaDjLJ2YTvz1Ecb/PiThN/jpnXJA7oESf1KGj4KHCdpISlUNYBW4q3x0At
-        x4FKwX4zkj4iObDVpmVDalEyz85hG6J4QdgUN3v4oaKUHJxOcsEiKOCf38wffkQP/xnj1gk2jnmb
-        K1V/XxZPH8Fsy9oJ1uP/J5htSnovTq8HsupU3Qyk+OWXJxTC6h1ZnSNPcpPDKQiRi3+Zux2/843/
-        iAKFjZ/K218gBUTy5L+iHG0gh53nc0x5CCUW9XzHaSTaWdywP0giHxRUw9RJuC4QzsmTHFAUJ7xK
-        /hjdizoyfnC7KM4QJ2IY/EQMFQUfA66RlLn6K87WzbM9R+MITaj8NnUNgE6S2EASDzBi87Vxzfun
-        ZcfRsAlJPptIEuwFpJI8mKwoFTTo7Tw7nh3FNyD+xrxopLDz04yjk0DQxHcqiI02ecHZEUdXGEXy
-        O/3KsDrJlzP01nbGvzrNbDGKJkTh7MQ6AI0kydVQcUY2YMRrpmmS4IR9exVdalF0EscG4jh5Wqcz
-        lTOiqm/XSQ4XyOHm+QxRsMLf5beu6gB0kgSm64OMzAFasUVmhDdJ0SiMqbQ6clivNz+9KBRM3rcB
-        ucztVc1/rQXRSBoXpu47gFXK29oESJw9M6CBP8dxIl+Hp4Cnj2A909sJdnpqjBxjwNM0+QFhOTen
-        v0R/0ND4gsfGiG/s+pg5MA6Up//xff/9x19vb3+9bA8///rl7buLvmIA5PBnmRLZT8vYM1pW98i2
-        mk/ygZfl2O+t8IgGKDIGbMFt3PBjiPPlzpsffI7F082RjvlNfski/QmYdo6c3pHdyFRc5hw2ebNy
-        u2V9Eo3DsZFto7K3/Brz/RzjluC1BOXyu5+Uf6dld8UAbh95NeN8e5nTPrLsQ/7tfaDvKh0HxGcj
-        mRc+GDcRGOqVvFfirm+xuOtbsrnrSUmbN5bHHmVtUK/ksj3pXCnJCftY4zIMdqPb2FBs4j1hN35L
-        46Jd+8lsrfaNyV5R58it8R9KLtuzzdn+zxdng2sJctvrILGtQvxCY8rGiLjsTc40GhPKTGBIE2OO
-        7rCBwntjFZE7NmfM2M+ZqUzm2GB33+HojfF+mgEYY+zTJfs9Mq4ClDDgpeEHhCH+i7HGfwsCI8R4
-        YiTUGKckmLDLxG3f0GRJQmPzCH6m4s4NM4qefWTW5AGWXLZX3OrtFF+RMPuiMq9S7toD5eckNth/
-        7Aq2Rvb3evOnwBFiYz2nxpowsYTypxOSGMhnE1LMhYuEMTp8Aj9XNrNzY7lHVq+2qWvJZXvZcpta
-        JEhkXsLNZU/3/rVbDjMj7SPuTdSOBrPNTSyfT3uF0bC3NldXb/sStDaXPaVZYd+XfVmnc2TWJFaU
-        XLajZXrOjta7qytjRAI2plY0d9r47kdGf7Vik8Q2Pym/ezb23R5Cfqvr+9OWy8ZAa9yzMfsfZPKo
-        momcaUEJ8HHGxlYYPJefzUJs/fLG+LlDwLL5kHU99nirtWKXdTf+1La4P6eVLa/VNZ5GOJ4bN3SB
-        D9TCvCPlP3xmUGPEfIz7hPjxG2Y7GxQ6RPzp0jDPyqwJXe+kMYuOtpmrO+PfWt7HfBfQMbOAzDMl
-        f+BiFPonmwHL4zuJjrXrE1xBdHuZd7iluqc54M/PGCVoOmUrGfGvPn+a+YBzJeuDy5+IstsynZZl
-        3rAnZrq1kYt2y7T4PGgy43dg+axerq5nhr8l0o8WXPx0T9Vr2R3+uDxr5xiXUSy5bE8x11717G3f
-        uOq/3fMb9Eejv18MLrc/zr/JU8dyvEm31fPHzO51p+MW6mK/1XHantMb80fQe1LubssWyz/XZC5M
-        NfeSy3bcu7nkzfPB7QgFOGb+iI+hB73/uVHiRS8wZoz+W+Dfydi1n6uAJbIDPLYsqllIlFyWU6BT
-        rsBATEmlGux+le+aPrx917v/9c2XC9we3386+dX+/s+P69uzd8P709Nv0SfyLuxfvk2/n51/vLXt
-        392vqy9fzi/Xl6F/aX9r924H/bsvvj357UPw29rrrK6Hs5vIfRbx3F7tpFhy2U68tmsdmMQBSlBA
-        4sToX70vjbdsLzg6YldACb/QcIKjMS0ZNMz/ZRcC9DfG9lbuVZMowgG+Q+Kx/DSJnJYtJgOzV+tj
-        MVNrcw/TcXdzaE6iw1ljR2L09uaqQSN+yWNF4jtx/BOylcKTyNJlU0u1LCWX7WTxOgcjh33b7LUy
-        BjhKyJS7mlisjY5HJzlp9r+EukDLU9CGma2JMb43To5H96HP11M+P3bLT/hfj4MU88mcfeAJmZFE
-        PIsatSyekFyIarLvyTeLw4iyFVx/yevBkXHCHsYYxbg0yGnzAAebn636Cm6b6ygcryPLOdQxlzbA
-        lxyGCIZcoEQq7rOaom8iCBJuQl5PanBs7o6YzLd2asvzSi7L0bVK6PZ/VSKL/ngemsydqmkRVnLZ
-        nmYud++YYnBEUSXB3YVPSY1H5fl5HGw9WUfNFAOWmcTDNSejtl9zDkFPoUpiy5IGQU9Ay+Fr5Log
-        bMllW1rd3F7DjN0Wx3PEi6HY/8dzMs25ETmDkPeW9/fUMD24DFJ2ymzS9vNbM+6iife7uEzotcwu
-        f1yeW2uGrI21ctiC4nDAurkl4Oj0/edv788lHuz+yqd7thYP8plsLDq1qVkll23J5fZuT0/jx3jI
-        y4U4Xfa/xdN/4GTOpoWA+Sp+wiaIp/WQxRKQLXzY2s7q1HrIlvBgXG6M7AOb63RK6T/GPY7efrj7
-        dH17ebdo9++Ox2fz39Zx7ypaoekf9llw1ks/9xb28Osfd3/czsbvp3f2/Hq6cC7szuT7O3vy/sL5
-        8G2Bv89wd4Y+hP2ri+dRrntkV5lx5hvbPLrIjAJbYx/uTFn5jrLp1JfZgtpc9mS0LPYWu9xXtWom
-        4fLLcrScA5dWPvbh18U++r4vUsa418etHJvOdls67LaUubV/CEclNtCSZzGiDCj+eWHwHXXviMcL
-        q16Z8st2Cpm5B5/gIE4iJKHN/sqnfPyms5maK81h+WVbcr2cC4ZimVCQeObfQhp+W9GAJNz+PSlH
-        c7NB4ZnVxRPiMh4XYS6KU4iL9HIZgEhsCkvQ3F34pMzETG232XK8jlnhsi2zTu7pCW9CJpS3ue7p
-        bG2Xxxi4B8LsaFUoovyy/Su336+bjLNtxf/+22Ts/48m14utA2NarO3Ju10RHdOk6HA5JQ4XXP6V
-        ulue2JFxjyyr2t0SZLP9qJLNiLbXAZuTqdx2d+7Sp3uUHTEf8mMhj7xqA7O/rLNbSezY5U4I88c4
-        COg6NrZ32aZhZt6M1/hgN/ce0gVJS7uraFB0qbnM8rxtsZwTX62Od+GyLe9c39qT0WDw7b3MNuP+
-        yqd7pG7LtkUE0KveIsrGdW/z5K2DcE8ue5h/4dYIh4TN8YPs1TPeRTRdGa3/KzVNBxv8CtVMDn7P
-        E3uDbH3A5xR3R65WA/bf4Uu7N1DZhBjwcyNy5D7Q8U2ESBIfHb1NVmVT6O6OmvE8+Y3OmaphYTDz
-        zy+Yq2myepOhvolEYuRisyKpMVts+Vc995Rdthvge6t1GGYXO2lqi4m+vbhwjkOrM49P3v9+MR+T
-        b3ff4++frnr3X5fHqJf4376np9Pf7sxP6z8+fbd/jX/7J3WOp95X88z9evWp7x9fo/u7def4j377
-        za9P/gpZ3Flkb35lhKH8sp147RLx+ItQLV2Zh+nPW2JyfNadmh0zl2/BeNXLjrLLdgLsXerTbBF9
-        ullES9iH4h1PSdUSE7fTre54kV3WuWG+p9k58g6cGdc5MBUES3DMXfqk5DyxmVi7fCy7bEduH7A+
-        xiHmturbiFmeBM/uv4mZQCbWWXnnU1Jntp29nK5VFxAou2xHfT8NXmfWttGHISW9H7Y3G9eb6J6x
-        WTj/ZLZtEe3zGl7YwmW7Sb9XzVY26/rD9fHHr5/719cfLy9ufnU+PfUDzrgw+1O9biy7bEc558Lx
-        jYnj0YmRbXNueLMflGx88l2JJ/ZeHGZWHb5wqlkRl122Y7aPb59cDCTe0OyqJw3PmZtgfM1SuOyy
-        HSW30h15rCeS2pc397++Ddq9fufb+o+Vg7wTQhYfFyPv47o9+HyM28e3n7/7N8teNP4n9enF8uJy
-        fIs6d3eD7++v+v98g67GJ8+gm82nncokz/LLdro5FZ6IpBPy2xTxDenn9kB2jNrV2TLll+2I2+Dt
-        lngJnjHTi6fKd7njaNbMTSWX7XNcd+R4tYRx2jc2+VsyIaKTQXH9BdYlP3cFVjtwC5ftKLqQojDR
-        CiTrnubrI+tBsjfDdypczzAKkvkARZjfzYsrXj/jNmQ8mNNVhP7qpDuQ9Lvh8FiFMr/+9ZPsHozl
-        0eiv/lh7kPH5lQrhYNVaLlFEg4l6ietzM91PO+9wYgwo8wxw8bTfAVquEJkd5NK7ZrttF+bVHE4u
-        Dv9zKDs8WyIruuR+ck0k0OF7MKZ55LYLoZycG8EWffJce2aBKwcwbjBaGiMUTsb09ydh2uRiVzLd
-        e4rMnbjKbf7JMrYKjA/y61oA9qdT58nzNSHvGuq5aFVfgXBxOBd2lH4+SefIrdmyqCG59zGuUJSw
-        r2VAx7iBbqfdfjqvOE/QrS4irye4n12vv9zK8rLajleM2SAS83yGL3SJeQHgLeVBj6dg67qPNUz7
-        afZ9EJCQlvQ0raTsFl/VLKOWTo0c2s9n26mubalnu59i+9EChTFSYVt8T3dsc2g/n223dvOlhm1u
-        UzU3Qf794uvZYNq/+CpNvVNCPT/j8hNTvtJo8fcd7k8XwWMEa1fw1SLkks77xunv/py3QZPn3ina
-        q91jH/ADU2kUkiex0Z5VG2+v47x3N24GpwpcOwWuXLNwQtdL/BNjzXmSNee2NJDMxaRO33+WZtn1
-        imbrSZg51e0tGpjtHYkztEaEyHNrP2H9EOTm1sacqrnt/YchCUMcU3l3mNErTrK7lzEP9/MJu49+
-        mPsQRZY4KblBkG3toRV50iCi3bKzjY22sn39H/8/AAAA//8DAHAA5PZS+gMA
+        H4sIAHJU6lkAA2TOPQvCMBSF4f9y51ZuUvtBNsFBF6dOikNs7hCbJiVJERX/u61FRF1fHg7ncAet
+        QOQFYgJWdgQCzu1gbrppIYF47aeyllGeZKCxDIH8v1MUGq/7qJ0FYQdjEnAXS/5beepcpI0Lcave
+        7NN2r9W5Np5kJLWK4wBHVqaYp8hqzkVWiWW5QMT9dKZXP6xKWVHzTDAm8mpmj+MTAAD//wMARRs6
+        UuUAAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-Pagination-Per-Page, X-Pagination-Current-Page,
+          X-Pagination-Total-Pages, X-Pagination-Total-Entries']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['176']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:26 GMT']
+      ETag: [W/"bdb093aaa188f076a28a1e6e3aa515dc"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Pagination-Current-Page: ['1']
+      X-Pagination-Per-Page: ['1000']
+      X-Pagination-Total-Entries: ['1']
+      X-Pagination-Total-Pages: ['1']
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [bae0fce8-2b92-47bf-8419-7cbe8ac3d2b6]
+      X-Runtime: ['0.258452']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"sql": "select * from (select * from scratch.api_client_test_fixture)
+      limit 1", "preview_rows": 10, "database": 32, "hidden": true, "credential":
+      5600}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['152']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: POST
+    uri: https://api.civisanalytics.com/queries
+  response:
+    body:
+      string: !!binary |
+        H4sIAHNU6lkAA4xRQU7DMBD8SrQnQGnlhLYRuSE4wA1VnECocu0NXclxUnvdViD+zqYlqNw47npm
+        PDP7CWShrqqqmBVVDlazXuuIUF+XOcStgxoiOjScXWVN6Nrs4u8YTdBsNlPd08o4Qs8rxsirhg6c
+        Al5mjlrirIAcTEAr76RFdL5QKoeAMTledvsI9evbON91LrX+ZyX61POjePTJuRzwYLBn6vy4EFXN
+        aG9ZnJaqqCaFmpTqubip57O6XEyVUi/yeertf2ANeYqbE+6kH1l4QtomTGgF4nTkZfKDpUU5F56S
+        3jZkJRvUHBLmQJ4xaMO0E2ajXZRdH3BHuD+FLdQAMi5ZfEBtMYxM07UCjPEYEN4/qB+KOxZyj8cq
+        B+wAa/WQym9TJ7FGsw059LrFp4BygLMIgc8zBey78Fvq1zcAAAD//wMA6bT+sQQCAAA=
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
+      Content-Length: ['335']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:18 GMT']
-      ETag: [W/"c055f50a28332cb21eba7831bfe6363e"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:27 GMT']
+      ETag: [W/"029915c18f5effeefe1ec4253571422d"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['995']
-      X-Request-Id: [a33a6962-0fe0-4ea4-83fb-d5dbba18021f]
-      X-Runtime: ['0.683488']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [524520b5-930f-420f-b8d7-731ef34ac7a2]
+      X-Runtime: ['0.441626']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -553,84 +131,84 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
-    uri: https://api.civisanalytics.com/users/me
+    uri: https://api.civisanalytics.com/queries/7771417
   response:
     body:
       string: !!binary |
-        H4sIADr2EFgAA4yUTW/bMAyG/0rgs1PY+fKW07YWK4Idm9OGQWAlOtYqS54+unpB/vvopHFgV1hz
-        Mkw+fElRFPeJFMm6yFZpoqHGZJ18Q+mryUbv0DqjVJImWINU5HmSZ+MnLp+lAw2q9ZK7G25q4oJD
-        +ypyQckutfQSlOvEN/SvwPnbCvkTis9am6A51qh9559l+WqaFdNZsc0/rrPlepHfZFn2naJKBB8s
-        flWwI3KfcKM9SI2WOW5l04V7G5DOYbwsW1YGpZgyu7O5aX1lNJuP8TfxFhtjPfNYNwo8ju1OQ+Mq
-        M+b735Maa8BCfTEiWF4xjX9YkGejh0eFEFjJzcDEmq51mtXgeUWNPDkPdASLJVqkfh07UBuBikkt
-        8IUZK6gTpURF15lwS81CwcBT495iQlqCBDo+ckOgHnUyymOH0Fwk/YneTRThBpksuqCu0IlwA53G
-        ml/IrxCKgSOlrqGWeBrdZ/J2jyEfB0a6khZpsZp3s10fh+LdUiLcoJKBP5pwDPm2wQty9+ha3Qnh
-        y3UFRbhBQQN/fC4GyLAcATTJ4HB8m0PK+Iq+I+SKGYwh9Dx4cN7UXyxocXw1mjZAmuysCQ29lx/7
-        46pb9Itue7+9J2Vjd6DlX/DS6A0Bs0N6IvPFsmddoPFop78Duo6bugos5ZgexSMi83mvsix6ldM5
-        Z/MVXYT4X+pZ/qEPunuY3NKE0oKkHTp5OCWOBv88/AMAAP//AwCzYBNozgUAAA==
+        H4sIAIJU6lkAA4xRTU/DMAz9K5W5AOqmtPso9IY4wU5MnJjQlKWuGpamJXHEYNp/x5m2ShwmccjB
+        fi/2e8970BWURVFk06xIoZIkN9IjlJM8Bf9poASPBhUlt0ntuja5/lt65SSpZix7vVZGo6U1oad1
+        rXcUHN4kRreakgxSUA4rxrXkobO5ECk49MHQsvvyUK5WEEk5vwm8v5/Bx86E1kYcJEObOAcY5b26
+        pyfWboMxKeBOYU+6s+cGb5OE1QOxg1xkxSgTo1y8ZvflbFrm87EQ4o2Hhb76D63WVvvmEm8y8Dzx
+        tJhZUArZbsU9Iz0tg41a5/mMiYKDbnTFYUBJLmAKVrbx10tA951cna7BX2WgpnNQ7o9Xyu8mxcB9
+        7hqbLIL50WobfXh0J+RjO3RZdczbR/6C684abZlTcw8PR7nusvvi7Mph37kh7MMvAAAA//8DAF0F
+        HTM0AgAA
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:18 GMT']
-      ETag: [W/"135c60b9d703c699bcfd8dfd9e4359ae"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:42 GMT']
+      ETag: [W/"d8ba5bdb2701901c2554d6771f297aa4"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['994']
-      X-Request-Id: [e25de0ab-6aa1-4a7e-8d58-9cc342e75a36]
-      X-Runtime: ['0.296728']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [d2daa949-ea8c-42cc-87f3-5b52b4bd54e0]
+      X-Runtime: ['0.200020']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
-    body: '{"remote_host_id": 32, "sql": "select * from scratch.api_client_test_fixture",
-      "credential_id": 4793, "name": "7d9971ab37fc44bc83fa51353bb4569f"}'
+    body: '{"name": "5d9d4bdef395498cb82dcc419c227eb4", "hidden": true, "csv_settings":
+      {"compression": "gzip", "include_header": false}, "sql": "select * from scratch.api_client_test_fixture",
+      "remote_host_id": 32, "credential_id": 5600}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['145']
+      Content-Length: ['227']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: POST
     uri: https://api.civisanalytics.com/scripts/sql
   response:
     body:
       string: !!binary |
-        H4sIADv2EFgAA7RU227bMAz9lUCPQ5rEdS513rJ0QIvdurXAgA5DoEh0zVWWPInqGhT991FO4l7W
-        h/VhL4Z1eMhD0ke+E6jFfDzJi2xU9IWVNYi5mOmimGVync9KNR6v1VFeykmWT/L1ejyZFqXoC9o0
-        iXn+5QMflAdJoBfEyOEomx5ko4PD6UV2NM9H86wYZJP8kmmx0f9Ck5Eq58X8ru1tNpp2fb0HpKp3
-        aq/AB2dMKhnA74LX+AhHi4TShJR0ymdnDVpmlYzBfV8E4k44iNoAh0vmh2rbmo3G9EXj3U9QxAW+
-        /+CT9GDpVO+jSXbpLMFtmsVHa8GLlibrXYr0V7HmJD7esSCGC6gb06q2TTA7rs1WtYs9KJTe1X+j
-        tEOOoQGrU/Wli5aeh8+Vx4Y+tXvZRnj669SJ0EAS273IBgcKbzBIK82GUIWBcvUwtLlhGH6Z4c4X
-        PBmP+LqcYZuRNq14wshbZvH9ezdPBxzLzW5vHXTion+OfUQbCZ6jX1nqDHxK2BZmWesIS1SS0Nl2
-        8OjNPi8qBSG8q3kR53GdPnPXz6PQW6c3L+ELrT2/77soGYoeXgqxyYz5Jr1lZ3adPyn42Yo5+Qhd
-        mT1w3648JS7C/70Jlj3MC3xwPmENly5RxKIGzzscLit+XjnONjIk9p5boWYXdo4mNj3Q2fbqPLhW
-        elXhTfrqOx77hKsHMEzrveklr/fYQ5JUNWCLrZRB9vaK90WrEm+JF8PacNtINr1ePL1ZHmpHcOJC
-        q5gftr+jdDd46oSMZ0XOmNNw5uEG4ferpe//AAAA//8DALekgnYmBQAA
+        H4sIAINU6lkAA7RU204bMRD9lWgfK8hlk5DLWwqtaCktJUiVqCrk2LOJwWsvvqQExL/3eHezAcpD
+        W6kvUXzmzMyZ2z4kUiTT0WjUG/TGe4lmOSXTZCgmYrAQlPUnw8FkzBfjVHA+6E14mo5oMUj2Er8p
+        InP+9RMe3BLzJGYeSNrtjfZ73f20e9GbTIeD6SBtTw76l6CFQvwJjQW/MjaZPpTa0nF/1Aj7aFa6
+        dRLUveQ3MaAjW1uubxpUauklUy7yT/A2WkkNTgaMHvcS56ECRikUwZyB71aVLB2UQjmwL43dgOO4
+        lYUHq7DmmrhH0O8/8GKWtP8gth5RyKHRnu5ibTZoTTYpaSyvXZhdhhxOeD5AhHQXlBeqVFIKAzss
+        VKWkse0yZNbkv6O+Ro6oIC1i9EMTtH9pnpdVfC47VVnQkZuoJBHkmSx7xQrZ5nItHdNMbbzkrs1N
+        3qk64DruVnXqPUFlKPHvfDqlR+w+R4UBnUfy7f+mngY4Ypu6bw10bIJ9iZ1KHTy9RM+R6oxsdKgC
+        I602XmYSk5VGl4UHq7Z+gXNy7l2ORszDIo650fPE9NaIzWv4TAiL//RKtPcY2tOuP7WdU6E2F6aZ
+        L6Bg6dWInin1jVkt9bIp+FnALzqZehuoCbMFHstJRceZ+38HpbH26PnugLzM6dJESjLLyaLtncMV
+        fpcG3oq5yN5yV1Jgcbf6Pc6E/Fl1bLs9Z5av5DruSX0r2Kx4naRAa71pxetoYeuY56s2lvKKK4lr
+        uEKr/FUm7zx6gtR0VzCciZg9v0VLufF0bFyZsZ+WH7R4TSg6IsODbheYEXRmaS3p5z+k5m49J+8x
+        iWoQmqsg6JiYwJdiWxVup4iTx44ixfJeFtHTqJDrI1Iylz6SIy1ncVr6NkD4riuZsZxOg4qrrnYf
+        lviIU4V6CKpP4vEXAAAA//8DABf4r7X7BQAA
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:19 GMT']
-      ETag: [W/"4435ca1a0fe67f3003b04b9a400d65b4"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:43 GMT']
+      ETag: [W/"eccb3d0c3aeaf9810fc05fa9bd0d02dd"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['993']
-      X-Request-Id: [e9d88a36-ccb8-4517-ac76-9ec04b41a81f]
-      X-Runtime: ['0.285169']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [57a5121d-c1b6-4109-9924-fcf264b3aa2b]
+      X-Runtime: ['0.298596']
       X-XSS-Protection: [1; mode=block]
     status: {code: 201, message: Created}
 - request:
@@ -641,32 +219,32 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: POST
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs
   response:
     body:
       string: !!binary |
-        H4sIADv2EFgAA0zKMQvCMBDF8e/y5gwtsYVkEydXV3EI9oqBI7W5u0n87h6C4Pj/vfdCXZDjNKY4
-        z0OA7Hx2OEwxjUPy1qKEjN3IaEFAlVNpd+ILOYm65bWw0PfavY+K3Iw5YK2tyuNfqPet/2IzfZpP
-        19v7AwAA//8DAPf88faGAAAA
+        H4sIAINU6lkAA0zKsQoCMRCE4XeZOkUiaiSdWNnaikXw9jCw5LzsbiW+u4sgWP7fzAttQtlvdjHG
+        lAJk5bNDzjlt08FbqxIKViOjCQFNTrXfiS/kJOpW5spC3+vwPipKN+aAufUmj3+hMZbxi8X0aT5d
+        b+8PAAAA//8DAH2UMqWGAAAA
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: [no-cache]
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:19 GMT']
-      Location: ['https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660']
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:43 GMT']
+      Location: ['https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011']
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['992']
-      X-Request-Id: [45fdaaf0-f361-47ef-8d0f-cef3e65114d8]
-      X-Runtime: ['0.413865']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [2b7f8146-3b5c-4366-9f6b-e8cc148c862c]
+      X-Runtime: ['0.204844']
       X-XSS-Protection: [1; mode=block]
     status: {code: 202, message: Accepted}
 - request:
@@ -677,51 +255,15 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
   response:
     body:
       string: !!binary |
-        H4sIADz2EFgAAzTMvQ7CMAxG0Xfx3CK7oRHJhphYEROIIQIXIkUuzc+EeHcsEOP9fOQXxBt4M5Iz
-        1mIHZUl7HdajcYROu4bK4CE3kSh36CCWXZArpwMvjUtl1VNIhb82a2+r+gHJ9oT9YI+08QY9uRUi
-        nvTBFCWWx89JS6kDznnO/5hbfTY9nS/vDwAAAP//AwBVUxNQnQAAAA==
-    headers:
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Connection: [keep-alive]
-      Content-Encoding: [gzip]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:20 GMT']
-      ETag: [W/"f59b1acf5179d26a34fc2fec00bc76ab"]
-      Server: [nginx/1.8.1]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['991']
-      X-Request-Id: [3eb1fac1-6e0c-4c2b-82ee-f58bf27f55de]
-      X-Runtime: ['0.062127']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: '{}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
-    method: GET
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660
-  response:
-    body:
-      string: !!binary |
-        H4sIAEv2EFgAAzTMvQ7CMAxG0Xfx3CK7oRHJhphYEROIIQIXIkUuzc+EeHcsEOP9fOQXxBt4M5Iz
-        1mIHZUl7HdajcYROu4bK4CE3kSh36CCWXZArpwMvjUtl1VNIhb82a2+r+gHJ9oT9YI+08QY9uRUi
-        nvTBFCWWx89JS6kDznnO/5hbfTY9nS/vDwAAAP//AwBVUxNQnQAAAA==
+        H4sIAINU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
@@ -729,17 +271,17 @@ interactions:
       Content-Encoding: [gzip]
       Content-Length: ['154']
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:35 GMT']
-      ETag: [W/"f59b1acf5179d26a34fc2fec00bc76ab"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:43 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['988']
-      X-Request-Id: [e95878d8-849e-4a66-9a14-e889a936b02c]
-      X-Runtime: ['0.076685']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [7c703225-7cd7-494d-aa9c-69991c6df3f0]
+      X-Runtime: ['0.070020']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -750,32 +292,32 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
   response:
     body:
       string: !!binary |
-        H4sIAFr2EFgAAzTMvQ7CMAxG0Xfx3CK7oRHJhphYEROIIQIXIkUuzc+EeHcsEOP9fOQXxBt4M5Iz
-        1mIHZUl7HdajcYROu4bK4CE3kSh36CCWXZArpwMvjUtl1VNIhb82a2+r+gHJ9oT9YI+08QY9uRUi
-        nvTBFCWWx89JS6kDznnO/5hbfTY9nS/vDwAAAP//AwBVUxNQnQAAAA==
+        H4sIAINU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:30:50 GMT']
-      ETag: [W/"f59b1acf5179d26a34fc2fec00bc76ab"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:43 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['985']
-      X-Request-Id: [24ce85d8-dd23-48de-9a6c-510f68653fc2]
-      X-Runtime: ['0.152940']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [c513b68d-6dfb-4983-8f66-96cad2bfeaea]
+      X-Runtime: ['0.067675']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -786,41 +328,32 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
   response:
     body:
       string: !!binary |
-        H4sIAGn2EFgAA4yRXY+iMBSG/wuJd6O2FFBJzAYRv0YERUDd3YtaiqAISMv4MZn/vp2dmbvdzSZt
-        cs6b55zT9/RVSiNJRyrsIU0DTxK7ZFMhKCrqQdATOcecSrrEakIojWgkPUkpM3FOaLail5oyLjQ9
-        xhmjv+lK5AYXFTKAWhOCpqytYVdHQIe9FgBgJxrEaZ6y5M8c1IHyxdGqKipJz+sse5KKmpe1KPj+
-        +hku8Pn9ZZ2o1+tAvEedmCjKnnRRjFWIVLTfK6rWi1uEvYheJeaJoBPOS6a32yR9SVmTFDkrMtpi
-        qIXP+FHk+MpapDi36a0sKs7an3tofy2o/T/TvhmhZ4h1MfZM79Oob3hTY9px1+bEclzfVpayZvyo
-        AZA161amFWV9qHQ6GtJkTf3QvfSQY15XtA+z2cK0My16nqsHtEnhvjvQwq7d9UADDT9o0aEURui7
-        HU5z3oxSIbCUp0Xex5xjkpyF3ECDhgziNKO52Jyobsjy/9gR2F/m8HtJ+5zeeEMeCfCDujXx+dFk
-        lNRVyu9NXpxo3h8ti+F2Ez2sxUOw/zhXCw/nMlmLEAXmZLLktuI56TMzliWKZyE8Dk7Q96rxAcls
-        ujnDSUMeUPcEw/nMC7bLS2Bu+DhhbLWBXQRnibqjmace79euRX0v4gvBH73LQhsRPCeDyl37wYAi
-        HjvjnRiqOM+HGpauCwSX7O65T30QVuW248xRZCZ2J9NCL54g17PGpqgYbK3ad+rh9t1Y5R3kcOr7
-        ZJWNie3PApOZLl3lyVSAzu1uFUTFhYiDSw2CDT4EFISjwtaENBM3peV8CWZrJzaO9s2Ug+rhV6dC
-        o4/h1fDFl0lvP99+AQAA//8DADG5I1WzAwAA
+        H4sIAINU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:31:05 GMT']
-      ETag: [W/"43064506f7d2b72dfef504e3685920a3"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:43 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['982']
-      X-Request-Id: [0ea626e5-6d4e-4aa6-ae2a-fc54933f405f]
-      X-Runtime: ['0.134866']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [e842b626-b476-4c74-9f48-901150b62ff5]
+      X-Runtime: ['0.114322']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -831,41 +364,722 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['2']
       Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
     method: GET
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/runs/35193660
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
   response:
     body:
       string: !!binary |
-        H4sIAGn2EFgAA4yRXXOiMBSG/wsz3lUNEFCYcXZQqFIXVPyoursXAYKmhg9JUKTT/77p2t7t7nQm
-        FznvPOc9OW9eJRJLpqrJhqrr4EFiZ+oKAWqqIQND1BxxLJkSq6II4xjH0oNE2AhlEaYBPleYcaGZ
-        CaIM/6FLUVtcdChA1tsyaCv6Su6bKjBlowMA2AuDhGSEHf/OySaAnxwuy7yUzKyi9EHKK15UouHH
-        68fVR+n7y3qxYfRkFKq9JIIwjPpqgjRZ1dQwhJpuJJ2IXYRXgfhR0EfOC2Z2uxG5ENaO8ozlFHeY
-        2kEpavIMXVknytMurou85Kz7kUP3M6DuV6Z9s56XloiLsSm+ufHAWrqWCzcKhDMFBlpv7cytnxUA
-        iu7UBSkxG8iw19NVXdG1u74khwzxqsSDGZXH+dzBml0YXlDXwZMxxdXCc9iupdp3WjgUYhH8vg7H
-        GW/HRAiMcJJnA8Q5io6pkFvqsKWAhFCcieREd0tRvrKOwP4xh98KPOC45i3lUYB3qm6jtGkzHFUl
-        4bc2z084Gzwucnu3jRvHbwT7n3N1kO1lw9MyaI5K5mw0N2iWU2ZtZuE2HZFzqpziFxRPsuJ58bRn
-        55YynLzU0Tg9PHpjQi/z52Xqzkk/B0+aZyUzpeinxywzhPXWK7XTxt8eG7gPJ1UJQjmnaRV+94WJ
-        pZwE4hPqljbcTu3h90NwqIlfL7anW3LpE3tMziCYo7gP7y9lSR9SrsIJlUfqbiEUWmDuBkmyBqNE
-        lNCL9zdjc1pdovIlXy2TFar8DVuUu4oqdLsRUzXrUjHPn+/0Q3K7rkm/WmezHnL28mWyGsrnBuY6
-        buyrtRbfJb39evsNAAD//wMAoRjcf68DAAA=
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [b3576b0d-2a12-4726-af1f-dd52d0f8c573]
+      X-Runtime: ['0.075122']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
     headers:
       Access-Control-Allow-Origin: ['*']
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:31:05 GMT']
-      ETag: [W/"351cf9ec70891b737bc4a910cb250ee3"]
-      Server: [nginx/1.8.1]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
       Strict-Transport-Security: [max-age=31536000]
       Vary: [Accept-Encoding]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
       X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['981']
-      X-Request-Id: [c3964527-8db4-4de3-a50f-6c8aa7d82473]
-      X-Runtime: ['0.143614']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [789877da-a3f7-4e04-bd8d-a5da43e53b97]
+      X-Runtime: ['0.068441']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [5292393a-9b07-45dc-8c72-3857894efdfd]
+      X-Runtime: ['0.111012']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [5ec657f5-9957-4c90-a648-fbdcf9204e69]
+      X-Runtime: ['0.065822']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [9bee57f8-48d3-4768-a587-29e53b35b463]
+      X-Runtime: ['0.089263']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [bd8df3e8-b2fc-41e8-a85d-02da4a4243c1]
+      X-Runtime: ['0.080945']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [fa622c92-afae-49ba-bfdc-b16bf083e9c9]
+      X-Runtime: ['0.071242']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIRU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:44 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [39e3f58e-48e1-4020-a26d-4bb1d6eaae15]
+      X-Runtime: ['0.072985']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [32e3f829-0949-484d-85b5-c60014a7c774]
+      X-Runtime: ['0.068346']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [38bbd2f9-0db1-4b11-a2d9-16246bb85de8]
+      X-Runtime: ['0.077995']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [86394be6-62c8-4fe1-ab31-82b78bff4af7]
+      X-Runtime: ['0.062570']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [dbe67feb-6f9a-42d9-997a-27e8ce39a9ff]
+      X-Runtime: ['0.086464']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [686efc1d-3f36-4059-ae0e-18b3bf4b5ad3]
+      X-Runtime: ['0.090538']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [415648f2-7304-4c2c-9015-604fdd3ad1f2]
+      X-Runtime: ['0.061277']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAAzSNPQ/CMAxE/4vnFNklJZANMbEiJhBDBC5Eilyajwnx37FAjO/u6e4F8QZ+1Q+I
+        SGSgzGmvgXOOLK2Va6gMHnITiXIHA7Hsglw5HXhuXCqrPYZU+Otm5W1Vv0dyHWHX45E2frDeLhd6
+        cdKBMUosj58nLSUDnPOU/zC1+mxanS/vDwAAAP//AwBWRId/nQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"8b9d2faf5f1bf0a680897fca1368db81"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [23c6676d-7a37-4c55-abce-1412cea3058f]
+      X-Runtime: ['0.059750']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIVU6lkAA5RR2W7iMBT9l0i8FUhMViQ0CgRayt5AIZ0ZjYxjEkNiB9thSdV/H9PlcUaqFMm5
+        12e59/hVI7HWtoGl67ph3GnimA1Vw3EcwzRcVUsosdbWeEkpoYl2pxHRgxTh7AkfSywkVugdzAR+
+        x3JV+1LhgW44dUOvA31peG3LbJuthrJ4UQI7QolIP3C0zLI7DXPO+FfBSlmU6urn6+fvFOa3CazY
+        i81tjHctzzI9F21dECNkGh4CwMFb8w/HiOVbQnHcQOLUSKp3rwzf9rFd/Ua60wooUyWWSlmIdrOJ
+        yImIOmJUsAw3RKsBc1gxCs+iocSajCeiKROZNPGlYFyK5mcwza/Emt8f64e/Dn2EsBAjfB3GHT8c
+        +sN+tLJH9iTqO611YPq/Sl0Hdv9SEI5Fx7B017Zc17U++iFJKJQlxx1+3dAaGKTDXvI0DP0a6GZi
+        PXenZvA08u9RrRV8MJRKoZbEt1UlprIeE9UQRBJGO1BKiNJctWutbg3ot9CoCl2xawB8f0FF+oer
+        vBa4A4siIwjerNXol3pSkeIDf6nDvKoLjEpO5LUu2QHTzmDBgmgTV/3JRsH/8537MBhTlcFgxfjG
+        iudzFcd6HIcj4a/wmXk9bzsLX/J+NFaYeLbYq8Pbe4D7bNitTlGUx+vxYLLDPfv+kXvL/XHFu7PH
+        RBwPC/MhfrheW/MlmU8W6eHcnVeWohu2cLdnuRyDHdpO8qwVAZgEDxOyVt6n6wJWYrizDpEwksBf
+        R0vnWdD5dJFkVv6012dLCP1DSsXg+RT4+oa80NImz/vKNQPhTUW+AHgxPaDKqXp5YSexe4uAddm2
+        jF3PCJNlNeLPeRo5PXAEZDSww1E4y1YTn6UwL6rzSj2h9vb77S8AAAD//wMAv/CKZuYDAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:45 GMT']
+      ETag: [W/"e4f60051b5172686dd8463e4a4830b8c"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [8c5685c5-4131-467d-9689-26a0012fc52c]
+      X-Runtime: ['0.102091']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIZU6lkAA5RR2W7iMBT9l0i8sTjOChIahU1ACpQGKDAzGhnHTVwSJ7EdllT99zGlfZyRKvnB
+        9/os9x6/aTTUOja0AAC6XtdEkUxUw3Ec3dRdVUskidbReMkYZZFW16joI4ZJ8kSKkghJFPoFJYJ8
+        YLmqPanwEOhOQwcNCFZ6u2OZHdNoKou9EnihjIr4jmNlktQ1wnnGv4qslHmpnn6+fV7nKL1NYIXt
+        0DyE5MVoW2bbxQcXhhibehtD6JCD+YcTnKUHykjYxOLUjKoPr4Tc9rFdcCPVtRzJWInFUuai02ph
+        eqKigTMmsoQ0hdFEKaoyhs6iqcRaGY9ES0YyapFLnnEpWp/BtL4Sa31/rB/ec+BhTITwyXUSdr1g
+        4k12y43prGYTwxzuer73qwQA2sNLTjkRXd0Crm25rmvf+wGNGJIlJ90MuNdqca3B3lbgGhyBnDgh
+        4Xp5uOKA7WrG4M5QKrlaktxWlYTJRkhVQ1BJM9ZFUiIcp6pdM3o1CG6hMRW6Ytcg/P6CivQPV3nN
+        SRfleUIxulmriS+NqKL5HX9poLRqCIJLTuW1IbMjYd3RMhvstmE1nG0V/D/nPESDXjGeR3Ri+Q8X
+        vPOTa+ALbw9VPMPgstjPpqvloyoM0qfreaw4lg4zR/Ic2tuqtB9YbIcUexb2N+Ua9k/b3Ww2nZ1F
+        NfDHmJtn5IrwnE0HKpcRH4+Ft9UpiwfDZWo9l3paFcFpMefb4ZYWGd0pJ3X8U/IUBJGXELRI5sOB
+        UyxC0/Gvy8tcqezltEfy48HA3mowLvor96w/R6sdTm4eAMwRH61TiIQcx7PEHh2xm27wiGyO44kC
+        hMBmBlpD9vrEH43Da8DC0X4OQnt68rK4SPPqvFbfqL3/fv8LAAD//wMALttiPOoDAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:46 GMT']
+      ETag: [W/"114c6e516639e5f00ebab866a93434a7"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [f5861774-e24d-43f2-832d-cc6f3a9a7f82]
+      X-Runtime: ['0.146109']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIZU6lkAA5RR2Y7iMBD8l0i8EUicGwmtAgkMyzmcgd3VyjgmMSRxiB0CjObf18zxOCuN5Ifu
+        UlV1d/lFIqHUMoGhKIqq1iV2TgYCsCxL1VVb9BxyLLUkViKEcYhDqS4R1oUZwskcn0vMuMBaB5gw
+        /MYuRO9yoQCKasmqIgNlqTotQ2/pWkMM2QmDA8kIi7/kGZ88XBS0kFpZmSR1iZY8L4Xg18tHOYHp
+        YzMjdEJ9H+KD5hi6Y6O9DUKEdNVBAFh4r/8tMKLpnmQ4bCB2aUT3tw0S/LjTtJWHqC7lkMfCLOY8
+        Z61mE5ELYTKiGaMJbjCtAVN4pxmsWEOYNWkRsSaPeNTE15wWnDU/Amt+Jtn8/lo/3M3CFSkzNsS3
+        Qdh2FwP3p2sGu6kPRhP/uTvvur9LRQGmf81JgVlbNRTbNGzbNt/xBYkyyMsCtyPqH6E1ra6WVwOd
+        dDDWevH9yPn5ErFtTfPe+cIjFyfix6EcZ1wOiQAY4YRmbcg5RHEq4JrWqQHlEVkmIhfqGgDfP0+I
+        vpjKbzluwzxPCIKP0TXQu8rRneTv/KsM07vMMCoLwm8ypyectXvP1NsG4d0fB4L+n1f50Ov0w3Ru
+        E3Ci3ZO9zVh3yFxkzXw83Ck02GxGCWHKUZDDzWpVjuYbUcbDuAqr3HFnw8nRcBXv0B+hc9Xb9Ffw
+        hAfrFPQDcCr7gjoUEQeUHzchnBb2k5mvV7s7PM9HT9pYG4PU0XYnXzd7074LBsFsNfP8p1NnW62r
+        lO4BHhrehII968092omE32B7uyzLYk8Wh0GS3I7L9cyz1MAYq1UQ3W4+rnZnaMWBGuix2YnGW211
+        KTS4XF16wdIRy/jzeEcYWewK6zJClm853ehQ0fic5vdqJT5Qev3z+g8AAP//AwAbfAzA+gMAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['682']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:46 GMT']
+      ETag: [W/"920fedbc114f4f26135aba0f969ccf2f"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [850536ed-7f2c-4edc-889b-1079da777eb4]
+      X-Runtime: ['0.143935']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.6.2 python-requests/2.18.1]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/7771418/runs/62500011
+  response:
+    body:
+      string: !!binary |
+        H4sIAIZU6lkAA5RSa4+iMBT9LyR+G7VUXpqYDTjggqNR8b272dRSoStQpAWVyfz3rTOzH3eTTUh6
+        7+k593HKq0IjZWBAHQCgqk8Kv6S+BEzTVDXVkrlAgigDhVcYExKRSHlSKB+hHJN0SS4V4UJigxNK
+        OXlnlzK3hVRAoJptFbQhWKn9ga4NtF5HNjnIAieaU578laf/4ZGyZKUyyKs0fVJYJYpKCr69foYz
+        lD0m06N+pB0jcur1da1v4aMFI4w1tY8hNMlR+1kSzLIjzUnUwbzuxM37BCl57GlY4CF6UgokElks
+        EaLgg24X05ryNmY5Zynp8F4HZahhObryjizWZWXMuyIWcZfcClYK3v00rPvHye7/j/XF3oa2dJnz
+        Cbn70dAOfdvf7U1np/mavtLD9cH+XgEADfdW0JLwoaoDy9AtyzI+8JDGORJVSYZedQnqFnQ2KPI8
+        thTmfp5XnLn+thq5rd7zB1/WKOSK5LGoILloR1QCnArK8iESAuEkk3Cr57QgeFiWS8ulugXh/68n
+        RX/pKu4FGaKiSClGj9Yt6N3acUOLD/6tjbKmzQmuSirubcHOJB96C/a830WNO91J+j++q4ueZynd
+        rpaqcd7cpCen9RTRCbdXq3oebEDkZuMURTEbhbtZIe/DRP6f+3WfVrBOZO6d74E8Ago8HsvASQMY
+        9rCM5kF2jc+1+9WUjeyXhMXLdR1k/mVTI6f5Vd+3ZqzfRuF9vNiV42ugIqMf+bpBErGAJMFf04tl
+        abUBcn/vjjZLdd3Mw4mrYn1/cNK5ZoOpqr1c6GG7trybPXNmgQPO8Lg8/DqFd380EXEzMVXZfLHw
+        2NpYxBNzuuFRtnIDcEC5txxv3NhZLpyNcYfgZTFlySUrmutaPqLy9uPtNwAAAP//AwD5cLYN/gMA
+        AA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['685']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 20 Oct 2017 19:54:46 GMT']
+      ETag: [W/"61e65ee44f407dbb22141a1bf313ee27"]
+      Server: [nginx/1.13.6]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [8c6086e7-9926-4714-9880-5dd2fe67cb6b]
+      X-Runtime: ['0.425254']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -874,71 +1088,23 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic]
+      User-Agent: [python-requests/2.18.1]
     method: GET
-    uri: https://civis-console.s3.amazonaws.com/exports/4539109/35193660/7d9971ab37fc44bc83fa51353bb4569f.csv?AWSAccessKeyId=ASIAI4V244O24R57UEPA&Expires=1477636265&Signature=Ol1GoPEe5Dp9MRxxRJ9KeuQMEsY%3D&response-content-disposition=attachment%3B%20filename%3D%227d9971ab37fc44bc83fa51353bb4569f.csv%22&response-content-type=text%2Fcsv&x-amz-security-token=FQoDYXdzENz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDMnBkSRzh2nEV5IRzSKsAVObXmCiqm2kdjadHnpWQJZsq%2BHjxcGmgFMGilvPWSmIPi8o0J5MAfO2p8mhnn9%2FXMr5kVNXhz4ZbHur0b1olmubLN%2BA2k%2FNilIrD4XKDBLgRgxiNxQXkyfv8iDGiq0RPad84%2F%2Fsf84lt34Hl1C3YQ%2FlpetIRffU0Cf%2F4MdZy9VkTvcrjoTSfTauNVsQrYul2lXV%2B5AvusMNPY6gfywUi8uUnO7aEZ1vHTB1qz4o6ezDwAU%3D
+    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/exports/7771418/62500011/5d9d4bdef395498cb82dcc419c227eb4_recombined.csv.gz?AWSAccessKeyId=ASIAIXY7BX4I45T5SUZA&Expires=1508658886&Signature=FuqJv%2BVadFFoRt7YPnusoEIWuCE%3D&response-content-disposition=attachment%3B%20filename%3D%225d9d4bdef395498cb82dcc419c227eb4_recombined.csv.gz%22&response-content-type=application%2Fx-gzip&x-amz-security-token=FQoDYXdzEMX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDNliWTR16kVx%2BfUMaiKsATTvPJV0dEmGladgoCSXNp%2BShfinYU9iu2vh%2BFkyJ%2BJi0Fsg%2BBlJ2S3c%2BPJmwgkvEH7%2FALhogRUvJmIqVvaBzjvyW7g5xCSyGQXrGwJ1a69dI56ehtQ2ehcHlq884v60nIYECVR1UzPSKE1c5YZBlP4A0M14LqiZWU8FxANBNJB0k2bRZjfSyICKtgzK71%2FQQFoU6QgK7MVsdmTEJ0ZanFRGVEgBRQBV6y20LQMohqmpzwU%3D
   response:
     body:
       string: !!binary |
-        H4sIAGf2EFgAA0vUSdJJ5jLUMdIx5gIAebO7uwwAAAA=
+        H4sIAAAAAAAEA1MyVNJRMgJiYyUuAKSR3egMAAAA
     headers:
       Accept-Ranges: [bytes]
-      Content-Disposition: [attachment; filename="7d9971ab37fc44bc83fa51353bb4569f.csv"]
-      Content-Encoding: [gzip]
-      Content-Length: ['32']
-      Content-Type: [text/csv]
-      Date: ['Wed, 26 Oct 2016 18:31:06 GMT']
-      ETag: ['"e68ee1a238d8c92ca13a5890e0bb78f1"']
-      Last-Modified: ['Wed, 26 Oct 2016 18:31:05 GMT']
+      Content-Disposition: [attachment; filename="5d9d4bdef395498cb82dcc419c227eb4_recombined.csv.gz"]
+      Content-Length: ['30']
+      Content-Type: [application/x-gzip]
+      Date: ['Fri, 20 Oct 2017 19:54:48 GMT']
+      ETag: ['"127be87edf89b6621c68647ed84e19fb"']
+      Last-Modified: ['Fri, 20 Oct 2017 19:54:46 GMT']
       Server: [AmazonS3]
-      x-amz-id-2: [nz7ljKnhrzodQz/9+fvre3DJOEGtxDUpIQf49BHSnY+2epW/Dxe5HsokcJDGeXnniIfCMBiw6cs=]
-      x-amz-request-id: [381F5265EFA48FE5]
-      x-amz-server-side-encryption: [AES256]
+      x-amz-id-2: [1Mu2VF8SSvr8Sz0gF7HAo4u1VbdLXE5CxHpx5ycS98BzCUVhP4OrYDQQTFP5mG/GJjEuywJj0Ec=]
+      x-amz-request-id: [7B5AC0E56D4620D9]
     status: {code: 200, message: OK}
-- request:
-    body: '{"status": true}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['16']
-      Content-Type: [application/json]
-      User-Agent: [civisclient/2.0.0]
-    method: PUT
-    uri: https://api.civisanalytics.com/scripts/sql/4539109/archive
-  response:
-    body:
-      string: !!binary |
-        H4sIAGr2EFgAA7RUW0/bMBT+K5UfJ2iTpk1J3jqYRLUbDKRJTFPl2ieNh2NnvrBWFf99x26bAgMJ
-        HvZSxd+5fefydUMEJ+VonBVpUhwRRRsgJZnwopikdJFNKjYaLdhJVtFxmo2zxWI0zouKHBG3boPn
-        1eUnfDAD1AGfOkSGSZofp8nxML9OT8osKdOinyTJDbr5lr/klpZJ3k+H0Y16V2tDyk3kNknyjtdH
-        EK7uzdQSjNVShpQWzM54Kx7gQgknqLQhaIZvraRQ6FUhBvdHxDpkgkbrGQPgwNGnwiBbv8hvtG+j
-        NfoXMIe5f/zEFzWg3AyZKi/lltGpVg5WIY3xSoEh0Y02uxBqlr7BIHxukIuw19C0MhKK/NDbL+SW
-        S2c7VKiMbv5F3Q45gxYUD9lPtVfuqfmKGdG6L3FkWwsO5jYwIRwcFXFktBV9Ju6EpYrKtRPM9plu
-        BjbG2oH9LQe7k8HOsMW3xQxiRFgCww69hFB8/9310wFndL2bWweda2+eYp+F8g6eot+w1AWYELBN
-        jGWVdqISjDqhVWzcG7mPC+dg7YcGB3HlF2HNHZ8Hpvear5/Dp5wb/N6zqBDyBp4z4f1J+Z0ahUfb
-        MX+U8KsipTMeujR74D6OPARO7f8VicIbxgFOD0ckGrjRwYVMGzA4w8Fpjb9LjdGS2uC9p5SN0yLL
-        8+R5rb3yHwNDzSvcXqtcMEYf7qAWHHXSaQ5LLcFdbMV90BU1rBZ34S6328BDDr2ARK/eu14QYw+P
-        nDpW91EDcyYFim+OC3XzSqwcbi5UXrUUVcmnj6VvoNEOzrWNBbNhHEwQL64lIKNJkSGmOVwYuBPw
-        582l7/8CAAD//wMArdoN3eIFAAA=
-    headers:
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Connection: [keep-alive]
-      Content-Encoding: [gzip]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 26 Oct 2016 18:31:06 GMT']
-      ETag: [W/"c41d66ac335c87ad8db465a33c00522c"]
-      Server: [nginx/1.8.1]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-RateLimit-Limit: ['1000']
-      X-RateLimit-Remaining: ['980']
-      X-Request-Id: [bbd6664a-0d68-43e2-9687-1b65b191f27d]
-      X-Runtime: ['0.217793']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
-recorded_with: VCR
 version: 1

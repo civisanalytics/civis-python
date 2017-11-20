@@ -142,6 +142,7 @@ Custom Dependencies
 -------------------
 
 Installing packages from PyPI is straightforward. You can specify a `dependencies`
+
 argument to :class:`~civis.ml.ModelPipeline` which will install the
 dependencies in your runtime environment. VCS support is also enabled
 (see `docs
@@ -151,7 +152,6 @@ URL in the form of, for example, ``git+https://github.com/scikit-learn/scikit-le
 
 CivisML will run ``pip install [your package here]``. We strongly encourage you to pin
 package versions for consistency. Example code looks like:
-
 
 .. code-block:: python
 
@@ -170,8 +170,8 @@ password field of a credential, and pass the credential name to the ``git_token_
 argument in :class:`~civis.ml.ModelPipeline`. This also works with other hosting services.
 A simple example of how to do this with API looks as follows
 
-
 .. code-block:: python
+
 		
   import civis
   password = 'abc123'  # token copied from https://github.com/settings/tokens
@@ -231,24 +231,6 @@ Examples
 This is called as soon as the run completes. It takes a single argument, the
 :class:`~concurrent.futures.Future` for the completed job.
 You can use this method to chain jobs together:
-
-
-.. code-block:: python
-
-  from concurrent import futures
-  from civis.ml import ModelPipeline
-  import pandas as pd
-  df = pd.read_csv('data.csv')
-  training, predictions = [], []
-  model = ModelPipeline('sparse_logistic', dependent_variable='type')
-  training.append(model.train(df))
-  training[-1].add_done_callback(lambda fut: predictions.append(model.predict(df)))
-  futures.wait(training)  # Blocks until all training jobs complete
-  futures.wait(predictions)  # Blocks until all prediction jobs complete
-
-
-You can create and train multiple models at once to find the best approach
-for solving a problem. For example:
 
 
 .. code-block:: python

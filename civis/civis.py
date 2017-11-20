@@ -3,7 +3,7 @@ import logging
 
 from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
-from civis._utils import open_session, get_api_key
+from civis._utils import get_api_key
 
 
 log = logging.getLogger(__name__)
@@ -281,14 +281,15 @@ class APIClient(MetaMixin):
                              "'pandas'")
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
-        self._session = session = open_session(session_auth_key, retry_total)
+        self._session_kwargs = {'api_key': session_auth_key,
+                                'max_retries': retry_total}
 
         classes = generate_classes_maybe_cached(local_api_spec,
                                                 session_auth_key,
                                                 api_version,
                                                 resources)
         for class_name, cls in classes.items():
-            setattr(self, class_name, cls(session, return_type))
+            setattr(self, class_name, cls(self._session_kwargs, return_type))
 
     @property
     def feature_flags(self):
@@ -298,3 +299,6 @@ class APIClient(MetaMixin):
         self._feature_flags = tuple(flag for flag, value
                                     in me['feature_flags'].items() if value)
         return self._feature_flags
+
+    def __getstate__(self):
+        raise RuntimeError("The APIClient object can't be pickled.")

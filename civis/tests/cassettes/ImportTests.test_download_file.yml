@@ -5,30 +5,23 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic]
+      User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: https://httpbin.org/stream/3
+    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/exports/8088768/64214686/b0d0b962d11f4a1f8e7d7ee22279b7f5_recombined.csv.gz?AWSAccessKeyId=ASIAJRB6EHAE57QQX6LQ&Expires=1510722945&Signature=9gCMLcv0%2FFpXyioFs9IhxRjgWys%3D&response-content-disposition=attachment%3B%20filename%3D%22b0d0b962d11f4a1f8e7d7ee22279b7f5_recombined.csv.gz%22&response-content-type=application%2Fx-gzip&x-amz-security-token=FQoDYXdzEDIaDIe8sIndbfCdrThhTiKsAWdXrOLx2fIcQqI7YFwdHdK37f8M%2F3QRAVUgZ%2F2XhV7t3UXftbdT0NqXVihFAHD%2BWFztXDD7XXFvoVg7bhUdSL6mLjOrOBzzSmogYngRccTYKEBTR%2Fkl6XtQniSjBQp5Jy5LaQPTpMTJk42X2jqi%2Fk0EAfAq072DnwZtOEB8e1ArWjzoimpsW7Vy3e7snhmF%2FWY%2BKpREJMW8zX%2BGSmhnTXvpPqNW3Kob9kwKH3Mowaan0AU%3D
   response:
-    body: {string: '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 0, "origin": "108.211.184.39"}
-
-        {"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 1, "origin": "108.211.184.39"}
-
-        {"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org",
-        "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0
-        CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 2, "origin": "108.211.184.39"}
-
-        '}
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA1MyVNJRMgJiYyUuAKSR3egMAAAA
     headers:
-      Access-Control-Allow-Credentials: ['true']
-      Access-Control-Allow-Origin: ['*']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      Date: ['Tue, 25 Oct 2016 02:22:42 GMT']
-      Server: [nginx]
+      Accept-Ranges: [bytes]
+      Content-Disposition: [attachment; filename="b0d0b962d11f4a1f8e7d7ee22279b7f5_recombined.csv.gz"]
+      Content-Length: ['30']
+      Content-Type: [application/x-gzip]
+      Date: ['Mon, 13 Nov 2017 17:30:54 GMT']
+      ETag: ['"127be87edf89b6621c68647ed84e19fb"']
+      Last-Modified: ['Mon, 13 Nov 2017 17:15:45 GMT']
+      Server: [AmazonS3]
+      x-amz-id-2: [YdomfPi5oU0CdvEync2MzBB3yAmfLHa9D7PsuvkrGfbHuZ7RVAxlcfvyUSs6ZnvJnxN68wOA1Rs=]
+      x-amz-request-id: [29A4672871BEF060]
     status: {code: 200, message: OK}
-recorded_with: VCR
 version: 1

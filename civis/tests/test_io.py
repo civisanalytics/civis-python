@@ -89,15 +89,10 @@ class ImportTests(CivisVCRTestCase):
                 result = civis.io.civis_to_csv(tmp.name, sql, database,
                                                polling_interval=POLL_INTERVAL)
                 result = result.result()
+                cls.export_url = result['output'][0]['path']
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_get_url_from_file_id(self, *mocks):
-        client = civis.APIClient()
-        url = civis.io._files._get_url_from_file_id(self.file_id, client)
-        assert url.startswith('https://civis-console.s3.amazonaws.com/files/')
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
@@ -121,6 +116,20 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result, int)
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_large_file_to_civis(self, *mocks):
+        curr_size = civis.io._files.MIN_MULTIPART_SIZE
+        civis.io._files.MIN_MULTIPART_SIZE = 1
+        with tempfile.NamedTemporaryFile() as tmp:
+            tmp.write(b'a,b,c\n1,2,3')
+            tmp.flush()
+            tmp.seek(0)
+            result = civis.io.file_to_civis(tmp, tmp.name)
+
+            civis.io._files.MIN_MULTIPART_SIZE = curr_size
+
+        assert isinstance(result, int)
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_file(self, *mocks):
         buf = BytesIO()
         civis.io.civis_to_file(self.file_id, buf)
@@ -139,6 +148,18 @@ class ImportTests(CivisVCRTestCase):
                                            existing_table_rows='truncate',
                                            polling_interval=POLL_INTERVAL)
             result = result.result()  # block until done
+
+        assert isinstance(result.id, int)
+        assert result.state == 'succeeded'
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_civis_file_to_table(self, *mocks):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        result = civis.io.civis_file_to_table(self.file_id, database, table,
+                                              existing_table_rows='truncate',
+                                              polling_interval=POLL_INTERVAL)
+        result = result.result()  # block until done
 
         assert isinstance(result.id, int)
         assert result.state == 'succeeded'
@@ -185,7 +206,8 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         result = civis.io.civis_to_multifile_csv(
             sql, database='redshift-general', polling_interval=POLL_INTERVAL)
-        assert set(result.keys()) == {'entries', 'query', 'header'}
+        assert set(result.keys()) == {'entries', 'query', 'header',
+                                      'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql
         assert result['header'] == ['a', 'b', 'c']
         assert isinstance(result['entries'], list)
@@ -220,13 +242,10 @@ class ImportTests(CivisVCRTestCase):
             civis.io._tables._get_sql_select(table, "column_a")
 
     def test_download_file(self, *mocks):
-        url = "https://httpbin.org/stream/3"
-        x = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 0, "origin": "108.211.184.39"}\n'  # noqa: E501
-        y = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 1, "origin": "108.211.184.39"}\n'  # noqa: E501
-        z = '{"url": "https://httpbin.org/stream/3", "headers": {"Host": "httpbin.org", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "User-Agent": "python-requests/2.7.0 CPython/3.4.3 Linux/3.19.0-25-generic"}, "args": {}, "id": 2, "origin": "108.211.184.39"}\n'  # noqa: E501
-        expected = x + y + z
+        expected = '"1","2","3"\n'
         with tempfile.NamedTemporaryFile() as tmp:
-            civis.io._tables._download_file(url, tmp.name)
+            civis.io._tables._download_file(self.export_url, tmp.name,
+                                            b'', 'none')
             with open(tmp.name, "r") as f:
                 data = f.read()
         assert data == expected
@@ -341,3 +360,24 @@ def test_load_json(mock_c2f):
     mock_c2f.side_effect = _dump_json
     out = civis.io.file_to_json(13, client=mock.Mock())
     assert out == obj
+
+
+@mock.patch('civis.io._files._civis_to_file')
+@mock.patch('%s.open' % __name__, create=True)
+def test_civis_to_file_local(mock_open, mock_civis_to_file_helper):
+    # Test that passing a path to civis_to_file opens a file.
+    civis.io.civis_to_file(123, "foo")
+    mock_open.return_value = mock_file = mock.Mock()
+    assert mock_open.called_once_with("foo", "wb")
+    assert mock_civis_to_file_helper.called_once_with(123, mock_file)
+
+
+@mock.patch('civis.io._files._file_to_civis')
+@mock.patch('%s.open' % __name__, create=True)
+def test_file_to_civis(mock_open, mock_file_to_civis_helper):
+    # Test that passing a path to file_to_civis opens a file.
+    civis.io.file_to_civis("foo", "foo_name")
+    mock_open.return_value = mock_file = mock.Mock()
+    assert mock_open.called_once_with("foo", "rb")
+    assert mock_file_to_civis_helper.called_once_with(
+        "foo", "foo_name", mock_file)

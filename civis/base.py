@@ -8,6 +8,7 @@ import six
 import warnings
 
 from civis.response import PaginatedResponse, convert_response_data_type
+from civis._utils import open_session
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -78,8 +79,8 @@ class Endpoint(object):
 
     _lock = threading.Lock()
 
-    def __init__(self, session, return_type='civis'):
-        self._session = session
+    def __init__(self, session_kwargs, return_type='civis'):
+        self._session_kwargs = session_kwargs
         self._return_type = return_type
         self._base_url = get_base_url()
 
@@ -93,8 +94,9 @@ class Endpoint(object):
         url = self._build_path(path)
 
         with self._lock:
-            response = self._session.request(method, url, json=data,
-                                             params=params, **kwargs)
+            with open_session(**self._session_kwargs) as sess:
+                response = sess.request(method, url, json=data,
+                                        params=params, **kwargs)
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]

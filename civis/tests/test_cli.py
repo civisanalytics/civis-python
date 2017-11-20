@@ -36,7 +36,10 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
     mock_retrieve_spec_dict.return_value = civis_spec
 
     cli = generate_cli()
-    expected_cli_keys = set(BASE_RESOURCES_V1) | {'civis'}
+    expected_cli_keys = (
+        {x.replace('_', '-') for x in BASE_RESOURCES_V1} |
+        {'civis'}
+    )
     assert sorted(cli.commands.keys()) == sorted(expected_cli_keys)
 
     # Check a regular command.
