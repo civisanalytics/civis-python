@@ -545,7 +545,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 @deprecate_param('v2.0.0', 'api_key')
 def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
-                       distkey=None, sortkey1=None, sortkey2=None,
+                       diststyle=None, distkey=None,
+                       sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
                        polling_interval=None,
                        archive=False, hidden=True, **kwargs):
@@ -577,6 +578,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -632,7 +636,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
-                              distkey=distkey,
+                              diststyle=diststyle, distkey=distkey,
                               sortkey1=sortkey1, sortkey2=sortkey2,
                               delimiter=delimiter, headers=headers,
                               credential_id=credential_id,
@@ -645,7 +649,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
 @deprecate_param('v2.0.0', 'api_key')
 def csv_to_civis(filename, database, table, api_key=None, client=None,
                  max_errors=None, existing_table_rows="fail",
-                 distkey=None, sortkey1=None, sortkey2=None,
+                 diststyle=None, distkey=None,
+                 sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
                  credential_id=None, polling_interval=None,
                  archive=False, hidden=True):
@@ -673,6 +678,9 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -726,7 +734,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         fut = civis_file_to_table(file_id, database, table,
                                   client=client, max_errors=max_errors,
                                   existing_table_rows=existing_table_rows,
-                                  distkey=distkey,
+                                  diststyle=diststyle, distkey=distkey,
                                   sortkey1=sortkey1, sortkey2=sortkey2,
                                   delimiter=delimiter, headers=headers,
                                   credential_id=credential_id,
@@ -737,7 +745,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
 
 def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
-                        distkey=None, sortkey1=None, sortkey2=None,
+                        diststyle=None, distkey=None,
+                        sortkey1=None, sortkey2=None,
                         delimiter=",", headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
@@ -762,6 +771,9 @@ def civis_file_to_table(file_id, database, table, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -813,7 +825,8 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     options = dict(max_errors=max_errors,
                    existing_table_rows=existing_table_rows,
-                   distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
+                   diststyle=diststyle, distkey=distkey,
+                   sortkey1=sortkey1, sortkey2=sortkey2,
                    column_delimiter=delimiter, first_row_is_header=headers)
 
     client.imports.post_syncs(
