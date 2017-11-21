@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-
+- ``civis.io.dataframe_to_civis``, ``civis.io.csv_to_civis``, and ``civis.io.civis_file_to_table`` functions now support the `diststyle` parameter.
 
 ## 1.7.1 - 2017-11-16
 ### Fixed
