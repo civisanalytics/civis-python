@@ -131,12 +131,49 @@ parallel. ``n_jobs`` defaults to 1 (no parallelization).
 `Hyperband <https://arxiv.org/abs/1603.06560>`_
 is an efficient approach to hyperparameter optimization, and
 *recommended over grid search where possible*. CivisML will perform
-hyperband optimization if you pass the string ``'hyperband'`` to
-``cross_validation_parameters``. Hyperband is currently only supported for the following models:
+hyperband optimization for a pre-defined model  if you pass the string
+``'hyperband'`` to ``cross_validation_parameters``. Hyperband is
+currently only supported for the following models:
 "gradient_boosting_classifier", "random_forest_classifier",
 "extra_trees_classifier", "multilayer_perceptron_classifier",
 "gradient_boosting_regressor", "random_forest_regressor",
 "extra_trees_regressor", and "multilayer_perceptron_regressor".
+Note that if you want to use hyperband with a custom model, you will need to
+wrap your estimator in a
+:class:`civismlext.hyperband.HyperbandSearchCV
+       https://github.com/civisanalytics/civisml-extensions/blob/5546ba1a482462662f3f6ecdb8fc74f1087f8dbf/civismlext/hyperband.py#L43`_
+       estimator yourself.
+
+CivisML runs pre-defined with hyperband using the following
+distributions:
+
++------------------------------------+--------------------+-----------------------------------------------------------------------------+
+| Models                             | Cost               | Hyperband                                                                   |
+|                                    | Parameter          | Distributions                                                               |
++====================================+====================+=============================================================================+
+| | gradient_boosting_classifier     | | ``n_estimators`` | | ``max_depth: [1, 2, 5, 10, 15]``                                          |
+| | gradient_boosting_regressor      | | ``min = 100,``   | | ``max_features: [None, 'sqrt', 'log2', 0.5, 0.3, 0.1, 0.05, 0.01]``       |
+|                                    | | ``max = 10000``  | | ``learning_rate: truncexpon(b=5, loc=.0003, scale=1./167.)``              |
++------------------------------------+--------------------+-----------------------------------------------------------------------------+
+| | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
+| | random_forest_regressor          | | ``min = 100,``   | | ``max_features: truncexpon(b=10., loc=.01, scale=1./10.11)``              |
+| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10, None]``                                  |
+| | extra_trees_regressor            |                    |                                                                             |
++------------------------------------+--------------------+-----------------------------------------------------------------------------+
+| | multilayer_perceptron_classifier | | ``n_epochs``     | | ``keep_prob: uniform()``                                                  |
+| | multilayer_perceptron_regressor  | | ``min = 5,``     | | ``hidden_units: [(), (16,), (32,), (64,), (64, 64), (64, 64, 64),``       |
+|                                    | | ``max = 50``     | |                  ``(128,), (128, 128), (128, 128, 128), (256,),``         |
+|                                    |                    | |                  ``(256, 256), (256, 256, 256), (512, 256, 128, 64),``    |
+|                                    |                    | |                  ``(1024, 512, 256, 128)]``                               |
+|                                    |                    | | ``learning_rate: [1e-2, 2e-2, 5e-2, 8e-2, 1e-3, 2e-3, 5e-3, 8e-3, 1e-4]`` |
++------------------------------------+--------------------+-----------------------------------------------------------------------------+
+
+The truncated exponential distribution for the gradient boosting
+classifier and regressor was chosen to skew the distribution toward
+small values, ranging between .0003 and .03, with a mean close to
+.006. Similarly, the truncated exponential distribution for the random
+forest and extra trees models skews toward small values, ranging
+between .01 and 1, and with a mean close to .1.
 
 Custom Dependencies
 -------------------
