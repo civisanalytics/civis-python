@@ -80,3 +80,8 @@ else:
                 if _warn:
                     _warnings.warn("Implicitly cleaning up {!r}".format(self),
                                    ResourceWarning)
+
+try:
+    from weakref import finalize as weakref_finalize  # noqa
+except ImportError:
+    from backports.weakref import finalize as weakref_finalize  # noqa

@@ -2,20 +2,24 @@ from __future__ import absolute_import
 
 from abc import ABCMeta, abstractmethod
 from builtins import super
-from concurrent.futures import Executor
+from concurrent.futures import Executor, Future, ThreadPoolExecutor
 from concurrent import futures
 import copy
 import datetime
 import logging
 import time
 import threading
+from collections import deque
+import weakref
+from civis.compat import weakref_finalize
 import warnings
 
 import six
 
 from civis import APIClient
-from civis.base import CivisAPIError, DONE
+from civis.base import DONE, NOT_FINISHED, CANCELLED, CivisAPIError
 from civis.polling import PollableResult
+from civis.response import Response
 
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
@@ -214,8 +218,12 @@ class ContainerFuture(CivisFuture):
     ----------
     job_id: int
         The ID for the container/script/job.
-    run_id : int
-        The ID for the run to monitor
+    run_id : int or None
+        The ID for the run to monitor. If None, then the container state
+        is set to 'queued' and the future will never complete. The private
+        method ``_start_container`` can be used to start the container using
+        ``civis.APIClient.jobs.post_runs``. This functionality is meant
+        for internal usage only.
     max_n_retries : int, optional
         If the job generates an exception, retry up to this many times
     polling_interval: int or float, optional
@@ -239,14 +247,38 @@ class ContainerFuture(CivisFuture):
                  polling_interval=None,
                  client=None,
                  poll_on_creation=True):
-        if client is None:
-            client = APIClient(resources='all')
-        super().__init__(client.scripts.get_containers_runs,
-                         [int(job_id), int(run_id)],
-                         polling_interval=polling_interval,
-                         client=client,
-                         poll_on_creation=poll_on_creation)
+        Future.__init__(self)
+        self.client = client or APIClient(resources='all')
+        self.poller_args = [int(job_id), run_id]
+        self._polling_interval = polling_interval
+        self._poll_on_creation = poll_on_creation
         self._max_n_retries = max_n_retries
+
+        if run_id is not None:
+            self._init_polling_pubnubbing()
+
+    def _init_polling_pubnubbing(self, poll_on_creation=None):
+        self.poller_args[1] = int(self.poller_args[1])
+        super().__init__(
+            self.client.scripts.get_containers_runs,
+            self.poller_args,
+            polling_interval=self._polling_interval,
+            client=self.client,
+            poll_on_creation=(
+                poll_on_creation
+                if poll_on_creation is not None
+                else self._poll_on_creation))
+        self._fully_initted = True
+
+    def _start_container(self, check_state=True):
+        if check_state and self.done():
+            return
+        run = self.client.jobs.post_runs(self.job_id)
+        self.poller_args[1] = int(run.id)
+        self._last_result = run
+        self._last_polled = time.time()
+        if not getattr(self, '_fully_initted', False):
+            self._init_polling_pubnubbing(poll_on_creation=False)
 
     @property
     def job_id(self):
@@ -256,6 +288,16 @@ class ContainerFuture(CivisFuture):
     def run_id(self):
         return self.poller_args[1]
 
+    def _check_result(self):
+        with self._condition:
+            if self.run_id is None:
+                if hasattr(self, '_result') and self._result is not None:
+                    return self._result
+                else:
+                    return Response({"state": NOT_FINISHED[0]})
+            else:
+                return super()._check_result()
+
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
         # remaining, retry the run instead of erroring.
@@ -264,11 +306,9 @@ class ContainerFuture(CivisFuture):
                 # Start a new run of the script and update
                 # the run ID used by the poller.
                 self.cleanup()
-                self._last_result = self.client.jobs.post_runs(self.job_id)
                 orig_run_id = self.run_id
-                self.poller_args[1] = run_id = self._last_result.id
+                self._start_container(check_state=False)
                 self._max_n_retries -= 1
-                self._last_polled = time.time()
 
                 # Threads can only be started once, and the last thread
                 # stopped in cleanup. Start a new polling thread.
@@ -281,7 +321,7 @@ class ContainerFuture(CivisFuture):
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',
                           self.job_id, orig_run_id,
-                          run_id, self._max_n_retries)
+                          self.run_id, self._max_n_retries)
             else:
                 super()._set_api_exception(exc=exc, result=result)
 
@@ -300,7 +340,11 @@ class ContainerFuture(CivisFuture):
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
                 try:
-                    self._result = self.client.scripts.post_cancel(self.job_id)
+                    if self.run_id is not None:
+                        self._result = self.client.scripts.post_cancel(
+                            self.job_id)
+                    else:
+                        self._result = Response({'state': CANCELLED[0]})
                 except CivisAPIError as exc:
                     if exc.status_code == 404:
                         # The most likely way to get this error
@@ -343,10 +387,12 @@ class _CivisExecutor(Executor):
                  max_n_retries=0,
                  client=None,
                  polling_interval=None,
-                 inc_script_names=False):
+                 inc_script_names=False,
+                 max_workers=-1):
         self.max_n_retries = max_n_retries
         self.hidden = hidden
         self.name = name
+        self.max_workers = max_workers if max_workers is not None else -1
         self.polling_interval = polling_interval
         self.inc_script_names = inc_script_names
         self._script_name_counter = 0
@@ -354,28 +400,85 @@ class _CivisExecutor(Executor):
         self._shutdown_lock = threading.Lock()
         self._shutdown_thread = False
 
-        if client is None:
-            client = APIClient(resources='all')
-        self.client = client
+        self.client = client or APIClient(resources='all')
 
         # A list of ContainerFuture objects for submitted jobs.
         self._futures = []
+        if self.max_workers > 0:
+            self._init_worker()
+        elif self.max_workers == 0:
+            raise ValueError("`max_workers` cannot be zero!")
 
-    def _make_future(self, job_id, run_id):
-        """Instantiates a :class:`~civis.futures.ContainerFuture`,
-        adds it to the internal list of futures, and returns it.
-        This is a helper method for :func:`submit`.
-        """
-        future = ContainerFuture(job_id, run_id,
-                                 polling_interval=self.polling_interval,
-                                 max_n_retries=self.max_n_retries,
-                                 client=self.client,
-                                 poll_on_creation=False)
+    def _init_worker(self):
+        """start the worker and attach an exit handler"""
+        self._submitted = deque()
+        self._submit_condition = threading.Condition()
+        self._worker_exc = ThreadPoolExecutor(max_workers=1)
+        self._worker_exc.submit(self._worker)
+        self._worker_exc.shutdown(wait=False)
 
-        self._futures.append(future)
+        # use this function to shutdown any workers
+        def _finalize():
+            self._submitted.append(None)
+            self._wakeup_worker()
 
-        # Return a ContainerFuture object with the job ID.
-        return future
+        self._finalize_worker_exc = weakref_finalize(self, _finalize)
+
+    def _wakeup_worker(self):
+        """Tell the worker to work if it is sleeping."""
+        with self._submit_condition:
+            self._submit_condition.notify()
+
+    def _worker(self):
+        """worker thread to control the number of running jobs"""
+        # this callback makes each future remove itself from the
+        # `_running` deque and notify the worker
+        # uses weakref's to make sure if things are GC'ed we don't throw
+        # an error
+        def _make_callback(_deque_wr, _lock_wr):
+            def _callback(fut):
+                # remove self from running queue
+                _deque = _deque_wr()
+                if _deque is not None:
+                    try:
+                        _deque.remove(fut)
+                    except ValueError:
+                        pass
+
+                # tell the worker to work!
+                _lock = _lock_wr()
+                if _lock is not None:
+                    with _lock:
+                        _lock.notify()
+            return _callback
+
+        _running = deque()
+
+        # the worker will exit when it gets None
+        while True:
+            with self._submit_condition:
+                # use a timeout to make sure we never don't submit stuff
+                self._submit_condition.wait_for(
+                    lambda: (len(_running) < self.max_workers and
+                             len(self._submitted) > 0),
+                    timeout=15.0)
+
+                try:
+                    fut = self._submitted.popleft()
+                    if fut is None:
+                        return
+                    elif fut.done():
+                        continue
+                    elif len(_running) < self.max_workers:
+                        fut._start_container()
+                        _running.append(fut)
+                        fut.add_done_callback(_make_callback(
+                            weakref.ref(_running),
+                            weakref.ref(self._submit_condition)))
+                    else:
+                        self._submitted.appendleft(fut)
+                except IndexError:
+                    pass
 
     def submit(self, fn, *args, **kwargs):
         """Submits a callable to be executed with the given arguments.
@@ -427,18 +530,31 @@ class _CivisExecutor(Executor):
             job = self._create_job(name=name,
                                    arguments=arguments,
                                    cmd=cmd)
-            run = self.client.jobs.post_runs(job.id)
-            log.debug('Container "{}" created with script ID {} and '
-                      'run ID {}'.format(name, job.id, run.id))
+            log.debug('Container "{}" created with '
+                      'script ID {}'.format(name, job.id))
 
-            return self._make_future(job.id, run.id)
+            future = ContainerFuture(
+                job.id, None,
+                polling_interval=self.polling_interval,
+                max_n_retries=self.max_n_retries,
+                client=self.client,
+                poll_on_creation=False)
+
+            self._futures.append(future)
+            if self.max_workers > 0:
+                self._submitted.append(future)
+                self._wakeup_worker()
+            else:
+                future._start_container()
+
+            return future
 
     @abstractmethod
     def _create_job(self, name, arguments=None, cmd=None):
         raise NotImplementedError("Implement in the child class")
 
     def shutdown(self, wait=True):
-        """Wait until all Civis jobs started by this are in done states
+        """Wait until all Civis jobs started by this are in done states.
 
         Parameters
         ----------
@@ -449,11 +565,20 @@ class _CivisExecutor(Executor):
         with self._shutdown_lock:
             self._shutdown_thread = True
 
+        # tell the worker to stop
+        if self.max_workers > 0:
+            self._submitted.append(None)
+            self._wakeup_worker()
+
         if wait:
             futures.wait(self._futures)
 
     def cancel_all(self):
-        """Send cancel requests for all running Civis jobs"""
+        """Send cancel requests for all running Civis jobs."""
+        # prevent the worker from submitting any more jobs
+        if self.max_workers > 0:
+            self._submitted.clear()
+
         for f in self._futures:
             # The ContainerFuture is smart enough to only cancel the run
             # if the run is still in progress.
@@ -513,6 +638,9 @@ class _ContainerShellExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
+    max_workers : int
+        The maximum number of containers allowed to run simultaneously. If
+        ``max_workers`` < 0, then no maximum is set.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -529,6 +657,7 @@ class _ContainerShellExecutor(_CivisExecutor):
                  client=None,
                  polling_interval=None,
                  inc_script_names=False,
+                 max_workers=-1,
                  **kwargs):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
@@ -546,7 +675,8 @@ class _ContainerShellExecutor(_CivisExecutor):
                          client=client,
                          max_n_retries=max_n_retries,
                          polling_interval=polling_interval,
-                         inc_script_names=inc_script_names)
+                         inc_script_names=inc_script_names,
+                         max_workers=max_workers)
 
     def _create_job(self, name, arguments=None, cmd=None):
         # Combine instance and input arguments into one dictionary.
@@ -613,6 +743,9 @@ class CustomScriptExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
+    max_workers : int
+        The maximum number of containers allowed to run simultaneously. If
+        ``max_workers`` < 0, then no maximum is set.
 
     See Also
     --------
@@ -625,7 +758,8 @@ class CustomScriptExecutor(_CivisExecutor):
                  max_n_retries=0,
                  client=None,
                  polling_interval=None,
-                 inc_script_names=False):
+                 inc_script_names=False,
+                 max_workers=-1):
         self.from_template_id = from_template_id
         self.arguments = arguments
 
@@ -638,7 +772,8 @@ class CustomScriptExecutor(_CivisExecutor):
                          client=client,
                          max_n_retries=max_n_retries,
                          polling_interval=polling_interval,
-                         inc_script_names=inc_script_names)
+                         inc_script_names=inc_script_names,
+                         max_workers=max_workers)
 
     def submit(self, **arguments):
         """Submit a Custom Script with the given arguments

@@ -60,6 +60,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
   uses this library (#141).
+- The `_CivisExecutor` now takes a ``max_workers`` parameter to control the number of
+  simultaneous jobs running in Civis Platform (#147).
 - Added `etl`, `n_jobs`, and `validation_data` arguments to
   ModelPipeline.train (#139).
 - Added `cpu`, `memory`, and `disk` arguments to ModelPipeline.predict
