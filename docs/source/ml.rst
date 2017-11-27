@@ -134,10 +134,19 @@ is an efficient approach to hyperparameter optimization, and
 hyperband optimization for a pre-defined model  if you pass the string
 ``'hyperband'`` to ``cross_validation_parameters``. Hyperband is
 currently only supported for the following models:
-"gradient_boosting_classifier", "random_forest_classifier",
-"extra_trees_classifier", "multilayer_perceptron_classifier",
-"gradient_boosting_regressor", "random_forest_regressor",
-"extra_trees_regressor", and "multilayer_perceptron_regressor".
+``gradient_boosting_classifier``, ``random_forest_classifier``,
+``extra_trees_classifier``, ``multilayer_perceptron_classifier``,
+``stacking_classifier``, ``gradient_boosting_regressor``,
+``random_forest_regressor``, ``extra_trees_regressor``,
+``multilayer_perceptron_regressor``, and ``stacking_regressor``. The
+preset multilayer perceptron models are currently only supported when
+``cross_validation_parameters='hyperband'``.
+
+Hyperband cannot be used to tune GLMs. For this reason, preset GLMs do
+not have a hyperband option. Similarly, when
+``cross_validation_parameters='hyperband'`` and the model is
+``stacking_classifier`` or ``stacking_regressor``, only the GBT and
+random forest steps of the stacker are tuned using hyperband.
 Note that if you want to use hyperband with a custom model, you will need to
 wrap your estimator in a
 :class:`civismlext.hyperband.HyperbandSearchCV
@@ -153,12 +162,15 @@ distributions:
 +====================================+====================+=============================================================================+
 | | gradient_boosting_classifier     | | ``n_estimators`` | | ``max_depth: [1, 2, 5, 10, 15]``                                          |
 | | gradient_boosting_regressor      | | ``min = 100,``   | | ``max_features: [None, 'sqrt', 'log2', 0.5, 0.3, 0.1, 0.05, 0.01]``       |
-|                                    | | ``max = 10000``  | | ``learning_rate: truncexpon(b=5, loc=.0003, scale=1./167.)``              |
+| | GBT step in stacking_classifier  | | ``max = 10000``  | | ``learning_rate: truncexpon(b=5, loc=.0003, scale=1./167.)``              |
+| | GBT step in stacking_regressor   |                    |                                                                             |
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
 | | random_forest_regressor          | | ``min = 100,``   | | ``max_features: truncexpon(b=10., loc=.01, scale=1./10.11)``              |
 | | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10, None]``                                  |
 | | extra_trees_regressor            |                    |                                                                             |
+| | RF step in stacking_classifier   |                    |                                                                             |
+| | RF step in stacking_regressor    |                    |                                                                             |
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | multilayer_perceptron_classifier | | ``n_epochs``     | | ``keep_prob: uniform()``                                                  |
 | | multilayer_perceptron_regressor  | | ``min = 5,``     | | ``hidden_units: [(), (16,), (32,), (64,), (64, 64), (64, 64, 64),``       |
