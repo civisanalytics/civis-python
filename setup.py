@@ -32,6 +32,11 @@ def get_version():
     return ".".join([MAJOR, MINOR, MICRO])
 
 
+def read(fname):
+    with open(os.path.join(os.path.dirname(__file__), fname)) as _in:
+        return _in.read()
+
+
 def main():
     with open('README.rst') as README_FILE:
         README = README_FILE.read()
@@ -48,25 +53,7 @@ def main():
         data_files=[(os.path.join('civis', 'tests'),
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
-        install_requires=[
-            'pyyaml>=3.0,<=3.99',
-            'click>=6.0,<=6.99',
-            'jsonref>=0.1.0,<=0.1.99',
-            'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,==2.*',
-            'six>=1.10,<=1.99',
-            'joblib>=0.11,<=0.11.99',
-            'pubnub>=4.0,<=4.99',
-            'cloudpickle>=0.2.0,<=0.3.99',
-        ],
-        extras_require={
-            ':python_version=="2.7"': [
-                'funcsigs==1.0.2',
-                'future>=0.16,<=0.99',
-                'futures==3.1.1',
-                'functools32>=3.2,<=3.99'
-            ],
-        },
+        install_requires=read('requirements.txt').strip().split('\n'),
         entry_points={
             'console_scripts': [
                 'civis = civis.cli.__main__:main',
