@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Fixed
+- Relaxed requirement on ``cloudpickle`` version number (#187)
+
 
 ## 1.7.1 - 2017-11-16
 ### Fixed
