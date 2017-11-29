@@ -7,15 +7,17 @@ import math
 from multiprocessing.dummy import Pool
 import os
 import re
+import shutil
 import six
 import requests
+import tempfile
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis.compat import FileNotFoundError, TemporaryDirectory
+from civis.compat import FileNotFoundError
 from civis.utils._deprecation import deprecate_param
-from civis._utils import retry
+from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
@@ -23,7 +25,7 @@ try:
 except ImportError:
     HAS_PANDAS = False
 
-MIN_MULTIPART_SIZE = 50 * 2 ** 20  # 50MB
+MIN_MULTIPART_SIZE = 10 * 2 ** 20  # 50MB # >>>
 MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
 MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
 MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
@@ -34,6 +36,7 @@ RETRY_EXCEPTIONS = (requests.HTTPError,
                     requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
+CHUNK_SIZE = 32 * 1024
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
            'file_to_dataframe', 'file_to_json']
 
@@ -133,7 +136,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         "There are {} file parts but only {} urls".format(num_parts, len(urls))
 
     # generate for writing a specific number of bytes from the buffer
-    def _gen_chunks(part_buf, max_bytes, chunk_size=32 * 1024):
+    def _gen_chunks(part_buf, max_bytes, chunk_size=CHUNK_SIZE):
         bytes_read = 0
         while True:
             length = min(chunk_size, max_bytes - bytes_read)
@@ -145,12 +148,16 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part_base(item, part_path):
+    def _upload_part_base(item, buf, part_size, file_size):
         part_num, part_url = item[0], item[1]
+        offset = part_size * part_num
+        num_bytes = min(part_size, file_size - offset)
+
         log.debug('Uploading file part %s', part_num)
-        file_out = part_path.format(part_num)
-        with open(file_out, 'rb') as fout:
-            part_response = requests.put(part_url, data=fout)
+        with open(buf.name, 'rb') as fout:
+            fout.seek(offset)
+            partial_buf = BufferedPartialReader(fout, num_bytes)
+            part_response = requests.put(part_url, data=partial_buf)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
@@ -161,21 +168,9 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     # upload each part
     try:
         pool = Pool(MAX_THREADS)
-        with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, 'file_to_civis_{}.csv')
-            for i in range(0, num_parts):
-                offset = part_size * i
-                num_bytes = min(part_size, file_size - offset)
-                buf.seek(offset)
-
-                # write part to disk so that we can stream it
-                file_in = tmp_path.format(i)
-                with open(file_in, 'wb') as fin:
-                    for x in _gen_chunks(buf, num_bytes):
-                        fin.write(x)
-
-            _upload_part = partial(_upload_part_base, part_path=tmp_path)
-            pool.map(_upload_part, enumerate(urls))
+        _upload_part = partial(_upload_part_base, buf=buf,
+                               part_size=part_size, file_size=file_size)
+        pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
     # if any part except the last failed to upload at least 5MB
@@ -242,6 +237,12 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         with open(buf, 'rb') as f:
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
+    if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
+        with tempfile.NamedTemporaryFile() as tmp:
+            shutil.copyfileobj(buf, tmp, CHUNK_SIZE)
+            tmp.seek(0)
+            return _file_to_civis(
+                tmp, name, api_key=api_key, client=client, **kwargs)
     else:
         return _file_to_civis(
             buf, name, api_key=api_key, client=client, **kwargs)
@@ -333,8 +334,7 @@ def _civis_to_file(file_id, buf, api_key=None, client=None):
                                'expired.'.format(file_id))
     response = requests.get(url, stream=True)
     response.raise_for_status()
-    chunk_size = 32 * 1024
-    chunked = response.iter_content(chunk_size)
+    chunked = response.iter_content(CHUNK_SIZE)
     for lines in chunked:
         buf.write(lines)
 
