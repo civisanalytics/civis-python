@@ -129,3 +129,19 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
         return f_retry
 
     return deco_retry
+
+
+class BufferedPartialReader(object):
+    def __init__(self, buf, max_bytes):
+        self.max_bytes = max_bytes
+        self.bytes_read = 0
+        self.buf = buf
+        self.len = max_bytes
+
+    def read(self, size=-1):
+        if self.bytes_read >= self.max_bytes:
+            return b''
+        bytes_left = self.max_bytes - self.bytes_read
+        data = self.buf.read(min(size, bytes_left))
+        self.bytes_read += len(data)
+        return data
