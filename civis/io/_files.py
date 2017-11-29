@@ -10,12 +10,11 @@ import re
 import shutil
 import six
 import requests
-import tempfile
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis.compat import FileNotFoundError
+from civis.compat import FileNotFoundError, TemporaryDirectory
 from civis.utils._deprecation import deprecate_param
 from civis._utils import BufferedPartialReader, retry
 
@@ -238,11 +237,22 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
-        with tempfile.NamedTemporaryFile() as tmp:
-            shutil.copyfileobj(buf, tmp, CHUNK_SIZE)
-            tmp.seek(0)
-            return _file_to_civis(
-                tmp, name, api_key=api_key, client=client, **kwargs)
+        try:
+            pos = buf.tell()
+            data = buf.read(5)
+            buf.seek(pos)
+            data.decode('utf-8')
+            mode = 'wb'
+        except AttributeError:
+            mode = 'w'
+
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
+            with open(tmp_path, mode) as fin:
+                shutil.copyfileobj(buf, fin, CHUNK_SIZE)
+                fin.seek(0)
+                return _file_to_civis(
+                    fin, name, api_key=api_key, client=client, **kwargs)
     else:
         return _file_to_civis(
             buf, name, api_key=api_key, client=client, **kwargs)
