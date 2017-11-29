@@ -5,7 +5,7 @@ import io
 import logging
 import re
 import shutil
-import six
+import tempfile
 import warnings
 import zlib
 
@@ -622,17 +622,14 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    buf = six.BytesIO()
-    if six.PY3:
-        txt = io.TextIOWrapper(buf, encoding='utf-8')
-    else:
-        txt = buf
-    df.to_csv(txt, encoding='utf-8', index=False, **kwargs)
-    txt.flush()
-    buf.seek(0)
+
+    with tempfile.NamedTemporaryFile() as buf:
+        df.to_csv(buf, encoding='utf-8', index=False, **kwargs)
+        buf.seek(0)
+        name = table.split('.')[-1]
+        file_id = file_to_civis(buf, name, client=client)
+
     delimiter = ','
-    name = table.split('.')[-1]
-    file_id = file_to_civis(buf, name, client=client)
     fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
