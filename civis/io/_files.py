@@ -84,21 +84,16 @@ def _buf_len(buf):
     return None
 
 
-def _is_bytes(buf):
-    if hasattr(buf, 'mode'):
-        if 'b' in buf.mode:
-            return True
-        return False
-
+def _is_str(buf):
     if buf.seekable():
         try:
             pos = buf.tell()
             data = buf.read(5)
             buf.seek(pos)
             data.decode('utf-8')
-            return True
-        except AttributeError:
             return False
+        except AttributeError:
+            return True
 
     return None
 
@@ -248,15 +243,11 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     # if buf is not a file handle or if current position is not 0
     # then write to a file
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
-        # determine mode to rewrite file else don't rewrite
-        is_bytes = _is_bytes(buf)
-        if is_bytes is None:
-            return _file_to_civis(
-                buf, name, api_key=api_key, client=client, **kwargs)
-        elif is_bytes:
-            mode = 'wb'
-        else:
+        # determine mode to rewrite file; default is bytes
+        if _is_str(buf):
             mode = 'w'
+        else:
+            mode = 'wb'
 
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
