@@ -229,7 +229,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     # if buf is not a file handle or if current position is not 0
     # then write to a file
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
-       with TemporaryDirectory() as tmp_dir:
+        with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
             try:
                 with open(tmp_path, 'wb') as fin:
