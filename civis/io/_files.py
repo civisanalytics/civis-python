@@ -84,6 +84,25 @@ def _buf_len(buf):
     return None
 
 
+def _is_bytes(buf):
+    if hasattr(buf, 'mode'):
+        if 'b' in buf.mode:
+            return True
+        return False
+
+    if buf.seekable():
+        try:
+            pos = buf.tell()
+            data = buf.read(5)
+            buf.seek(pos)
+            data.decode('utf-8')
+            return True
+        except AttributeError:
+            return False
+
+    return None
+
+
 def _single_upload(buf, name, is_seekable, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
@@ -133,17 +152,6 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     urls = file_response.upload_urls
     assert num_parts == len(urls), \
         "There are {} file parts but only {} urls".format(num_parts, len(urls))
-
-    # generate for writing a specific number of bytes from the buffer
-    def _gen_chunks(part_buf, max_bytes, chunk_size=CHUNK_SIZE):
-        bytes_read = 0
-        while True:
-            length = min(chunk_size, max_bytes - bytes_read)
-            if length <= 0:
-                break
-            bytes_read += length
-            data = part_buf.read(length)
-            yield data
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
@@ -236,23 +244,27 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         with open(buf, 'rb') as f:
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
+
+    # if buf is not a file handle or if current position is not 0
+    # then write to a file
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
-        try:
-            pos = buf.tell()
-            data = buf.read(5)
-            buf.seek(pos)
-            data.decode('utf-8')
+        # determine mode to rewrite file else don't rewrite
+        is_bytes = _is_bytes(buf)
+        if is_bytes is None:
+            return _file_to_civis(
+                buf, name, api_key=api_key, client=client, **kwargs)
+        elif is_bytes:
             mode = 'wb'
-        except AttributeError:
+        else:
             mode = 'w'
 
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
             with open(tmp_path, mode) as fin:
                 shutil.copyfileobj(buf, fin, CHUNK_SIZE)
-                fin.seek(0)
+            with open(tmp_path, 'rb') as fout:
                 return _file_to_civis(
-                    fin, name, api_key=api_key, client=client, **kwargs)
+                    fout, name, api_key=api_key, client=client, **kwargs)
     else:
         return _file_to_civis(
             buf, name, api_key=api_key, client=client, **kwargs)
