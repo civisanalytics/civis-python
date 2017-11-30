@@ -142,7 +142,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         num_bytes = min(part_size, file_size - offset)
 
         log.debug('Uploading file part %s', part_num)
-        with open(buf.name, 'rb') as fout:
+        mode = 'r'
+        if 'b' in buf.mode:
+            mode += 'b'
+        with open(buf.name, mode) as fout:
             fout.seek(offset)
             partial_buf = BufferedPartialReader(fout, num_bytes)
             part_response = requests.put(part_url, data=partial_buf)
@@ -254,10 +257,13 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         log.warning('Could not determine file size; defaulting to '
                     'single post. Files over 5GB will fail.')
 
-    # determine if file-like object is seekable
+    # determine if file-like object will support multipart upload
+    multipart_upload = False
     try:
         buf.seek(buf.tell())
         is_seekable = True
+        if hasattr(buf, 'name') and hasattr(buf, 'mode'):
+            multipart_upload = True
     except io.UnsupportedOperation:
         is_seekable = False
 
@@ -266,11 +272,12 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     elif file_size > MAX_FILE_SIZE:
         msg = "File is greater than the maximum allowable file size (5TB)"
         raise ValueError(msg)
-    elif not is_seekable and file_size > MAX_PART_SIZE:
-        msg = "Cannot perform multipart upload on non-seekable files. " \
+    elif not multipart_upload and file_size > MAX_PART_SIZE:
+        msg = "Cannot perform multipart upload on non-seekable files or " \
+              "files without name and mode attributes. " \
               "File is greater than the maximum allowable part size (5GB)"
         raise ValueError(msg)
-    elif file_size <= MIN_MULTIPART_SIZE or not is_seekable:
+    elif file_size <= MIN_MULTIPART_SIZE or not multipart_upload:
         return _single_upload(buf, name, is_seekable, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
