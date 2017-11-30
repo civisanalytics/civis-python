@@ -84,20 +84,6 @@ def _buf_len(buf):
     return None
 
 
-def _is_str(buf):
-    if buf.seekable():
-        try:
-            pos = buf.tell()
-            data = buf.read(5)
-            buf.seek(pos)
-            data.decode('utf-8')
-            return False
-        except AttributeError:
-            return True
-
-    return None
-
-
 def _single_upload(buf, name, is_seekable, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
@@ -243,16 +229,14 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     # if buf is not a file handle or if current position is not 0
     # then write to a file
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
-        # determine mode to rewrite file; default is bytes
-        if _is_str(buf):
-            mode = 'w'
-        else:
-            mode = 'wb'
-
-        with TemporaryDirectory() as tmp_dir:
+       with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
-            with open(tmp_path, mode) as fin:
-                shutil.copyfileobj(buf, fin, CHUNK_SIZE)
+            try:
+                with open(tmp_path, 'wb') as fin:
+                    shutil.copyfileobj(buf, fin, CHUNK_SIZE)
+            except TypeError:
+                with open(tmp_path, 'w') as fin:
+                    shutil.copyfileobj(buf, fin, CHUNK_SIZE)
             with open(tmp_path, 'rb') as fout:
                 return _file_to_civis(
                     fout, name, api_key=api_key, client=client, **kwargs)
