@@ -85,7 +85,7 @@ def _buf_len(buf):
     return None
 
 
-def _single_upload(buf, name, is_seekable, client, **kwargs):
+def _single_upload(buf, name, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -97,9 +97,9 @@ def _single_upload(buf, name, is_seekable, client, **kwargs):
     form_key = OrderedDict(key=form.pop('key'))
     form_key.update(form)
 
+    @retry(RETRY_EXCEPTIONS)
     def _post():
-        if is_seekable:
-            buf.seek(0)
+        buf.seek(0)
         form_key['file'] = buf
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
@@ -110,11 +110,7 @@ def _single_upload(buf, name, is_seekable, client, **kwargs):
             msg = _get_aws_error_message(response)
             raise HTTPError(msg, response=response)
 
-    # we can only retry if the buffer is seekable
-    if is_seekable:
-        retry(RETRY_EXCEPTIONS)(_post())
-    else:
-        _post()
+    _post()
 
     return file_response.id
 
@@ -137,13 +133,13 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part_base(item, buf, part_size, file_size):
+    def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
         offset = part_size * part_num
         num_bytes = min(part_size, file_size - offset)
 
         log.debug('Uploading file part %s', part_num)
-        with open(buf.name, 'rb') as fin:
+        with open(file_path, 'rb') as fin:
             fin.seek(offset)
             partial_buf = BufferedPartialReader(fin, num_bytes)
             part_response = requests.put(part_url, data=partial_buf)
@@ -157,7 +153,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     # upload each part
     try:
         pool = Pool(MAX_THREADS)
-        _upload_part = partial(_upload_part_base, buf=buf,
+        _upload_part = partial(_upload_part_base, file_path=buf.name,
                                part_size=part_size, file_size=file_size)
         pool.map(_upload_part, enumerate(urls))
 
@@ -227,8 +223,8 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
 
-    # if buf is not a file handle or if current position is not 0
-    # then write to a file
+    # we should only pass _file_to_civis a file-like object that is
+    # on disk, seekable and at position 0
     if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
@@ -255,28 +251,11 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         log.warning('Could not determine file size; defaulting to '
                     'single post. Files over 5GB will fail.')
 
-    # determine if file-like object will support multipart upload
-    multipart_upload = False
-    try:
-        buf.seek(buf.tell())
-        is_seekable = True
-        if hasattr(buf, 'name') and hasattr(buf, 'mode'):
-            multipart_upload = True
-    except io.UnsupportedOperation:
-        is_seekable = False
-
-    if not file_size:
-        return _single_upload(buf, name, is_seekable, client, **kwargs)
+    if not file_size or file_size <= MIN_MULTIPART_SIZE:
+        return _single_upload(buf, name, client, **kwargs)
     elif file_size > MAX_FILE_SIZE:
         msg = "File is greater than the maximum allowable file size (5TB)"
         raise ValueError(msg)
-    elif not multipart_upload and file_size > MAX_PART_SIZE:
-        msg = "Cannot perform multipart upload on non-seekable files or " \
-              "files without name and mode attributes. " \
-              "File is greater than the maximum allowable part size (5GB)"
-        raise ValueError(msg)
-    elif file_size <= MIN_MULTIPART_SIZE or not multipart_upload:
-        return _single_upload(buf, name, is_seekable, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
