@@ -35,6 +35,7 @@ RETRY_EXCEPTIONS = (requests.HTTPError,
                     requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
+# standard chunk size; provides good performance across various buffer sizes
 CHUNK_SIZE = 32 * 1024
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
            'file_to_dataframe', 'file_to_json']
@@ -142,12 +143,9 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         num_bytes = min(part_size, file_size - offset)
 
         log.debug('Uploading file part %s', part_num)
-        mode = 'r'
-        if 'b' in buf.mode:
-            mode += 'b'
-        with open(buf.name, mode) as fout:
-            fout.seek(offset)
-            partial_buf = BufferedPartialReader(fout, num_bytes)
+        with open(buf.name, 'rb') as fin:
+            fin.seek(offset)
+            partial_buf = BufferedPartialReader(fin, num_bytes)
             part_response = requests.put(part_url, data=partial_buf)
 
         if not part_response.ok:
@@ -235,14 +233,14 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
             try:
-                with open(tmp_path, 'wb') as fin:
-                    shutil.copyfileobj(buf, fin, CHUNK_SIZE)
+                with open(tmp_path, 'wb') as fout:
+                    shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             except TypeError:
-                with open(tmp_path, 'w') as fin:
-                    shutil.copyfileobj(buf, fin, CHUNK_SIZE)
-            with open(tmp_path, 'rb') as fout:
+                with open(tmp_path, 'w') as fout:
+                    shutil.copyfileobj(buf, fout, CHUNK_SIZE)
+            with open(tmp_path, 'rb') as fin:
                 return _file_to_civis(
-                    fout, name, api_key=api_key, client=client, **kwargs)
+                    fin, name, api_key=api_key, client=client, **kwargs)
     else:
         return _file_to_civis(
             buf, name, api_key=api_key, client=client, **kwargs)
