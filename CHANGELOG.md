@@ -7,12 +7,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ``civis.io.dataframe_to_civis``, ``civis.io.csv_to_civis``, and ``civis.io.civis_file_to_table`` functions now support the `diststyle` parameter.
 
-### Changed
-- ``civis.io.dataframe_to_civis`` writes dataframes to disk instead of using an in memory buffer
-
 ### Fixed
 - Relaxed requirement on ``cloudpickle`` version number (#187)
+
+### Performance Enhancements
 - ``civis.io.file_to_civis`` now uses additional file handles for multipart upload instead of writing to disk to reduce disk usage
+- ``civis.io.dataframe_to_civis`` writes dataframes to disk instead of using an in memory buffer
 
 
 ## 1.7.1 - 2017-11-16
