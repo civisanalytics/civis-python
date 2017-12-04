@@ -20,7 +20,6 @@ from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
-
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
@@ -369,7 +368,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     except CivisAPIError as err:
         if err.status_code == 404:
             six.raise_from(IOError('Could not find job/run ID {}/{}'
-                                   .format(job_id, run_id)), err)
+                           .format(job_id, run_id)), err)
         else:
             raise
 
