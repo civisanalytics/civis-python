@@ -229,11 +229,13 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
             buf.tell() != 0:
         with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir.name, 'file_to_civis.csv')
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
+            buf_pos = buf.tell()
             try:
                 with open(tmp_path, 'wb') as fout:
                     shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             except TypeError:
+                buf.seek(buf_pos)
                 with open(tmp_path, 'w') as fout:
                     shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             with open(tmp_path, 'rb') as fin:
