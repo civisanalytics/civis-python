@@ -20,6 +20,7 @@ from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
+
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
@@ -225,9 +226,10 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
 
     # we should only pass _file_to_civis a file-like object that is
     # on disk, seekable and at position 0
-    if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
+    if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
+            buf.tell() != 0:
         with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
+            tmp_path = os.path.join(tmp_dir.name, 'file_to_civis.csv')
             try:
                 with open(tmp_path, 'wb') as fout:
                     shutil.copyfileobj(buf, fout, CHUNK_SIZE)
@@ -365,7 +367,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     except CivisAPIError as err:
         if err.status_code == 404:
             six.raise_from(IOError('Could not find job/run ID {}/{}'
-                           .format(job_id, run_id)), err)
+                                   .format(job_id, run_id)), err)
         else:
             raise
 
