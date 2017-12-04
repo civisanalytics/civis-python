@@ -53,6 +53,45 @@ calling ``result()`` on ``fut`` above forces the program to wait for the
 job started with :func:`~civis.io.dataframe_to_civis` to finish and
 returns the result.
 
+You can create :class:`CivisFuture <civis.futures.CivisFuture>` objects for
+many tasks (e.g., scripts, imports):
+
+.. code-block:: python
+
+   >>> import civis
+   >>> import concurrent.futures
+   >>>
+   >>> client = civis.APIClient()
+   >>>
+   >>> # Create a container script. This is just a simple example. Futures can
+   >>> # also be used with SQL queries, imports, etc.
+   >>> response_script = client.scripts.post_containers(
+   ...     required_resources={'cpu': 512, 'memory': 1024},
+   ...     docker_command="echo 'HELLO WORLD'",
+   ...     docker_image_name='civisanalytics/datascience-python')
+   >>> script_id = response_script.id
+   >>>
+   >>> # Create a run in order to execute the script.
+   >>> response_run = client.scripts.post_containers_runs(script_id)
+   >>> run_id = response_run.id
+   >>>
+   >>> # Create a future to represent the result of the run.
+   >>> future = civis.futures.CivisFuture(
+   ...     client.scripts.get_containers_runs, (script_id, run_id))
+   >>>
+   >>> # You can then have your code block and wait for the future to be done as
+   >>> # follows.
+   >>> concurrent.futures.wait([future])
+   >>>
+   >>> # Alternatively, you can call `future.result()` to block and get the
+   >>> # status of the run once it finishes. If the run is already completed, the
+   >>> # result will be returned immediately.
+   >>> result = future.result()
+   >>>
+   >>> # Alternatively, one can start a run and get a future for it with the helper
+   >>> # function `civis.utils.run_job`:
+   >>> future2 = civis.utils.run_job(script_id)
+   >>> future2.result()
 
 Working Directly with the Client
 ================================
