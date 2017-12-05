@@ -225,15 +225,16 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
 
     # we should only pass _file_to_civis a file-like object that is
     # on disk, seekable and at position 0
-    if not isinstance(buf, io.BufferedReader) or buf.tell() != 0:
+    if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
+            buf.tell() != 0:
+        # determine mode for writing
+        mode = 'w'
+        if isinstance(buf.read(0), six.binary_type):
+            mode += 'b'
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
-            try:
-                with open(tmp_path, 'wb') as fout:
-                    shutil.copyfileobj(buf, fout, CHUNK_SIZE)
-            except TypeError:
-                with open(tmp_path, 'w') as fout:
-                    shutil.copyfileobj(buf, fout, CHUNK_SIZE)
+            with open(tmp_path, mode) as fout:
+                shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             with open(tmp_path, 'rb') as fin:
                 return _file_to_civis(
                     fin, name, api_key=api_key, client=client, **kwargs)
