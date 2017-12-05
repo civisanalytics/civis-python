@@ -230,7 +230,7 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         # read some bytes to determine proper mode for writing
         mode = 'w'
         data = buf.read(5)
-        if isinstance(data, bytes):
+        if isinstance(data, six.binary_type):
             mode += 'b'
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
