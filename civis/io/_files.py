@@ -227,15 +227,13 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     # on disk, seekable and at position 0
     if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
             buf.tell() != 0:
-        # read some bytes to determine proper mode for writing
+        # determine mode for writing
         mode = 'w'
-        data = buf.read(5)
-        if isinstance(data, six.binary_type):
+        if isinstance(buf.read(0), six.binary_type):
             mode += 'b'
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
             with open(tmp_path, mode) as fout:
-                fout.write(data)
                 shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             with open(tmp_path, 'rb') as fin:
                 return _file_to_civis(
