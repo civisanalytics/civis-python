@@ -54,7 +54,9 @@ job started with :func:`~civis.io.dataframe_to_civis` to finish and
 returns the result.
 
 You can create :class:`CivisFuture <civis.futures.CivisFuture>` objects for
-many tasks (e.g., scripts, imports):
+many tasks (e.g., scripts, imports).  Here, we will create a container
+script that does the simple task of printing the text "HELLO WORLD", execute
+it, and then wait for it to finish.
 
 .. code-block:: python
 
