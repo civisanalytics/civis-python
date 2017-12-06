@@ -1,0 +1,582 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/databases
+  response:
+    body:
+      string: !!binary |
+        H4sIAIwoKFoAA2zQTQuCMBgH8K8ydlZQ8y1vpQQdosg6RYfVnuoB3WBbQkTfvUOyGXr+/57X05si
+        p8UsCT0qWAu0oIuqJgfFUKC404/Xgyi1oMQONamYYRemwZE8t6QqyVoYUGKiUxxZtpMNGryyxqZh
+        7ObsgesH3gxZSvjrkEZjU262FqSJ2+RYk5WUXLvqzGaqL/Y5tNKCLAqmhW9AG8vy+YRSg4eN4zsI
+        UINj83RsWuDI3DuCiW31U3XwcheF4WyMfruevwAAAP//AwCvCrbA4AEAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['214']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:40 GMT']
+      ETag: [W/"9de4ae6351e69f6aafba8142f9c5c3a8"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [67bc7eee-f81d-4d08-a7b3-41d574f0680b]
+      X-Runtime: ['0.190024']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/credentials?default=True
+  response:
+    body:
+      string: !!binary |
+        H4sIAIwoKFoAA2TOPQvCMBSF4f9y51ZuUvtBNsFBF6dOikNs7hCbJiVJERX/u61FRF1fHg7ncAet
+        QOQFYgJWdgQCzu1gbrppIYF47aeyllGeZKCxDIH8v1MUGq/7qJ0FYQdjEnAXS/5beepcpI0Lcave
+        7NN2r9W5Np5kJLWK4wBHVqaYp8hqzkVWiWW5QMT9dKZXP6xKWVHzTDAm8mpmj+MTAAD//wMARRs6
+        UuUAAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-Pagination-Per-Page, X-Pagination-Current-Page,
+          X-Pagination-Total-Pages, X-Pagination-Total-Entries']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['176']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:40 GMT']
+      ETag: [W/"287edbf0052b8f058e95057baeb68a1f"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Pagination-Current-Page: ['1']
+      X-Pagination-Per-Page: ['1000']
+      X-Pagination-Total-Entries: ['1']
+      X-Pagination-Total-Pages: ['1']
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [6638d48f-66cf-4feb-9238-fb3b450c6862]
+      X-Runtime: ['0.186026']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "064861753a724329942b3b4efd261591", "hidden": true, "credential_id":
+      5600, "csv_settings": {"filename_prefix": null, "compression": "gzip", "include_header":
+      false, "unquoted": false, "force_multifile": false, "column_delimiter": "comma"},
+      "remote_host_id": 32, "sql": "SELECT * FROM scratch.api_client_test_fixture"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['326']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/scripts/sql
+  response:
+    body:
+      string: !!binary |
+        H4sIAI0oKFoAA7RUXU8aQRT9K2QfG4VlQb7eKGps1WqFpIlNY4aZC4zOzqzzQUXjf++ZBRa1PrRN
+        +kKYc8+999yvfUqkSAa9dqvfaXf2Es1ySgZJ2mn3Os3uQYt1s3Yr6/fb2bQ1bdNMZJ3mQb+Z7CV+
+        VUTm+OsZHtwS8ySGHkiWNrv7zWw/7Uya3UHWHbSb9TRNr0ELhfgTGgt+YWwyeCq1Zb1WtxL22Sx0
+        7TSoR8nvYkBHdmO5vatQqaWXTLnIP8XbaCU1ODNg9LyXOA8VMEqhCOYZ+G6xlqWDUigH9rmxK3Ac
+        t7LwYBXW3BL3CPr9B17MkvafxNYjChkZ7ekh1maD1mSTksbyjQuz85DDCc8niJBuQnmhSiWlMLDD
+        VK2VVLZdhpk1+e+o3yCHVJAWMfrIBO3fmsdlFV/KTq0t6MhdVJII8kyWvWKFrHO5lI5pplZeclfn
+        Jm+sO+Aa7l41NnuCylDi3/k0So/YfY4KAzqP5Nv/VT0VcMhWm75V0IkJ9i12LnXw9Ba9QqpLstFh
+        HRhptfFyJjFZaXRZeLBq6xc4J+eOcjRiHKZxzJWeF6aPRqzew4dCWPynd6IdY2gvu/7SdkWFWk1M
+        NV9AwdK7ET1T6huzWup5VfCrgBc6GXgbqAqzBZ7LSUXHoft/B6Wx9uj57oC8zOnaREoyzMmi7Y3R
+        Ar9zA2/FXGRvuQspsLhb/R5nQv5yfWy7PWeWL+Qy7snmVrBZ8etzdHY0mtQ+1I6vLs5r2Drm+aKO
+        pbzhSuIabtAqfzOTDx49QWp6KBjORAxf36Kl3Hg6Ma7M2MrKD1q8JhQdkYNOmgIzgi4tLSX9/IfU
+        3C3H5D0msR6E5ioIOiEm8KXYVoXbKeLksaNIMX+URfQ0KuT6kJTMpY/kSMtZnJa+DxC+68rMWE7n
+        QcVVV7sPS3zEqUI9BG1O4vkXAAAA//8DAGjM6Nf7BQAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['717']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:41 GMT']
+      ETag: [W/"ce5368b3dce561024168f165bf3a4c84"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [5d497a2f-474f-41cf-8686-61041cccf6db]
+      X-Runtime: ['0.248666']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs
+  response:
+    body:
+      string: !!binary |
+        H4sIAI0oKFoAA0zKMQuDQAyG4f+S+RarhHpbceratXQ4NOJBOOslmaT/valQcHyf79shTxARL9g0
+        PQaQje8O167tsfu1JiWIsBkZTRAgy5DKSPwgJ1G3OCcWOq7V+6YQizEHmHPJspyFal3rP1bTt/n0
+        fH2+AAAA//8DALy0z3KGAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['132']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:41 GMT']
+      Location: ['https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196']
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [c9ce296d-9904-4511-889a-c60354d5834f]
+      X-Runtime: ['0.164685']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 202, message: Accepted}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAI4oKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:42 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [69a755bf-7c45-44aa-97d9-a16048866223]
+      X-Runtime: ['0.051543']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAI4oKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:42 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [e4172cac-4e82-4064-8e5f-2b4b6fe30e51]
+      X-Runtime: ['0.070350']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAI4oKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:42 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [7dd16751-a827-462a-9581-e17fbf6d33b6]
+      X-Runtime: ['0.060188']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAI8oKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:43 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [ddec35a8-8e5c-4d52-97fb-34d4606d7310]
+      X-Runtime: ['0.053780']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJAoKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:44 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [32746486-b902-4131-865b-6ad2e0b2e67e]
+      X-Runtime: ['0.771717']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJAoKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:44 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [718bf621-946c-4179-a6d8-470b9a7b1b34]
+      X-Runtime: ['0.055007']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJEoKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:45 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [75913682-bd2b-4354-b175-0b7d2bfe2eb5]
+      X-Runtime: ['0.102401']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJEoKFoAAzTMvQ7CMAxG0Xfx3KIkRA7NhjqxIiYQQwQuRIpcmp8J8e4YEOP9fOQnxCt4RINa
+        D9hBWdJOho1dD2g/XUMl8JAbc+QbdBDLGPhCaU9Lo1JJ9BRSoa/N0tsq3ijtem16hQftvHHe6pVS
+        6igPpsix3H+OW0odUM5z/sfc6qPJ6XR+vQEAAP//AwA6jdcznQAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['154']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:45 GMT']
+      ETag: [W/"ee326e2461bd66cd256618757a7aaf11"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [b7f70306-dd7a-4058-9e07-79b594b3c280]
+      X-Runtime: ['0.054641']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJIoKFoAA5RR25KiMBT8F6p88xKCBLHK2kK830ZGZlV2t7ZiCBjFgCQ4ytT8+8Zx5nEf5i2n
+        0+nT3XnTWKi1EYJI121U1cQ5GSug1TRs1LzPEkuqtbW84JzxWKtqTLiYE5o803NBhaSKHeFE0A9u
+        rmZHKj4EulXTYQ0gX7fa0Go39ToAIFACEeNM7B88XiRJVaN5nuZfQ1rIrFBXv94+jwt8ujsAqNlC
+        umUa2IJNA9p2E+6MXZNGofJu2vrfnJL0tGOchnUiLvW4/NiV0HseC1kAmFZVy7DcK7G9lJloNxqE
+        XZiokZSLNKF1YdTxCZcpx6+irsQaaR6Lhoxl3KDXLM2laHwW0/hqrPF9Wz+c9cohhAoxpbdx2HFW
+        Y2diwg0aeaPpcNX76QTO7wIAiPrXjOVUdHRTh5YOWgg98BWLOZZFTjvT19l2apvb9cFrtebRKjA3
+        6csGZbs1qBi9B1spZCogvceUlMtayBQgmGQp72ApMdmfFFwxuhUI7oVxVbh6XYHw++HUo/9slbeM
+        dnCWJYzg++oKHFxrccmyB/9aw6eyJigpciZvNZkeKe8MvLS33YRlfyRwr3uxnf1obW0OfOTODi6b
+        CserwG4258a5DCLm9/bRea50T2nmhe7sZbLIImkrwJr31v5MsufWwWg9FaCfKbBrFggdCezlTjn2
+        yAT1u6SwsTM+3pAg3szz48WT4l2GgfE6M+X1Eg3E9VyAwFk153AkfWvpRv1bXwwtD23Lp0Ex4cV1
+        6W9L1w/SvbHwgbHv9gEbkd0uNNAiweFpPPdeZkYyWi/Hm8wvdDecxwGJ3IM5Haow44s/MMId2b4m
+        Bj+uj7o13Zhisoz1SeAqMwvbSY9yGAPvRX2R9v7n/R8AAAD//wMAgQIFzMIDAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['674']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:46 GMT']
+      ETag: [W/"8866ee92a9f82acf842c11e644234b96"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [b1d6ec79-75b6-4dad-a634-348749be3952]
+      X-Runtime: ['0.227197']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/scripts/sql/8439646/runs/66261196
+  response:
+    body:
+      string: !!binary |
+        H4sIAJIoKFoAA5RR227iMBT8l0i8AXGcxAEktAq3klKgEFISdlcrk5hgyMXEDpdU/fc1vTz2oW8+
+        o5k5Z8avCo2UDkIQaVob1RV+ShwJtAy9jYz7LLAgSkfhZRgSEpFIqSuU93EWkmRJTiXhQmKdHU44
+        eWcXcraFVECgWQ0NNgBaaVYHWh1DawIANtJgRzPK99/yzC8eKYq8UDpZmSR1JS8FK6Xg9+vnc4bT
+        +2UAGS2kWaaOLWjosN024FbfGmQXyUxmW/tXkDBPtzQjUTPk52ZcvV+QkHtOC1kAmFZdYVjspdle
+        CMY7qhrSM+WNMM94npAm15s4xVWe4QtvSjM1L2KuiljEKrmyvBBc/SxM/WpS/flZv+y1a8uWOZ+Q
+        mxN1bdexH5cPntefj50Hf75254s/JQAQDa+MFoR3NVODlgZaCH3gLo0zLMqCdHvUz46aafiB39oH
+        EajB0TrWjeuGDOJWTR988KUHkxHJPaggmWhEVAKcCppnXSwEDvephGt6rwbBvbJMVi7VNQh/Hk+K
+        vtkqbox0MWMJDfF9tTz22ogryj741wZOqwYnYVlQcWuI/Eiy7miRDwI/qoZjjgfz6cWj+80yYNMJ
+        2k+HdMLt9TzqpwHAVqrffMDsSGN6UVjO8RKNV8vQeLKvvTihNdh7xlbhv+ilW7BxukIz3l/O2NaD
+        zsQB1JWES8sPDnzF8DK3FlV8DFhwmt9YkscwzWNJKPzp5Yzw4jzUaZncu9ar0DmO+NQWhX1LemAy
+        BNWUVXMcPa336QDupqI8ksQibXeGjdGT1LwIoR2oVz5T6PYGuseksYTR0MXbp8MBOyf9Yubx+jFK
+        vTE6e6PKZstBq21qGgR0s5N0B+RH8RCDhSc/SXn7+/YfAAD//wMAWmuUQ94DAAA=
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['674']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 06 Dec 2017 17:27:46 GMT']
+      ETag: [W/"bcabb3481e7d8267685654606e42bd3a"]
+      Server: [nginx/1.13.7]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [7024f1cf-05f3-405f-b193-d4c96a82dc5e]
+      X-Runtime: ['0.151451']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://civis-console.s3.amazonaws.com/orgs/tgtg/exports/8439646/66261196/064861753a724329942b3b4efd261591_recombined.csv.gz?AWSAccessKeyId=ASIAJRGUUCOHIGXOWSOQ&Expires=1512710866&Signature=BiXnk154XYX8hYd0%2FWg34xZeDg8%3D&response-content-disposition=attachment%3B%20filename%3D%22064861753a724329942b3b4efd261591_recombined.csv.gz%22&response-content-type=application%2Fx-gzip&x-amz-security-token=FQoDYXdzEHsaDOMwUihZRYpMK6hMEiKsAWOdCmY0a7m3yX0pAd1p3rr7IkwdHTRc4LAxBgli%2BPa7rXV3uSrpHmT6NsCRNpbU2IKI0iS%2Bw8XYjsTpaRo7QzgkYpYqOyplog2mog%2BrXMwv6aQvE3iul%2FW3zcIkFsMAtrAylB0KE0zMpzOadLWhmD2fMtukel7e9SNa4FL%2FVtt1jiUuPi2SBD3Up%2B%2F6ESabLjjaIq3w5ogWJdmUH6vUFzApRD8951120iZf%2BI0oktGg0QU%3D
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA1MyVNJRMgJiYyUuAKSR3egMAAAA
+    headers:
+      Accept-Ranges: [bytes]
+      Content-Disposition: [attachment; filename="064861753a724329942b3b4efd261591_recombined.csv.gz"]
+      Content-Length: ['30']
+      Content-Type: [application/x-gzip]
+      Date: ['Wed, 06 Dec 2017 17:27:48 GMT']
+      ETag: ['"127be87edf89b6621c68647ed84e19fb"']
+      Last-Modified: ['Wed, 06 Dec 2017 17:27:46 GMT']
+      Server: [AmazonS3]
+      x-amz-id-2: [L6VYIdPevZt7ak45AoX5yUK+OZXpBU/GN3qBx/JKB44D5piRMkkNz8OhkJ/AlQxqKNubx2QgqN0=]
+      x-amz-request-id: [004A43DD91D04AB0]
+    status: {code: 200, message: OK}
+version: 1
