@@ -172,8 +172,8 @@ class ImportTests(CivisVCRTestCase):
             result = result.result()
             assert result.state == 'succeeded'
 
-            with open(fout.name, 'rb') as fin:
-                assert gzip.decompress(fin.read()) == b'"1","2","3"\n'
+            with gzip.open(fout.name, 'rb') as fin:
+                assert fin.read() == b'"1","2","3"\n'
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):

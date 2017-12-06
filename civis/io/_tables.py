@@ -925,8 +925,9 @@ def _download_file(url, local_path, headers, compression):
 
     # gzipped buffers can be concatenated so write headers as gzip
     if compression == 'gzip':
-        with open(local_path, 'wb') as fout:
-            fout.write(gzip.compress(headers))
+        with gzip.open(local_path, 'wb') as fout:
+            fout.write(headers)
+        with open(local_path, 'ab') as fout:
             shutil.copyfileobj(response.raw, fout, CHUNK_SIZE)
 
     # write headers and decompress the stream
