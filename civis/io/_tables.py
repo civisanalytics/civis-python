@@ -368,7 +368,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # don't fix bug that would cause breaking change for now
     # when gzip compression is requested, a gzip file is not actually returned
     # instead the gzip file is decompressed during download
-    if compression == 'gzip':
+    if compression == 'gzip' and include_header:
         compression = 'none'
 
     # don't support parallel unload; the output format
