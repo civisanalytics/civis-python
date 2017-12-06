@@ -2,7 +2,6 @@ from collections import OrderedDict
 import json
 import os
 from six import StringIO, BytesIO
-import gzip
 import tempfile
 import zipfile
 
@@ -144,36 +143,6 @@ class ImportTests(CivisVCRTestCase):
         civis.io.civis_to_file(self.file_id, buf)
         buf.seek(0)
         assert buf.read() == b'a,b,c\n1,2,3'
-
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_civis_to_gzip_csv_with_headers(self, *mocks):
-        with tempfile.NamedTemporaryFile() as fout:
-            sql = "SELECT * FROM scratch.api_client_test_fixture"
-            database = 'redshift-general'
-            result = civis.io.civis_to_csv(fout.name, sql, database,
-                                           polling_interval=POLL_INTERVAL,
-                                           compression='gzip',
-                                           include_header=True)
-            result = result.result()
-            assert result.state == 'succeeded'
-
-            with open(fout.name, 'rb') as fin:
-                assert fin.read() == b'a,b,c\n1,2,3\n'
-
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_civis_to_gzip_csv_no_headers(self, *mocks):
-        with tempfile.NamedTemporaryFile() as fout:
-            sql = "SELECT * FROM scratch.api_client_test_fixture"
-            database = 'redshift-general'
-            result = civis.io.civis_to_csv(fout.name, sql, database,
-                                           polling_interval=POLL_INTERVAL,
-                                           compression='gzip',
-                                           include_header=False)
-            result = result.result()
-            assert result.state == 'succeeded'
-
-            with gzip.open(fout.name, 'rb') as fin:
-                assert fin.read() == b'"1","2","3"\n'
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):
