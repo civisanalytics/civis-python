@@ -3,9 +3,9 @@ import csv
 from os import path
 import io
 import logging
+import os
 import re
 import shutil
-import six
 import warnings
 import zlib
 
@@ -326,8 +326,9 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     compression: str, optional
         Type of compression to use, if any. One of ``'none'``, ``'zip'``, or
         ``'gzip'``. Default ``'none'``. ``'gzip'`` currently returns a file
-        with no compression. In a future release, a ``'gzip'`` compressed
-        file will be returned.
+        with no compression unless include_header is set to False. In a
+        future release, a ``'gzip'`` compressed file will be returned for
+        all cases.
     delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``','``.
@@ -368,7 +369,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     # don't fix bug that would cause breaking change for now
     # when gzip compression is requested, a gzip file is not actually returned
     # instead the gzip file is decompressed during download
-    if compression == 'gzip':
+    if compression == 'gzip' and include_header:
         compression = 'none'
 
     # don't support parallel unload; the output format
@@ -545,7 +546,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 @deprecate_param('v2.0.0', 'api_key')
 def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
-                       distkey=None, sortkey1=None, sortkey2=None,
+                       diststyle=None, distkey=None,
+                       sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
                        polling_interval=None,
                        archive=False, hidden=True, **kwargs):
@@ -577,6 +579,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -618,21 +623,18 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-    buf = six.BytesIO()
-    if six.PY3:
-        txt = io.TextIOWrapper(buf, encoding='utf-8')
-    else:
-        txt = buf
-    df.to_csv(txt, encoding='utf-8', index=False, **kwargs)
-    txt.flush()
-    buf.seek(0)
+
+    with TemporaryDirectory() as tmp_dir:
+        tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
+        df.to_csv(tmp_path, encoding='utf-8', index=False, **kwargs)
+        name = table.split('.')[-1]
+        file_id = file_to_civis(tmp_path, name, client=client)
+
     delimiter = ','
-    name = table.split('.')[-1]
-    file_id = file_to_civis(buf, name, client=client)
     fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
-                              distkey=distkey,
+                              diststyle=diststyle, distkey=distkey,
                               sortkey1=sortkey1, sortkey2=sortkey2,
                               delimiter=delimiter, headers=headers,
                               credential_id=credential_id,
@@ -645,7 +647,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
 @deprecate_param('v2.0.0', 'api_key')
 def csv_to_civis(filename, database, table, api_key=None, client=None,
                  max_errors=None, existing_table_rows="fail",
-                 distkey=None, sortkey1=None, sortkey2=None,
+                 diststyle=None, distkey=None,
+                 sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
                  credential_id=None, polling_interval=None,
                  archive=False, hidden=True):
@@ -673,6 +676,9 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -726,7 +732,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         fut = civis_file_to_table(file_id, database, table,
                                   client=client, max_errors=max_errors,
                                   existing_table_rows=existing_table_rows,
-                                  distkey=distkey,
+                                  diststyle=diststyle, distkey=distkey,
                                   sortkey1=sortkey1, sortkey2=sortkey2,
                                   delimiter=delimiter, headers=headers,
                                   credential_id=credential_id,
@@ -737,7 +743,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
 
 def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
-                        distkey=None, sortkey1=None, sortkey2=None,
+                        diststyle=None, distkey=None,
+                        sortkey1=None, sortkey2=None,
                         delimiter=",", headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
@@ -762,6 +769,9 @@ def civis_file_to_table(file_id, database, table, client=None,
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
         Defaults to ``'fail'``.
+    diststyle : str, optional
+        The distribution style for the table.
+        One of ``'even'``, ``'all'`` or ``'key'``.
     distkey : str, optional
         The column to use as the distkey for the table.
     sortkey1 : str, optional
@@ -813,7 +823,8 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     options = dict(max_errors=max_errors,
                    existing_table_rows=existing_table_rows,
-                   distkey=distkey, sortkey1=sortkey1, sortkey2=sortkey2,
+                   diststyle=diststyle, distkey=distkey,
+                   sortkey1=sortkey1, sortkey2=sortkey2,
                    column_delimiter=delimiter, first_row_is_header=headers)
 
     client.imports.post_syncs(
@@ -915,8 +926,9 @@ def _download_file(url, local_path, headers, compression):
 
     # gzipped buffers can be concatenated so write headers as gzip
     if compression == 'gzip':
-        with open(local_path, 'wb') as fout:
-            fout.write(gzip.compress(headers))
+        with gzip.open(local_path, 'wb') as fout:
+            fout.write(headers)
+        with open(local_path, 'ab') as fout:
             shutil.copyfileobj(response.raw, fout, CHUNK_SIZE)
 
     # write headers and decompress the stream

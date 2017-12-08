@@ -106,12 +106,20 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result, int)
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_file_to_civis(self, *mocks):
-        with tempfile.NamedTemporaryFile() as tmp:
-            tmp.write(b'a,b,c\n1,2,3')
-            tmp.flush()
-            tmp.seek(0)
-            result = civis.io.file_to_civis(tmp, tmp.name)
+    def test_text_file_to_civis(self, *mocks):
+        buf = StringIO()
+        buf.write('a,b,c\n1,2,3')
+        buf.seek(0)
+        result = civis.io.file_to_civis(buf, 'somename')
+
+        assert isinstance(result, int)
+
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_bytes_file_to_civis(self, *mocks):
+        buf = BytesIO()
+        buf.write(b'a,b,c\n1,2,3')
+        buf.seek(0)
+        result = civis.io.file_to_civis(buf, 'somename')
 
         assert isinstance(result, int)
 
