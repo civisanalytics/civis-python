@@ -37,7 +37,7 @@ backend for your Jupyter notebooks.
 
   Download a notebook from Civis Platform to the requested file on the local filesystem.
 
-- ``civis notebooks launch [$LANGUAGE] [--mem $MEMORY] [--cpu $CPU]``
+- ``civis notebooks new [$LANGUAGE] [--mem $MEMORY] [--cpu $CPU]``
 
   Create a new notebook, allocate resources for it, and open it in a tab
   of your default web browser. This command is the most similar to ``jupyter notebook``.
