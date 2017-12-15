@@ -93,7 +93,7 @@ def notebooks_download_cmd(notebook_id, path):
               help='Memory allocated for this notebook in MiB.')
 @click.option('--cpu', type=int, default=None,
               help='CPU available for this notebook in 1/1000 of a core.')
-def notebooks_launch_cmd(language='python3', mem=None, cpu=None):
+def notebooks_new_cmd(language='python3', mem=None, cpu=None):
     """Create a new notebook and open it in the browser."""
     client = civis.APIClient()
     kwargs = {'memory': mem, 'cpu': cpu}
