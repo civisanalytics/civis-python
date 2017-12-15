@@ -92,7 +92,7 @@ def notebooks_download_cmd(notebook_id, path):
 @click.option('--mem', type=int, default=None,
               help='Memory allocated for this notebook in MiB.')
 @click.option('--cpu', type=int, default=None,
-              help='CPU available for this notebook in 1/1000 of a core.')
+              help='CPU available for this notebook in 1/1024 of a core.')
 def notebooks_launch_cmd(language='python3', mem=None, cpu=None):
     """Create a new notebook and open it in the browser."""
     client = civis.APIClient()
@@ -109,7 +109,7 @@ def notebooks_launch_cmd(language='python3', mem=None, cpu=None):
 @click.option('--mem', type=int, default=None,
               help='Memory allocated for this notebook in MiB.')
 @click.option('--cpu', type=int, default=None,
-              help='CPU available for this notebook in 1/1000 of a core.')
+              help='CPU available for this notebook in 1/1024 of a core.')
 def notebooks_up(notebook_id, mem=None, cpu=None):
     """Start an existing notebook and open it in the browser."""
     client = civis.APIClient()
