@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ``civis.io.dataframe_to_civis``, ``civis.io.csv_to_civis``, and ``civis.io.civis_file_to_table`` functions now support the `diststyle` parameter.
 - New notebook-related CLI commands: "new", "up", "down", and "open".
+- Additional documentation for using the Civis joblib backend (#199)
 
 ### Fixed
 - Relaxed requirement on ``cloudpickle`` version number (#187)
