@@ -8,6 +8,7 @@ import os
 
 import click
 import requests
+import webbrowser
 
 import civis
 from civis.io import file_to_civis, civis_to_file
@@ -83,6 +84,71 @@ def notebooks_download_cmd(notebook_id, path):
     with open(path, 'wb') as f:
         for lines in chunked:
             f.write(lines)
+
+
+@click.command('new')
+@click.argument('language', type=click.Choice(['python3', 'python2', 'r']),
+                default='python3')
+@click.option('--mem', type=int, default=None,
+              help='Memory allocated for this notebook in MiB.')
+@click.option('--cpu', type=int, default=None,
+              help='CPU available for this notebook in 1/1000 of a core.')
+def notebooks_new_cmd(language='python3', mem=None, cpu=None):
+    """Create a new notebook and open it in the browser."""
+    client = civis.APIClient()
+    kwargs = {'memory': mem, 'cpu': cpu}
+    kwargs = {k: v for k, v in kwargs.items() if v is not None}
+    new_nb = client.notebooks.post(language=language, **kwargs)
+    print("Created new {} notebook with ID {} .".format(language, new_nb.id))
+    _notebooks_up(new_nb.id)
+    _notebooks_open(new_nb.id)
+
+
+@click.command('up')
+@click.argument('notebook_id', type=int)
+@click.option('--mem', type=int, default=None,
+              help='Memory allocated for this notebook in MiB.')
+@click.option('--cpu', type=int, default=None,
+              help='CPU available for this notebook in 1/1000 of a core.')
+def notebooks_up(notebook_id, mem=None, cpu=None):
+    """Start an existing notebook and open it in the browser."""
+    client = civis.APIClient()
+    kwargs = {'memory': mem, 'cpu': cpu}
+    kwargs = {k: v for k, v in kwargs.items() if v is not None}
+    client.notebooks.patch(notebook_id, **kwargs)
+    _notebooks_up(notebook_id)
+    _notebooks_open(notebook_id)
+
+
+def _notebooks_up(notebook_id):
+    client = civis.APIClient()
+    return client.notebooks.post_deployments(notebook_id)
+
+
+@click.command('down')
+@click.argument('notebook_id', type=int)
+def notebooks_down(notebook_id):
+    """Shut down a running notebook."""
+    client = civis.APIClient()
+    nb = client.notebooks.get(notebook_id)
+    state = nb['most_recent_deployment']['state']
+    if state not in ['running', 'pending']:
+        print('Notebook is in state "{}" and can\'t be stopped.'.format(state))
+    deployment_id = nb['most_recent_deployment']['deploymentId']
+    client.notebooks.delete_deployments(notebook_id, deployment_id)
+
+
+@click.command('open')
+@click.argument('notebook_id', type=int)
+def notebooks_open(notebook_id):
+    """Open an existing notebook in the browser."""
+    _notebooks_open(notebook_id)
+
+
+def _notebooks_open(notebook_id):
+    url = 'https://platform.civisanalytics.com/#/notebooks/{}?fullscreen=true'
+    url = url.format(notebook_id)
+    webbrowser.open(url, new=2, autoraise=True)
 
 
 @click.command('civis', help="Print Civis")
