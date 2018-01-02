@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: !!python/unicode '{"name": "somename"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['20']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.1 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/files
+  response:
+    body:
+      string: !!binary |
+        H4sIAFXOJloAA2RS25KiMBT8F54HSbgpvjkoIwww6w2Ul61AggZBWBMVmZp/32DtWLu1T0md090n
+        fdKfEsXSeGjqumWaL9IJVUQaS6yuyOP6ImVngjjBEy7KKoBDGaoyMNbQHBtgrFoDAEAiYDktyYp2
+        ggxeJNI29EzYN2ckAygD/T/OpSlrhDfnUsAOnDdsrCgZvVImZ/WJ1SUZMG2AKtTVJ3Rjg6yuniSH
+        khIzafwpHcld0Ovznil8z/dK/xCmqDBNVTPVZHOkW7JOhpmMSDaSYY7UPLeQjnKg/OWyqUua9ULk
+        7pVk/tpklQNQbF3coqZBMWnDO2gDCm5htGjDrobBtL5/RDX1ba9IVeOItstGnJ1bNKnQoDgOz8l2
+        QT+oV6Bt0mR32OO6VG1L9wSYwIj+se9fswp3vrY84bfsmlQlS7bBNSgcuitcdVcEPCz24GMldrbG
+        hR875a7b8yBODkGVVB/xDOzi3c3XwmsaR5ddDL/1dYHlhMIiq6JjEhvCj8N6P4sN9xab0l9GUbiA
+        XrI4hnY8a4KNM7s+vHazezDdXPE24EnsdNgGra8Fna86WtYtc6HX4jgSdc/y54wSGx7Sbc13cXtK
+        Na/Bbwf+mBPhdWhDd71xpn4Uuou1C0P6Lyd5c0Cyck23cG/BOmvFfBhNZ2q4njz2m0fQEv/Tyqjq
+        ZJFFTE6coj4xk3d34r7PNoG93L3ar1vP/7FQ+oRCFRjKhckEMS5DhWmKSI/+80x+XQjjTzFU7usz
+        5Yeq14pXujwPJra8mk9Uw3yCsMj+n+D3siLCBlCt5NlndH9C/HLuQRbRNIAhBNYQETzUgTkk0LRE
+        4NBQ1XRoqEMzBVlqkFEKTAI1faSZOSRmbho4zzTp6+s3AAAA//8DANwbllSOAwAA
+    headers:
+      access-control-allow-origin: ['*']
+      cache-control: ['max-age=0, private, must-revalidate']
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-length: ['675']
+      content-type: [application/json; charset=utf-8]
+      date: ['Tue, 05 Dec 2017 16:50:29 GMT']
+      etag: [W/"e08b201d6b37312eb997ca41d6ccc13a"]
+      server: [nginx/1.13.7]
+      strict-transport-security: [max-age=15552000]
+      vary: [Accept-Encoding]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-ratelimit-limit: ['1000']
+      x-ratelimit-remaining: ['999']
+      x-request-id: [b833e8ee-e0b7-4158-8382-ee1ac7bb5931]
+      x-runtime: ['0.088243']
+      x-xss-protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: !!python/unicode "--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"key\"; filename=\"key\"\r\n\r\norgs/tgtg/files/21bb26b3-6849-4e7c-aec8-1fa2ff9a4af0/somename\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"; filename=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"; filename=\"x-amz-signature\"\r\n\r\n9e330d11097aed74067e169a2fa723415276b0cb5e8b06e134836f1e6f65dfc3\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"; filename=\"x-amz-date\"\r\n\r\n20171205T165029Z\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"policy\"; filename=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjoiMjAxNy0xMi0wNVQxNzo1MDoyOVoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJjaXZpcy1jb25zb2xlIn0seyJrZXkiOiJvcmdzL3RndGcvZmlsZXMvMjFiYjI2YjMtNjg0OS00ZTdjLWFlYzgtMWZhMmZmOWE0YWYwL3NvbWVuYW1lIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiQUtJQUlLRVVNQ1JZQkNCWEpMUFEvMjAxNzEyMDUvdXMtZWFzdC0xL3MzL2F3czRfcmVxdWVzdCJ9LHsieC1hbXotYWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsieC1hbXotZGF0ZSI6IjIwMTcxMjA1VDE2NTAyOVoifV19\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"; filename=\"x-amz-credential\"\r\n\r\nAKIAIKEUMCRYBCBXJLPQ/20171205/us-east-1/s3/aws4_request\r\n--623ce27774834dfdb671215176407cc0\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"file_to_civis.csv\"\r\n\r\na,b,c\n1,2,3\r\n--623ce27774834dfdb671215176407cc0--\r\n"
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['1474']
+      Content-Type: [multipart/form-data; boundary=623ce27774834dfdb671215176407cc0]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://civis-console.s3.amazonaws.com/
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      date: ['Tue, 05 Dec 2017 16:50:30 GMT']
+      etag: ['"1a477f6d2f9c9fc827fa46b5ace1a145"']
+      location: ['https://civis-console.s3.amazonaws.com/orgs%2Ftgtg%2Ffiles%2F21bb26b3-6849-4e7c-aec8-1fa2ff9a4af0%2Fsomename']
+      server: [AmazonS3]
+      x-amz-id-2: [4YQrSeJ6FdDVUFrCh3o2hymCFIdplfHJ2+pcFm/eKWatynNqPTz63CqXh11n5WEJy8LujjDgpFk=]
+      x-amz-request-id: [2F78FF7EC5480185]
+    status: {code: 204, message: No Content}
+version: 1

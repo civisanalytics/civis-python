@@ -7,6 +7,7 @@ import math
 from multiprocessing.dummy import Pool
 import os
 import re
+import shutil
 import six
 import requests
 from requests import HTTPError
@@ -15,7 +16,7 @@ from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError, TemporaryDirectory
 from civis.utils._deprecation import deprecate_param
-from civis._utils import retry
+from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
@@ -34,6 +35,8 @@ RETRY_EXCEPTIONS = (requests.HTTPError,
                     requests.ConnectTimeout)
 
 log = logging.getLogger(__name__)
+# standard chunk size; provides good performance across various buffer sizes
+CHUNK_SIZE = 32 * 1024
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
            'file_to_dataframe', 'file_to_json']
 
@@ -82,7 +85,7 @@ def _buf_len(buf):
     return None
 
 
-def _single_upload(buf, name, is_seekable, client, **kwargs):
+def _single_upload(buf, name, client, **kwargs):
     file_response = client.files.post(name, **kwargs)
 
     # Platform has given us a URL to which we can upload a file.
@@ -94,9 +97,9 @@ def _single_upload(buf, name, is_seekable, client, **kwargs):
     form_key = OrderedDict(key=form.pop('key'))
     form_key.update(form)
 
+    @retry(RETRY_EXCEPTIONS)
     def _post():
-        if is_seekable:
-            buf.seek(0)
+        buf.seek(0)
         form_key['file'] = buf
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
@@ -107,11 +110,7 @@ def _single_upload(buf, name, is_seekable, client, **kwargs):
             msg = _get_aws_error_message(response)
             raise HTTPError(msg, response=response)
 
-    # we can only retry if the buffer is seekable
-    if is_seekable:
-        retry(RETRY_EXCEPTIONS)(_post())
-    else:
-        _post()
+    _post()
 
     return file_response.id
 
@@ -132,25 +131,18 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     assert num_parts == len(urls), \
         "There are {} file parts but only {} urls".format(num_parts, len(urls))
 
-    # generate for writing a specific number of bytes from the buffer
-    def _gen_chunks(part_buf, max_bytes, chunk_size=32 * 1024):
-        bytes_read = 0
-        while True:
-            length = min(chunk_size, max_bytes - bytes_read)
-            if length <= 0:
-                break
-            bytes_read += length
-            data = part_buf.read(length)
-            yield data
-
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
-    def _upload_part_base(item, part_path):
+    def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
+        offset = part_size * part_num
+        num_bytes = min(part_size, file_size - offset)
+
         log.debug('Uploading file part %s', part_num)
-        file_out = part_path.format(part_num)
-        with open(file_out, 'rb') as fout:
-            part_response = requests.put(part_url, data=fout)
+        with open(file_path, 'rb') as fin:
+            fin.seek(offset)
+            partial_buf = BufferedPartialReader(fin, num_bytes)
+            part_response = requests.put(part_url, data=partial_buf)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
@@ -161,21 +153,9 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     # upload each part
     try:
         pool = Pool(MAX_THREADS)
-        with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, 'file_to_civis_{}.csv')
-            for i in range(0, num_parts):
-                offset = part_size * i
-                num_bytes = min(part_size, file_size - offset)
-                buf.seek(offset)
-
-                # write part to disk so that we can stream it
-                file_in = tmp_path.format(i)
-                with open(file_in, 'wb') as fin:
-                    for x in _gen_chunks(buf, num_bytes):
-                        fin.write(x)
-
-            _upload_part = partial(_upload_part_base, part_path=tmp_path)
-            pool.map(_upload_part, enumerate(urls))
+        _upload_part = partial(_upload_part_base, file_path=buf.name,
+                               part_size=part_size, file_size=file_size)
+        pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
     # if any part except the last failed to upload at least 5MB
@@ -242,6 +222,22 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         with open(buf, 'rb') as f:
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
+
+    # we should only pass _file_to_civis a file-like object that is
+    # on disk, seekable and at position 0
+    if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
+            buf.tell() != 0:
+        # determine mode for writing
+        mode = 'w'
+        if isinstance(buf.read(0), six.binary_type):
+            mode += 'b'
+        with TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
+            with open(tmp_path, mode) as fout:
+                shutil.copyfileobj(buf, fout, CHUNK_SIZE)
+            with open(tmp_path, 'rb') as fin:
+                return _file_to_civis(
+                    fin, name, api_key=api_key, client=client, **kwargs)
     else:
         return _file_to_civis(
             buf, name, api_key=api_key, client=client, **kwargs)
@@ -256,24 +252,11 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         log.warning('Could not determine file size; defaulting to '
                     'single post. Files over 5GB will fail.')
 
-    # determine if file-like object is seekable
-    try:
-        buf.seek(buf.tell())
-        is_seekable = True
-    except io.UnsupportedOperation:
-        is_seekable = False
-
-    if not file_size:
-        return _single_upload(buf, name, is_seekable, client, **kwargs)
+    if not file_size or file_size <= MIN_MULTIPART_SIZE:
+        return _single_upload(buf, name, client, **kwargs)
     elif file_size > MAX_FILE_SIZE:
         msg = "File is greater than the maximum allowable file size (5TB)"
         raise ValueError(msg)
-    elif not is_seekable and file_size > MAX_PART_SIZE:
-        msg = "Cannot perform multipart upload on non-seekable files. " \
-              "File is greater than the maximum allowable part size (5GB)"
-        raise ValueError(msg)
-    elif file_size <= MIN_MULTIPART_SIZE or not is_seekable:
-        return _single_upload(buf, name, is_seekable, client, **kwargs)
     else:
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
@@ -333,8 +316,7 @@ def _civis_to_file(file_id, buf, api_key=None, client=None):
                                'expired.'.format(file_id))
     response = requests.get(url, stream=True)
     response.raise_for_status()
-    chunk_size = 32 * 1024
-    chunked = response.iter_content(chunk_size)
+    chunked = response.iter_content(CHUNK_SIZE)
     for lines in chunked:
         buf.write(lines)
 
