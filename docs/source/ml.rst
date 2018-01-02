@@ -284,6 +284,24 @@ You can use this method to chain jobs together:
 
 .. code-block:: python
 
+  from concurrent import futures
+  from civis.ml import ModelPipeline
+  import pandas as pd
+  df = pd.read_csv('data.csv')
+  training, predictions = [], []
+  model = ModelPipeline('sparse_logistic', dependent_variable='type')
+  training.append(model.train(df))
+  training[-1].add_done_callback(lambda fut: predictions.append(model.predict(df)))
+  futures.wait(training)  # Blocks until all training jobs complete
+  futures.wait(predictions)  # Blocks until all prediction jobs complete
+
+
+You can create and train multiple models at once to find the best approach
+for solving a problem. For example:
+
+
+.. code-block:: python
+
   from civis.ml import ModelPipeline
   algorithms = ['gradient_boosting_classifier', 'sparse_logistic', 'random_forest_classifier']
   pkey = 'person_id'
