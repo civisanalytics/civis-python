@@ -135,22 +135,22 @@ Examples
 Parallel computation using the default joblib backend
 (this uses processes on your local computer)::
 
-    >>> def my_func(num1, num2):
+    >>> def expensive_calculation(num1, num2):
     ...     return 2 * num1 + num2
     >>> from joblib import delayed, Parallel
     >>> parallel = Parallel(n_jobs=5)
     >>> args = [(0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
-    >>> print(parallel(delayed(my_func)(*a) for a in args))
+    >>> print(parallel(delayed(expensive_calculation)(*a) for a in args))
     [1, 3, 5, 7, 9, 11, 13]
 
 You can do the the same parallel computation using the Civis backend
 by creating and registering a backend factory and entering a
 ``with parallel_backend('civis')`` context. The code below will start
-seven different jobs in Civis Platform (with up to 5 running at once).
-Each job will call the function ``my_func`` with a different set of
-arguments from the list ``args``.::
+seven different jobs in Civis Platform (with up to five running at once).
+Each job will call the function ``expensive_calculation`` with a
+different set of arguments from the list ``args``.::
 
-    >>> def my_func(num1, num2):
+    >>> def expensive_calculation(num1, num2):
     ...     return 2 * num1 + num2
     >>> from joblib import delayed, Parallel
     >>> from joblib import parallel_backend, register_parallel_backend
@@ -160,7 +160,7 @@ arguments from the list ``args``.::
     >>> args = [(0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
     >>> with parallel_backend('civis'):
     ...    parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
-    ...    print(parallel(delayed(my_func)(*a) for a in args))
+    ...    print(parallel(delayed(expensive_calculation)(*a) for a in args))
     [1, 3, 5, 7, 9, 11, 13]
 
 You can use the Civis joblib backend to parallelize any code which
