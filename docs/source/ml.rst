@@ -40,9 +40,7 @@ values in a column. The "sparse_*" models include a LASSO regression step
 to do feature selection before passing data to the final model.
 In some models, CivisML uses default parameters different from those in scikit-learn,
 as indicated in the "Altered Defaults" column. All models also have
-``random_state=42``. Note that "multilayer_perceptron_classifier"
-and "multilayer_perceptron_regressor" can only be used with
-hyperband; see :ref:`hyperparam-search`.
+``random_state=42``.
 
 ================================  ================    ==================================================================================================================================   ==================================
 Name                              Model Type          Algorithm                                                                                                                            Altered Defaults
@@ -77,7 +75,9 @@ and "random_forest_regressor" models, and combining them using
 <https://github.com/civisanalytics/civisml-extensions>`_. The
 estimators that are being stacked have the same names as the
 associated pre-defined models, and the meta-estimator steps are named
-"meta-estimator".
+"meta-estimator". Note that although default parameters are provided
+for multilayer perceptron models, it is highly recommended that
+multilayer perceptrons be run using hyperband.
 
 Custom Models
 -------------
@@ -138,9 +138,7 @@ currently only supported for the following models:
 ``extra_trees_classifier``, ``multilayer_perceptron_classifier``,
 ``stacking_classifier``, ``gradient_boosting_regressor``,
 ``random_forest_regressor``, ``extra_trees_regressor``,
-``multilayer_perceptron_regressor``, and ``stacking_regressor``. The
-preset multilayer perceptron models are currently only supported when
-``cross_validation_parameters='hyperband'``.
+``multilayer_perceptron_regressor``, and ``stacking_regressor``.
 
 Hyperband cannot be used to tune GLMs. For this reason, preset GLMs do
 not have a hyperband option. Similarly, when
@@ -149,9 +147,7 @@ not have a hyperband option. Similarly, when
 random forest steps of the stacker are tuned using hyperband.
 Note that if you want to use hyperband with a custom model, you will need to
 wrap your estimator in a
-:class:`civismlext.hyperband.HyperbandSearchCV
-       https://github.com/civisanalytics/civisml-extensions/blob/5546ba1a482462662f3f6ecdb8fc74f1087f8dbf/civismlext/hyperband.py#L43`_
-       estimator yourself.
+:class:`civismlext.hyperband.HyperbandSearchCV` estimator yourself.
 
 CivisML runs pre-defined with hyperband using the following
 distributions:
@@ -160,9 +156,9 @@ distributions:
 | Models                             | Cost               | Hyperband                                                                   |
 |                                    | Parameter          | Distributions                                                               |
 +====================================+====================+=============================================================================+
-| | gradient_boosting_classifier     | | ``n_estimators`` | | ``max_depth: [1, 2, 5, 10, 15]``                                          |
+| | gradient_boosting_classifier     | | ``n_estimators`` | | ``max_depth: randint(low=1, high=5)``                                     |
 | | gradient_boosting_regressor      | | ``min = 100,``   | | ``max_features: [None, 'sqrt', 'log2', 0.5, 0.3, 0.1, 0.05, 0.01]``       |
-| | GBT step in stacking_classifier  | | ``max = 10000``  | | ``learning_rate: truncexpon(b=5, loc=.0003, scale=1./167.)``              |
+| | GBT step in stacking_classifier  | | ``max = 1000``   | | ``learning_rate: truncexpon(b=5, loc=.0003, scale=1./167.)``              |
 | | GBT step in stacking_regressor   |                    |                                                                             |
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
