@@ -68,6 +68,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Fixes a bug where we would sometimes miss an immediate error on SQL scripts (#174).
 
 ### Added
+- Documentation updated to include new CivisML features (#137).
 - ``civis.resources.cache_api_spec`` function to make it easier to record the
   current API spec locally (#141).
 - Autospecced mock of the ``APIClient`` for use in testing third-party code which
