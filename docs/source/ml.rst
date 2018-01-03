@@ -126,7 +126,7 @@ hyperparameter names, and the values are lists of hyperparameter
 values to grid search over. You can run hyperparameter tuning in parallel by
 setting the ``n_jobs``
 parameter to however many jobs you would like to run in
-parallel. ``n_jobs`` defaults to 1 (no parallelization). 
+parallel. ``n_jobs`` defaults to 4.
 
 `Hyperband <https://arxiv.org/abs/1603.06560>`_
 is an efficient approach to hyperparameter optimization, and
