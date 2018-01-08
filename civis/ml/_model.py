@@ -81,7 +81,7 @@ def _block_and_handle_missing(method):
     return wrapper
 
 
-def _stash_local_dataframe(df, client=None):
+def _stash_local_dataframe(df, template_id, client=None):
     """Store data in a temporary Civis File and return the file ID"""
     # Standard dataframe indexes do not have a "levels" attribute,
     # but multiindexes do. Checking for this attribute means we don't
@@ -91,7 +91,10 @@ def _stash_local_dataframe(df, client=None):
                         "Try calling `.reset_index` on your data to convert "
                         "it into a CivisML-friendly format.")
     try:
-        return _stash_dataframe_as_feather(df, client)
+        if template_id > 9969:
+            return _stash_dataframe_as_feather(df, client)
+        else:
+            return _stash_dataframe_as_csv(df, client)
     except (ImportError, AttributeError) as exc:
         if (df.dtypes == 'category').any():
             # The original exception should tell users if they need
@@ -921,7 +924,8 @@ class ModelPipeline:
             raise ValueError('Provide a single source of data.')
 
         if df is not None:
-            file_id = _stash_local_dataframe(df, client=self._client)
+            file_id = _stash_local_dataframe(df, self.train_template_id,
+                                             client=self._client)
         elif csv_path:
             file_id = _stash_local_file(csv_path, client=self._client)
 
@@ -1170,7 +1174,8 @@ class ModelPipeline:
             raise ValueError('Provide a single source of data.')
 
         if df is not None:
-            file_id = _stash_local_dataframe(df, client=self._client)
+            file_id = _stash_local_dataframe(df, self.predict_template_id,
+                                             client=self._client)
         elif csv_path:
             file_id = _stash_local_file(csv_path, client=self._client)
 
