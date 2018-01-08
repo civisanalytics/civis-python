@@ -14,6 +14,11 @@ try:
 except ImportError:
     HAS_PANDAS = False
 try:
+    import feather  # NOQA
+    HAS_FEATHER = True
+except ImportError:
+    HAS_FEATHER = False
+try:
     from sklearn.linear_model import LogisticRegression
     HAS_SKLEARN = True
 except ImportError:
@@ -159,12 +164,22 @@ def test_stash_local_dataframe_multiindex_err():
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
-def test_stash_local_data_from_dataframe(mock_file):
+def test_stash_local_data_from_dataframe_csv(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
-    assert _model._stash_local_dataframe(df) == -11
+    assert _model._stash_dataframe_as_csv(df, mock.Mock()) == -11
     mock_file.assert_called_once_with(mock.ANY, name='modelpipeline_data.csv',
                                       client=mock.ANY)
     assert isinstance(mock_file.call_args[0][0], BytesIO)
+
+
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
+@pytest.mark.skipif(not HAS_FEATHER, reason="feather not installed")
+@mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
+def test_stash_local_data_from_dataframe_feather(mock_file):
+    df = pd.DataFrame({'a': [1], 'b': [2]})
+    assert _model._stash_local_dataframe(df) == -11
+    mock_file.assert_called_once_with(
+        mock.ANY, name='modelpipeline_data.feather', client=mock.ANY)
 
 
 @mock.patch.object(_model, '_retrieve_file', autospec=True)

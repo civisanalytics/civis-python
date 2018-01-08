@@ -40,12 +40,15 @@ Machine learning features in the ``ml`` namespace have a soft dependency on
 ``scikit-learn`` and ``pandas``. Install ``scikit-learn`` to
 export your trained models from the Civis Platform or to
 provide your own custom models. Use ``pandas`` to download model predictions
-from the Civis Platform. Install these dependencies with
+from the Civis Platform. The ``civis.ml`` code optionally uses the
+`feather <https://github.com/wesm/feather>`_ format to transfer data from your
+local computer to Civis Platform. Install these dependencies with
 
 .. code-block:: bash
 
    pip install scikit-learn
    pip install pandas
+   pip install feather-format
 
 
 Python version support

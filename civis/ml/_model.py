@@ -24,7 +24,7 @@ except ImportError:
 from civis import APIClient, find, find_one, __version__
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import FileNotFoundError
+from civis.compat import FileNotFoundError, TemporaryDirectory
 import civis.io as cio
 from civis.futures import ContainerFuture
 
@@ -90,6 +90,30 @@ def _stash_local_dataframe(df, client=None):
         raise TypeError("CivisML does not support multi-indexed data frames. "
                         "Try calling `.reset_index` on your data to convert "
                         "it into a CivisML-friendly format.")
+    try:
+        return _stash_dataframe_as_feather(df, client)
+    except (ImportError, AttributeError) as exc:
+        if (df.dtypes == 'category').any():
+            # The original exception should tell users if they need
+            # to upgrade pandas (an AttributeError)
+            # # or if they need to install "feather-format" (ImportError).
+            six.raise_from(ValueError(
+                'Categorical columns can only be handled with pandas '
+                'version >= 0.20 and `feather-format` installed.'),
+                exc)
+        return _stash_dataframe_as_csv(df, client)
+
+
+def _stash_dataframe_as_feather(df, client):
+    civis_fname = 'modelpipeline_data.feather'
+    with TemporaryDirectory() as tdir:
+        path = os.path.join(tdir, civis_fname)
+        df.to_feather(path)
+        file_id = cio.file_to_civis(path, name=civis_fname, client=client)
+    return file_id
+
+
+def _stash_dataframe_as_csv(df, client):
     civis_fname = 'modelpipeline_data.csv'
     buf = six.BytesIO()
     if six.PY3:
@@ -837,6 +861,9 @@ class ModelPipeline:
             Note that the index of the :class:`~pandas.DataFrame` will be
             ignored -- use ``df.reset_index()`` if you want your
             index column to be included with the data passed to CivisML.
+            NB: You must install ``feather-format`` if your
+            :class:`~pandas.DataFrame` contains :class:`~pandas.Categorical`
+            columns, to ensure that CivisML preserves data types.
         csv_path : str, optional
             The location of a CSV of data on the local disk.
             It will be uploaded to a Civis file.
@@ -1079,6 +1106,9 @@ class ModelPipeline:
             Note that the index of the :class:`~pandas.DataFrame` will be
             ignored -- use ``df.reset_index()`` if you want your
             index column to be included with the data passed to CivisML.
+            NB: You must install ``feather-format`` if your
+            :class:`~pandas.DataFrame` contains :class:`~pandas.Categorical`
+            columns, to ensure that CivisML preserves data types.
         csv_path : str, optional
             The location of a CSV of data on the local disk.
             It will be uploaded to a Civis file.
