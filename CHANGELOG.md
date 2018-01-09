@@ -2,11 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
-
+## 1.7.2 - 2018-01-09
 ### Fixed
 - Relaxed requirement on ``cloudpickle`` version number (#187)
-
+- Restore previous behavior of ``civis.io.civis_to_csv`` when using "compression='gzip'" (#195)
 
 ## 1.7.1 - 2017-11-16
 ### Fixed
