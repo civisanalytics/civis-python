@@ -10,12 +10,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Additional documentation for using the Civis joblib backend (#199)
 
 ### Fixed
-- Relaxed requirement on ``cloudpickle`` version number (#187)
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now uses additional file handles for multipart upload instead of writing to disk to reduce disk usage
 - ``civis.io.dataframe_to_civis`` writes dataframes to disk instead of using an in memory buffer
 
+## 1.7.2 - 2018-01-09
+### Fixed
+- Relaxed requirement on ``cloudpickle`` version number (#187)
+- Restore previous behavior of ``civis.io.civis_to_csv`` when using "compression='gzip'" (#195)
 
 ## 1.7.1 - 2017-11-16
 ### Fixed
