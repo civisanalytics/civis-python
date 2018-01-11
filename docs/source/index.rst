@@ -37,15 +37,19 @@ set ``use_pandas=True`` in functions that accept that parameter.  To install
    pip install pandas
 
 Machine learning features in the ``ml`` namespace have a soft dependency on
-``scikit-learn`` and ``pandas``. Install ``scikit-learn`` to
+``scikit-learn``, ``pandas``, ``civisml-extensions``, and
+``glmnet``. Install ``scikit-learn`` to
 export your trained models from the Civis Platform or to
 provide your own custom models. Use ``pandas`` to download model predictions
-from the Civis Platform. Install these dependencies with
+from the Civis Platform. Use ``civisml-extensions`` and ``glmnet`` to
+access a successfully trained model object. Install these dependencies with
 
 .. code-block:: bash
 
    pip install scikit-learn
    pip install pandas
+   pip install civisml-extensions
+   pip install glmnet
 
 
 Python version support

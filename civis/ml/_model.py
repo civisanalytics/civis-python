@@ -284,6 +284,7 @@ class ModelFuture(ContainerFuture):
     civis.futures.ContainerFuture
     concurrent.futures.Future
     """
+
     def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
                  polling_interval=None, client=None, poll_on_creation=True):
         super().__init__(job_id, run_id,
@@ -330,9 +331,9 @@ class ModelFuture(ContainerFuture):
                 except Exception:  # NOQA
                     est = None
                 fut.set_exception(
-                      ModelError('Model run failed with stack trace:\n'
-                                 '{}'.format(meta['run']['stack_trace']),
-                                 est, meta))
+                    ModelError('Model run failed with stack trace:\n'
+                               '{}'.format(meta['run']['stack_trace']),
+                               est, meta))
         except (FileNotFoundError, CivisJobFailure) as exc:
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
@@ -813,7 +814,7 @@ class ModelPipeline:
               database_name=None, file_id=None,
               sql_where=None, sql_limit=None, oos_scores=None,
               oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None, validation_data='train', n_jobs=4):
+              polling_interval=None, validation_data='train', n_jobs=None):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -877,7 +878,8 @@ class ModelPipeline:
             for validation; and `'skip'`, which skips the validation step.
         n_jobs : int, optional
             Number of jobs to use for training and validation. Defaults to
-            4, which allows parallelization over the 4 cross validation folds.
+            `None`, which allows CivisML to dynamically calculate an
+            appropriate number of workers to use.
             Increase n_jobs to parallelize over many hyperparameter
             combinations in grid search/hyperband, or decrease to use fewer
             computational resources at once.
@@ -958,14 +960,14 @@ class ModelPipeline:
         self.train_result_ = None
 
         result, container, run = self._create_custom_run(
-              self.train_template_id,
-              job_name=name,
-              table_name=table_name,
-              database_name=database_name,
-              file_id=file_id,
-              args=train_args,
-              resources=self.job_resources,
-              polling_interval=polling_interval)
+            self.train_template_id,
+            job_name=name,
+            table_name=table_name,
+            database_name=database_name,
+            file_id=file_id,
+            args=train_args,
+            resources=self.job_resources,
+            polling_interval=polling_interval)
 
         self.train_result_ = result
 
@@ -1019,12 +1021,12 @@ class ModelPipeline:
             train_kwargs = {'train_job_id': self.train_result_.job_id,
                             'train_run_id': self.train_result_.run_id}
         fut = ModelFuture(
-              container.id,
-              run.id,
-              client=self._client,
-              polling_interval=polling_interval,
-              poll_on_creation=False,
-              **train_kwargs)
+            container.id,
+            run.id,
+            client=self._client,
+            polling_interval=polling_interval,
+            poll_on_creation=False,
+            **train_kwargs)
 
         return fut, container, run
 

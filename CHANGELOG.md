@@ -8,6 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - ``civis.io.dataframe_to_civis``, ``civis.io.csv_to_civis``, and ``civis.io.civis_file_to_table`` functions now support the `diststyle` parameter.
 - New notebook-related CLI commands: "new", "up", "down", and "open".
 - Additional documentation for using the Civis joblib backend (#199)
+- Documented additional soft dependencies for CivisML (#201)
+
+### Changed
+- Changed `ModelPipeline.train` default for `n_jobs` from 4 to `None`,
+  so that `n_jobs` will be dynamically calculated by default (#201)
 
 ### Fixed
 
