@@ -42,7 +42,10 @@ Machine learning features in the ``ml`` namespace have a soft dependency on
 export your trained models from the Civis Platform or to
 provide your own custom models. Use ``pandas`` to download model predictions
 from the Civis Platform. Use ``civisml-extensions`` and ``glmnet`` to
-access a successfully trained model object. Install these dependencies with
+access a successfully trained model object. The ``civis.ml`` code
+optionally uses the `feather <https://github.com/wesm/feather>`_
+format to transfer data from your local computer to Civis
+Platform. Install these dependencies with
 
 .. code-block:: bash
 
@@ -50,6 +53,7 @@ access a successfully trained model object. Install these dependencies with
    pip install pandas
    pip install civisml-extensions
    pip install glmnet
+   pip install feather-format
 
 
 Python version support
