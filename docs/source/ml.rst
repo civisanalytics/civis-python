@@ -317,9 +317,18 @@ the following pip-installable dependencies enhance the capabilities of the
 - pandas
 - scikit-learn
 - glmnet
+- feather-format
 
 Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
+
+If you wish to use the :class:`~civis.ml.ModelPipeline` code to model on
+:class:`~pandas.DataFrame` objects in your local environment, the
+`feather-format <https://github.com/wesm/feather>`_ package (requires `pandas` >= 0.20)
+will improve data transfer speeds and guarantee that your data types are correctly
+detected by CivisML. You must install `feather-format` if you wish to use
+`pd.Categorical` columns in your `DataFrame` objects, since that type information
+is lost when writing data as a CSV.
 
 If you wish to use custom models or download trained models,
 you'll need scikit-learn installed.

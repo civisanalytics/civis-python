@@ -14,6 +14,11 @@ try:
 except ImportError:
     HAS_PANDAS = False
 try:
+    import feather  # NOQA
+    HAS_FEATHER = True
+except ImportError:
+    HAS_FEATHER = False
+try:
     from sklearn.linear_model import LogisticRegression
     HAS_SKLEARN = True
 except ImportError:
@@ -154,17 +159,45 @@ def test_stash_local_dataframe_multiindex_err():
                         'one', 'two', 'one', 'two'])]
     df = pd.DataFrame(np.random.randn(8, 4), index=arrays)
     with pytest.raises(TypeError):
-        _model._stash_local_dataframe(df)
+        _model._stash_local_dataframe(df, 10000)
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
-def test_stash_local_data_from_dataframe(mock_file):
+def test_stash_local_data_from_dataframe_csv(mock_file):
     df = pd.DataFrame({'a': [1], 'b': [2]})
-    assert _model._stash_local_dataframe(df) == -11
+    assert _model._stash_dataframe_as_csv(df, mock.Mock()) == -11
     mock_file.assert_called_once_with(mock.ANY, name='modelpipeline_data.csv',
                                       client=mock.ANY)
     assert isinstance(mock_file.call_args[0][0], BytesIO)
+
+
+@pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
+@pytest.mark.skipif(not HAS_FEATHER, reason="feather not installed")
+@mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
+def test_stash_local_data_from_dataframe_feather(mock_file):
+    df = pd.DataFrame({'a': [1], 'b': [2]})
+    assert _model._stash_local_dataframe(df, 10000) == -11
+    mock_file.assert_called_once_with(
+        mock.ANY, name='modelpipeline_data.feather', client=mock.ANY)
+
+
+@mock.patch.object(_model, '_stash_dataframe_as_feather', autospec=True)
+@mock.patch.object(_model, '_stash_dataframe_as_csv', autospec=True)
+def test_stash_local_dataframe_format_select_csv(mock_csv, mock_feather):
+    # Always store data as a CSV for CivisML versions <= 2.0.
+    _model._stash_local_dataframe('df', 9969)
+    assert mock_feather.call_count == 0
+    assert mock_csv.call_count == 1
+
+
+@mock.patch.object(_model, '_stash_dataframe_as_feather', autospec=True)
+@mock.patch.object(_model, '_stash_dataframe_as_csv', autospec=True)
+def test_stash_local_dataframe_format_select_feather(mock_csv, mock_feather):
+    # Try to store data as Feather for CivisML versions > 2.0.
+    _model._stash_local_dataframe('df', 10050)
+    assert mock_feather.call_count == 1
+    assert mock_csv.call_count == 0
 
 
 @mock.patch.object(_model, '_retrieve_file', autospec=True)
@@ -803,7 +836,8 @@ def test_modelpipeline_train_custom_etl(mock_ccr, mock_f2c, mp_setup):
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
-@mock.patch.object(_model, "_stash_local_dataframe", return_value=-11)
+@mock.patch.object(_model, "_stash_local_dataframe", return_value=-11,
+                   autospec=True)
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
     mp = mp_setup
@@ -812,7 +846,8 @@ def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
 
     train_data = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
     assert 'res' == mp.train(train_data)
-    mock_stash.assert_called_once_with(train_data, client=mock.ANY)
+    mock_stash.assert_called_once_with(
+        train_data, max(_model._PRED_TEMPLATES.keys()), client=mock.ANY)
     assert mp.train_result_ == 'res'
 
 

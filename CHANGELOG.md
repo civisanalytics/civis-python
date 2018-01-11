@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - ``civis.io.dataframe_to_civis``, ``civis.io.csv_to_civis``, and ``civis.io.civis_file_to_table`` functions now support the `diststyle` parameter.
 - New notebook-related CLI commands: "new", "up", "down", and "open".
 - Additional documentation for using the Civis joblib backend (#199)
+- Use "feather"-formatted files to send data from users to CivisML, if possible.
+  Require this when using ``pd.Categorical`` types, since CSVs require us to
+  re-infer column types, and this can fail. Using feather should also give a
+  speed improvement; it reads and writes faster than CSVs and produces smaller files (#200).
 
 ### Fixed
 
