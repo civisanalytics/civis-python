@@ -909,7 +909,8 @@ class ModelPipeline:
         n_jobs : int, optional
             Number of jobs to use for training and validation. Defaults to
             `None`, which allows CivisML to dynamically calculate an
-            appropriate number of workers to use.
+            appropriate number of workers to use (in general, as many as
+            possible without using all resources in the cluster).
             Increase n_jobs to parallelize over many hyperparameter
             combinations in grid search/hyperband, or decrease to use fewer
             computational resources at once.

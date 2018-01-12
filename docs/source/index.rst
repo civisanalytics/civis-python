@@ -37,12 +37,10 @@ set ``use_pandas=True`` in functions that accept that parameter.  To install
    pip install pandas
 
 Machine learning features in the ``ml`` namespace have a soft dependency on
-``scikit-learn``, ``pandas``, ``civisml-extensions``, and
-``glmnet``. Install ``scikit-learn`` to
+``scikit-learn`` and ``pandas``. Install ``scikit-learn`` to
 export your trained models from the Civis Platform or to
 provide your own custom models. Use ``pandas`` to download model predictions
-from the Civis Platform. Use ``civisml-extensions`` and ``glmnet`` to
-access a successfully trained model object. The ``civis.ml`` code
+from the Civis Platform. The ``civis.ml`` code
 optionally uses the `feather <https://github.com/wesm/feather>`_
 format to transfer data from your local computer to Civis
 Platform. Install these dependencies with
@@ -51,9 +49,20 @@ Platform. Install these dependencies with
 
    pip install scikit-learn
    pip install pandas
+   pip install feather-format
+
+
+Some CivisML models have open-source dependencies in
+addition to ``scikit-learn``, which you may need if you want to
+download the model object. These dependencies are
+``civisml-extensions``, ``glmnet``, and ``muffnn``. Install these
+dependencies with
+   
+.. code-block:: bash
+
    pip install civisml-extensions
    pip install glmnet
-   pip install feather-format
+   pip install muffnn
 
 
 Python version support
