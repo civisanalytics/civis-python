@@ -1,5 +1,6 @@
 """Run CivisML jobs and retrieve the results
 """
+import builtins
 from builtins import super
 from collections import namedtuple
 import io
@@ -218,6 +219,49 @@ def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
         else:
             exc = CivisJobFailure(all_logs)
     return exc
+
+
+def _parse_warning(warn_str):
+    """Reverse-engineer a warning string
+
+    Parameters
+    ----------
+    warn_str : string
+
+    Returns
+    -------
+    (str, Warning, str, int)
+        message, category, filename, lineno
+    """
+    tokens = warn_str.rstrip('\n').split(" ")
+
+    # The first token is
+    # "[filename]:[lineno]:"
+    filename, lineno, _ = tokens[0].split(':')
+
+    # The second token is
+    # "[category name]:"
+    category = getattr(builtins, tokens[1][:-1], RuntimeWarning)
+
+    message = " ".join(tokens[2:])
+
+    return message, category, filename, int(lineno)
+
+
+def _show_civisml_warnings(warn_list):
+    """Re-raise warnings recorded during a CivisML run
+
+    Parameters
+    ----------
+    warn_list : list of str
+        A list of warnings generated during a CivisML run
+    """
+    for warn_str in warn_list:
+        try:
+            warnings.warn_explicit(*_parse_warning(warn_str))
+        except Exception:  # NOQA
+            warn_str = "Remote warning from CivisML:\n" + warn_str
+            warnings.warn(warn_str, RuntimeWarning)
 
 
 class ModelFuture(ContainerFuture):
@@ -476,6 +520,7 @@ class ModelFuture(ContainerFuture):
             fid = cio.file_id_from_run_output('model_info.json', self.job_id,
                                               self.run_id, client=self.client)
             self._metadata = cio.file_to_json(fid, client=self.client)
+            _show_civisml_warnings(self._metadata.get('warnings', []))
         return self._metadata
 
     @property
