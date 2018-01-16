@@ -29,7 +29,28 @@ Note that whichever option you chose, CivisML will pre-process your data to
 one-hot-encode categorical features (the non-numerical columns) to binary indicator columns
 before sending the features to the :class:`~sklearn.pipeline.Pipeline`.
 
-       
+Model Dependencies
+------------------
+
+Many models built in CivisML have open-source dependencies in addition
+to ``scikit-learn``, and you will need to install these dependencies
+to access the model object. Models which use the default CivisML ETL,
+along with models which use stacking or hyperband, depend on
+``civisml-extensions``. Pre-defined models which include a feature
+selection step ("sparse_logistic", "sparse_linear_regressor",
+"sparse_ridge_regressor", "stacking_classifier", and
+"stacking_regressor") depend on ``glmnet``. Pre-defined MLP models
+("multilayer_perceptron_classifier" and
+"multilayer_perceptron_regressor") depend on ``muffnn``. These
+dependencies can be installed with
+
+.. code-block:: bash
+
+   pip install civisml-extensions
+   pip install glmnet
+   pip install muffnn
+
+
 Pre-Defined Models
 ------------------
 
@@ -126,7 +147,9 @@ hyperparameter names, and the values are lists of hyperparameter
 values to grid search over. You can run hyperparameter tuning in parallel by
 setting the ``n_jobs``
 parameter to however many jobs you would like to run in
-parallel. ``n_jobs`` defaults to 4.
+parallel. By default, ``n_jobs`` is dynamically calculated based on
+the resources available on your cluster, such that a modeling job will
+never take up more than 90% of the cluster resources at once.
 
 `Hyperband <https://arxiv.org/abs/1603.06560>`_
 is an efficient approach to hyperparameter optimization, and
