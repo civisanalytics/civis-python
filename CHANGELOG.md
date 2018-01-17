@@ -20,7 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``
-  parameter default to 'threading' as opposed to 'civis'. The default of 'civis' would launch additional
+  parameter default to 'sequential' as opposed to 'civis'. The default of 'civis' would launch additional
   containers in nested calls to ``joblib.Parallel``. (#205)
 
 ### Performance Enhancements
