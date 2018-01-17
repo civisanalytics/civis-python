@@ -223,6 +223,26 @@ def test_load_table_from_outputs(mock_fid, mock_f2df):
     _model._load_table_from_outputs(1, 2, 'fname', client=mock_client)
 
 
+def test_show_civisml_warnings():
+    warn_list = ["/path:13: UserWarning: A message\n",
+                 "/module:42: RuntimeWarning: Profundity\n"]
+    with pytest.warns(UserWarning) as warns:
+        _model._show_civisml_warnings(warn_list)
+    assert len(warns.list) == 2
+    assert str(warns.list[0].message) == "A message"
+    assert str(warns.list[1].message) == "Profundity"
+
+
+def test_show_civisml_warnings_error():
+    # If the warnings-parser fails, we should still get a sensible warning.
+    warn_list = ["/path UserWarning: A message\n"]  # Malformed warning message
+    with pytest.warns(RuntimeWarning) as warns:
+        _model._show_civisml_warnings(warn_list)
+    assert len(warns.list) == 1
+    assert warn_list[0] in str(warns.list[0].message)
+    assert "Remote warning from CivisML" in str(warns.list[0].message)
+
+
 ###################################
 # Tests of ModelFuture below here #
 ###################################
@@ -451,12 +471,12 @@ def test_table_None(mock_res, mock_lt):
 
 @mock.patch.object(_model.cio, "file_id_from_run_output",
                    mock.Mock(return_value=11, spec_set=True))
-@mock.patch.object(_model.cio, "file_to_json", return_value='bar')
+@mock.patch.object(_model.cio, "file_to_json", return_value={'foo': 'bar'})
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")
 def test_metadata(mock_spec, mock_f2j):
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
-    assert mf.metadata == 'bar'
+    assert mf.metadata == {'foo': 'bar'}
     mock_f2j.assert_called_once_with(11, client=c)
 
 
