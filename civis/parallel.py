@@ -285,7 +285,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         is the joblib backend to use when executing code within joblib in the
         container. The default of 'sequential' uses the joblib sequential
         backend in the container. The value 'civis' uses an exact copy of the
-        Civis joblib backend that launched the container.Note that with the
+        Civis joblib backend that launched the container. Note that with the
         value 'civis', one can potentially use more jobs than specified by
         ``n_jobs``.
     **kwargs:
