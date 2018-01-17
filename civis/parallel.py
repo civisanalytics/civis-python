@@ -51,7 +51,7 @@ def infer_backend_factory(required_resources=None,
                           max_submit_retries=0,
                           max_job_retries=0,
                           hidden=True,
-                          remote_backend='civis',
+                          remote_backend='sequential',
                           **kwargs):
     """Infer the container environment and return a backend factory.
 
@@ -135,8 +135,11 @@ def infer_backend_factory(required_resources=None,
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'civis' uses an exact copy of the Civis
-        joblib backend that launched the container.
+        container. The default of 'sequential' uses the joblib sequential
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container. Note that with the
+        value 'civis', one can potentially use more jobs than specified by
+        ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed directly to
         :func:`~civis.APIClient.scripts.post_containers`, potentially
@@ -221,7 +224,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          max_submit_retries=0,
                          max_job_retries=0,
                          hidden=True,
-                         remote_backend='civis',
+                         remote_backend='sequential',
                          **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
 
@@ -280,8 +283,11 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'civis' uses an exact copy of the Civis
-        joblib backend that launched the container.
+        container. The default of 'sequential' uses the joblib sequential
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container. Note that with the
+        value 'civis', one can potentially use more jobs than specified by
+        ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -738,7 +744,7 @@ class _CivisBackend(ParallelBackendBase):
                  from_template_id=None,
                  max_submit_retries=0,
                  client=None,
-                 remote_backend='civis',
+                 remote_backend='sequential',
                  **executor_kwargs):
         self.setup_cmd = setup_cmd
         self.from_template_id = from_template_id

@@ -21,6 +21,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   corresponding CivisML job (#204)
 
 ### Fixed
+- Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``
+  parameter default to 'sequential' as opposed to 'civis'. The default of 'civis' would launch additional
+  containers in nested calls to ``joblib.Parallel``. (#205)
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now uses additional file handles for multipart upload instead of writing to disk to reduce disk usage
