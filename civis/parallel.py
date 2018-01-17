@@ -135,9 +135,9 @@ def infer_backend_factory(required_resources=None,
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'sequential' uses the joblib sequential backend
-        in the container. The value 'civis' uses an exact copy of the Civis
-        joblib backend that launched the container.
+        container. The default of 'sequential' uses the joblib sequential 
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container.
     **kwargs:
         Additional keyword arguments will be passed directly to
         :func:`~civis.APIClient.scripts.post_containers`, potentially
@@ -281,9 +281,9 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'sequential' uses the joblib sequential backend
-        in the container. The value 'civis' uses an exact copy of the Civis
-        joblib backend that launched the container.
+        container. The default of 'sequential' uses the joblib sequential 
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
