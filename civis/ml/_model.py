@@ -582,7 +582,8 @@ class ModelPipeline:
     dependent_variable : string or List[str]
         The dependent variable of the training dataset.
         For a multi-target problem, this should be a list of
-        column names of dependent variables.
+        column names of dependent variables. Nulls in the dependent
+        variable will automatically be dropped.
     primary_key : string, optional
         The unique ID (primary key) of the training dataset.
         This will be used to index the out-of-sample scores.
@@ -590,10 +591,11 @@ class ModelPipeline:
         Specify parameters for the final stage estimator in a
         predefined model, e.g. ``{'C': 2}`` for a "sparse_logistic"
         model.
-    cross_validation_parameters : dict, optional
-        Cross validation parameter grid for learner parameters, e.g.
+    cross_validation_parameters : dict or string, optional
+        Options for cross validation. For grid search, supply a 
+        parameter grid as a dictionary, e.g.,
         ``{{'n_estimators': [100, 200, 500], 'learning_rate': [0.01, 0.1],
-        'max_depth': [2, 3]}}``.
+        'max_depth': [2, 3]}}``. For hyperband, pass the string "hyperband".
     model_name : string, optional
         The prefix of the Platform modeling jobs. It will have
         " Train" or " Predict" added to become the Script title.
@@ -1196,7 +1198,10 @@ class ModelPipeline:
             Action to take if the prediction table already exists.
         n_jobs : int, optional
             Number of concurrent Platform jobs to use
-            for multi-file / large table prediction.
+            for multi-file / large table prediction. Defaults to
+            `None`, which allows CivisML to dynamically calculate an
+            appropriate number of workers to use (in general, as many as
+            possible without using all resources in the cluster).
         polling_interval : float, optional
             Check for job completion every this number of seconds.
             Do not set if using the notifications endpoint.
