@@ -562,6 +562,22 @@ def test_validation_metadata_training(mock_spe, mock_f2f,
 
 
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
+@mock.patch.object(_model.cio, "file_to_json", autospec=True)
+@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+def test_validation_metadata_missing(mock_spe, mock_f2f,
+                                     mock_file_id_from_run_output):
+    # Make sure that missing validation metadata doesn't cause an error
+    mock_file_id_from_run_output.side_effect = FileNotFoundError
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
+
+    assert mf.validation_metadata == {}
+    assert mf.metrics is None
+    assert mock_f2f.call_count == 0
+    assert mock_file_id_from_run_output.call_count == 1
+
+
+@mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json", return_value='foo',
                    autospec=True)
 @mock.patch.object(_model.ModelFuture, "_set_model_exception")

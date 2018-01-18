@@ -19,6 +19,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   speed improvement; it reads and writes faster than CSVs and produces smaller files (#200).
 - ``ModelFuture`` objects will emit any warnings which occurred during their
   corresponding CivisML job (#204)
+- ``ModelFuture`` objects will return an empty dictionary if validation metadata
+  are missing, rather than issuing an exception or returning ``None`` (#208)
 
 ### Fixed
 - Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``
