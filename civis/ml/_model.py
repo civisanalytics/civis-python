@@ -592,7 +592,7 @@ class ModelPipeline:
         predefined model, e.g. ``{'C': 2}`` for a "sparse_logistic"
         model.
     cross_validation_parameters : dict or string, optional
-        Options for cross validation. For grid search, supply a 
+        Options for cross validation. For grid search, supply a
         parameter grid as a dictionary, e.g.,
         ``{{'n_estimators': [100, 200, 500], 'learning_rate': [0.01, 0.1],
         'max_depth': [2, 3]}}``. For hyperband, pass the string "hyperband".
