@@ -25,30 +25,8 @@ cross-validation happens over all steps together.
 You can define your model in two ways, either by selecting a pre-defined algorithm
 or by providing your own scikit-learn
 :class:`~sklearn.pipeline.Pipeline` or :class:`~sklearn.base.BaseEstimator` object.
-Note that whichever option you chose, CivisML will pre-process your data to
-one-hot-encode categorical features (the non-numerical columns) to binary indicator columns
-before sending the features to the :class:`~sklearn.pipeline.Pipeline`.
-
-Model Dependencies
-------------------
-
-Many models built in CivisML have open-source dependencies in addition
-to ``scikit-learn``, and you will need to install these dependencies
-to access the model object. Models which use the default CivisML ETL,
-along with models which use stacking or hyperband, depend on
-``civisml-extensions``. Pre-defined models which include a feature
-selection step ("sparse_logistic", "sparse_linear_regressor",
-"sparse_ridge_regressor", "stacking_classifier", and
-"stacking_regressor") depend on ``glmnet``. Pre-defined MLP models
-("multilayer_perceptron_classifier" and
-"multilayer_perceptron_regressor") depend on ``muffnn``. These
-dependencies can be installed with
-
-.. code-block:: bash
-
-   pip install civisml-extensions
-   pip install glmnet
-   pip install muffnn
+Note that whichever option you chose, CivisML will pre-process your
+data using either its default ETL, or ETL that you provide (see :ref:`custom-etl`).
 
 
 Pre-Defined Models
@@ -105,19 +83,24 @@ Custom Models
 
 You can create your own :class:`~sklearn.pipeline.Pipeline` instead of using one of
 the pre-defined ones. Create the object and pass it as the ``model`` parameter
-of the :class:`~civis.ml.ModelPipeline`. Your model must be built from libraries which CivisML
-recognizes. You can use code from
+of the :class:`~civis.ml.ModelPipeline`. Your model must follow the
+scikit-learn API, and you will need to include any dependencies as
+:ref:`custom-dependencies` if they are not already installed in
+CivisML. Preinstalled libraries available for your use include:
 
-- `scikit-learn <http://scikit-learn.org>`_ v0.18.1
+- `scikit-learn <http://scikit-learn.org>`_ v0.19.1
 - `glmnet <https://github.com/civisanalytics/python-glmnet>`_ v2.0.0
 - `xgboost <http://xgboost.readthedocs.io>`_ v0.6a2
-- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.1.1
+- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.2.0
+- `civisml-extensions <https://github.com/civisanalytics/civisml-extensions>`_ v.0.1.6
 
 When you're assembling your own model, remember that you'll have to make certain that
 either you add a missing value imputation step or that your data doesn't have any
 missing values. If you're making a classification model, the model must have a ``predict_proba``
 method. If the class you're using doesn't have a ``predict_proba`` method,
 you can add one by wrapping it in a :class:`~sklearn.calibration.CalibratedClassifierCV`.
+
+..  _custom-etl:
 
 Custom ETL
 ----------
@@ -172,7 +155,7 @@ Note that if you want to use hyperband with a custom model, you will need to
 wrap your estimator in a
 :class:`civismlext.hyperband.HyperbandSearchCV` estimator yourself.
 
-CivisML runs pre-defined with hyperband using the following
+CivisML runs pre-defined models with hyperband using the following
 distributions:
 
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
@@ -205,6 +188,8 @@ small values, ranging between .0003 and .03, with a mean close to
 .006. Similarly, the truncated exponential distribution for the random
 forest and extra trees models skews toward small values, ranging
 between .01 and 1, and with a mean close to .1.
+
+.. _custom-dependencies:
 
 Custom Dependencies
 -------------------
@@ -341,7 +326,10 @@ the following pip-installable dependencies enhance the capabilities of the
 - scikit-learn
 - glmnet
 - feather-format
+- civisml-extensions
+- muffnn
 
+  
 Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
 
@@ -356,9 +344,16 @@ is lost when writing data as a CSV.
 If you wish to use custom models or download trained models,
 you'll need scikit-learn installed.
 
-The "sparse_logistic", "sparse_linear_regressor", and "sparse_ridge_regressor" models
-all use the public Civis Analytics ``glmnet`` library. Install it if you wish to download
-a model created from one of these pre-defined models.
+Several pre-defined models rely on public Civis Analytics
+libraries. The "sparse_logistic", "sparse_linear_regressor",
+"sparse_ridge_regressor", "stacking_classifier", and "stacking_regressor" models
+all use the ``glmnet`` library. Pre-defined MLP models
+("multilayer_perceptron_classifier" and
+"multilayer_perceptron_regressor") depend on the ``muffnn``
+library. Finally, models which use the default CivisML ETL,
+along with models which use stacking or hyperband, depend on
+``civisml-extensions``. Install these packages if you wish to download
+the pre-defined models that depend on them.
 
 Object reference
 ================
