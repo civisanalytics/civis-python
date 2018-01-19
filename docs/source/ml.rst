@@ -86,12 +86,13 @@ the pre-defined ones. Create the object and pass it as the ``model`` parameter
 of the :class:`~civis.ml.ModelPipeline`. Your model must follow the
 scikit-learn API, and you will need to include any dependencies as
 :ref:`custom-dependencies` if they are not already installed in
-CivisML. Common libraries you may want to use include: 
+CivisML. Preinstalled libraries available for your use include:
 
-- `scikit-learn <http://scikit-learn.org>`_ v0.18.1
+- `scikit-learn <http://scikit-learn.org>`_ v0.19.1
 - `glmnet <https://github.com/civisanalytics/python-glmnet>`_ v2.0.0
 - `xgboost <http://xgboost.readthedocs.io>`_ v0.6a2
-- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.1.1
+- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.2.0
+- `civisml-extensions <https://github.com/civisanalytics/civisml-extensions>`_ v.0.1.6
 
 When you're assembling your own model, remember that you'll have to make certain that
 either you add a missing value imputation step or that your data doesn't have any
@@ -154,7 +155,7 @@ Note that if you want to use hyperband with a custom model, you will need to
 wrap your estimator in a
 :class:`civismlext.hyperband.HyperbandSearchCV` estimator yourself.
 
-CivisML runs pre-defined with hyperband using the following
+CivisML runs pre-defined models with hyperband using the following
 distributions:
 
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+

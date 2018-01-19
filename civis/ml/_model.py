@@ -582,8 +582,8 @@ class ModelPipeline:
     dependent_variable : string or List[str]
         The dependent variable of the training dataset.
         For a multi-target problem, this should be a list of
-        column names of dependent variables. Nulls in the dependent
-        variable will automatically be dropped.
+        column names of dependent variables. Nulls in a single
+        dependent variable will automatically be dropped.
     primary_key : string, optional
         The unique ID (primary key) of the training dataset.
         This will be used to index the out-of-sample scores.
