@@ -29,6 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   containers in nested calls to ``joblib.Parallel``. (#205)
 - If validation metadata are missing, ``ModelFuture`` objects will return ``None``
   for metrics or validation metadata, rather than issuing an exception (#208)
+- Allowed callers to pass `index` and `encoding` arguments to the `to_csv` method through `dataframe_to_civis`.
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now uses additional file handles for multipart upload instead of writing to disk to reduce disk usage

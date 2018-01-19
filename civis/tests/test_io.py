@@ -209,6 +209,18 @@ class ImportTests(CivisVCRTestCase):
         result = result.result()
         assert result.state == 'succeeded'
 
+    @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_dataframe_to_civis_with_index(self, *mocks):
+        df = pd.DataFrame([['1', '2', '3']], columns=['a', 'b', 'c'])
+        result = civis.io.dataframe_to_civis(df, 'redshift-general',
+                                             'scratch.api_client_test_fixture',
+                                             existing_table_rows='truncate',
+                                             polling_interval=POLL_INTERVAL,
+                                             index=True)
+        result = result.result()
+        assert result.state == 'succeeded'
+
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
