@@ -547,7 +547,11 @@ class ModelFuture(ContainerFuture):
                 self._val_metadata = {}
             else:
                 self._val_metadata = cio.file_to_json(fid, client=self.client)
-        return self._val_metadata
+        if not self._val_metadata:
+            # Convert an empty dictionary to None
+            return None
+        else:
+            return self._val_metadata
 
     @property
     def metrics(self):

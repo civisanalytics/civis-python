@@ -571,7 +571,7 @@ def test_validation_metadata_missing(mock_spe, mock_f2f,
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
-    assert mf.validation_metadata == {}
+    assert mf.validation_metadata is None
     assert mf.metrics is None
     assert mock_f2f.call_count == 0
     assert mock_file_id_from_run_output.call_count == 1
