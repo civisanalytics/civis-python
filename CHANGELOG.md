@@ -19,13 +19,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   speed improvement; it reads and writes faster than CSVs and produces smaller files (#200).
 - ``ModelFuture`` objects will emit any warnings which occurred during their
   corresponding CivisML job (#204)
-- If validation metadata are missing, ``ModelFuture`` objects will return ``None``
-  for metrics or validation metadata, rather than issuing an exception (#208)
 
 ### Fixed
 - Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``
   parameter default to 'sequential' as opposed to 'civis'. The default of 'civis' would launch additional
   containers in nested calls to ``joblib.Parallel``. (#205)
+- If validation metadata are missing, ``ModelFuture`` objects will return ``None``
+  for metrics or validation metadata, rather than issuing an exception (#208)
 
 ### Performance Enhancements
 - ``civis.io.file_to_civis`` now uses additional file handles for multipart upload instead of writing to disk to reduce disk usage
