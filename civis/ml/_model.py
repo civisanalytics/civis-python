@@ -677,8 +677,7 @@ class ModelPipeline:
     >>> pred = model.predict(table_name='schema.demographics_table ',
     ...                      database_name='My Redshift Cluster',
     ...                      output_table='schema.predicted_survey_response',
-    ...                      if_exists='drop',
-    ...                      n_jobs=50)
+    ...                      if_exists='drop')
     >>> df_pred = pred.table  # Blocks until finished
     # Modify the parameters of the base estimator in a default model:
     >>> model = ModelPipeline('sparse_logistic', 'depvar',
