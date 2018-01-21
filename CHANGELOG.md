@@ -20,6 +20,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   speed improvement; it reads and writes faster than CSVs and produces smaller files (#200).
 - ``ModelFuture`` objects will emit any warnings which occurred during their
   corresponding CivisML job (#204)
+- Removed line setting "n_jobs" from an example of CivisML prediction.
+  Recommended use is to let CivisML determine the number of jobs itself (#211).
 
 ### Fixed
 - Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``
