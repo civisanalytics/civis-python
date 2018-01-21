@@ -536,16 +536,26 @@ class ModelFuture(ContainerFuture):
     @_block_and_handle_missing
     def validation_metadata(self):
         if self._val_metadata is None:
-            fid = cio.file_id_from_run_output('metrics.json',
-                                              self.train_job_id,
-                                              self.train_run_id,
-                                              client=self.client)
-            self._val_metadata = cio.file_to_json(fid, client=self.client)
-        return self._val_metadata
+            try:
+                fid = cio.file_id_from_run_output('metrics.json',
+                                                  self.train_job_id,
+                                                  self.train_run_id,
+                                                  client=self.client)
+            except FileNotFoundError:
+                # Use an empty dictionary to indicate that
+                # we've already checked for metadata.
+                self._val_metadata = {}
+            else:
+                self._val_metadata = cio.file_to_json(fid, client=self.client)
+        if not self._val_metadata:
+            # Convert an empty dictionary to None
+            return None
+        else:
+            return self._val_metadata
 
     @property
     def metrics(self):
-        if self.validation_metadata is not None:
+        if self.validation_metadata:
             return self.validation_metadata['metrics']
         else:
             return None
