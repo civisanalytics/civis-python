@@ -660,7 +660,7 @@ def test_modelpipeline_etl_init_err():
     mock_client = mock.MagicMock()
     r = Response({'content': None, 'status_code': 9999, 'reason': None})
 
-    def pre_2p0_template(*args, id=None, **kwargs):
+    def pre_2p0_template(id=None, **kwargs):
         if id > 9113:
             raise CivisAPIError(r)
         return {}
