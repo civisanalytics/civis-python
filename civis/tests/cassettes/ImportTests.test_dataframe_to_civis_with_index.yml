@@ -1,0 +1,2765 @@
+interactions:
+- request:
+    body: '{"name": "api_client_test_fixture"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['35']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/files
+  response:
+    body:
+      string: !!binary |
+        H4sIAHJ9YloAA3RTW5OaMBT+LzwvSxJAxTeL4EKFHRXB5WUnkKBBbjVRkU7/e8NOu9NOp5k5k4fz
+        XXKSL98VRpT5bGICZOlPSoNrqswV3LH3vGK0Ee+CcvFesF5cL1R5UvILxYKShZAoBOBMBVCFVoT0
+        OYJzhJ4BAKmEFayiOzZILfCk0L5jF8r/4CAVzv7hXLuqxWR/qSTsJETH55qWsxvjat42vK3oM9ef
+        cY2HtsF3/py39SfJZbQiXJl/V870Ient5cg1cRRHbTwI16YWKQw4hSo2C6Aa+VRXsUV0lUBjghHE
+        0yki2v+H7tqK5aMuffgVffnS5bULcGJdvbJlQbnoX21wD3bgEbibe7BsH0Ekq2rZ2vbLDJlnfNh2
+        ch+8ssukBiNJeEkPG/bK/BIf0i5/wBE3ZKivvAZwiZH989i/5TUZ1vq2Iav8ltYVTw/BLRyqc1pu
+        +nBwxFsU14ENwNuQD+vEMdNlINKlA8LaeQSJo4eDf14j945jq8xWVZU124Ks4oG4Vo0PJ0AO/m9P
+        Y524gjJY5nV8ThNTzujyccbNXvibfReH0R6GsR/u9qETV+HrFji3j/mXiz6IzjdykN6JOxAb9Gs9
+        GKSvng/bQur1JJGetm+tXzijNjxlh1a8JX2T6X5HVifx4ROTKLShF+3d5ToOvU3kwZD9zUlXLkh3
+        3sQrvXsQHWU5Zrz0hqB0Pu68iKEl36xXcT2oMq5EPijDY6gWX72Fvzfl2gaevYx34WqhjYEEEFra
+        lasUc6FCjeuaDJjxfqHfrjIIn2K4OrYXJk71qJXsDPUlWNjq7mWBzMkniMjv8Svno6xMOYIIpZ99
+        zo4N/sjVXNGLSVFQnFmFBFlTSGhBJhmkZDIzEMzMiTkrsDEjujXDkOYYWQaaYgsQXYY5Q1Plx4+f
+        AAAA//8DAKdzpZvAAwAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['699']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:22 GMT']
+      ETag: [W/"d2e381c41443c42f7cda86bc1b905617"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [179e44e5-8da3-4c49-a08a-967c57a20e3b]
+      X-Runtime: ['0.295288']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: "--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition: form-data; name=\"key\";
+      filename=\"key\"\r\n\r\norgs/tgtg/files/79df4171-a5f0-4c73-a9d3-d146a21a772d/api_client_test_fixture\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"policy\"; filename=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjoiMjAxOC0wMS0yMFQwMDoyMToyMloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJjaXZpcy1jb25zb2xlIn0seyJrZXkiOiJvcmdzL3RndGcvZmlsZXMvNzlkZjQxNzEtYTVmMC00YzczLWE5ZDMtZDE0NmEyMWE3NzJkL2FwaV9jbGllbnRfdGVzdF9maXh0dXJlIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiQUtJQUpVNTU1NVJNSUNEVlNOR0EvMjAxODAxMTkvdXMtZWFzdC0xL3MzL2F3czRfcmVxdWVzdCJ9LHsieC1hbXotYWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsieC1hbXotZGF0ZSI6IjIwMTgwMTE5VDIzMjEyMloifV19\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"; filename=\"x-amz-credential\"\r\n\r\nAKIAJU5555RMICDVSNGA/20180119/us-east-1/s3/aws4_request\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"; filename=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"; filename=\"x-amz-date\"\r\n\r\n20180119T232122Z\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"; filename=\"x-amz-signature\"\r\n\r\n3f6ffeab9f321971defd6b1ed68421b5658fa48d398a1eca29427a90d3417b27\r\n--b655b6ef57a840978cacf520b379f7c3\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"dataframe_to_civis.csv\"\r\n\r\n,a,b,c\n0,1,2,3\n\r\n--b655b6ef57a840978cacf520b379f7c3--\r\n"
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['1518']
+      Content-Type: [multipart/form-data; boundary=b655b6ef57a840978cacf520b379f7c3]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://civis-console.s3.amazonaws.com/
+  response:
+    body: {string: ''}
+    headers:
+      Date: ['Fri, 19 Jan 2018 23:21:23 GMT']
+      ETag: ['"301e5ce83a441403d918607f20b19f93"']
+      Location: ['https://civis-console.s3.amazonaws.com/orgs%2Ftgtg%2Ffiles%2F79df4171-a5f0-4c73-a9d3-d146a21a772d%2Fapi_client_test_fixture']
+      Server: [AmazonS3]
+      x-amz-id-2: [/BiakZHkfbQkzGxOmBk1ddn2P6xWd8etVpjFfUM6A/6a+gcSlbzS+9RuIWW3xZ8ANQ77ZIwftzE=]
+      x-amz-request-id: [769AEC4B0E36D3C4]
+    status: {code: 204, message: No Content}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/databases
+  response:
+    body:
+      string: !!binary |
+        H4sIAHR9YloAA2zQQQuCQBAF4L+y7NmgVVPrFnoJiqKiS3SYcrIB3YXdTYjovxcku4Ke3zePx5zf
+        nEq+iGYi4BIa5Au+LA7sqIEkyYp/gg6EiQM5tWRYARauYNCTLHOkyNlKWtRy2BSK2LE1QvVEpu4s
+        V9KgbsGSkuykfqfGF8ehu9ipmizdoPZp4tM9luZBd8vyzdaD1OW6yyclNsqBNJyOi4lFYx3L5iNK
+        9z40jCuUqHtbs2RoGiwJnBDTkbXmqVt8+YcIEQ3Rf+vlCwAA//8DAAuZPUHRAQAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['219']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:24 GMT']
+      ETag: [W/"c9cc2ec9ee9cca4392a441e388214ba7"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [5eaa10c0-8799-4765-8f8f-5042f7e9f1eb]
+      X-Runtime: ['0.526773']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/credentials?default=True
+  response:
+    body:
+      string: !!binary |
+        H4sIAHZ9YloAA1zOsQ6CMBCA4Xe5GcwVRLCbiYMuTk4ah0pvIEJL2iONMb67BZbGsX++u+v9A50G
+        WWLZZGDUQCAhKP+iABnwe5zfR8XqqTzFMnly/0qTb103cmdNzDHYYMilwtFgmU7W8zneMlPfp+2y
+        7Ftr60gx6QPH8QJFlQvMcX8VlSx2EssNIt7mb4w6ZXU0ebEw0chtvbLv4wcAAP//AwBOZlZR3QAA
+        AA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-Pagination-Per-Page, X-Pagination-Current-Page,
+          X-Pagination-Total-Pages, X-Pagination-Total-Entries']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['172']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:26 GMT']
+      ETag: [W/"0a6e72c0eabd9366bb2b40d1497327a5"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Pagination-Current-Page: ['1']
+      X-Pagination-Per-Page: ['1000']
+      X-Pagination-Total-Entries: ['1']
+      X-Pagination-Total-Pages: ['1']
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [812689e8-1cff-49a4-af24-e929c9c3b4dd]
+      X-Runtime: ['1.493319']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "CSV import to scratch.api_client_test_fixture", "sync_type":
+      "AutoImport", "destination": {"remote_host_id": 32, "credential_id": 3038},
+      "is_outbound": false, "hidden": true}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['184']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/imports
+  response:
+    body:
+      string: !!binary |
+        H4sIAHd9YloAA7RTTW8aMRD9K8hnSHfhAOxtS1uFSm2qBBUpVYWMPbCTeu2VPW6Covz3jmF30yQc
+        eullNX72vPl4bx+FlTWIQixuvg+wbpynAblBUF6Sqi5kgxtlECxtCAJtdvhA0YMYinCwanVoUmoZ
+        yS2PqQl30StGbTRmKDQnoZWEzoriUXioHcGlC7TUopiMh0J50MyO0hyRbDIbCqk1pgxpFv1tEMWP
+        n8OuWYZDhTsa7cGCl0Y8cWFVgY4GUp0u1l0fPfBBHlqqHrrkjl9jX9BGHvgVeh1t+AY+JZyIuax1
+        hDtUxxFDqh1912yISkEIH2uJ5iZu70BR389fV++dPpzDS609x3CG7ZN39dfjKt6mXUNjDivXXe0Y
+        YsXOMpI0Zi29RbvvB35BeMWqkY/Q03QAD95Iz9Is+xUjR/N8Osumcz6Eq0hbFy2DO1aPGe7ctvXL
+        51MUiuLZNeym564ovUJtks/YIHzWJa9OjLN8NsryUT5fjSfFOC/G04ssy275WWz0vzwzMhCr2PUc
+        A/ikWep9mk16f62loUEZfsG9OD1q8XvZYmixdaVYl3x21qCFdlZejo82bbUM/4XdwkOaouztRFjD
+        rbPHn7EGz3Z8t6j4u3ecXaHmn6gTUnpV4W/odHn6AwAA//8DAIHkQScBBAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['501']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:27 GMT']
+      ETag: [W/"b1a9e2c2bba5443d490b41440ad878b3"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [c1bc5293-e301-4592-9d15-bb328491f481]
+      X-Runtime: ['0.436851']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: '{"source": {"file": {"id": 8650293}}, "destination": {"database_table":
+      {"schema": "scratch", "table": "api_client_test_fixture"}}, "advanced_options":
+      {"max_errors": null, "existing_table_rows": "truncate", "diststyle": null, "distkey":
+      null, "sortkey1": null, "sortkey2": null, "column_delimiter": "comma", "first_row_is_header":
+      null}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['338']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/imports/9178079/syncs
+  response:
+    body:
+      string: !!binary |
+        H4sIAHh9YloAA4xT244TMQz9lzyPUHcR0O0b6iKB1LKwi7SPlTfjmbGaSWYTp+1Q9d9x5laKCuIt
+        9vHl2D45KsrV4u7mw3w2n2UquOg1qsWxc8/fv5vd3r3NVANcqYWChjbaEFreMAbeFHTg6FFlKgeG
+        Fwj4A16MpNtoTKYKMn+WOmWqdK40+Oz8NlSIPAYHMBgK13UfPGR26BvX9A5JzaUpWWByNtUdWAXt
+        gXX15r/ZHSWlwhrOuRLDPfaPGWPAZ+LKRX4a0gdaVycSP+Q7sBrzhyYxDqlxDYdP3jsfxiHxQGmm
+        sqP26PYCKPbRauCOuaCB247ZYG6x7Y3gfDJuLqzb3tLOxNreo6GaGL04tauF8og8yGY9yT6FlDCV
+        l2XidtmBIzfv9ssq2u0T/ZyOsqcG789nGDZagAmYTcRXzpYrsqn6gJDdgaF8WYF/xMaAxlo6jkWF
+        DBXtuIKli5YlVaphkp4XZtKq5/YV6onLBPX3uAp1Rf+OfLusvqbrDa7GwuH3WAOB1y6ngjC/XGPd
+        hlezFAkaV66T2jCMAupH1GnJooE1irry8+/xgWUdX8JnhDzdcFRMI6f+qPtfMHyVV/M9om9HWzvL
+        oHmV1DPFuIug0+kXAAAA//8DAATwVBH7AwAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['483']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:28 GMT']
+      ETag: [W/"d772397b895452b30035d43af56892f1"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [3b32decf-677d-4076-aa67-577a8bed70bb]
+      X-Runtime: ['0.746602']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: POST
+    uri: https://api.civisanalytics.com/jobs/9178079/runs
+  response:
+    body:
+      string: !!binary |
+        H4sIAHp9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUiosTS1NTVHSUUouSgWKpDiWAAWNDAwt
+        dA0MdQ0tQ4yMrYwMrYws9QwMDKKUwPqKoMrySnNydJTSMvMyizOQRVKLivKLIJxaAAAAAP//AwD1
+        yRTkdwAAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['121']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:30 GMT']
+      ETag: [W/"51f5c0d47c2bc323f48277f2880ff068"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [de999433-910e-4f69-91d0-46a922356258]
+      X-Runtime: ['0.307587']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 201, message: Created}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAHt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:31 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [b9f15a16-843e-4ce3-aa82-b167cc95dff4]
+      X-Runtime: ['0.206926']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAHt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:31 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [cb297f9e-10d4-4fe5-b789-65635c398c9e]
+      X-Runtime: ['0.179291']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAH19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:33 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [0f6a482f-4c52-41e5-9cdd-1ef83e3455aa]
+      X-Runtime: ['0.656122']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAH59YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:34 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [c56101da-b383-4036-8977-6b4e7a5df068]
+      X-Runtime: ['0.157678']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAH99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:35 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [82fe1264-27e9-4709-8856-9a6d12328cd9]
+      X-Runtime: ['0.355029']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAH99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:35 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [2eee8fd2-d47c-46ee-90ec-14bbde511109]
+      X-Runtime: ['0.075413']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIB9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:36 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [1817d08b-3f41-4a0d-969d-a862a389bc1d]
+      X-Runtime: ['0.699333']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIF9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:37 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [32e8762d-7d6e-43cd-96ee-3f4ab38de364]
+      X-Runtime: ['0.177486']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIJ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:38 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [cd7beff5-f46f-4a64-9ba7-0dea86ac9bcd]
+      X-Runtime: ['0.067088']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIN9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:39 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [8a4ba6d2-7699-448e-8e81-cc8d3ae37a2d]
+      X-Runtime: ['0.070551']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIN9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:39 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [82f1adec-cb32-498a-9994-9aafd9b320a9]
+      X-Runtime: ['0.085567']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIR9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:40 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [a7903b10-8d9c-430a-8b5f-525b73702d51]
+      X-Runtime: ['0.233233']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIV9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:41 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [d971e29d-c932-492a-9112-b35594c2c373]
+      X-Runtime: ['0.185141']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIZ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:42 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [05b13539-bd9f-45a1-94e0-54783026464e]
+      X-Runtime: ['0.115444']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIZ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:42 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [708fc248-91d3-4539-9282-28402368bb7c]
+      X-Runtime: ['0.247696']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAId9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:43 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [33a09220-3ddd-4a8f-96de-0f76bdb75360]
+      X-Runtime: ['0.089298']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIh9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:44 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [8ff67fad-bb04-4312-a45a-5d7c1ec9f04d]
+      X-Runtime: ['0.390262']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIl9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:45 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [f20df3d3-0120-45c0-8954-d0457a910ec5]
+      X-Runtime: ['0.081570']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIp9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:46 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [e40962ca-cd82-4260-99ee-f029e089fc01]
+      X-Runtime: ['0.281289']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:47 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [dc7f393f-911a-42fe-a5e8-f958ac390449]
+      X-Runtime: ['0.220151']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:47 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [57ba0af7-d7b8-430f-b4d8-8b95bc551527]
+      X-Runtime: ['0.141903']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAIx9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:48 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [aaaa9242-b15f-4262-ab40-a62009874d2d]
+      X-Runtime: ['0.178591']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAI19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:49 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [37da5d4b-579f-4a3e-b965-6464aea194f6]
+      X-Runtime: ['0.130884']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAI19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:49 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [aca92964-d572-463f-a628-d73a189e6a5e]
+      X-Runtime: ['0.129312']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAI59YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:50 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [1fa15d9c-7e29-41c8-9e02-9023c750265b]
+      X-Runtime: ['0.103952']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAI99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:51 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [9e87cb33-d3da-4527-ab39-59cbda5fac4f]
+      X-Runtime: ['0.114550']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJB9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:52 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [cd5bd245-eecf-459c-a75c-921e3c0511d8]
+      X-Runtime: ['0.135501']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJF9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:53 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['996']
+      X-Request-Id: [99ee46af-820c-41fb-b8b7-a964523d1712]
+      X-Runtime: ['0.108105']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJJ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:54 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [a0f4dca7-d387-4895-86e4-21128bd24a76]
+      X-Runtime: ['0.167452']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJJ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:54 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [903c9d1d-5617-41f2-abeb-7bfc7e201412]
+      X-Runtime: ['0.251480']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJN9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:55 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['995']
+      X-Request-Id: [b0cb7d42-05a2-4ada-84d5-15d06f96b639]
+      X-Runtime: ['0.115778']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJR9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:56 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [79faf8d3-9567-45f0-a12e-5f902cd42e42]
+      X-Runtime: ['0.133507']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJV9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:57 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [1b849254-fa7e-4fe9-a74a-c400aaa4890a]
+      X-Runtime: ['0.168447']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJZ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:58 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [4a2ad173-8563-4ea5-92f0-58ffa2bf388f]
+      X-Runtime: ['0.244612']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJd9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:21:59 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [21c6e204-cec9-4d32-bd79-e1ea32f4775a]
+      X-Runtime: ['0.576868']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJh9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:00 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [558f0c52-98d6-411f-88b6-3d4c63384b53]
+      X-Runtime: ['0.061860']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJh9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:00 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [5a383aba-ce78-474f-aff1-2b3f0e18a31a]
+      X-Runtime: ['0.117373']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJl9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:01 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [bf070566-3205-4814-a401-bb75b2500c13]
+      X-Runtime: ['0.186485']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJp9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:02 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [2cc61fbc-cac7-4c6e-8db9-2c49e83a12b8]
+      X-Runtime: ['0.131780']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:03 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [61ddc384-c781-4c41-b8e0-41f8873492b4]
+      X-Runtime: ['0.098100']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:03 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [dde0fc84-9c5d-45fe-92a7-91170651c50a]
+      X-Runtime: ['0.080682']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJx9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:04 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [47f68d42-0aa5-4aac-9e6f-c6c344792e8e]
+      X-Runtime: ['0.376629']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJ19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:05 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['996']
+      X-Request-Id: [ae9475ea-d73d-4d0f-9602-3713de30bfa5]
+      X-Runtime: ['0.202654']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJ59YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:06 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [804693fa-bd52-4b97-9817-6659f3228c53]
+      X-Runtime: ['0.252328']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJ99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:07 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [bdfb651f-a9db-4f99-9e58-93be92c97659]
+      X-Runtime: ['0.109538']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAJ99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:07 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [f29158ea-1e76-4d0d-a105-dcef05762d33]
+      X-Runtime: ['0.159275']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKB9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:08 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [237e7f9e-c687-4ea6-ab84-d1c9dd486ec8]
+      X-Runtime: ['0.060693']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKF9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:09 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [9a0b5bd7-a23d-4f32-a22c-eb7682d0a729]
+      X-Runtime: ['0.182150']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKZ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:14 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [8b27d587-d6d6-4b3e-ad69-b95915ed49ab]
+      X-Runtime: ['4.859089']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKd9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:15 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [5b018c57-f4fe-4748-9b13-3c0a2d079544]
+      X-Runtime: ['0.111735']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKh9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:16 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['996']
+      X-Request-Id: [f722eada-99a4-4881-a883-de552da0ed26]
+      X-Runtime: ['0.060826']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKl9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:17 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [439ccfbf-43f9-4e63-a6b0-44c296447686]
+      X-Runtime: ['0.120107']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKl9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:17 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [f44287d1-407a-4328-94ac-b22a4ed08bf7]
+      X-Runtime: ['0.118298']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKp9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:18 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [141a73ab-326c-471c-be02-5b2d1588a2bd]
+      X-Runtime: ['0.215039']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAKt9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:19 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [aaa2c6de-3373-4f10-8f88-c168ecc56ba8]
+      X-Runtime: ['0.629823']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAK19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:21 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [6aed8526-85fa-429b-9ea9-081896d70b8c]
+      X-Runtime: ['0.562930']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAK19YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:21 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [1c836b06-9787-43f5-b118-499e61ae5df7]
+      X-Runtime: ['0.131547']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAK59YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:22 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [79b793da-1ab4-4675-ba79-7517e0116158]
+      X-Runtime: ['0.267128']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIAK99YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:23 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [a6297f75-7943-43de-b743-2eaddec1268a]
+      X-Runtime: ['0.166912']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALF9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:25 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [d23cb8d6-a60c-4cdc-81a7-a2007839e4b6]
+      X-Runtime: ['0.811370']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALF9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:25 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [dadf98f0-5461-4ccc-8832-eaa126c2022e]
+      X-Runtime: ['0.115840']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALJ9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:26 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['998']
+      X-Request-Id: [909972a3-8de3-45df-a238-63505f694643]
+      X-Runtime: ['0.269611']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALN9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:27 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [c4159970-a9dc-4d18-9a8f-c1738008cec3]
+      X-Runtime: ['0.111718']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALR9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:28 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['999']
+      X-Request-Id: [9bd06e66-2482-47ad-9de7-52ece9135903]
+      X-Runtime: ['0.314271']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALd9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:31 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['995']
+      X-Request-Id: [fdc2ebe6-3caf-4355-a193-946762a21c0e]
+      X-Runtime: ['1.988066']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALh9YloAA6pWykxRsjKztDQyNDA001EqLkksSVWyUioqzcvLzEtX0lFKLkoFCqU4lgBFjQwM
+        LXQNDHUNLUOMjK2MDK2MLPUMDAyilMAai3AqMzaAKUvLzMsszoCoyyvNydFRSi0qyi+CcGoBAAAA
+        //8DAKhDokaOAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['126']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:32 GMT']
+      ETag: [W/"bcc4b873c4c512490654bbff81cc7c0f"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [180e02ab-d28f-4f08-94d0-74b7f1202546]
+      X-Runtime: ['0.254935']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [civis-python/1.7.2 python-requests/2.18.4]
+    method: GET
+    uri: https://api.civisanalytics.com/jobs/9178079/runs/69921016
+  response:
+    body:
+      string: !!binary |
+        H4sIALl9YloAA3TLMQrDMAxG4bv8c1IkGUKtrXfI1C3YKjWEFGRnCr17QiBbuz6+t6Fk6BCjMPHQ
+        obapGRR1TcksW0aH5HbE/GhHF+J7T9xzHCWosEq8EdET5+p/WaCLvcpS6vu3Ew1yOXP/OHRZ5/m7
+        AwAA//8DAIPN8ZemAAAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['129']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 19 Jan 2018 23:22:33 GMT']
+      ETag: [W/"4165f91b912787f831692792407da95d"]
+      Server: [nginx/1.13.8]
+      Strict-Transport-Security: [max-age=15552000]
+      Vary: [Accept-Encoding]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-RateLimit-Limit: ['1000']
+      X-RateLimit-Remaining: ['997']
+      X-Request-Id: [2ed3a423-7d6d-43d7-b680-ce20d1e407b7]
+      X-Runtime: ['0.189694']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

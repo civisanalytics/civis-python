@@ -626,7 +626,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
 
     with TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
-        df.to_csv(tmp_path, encoding='utf-8', index=False, **kwargs)
+        to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
+        to_csv_kwargs.update(kwargs)
+        df.to_csv(tmp_path, **to_csv_kwargs)
         name = table.split('.')[-1]
         file_id = file_to_civis(tmp_path, name, client=client)
 
