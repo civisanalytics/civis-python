@@ -22,6 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   corresponding CivisML job (#204)
 - Removed line setting "n_jobs" from an example of CivisML prediction.
   Recommended use is to let CivisML determine the number of jobs itself (#211).
+- Update maximum CivisML version to v2.1; adjust fallback logic such that users get
+  the most recent available release (#212).
 
 ### Fixed
 - Restored the pre-v1.7.0 default behavior of the ``joblib`` backend by setting the ``remote_backend``

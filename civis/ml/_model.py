@@ -37,11 +37,13 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {9968: 9969,  # v2.0
-                   9112: 9113,  # v1.1
-                   8387: 9113,  # v1.0
-                   7020: 7021,  # v0.5
+_PRED_TEMPLATES = {10582: 10583,  # v2.1
+                   9968: 9969,    # v2.0
+                   9112: 9113,    # v1.1
+                   8387: 9113,    # v1.0
+                   7020: 7021,    # v0.5
                    }
+_CIVISML_TEMPLATE = None  # CivisML training template to use
 
 
 class ModelError(RuntimeError):
@@ -702,29 +704,29 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    # These are the v2.0 templates
-    train_template_id = 9968
-    predict_template_id = 9969
-    # These are the v1.1 templates
-    _train_template_id_fallback = 9112
-    _predict_template_id_fallback = 9113
+    def _get_template_ids(self, client):
+        """Determine which version of CivisML to use.
 
-    def _set_template_version(self, client):
-        """Determine which version of CivisML to use. If the user
-        has access to the newest templates, use them, otherwise
-        fall back to the previous version. Used for internal or limited
-        releases of new CivisML versions."""
-        if '_NEWEST_CIVISML_VERSION' not in globals():
-            global _NEWEST_CIVISML_VERSION
-            try:
-                newest_train = max(_PRED_TEMPLATES.keys())
-                # Check that we can access the newest templates
-                client.templates.get_scripts(id=newest_train)
-                client.templates.get_scripts(id=_PRED_TEMPLATES[newest_train])
-            except CivisAPIError:
-                _NEWEST_CIVISML_VERSION = False
+        Select the most recent template to which the user has access.
+        Used for internal or limited releases of new CivisML versions.
+        """
+        global _CIVISML_TEMPLATE
+        if _CIVISML_TEMPLATE is None:
+            for t_id in sorted(_PRED_TEMPLATES)[::-1]:
+                try:
+                    # Check that we can access the template
+                    client.templates.get_scripts(id=t_id)
+                    client.templates.get_scripts(id=_PRED_TEMPLATES[t_id])
+                except CivisAPIError:
+                    continue
+                else:
+                    # Store the template ID so we don't need to repeat
+                    # these API calls in this session.
+                    _CIVISML_TEMPLATE = t_id
+                    break
             else:
-                _NEWEST_CIVISML_VERSION = True
+                raise RuntimeError("Unable to find a CivisML template.")
+        return _CIVISML_TEMPLATE, _PRED_TEMPLATES[_CIVISML_TEMPLATE]
 
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
@@ -761,18 +763,14 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
-        self._set_template_version(client)
+        template_ids = self._get_template_ids(self._client)
+        self.train_template_id, self.predict_template_id = template_ids
 
-        if _NEWEST_CIVISML_VERSION:
-            self.etl = etl
-        elif not _NEWEST_CIVISML_VERSION and etl is not None:
+        self.etl = etl
+        if self.train_template_id < 9968 and self.etl is not None:
+            # This is a pre-v2.0 CivisML template
             raise NotImplementedError("The etl argument is not implemented"
                                       " in this version of CivisML.")
-
-        else:
-            # fall back to previous version templates
-            self.train_template_id = self._train_template_id_fallback
-            self.predict_template_id = self._predict_template_id_fallback
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -782,7 +780,8 @@ class ModelPipeline:
     def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient(resources='all')
-        self._set_template_version(self._client)
+        template_ids = self._get_template_ids(self._client)
+        self.train_template_id, self.predict_template_id = template_ids
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
@@ -1009,7 +1008,7 @@ class ModelPipeline:
             train_args['FIT_PARAMS'] = json.dumps(fit_params)
         if self.dependencies:
             train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
-        if _NEWEST_CIVISML_VERSION:
+        if self.train_template_id >= 9968:
             if validation_data:
                 train_args['VALIDATION_DATA'] = validation_data
             if n_jobs:
@@ -1030,7 +1029,7 @@ class ModelPipeline:
                 shutil.rmtree(tempdir)
         train_args['MODEL'] = self.model
 
-        if HAS_SKLEARN and _NEWEST_CIVISML_VERSION:
+        if HAS_SKLEARN and self.train_template_id >= 9968:
             if isinstance(self.etl, BaseEstimator):
                 try:
                     tempdir = tempfile.mkdtemp()
@@ -1266,7 +1265,7 @@ class ModelPipeline:
             predict_args['LIMITSQL'] = sql_limit
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
-        if _NEWEST_CIVISML_VERSION:
+        if self.predict_template_id >= 9969:
             if cpu:
                 predict_args['CPU'] = cpu
             if memory:
