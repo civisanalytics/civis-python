@@ -654,28 +654,37 @@ def mp_setup():
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
-def test_modelpipeline_init_err():
+def test_modelpipeline_etl_init_err():
+    # If users don't have access to >= v2.0 temlates, then passing
+    # `etl` to a new ModelPipeline should produce a NotImplementedError.
     mock_client = mock.MagicMock()
     r = Response({'content': None, 'status_code': 9999, 'reason': None})
-    mock_client.templates.get_scripts.side_effect = CivisAPIError(r)
+
+    def pre_2p0_template(*args, id=None, **kwargs):
+        if id > 9113:
+            raise CivisAPIError(r)
+        return {}
+    mock_client.templates.get_scripts.side_effect = pre_2p0_template
     with pytest.raises(NotImplementedError):
         _model.ModelPipeline(LogisticRegression(), 'test',
                              etl=LogisticRegression(),
                              client=mock_client)
     # clean up
-    del _model._NEWEST_CIVISML_VERSION
+    _model._CIVISML_TEMPLATE = None
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
 def test_modelpipeline_init_newest():
+    _model._CIVISML_TEMPLATE = None
     mock_client = mock.MagicMock()
     mock_client.templates.get_scripts.return_value = {}
     etl = LogisticRegression()
     mp = _model.ModelPipeline(LogisticRegression(), 'test', etl=etl,
                               client=mock_client)
     assert mp.etl == etl
+    assert mp.train_template_id == max(_model._PRED_TEMPLATES)
     # clean up
-    del _model._NEWEST_CIVISML_VERSION
+    _model._CIVISML_TEMPLATE = None
 
 
 @mock.patch.object(_model, 'ModelFuture')
