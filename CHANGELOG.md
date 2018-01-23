@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+- Updated CivisML 2.0 notebook (#214)
 
 ## 1.8.0 - 2018-01-23
 ### Added
