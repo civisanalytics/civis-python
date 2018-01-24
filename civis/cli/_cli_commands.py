@@ -99,7 +99,9 @@ def notebooks_new_cmd(language='python3', mem=None, cpu=None):
     kwargs = {'memory': mem, 'cpu': cpu}
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
     new_nb = client.notebooks.post(language=language, **kwargs)
-    print("Created new {} notebook with ID {} .".format(language, new_nb.id))
+    print("Created new {language} notebook with ID {id} in Civis Platform"
+          " (https://platform.civisanalytics.com/#/notebooks/{id})."
+          .format(language=language, id=new_nb.id))
     _notebooks_up(new_nb.id)
     _notebooks_open(new_nb.id)
 
