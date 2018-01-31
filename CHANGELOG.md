@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Fixed
+- Added missing string formatting to a log emit in file multipart upload (#217)
+
 ### Changed
 - Updated CivisML 2.0 notebook (#214)
 - Reworded output of `civis notebooks new` CLI command (#215)

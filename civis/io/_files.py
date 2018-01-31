@@ -148,7 +148,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
             msg = _get_aws_error_message(part_response)
             raise HTTPError(msg, response=part_response)
 
-        log.debug('Completed upload of file part', part_num)
+        log.debug('Completed upload of file part %s', part_num)
 
     # upload each part
     try:
