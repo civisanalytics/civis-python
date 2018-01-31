@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Added a script for integration tests (smoke tests).
 
 ### Changed
 - Updated CivisML 2.0 notebook (#214)
