@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added a script for integration tests (smoke tests).
 
 ### Fixed
-- Added missing string formatting to a log emit in file multipart upload (#217)
+- Added missing string formatting to a log emit in file multipart upload and
+  correct ordering of parameters in another log emit (#217)
 
 ### Changed
 - Updated CivisML 2.0 notebook (#214)
