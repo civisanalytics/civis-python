@@ -28,14 +28,17 @@ def main():
     client = civis.APIClient(resources="all")
 
     # Test read_civis and read_civis_sql produce the same results.
+    # The table used here has an explicit index column to sort by in case the
+    # rows come back in a different order.
     logger.info('Testing reading from redshift...')
     sql = "SELECT * FROM datascience.iris"
     df1 = civis.io.read_civis_sql(
-        sql=sql, database=database, use_pandas=True, client=client)
+        sql=sql, database=database, use_pandas=True, client=client
+    ).sort_values(by='index')
     df2 = civis.io.read_civis(
         table="datascience.iris", database=database, use_pandas=True,
         client=client
-    )
+    ).sort_values(by='index')
     assert df1.shape == (150, 6)
     pd.testing.assert_frame_equal(df1, df2)
 
