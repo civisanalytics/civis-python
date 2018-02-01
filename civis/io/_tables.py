@@ -982,7 +982,7 @@ def _robust_schema_table_split(table):
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')
-    schema_name_tup = next(csv.reader(StringIO(table), delimiter="."))
+    schema_name_tup = next(reader)
     if len(schema_name_tup) != 2:
         raise ValueError("Cannot parse schema and table. "
                          "Does '{}' follow the pattern 'schema.table'?"
