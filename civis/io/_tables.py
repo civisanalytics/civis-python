@@ -54,8 +54,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
     Parameters
     ----------
     table : str
-        Name of table, including schema, in the database. I.e.
-        ``'my_schema.my_table'``.
+        Name of table, including schema, in the database. E.g.
+        ``'my_schema.my_table'``. Schemas or tablenames with periods must
+        be double quoted, e.g. ``'my_schema."my.table"'``.
     database : str or int
         Read data from this database. Can be the database name or ID.
     columns : list, optional
@@ -565,7 +566,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         Upload data into this database. Can be the database name or ID.
     table : str
         The schema and table you want to upload to. E.g.,
-        ``'scratch.table'``.
+        ``'scratch.table'``. Schemas or tablenames with periods must
+        be double quoted, e.g. ``'scratch."my.table"'``.
     api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
