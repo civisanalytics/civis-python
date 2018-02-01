@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import logging
 
 from civis.compat import lru_cache
+from civis.io._tables import _robust_schema_table_split
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
 
@@ -208,7 +209,7 @@ class MetaMixin():
             If an exact table match can't be found.
         """
         database_id = self.get_database_id(database)
-        schema, name = table.split('.')
+        schema, name = _robust_schema_table_split(table)
         tables = self.tables.list(database_id=database_id, schema=schema,
                                   name=name)
         if not tables:
