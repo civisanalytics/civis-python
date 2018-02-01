@@ -978,6 +978,10 @@ def _download_callback(job_id, run_id, filename, headers, compression):
 
 
 def _robust_schema_table_split(table):
+    reader = csv.reader(StringIO(table),
+                        delimiter=".",
+                        doublequote=True,
+                        quotechar='"')
     schema_name_tup = next(csv.reader(StringIO(table), delimiter="."))
     if len(schema_name_tup) != 2:
         raise ValueError("Cannot parse schema and table. "

@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-### Changed
+### Fixed
 - Added more robust parsing for tablename parsing in io.  You may now
   pass in tables like schema."tablename.with.periods".
 
