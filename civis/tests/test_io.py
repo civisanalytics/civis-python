@@ -401,3 +401,17 @@ def test_file_to_civis(mock_open, mock_file_to_civis_helper):
     assert mock_open.called_once_with("foo", "rb")
     assert mock_file_to_civis_helper.called_once_with(
         "foo", "foo_name", mock_file)
+
+
+def test_robust_schema_table_split():
+    strs = ['schema.table', 'schema."t.able"', 'schema.table"',
+            '"sch.ema"."t.able"', 'schema."tab""le."']
+    schemas = ['schema', 'schema', 'schema', 'sch.ema', 'schema']
+    tables = ['table', 't.able', 'table"', 't.able', 'tab"le.']
+    for s, exp_schema, exp_table in zip(strs, schemas, tables):
+        schema, table = civis.io._tables._robust_schema_table_split(s)
+        assert schema == exp_schema
+        assert table == exp_table
+    with pytest.raises(ValueError):
+        s = "table_no_schema"
+        schema, table = civis.io._tables._robust_schema_table_split(s)

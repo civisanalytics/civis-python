@@ -629,7 +629,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
         to_csv_kwargs.update(kwargs)
         df.to_csv(tmp_path, **to_csv_kwargs)
-        name = table.split('.')[-1]
+        _, name = _robust_schema_table_split(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
     delimiter = ','
@@ -810,7 +810,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     if client is None:
         client = APIClient(resources='all')
 
-    schema, table = table.split(".", 1)
+    schema, table = _robust_schema_table_split(table)
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     delimiter = DELIMITERS.get(delimiter)
@@ -973,3 +973,12 @@ def _download_callback(job_id, run_id, filename, headers, compression):
             return _download_file(url, filename, headers, compression)
 
     return callback
+
+
+def _robust_schema_table_split(table):
+    schema_name_tup = next(csv.reader(StringIO(table), delimiter="."))
+    if len(schema_name_tup) != 2:
+        raise ValueError("Cannot parse schema and table. "
+                         "Does '{}' follow the pattern 'schema.table'?"
+                         .format(table))
+    return schema_name_tup
