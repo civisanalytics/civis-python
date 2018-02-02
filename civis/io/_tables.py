@@ -5,6 +5,7 @@ import io
 import logging
 import os
 import re
+import six
 import shutil
 import warnings
 import zlib
@@ -978,7 +979,7 @@ def _download_callback(job_id, run_id, filename, headers, compression):
 
 
 def _robust_schema_table_split(table):
-    reader = csv.reader(StringIO(table),
+    reader = csv.reader(StringIO(six.text_type(table)),
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')
