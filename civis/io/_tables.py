@@ -5,6 +5,7 @@ import io
 import logging
 import os
 import re
+import six
 import shutil
 import warnings
 import zlib
@@ -54,8 +55,9 @@ def read_civis(table, database, columns=None, use_pandas=False,
     Parameters
     ----------
     table : str
-        Name of table, including schema, in the database. I.e.
-        ``'my_schema.my_table'``.
+        Name of table, including schema, in the database. E.g.
+        ``'my_schema.my_table'``. Schemas or tablenames with periods must
+        be double quoted, e.g. ``'my_schema."my.table"'``.
     database : str or int
         Read data from this database. Can be the database name or ID.
     columns : list, optional
@@ -565,7 +567,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         Upload data into this database. Can be the database name or ID.
     table : str
         The schema and table you want to upload to. E.g.,
-        ``'scratch.table'``.
+        ``'scratch.table'``. Schemas or tablenames with periods must
+        be double quoted, e.g. ``'scratch."my.table"'``.
     api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
@@ -629,7 +632,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
         to_csv_kwargs.update(kwargs)
         df.to_csv(tmp_path, **to_csv_kwargs)
-        name = table.split('.')[-1]
+        _, name = _robust_schema_table_split(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
     delimiter = ','
@@ -810,7 +813,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     if client is None:
         client = APIClient(resources='all')
 
-    schema, table = table.split(".", 1)
+    schema, table = _robust_schema_table_split(table)
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     delimiter = DELIMITERS.get(delimiter)
@@ -973,3 +976,16 @@ def _download_callback(job_id, run_id, filename, headers, compression):
             return _download_file(url, filename, headers, compression)
 
     return callback
+
+
+def _robust_schema_table_split(table):
+    reader = csv.reader(StringIO(six.text_type(table)),
+                        delimiter=".",
+                        doublequote=True,
+                        quotechar='"')
+    schema_name_tup = next(reader)
+    if len(schema_name_tup) != 2:
+        raise ValueError("Cannot parse schema and table. "
+                         "Does '{}' follow the pattern 'schema.table'?"
+                         .format(table))
+    return schema_name_tup

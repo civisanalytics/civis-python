@@ -401,3 +401,20 @@ def test_file_to_civis(mock_open, mock_file_to_civis_helper):
     assert mock_open.called_once_with("foo", "rb")
     assert mock_file_to_civis_helper.called_once_with(
         "foo", "foo_name", mock_file)
+
+
+@pytest.mark.parametrize("table,expected", [
+    ('schema.table', ['schema', 'table']),
+    ('schema."t.able"', ['schema', 't.able']),
+    ('schema.table"', ['schema', 'table"']),
+    ('"sch.ema"."t.able"', ['sch.ema', 't.able']),
+    ('schema."tab""le."', ['schema', 'tab"le.'])
+])
+def test_robust_schema_table_split(table, expected):
+    assert civis.io._tables._robust_schema_table_split(table) == expected
+
+
+def test_robust_schema_table_split_raises():
+    s = "table_with_no_schema"
+    with pytest.raises(ValueError):
+        schema, table = civis.io._tables._robust_schema_table_split(s)
