@@ -407,8 +407,8 @@ def test_file_to_civis(mock_open, mock_file_to_civis_helper):
     ('schema.table', ['schema', 'table']),
     ('schema."t.able"', ['schema', 't.able']),
     ('schema.table"', ['schema', 'table"']),
-    ('"sch.ema"."t.able"', ['sch.ema','t.able']),
-    ('schema."tab""le."', ['schema','tab"le.'])
+    ('"sch.ema"."t.able"', ['sch.ema', 't.able']),
+    ('schema."tab""le."', ['schema', 'tab"le.'])
 ])
 def test_robust_schema_table_split(table, expected):
     assert civis.io._tables._robust_schema_table_split(table) == expected
