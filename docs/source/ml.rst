@@ -60,16 +60,17 @@ stacking_regressor                regression          `StackedRegressor <https:/
 ================================  ================    ==================================================================================================================================   ==================================
 
 The "stacking_classifier" model stacks
-together the "sparse_logistic", "gradient_boosting_classifier",
-and "random_forest_classifier" models, using altered defaults as
-listed for each in the "Altered Defaults" column of the table
-above. The models are combined using a
+the "gradient_boosting_classifier",
+and "random_forest_classifier" predefined models together with a
+``glmnet.LogitNet(alpha=0, n_splits=4, max_iter=10000, tol=1e-5,
+scoring='log_loss')``. The models are combined using a
 :class:`~sklearn.pipeline.Pipeline` containing a `Normalizer <http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer>`_
 step, followed by `LogisticRegressionCV <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html>`_
 with ``penalty='l2'`` and ``tol=1e-08``. The
 "stacking_regressor" works similarly, stacking together the
-"sparse_linear_regressor", "gradient_boosting_regressor",
-and "random_forest_regressor" models, and combining them using
+"gradient_boosting_regressor" and "random_forest_regressor" models
+and a ``glmnet.ElasticNet(alpha=0, n_splits=4, max_iter=10000,
+tol=1e-5, scoring='r2')``, combining them using
 `NonNegativeLinearRegression
 <https://github.com/civisanalytics/civisml-extensions>`_. The
 estimators that are being stacked have the same names as the
@@ -144,7 +145,11 @@ currently only supported for the following models:
 ``extra_trees_classifier``, ``multilayer_perceptron_classifier``,
 ``stacking_classifier``, ``gradient_boosting_regressor``,
 ``random_forest_regressor``, ``extra_trees_regressor``,
-``multilayer_perceptron_regressor``, and ``stacking_regressor``.
+``multilayer_perceptron_regressor``, and
+``stacking_regressor``. Although hyperband is supported for stacking
+models, stacking itself is a kind of model tuning, and the combination
+of stacking and hyperband is likely too computationally intensive to
+be useful in many cases.
 
 Hyperband cannot be used to tune GLMs. For this reason, preset GLMs do
 not have a hyperband option. Similarly, when
