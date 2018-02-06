@@ -122,7 +122,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     num_parts = int(math.ceil((file_size) / float(part_size)))
 
     log.debug('Uploading file with %s bytes using %s file parts with a part '
-              'size of %s bytes', file_size, part_size, num_parts)
+              'size of %s bytes', file_size, num_parts, part_size)
     file_response = client.files.post_multipart(name=name, num_parts=num_parts,
                                                 **kwargs)
 
@@ -148,7 +148,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
             msg = _get_aws_error_message(part_response)
             raise HTTPError(msg, response=part_response)
 
-        log.debug('Completed upload of file part', part_num)
+        log.debug('Completed upload of file part %s', part_num)
 
     # upload each part
     try:

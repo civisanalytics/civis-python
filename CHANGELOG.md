@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Added more robust parsing for tablename parsing in io.  You may now
+  pass in tables like schema."tablename.with.periods".
+
+## 1.8.1 - 2018-02-01
+### Added
+- Added a script for integration tests (smoke tests).
+
+### Fixed
+- Added missing string formatting to a log emit in file multipart upload and
+  correct ordering of parameters in another log emit (#217)
 
 ### Changed
 - Updated documentation with new information about predefined stacking
