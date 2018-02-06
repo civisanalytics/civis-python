@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Changed
+- Updated documentation with new information about predefined stacking
+  estimators (#221)
 - Updated CivisML 2.0 notebook (#214)
 - Reworded output of `civis notebooks new` CLI command (#215)
 
