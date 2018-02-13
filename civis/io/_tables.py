@@ -280,13 +280,9 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     if use_pandas:
         if 'dtype' in kwargs:
             # Filter out integer columns because of NaN handling issues in pandas
-            int_dtypes = {k: v for k, v in kwargs['dtypes'].items() if (np.issubdtype(v, np.int))}
+            # int_dtypes = {k: v for k, v in kwargs['dtypes'].items() if (np.issubdtype(v, np.int))}
             kwargs['dtype'] = {k: v for k, v in kwargs['dtypes'].items() if not np.issubdtype(v, np.int)}
             data = pd.read_csv(url, **kwargs)
-            # for col in int_dtypes.keys():
-            #     are_nulls = data[col].isnull().any()
-            #     if not are_nulls:
-            #         data[col] = data[col].astype(np.int)
         else:
             data = pd.read_csv(url, **kwargs)
 
