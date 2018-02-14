@@ -13,6 +13,34 @@ RETRY_CODES = [429, 502, 503, 504]
 
 
 def find(object_list, filter_func=None, **kwargs):
+    """Return the elements from ``object_list`` that satisfy the filters.
+
+    Parameters
+    ----------
+    object_list : iterable
+    filter_func : callable, optional
+        A one-argument function. If specified, ``kwargs`` are ignored.
+        An ``element`` from the input iterable is kept in the returned list
+        if and only if ``bool(filter_func(element))`` is ``True``.
+    **kwargs
+        Key-value pairs for more fine-grained filtering; they cannot be used
+        in conjunction with ``filter_func``. All keys must be strings.
+        An ``element`` from the input iterable is kept in the returned
+        list, unless one of the following conditions is met:
+        - ``key`` is not an attribute of ``element``
+        - ``value`` is a one-argument function and
+          ``bool(value(element.key))`` is ``False``
+        - ``value`` is ``False``
+        - ``element.key`` is not equal to ``value``
+
+    Returns
+    -------
+    list
+
+    See Also
+    --------
+    civis.find_one
+    """
     _func = filter_func
     if not filter_func:
         def default_filter(o):
@@ -35,6 +63,18 @@ def find(object_list, filter_func=None, **kwargs):
 
 
 def find_one(object_list, filter_func=None, **kwargs):
+    """Return one object (or ``None``) from ``civis.find``.
+
+    The arguments are the same as those for ``civis.find``.
+
+    Returns
+    -------
+    object or None
+
+    See Also
+    --------
+    civis.find
+    """
     results = find(object_list, filter_func, **kwargs)
 
     return results[0] if results else None
