@@ -13,25 +13,27 @@ RETRY_CODES = [429, 502, 503, 504]
 
 
 def find(object_list, filter_func=None, **kwargs):
-    """Return the elements from ``object_list`` that satisfy the filters.
+    """Return the objects from ``object_list`` that satisfy the filters.
 
     Parameters
     ----------
     object_list : iterable
+        An iterable of arbitrary objects, particularly those with attributes
+        that can be targeted by the filters in ``kwargs``.
     filter_func : callable, optional
         A one-argument function. If specified, ``kwargs`` are ignored.
-        An ``element`` from the input iterable is kept in the returned list
-        if and only if ``bool(filter_func(element))`` is ``True``.
+        An ``object`` from the input iterable is kept in the returned list
+        if and only if ``bool(filter_func(object))`` is ``True``.
     **kwargs
         Key-value pairs for more fine-grained filtering; they cannot be used
         in conjunction with ``filter_func``. All keys must be strings.
-        An ``element`` from the input iterable is kept in the returned
+        An ``object`` from the input iterable is kept in the returned
         list, unless one of the following conditions is met:
-        - ``key`` is not an attribute of ``element``
+        - ``key`` is not an attribute of ``object``
         - ``value`` is a one-argument function and
-          ``bool(value(element.key))`` is ``False``
+          ``bool(value(object.key))`` is ``False``
         - ``value`` is ``False``
-        - ``element.key`` is not equal to ``value``
+        - ``object.key`` is not equal to ``value``
 
     Returns
     -------
