@@ -28,13 +28,13 @@ def find(object_list, filter_func=None, **kwargs):
     **kwargs
         Key-value pairs for more fine-grained filtering; they cannot be used
         in conjunction with ``filter_func``. All keys must be strings.
-        An ``object`` from the input iterable is kept in the returned
-        list, unless one of the following conditions is met:
-        - ``key`` is not an attribute of ``object``
+        For an ``object`` from the input iterable to be included in the
+        returned list, all the ``key``s must be attributes of ``object``, plus
+        one of the following conditions for a given ``key``:
         - ``value`` is a one-argument function and
-          ``bool(value(getattr(object, key)))`` is ``False``
-        - ``value`` is ``False``
-        - ``getattr(object, key)`` is not equal to ``value``
+          ``bool(value(getattr(object, key)))`` is ``True``
+        - ``value`` is ``True``
+        - ``getattr(object, key)`` is equal to ``value``
 
     Returns
     -------
