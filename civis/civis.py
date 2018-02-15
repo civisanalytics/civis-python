@@ -18,8 +18,8 @@ def find(object_list, filter_func=None, **kwargs):
     Parameters
     ----------
     object_list : iterable
-        An iterable of arbitrary objects, particularly those with attributes
-        that can be targeted by the filters in ``kwargs``.
+        An iterable of arbitrary objects, particularly dicts and objects with
+        attributes that can be targeted by the filters in ``kwargs``.
     filter_func : callable, optional
         A one-argument function. If specified, ``kwargs`` are ignored.
         An ``object`` from the input iterable is kept in the returned list
@@ -38,6 +38,15 @@ def find(object_list, filter_func=None, **kwargs):
     Returns
     -------
     list
+
+    Examples
+    --------
+    >>> import civis
+    >>> client = civis.APIClient()
+    >>> # creds is a list of dicts representing credentials
+    >>> creds = client.credentials.list()
+    >>> # target_creds contains dicts with the key-value ('name', 'username')
+    >>> target_creds = find(creds, name='username')
 
     See Also
     --------
