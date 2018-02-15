@@ -1015,4 +1015,4 @@ def split_schema_tablename(table):
         raise ValueError("Cannot parse schema and table. "
                          "Does '{}' follow the pattern 'schema.table'?"
                          .format(table))
-    return schema_name_tup
+    return tuple(schema_name_tup)
