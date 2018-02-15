@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added more robust parsing for tablename parsing in io.  You may now
   pass in tables like schema."tablename.with.periods".
 
+### Added
+- Added docstrings for `civis.find` and `civis.find_one`. (#224)
+
 ## 1.8.1 - 2018-02-01
 ### Added
 - Added a script for integration tests (smoke tests).
