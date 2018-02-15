@@ -30,7 +30,7 @@ def find(object_list, filter_func=None, **kwargs):
         in conjunction with ``filter_func``. All keys must be strings.
         For an ``object`` from the input iterable to be included in the
         returned list, all the ``key``s must be attributes of ``object``, plus
-        one of the following conditions for a given ``key``:
+        any one of the following conditions for a given ``key``:
         - ``value`` is a one-argument function and
           ``bool(value(getattr(object, key)))`` is ``True``
         - ``value`` is ``True``
