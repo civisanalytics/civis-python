@@ -31,9 +31,9 @@ def find(object_list, filter_func=None, **kwargs):
         list, unless one of the following conditions is met:
         - ``key`` is not an attribute of ``object``
         - ``value`` is a one-argument function and
-          ``bool(value(object.key))`` is ``False``
+          ``bool(value(object[key]))`` is ``False``
         - ``value`` is ``False``
-        - ``object.key`` is not equal to ``value``
+        - ``object[key]`` is not equal to ``value``
 
     Returns
     -------
