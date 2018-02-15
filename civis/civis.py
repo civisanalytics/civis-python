@@ -209,7 +209,7 @@ class MetaMixin():
             If an exact table match can't be found.
         """
         database_id = self.get_database_id(database)
-        schema, name = civis.io._robust_schema_table_split(table)
+        schema, name = civis.io.split_schema_tablename(table)
         tables = self.tables.list(database_id=database_id, schema=schema,
                                   name=name)
         if not tables:

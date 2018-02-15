@@ -411,11 +411,11 @@ def test_file_to_civis(mock_open, mock_file_to_civis_helper):
     ('schema."tab""le."', ['schema', 'tab"le.']),
     ('table_with_no_schema', [None, 'table_with_no_schema']),
 ])
-def test_robust_schema_table_split(table, expected):
+def test_split_schema_tablename(table, expected):
     assert civis.io._tables.split_schema_tablename(table) == expected
 
 
-def test_robust_schema_table_split_raises():
+def test_split_schema_tablename_raises():
     s = "table.with.too.many.periods"
     with pytest.raises(ValueError):
         civis.io._tables.split_schema_tablename(s)
