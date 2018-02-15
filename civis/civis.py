@@ -18,8 +18,9 @@ def find(object_list, filter_func=None, **kwargs):
     Parameters
     ----------
     object_list : iterable
-        An iterable of arbitrary objects, particularly dicts and objects with
+        An iterable of arbitrary objects, particularly those with
         attributes that can be targeted by the filters in ``kwargs``.
+        A major use case is a list of ``civis.response.Response`` objects.
     filter_func : callable, optional
         A one-argument function. If specified, ``kwargs`` are ignored.
         An ``object`` from the input iterable is kept in the returned list
@@ -31,9 +32,9 @@ def find(object_list, filter_func=None, **kwargs):
         list, unless one of the following conditions is met:
         - ``key`` is not an attribute of ``object``
         - ``value`` is a one-argument function and
-          ``bool(value(object[key]))`` is ``False``
+          ``bool(value(getattr(object, key)))`` is ``False``
         - ``value`` is ``False``
-        - ``object[key]`` is not equal to ``value``
+        - ``getattr(object, key)`` is not equal to ``value``
 
     Returns
     -------
@@ -43,9 +44,10 @@ def find(object_list, filter_func=None, **kwargs):
     --------
     >>> import civis
     >>> client = civis.APIClient()
-    >>> # creds is a list of dicts representing credentials
+    >>> # creds is a list of civis.response.Response objects
     >>> creds = client.credentials.list()
-    >>> # target_creds contains dicts with the key-value ('name', 'username')
+    >>> # target_creds contains civis.response.Response objects
+    >>> # with the attribute 'name' == 'username'
     >>> target_creds = find(creds, name='username')
 
     See Also
