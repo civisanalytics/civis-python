@@ -14,6 +14,7 @@
 # serve to show the default.
 
 import os
+import datetime
 
 # -- General configuration ------------------------------------------------
 
@@ -53,8 +54,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
+current_year = datetime.datetime.now().year
 project = 'Civis Client'
-copyright = '2016, Civis Analytics'
+copyright = '2016-%d, Civis Analytics' % current_year
 author = 'Civis Analytics'
 
 # The version info for the project you're documenting, acts as replacement for
