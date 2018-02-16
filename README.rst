@@ -75,6 +75,12 @@ to see if it will succeed.
 Build Documentation Locally
 ---------------------------
 
+To install dependencies for building the documentation::
+
+    pip install Sphinx
+    pip install sphinx_rtd_theme
+    pip install numpydoc
+
 To build the API documentation locally::
 
     cd docs
