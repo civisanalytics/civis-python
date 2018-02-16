@@ -1,6 +1,20 @@
 Civis API Python Client
 =======================
 
+|Travis| |PyPI| |PyVersions|
+
+.. |Travis| image:: https://img.shields.io/travis/civisanalytics/civis-python/master.svg
+   :alt: Build status
+   :target: https://travis-ci.org/civisanalytics/civis-python
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/civis.svg
+   :target: https://pypi.org/project/civis/
+   :alt: Latest version on PyPI
+
+.. |PyVersions| image:: https://img.shields.io/pypi/pyversions/civis.svg
+   :target: https://pypi.org/project/civis/
+   :alt: Supported python versions for civis-python
+
 Introduction
 ------------
 
