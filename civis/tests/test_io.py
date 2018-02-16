@@ -404,17 +404,18 @@ def test_file_to_civis(mock_open, mock_file_to_civis_helper):
 
 
 @pytest.mark.parametrize("table,expected", [
-    ('schema.table', ['schema', 'table']),
-    ('schema."t.able"', ['schema', 't.able']),
-    ('schema.table"', ['schema', 'table"']),
-    ('"sch.ema"."t.able"', ['sch.ema', 't.able']),
-    ('schema."tab""le."', ['schema', 'tab"le.'])
+    ('schema.table', ('schema', 'table')),
+    ('schema."t.able"', ('schema', 't.able')),
+    ('schema.table"', ('schema', 'table"')),
+    ('"sch.ema"."t.able"', ('sch.ema', 't.able')),
+    ('schema."tab""le."', ('schema', 'tab"le.')),
+    ('table_with_no_schema', (None, 'table_with_no_schema')),
 ])
-def test_robust_schema_table_split(table, expected):
-    assert civis.io._tables._robust_schema_table_split(table) == expected
+def test_split_schema_tablename(table, expected):
+    assert civis.io._tables.split_schema_tablename(table) == expected
 
 
-def test_robust_schema_table_split_raises():
-    s = "table_with_no_schema"
+def test_split_schema_tablename_raises():
+    s = "table.with.too.many.periods"
     with pytest.raises(ValueError):
-        schema, table = civis.io._tables._robust_schema_table_split(s)
+        civis.io._tables.split_schema_tablename(s)

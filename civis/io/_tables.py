@@ -37,7 +37,7 @@ CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
-           'civis_file_to_table']
+           'civis_file_to_table', 'split_schema_tablename']
 
 DELIMITERS = {
     ',': 'comma',
@@ -632,7 +632,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
         to_csv_kwargs.update(kwargs)
         df.to_csv(tmp_path, **to_csv_kwargs)
-        _, name = _robust_schema_table_split(table)
+        _, name = split_schema_tablename(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
     delimiter = ','
@@ -813,7 +813,9 @@ def civis_file_to_table(file_id, database, table, client=None,
     if client is None:
         client = APIClient(resources='all')
 
-    schema, table = _robust_schema_table_split(table)
+    schema, table = split_schema_tablename(table)
+    if schema is None:
+        raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     delimiter = DELIMITERS.get(delimiter)
@@ -978,14 +980,39 @@ def _download_callback(job_id, run_id, filename, headers, compression):
     return callback
 
 
-def _robust_schema_table_split(table):
+def split_schema_tablename(table):
+    """Split a Redshift 'schema.tablename' string
+
+    Remember that special characters (such as '.') can only
+    be included in a schema or table name if delimited by double-quotes.
+
+    Parameters
+    ----------
+    table: str
+        Either a Redshift schema and table name combined
+        with a ".", or else a single table name.
+
+    Returns
+    -------
+    schema, tablename
+        A 2-tuple of strings. The ``schema`` may be None if the input
+        is only a table name, but the ``tablename`` will always be filled.
+
+    Raises
+    ------
+    ValueError
+        If the input ``table`` is not separable into a schema and
+        table name.
+    """
     reader = csv.reader(StringIO(six.text_type(table)),
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')
     schema_name_tup = next(reader)
+    if len(schema_name_tup) == 1:
+        schema_name_tup = (None, schema_name_tup[0])
     if len(schema_name_tup) != 2:
         raise ValueError("Cannot parse schema and table. "
                          "Does '{}' follow the pattern 'schema.table'?"
                          .format(table))
-    return schema_name_tup
+    return tuple(schema_name_tup)
