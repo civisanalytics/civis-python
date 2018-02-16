@@ -1,6 +1,0 @@
-[submodule "docs/sphinxext"]
-	path = docs/sphinxext
-	url = https://github.com/numpy/numpydoc
-[submodule "docs/sphinx_rtd_theme"]
-	path = docs/sphinx_rtd_theme
-	url = https://github.com/snide/sphinx_rtd_theme.git
