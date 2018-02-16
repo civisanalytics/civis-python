@@ -1,1 +1,2 @@
 civis/tests/cassettes/*.yaml -diff
+/CHANGELOG.md merge=union
