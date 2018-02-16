@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   pass in tables like schema."tablename.with.periods".
 
 ### Added
+- Added a utility function which can robustly split a Redshift schema name
+  and table name which are presented as a single string joined by a "." (#225)
 - Added docstrings for `civis.find` and `civis.find_one`. (#224)
 
 ## 1.8.1 - 2018-02-01
