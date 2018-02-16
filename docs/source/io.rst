@@ -21,6 +21,7 @@ from Civis will all be treated as strings.
 
    civis_to_csv
    civis_to_multifile_csv
+   civis_file_to_table
    csv_to_civis
    dataframe_to_civis
    read_civis
