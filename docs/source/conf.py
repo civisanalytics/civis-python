@@ -404,7 +404,7 @@ class GeneratedAutosummary(Autosummary):
             if public_only and name.startswith('_'):
                 continue
             try:
-                documenter = get_documenter(safe_getattr(obj, name), obj)
+                documenter = get_documenter(None, safe_getattr(obj, name), obj)
             except AttributeError:
                 continue
             if documenter.objtype == typ:
