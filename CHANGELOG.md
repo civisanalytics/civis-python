@@ -13,6 +13,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   and table name which are presented as a single string joined by a "." (#225)
 - Added docstrings for `civis.find` and `civis.find_one`. (#224)
 
+### Changed
+- Added a merge rule for the changelog to .gitattributes (#229)
+
 ## 1.8.1 - 2018-02-01
 ### Added
 - Added a script for integration tests (smoke tests).
