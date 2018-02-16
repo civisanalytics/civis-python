@@ -13,16 +13,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
-import shlex
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('../sphinxext'))
-themedir = os.path.join(os.pardir, 'sphinx_rtd_theme')
-sys.path.insert(0, themedir)
+import datetime
 
 # -- General configuration ------------------------------------------------
 
@@ -62,8 +54,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
+current_year = datetime.datetime.now().year
 project = 'Civis Client'
-copyright = '2016, Civis Analytics'
+copyright = '2016-%d, Civis Analytics' % current_year
 author = 'Civis Analytics'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -413,7 +406,7 @@ class GeneratedAutosummary(Autosummary):
             if public_only and name.startswith('_'):
                 continue
             try:
-                documenter = get_documenter(safe_getattr(obj, name), obj)
+                documenter = get_documenter(None, safe_getattr(obj, name), obj)
             except AttributeError:
                 continue
             if documenter.objtype == typ:

@@ -98,12 +98,12 @@ Then add the following line, replacing ``api_key_here`` with your key::
 
 **Linux**
 
-Open ``.bash_profile`` in your favorite editor (nano is used here):
+Open ``.bashrc`` in your favorite editor (nano is used here):
 
 .. code-block:: bash
 
    cd ~/
-   nano .bash_profile
+   nano .bashrc
 
 Then add the following line, replacing ``api_key_here`` with your key::
 

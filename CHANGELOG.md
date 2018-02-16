@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added docstrings for `civis.find` and `civis.find_one`. (#224)
 
 ### Changed
+- Switched to pip install-ing dependencies for building the documentation (#230)
 - Added a merge rule for the changelog to .gitattributes (#229)
 
 ## 1.8.1 - 2018-02-01
