@@ -7,6 +7,7 @@ from concurrent import futures
 import copy
 import datetime
 import logging
+import os
 import time
 import threading
 import warnings
@@ -406,7 +407,10 @@ class _CivisExecutor(Executor):
             its ``.result()``. The user is responsible for downloading
             outputs produced by the script, if any.
         """
-        arguments = kwargs.pop('arguments', None)
+        arguments = kwargs.pop('arguments', {})
+        arguments.update({'CIVIS_PARENT_JOB_ID': os.getenv('CIVIS_JOB_ID'),
+                          'CIVIS_PARENT_RUN_ID': os.getenv('CIVIS_RUN_ID')})
+
         with self._shutdown_lock:
             if self._shutdown_thread:
                 raise RuntimeError('cannot schedule new '
@@ -532,6 +536,14 @@ class _ContainerShellExecutor(_CivisExecutor):
                  **kwargs):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
+
+        params = [{'name': 'CIVIS_PARENT_JOB_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_JOB_ID')},
+                  {'name': 'CIVIS_PARENT_RUN_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_RUN_ID')}]
+        self.container_kwargs.setdefault('params', []).extend(params)
 
         if required_resources is None:
             required_resources = {'cpu': 1024, 'memory': 1024}
