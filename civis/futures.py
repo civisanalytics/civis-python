@@ -476,6 +476,13 @@ class _ContainerShellExecutor(_CivisExecutor):
     with necessary changes for parallelizing over different Container
     Script inputs rather than over functions.
 
+    Jobs created through this executor will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs
               (via `max_n_retries`) to protect against network and
@@ -587,6 +594,13 @@ class CustomScriptExecutor(_CivisExecutor):
     Each Custom Script will be created from the same template, but may
     use different arguments. This class follows the implementations in
     :ref:`concurrent.futures`.
+
+    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
+    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs

@@ -60,6 +60,13 @@ def infer_backend_factory(required_resources=None,
     relevant parameters (e.g. the Docker image) of the container
     it's running inside of.
 
+    Jobs created through this backend will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+
     .. note:: This function will read the state of the parent
               container job at the time this function executes. If the
               user has modified the container job since the run started
@@ -228,6 +235,13 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
 
+    Jobs created through this backend will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+
     .. note:: The total size of function parameters in `Parallel()`
               calls on this backend must be less than 5 GB due to
               AWS file size limits.
@@ -391,6 +405,13 @@ def make_backend_template_factory(from_template_id,
                                   max_job_retries=0,
                                   hidden=True):
     """Create a joblib backend factory that uses Civis Custom Scripts.
+
+    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
+    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     Parameters
     ----------
