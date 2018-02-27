@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added a utility function which can robustly split a Redshift schema name
   and table name which are presented as a single string joined by a "." (#225)
 - Added docstrings for `civis.find` and `civis.find_one`. (#224)
+- Executors in ``futures`` (and the joblib backend, which uses them) will now
+  add "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables
+  to the child jobs they create (#236)
 
 ### Changed
 - Switched to pip install-ing dependencies for building the documentation (#230)
