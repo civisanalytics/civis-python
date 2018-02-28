@@ -7,6 +7,7 @@ from concurrent import futures
 import copy
 import datetime
 import logging
+import os
 import time
 import threading
 import warnings
@@ -406,7 +407,10 @@ class _CivisExecutor(Executor):
             its ``.result()``. The user is responsible for downloading
             outputs produced by the script, if any.
         """
-        arguments = kwargs.pop('arguments', None)
+        arguments = kwargs.pop('arguments', {})
+        arguments.update({'CIVIS_PARENT_JOB_ID': os.getenv('CIVIS_JOB_ID'),
+                          'CIVIS_PARENT_RUN_ID': os.getenv('CIVIS_RUN_ID')})
+
         with self._shutdown_lock:
             if self._shutdown_thread:
                 raise RuntimeError('cannot schedule new '
@@ -472,6 +476,13 @@ class _ContainerShellExecutor(_CivisExecutor):
     with necessary changes for parallelizing over different Container
     Script inputs rather than over functions.
 
+    Jobs created through this executor will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs
               (via `max_n_retries`) to protect against network and
@@ -533,6 +544,14 @@ class _ContainerShellExecutor(_CivisExecutor):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
 
+        params = [{'name': 'CIVIS_PARENT_JOB_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_JOB_ID')},
+                  {'name': 'CIVIS_PARENT_RUN_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_RUN_ID')}]
+        self.container_kwargs.setdefault('params', []).extend(params)
+
         if required_resources is None:
             required_resources = {'cpu': 1024, 'memory': 1024}
         self.required_resources = required_resources
@@ -575,6 +594,13 @@ class CustomScriptExecutor(_CivisExecutor):
     Each Custom Script will be created from the same template, but may
     use different arguments. This class follows the implementations in
     :ref:`concurrent.futures`.
+
+    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
+    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs

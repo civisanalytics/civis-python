@@ -287,9 +287,36 @@ def test_container_scripts():
 
 
 def test_custom_scripts():
-    c = _check_executor(133)
+    with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': '12',
+                                        'CIVIS_RUN_ID': '40'}):
+        c = _check_executor(133)
     assert c.scripts.post_custom.call_count > 0
     assert c.scripts.post_containers.call_count == 0
+
+    # Verify that this script's job and run ID are passed to arguments
+    args = c.scripts.post_custom.call_args[1].get('arguments')
+    for k, v in (('CIVIS_PARENT_JOB_ID', '12'), ('CIVIS_PARENT_RUN_ID', '40')):
+        assert args.get(k) == v
+
+
+def test_container_script_param_injection():
+    # Test that child jobs created by the shell executor have the
+    # job and run IDs of the script which created them (if any).
+    job_id, run_id = '123', '13'
+    c = _setup_client_mock(42, 43, n_failures=0)
+    with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': job_id,
+                                        'CIVIS_RUN_ID': run_id}):
+        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01)
+        bpe.submit("foo")
+
+    params = c.scripts.post_containers.call_args[1].get('params')
+    assert params is not None
+    assert {'name': 'CIVIS_PARENT_JOB_ID', 'type': 'integer',
+            'value': job_id} in params, \
+        "The creator's job ID wasn't passed to the child."
+    assert {'name': 'CIVIS_PARENT_RUN_ID', 'type': 'integer',
+            'value': run_id} in params, \
+        "The creator's run ID wasn't passed to the child."
 
 
 def test_create_docker_command():

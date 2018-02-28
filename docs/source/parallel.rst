@@ -106,6 +106,15 @@ to transport code and data from the parent environment to the Civis Platform.
 This means that you may parallelize dynamically-defined functions and classes,
 including lambda functions.
 
+The joblib backend will automatically add environment variables called
+"CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID", holding the values
+of the job and run IDs of the Civis Platform job in which you're
+running the joblib backend (if any). Your functions could use these
+to communicate with the parent job or to recognize that they're in
+a process which has been created by another Civis Platform job.
+However, where possible you should let the joblib backend itself
+transport the return value of the function it's running back to the parent.
+
 Infer backend parameters
 ------------------------
 If you're writing code which will run inside a Civis Container Script, then
