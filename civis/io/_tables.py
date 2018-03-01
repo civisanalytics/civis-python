@@ -37,7 +37,8 @@ CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
            'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
-           'civis_file_to_table', 'split_schema_tablename']
+           'civis_file_to_table', 'split_schema_tablename',
+           'query_to_civis_file']
 
 DELIMITERS = {
     ',': 'comma',
@@ -120,6 +121,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
     --------
     civis.io.read_civis_sql : Read directly into memory using SQL.
     civis.io.civis_to_csv : Write directly to csv.
+    civis.io.query_to_civis_file : Store results of a SQL query in a Civis file
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
@@ -136,6 +138,74 @@ def read_civis(table, database, columns=None, use_pandas=False,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
     return data
+
+
+def query_to_civis_file(sql, database, job_name=None, client=None,
+                        credential_id=None, polling_interval=None,
+                        hidden=True, csv_settings=None):
+    """Store results of a query to a Civis file
+
+    Parameters
+    ----------
+    sql : str, optional
+        The SQL select string to be executed.
+    database : str or int
+        Execute the query against this database. Can be the database name
+        or ID.
+    job_name : str, optional
+        A name to give the job. If omitted, a random job name will be
+        used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    credential_id : str or int, optional
+        The database credential ID.  If ``None``, the default credential
+        will be used.
+    polling_interval : int or float, optional
+        Number of seconds to wait between checks for query completion.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
+    csv_settings : dict, optional
+        A dictionary of csv_settings to pass to
+        :func:`civis.APIClient.scripts.post_sql`.
+
+    Returns
+    -------
+    output : list
+        A list of dictionaries for the outputs of the query. Typically,
+        this will be a list of length 1. Each dictionary includes
+        a temporary URL to download the data as well as a file_id where
+        results are permanently stored. If no results are returned by
+        the query, this will be an empty list.
+        See: ``output`` in :func:`civis.APIClient.scripts.get_sql_runs`.
+
+    Examples
+    --------
+    >>> sql = "SELECT * FROM schema.table"
+    >>> output = query_to_civis_file(sql, "my_database")
+    >>> file_id = output[0]["file_id"]
+
+
+    See Also
+    --------
+    civis.io.read_civis : Read directly into memory without SQL.
+    civis.io.read_civis_sql : Read results of a SQL query into memory.
+    civis.io.civis_to_csv : Write directly to a CSV file.
+    civis.io.civis_file_to_table : Upload a Civis file to a Civis table
+    """
+    client = client or APIClient()
+    script_id, run_id = _sql_script(client=client,
+                                    sql=sql,
+                                    database=database,
+                                    job_name=job_name,
+                                    credential_id=credential_id,
+                                    csv_settings=csv_settings,
+                                    hidden=hidden)
+    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
+                      polling_interval=polling_interval, client=client,
+                      poll_on_creation=False)
+    fut.result()
+    return client.scripts.get_sql_runs(script_id, run_id)["output"]
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -358,6 +428,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     --------
     civis.io.read_civis : Read table contents into memory.
     civis.io.read_civis_sql : Read results of a SQL query into memory.
+    civis.io.query_to_civis_file : Store results of a SQL query in a Civis file
     """
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "

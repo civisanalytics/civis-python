@@ -198,6 +198,14 @@ class ImportTests(CivisVCRTestCase):
                                        polling_interval=POLL_INTERVAL)
         assert data == expected
 
+    @mock.patch(api_import_str, return_value=civis_api_spec)
+    def test_query_to_civis_file(self, *mocks):
+        expected = [{'path': 'https://civis-console.s3.amazonaws.com/orgs/tgtg/exports/9964936/74103957/1c1d50c092c5433a90640b51d3aa5e46.csv?AWSAccessKeyId=ASIAJOUMHHOMSQXVPZZA&Expires=1520134387&Signature=KGoeOlP8PSkThr5SB7Vh3Hdqc2s%3D&response-content-disposition=attachment%3B%20filename%3D%221c1d50c092c5433a90640b51d3aa5e46.csv%22&response-content-type=text%2Fcsv&x-amz-security-token=FQoDYXdzEBkaDCGDmVb1f7d%2FxrfUNCKsAVOjHt5sW6LhGPaHiEadeLDMjuWxSAauojRPV6HmD7b93O%2F0r742aPHsOAuMfd%2F3bL%2F9lbGxt6SRTSIgvmiE02JRUGMeQ6L4Km2tm084aMePhNKqbswdgqeJJ%2FTwai8u3QcvnMLdCklXDxu1z3QHEDELTCwdPIOXIb5be%2FdsFWKHccXzMuN6bX8yRl%2Bnt%2BEnYENGGtz2UCZRLuP3VGy6ZSPgQCFNzQa9lcANq1Mos93l1AU%3D', 'output_name': '1c1d50c092c5433a90640b51d3aa5e46.csv', 'file_id': 9777932}]  # NOQA
+        sql = "SELECT 1"
+        data = civis.io.query_to_civis_file(sql, 'redshift-general',
+                                            polling_interval=POLL_INTERVAL)
+        assert data == expected
+
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_dataframe_to_civis(self, *mocks):
