@@ -205,7 +205,6 @@ class ImportTests(CivisVCRTestCase):
         fut = civis.io.export_to_civis_file(sql, 'redshift-general',
                                             polling_interval=POLL_INTERVAL)
         data = fut.result()['output']
-        print(data)
         assert data == expected
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
