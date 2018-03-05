@@ -17,6 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   to the child jobs they create (#236)
 - Added a new parameter ``dvs_to_predict`` to ``civis.ml.ModelPipeline.predict``.
   This allows users to select a subset of a model's outputs for scoring (#241).
+- Added `civis.io.export_to_civis_file` to store results of a SQL query
+  to a Civis file
 
 ### Changed
 - Moved "Optional Dependencies" doc section to top of ML docs, and
