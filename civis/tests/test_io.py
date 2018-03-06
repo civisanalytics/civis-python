@@ -35,6 +35,21 @@ class MockAPIError(CivisAPIError):
         self.status_code = sc
 
 
+class MockResponse(dict):
+    """A class to mimic civis.response.Response.
+
+    Various functions in civis may access elements of Response as attributes
+    or a dictionary.  This object allows for easy testing of these functions by
+    setting both `MockResponse.a` and `MockResponse['a']` via the call
+    `MockResponse(a='value')`.
+    """
+
+    def __init__(self, **kwargs):
+        self.update(kwargs)
+        self.__dict__.update(kwargs)
+
+
+
 @mock.patch(api_import_str, return_value=civis_api_spec)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -198,15 +213,6 @@ class ImportTests(CivisVCRTestCase):
                                        polling_interval=POLL_INTERVAL)
         assert data == expected
 
-   # @mock.patch(api_import_str, return_value=civis_api_spec)
-   # def test_export_to_civis_file(self, *mocks):
-   #     expected = [{'output_name': '17b1f9e5ef5246afa2a1880210d6042d.csv',
-   #                  'file_id': 9844453}]  # NOQA
-   #     sql = "SELECT 1"
-   #     fut = civis.io.export_to_civis_file(sql, 'redshift-general',
-   #                                         polling_interval=POLL_INTERVAL)
-   #     data = fut.result()['output']
-   #     #assert data == expected
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
@@ -429,3 +435,24 @@ def test_split_schema_tablename_raises():
     s = "table.with.too.many.periods"
     with pytest.raises(ValueError):
         civis.io._tables.split_schema_tablename(s)
+
+
+@mock.patch.object(civis.io._tables, '_sql_script', autospec=True,
+                   return_value=[-1000, 1000])
+@mock.patch.object(civis.io._tables, 'APIClient', autospec=True)
+def test_export_to_civis_file(mock_APIClient, mock_sql_script):
+    expected = [{'file_id': 9844453}]
+
+    # Mock client.scripts.get_sql_runs to return successful response with data
+    # (mock_client must not have channels in its spec to avoid hitting PubNub)
+    mock_client = mock.Mock(spec=['scripts'])
+    mock_client.scripts = mock.Mock(spec=['get_sql_runs'])
+    response = MockResponse(state='success', output=expected)
+    mock_client.scripts.get_sql_runs.return_value = response
+    mock_APIClient.return_value = mock_client
+
+    sql = "SELECT 1"
+    fut = civis.io.export_to_civis_file(sql, 'fake-db',
+                                        polling_interval=POLL_INTERVAL)
+    data = fut.result()['output']
+    assert data == expected
