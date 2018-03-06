@@ -190,7 +190,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
     civis.io.civis_to_csv : Write directly to a CSV file.
     civis.io.civis_file_to_table : Upload a Civis file to a Civis table
     """
-    client = client or APIClient()
+    client = client or APIClient(resources='all')
     script_id, run_id = _sql_script(client=client,
                                     sql=sql,
                                     database=database,
