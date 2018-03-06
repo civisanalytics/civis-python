@@ -6,10 +6,50 @@ CivisML uses the Civis Platform to train machine learning models
 and parallelize their predictions over large datasets.
 It contains best-practice models for general-purpose classification
 and regression modeling as well as model quality evaluations and
-visualizations. All CivisML models use `scikit-learn <http://scikit-learn.org/>`_
-for interoperability with other platforms and to allow you to leverage
+visualizations. All CivisML models use the `scikit-learn <http://scikit-learn.org/>`_
+API for interoperability with other platforms and to allow you to leverage
 resources in the open-source software community when creating machine learning models.
 
+
+Optional dependencies
+=====================
+
+You do not need any external libraries installed to use CivisML, but
+the following pip-installable dependencies enhance the capabilities of the
+:class:`~civis.ml.ModelPipeline`:
+
+- pandas
+- scikit-learn
+- glmnet
+- feather-format
+- civisml-extensions
+- muffnn
+
+  
+Install :mod:`pandas` if you wish to download tables of predictions.
+You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
+
+If you wish to use the :class:`~civis.ml.ModelPipeline` code to model on
+:class:`~pandas.DataFrame` objects in your local environment, the
+`feather-format <https://github.com/wesm/feather>`_ package (requires `pandas` >= 0.20)
+will improve data transfer speeds and guarantee that your data types are correctly
+detected by CivisML. You must install `feather-format` if you wish to use
+`pd.Categorical` columns in your `DataFrame` objects, since that type information
+is lost when writing data as a CSV.
+
+If you wish to use custom models or download trained models,
+you'll need scikit-learn installed.
+
+Several pre-defined models rely on public Civis Analytics
+libraries. The "sparse_logistic", "sparse_linear_regressor",
+"sparse_ridge_regressor", "stacking_classifier", and "stacking_regressor" models
+all use the ``glmnet`` library. Pre-defined MLP models
+("multilayer_perceptron_classifier" and
+"multilayer_perceptron_regressor") depend on the ``muffnn``
+library. Finally, models which use the default CivisML ETL,
+along with models which use stacking or hyperband, depend on
+``civisml-extensions``. Install these packages if you wish to download
+the pre-defined models that depend on them.
 
 Define Your Model
 =================
@@ -48,15 +88,15 @@ sparse_logistic                   classification      `LogisticRegression <http:
 gradient_boosting_classifier      classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
 random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
 extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
-multilayer_perceptron_classifier  classification      `MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
-stacking_classifier               classification      `StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_ 
+multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
+stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_ 
 sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
 sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
 gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
 random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
 extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
-multilayer_perceptron_regressor   regression          `MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
-stacking_regressor                regression          `StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_ 
+multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
+stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_ 
 ================================  ================    ==================================================================================================================================   ==================================
 
 The "stacking_classifier" model stacks
@@ -319,46 +359,6 @@ for solving a problem. For example:
   train = [model.train(table_name='schema.name', database_name='My DB') for model in models]
   aucs = [tr.metrics['roc_auc'] for tr in train]  # Code blocks here
 
-
-Optional dependencies
-=====================
-
-You do not need any external libraries installed to use CivisML, but
-the following pip-installable dependencies enhance the capabilities of the
-:class:`~civis.ml.ModelPipeline`:
-
-- pandas
-- scikit-learn
-- glmnet
-- feather-format
-- civisml-extensions
-- muffnn
-
-  
-Install :mod:`pandas` if you wish to download tables of predictions.
-You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
-
-If you wish to use the :class:`~civis.ml.ModelPipeline` code to model on
-:class:`~pandas.DataFrame` objects in your local environment, the
-`feather-format <https://github.com/wesm/feather>`_ package (requires `pandas` >= 0.20)
-will improve data transfer speeds and guarantee that your data types are correctly
-detected by CivisML. You must install `feather-format` if you wish to use
-`pd.Categorical` columns in your `DataFrame` objects, since that type information
-is lost when writing data as a CSV.
-
-If you wish to use custom models or download trained models,
-you'll need scikit-learn installed.
-
-Several pre-defined models rely on public Civis Analytics
-libraries. The "sparse_logistic", "sparse_linear_regressor",
-"sparse_ridge_regressor", "stacking_classifier", and "stacking_regressor" models
-all use the ``glmnet`` library. Pre-defined MLP models
-("multilayer_perceptron_classifier" and
-"multilayer_perceptron_regressor") depend on the ``muffnn``
-library. Finally, models which use the default CivisML ETL,
-along with models which use stacking or hyperband, depend on
-``civisml-extensions``. Install these packages if you wish to download
-the pre-defined models that depend on them.
 
 Object reference
 ================
