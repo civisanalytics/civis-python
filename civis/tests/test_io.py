@@ -40,7 +40,7 @@ class MockResponse(dict):
 
     Various functions in civis may access elements of Response as attributes
     or a dictionary.  This object allows for easy testing of these functions by
-    setting both `MockResponse.a` and `MockResponse['a']` via the call
+    setting both `MockResponse().a` and `MockResponse()['a']` via the call
     `MockResponse(a='value')`.
     """
 
