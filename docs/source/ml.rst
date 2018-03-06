@@ -25,7 +25,7 @@ the following pip-installable dependencies enhance the capabilities of the
 - civisml-extensions
 - muffnn
 
-  
+
 Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
 
@@ -61,7 +61,7 @@ A :class:`~sklearn.pipeline.Pipeline` allows you to combine multiple
 modeling steps (such as missing value imputation and feature selection) into a
 single model. The :class:`~sklearn.pipeline.Pipeline` is treated as a unit -- for example,
 cross-validation happens over all steps together.
- 
+
 You can define your model in two ways, either by selecting a pre-defined algorithm
 or by providing your own scikit-learn
 :class:`~sklearn.pipeline.Pipeline` or :class:`~sklearn.base.BaseEstimator` object.
@@ -86,17 +86,17 @@ Name                              Model Type          Algorithm                 
 ================================  ================    ==================================================================================================================================   ==================================
 sparse_logistic                   classification      `LogisticRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_                ``C=499999950, tol=1e-08``
 gradient_boosting_classifier      classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
-random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
-extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
-multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
-stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_ 
-sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
-sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
+random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500, max_depth=7``
+extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500, max_depth=7``
+multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_
+stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_
+sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_
+sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_
 gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
-random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
-extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
-multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
-stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_ 
+random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500, max_depth=7``
+extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500, max_depth=7``
+multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_
+stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_
 ================================  ================    ==================================================================================================================================   ==================================
 
 The "stacking_classifier" model stacks
@@ -151,7 +151,7 @@ By default, CivisML pre-processes data using the
 equal to the ``excluded_columns`` parameter. You can replace this
 with your own ETL by creating an object of class
 :class:`~sklearn.base.BaseEstimator` and passing it as the ``etl``
-parameter during training. 
+parameter during training.
 
 By default, :class:`~civismlext.preprocessing.DataFrameETL`
 automatically one-hot encodes all categorical columns in the
@@ -214,7 +214,7 @@ distributions:
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
 | | random_forest_regressor          | | ``min = 100,``   | | ``max_features: truncexpon(b=10., loc=.01, scale=1./10.11)``              |
-| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10, None]``                                  |
+| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10]``                                  |
 | | extra_trees_regressor            |                    |                                                                             |
 | | RF step in stacking_classifier   |                    |                                                                             |
 | | RF step in stacking_regressor    |                    |                                                                             |
@@ -245,7 +245,7 @@ argument to :class:`~civis.ml.ModelPipeline` which will install the
 dependencies in your runtime environment. VCS support is also enabled
 (see `docs
 <https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_.)
-Installing a remote git repository from, say, Github only requires passing the HTTPS 
+Installing a remote git repository from, say, Github only requires passing the HTTPS
 URL in the form of, for example, ``git+https://github.com/scikit-learn/scikit-learn``.
 
 CivisML will run ``pip install [your package here]``. We strongly encourage you to pin
@@ -270,11 +270,11 @@ A simple example of how to do this with API looks as follows
 
 .. code-block:: python
 
-		
+
   import civis
   password = 'abc123'  # token copied from https://github.com/settings/tokens
   username = 'user123'  # Github username
-  git_token_name = 'Github credential' 
+  git_token_name = 'Github credential'
 
   client = civis.APIClient()
   credential = client.credentials.post(password=password,

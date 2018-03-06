@@ -30,6 +30,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Switched to pip install-ing dependencies for building the documentation (#230)
 - Added a merge rule for the changelog to .gitattributes (#229)
 - Default to "all" API resources rather than "base".
+- Updated documentation on algorithm hyperparameters to reflect changes with
+  CivisML v2.2 release (#240)
 
 ## 1.8.1 - 2018-02-01
 ### Added
