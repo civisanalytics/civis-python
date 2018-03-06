@@ -49,7 +49,6 @@ class MockResponse(dict):
         self.__dict__.update(kwargs)
 
 
-
 @mock.patch(api_import_str, return_value=civis_api_spec)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -212,7 +211,6 @@ class ImportTests(CivisVCRTestCase):
                                        use_pandas=False,
                                        polling_interval=POLL_INTERVAL)
         assert data == expected
-
 
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
