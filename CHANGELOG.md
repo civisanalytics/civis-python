@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   to the child jobs they create (#236)
 
 ### Changed
+- Moved "Optional Dependencies" doc section to top of ML docs, and
+  added clarifications for pre-defined models with non-sklearn
+  estimators (#238)
 - Switched to pip install-ing dependencies for building the documentation (#230)
 - Added a merge rule for the changelog to .gitattributes (#229)
 
