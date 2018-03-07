@@ -445,3 +445,32 @@ def test_export_to_civis_file(mock_sql_script):
                                             credential_id=None,
                                             csv_settings=None,
                                             hidden=True)
+
+
+def test_sql_script():
+    sql = "SELECT SPECIAL SQL QUERY"
+    export_job_id = 32
+    database_id = 29
+    credential_id = 3920
+    response = Response({'id': export_job_id})
+
+    mock_client = create_client_mock()
+    mock_client.scripts.post_sql.return_value = response
+    mock_client.get_database_id.return_value = database_id
+    mock_client.default_credential = credential_id
+
+    civis.io._tables._sql_script(client=mock_client,
+                                 sql=sql,
+                                 database='fake-db',
+                                 job_name='My job',
+                                 credential_id=None,
+                                 hidden=False,
+                                 csv_settings=None)
+    mock_client.scripts.post_sql.assert_called_once_with(
+        'My job',
+        remote_host_id=database_id,
+        credential_id=credential_id,
+        sql=sql,
+        hidden=False,
+        csv_settings={})
+    mock_client.scripts.post_sql_runs.assert_called_once_with(export_job_id)
