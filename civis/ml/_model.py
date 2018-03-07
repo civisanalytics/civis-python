@@ -1224,9 +1224,11 @@ class ModelPipeline:
             If this is a multi-output model, you may list a subset of
             dependent variables for which you wish to generate predictions.
             This list must be a subset of the original `dependent_variable`
-            input. Ignoring some of the model's outputs will let predictions
-            complete faster and use less disk space. The default is to
-            produce scores for all DVs.
+            input. The scores for the returned subset will be identical to
+            the scores which those outputs would have had if all outputs
+            were written, but ignoring some of the model's outputs will
+            let predictions complete faster and use less disk space.
+            The default is to produce scores for all DVs.
 
         Returns
         -------
@@ -1276,8 +1278,8 @@ class ModelPipeline:
         if dvs_to_predict:
             if isinstance(dvs_to_predict, six.string_types):
                 dvs_to_predict = [dvs_to_predict]
-            if self.predict_template_id > 10600:
-                # This feature was added in v2.2.
+            if self.predict_template_id > 10583:
+                # This feature was added in v2.2; 10583 is the v2.1 template
                 predict_args['TARGET_COLUMN'] = ' '.join(dvs_to_predict)
         if self.predict_template_id >= 9969:
             if cpu:
