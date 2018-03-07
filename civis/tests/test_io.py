@@ -23,6 +23,7 @@ from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
 from civis.tests import TEST_SPEC
+from civis.tests.mocks import create_client_mock
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 with open(TEST_SPEC) as f:
@@ -33,20 +34,6 @@ class MockAPIError(CivisAPIError):
     """A fake API error with only a status code"""
     def __init__(self, sc):
         self.status_code = sc
-
-
-class MockResponse(dict):
-    """A class to mimic civis.response.Response.
-
-    Various functions in civis may access elements of Response as attributes
-    or a dictionary.  This object allows for easy testing of these functions by
-    setting both `MockResponse().a` and `MockResponse()['a']` via the call
-    `MockResponse(a='value')`.
-    """
-
-    def __init__(self, **kwargs):
-        self.update(kwargs)
-        self.__dict__.update(kwargs)
 
 
 @mock.patch(api_import_str, return_value=civis_api_spec)
@@ -436,21 +423,17 @@ def test_split_schema_tablename_raises():
 
 
 @mock.patch.object(civis.io._tables, '_sql_script', autospec=True,
-                   return_value=[-1000, 1000])
-@mock.patch.object(civis.io._tables, 'APIClient', autospec=True)
-def test_export_to_civis_file(mock_APIClient, mock_sql_script):
+                   return_value=[700, 1000])
+def test_export_to_civis_file(*mocks):
     expected = [{'file_id': 9844453}]
 
-    # Mock client.scripts.get_sql_runs to return successful response with data
-    # (mock_client must not have channels in its spec to avoid hitting PubNub)
-    mock_client = mock.Mock(spec=['scripts'])
-    mock_client.scripts = mock.Mock(spec=['get_sql_runs'])
-    response = MockResponse(state='success', output=expected)
+    mock_client = create_client_mock()
+    response = Response({'state': 'success', 'output': expected})
     mock_client.scripts.get_sql_runs.return_value = response
-    mock_APIClient.return_value = mock_client
 
     sql = "SELECT 1"
     fut = civis.io.export_to_civis_file(sql, 'fake-db',
-                                        polling_interval=POLL_INTERVAL)
+                                        polling_interval=POLL_INTERVAL,
+                                        client=mock_client)
     data = fut.result()['output']
     assert data == expected
