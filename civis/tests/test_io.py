@@ -424,12 +424,13 @@ def test_split_schema_tablename_raises():
 
 @mock.patch.object(civis.io._tables, '_sql_script', autospec=True,
                    return_value=[700, 1000])
-def test_export_to_civis_file(*mocks):
+def test_export_to_civis_file(mock_sql_script):
     expected = [{'file_id': 9844453}]
 
     mock_client = create_client_mock()
     response = Response({'state': 'success', 'output': expected})
     mock_client.scripts.get_sql_runs.return_value = response
+    mock_client.scripts.post_sql
 
     sql = "SELECT 1"
     fut = civis.io.export_to_civis_file(sql, 'fake-db',
@@ -437,3 +438,10 @@ def test_export_to_civis_file(*mocks):
                                         client=mock_client)
     data = fut.result()['output']
     assert data == expected
+    mock_sql_script.assert_called_once_with(client=mock_client,
+                                            sql=sql,
+                                            database='fake-db',
+                                            job_name=None,
+                                            credential_id=None,
+                                            csv_settings=None,
+                                            hidden=True)
