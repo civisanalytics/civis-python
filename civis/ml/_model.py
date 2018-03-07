@@ -738,7 +738,7 @@ class ModelPipeline:
                  etl=None):
         self.model = model
         self._input_model = model  # In case we need to modify the input
-        if isinstance(dependent_variable, str):
+        if isinstance(dependent_variable, six.string_types):
             # Standardize the dependent variable as a list.
             dependent_variable = [dependent_variable]
         self.dependent_variable = dependent_variable
@@ -1133,7 +1133,8 @@ class ModelPipeline:
                 manifest=None, file_id=None, sql_where=None, sql_limit=None,
                 primary_key=SENTINEL, output_table=None, output_db=None,
                 if_exists='fail', n_jobs=None, polling_interval=None,
-                cpu=None, memory=None, disk_space=None):
+                cpu=None, memory=None, disk_space=None,
+                dvs_to_predict=None):
         """Make predictions on a trained model
 
         Provide input through one of
@@ -1219,6 +1220,15 @@ class ModelPipeline:
             RAM requested by the user for a single job.
         disk_space : float, optional
             disk space requested by the user for a single job.
+        dvs_to_predict : list of str, optional
+            If this is a multi-output model, you may list a subset of
+            dependent variables for which you wish to generate predictions.
+            This list must be a subset of the original `dependent_variable`
+            input. The scores for the returned subset will be identical to
+            the scores which those outputs would have had if all outputs
+            were written, but ignoring some of the model's outputs will
+            let predictions complete faster and use less disk space.
+            The default is to produce scores for all DVs.
 
         Returns
         -------
@@ -1265,6 +1275,12 @@ class ModelPipeline:
             predict_args['LIMITSQL'] = sql_limit
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
+        if dvs_to_predict:
+            if isinstance(dvs_to_predict, six.string_types):
+                dvs_to_predict = [dvs_to_predict]
+            if self.predict_template_id > 10583:
+                # This feature was added in v2.2; 10583 is the v2.1 template
+                predict_args['TARGET_COLUMN'] = ' '.join(dvs_to_predict)
         if self.predict_template_id >= 9969:
             if cpu:
                 predict_args['CPU'] = cpu

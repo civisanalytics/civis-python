@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Executors in ``futures`` (and the joblib backend, which uses them) will now
   add "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables
   to the child jobs they create (#236)
+- Added a new parameter ``dvs_to_predict`` to ``civis.ml.ModelPipeline.predict``.
+  This allows users to select a subset of a model's outputs for scoring (#241).
 
 ### Changed
 - Moved "Optional Dependencies" doc section to top of ML docs, and
