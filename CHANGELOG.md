@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+### Changed
+- The caches used in generate_classes and get_api_spec will now invalidate
+  after a period of time to prevent stale API specs in long running Python
+  instances (after 10 hours and 5 hours, respectively).
+
 ### Fixed
 - Added more robust parsing for tablename parsing in io.  You may now
   pass in tables like schema."tablename.with.periods".

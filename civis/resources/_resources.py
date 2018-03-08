@@ -8,6 +8,7 @@ try:
 except ImportError:
     from funcsigs import Signature, Parameter
 
+import cachetools
 from jsonref import JsonRef
 import requests
 import six
@@ -63,6 +64,11 @@ ITERATOR_PARAM_DESC = (
 MAX_RETRIES = 10
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
+
+# Note: time to live (ttl) for get_api_spec should be shorter than the
+# cache for generate_classes so generate_classes can return fresh api spec
+GENERATE_CLASSES_TTL = 36000  # 10 hours
+GET_API_SPEC_TTL = GENERATE_CLASSES_TTL / 2
 
 
 def exclude_resource(path, api_version, resources):
@@ -473,7 +479,7 @@ def parse_api_spec(api_spec, api_version, resources):
     return classes
 
 
-@lru_cache(maxsize=4)
+@cachetools.func.ttl_cache(maxsize=4, ttl=GET_API_SPEC_TTL)
 def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """Download the Civis API specification.
 
@@ -502,7 +508,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     return spec
 
 
-@lru_cache(maxsize=4)
+@cachetools.func.ttl_cache(maxsize=4, ttl=GENERATE_CLASSES_TTL)
 def generate_classes(api_key, api_version="1.0", resources="base"):
     """ Dynamically create classes to interface with the Civis API.
 
