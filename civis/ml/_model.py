@@ -42,8 +42,11 @@ _PRED_TEMPLATES = {10582: 10583,  # v2.1
                    9112: 9113,    # v1.1
                    8387: 9113,    # v1.0
                    7020: 7021,    # v0.5
+                   11028: 10616,  # v2.2 registration CHANGE ME
                    }
 _CIVISML_TEMPLATE = None  # CivisML training template to use
+REGISTRATION_TEMPLATES = [11028,  # v2.2 CHANGE ME
+                          ]
 
 
 class ModelError(RuntimeError):
@@ -631,10 +634,10 @@ class ModelPipeline:
         See :func:`~civis.resources._resources.Scripts.post_custom` for
         further documentation about email and URL notification.
     dependencies : array, optional
-        List of packages to install from PyPI or git repository (i.e., Github
+        List of packages to install from PyPI or git repository (e.g., Github
         or Bitbucket). If a private repo is specified, please include a
         ``git_token_name`` argument as well (see below). Make sure to pin
-        dependencies to a specific version, since dependecies will be
+        dependencies to a specific version, since dependencies will be
         reinstalled during every training and predict job.
     git_token_name : str, optional
         Name of remote git API token stored in Civis Platform as the password
@@ -713,6 +716,8 @@ class ModelPipeline:
         global _CIVISML_TEMPLATE
         if _CIVISML_TEMPLATE is None:
             for t_id in sorted(_PRED_TEMPLATES)[::-1]:
+                if t_id in REGISTRATION_TEMPLATES:
+                    continue
                 try:
                     # Check that we can access the template
                     client.templates.get_scripts(id=t_id)
@@ -782,6 +787,147 @@ class ModelPipeline:
         self._client = APIClient()
         template_ids = self._get_template_ids(self._client)
         self.train_template_id, self.predict_template_id = template_ids
+
+    @classmethod
+    def register_pretrained_model(cls, model, dependent_variable=None,
+                                  features=None, primary_key=None,
+                                  model_name=None, dependencies=None,
+                                  git_token_name=None,
+                                  skip_model_check=False, verbose=False,
+                                  client=None):
+        """Use a fitted scikit-learn model with CivisML scoring
+
+        Use this function to set up your own fitted scikit-learn-compatible
+        Estimator object for scoring with CivisML. This function will
+        upload your model to Civis Platform and store enough metadata
+        about it that you can subsequently use it with a CivisML scoring job.
+
+        The only required input is the model itself, but you are strongly
+        recommended to also provide a list of feature names. Without a list
+        of feature names, CivisML will have to assume that your scoring
+        table contains only the features needed for scoring (perhaps also
+        with a primary key column), in all in the correct order.
+
+        Parameters
+        ----------
+        model : sklearn.base.BaseEstimator or int
+            The model object. This must be a fitted scikit-learn compatible
+            Estimator object, or else the integer Civis File ID of a
+            pickle which stores such an object.
+        dependent_variable : string or List[str], optional
+            The dependent variable of the training dataset.
+            For a multi-target problem, this should be a list of
+            column names of dependent variables.
+        features : string or List[str], optional
+            A list of column names of features which were used for training.
+            These will be used to ensure that tables input for prediction
+            have the correct features in the correct order.
+        primary_key : string, optional
+            The unique ID (primary key) of the scoring dataset..
+        model_name : string, optional
+            The name of the Platform registration job. It will have
+            " Predict" added to become the Script title for predictions.
+        dependencies : array, optional
+            List of packages to install from PyPI or git repository (e.g.,
+            GitHub or Bitbucket). If a private repo is specified, please
+            include a ``git_token_name`` argument as well (see below).
+            Make sure to pin dependencies to a specific version, since
+            dependencies will be reinstalled during every predict job.
+        git_token_name : str, optional
+            Name of remote git API token stored in Civis Platform as
+            the password field in a custom platform credential.
+            Used only when installing private git repositories.
+        skip_model_check : bool, optional
+            If you're sure that your model will work with CivisML, but it
+            will fail the comprehensive verification, set this to True.
+        verbose : bool, optional
+            If True, supply debug outputs in Platform logs and make
+            prediction child jobs visible.
+        client : :class:`~civis.APIClient`, optional
+            If not provided, an :class:`~civis.APIClient` object will be
+            created from the :envvar:`CIVIS_API_KEY`.
+
+        Returns
+        -------
+        :class:`~civis.ml.ModelPipeline`
+
+        Examples
+        --------
+        This example assumes that you already have training data
+        ``X`` and ``y``, where ``X`` is a :class:`~pandas.DataFrame`.
+        >>> from civis.ml import ModelPipeline
+        >>> from sklearn.linear_model import Lasso
+        >>> est = Lasso().fit(X, y)
+        >>> model = ModelPipeline.register_pretrained_model(
+        ...     est, 'concrete', features=X.columns)
+        >>> model.predict(table_name='my.table', database_name='my-db')
+        """
+        client = client or APIClient()
+
+        if isinstance(dependent_variable, six.string_types):
+            dependent_variable = [dependent_variable]
+        if isinstance(features, six.string_types):
+            features = [features]
+        if isinstance(dependencies, six.string_types):
+            dependencies = [dependencies]
+        if not model_name:
+            model_name = ("Pretrained {} model for "
+                          "CivisML".format(model.__class__.__name__))
+            model_name = model_name[:255]  # Max size is 255 characters
+
+        if isinstance(model, (int, float, six.string_types)):
+            model_file_id = int(model)
+        else:
+            try:
+                tempdir = tempfile.mkdtemp()
+                fout = os.path.join(tempdir, 'model_for_civisml.pkl')
+                joblib.dump(model, fout, compress=3)
+                with open(fout, 'rb') as _fout:
+                    # NB: Using the name "estimator.pkl" means that
+                    # CivisML doesn't need to copy this input to a file
+                    # with a different name.
+                    model_file_id = cio.file_to_civis(_fout, 'estimator.pkl',
+                                                      client=client)
+            finally:
+                shutil.rmtree(tempdir)
+
+        args = {'MODEL_FILE_ID': str(model_file_id),
+                'SKIP_MODEL_CHECK': skip_model_check,
+                'DEBUG': verbose}
+        if dependent_variable is not None:
+            args['TARGET_COLUMN'] = ' '.join(dependent_variable)
+        if features is not None:
+            args['FEATURE_COLUMNS'] = ' '.join(features)
+        if dependencies is not None:
+            args['DEPENDENCIES'] = ' '.join(dependencies)
+        if git_token_name:
+            creds = find(client.credentials.list(),
+                         name=git_token_name,
+                         type='Custom')
+            if len(creds) > 1:
+                raise ValueError("Unique credential with name '{}' for "
+                                 "remote git hosting service not found!"
+                                 .format(git_token_name))
+            args['GIT_CRED'] = creds[0].id
+
+        template_id = max(REGISTRATION_TEMPLATES)
+        container = client.scripts.post_custom(
+            from_template_id=template_id,
+            name=model_name,
+            arguments=args)
+        log.info('Created custom script %s.', container.id)
+
+        run = client.scripts.post_custom_runs(container.id)
+        log.debug('Started job %s, run %s.', container.id, run.id)
+
+        fut = ModelFuture(container.id, run.id, client=client,
+                          poll_on_creation=False)
+        fut.result()
+        log.info('Model registration complete.')
+
+        mp = ModelPipeline.from_existing(fut.job_id, fut.run_id, client)
+        mp.primary_key = primary_key
+        return mp
 
     @classmethod
     def from_existing(cls, train_job_id, train_run_id='latest', client=None):
@@ -887,7 +1033,8 @@ class ModelPipeline:
                           'prediction code. Prediction will either fail '
                           'immediately or succeed.'
                           % (train_job_id, __version__), RuntimeWarning)
-            p_id = max(_PRED_TEMPLATES.values())
+            p_id = max([v for k, v in _PRED_TEMPLATES.items()
+                        if k not in REGISTRATION_TEMPLATES])
         klass.predict_template_id = p_id
 
         return klass

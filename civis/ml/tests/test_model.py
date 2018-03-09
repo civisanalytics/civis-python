@@ -39,6 +39,10 @@ import pytest
 from civis.ml import _model
 
 
+LATEST_TRAIN_TEMPLATE = 10582
+LATEST_PRED_TEMPLATE = 10583
+
+
 def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
                       run_outputs=None):
     """Return a Mock set up for use in testing container scripts
@@ -682,7 +686,7 @@ def test_modelpipeline_init_newest():
     mp = _model.ModelPipeline(LogisticRegression(), 'test', etl=etl,
                               client=mock_client)
     assert mp.etl == etl
-    assert mp.train_template_id == max(_model._PRED_TEMPLATES)
+    assert mp.train_template_id == LATEST_TRAIN_TEMPLATE
     # clean up
     _model._CIVISML_TEMPLATE = None
 
@@ -787,8 +791,7 @@ def test_modelpipeline_classmethod_constructor_defaults(
 def test_modelpipeline_classmethod_constructor_future_train_version():
     # Test handling attempts to restore a model created with a newer
     # version of CivisML.
-    current_max_template = max(_model._PRED_TEMPLATES)
-    cont = container_response_stub(current_max_template + 1000)
+    cont = container_response_stub(LATEST_TRAIN_TEMPLATE + 1000)
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = cont
     mock_client.credentials.get.return_value = Response({'name': 'Token'})
@@ -796,7 +799,7 @@ def test_modelpipeline_classmethod_constructor_future_train_version():
     # test everything is working fine
     with pytest.warns(RuntimeWarning):
         mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    exp_p_id = _model._PRED_TEMPLATES[current_max_template]
+    exp_p_id = _model._PRED_TEMPLATES[LATEST_TRAIN_TEMPLATE]
     assert mp.predict_template_id == exp_p_id
 
 
@@ -892,7 +895,7 @@ def test_modelpipeline_train_df(mock_ccr, mock_stash, mp_setup):
     train_data = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
     assert 'res' == mp.train(train_data)
     mock_stash.assert_called_once_with(
-        train_data, max(_model._PRED_TEMPLATES.keys()), client=mock.ANY)
+        train_data, LATEST_TRAIN_TEMPLATE, client=mock.ANY)
     assert mp.train_result_ == 'res'
 
 

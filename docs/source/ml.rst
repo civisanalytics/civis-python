@@ -25,7 +25,7 @@ the following pip-installable dependencies enhance the capabilities of the
 - civisml-extensions
 - muffnn
 
-  
+
 Install :mod:`pandas` if you wish to download tables of predictions.
 You can also model on :class:`~pandas.DataFrame` objects in your interpreter.
 
@@ -61,7 +61,7 @@ A :class:`~sklearn.pipeline.Pipeline` allows you to combine multiple
 modeling steps (such as missing value imputation and feature selection) into a
 single model. The :class:`~sklearn.pipeline.Pipeline` is treated as a unit -- for example,
 cross-validation happens over all steps together.
- 
+
 You can define your model in two ways, either by selecting a pre-defined algorithm
 or by providing your own scikit-learn
 :class:`~sklearn.pipeline.Pipeline` or :class:`~sklearn.base.BaseEstimator` object.
@@ -88,15 +88,15 @@ sparse_logistic                   classification      `LogisticRegression <http:
 gradient_boosting_classifier      classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
 random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
 extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
-multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_ 
-stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_ 
-sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_ 
-sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_ 
+multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_
+stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_
+sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_
+sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_
 gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
 random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
 extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
-multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_ 
-stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_ 
+multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_
+stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_
 ================================  ================    ==================================================================================================================================   ==================================
 
 The "stacking_classifier" model stacks
@@ -151,7 +151,7 @@ By default, CivisML pre-processes data using the
 equal to the ``excluded_columns`` parameter. You can replace this
 with your own ETL by creating an object of class
 :class:`~sklearn.base.BaseEstimator` and passing it as the ``etl``
-parameter during training. 
+parameter during training.
 
 By default, :class:`~civismlext.preprocessing.DataFrameETL`
 automatically one-hot encodes all categorical columns in the
@@ -245,7 +245,7 @@ argument to :class:`~civis.ml.ModelPipeline` which will install the
 dependencies in your runtime environment. VCS support is also enabled
 (see `docs
 <https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_.)
-Installing a remote git repository from, say, Github only requires passing the HTTPS 
+Installing a remote git repository from, say, Github only requires passing the HTTPS
 URL in the form of, for example, ``git+https://github.com/scikit-learn/scikit-learn``.
 
 CivisML will run ``pip install [your package here]``. We strongly encourage you to pin
@@ -270,11 +270,11 @@ A simple example of how to do this with API looks as follows
 
 .. code-block:: python
 
-		
+
   import civis
   password = 'abc123'  # token copied from https://github.com/settings/tokens
   username = 'user123'  # Github username
-  git_token_name = 'Github credential' 
+  git_token_name = 'Github credential'
 
   client = civis.APIClient()
   credential = client.credentials.post(password=password,
@@ -358,6 +358,31 @@ for solving a problem. For example:
   models = [ModelPipeline(alg, primary_key=pkey, dependent_variable=depvar) for alg in algorithms]
   train = [model.train(table_name='schema.name', database_name='My DB') for model in models]
   aucs = [tr.metrics['roc_auc'] for tr in train]  # Code blocks here
+
+
+Registering Models Trained Outside of Civis
+===========================================
+
+Instead of using CivisML to train your model, you may train any
+scikit-learn-compatible model outside of Civis Platform and use
+:meth:`civis.ml.ModelPipeline.register_pretrained_model` to register it
+as a CivisML model in Civis Platform. This will let you use Civis Platform
+to make predictions using your model, either to take advantage of distributed
+predictions on large datasets, or to create predictions as part of
+a workflow or service in Civis Platform.
+
+When registering a model trained outside of Civis Platform, you are
+strongly advised to provide an ordered list of feature names used
+for training. This will allow CivisML to ensure that tables of data
+input for predictions have the correct features in the correct order.
+If your model has more than one output, you should also provide a list
+of output names so that CivisML knows how many outputs to expect and
+how to name them in the resulting table of model predictions.
+
+If your model uses dependencies which aren't part of the default CivisML
+execution environment, you must provide them to the ``dependencies``
+parameter of the :meth:`~civis.ml.ModelPipeline.register_pretrained_model`
+function, just as with the :class:`~civis.ml.ModelPipeline` constructor.
 
 
 Object reference
