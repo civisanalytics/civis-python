@@ -26,6 +26,7 @@ from Civis will all be treated as strings.
    dataframe_to_civis
    read_civis
    read_civis_sql
+   export_to_civis_file
 
 Files
 -----

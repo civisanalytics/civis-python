@@ -23,6 +23,7 @@ from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
 from civis.tests import TEST_SPEC
+from civis.tests.mocks import create_client_mock
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 with open(TEST_SPEC) as f:
@@ -419,3 +420,57 @@ def test_split_schema_tablename_raises():
     s = "table.with.too.many.periods"
     with pytest.raises(ValueError):
         civis.io._tables.split_schema_tablename(s)
+
+
+@mock.patch.object(civis.io._tables, '_sql_script', autospec=True,
+                   return_value=[700, 1000])
+def test_export_to_civis_file(mock_sql_script):
+    expected = [{'file_id': 9844453}]
+
+    mock_client = create_client_mock()
+    response = Response({'state': 'success', 'output': expected})
+    mock_client.scripts.get_sql_runs.return_value = response
+    mock_client.scripts.post_sql
+
+    sql = "SELECT 1"
+    fut = civis.io.export_to_civis_file(sql, 'fake-db',
+                                        polling_interval=POLL_INTERVAL,
+                                        client=mock_client)
+    data = fut.result()['output']
+    assert data == expected
+    mock_sql_script.assert_called_once_with(client=mock_client,
+                                            sql=sql,
+                                            database='fake-db',
+                                            job_name=None,
+                                            credential_id=None,
+                                            csv_settings=None,
+                                            hidden=True)
+
+
+def test_sql_script():
+    sql = "SELECT SPECIAL SQL QUERY"
+    export_job_id = 32
+    database_id = 29
+    credential_id = 3920
+    response = Response({'id': export_job_id})
+
+    mock_client = create_client_mock()
+    mock_client.scripts.post_sql.return_value = response
+    mock_client.get_database_id.return_value = database_id
+    mock_client.default_credential = credential_id
+
+    civis.io._tables._sql_script(client=mock_client,
+                                 sql=sql,
+                                 database='fake-db',
+                                 job_name='My job',
+                                 credential_id=None,
+                                 hidden=False,
+                                 csv_settings=None)
+    mock_client.scripts.post_sql.assert_called_once_with(
+        'My job',
+        remote_host_id=database_id,
+        credential_id=credential_id,
+        sql=sql,
+        hidden=False,
+        csv_settings={})
+    mock_client.scripts.post_sql_runs.assert_called_once_with(export_job_id)
