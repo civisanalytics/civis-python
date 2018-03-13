@@ -5,6 +5,7 @@ import civis
 from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
+from civis._deprecation import deprecate_param
 
 
 log = logging.getLogger(__name__)
@@ -318,7 +319,8 @@ class APIClient(MetaMixin):
         When set to "base", only the default endpoints will be exposed in the
         client object. Set to "all" to include all endpoints available for
         a given user, including those that may be in development and subject
-        to breaking changes at a later date.
+        to breaking changes at a later date. This will be removed in a future
+        version of the API client.
     local_api_spec : collections.OrderedDict or string, optional
         The methods on this class are dynamically built from the Civis API
         specification, which can be retrieved from the /endpoints endpoint.
@@ -327,6 +329,7 @@ class APIClient(MetaMixin):
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
     """
+    # @deprecate_param('v2.0.0', 'resources')
     def __init__(self, api_key=None, return_type='snake',
                  retry_total=6, api_version="1.0", resources="all",
                  local_api_spec=None):

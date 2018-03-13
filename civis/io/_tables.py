@@ -19,7 +19,7 @@ from civis.base import EmptyResultError
 from civis.compat import TemporaryDirectory
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis, query_civis
-from civis.utils._deprecation import deprecate_param
+from civis._deprecation import deprecate_param
 
 import requests
 

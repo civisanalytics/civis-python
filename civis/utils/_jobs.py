@@ -1,6 +1,6 @@
 from civis import APIClient
 from civis.futures import CivisFuture
-from civis.utils._deprecation import deprecate_param
+from civis._deprecation import deprecate_param
 
 
 @deprecate_param('v2.0.0', 'api_key')

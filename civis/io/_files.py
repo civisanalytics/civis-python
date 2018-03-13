@@ -15,7 +15,7 @@ from requests import HTTPError
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis.compat import FileNotFoundError, TemporaryDirectory
-from civis.utils._deprecation import deprecate_param
+from civis._deprecation import deprecate_param
 from civis._utils import BufferedPartialReader, retry
 
 try:
