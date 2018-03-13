@@ -328,7 +328,7 @@ class APIClient(MetaMixin):
         OrderedDict or a filename which points to a json file.
     """
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0", resources="base",
+                 retry_total=6, api_version="1.0", resources="all",
                  local_api_spec=None):
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
