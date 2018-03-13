@@ -49,7 +49,7 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
     >>> run.result()  # Wait for query to complete
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     database_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     resp = client.queries.post(database_id,
@@ -113,7 +113,7 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     ...                source_table='schma.tbl', dest_table='schma.tbl')
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     source_cred_id = source_credential_id or client.default_credential
     dest_cred_id = dest_credential_id or client.default_credential
     job_name = maybe_get_random_name(job_name)

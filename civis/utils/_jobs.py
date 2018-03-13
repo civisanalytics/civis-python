@@ -24,7 +24,7 @@ def run_job(job_id, api_key=None, client=None):
         A `CivisFuture` object.
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     run = client.jobs.post_runs(job_id)
     return CivisFuture(client.jobs.get_runs,
                        (job_id, run['id']),

@@ -130,7 +130,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
                       "Use `hidden` instead.", FutureWarning)
     if client is None:
         # Instantiate client here in case users provide a (deprecated) api_key
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
                           job_name=job_name, client=client,
@@ -190,7 +190,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
     civis.io.civis_to_csv : Write directly to a CSV file.
     civis.io.civis_file_to_table : Upload a Civis file to a Civis table
     """
-    client = client or APIClient(resources='all')
+    client = client or APIClient()
     script_id, run_id = _sql_script(client=client,
                                     sql=sql,
                                     database=database,
@@ -285,7 +285,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
     if archive:
@@ -430,7 +430,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
 
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
@@ -580,7 +580,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     civis.APIClient.scripts.post_sql
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     delimiter = DELIMITERS.get(delimiter)
     assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
 
@@ -689,7 +689,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     >>> fut.result()
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
@@ -792,7 +792,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     >>> fut.result()
     """
     if client is None:
-        client = APIClient(api_key=api_key, resources='all')
+        client = APIClient(api_key=api_key)
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
@@ -878,7 +878,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     >>> fut.result()
     """
     if client is None:
-        client = APIClient(resources='all')
+        client = APIClient()
 
     schema, table = split_schema_tablename(table)
     if schema is None:

@@ -14,6 +14,7 @@ import six
 
 from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
+from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
                           open_session, get_api_key)
 
@@ -65,6 +66,7 @@ CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
 
 
+@deprecate_param('v2.0.0', 'resources')
 def exclude_resource(path, api_version, resources):
     if api_version == "1.0" and resources == "base":
         include = any([path.startswith(x) for x in BASE_RESOURCES_V1])
@@ -422,6 +424,7 @@ def parse_method(verb, operation, path):
     return name, method
 
 
+@deprecate_param('v2.0.0', 'resources')
 def parse_path(path, operations, api_version, resources):
     """ Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
@@ -440,6 +443,7 @@ def parse_path(path, operations, api_version, resources):
     return modified_base_path, methods
 
 
+@deprecate_param('v2.0.0', 'resources')
 def parse_api_spec(api_spec, api_version, resources):
     """ Dynamically create classes to interface with the Civis API.
 
@@ -503,7 +507,8 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
 
 
 @lru_cache(maxsize=4)
-def generate_classes(api_key, api_version="1.0", resources="base"):
+@deprecate_param('v2.0.0', 'resources')
+def generate_classes(api_key, api_version="1.0", resources="all"):
     """ Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -555,6 +560,7 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
         json.dump(spec, _fout)
 
 
+@deprecate_param('v2.0.0', 'resources')
 def generate_classes_maybe_cached(cache, api_key, api_version, resources):
     """Generate class objects either from /endpoints or a local cache."""
     if cache is None:
