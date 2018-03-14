@@ -45,6 +45,7 @@ def main():
         url="https://www.civisanalytics.com",
         description="Access the Civis Platform API",
         packages=find_packages(),
+        include_package_data=True,
         data_files=[(os.path.join('civis', 'tests'),
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
