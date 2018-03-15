@@ -113,10 +113,7 @@ request. To make a call, first instantiate an :class:`~civis.APIClient` object:
    Creating an instance of :class:`~civis.APIClient` makes an HTTP request to
    determine the functions to attach to the object.  You must have an
    API key and internet connection to create an :class:`~civis.APIClient`
-   object. By default, the functions attached to the object come from a base
-   set of Civis API endpoints. Based on your user profile, you may have access
-   to a set of developmental endpoints.  To access these, instantiate the
-   client with ``client = civis.APIClient(resources='all')``.
+   object.
 
 With the client object instantiated, you can now make API requests like listing
 your user information:
