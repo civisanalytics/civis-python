@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   pass in tables like schema."tablename.with.periods".
 - Adding in missing documentation for civis_file_to_table
 - Include JSON files with pip distributions (#244)
+- Added flush to `civis_to_file` when passed a user-created buffer,
+  ensuring the buffer contains the entire file when subsequently read.
 
 ### Added
 - Added a utility function which can robustly split a Redshift schema name
