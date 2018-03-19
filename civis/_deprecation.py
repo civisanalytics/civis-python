@@ -1,7 +1,7 @@
 from functools import wraps
 import warnings
 
-from civis.compat import signature
+from .compat import signature
 
 
 def deprecate_param(version_removed, parameter_name):

@@ -181,7 +181,7 @@ def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
 def _load_table_from_outputs(job_id, run_id, filename, client=None,
                              **table_kwargs):
     """Load a table from a run output directly into a ``DataFrame``"""
-    client = APIClient(resources='all') if client is None else client
+    client = APIClient() if client is None else client
     file_id = cio.file_id_from_run_output(filename, job_id, run_id,
                                           client=client, regex=True)
     return cio.file_to_dataframe(file_id, client=client, **table_kwargs)
@@ -439,7 +439,7 @@ class ModelFuture(ContainerFuture):
     def __setstate__(self, state):
         self.__dict__ = state
         self._condition = threading.Condition()
-        self.client = APIClient(resources='all')
+        self.client = APIClient()
         self.poller = self.client.scripts.get_containers_runs
         self._begin_tracking()
         self.add_done_callback(self._set_model_exception)
@@ -759,7 +759,7 @@ class ModelPipeline:
         self.verbose = verbose
 
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         self._client = client
         self.train_result_ = None
 
@@ -779,7 +779,7 @@ class ModelPipeline:
 
     def __setstate__(self, state):
         self.__dict__ = state
-        self._client = APIClient(resources='all')
+        self._client = APIClient()
         template_ids = self._get_template_ids(self._client)
         self.train_template_id, self.predict_template_id = template_ids
 
@@ -817,7 +817,7 @@ class ModelPipeline:
         """
         train_job_id = int(train_job_id)  # Convert np.int to int
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
         try:
             fut = ModelFuture(train_job_id, train_run_id, client=client)

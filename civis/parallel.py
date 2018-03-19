@@ -162,7 +162,7 @@ def infer_backend_factory(required_resources=None,
     civis.parallel.make_backend_factory
     """
     if client is None:
-        client = civis.APIClient(resources='all')
+        client = civis.APIClient()
 
     if not os.environ.get('CIVIS_JOB_ID'):
         raise RuntimeError('This function must be run '
@@ -493,7 +493,7 @@ def _robust_pickle_download(output_file_id, client=None,
     --------
     cloudpickle.load
     """
-    client = client or civis.APIClient(resources='all')
+    client = client or civis.APIClient()
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -552,7 +552,7 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
     --------
     civis.io.file_to_civis
     """
-    client = client or civis.APIClient(resources='all')
+    client = client or civis.APIClient()
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -646,7 +646,7 @@ class _CivisBackendResult:
         if hasattr(future, 'client'):
             self._client = future.client
         else:
-            self._client = civis.APIClient(resources='all')
+            self._client = civis.APIClient()
 
         # Download results and trigger the next job as a callback
         # so that we don't have to wait for `get` to be called.
@@ -795,7 +795,7 @@ class _CivisBackend(ParallelBackendBase):
                 "max_submit_retries cannot be negative (value = %d)" %
                 self.max_submit_retries)
 
-        self.client = self.client or civis.APIClient(resources='all')
+        self.client = self.client or civis.APIClient()
         if self.from_template_id:
             self.executor = CustomScriptExecutor(self.from_template_id,
                                                  client=self.client,

@@ -25,7 +25,7 @@ def main():
     t0 = time.time()
 
     database = "redshift-general"
-    client = civis.APIClient(resources="all")
+    client = civis.APIClient()
 
     # Test read_civis and read_civis_sql produce the same results.
     # The table used here has an explicit index column to sort by in case the

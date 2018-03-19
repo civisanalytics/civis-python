@@ -27,8 +27,7 @@ def create_client_mock(cache=TEST_SPEC_ALL):
         error if any method calls have non-existent / misspelled parameters
     """
     # Create a client from the cache. We'll use this for auto-speccing.
-    real_client = APIClient(local_api_spec=cache, api_key='none',
-                            resources='all')
+    real_client = APIClient(local_api_spec=cache, api_key='none')
     real_client._feature_flags = {'noflag': None}
     if hasattr(real_client, 'channels'):
         # Deleting "channels" causes the client to fall back on

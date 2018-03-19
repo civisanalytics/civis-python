@@ -380,7 +380,7 @@ else:
     user_agent = "civis-python/SphinxDocs"
     api_version = "1.0"
     extra_classes = civis.resources._resources.generate_classes(
-        api_key=api_key, api_version=api_version, resources='all')
+        api_key=api_key, api_version=api_version)
 sorted_class_names = sorted(extra_classes.keys())
 
 civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names,

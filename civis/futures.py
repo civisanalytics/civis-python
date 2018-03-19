@@ -109,7 +109,7 @@ class CivisFuture(PollableResult):
                  polling_interval=None, api_key=None, client=None,
                  poll_on_creation=True):
         if client is None:
-            client = APIClient(api_key=api_key, resources='all')
+            client = APIClient(api_key=api_key)
 
         if polling_interval is None and hasattr(client, 'channels'):
             polling_interval = _LONG_POLLING_INTERVAL
@@ -241,7 +241,7 @@ class ContainerFuture(CivisFuture):
                  client=None,
                  poll_on_creation=True):
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         super().__init__(client.scripts.get_containers_runs,
                          [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
@@ -356,7 +356,7 @@ class _CivisExecutor(Executor):
         self._shutdown_thread = False
 
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         self.client = client
 
         # A list of ContainerFuture objects for submitted jobs.

@@ -1,4 +1,4 @@
-from civis.utils import _deprecation
+from civis import _deprecation
 
 import pytest
 
