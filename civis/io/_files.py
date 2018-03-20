@@ -303,6 +303,7 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
             _civis_to_file(file_id, f, api_key=api_key, client=client)
     else:
         _civis_to_file(file_id, buf, api_key=api_key, client=client)
+        buf.flush()
 
 
 def _civis_to_file(file_id, buf, api_key=None, client=None):
