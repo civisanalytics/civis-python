@@ -68,6 +68,9 @@ or by providing your own scikit-learn
 Note that whichever option you chose, CivisML will pre-process your
 data using either its default ETL, or ETL that you provide (see :ref:`custom-etl`).
 
+If you have already trained a scikit-learn model outside of Civis Platform,
+you can register it with Civis Platform as a CivisML model so that you can
+score it using CivisML. Read :ref:`model-registration` for how to do this.
 
 Pre-Defined Models
 ------------------
@@ -358,6 +361,32 @@ for solving a problem. For example:
   models = [ModelPipeline(alg, primary_key=pkey, dependent_variable=depvar) for alg in algorithms]
   train = [model.train(table_name='schema.name', database_name='My DB') for model in models]
   aucs = [tr.metrics['roc_auc'] for tr in train]  # Code blocks here
+
+..  _model-registration:
+
+Registering Models Trained Outside of Civis
+===========================================
+
+Instead of using CivisML to train your model, you may train any
+scikit-learn-compatible model outside of Civis Platform and use
+:meth:`civis.ml.ModelPipeline.register_pretrained_model` to register it
+as a CivisML model in Civis Platform. This will let you use Civis Platform
+to make predictions using your model, either to take advantage of distributed
+predictions on large datasets, or to create predictions as part of
+a workflow or service in Civis Platform.
+
+When registering a model trained outside of Civis Platform, you are
+strongly advised to provide an ordered list of feature names used
+for training. This will allow CivisML to ensure that tables of data
+input for predictions have the correct features in the correct order.
+If your model has more than one output, you should also provide a list
+of output names so that CivisML knows how many outputs to expect and
+how to name them in the resulting table of model predictions.
+
+If your model uses dependencies which aren't part of the default CivisML
+execution environment, you must provide them to the ``dependencies``
+parameter of the :meth:`~civis.ml.ModelPipeline.register_pretrained_model`
+function, just as with the :class:`~civis.ml.ModelPipeline` constructor.
 
 
 Object reference
