@@ -68,6 +68,9 @@ or by providing your own scikit-learn
 Note that whichever option you chose, CivisML will pre-process your
 data using either its default ETL, or ETL that you provide (see :ref:`custom-etl`).
 
+If you have already trained a scikit-learn model outside of Civis Platform,
+you can register it with Civis Platform as a CivisML model so that you can
+score it using CivisML. Read :ref:`model-registration` for how to do this.
 
 Pre-Defined Models
 ------------------
@@ -359,6 +362,7 @@ for solving a problem. For example:
   train = [model.train(table_name='schema.name', database_name='My DB') for model in models]
   aucs = [tr.metrics['roc_auc'] for tr in train]  # Code blocks here
 
+..  _model-registration:
 
 Registering Models Trained Outside of Civis
 ===========================================
