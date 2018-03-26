@@ -813,7 +813,7 @@ class ModelPipeline:
         model : sklearn.base.BaseEstimator or int
             The model object. This must be a fitted scikit-learn compatible
             Estimator object, or else the integer Civis File ID of a
-            pickle which stores such an object.
+            pickle or joblib-serialized file which stores such an object.
         dependent_variable : string or List[str], optional
             The dependent variable of the training dataset.
             For a multi-target problem, this should be a list of
@@ -823,7 +823,7 @@ class ModelPipeline:
             These will be used to ensure that tables input for prediction
             have the correct features in the correct order.
         primary_key : string, optional
-            The unique ID (primary key) of the scoring dataset..
+            The unique ID (primary key) of the scoring dataset
         model_name : string, optional
             The name of the Platform registration job. It will have
             " Predict" added to become the Script title for predictions.
