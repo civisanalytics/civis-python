@@ -89,15 +89,15 @@ Name                              Model Type          Algorithm                 
 ================================  ================    ==================================================================================================================================   ==================================
 sparse_logistic                   classification      `LogisticRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_                ``C=499999950, tol=1e-08``
 gradient_boosting_classifier      classification      `GradientBoostingClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html>`_    ``n_estimators=500, max_depth=2``
-random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500``
-extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500``
+random_forest_classifier          classification      `RandomForestClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`_            ``n_estimators=500, max_depth=7``
+extra_trees_classifier            classification      `ExtraTreesClassifier <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html>`_                ``n_estimators=500, max_depth=7``
 multilayer_perceptron_classifier  classification      `muffnn.MLPClassifier <https://github.com/civisanalytics/muffnn>`_
 stacking_classifier               classification      `civismlext.StackedClassifier <https://github.com/civisanalytics/civisml-extensions>`_
 sparse_linear_regressor           regression          `LinearRegression <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html>`_
 sparse_ridge_regressor            regression          `Ridge <http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html>`_
 gradient_boosting_regressor       regression          `GradientBoostingRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html>`_      ``n_estimators=500, max_depth=2``
-random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500``
-extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500``
+random_forest_regressor           regression          `RandomForestRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_              ``n_estimators=500, max_depth=7``
+extra_trees_regressor             regression          `ExtraTreesRegressor <http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html>`_                  ``n_estimators=500, max_depth=7``
 multilayer_perceptron_regressor   regression          `muffnn.MLPRegressor <https://github.com/civisanalytics/muffnn>`_
 stacking_regressor                regression          `civismlext.StackedRegressor <https://github.com/civisanalytics/civisml-extensions>`_
 ================================  ================    ==================================================================================================================================   ==================================
@@ -217,7 +217,7 @@ distributions:
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
 | | random_forest_regressor          | | ``min = 100,``   | | ``max_features: truncexpon(b=10., loc=.01, scale=1./10.11)``              |
-| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10, None]``                                  |
+| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10]``                                  |
 | | extra_trees_regressor            |                    |                                                                             |
 | | RF step in stacking_classifier   |                    |                                                                             |
 | | RF step in stacking_regressor    |                    |                                                                             |
