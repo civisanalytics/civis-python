@@ -39,8 +39,8 @@ import pytest
 from civis.ml import _model
 
 
-LATEST_TRAIN_TEMPLATE = 10582
-LATEST_PRED_TEMPLATE = 10583
+LATEST_TRAIN_TEMPLATE = 11219
+LATEST_PRED_TEMPLATE = 11220
 
 
 def setup_client_mock(script_id=-10, run_id=100, state='succeeded',

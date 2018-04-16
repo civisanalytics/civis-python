@@ -21,6 +21,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Executors in ``futures`` (and the joblib backend, which uses them) will now
   add "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables
   to the child jobs they create (#236)
+- Update default CivisML version to v2.2. This includes a new function
+  ``ModelPipeline.register_pretrained_model`` which allows users to train
+  a model outside of Civis Platform and use CivisML to score it at scale (#242, #247).
 - Added a new parameter ``dvs_to_predict`` to ``civis.ml.ModelPipeline.predict``.
   This allows users to select a subset of a model's outputs for scoring (#241).
 - Added `civis.io.export_to_civis_file` to store results of a SQL query
