@@ -7,7 +7,7 @@ python:
 install:
     - pip install --upgrade pip setuptools
     - pip install -r dev-requirements.txt
-    - pip install pandas scikit-learn scipy feather-format
+    - pip install -r full-testing-requirements.txt
     - pip install -e .
 env:
   global:

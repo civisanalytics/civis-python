@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Include JSON files with pip distributions (#244)
 - Added flush to `civis_to_file` when passed a user-created buffer,
   ensuring the buffer contains the entire file when subsequently read.
+- Travis tests for Python 3.4 are now restricted to pandas<=0.20, the
+  last version which supported Python 3.4 (#249)
 
 ### Added
 - Added a utility function which can robustly split a Redshift schema name
