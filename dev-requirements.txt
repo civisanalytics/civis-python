@@ -7,3 +7,10 @@ vcrpy>=1.11.0,<=1.11.99
 vcrpy-unittest==0.1.6
 sphinx_rtd_theme>=0.2.4,<1.0.0
 numpydoc>=0.7.0,<1.0.0
+feather-format
+numpy
+pandas; python_version >= '3.5'
+pandas<0.21; python_version == '3.4'
+pandas<=0.23; python_version == '2.7'
+scikit-learn
+scipy
