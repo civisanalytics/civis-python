@@ -15,6 +15,7 @@ except ImportError:
     has_pandas = False
 
 import civis
+from civis.io import _files
 from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 from civis.base import CivisAPIError
@@ -389,37 +390,40 @@ def test_load_json(mock_c2f):
     assert out == obj
 
 
-@mock.patch('civis.io._files._civis_to_file', autospec=True)
-def test_civis_to_file_local(mock_civis_to_file_helper):
-    # Test that passing a path to civis_to_file opens a file.
-    def mock_write(file_id, buf, **kwargs):
-        buf.write(str(file_id).encode())
-    mock_civis_to_file_helper.side_effect = mock_write
-
-    test_obj = '123'
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_civis_to_file_local(mock_requests):
+    # Test that a call to civis_to_file uses `requests` to grab the contents
+    # of a URL given by the API client and writes it to a file.
+    mock_civis = create_client_mock()
+    mock_requests.get.return_value.iter_content.return_value =\
+        (l.encode() for l in 'abcdef')
     with TemporaryDirectory() as tdir:
-        fname = os.path.join(tdir, "foo")
-        assert not os.path.exists(fname)
-        civis.io.civis_to_file(int(test_obj), fname)
-        assert os.path.exists(fname)
-        with open(fname, 'rt') as fin:
-            assert fin.read() == test_obj
+        fname = os.path.join(tdir, 'testfile')
+        _files.civis_to_file(137, fname, client=mock_civis)
+        with open(fname, 'rt') as _fin:
+            assert _fin.read() == 'abcdef'
+    mock_civis.files.get.assert_called_once_with(137)
+    mock_requests.get.assert_called_once_with(
+        mock_civis.files.get.return_value.file_url, stream=True)
 
 
-@mock.patch('civis.io._files._file_to_civis', autospec=True)
-def test_file_to_civis(mock_file_to_civis_helper):
-    # Test that passing a path to file_to_civis opens a file.
-    def mock_read(buf, name, **kwargs):
-        return buf.read()
-    mock_file_to_civis_helper.side_effect = mock_read
-
-    test_obj = '123'
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_file_to_civis(mock_requests):
+    # Test that file_to_civis posts a Civis File with the API client
+    # and calls `requests.post` on the returned URL.
+    mock_civis = create_client_mock()
+    civis_name, expected_id = 'newname', 137
+    mock_civis.files.post.return_value.id = expected_id
     with TemporaryDirectory() as tdir:
-        fname = os.path.join(tdir, "foo")
-        with open(fname, 'wt') as fout:
-            fout.write(test_obj)
-        obj = civis.io.file_to_civis(fname, "foo_name")
-        assert obj.decode() == test_obj
+        fname = os.path.join(tdir, 'testfile')
+        with open(fname, 'wt') as _fout:
+            _fout.write('abcdef')
+        fid = _files.file_to_civis(fname, civis_name, expires_at=None,
+                                   client=mock_civis)
+    assert fid == expected_id
+    mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
+    mock_requests.post.assert_called_once_with(
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY)
 
 
 @pytest.mark.parametrize("table,expected", [
