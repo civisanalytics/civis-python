@@ -15,7 +15,8 @@ except ImportError:
     has_pandas = False
 
 import civis
-from civis.compat import mock, FileNotFoundError
+from civis.io import _files
+from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 from civis.base import CivisAPIError
 from civis.resources._resources import get_api_spec, generate_classes
@@ -343,32 +344,38 @@ def test_file_id_from_run_output_platform_error():
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
+    url = 'url'
     m_client.files.get.return_value = Response({'name': 'spam.csv',
-                                                'file_url': 'url'})
-    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+                                                'file_url': url})
+    with mock.patch.object(civis.io._files.pd, 'read_csv',
+                           autospec=True) as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='infer', client=m_client)
-        assert mock_read_csv.called_once_with(121, compression='infer')
+        mock_read_csv.assert_called_once_with(url, compression='infer')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
     m_client = mock.Mock()
+    url = 'url'
     m_client.files.get.return_value = Response({'name': 'spam.csv.gz',
-                                                'file_url': 'url'})
-    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+                                                'file_url': url})
+    with mock.patch.object(civis.io._files.pd, 'read_csv',
+                           autospec=True) as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='infer', client=m_client)
-        assert mock_read_csv.called_once_with(121, compression='gzip')
+        mock_read_csv.assert_called_once_with(url, compression='gzip')
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
     m_client = mock.Mock()
+    url = 'url'
     m_client.files.get.return_value = Response({'name': 'spam.csv',
-                                                'file_url': 'url'})
-    with mock.patch.object(civis.io._files.pd, 'read_csv') as mock_read_csv:
+                                                'file_url': url})
+    with mock.patch.object(civis.io._files.pd, 'read_csv',
+                           autospec=True) as mock_read_csv:
         civis.io.file_to_dataframe(121, compression='special', client=m_client,
                                    delimiter='|', nrows=10)
-        assert mock_read_csv.called_once_with(121, compression='special',
+        mock_read_csv.assert_called_once_with(url, compression='special',
                                               delimiter='|', nrows=10)
 
 
@@ -383,25 +390,40 @@ def test_load_json(mock_c2f):
     assert out == obj
 
 
-@mock.patch('civis.io._files._civis_to_file')
-@mock.patch('%s.open' % __name__, create=True)
-def test_civis_to_file_local(mock_open, mock_civis_to_file_helper):
-    # Test that passing a path to civis_to_file opens a file.
-    civis.io.civis_to_file(123, "foo")
-    mock_open.return_value = mock_file = mock.Mock()
-    assert mock_open.called_once_with("foo", "wb")
-    assert mock_civis_to_file_helper.called_once_with(123, mock_file)
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_civis_to_file_local(mock_requests):
+    # Test that a call to civis_to_file uses `requests` to grab the contents
+    # of a URL given by the API client and writes it to a file.
+    mock_civis = create_client_mock()
+    mock_requests.get.return_value.iter_content.return_value =\
+        (l.encode() for l in 'abcdef')
+    with TemporaryDirectory() as tdir:
+        fname = os.path.join(tdir, 'testfile')
+        _files.civis_to_file(137, fname, client=mock_civis)
+        with open(fname, 'rt') as _fin:
+            assert _fin.read() == 'abcdef'
+    mock_civis.files.get.assert_called_once_with(137)
+    mock_requests.get.assert_called_once_with(
+        mock_civis.files.get.return_value.file_url, stream=True)
 
 
-@mock.patch('civis.io._files._file_to_civis')
-@mock.patch('%s.open' % __name__, create=True)
-def test_file_to_civis(mock_open, mock_file_to_civis_helper):
-    # Test that passing a path to file_to_civis opens a file.
-    civis.io.file_to_civis("foo", "foo_name")
-    mock_open.return_value = mock_file = mock.Mock()
-    assert mock_open.called_once_with("foo", "rb")
-    assert mock_file_to_civis_helper.called_once_with(
-        "foo", "foo_name", mock_file)
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_file_to_civis(mock_requests):
+    # Test that file_to_civis posts a Civis File with the API client
+    # and calls `requests.post` on the returned URL.
+    mock_civis = create_client_mock()
+    civis_name, expected_id = 'newname', 137
+    mock_civis.files.post.return_value.id = expected_id
+    with TemporaryDirectory() as tdir:
+        fname = os.path.join(tdir, 'testfile')
+        with open(fname, 'wt') as _fout:
+            _fout.write('abcdef')
+        fid = _files.file_to_civis(fname, civis_name, expires_at=None,
+                                   client=mock_civis)
+    assert fid == expected_id
+    mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
+    mock_requests.post.assert_called_once_with(
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY)
 
 
 @pytest.mark.parametrize("table,expected", [
