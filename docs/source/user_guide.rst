@@ -185,3 +185,14 @@ example, with pandas.
 .. code:: python
 
    >>> url = export_result.output[0].path
+
+
+API Response Types and Functions
+================================
+
+Many API requests via an :class:`~civis.APIClient` instance return an iterable
+of :class:`civis.response.Response` objects.
+For endpoints that support pagination when the `iterator` kwarg is specified,
+a :class:`civis.response.PaginatedResponse` object is returned.
+To facilitate working with :class:`civis.response.Response` objects,
+the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.

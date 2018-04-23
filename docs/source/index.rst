@@ -18,7 +18,7 @@ The recommended install method is pip:
 
    pip install civis
 
-Alternatively, you may clone the code from github and build from source:
+Alternatively, you may clone the code from GitHub and build from source:
 
 .. code-block:: bash
 
