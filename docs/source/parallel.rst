@@ -18,7 +18,7 @@ tool for your code:
 
 - Each function call which is parallelized with the Civis joblib backend will run
   in a different Civis Platform script. Creating a new script comes with some overhead.
-  It will take between a few seconds an a few minutes for each script to start,
+  It will take between a few seconds and a few minutes for each script to start,
   depending on whether Civis Platform needs to provision additional resources.
   If you expect that each function call will complete quickly, instead consider either
   running them in serial or using extra processes in the same Civis Platform script.
