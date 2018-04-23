@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   This allows users to select a subset of a model's outputs for scoring (#241).
 - Added `civis.io.export_to_civis_file` to store results of a SQL query
   to a Civis file
+- Surfaced `civis.find` and `civis.find_one` in the Sphinx docs. (#250)
 
 ### Changed
 - Moved "Optional Dependencies" doc section to top of ML docs, and
