@@ -15,27 +15,28 @@ RETRY_CODES = [429, 502, 503, 504]
 
 
 def find(object_list, filter_func=None, **kwargs):
-    """Return the objects from ``object_list`` that satisfy the filters.
+    """Filter :class:`civis.response.Response` objects.
 
     Parameters
     ----------
     object_list : iterable
-        An iterable of arbitrary objects, particularly those with
-        attributes that can be targeted by the filters in ``kwargs``.
-        A major use case is a list of ``civis.response.Response`` objects.
+        An iterable of arbitrary objects, particularly those with attributes
+        that can be targeted by the filters in `kwargs`. A major use case is
+        an iterable of :class:`civis.response.Response` objects.
     filter_func : callable, optional
-        A one-argument function. If specified, ``kwargs`` are ignored.
-        An ``object`` from the input iterable is kept in the returned list
+        A one-argument function. If specified, `kwargs` are ignored.
+        An `object` from the input iterable is kept in the returned list
         if and only if ``bool(filter_func(object))`` is ``True``.
     **kwargs
         Key-value pairs for more fine-grained filtering; they cannot be used
-        in conjunction with ``filter_func``. All keys must be strings.
-        For an ``object`` from the input iterable to be included in the
-        returned list, all the ``key``s must be attributes of ``object``, plus
-        any one of the following conditions for a given ``key``:
-        - ``value`` is a one-argument function and
+        in conjunction with `filter_func`. All keys must be strings.
+        For an `object` from the input iterable to be included in the
+        returned list, all the `key`s must be attributes of `object`, plus
+        any one of the following conditions for a given `key`:
+
+        - `value` is a one-argument function and
           ``bool(value(getattr(object, key)))`` is ``True``
-        - ``value`` is ``True``
+        - `value` is ``True``
         - ``getattr(object, key)`` is equal to ``value``
 
     Returns
@@ -78,9 +79,12 @@ def find(object_list, filter_func=None, **kwargs):
 
 
 def find_one(object_list, filter_func=None, **kwargs):
-    """Return one object (or ``None``) from ``civis.find``.
+    """Return one satisfying :class:`civis.response.Response` object.
 
-    The arguments are the same as those for ``civis.find``.
+    The arguments are the same as those for :func:`civis.find`.
+    If more than one object satisfies the filtering criteria,
+    the first one is returned.
+    If no satisfying objects are found, ``None`` is returned.
 
     Returns
     -------

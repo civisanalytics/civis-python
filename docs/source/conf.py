@@ -35,7 +35,7 @@ autosummary_generate = True
 
 intersphinx_mapping = {
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable', None),
-    'python': ('https://docs.python.org/3.4', None),
+    'python': ('https://docs.python.org/3', None),
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
     'sklearn': ('http://scikit-learn.org/stable', None),
     'joblib': ('http://pythonhosted.org/joblib', None),
