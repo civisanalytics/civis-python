@@ -1,8 +1,6 @@
 API Responses
 =============
 
-.. _response_types:
-
 Response Types
 --------------
 
