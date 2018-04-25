@@ -42,10 +42,11 @@ _PRED_TEMPLATES = {10582: 10583,  # v2.1
                    9112: 9113,    # v1.1
                    8387: 9113,    # v1.0
                    7020: 7021,    # v0.5
-                   11028: 10616,  # v2.2 registration CHANGE ME
+                   11219: 11220,  # v2.2
+                   11221: 11220,  # v2.2 registration
                    }
 _CIVISML_TEMPLATE = None  # CivisML training template to use
-REGISTRATION_TEMPLATES = [11028,  # v2.2 CHANGE ME
+REGISTRATION_TEMPLATES = [11221,  # v2.2
                           ]
 
 
