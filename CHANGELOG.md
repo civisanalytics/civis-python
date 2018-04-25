@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+
+### Added
+
+### Changed
+
+## 1.9.0 - 2018-04-25
+### Fixed
 - Added more robust parsing for tablename parsing in io.  You may now
   pass in tables like schema."tablename.with.periods".
 - Adding in missing documentation for civis_file_to_table
