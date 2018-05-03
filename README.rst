@@ -25,28 +25,68 @@ requests directly to the Civis API. See the
 `full documentation <https://civis-python.readthedocs.io>`_ for more details.
 
 
-Installation
-------------
+API Keys
+--------
 
-1. Get a Civis API key `(instructions) <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
-2. Add a ``CIVIS_API_KEY`` environment variable.
-3. You can add the following to ``.bash_profile`` for bash::
+Usage of ``civis-python`` requires a valid Civis Platform API key, which can
+be created by following the instructions
+`here <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
+API keys have a set expiration date and new keys will need to be created at
+least every 30 days. ``civis-python`` will look for a ``CIVIS_API_KEY``
+environmental variable to access your API key, so after creating a new API key,
+follow the steps below for your operating system to set up your environment.
+
+Linux / MacOS
+~~~~~~~~~~~~~
+
+1. Add the following to ``.bash_profile`` for bash::
 
     export CIVIS_API_KEY="alphaNumericApiK3y"
 
-4. Source your ``.bash_profile``
-5. Install the package::
+2. Source your ``.bash_profile`` (or restart your terminal).
+
+Windows 10
+~~~~~~~~~~
+
+1. Navigate to ``Settings`` -> type "environment" in search bar ->
+   ``Edit environment variables for your account``. This can also be found
+   in ``System Properties`` -> ``Advanced`` -> ``Environment Variables...``.
+2. In the user variables section, if ``CIVIS_API_KEY`` already exists in
+   the list of environment variables, click on it and press ``Edit...``.
+   Otherwise, click ``New..``.
+3. Enter CIVIS_API_KEY as the ``Variable name``.
+4. Enter your API key as the ``Variable value``.  Your API key should look
+   like a long string of letters and numbers.
+
+
+Installation
+------------
+
+After creating an API key and setting the ``CIVIS_API_KEY`` environmental
+variable, install ``civis-python`` with::
 
     pip install civis
 
-6. Optionally, install ``pandas``, and ``pubnub`` to enable some functionality in ``civis-python``::
+Optionally, install ``pandas``, and ``pubnub`` to enable some functionality in ``civis-python``::
 
     pip install pandas
     pip install pubnub
 
-   Installation of ``pandas`` will allow some functions to return ``DataFrame`` outputs.
-   Installation of ``pubnub`` will improve performance in all functions which
-   wait for a Civis Platform job to complete.
+Installation of ``pandas`` will allow some functions to return ``DataFrame`` outputs.
+Installation of ``pubnub`` will improve performance in all functions which
+wait for a Civis Platform job to complete.
+
+You can test your installation by running
+
+.. code-block:: python
+
+    import civis
+    client = civis.APIClient()
+    print(client.users.list_me()['username'])
+
+If ``civis-python`` was installed correctly, this will print your Civis
+Platform username.
+
 
 Usage
 -----

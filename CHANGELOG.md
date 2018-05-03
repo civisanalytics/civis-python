@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Added
+- Added instructions in the README for adding an API key to a Windows 10
+  environment
 
 ### Changed
 
