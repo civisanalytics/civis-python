@@ -48,12 +48,12 @@ Windows
 ~~~~~~~
 
 1. Navigate to ``Settings`` -> type "environment" in search bar ->
-   ``Edit environment variables for your account.``. This can also be found
+   ``Edit environment variables for your account``. This can also be found
    in ``System Properties`` -> ``Advanced`` -> ``Environment Variables...``.
 2. If ``CIVIS_API_KEY`` already exists in the list of environment variables,
-   click on it and press ``Edit...``. Otherwise, click ``New..```.
-3. Enter CIVIS_API_KEY as the ``Variable name``
-5. Enter your API key as the ``Variable value``.  Your API key should look
+   click on it and press ``Edit...``. Otherwise, click ``New..``.
+3. Enter CIVIS_API_KEY as the ``Variable name``.
+4. Enter your API key as the ``Variable value``.  Your API key should look
    like a long string of letters and numbers.
 
 
