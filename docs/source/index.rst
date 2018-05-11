@@ -10,18 +10,18 @@ Civis API Python Client
 
 
 .. include:: ../../README.rst
-  :start-after: start-api-keys
-  :end-before: end-api-keys
+  :start-after: start-api-keys-section
+  :end-before: end-api-keys-section
 
 
 .. include:: ../../README.rst
-  :start-after: start-installation
-  :end-before: end-installation
+  :start-after: start-installation-section
+  :end-before: end-installation-section
 
 
 .. include:: ../../README.rst
-  :start-after: start-python-version-support
-  :end-before: end-python-version-support
+  :start-after: start-python-version-support-section
+  :end-before: end-python-version-support-section
 
 
 User Guide
@@ -31,8 +31,8 @@ For a more detailed walkthrough, see the :ref:`user_guide`.
 
 
 .. include:: ../../README.rst
-  :start-after: start-retries
-  :end-before: end-retries
+  :start-after: start-retries-section
+  :end-before: end-retires-section
 
 
 Client API Reference

@@ -31,7 +31,7 @@ requests directly to the Civis API.
 Please see the
 `full documentation <https://civis-python.readthedocs.io>`_ for more details.
 
-.. start-api-keys
+.. start-api-keys-section
 
 API Keys
 --------
@@ -41,7 +41,7 @@ you will need a Civis Platform API key that is unique to you.
 Instructions for creating a new key are found
 `here <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
 API keys have a set expiration date and new keys will need to be created at
-least every 30 days. ``civis-python`` will look for a ``CIVIS_API_KEY``
+least every 30 days. The API client will look for a ``CIVIS_API_KEY``
 environmental variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
 
@@ -67,9 +67,9 @@ Windows 10
 4. Enter your API key as the "Variable value".  Your API key should look
    like a long string of letters and numbers.
 
-.. end-api-keys
+.. end-api-keys-section
 
-.. start-installation
+.. start-installation-section
 
 Installation
 ------------
@@ -137,21 +137,21 @@ dependencies with
    pip install glmnet
    pip install muffnn
 
-.. end-installation
+.. end-installation-section
 
-.. start-python-version-support
+.. start-python-version-support-section
 
 Python version support
 ----------------------
 
 Python 2.7, 3.4, 3.5, and 3.6
 
-.. end-python-version-support
+.. end-python-version-support-section
 
 Usage
 -----
 
-``civis-python`` includes a number of wrappers around the Civis API for
+``civis`` includes a number of wrappers around the Civis API for
 common workflows.
 
 .. code-block:: python
@@ -173,7 +173,7 @@ See the `full documentation <https://civis-python.readthedocs.io>`_ for a more
 complete user guide.
 
 
-.. start-retries
+.. start-retries-section
 
 Retries
 -------
@@ -189,7 +189,7 @@ If the error is one of [429, 502, 503, 504] and the request is not a ``patch*`` 
 method, then the API client will retry the request several times, with a delay,
 to see if it will succeed.
 
-.. end-retires
+.. end-retires-section
 
 
 Build Documentation Locally
