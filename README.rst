@@ -19,19 +19,19 @@ Civis API Python Client
 Introduction
 ------------
 
-.. start-introductory-paragraph
+.. start-include-marker-introductory-paragraph
 
 The Civis API Python client is a Python package that helps analysts and
 developers interact with the Civis Platform. The package includes a set of
 tools around common workflows as well as a convenient interface to make
 requests directly to the Civis API.
 
-.. end-introductory-paragraph
+.. end-include-marker-introductory-paragraph
 
 Please see the
 `full documentation <https://civis-python.readthedocs.io>`_ for more details.
 
-.. start-api-keys-section
+.. start-include-marker-api-keys-section
 
 API Keys
 --------
@@ -67,9 +67,9 @@ Windows 10
 4. Enter your API key as the "Variable value".  Your API key should look
    like a long string of letters and numbers.
 
-.. end-api-keys-section
+.. end-include-marker-api-keys-section
 
-.. start-installation-section
+.. start-include-marker-installation-section
 
 Installation
 ------------
@@ -137,16 +137,16 @@ dependencies with
    pip install glmnet
    pip install muffnn
 
-.. end-installation-section
+.. end-include-marker-installation-section
 
-.. start-python-version-support-section
+.. start-include-marker-python-version-support-section
 
 Python version support
 ----------------------
 
 Python 2.7, 3.4, 3.5, and 3.6
 
-.. end-python-version-support-section
+.. end-include-marker-python-version-support-section
 
 Usage
 -----
@@ -173,7 +173,7 @@ See the `full documentation <https://civis-python.readthedocs.io>`_ for a more
 complete user guide.
 
 
-.. start-retries-section
+.. start-include-marker-retries-section
 
 Retries
 -------
@@ -189,7 +189,7 @@ If the error is one of [429, 502, 503, 504] and the request is not a ``patch*`` 
 method, then the API client will retry the request several times, with a delay,
 to see if it will succeed.
 
-.. end-retires-section
+.. end-include-marker-retires-section
 
 
 Build Documentation Locally

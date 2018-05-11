@@ -8,9 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added instructions in the README for adding an API key to a Windows 10
   environment
-- Coalesced `README.rst` and `index.rst`. (#254)
 
 ### Changed
+- Coalesced `README.rst` and `index.rst`. (#254)
 
 ## 1.9.0 - 2018-04-25
 ### Fixed
