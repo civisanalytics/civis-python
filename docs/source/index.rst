@@ -3,117 +3,36 @@
 Civis API Python Client
 =======================
 
-The Civis API Python client is a Python package that helps analysts and
-developers interact with the Civis Platform. The package includes a set of
-tools around common workflows as well as a convenient interface to make
-requests directly to the Civis API.
+
+.. include:: ../../README.rst
+  :start-after: start-include-marker-introductory-paragraph
+  :end-before: end-include-marker-introductory-paragraph
 
 
-Installation
-------------
-
-The recommended install method is pip:
-
-.. code-block:: bash
-
-   pip install civis
-
-Alternatively, you may clone the code from GitHub and build from source:
-
-.. code-block:: bash
-
-   git clone https://github.com/civisanalytics/civis-python.git
-   cd civis-python
-   python setup.py install
-
-The client has a soft dependency on ``pandas`` to support features such as
-data type parsing.  If you are using the ``io`` namespace to read or write
-data from Civis, it is highly recommended that you install ``pandas`` and
-set ``use_pandas=True`` in functions that accept that parameter.  To install
-``pandas``:
-
-.. code-block:: bash
-
-   pip install pandas
-
-Machine learning features in the ``ml`` namespace have a soft dependency on
-``scikit-learn`` and ``pandas``. Install ``scikit-learn`` to
-export your trained models from the Civis Platform or to
-provide your own custom models. Use ``pandas`` to download model predictions
-from the Civis Platform. The ``civis.ml`` code
-optionally uses the `feather <https://github.com/wesm/feather>`_
-format to transfer data from your local computer to Civis
-Platform. Install these dependencies with
-
-.. code-block:: bash
-
-   pip install scikit-learn
-   pip install pandas
-   pip install feather-format
+.. include:: ../../README.rst
+  :start-after: start-include-marker-api-keys-section
+  :end-before: end-include-marker-api-keys-section
 
 
-Some CivisML models have open-source dependencies in
-addition to ``scikit-learn``, which you may need if you want to
-download the model object. These dependencies are
-``civisml-extensions``, ``glmnet``, and ``muffnn``. Install these
-dependencies with
-   
-.. code-block:: bash
-
-   pip install civisml-extensions
-   pip install glmnet
-   pip install muffnn
+.. include:: ../../README.rst
+  :start-after: start-include-marker-installation-section
+  :end-before: end-include-marker-installation-section
 
 
-Python version support
-----------------------
-
-Python 2.7, 3.4, 3.5, and 3.6
-
-
-Authentication
---------------
-
-In order to make requests to the Civis API, you will need an API key that is
-unique to you. Instructions for creating a new key are found here:
-https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key.
-By default, the Python client will look for your key in the environment
-variable ``CIVIS_API_KEY``. To add the API key to your environment, copy
-the key you generated to your clipboard and follow the instructions below
-for your operating system.
-
-**Mac**
-
-Open ``.bash_profile`` in TextEdit:
-
-.. code-block:: bash
-
-   cd ~/
-   touch .bash_profile
-   open -e .bash_profile
-
-Then add the following line, replacing ``api_key_here`` with your key::
-
-   export CIVIS_API_KEY="api_key_here"
-
-**Linux**
-
-Open ``.bashrc`` in your favorite editor (nano is used here):
-
-.. code-block:: bash
-
-   cd ~/
-   nano .bashrc
-
-Then add the following line, replacing ``api_key_here`` with your key::
-
-   export CIVIS_API_KEY="api_key_here"
+.. include:: ../../README.rst
+  :start-after: start-include-marker-python-version-support-section
+  :end-before: end-include-marker-python-version-support-section
 
 
 User Guide
 ----------
 
 For a more detailed walkthrough, see the :ref:`user_guide`.
+
+
+.. include:: ../../README.rst
+  :start-after: start-include-marker-retries-section
+  :end-before: end-include-marker-retires-section
 
 
 Client API Reference

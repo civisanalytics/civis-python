@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   environment
 
 ### Changed
+- Coalesced `README.rst` and `index.rst`. (#254)
 
 ## 1.9.0 - 2018-04-25
 ### Fixed
