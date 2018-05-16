@@ -14,8 +14,10 @@ try:
 except ImportError:
     has_pandas = False
 
+import numpy as np
+
 import civis
-from civis.io import _files
+from civis.io import _files, _tables
 from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 from civis.base import CivisAPIError
@@ -496,3 +498,52 @@ def test_sql_script():
         hidden=False,
         csv_settings={})
     mock_client.scripts.post_sql_runs.assert_called_once_with(export_job_id)
+
+
+def test_clean_text_plain():
+    """ Test clean_text with plain strings """
+
+    test_text = 'foo'
+    assert test_text == _tables.clean_text(test_text)
+
+    test_text = 'foo bar'
+    assert test_text == _tables.clean_text(test_text)
+
+    test_text = 'foo \\ bar'
+    assert test_text == _tables.clean_text(test_text)
+
+    test_text = 'foo " bar'
+    assert test_text == _tables.clean_text(test_text)
+
+
+def test_clean_text_ending_backslash():
+    """ Test clean_text with ending backslash """
+    test_text = 'foo\\'
+    expected_result = 'foo\\ '
+
+    assert expected_result == _tables.clean_text(test_text)
+
+
+def test_clean_text_backslash_double_quote():
+    """ Test clean_text with backslash before double quote """
+
+    test_text = 'foo\\"'
+    expected_result = 'foo\\ "'
+
+    assert expected_result == _tables.clean_text(test_text)
+
+    test_text = 'foo\\"\\'
+    expected_result = 'foo\\ "\\ '
+
+    assert expected_result == _tables.clean_text(test_text)
+
+
+def test_clean_text_nan():
+    """ Test clean_text with nan """
+    expected_result = ''
+
+    test_text = np.NaN
+    assert expected_result == _tables.clean_text(test_text)
+
+    test_text = None
+    assert expected_result == _tables.clean_text(test_text)
