@@ -617,8 +617,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
-                       headers=None, credential_id=None,
-                       polling_interval=None,
+                       credential_id=None, polling_interval=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -658,10 +657,6 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
-    headers : bool, optional
-        Whether or not the first row of the file should be treated as
-        headers. The default, ``None``, attempts to autodetect whether
-        or not the first row contains headers.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -694,21 +689,26 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
 
+    delimiter = '|'
+
     with TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
-        to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
+        to_csv_kwargs = {
+            'encoding': 'utf-8', 'index': False, 'header': True,
+            'sep': delimiter, 'quoting': csv.QUOTE_ALL, 'escapechar': '\\',
+            'doublequote': True
+        }
         to_csv_kwargs.update(kwargs)
         df.to_csv(tmp_path, **to_csv_kwargs)
         _, name = split_schema_tablename(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
-    delimiter = ','
     fut = civis_file_to_table(file_id, database, table,
                               client=client, max_errors=max_errors,
                               existing_table_rows=existing_table_rows,
                               diststyle=diststyle, distkey=distkey,
                               sortkey1=sortkey1, sortkey2=sortkey2,
-                              delimiter=delimiter, headers=headers,
+                              delimiter=delimiter, headers=True,
                               credential_id=credential_id,
                               polling_interval=polling_interval,
                               hidden=hidden)
