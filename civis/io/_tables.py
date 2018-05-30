@@ -617,7 +617,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
-                       credential_id=None, polling_interval=None,
+                       credential_id=None, headers=None, polling_interval=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -660,6 +660,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
+    headers : bool, optional
+        Whether or not the first row of the file should be treated as
+        headers. The default, ``None``, attempts to autodetect whether
+        or not the first row contains headers.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
     archive : bool, optional (deprecated)
@@ -688,7 +692,11 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     if archive:
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
-
+    if headers is not None:
+        warnings.warn(
+            'The "headers" parameter has been deprecated and will be removed '
+            'in a future version of the API client. Setting it has no effect.',
+            FutureWarning)
     delimiter = '|'
 
     with TemporaryDirectory() as tmp_dir:
