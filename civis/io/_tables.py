@@ -703,7 +703,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
         to_csv_kwargs = {
             'encoding': 'utf-8', 'index': False, 'header': True,
-            'sep': delimiter, 'quoting': csv.QUOTE_ALL, 'escapechar': '\\',
+            'sep': delimiter, 'quoting': csv.QUOTE_ALL, 'escapechar': None,
             'doublequote': True
         }
         to_csv_kwargs.update(kwargs)
