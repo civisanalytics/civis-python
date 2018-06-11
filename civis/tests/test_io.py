@@ -99,7 +99,7 @@ class ImportTests(CivisVCRTestCase):
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
-        with tempfile.TemporaryDirectory() as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
             tmp = open(fname, 'w+b')
             with zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zip_file:
@@ -151,7 +151,7 @@ class ImportTests(CivisVCRTestCase):
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):
-        with tempfile.TemporaryDirectory() as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
             tmp = open(fname, 'w+b')
             tmp.write(b'a,b,c\n1,2,3')
@@ -270,7 +270,7 @@ class ImportTests(CivisVCRTestCase):
 
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
-        with tempfile.TemporaryDirectory() as temp_dir:
+        with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
             tmp = open(fname, 'w+b')
             civis.io._tables._download_file(self.export_url, tmp.name,
