@@ -6,6 +6,7 @@ import json
 import os
 import pickle
 import tempfile
+import uuid
 
 import joblib
 try:
@@ -143,8 +144,8 @@ def test_block_and_handle_missing(mock_fut):
 
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_file(mock_file):
-    with tempfile.NamedTemporaryFile() as tempfname:
-        fname = tempfname.name
+    with tempfile.TemporaryDirectory() as temp_dir:
+        fname = os.path.join(temp_dir, str(uuid.uuid4()))
         with open(fname, 'wt') as _fout:
             _fout.write("a,b,c\n1,2,3\n")
 

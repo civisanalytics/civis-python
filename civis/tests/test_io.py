@@ -4,6 +4,7 @@ import os
 from six import StringIO, BytesIO
 import tempfile
 import zipfile
+import uuid
 
 import pytest
 import vcr
@@ -98,7 +99,9 @@ class ImportTests(CivisVCRTestCase):
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
-        with tempfile.NamedTemporaryFile() as tmp:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            tmp = open(fname, 'w+b')
             with zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zip_file:
                 zip_file.writestr(tmp.name, 'a,b,c\n1,2,3')
                 zip_member = zip_file.namelist()[0]
@@ -148,7 +151,9 @@ class ImportTests(CivisVCRTestCase):
 
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):
-        with tempfile.NamedTemporaryFile() as tmp:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            tmp = open(fname, 'w+b')
             tmp.write(b'a,b,c\n1,2,3')
             tmp.flush()
 
@@ -265,7 +270,9 @@ class ImportTests(CivisVCRTestCase):
 
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
-        with tempfile.NamedTemporaryFile() as tmp:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            tmp = open(fname, 'w+b')
             civis.io._tables._download_file(self.export_url, tmp.name,
                                             b'', 'none')
             with open(tmp.name, "r") as f:
