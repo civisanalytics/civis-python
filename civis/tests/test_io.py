@@ -138,6 +138,7 @@ class ImportTests(CivisVCRTestCase):
             tmp.flush()
             tmp.seek(0)
             result = civis.io.file_to_civis(tmp, fname)
+            tmp.close()
 
             civis.io._files.MIN_MULTIPART_SIZE = curr_size
 
@@ -157,6 +158,7 @@ class ImportTests(CivisVCRTestCase):
             tmp = open(fname, 'w+b')
             tmp.write(b'a,b,c\n1,2,3')
             tmp.flush()
+            tmp.close()
 
             table = "scratch.api_client_test_fixture"
             database = 'redshift-general'
