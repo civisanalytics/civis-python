@@ -71,8 +71,8 @@ class TestPolling(unittest.TestCase):
                                   poll_on_creation=False)
         pollable.done()  # Check status once to start the polling thread
         assert poller.call_count == 0
-        time.sleep(0.15)
-        assert poller.call_count == 1
+        time.sleep(0.1)
+        assert poller.call_count > 0
 
     def test_reset_polling_thread(self):
         pollable = PollableResult(
