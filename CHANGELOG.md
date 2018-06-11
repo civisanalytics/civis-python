@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added instructions in the README for adding an API key to a Windows 10
   environment
+- Configured Windows CI using AppVeyor. (#258)
 
 ### Changed
 - Coalesced `README.rst` and `index.rst`. (#254)
