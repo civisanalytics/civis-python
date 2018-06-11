@@ -2,7 +2,6 @@ from collections import OrderedDict
 import json
 import os
 from six import StringIO, BytesIO
-import tempfile
 import zipfile
 import uuid
 
@@ -86,10 +85,12 @@ class ImportTests(CivisVCRTestCase):
             res.result()  # block
 
             # create an export to check get_url. also tests export_csv
-            with tempfile.NamedTemporaryFile() as tmp:
+            with TemporaryDirectory() as temp_dir:
+                fname = os.path.join(temp_dir, str(uuid.uuid4()))
+                tmp = open(fname, 'w+b')
                 sql = "SELECT * FROM scratch.api_client_test_fixture"
                 database = 'redshift-general'
-                result = civis.io.civis_to_csv(tmp.name, sql, database,
+                result = civis.io.civis_to_csv(fname, sql, database,
                                                polling_interval=POLL_INTERVAL)
                 result = result.result()
                 cls.export_url = result['output'][0]['path']
@@ -101,9 +102,8 @@ class ImportTests(CivisVCRTestCase):
     def test_zip_member_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
-            tmp = open(fname, 'w+b')
-            with zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                zip_file.writestr(tmp.name, 'a,b,c\n1,2,3')
+            with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                zip_file.writestr(fname, 'a,b,c\n1,2,3')
                 zip_member = zip_file.namelist()[0]
                 with zip_file.open(zip_member) as zip_member_buf:
                     result = civis.io.file_to_civis(zip_member_buf, zip_member)
@@ -132,11 +132,13 @@ class ImportTests(CivisVCRTestCase):
     def test_large_file_to_civis(self, *mocks):
         curr_size = civis.io._files.MIN_MULTIPART_SIZE
         civis.io._files.MIN_MULTIPART_SIZE = 1
-        with tempfile.NamedTemporaryFile() as tmp:
+        with TemporaryDirectory() as temp_dir:
+            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            tmp = open(fname, 'w+b')
             tmp.write(b'a,b,c\n1,2,3')
             tmp.flush()
             tmp.seek(0)
-            result = civis.io.file_to_civis(tmp, tmp.name)
+            result = civis.io.file_to_civis(tmp, fname)
 
             civis.io._files.MIN_MULTIPART_SIZE = curr_size
 
@@ -159,7 +161,7 @@ class ImportTests(CivisVCRTestCase):
 
             table = "scratch.api_client_test_fixture"
             database = 'redshift-general'
-            result = civis.io.csv_to_civis(tmp.name, database, table,
+            result = civis.io.csv_to_civis(fname, database, table,
                                            existing_table_rows='truncate',
                                            polling_interval=POLL_INTERVAL)
             result = result.result()  # block until done
@@ -273,9 +275,9 @@ class ImportTests(CivisVCRTestCase):
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
             tmp = open(fname, 'w+b')
-            civis.io._tables._download_file(self.export_url, tmp.name,
+            civis.io._tables._download_file(self.export_url, fname,
                                             b'', 'none')
-            with open(tmp.name, "r") as f:
+            with open(fname, "r") as f:
                 data = f.read()
         assert data == expected
 
