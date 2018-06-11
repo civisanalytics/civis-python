@@ -133,12 +133,11 @@ class ImportTests(CivisVCRTestCase):
         civis.io._files.MIN_MULTIPART_SIZE = 1
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
-            tmp = open(fname, 'w+b')
-            tmp.write(b'a,b,c\n1,2,3')
-            tmp.flush()
-            tmp.seek(0)
-            result = civis.io.file_to_civis(tmp, fname)
-            tmp.close()
+            with open(fname, 'w+b') as tmp:
+                tmp.write(b'a,b,c\n1,2,3')
+                tmp.flush()
+                tmp.seek(0)
+                result = civis.io.file_to_civis(tmp, fname)
 
             civis.io._files.MIN_MULTIPART_SIZE = curr_size
 
@@ -155,10 +154,9 @@ class ImportTests(CivisVCRTestCase):
     def test_csv_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
-            tmp = open(fname, 'w+b')
-            tmp.write(b'a,b,c\n1,2,3')
-            tmp.flush()
-            tmp.close()
+            with open(fname, 'w+b') as tmp:
+                tmp.write(b'a,b,c\n1,2,3')
+                tmp.flush()
 
             table = "scratch.api_client_test_fixture"
             database = 'redshift-general'
