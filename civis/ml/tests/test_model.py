@@ -5,7 +5,6 @@ from six import BytesIO
 import json
 import os
 import pickle
-import tempfile
 import uuid
 
 import joblib

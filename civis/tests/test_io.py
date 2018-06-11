@@ -87,7 +87,6 @@ class ImportTests(CivisVCRTestCase):
             # create an export to check get_url. also tests export_csv
             with TemporaryDirectory() as temp_dir:
                 fname = os.path.join(temp_dir, str(uuid.uuid4()))
-                tmp = open(fname, 'w+b')
                 sql = "SELECT * FROM scratch.api_client_test_fixture"
                 database = 'redshift-general'
                 result = civis.io.civis_to_csv(fname, sql, database,
@@ -274,7 +273,6 @@ class ImportTests(CivisVCRTestCase):
         expected = '"1","2","3"\n'
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
-            tmp = open(fname, 'w+b')
             civis.io._tables._download_file(self.export_url, fname,
                                             b'', 'none')
             with open(fname, "r") as f:
