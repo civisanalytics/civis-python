@@ -4,7 +4,6 @@ import os
 from six import StringIO, BytesIO
 import zipfile
 import uuid
-import sys
 
 import pytest
 import vcr
