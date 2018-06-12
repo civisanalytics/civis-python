@@ -98,8 +98,6 @@ class ImportTests(CivisVCRTestCase):
 
             cls.export_job_id = result.sql_id
 
-    @pytest.mark.skipif(sys.platform.startswith('win'),
-                        reason='does not work yet for Windows')  # TODO
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
