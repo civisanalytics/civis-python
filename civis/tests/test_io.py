@@ -105,7 +105,8 @@ class ImportTests(CivisVCRTestCase):
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, str(uuid.uuid4()))
             with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                zip_file.writestr(fname, 'a,b,c\n1,2,3')
+                archive_name = str(uuid.uuid4())
+                zip_file.writestr(archive_name, 'a,b,c\n1,2,3')
                 zip_member = zip_file.namelist()[0]
                 with zip_file.open(zip_member) as zip_member_buf:
                     result = civis.io.file_to_civis(zip_member_buf, zip_member)
