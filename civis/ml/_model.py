@@ -3,7 +3,6 @@
 import builtins
 from builtins import super
 from collections import namedtuple
-import io
 import json
 import logging
 import os
