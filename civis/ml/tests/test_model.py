@@ -1,7 +1,7 @@
 from builtins import super
 from collections import namedtuple
 from concurrent.futures import CancelledError
-from six import BytesIO
+from six import StringIO
 import json
 import os
 import pickle
@@ -173,7 +173,7 @@ def test_stash_local_data_from_dataframe_csv(mock_file):
     assert _model._stash_dataframe_as_csv(df, mock.Mock()) == -11
     mock_file.assert_called_once_with(mock.ANY, name='modelpipeline_data.csv',
                                       client=mock.ANY)
-    assert isinstance(mock_file.call_args[0][0], BytesIO)
+    assert isinstance(mock_file.call_args[0][0], StringIO)
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
