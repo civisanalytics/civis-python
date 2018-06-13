@@ -126,7 +126,7 @@ def _stash_dataframe_as_feather(df, client):
 def _stash_dataframe_as_csv(df, client):
     civis_fname = 'modelpipeline_data.csv'
     if six.PY3:
-        txt = io.StringIO()
+        txt = six.StringIO()
     else:
         txt = six.BytesIO()
     df.to_csv(txt, encoding='utf-8', index=False)

@@ -5,8 +5,8 @@ import json
 import os
 import pickle
 import tempfile
-import io
 
+import six
 import joblib
 try:
     import pandas as pd
@@ -173,7 +173,7 @@ def test_stash_local_data_from_dataframe_csv(mock_file):
     assert _model._stash_dataframe_as_csv(df, mock.Mock()) == -11
     mock_file.assert_called_once_with(mock.ANY, name='modelpipeline_data.csv',
                                       client=mock.ANY)
-    assert isinstance(mock_file.call_args[0][0], io.StringIO)
+    assert isinstance(mock_file.call_args[0][0], six.StringIO)
 
 
 @pytest.mark.skipif(not HAS_PANDAS, reason="pandas not installed")
