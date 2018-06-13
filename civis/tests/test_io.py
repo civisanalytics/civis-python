@@ -3,7 +3,6 @@ import json
 import os
 from six import StringIO, BytesIO
 import zipfile
-import uuid
 
 import pytest
 import vcr
@@ -86,7 +85,7 @@ class ImportTests(CivisVCRTestCase):
 
             # create an export to check get_url. also tests export_csv
             with TemporaryDirectory() as temp_dir:
-                fname = os.path.join(temp_dir, str(uuid.uuid4()))
+                fname = os.path.join(temp_dir, 'tempfile')
                 sql = "SELECT * FROM scratch.api_client_test_fixture"
                 database = 'redshift-general'
                 result = civis.io.civis_to_csv(fname, sql, database,
@@ -100,9 +99,9 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            fname = os.path.join(temp_dir, 'tempfile')
             with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                archive_name = str(uuid.uuid4())
+                archive_name = 'archive_name'
                 zip_file.writestr(archive_name, 'a,b,c\n1,2,3')
                 zip_member = zip_file.namelist()[0]
                 with zip_file.open(zip_member) as zip_member_buf:
@@ -133,7 +132,7 @@ class ImportTests(CivisVCRTestCase):
         curr_size = civis.io._files.MIN_MULTIPART_SIZE
         civis.io._files.MIN_MULTIPART_SIZE = 1
         with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            fname = os.path.join(temp_dir, 'tempfile')
             with open(fname, 'w+b') as tmp:
                 tmp.write(b'a,b,c\n1,2,3')
                 tmp.flush()
@@ -154,7 +153,7 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_csv_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            fname = os.path.join(temp_dir, 'tempfile')
             with open(fname, 'w+b') as tmp:
                 tmp.write(b'a,b,c\n1,2,3')
                 tmp.flush()
@@ -273,7 +272,7 @@ class ImportTests(CivisVCRTestCase):
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
         with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, str(uuid.uuid4()))
+            fname = os.path.join(temp_dir, 'tempfile')
             civis.io._tables._download_file(self.export_url, fname,
                                             b'', 'none')
             with open(fname, "r") as f:
