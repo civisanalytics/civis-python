@@ -5,7 +5,6 @@ from six import StringIO
 import json
 import os
 import pickle
-import tempfile
 
 import joblib
 try:
@@ -32,7 +31,7 @@ except ImportError:
 from civis import APIClient
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import mock, FileNotFoundError
+from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 import pytest
 
@@ -143,8 +142,8 @@ def test_block_and_handle_missing(mock_fut):
 
 @mock.patch.object(_model.cio, 'file_to_civis', return_value=-11)
 def test_stash_local_data_from_file(mock_file):
-    with tempfile.NamedTemporaryFile() as tempfname:
-        fname = tempfname.name
+    with TemporaryDirectory() as temp_dir:
+        fname = os.path.join(temp_dir, 'tempfile')
         with open(fname, 'wt') as _fout:
             _fout.write("a,b,c\n1,2,3\n")
 
