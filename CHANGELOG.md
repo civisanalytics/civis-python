@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `_stash_dataframe_as_csv` in `civis/ml/_model.py` now uses a `StringIO`
   object which has the `getvalue` method (required by `pandas` v0.23.1
-  if a file-like object is passed into `df.to_csv`). (#260)
+  if a file-like object is passed into `df.to_csv`). (#259)
 
 ### Added
 - Added instructions in the README for adding an API key to a Windows 10
