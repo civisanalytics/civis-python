@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added instructions in the README for adding an API key to a Windows 10
   environment
 - Configured Windows CI using AppVeyor. (#258)
+- Added `utils` to the list of imports in `civis` so that `civis.utils.run_job` can be called directly once `civis` has been imported. (#261)
 
 ### Changed
 - Coalesced `README.rst` and `index.rst`. (#254)
