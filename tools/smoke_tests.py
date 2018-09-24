@@ -34,13 +34,14 @@ def main():
     sql = "SELECT * FROM datascience.iris"
     df1 = civis.io.read_civis_sql(
         sql=sql, database=database, use_pandas=True, client=client
-    ).sort_values(by='index')
+    ).set_index('index')
     df2 = civis.io.read_civis(
         table="datascience.iris", database=database, use_pandas=True,
         client=client
-    ).sort_values(by='index')
-    assert df1.shape == (150, 6)
-    pd.testing.assert_frame_equal(df1, df2)
+    ).set_index('index')
+    assert df1.shape == (150, 5)
+    # check_like=True since the order in which rows are retrieved may vary.
+    pd.testing.assert_frame_equal(df1, df2, check_like=True)
 
     # Test uploading data.
     logger.info('Testing uploading to redshift...')
