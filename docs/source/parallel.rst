@@ -35,7 +35,7 @@ tool for your code:
 
 Joblib
 ------
-`joblib <https://pythonhosted.org/joblib/index.html>`_ is an open source
+`joblib <https://joblib.readthedocs.io/en/latest/>`_ is an open source
 Python library which facilitates parallel processing in Python.
 Joblib uses Python's ``multiprocessing`` library to run functions
 in parallel, but it also allows users to define their own
@@ -49,7 +49,7 @@ The :func:`~civis.parallel.make_backend_factory`,
 to define a "civis" parallel computation backend which will transparently
 distribute computation in cloud resources managed by the Civis Platform.
 
-See the `joblib user guide <https://pythonhosted.org/joblib/parallel.html>`_
+See the `joblib user guide <https://joblib.readthedocs.io/en/latest/parallel.html>`_
 for examples of using joblib to do parallel computation.
 Note that the descriptions of "memmapping" aren't relevant to using
 Civis Platform as a backend, since your jobs will potentially run
@@ -92,7 +92,7 @@ context::
     ...     # Do joblib parallel computation here.
 
 You can find more about custom joblib backends in the
-`joblib documentation <http://pythonhosted.org/joblib/parallel.html#custom-backend-api-experimental>`_.
+`joblib documentation <https://joblib.readthedocs.io/en/latest/parallel.html#custom-backend-api-experimental>`_.
 
 Note that :class:`joblib.Parallel` takes both a ``n_jobs`` and ``pre_dispatch``
 parameter. The Civis joblib backend doesn't queue submitted jobs itself,
