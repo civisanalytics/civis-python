@@ -604,7 +604,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                                .format(script_id))
 
     buf = io.BytesIO()
-    civis_to_file(outputs[0]['file_id'], buf)
+    civis_to_file(outputs[0]['file_id'], buf, client=client)
     txt = io.TextIOWrapper(buf, encoding='utf-8')
     txt.seek(0)
     unload_manifest = json.load(txt)
@@ -958,7 +958,7 @@ def _include_header(client, sql, include_header, database, credential_id,
     headers = None
 
     # can't do a parallel unload when sql contains an order by
-    if not include_header or re.search('order\s+by', sql, re.I | re.M):
+    if not include_header or re.search(r'order\s+by', sql, re.I | re.M):
         return include_header, headers
 
     try:
