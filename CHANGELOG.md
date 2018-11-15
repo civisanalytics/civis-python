@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.9.1 - 2018-11-15
 ### Fixed
 - `_stash_dataframe_as_csv` in `civis/ml/_model.py` now uses a `StringIO`
   object which has the `getvalue` method (required by `pandas` v0.23.1
