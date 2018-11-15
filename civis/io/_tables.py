@@ -958,7 +958,7 @@ def _include_header(client, sql, include_header, database, credential_id,
     headers = None
 
     # can't do a parallel unload when sql contains an order by
-    if not include_header or re.search('order\s+by', sql, re.I | re.M):
+    if not include_header or re.search(r'order\s+by', sql, re.I | re.M):
         return include_header, headers
 
     try:
