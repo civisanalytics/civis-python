@@ -1,10 +1,12 @@
 from collections import OrderedDict
+import io
 import json
 import os
 from six import StringIO, BytesIO
 import zipfile
 
 import pytest
+import requests
 import vcr
 
 try:
@@ -429,6 +431,50 @@ def test_civis_to_file_local(mock_requests):
     mock_civis.files.get.assert_called_once_with(137)
     mock_requests.get.assert_called_once_with(
         mock_civis.files.get.return_value.file_url, stream=True)
+
+
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_civis_to_file_retries(mock_requests):
+    mock_civis = create_client_mock()
+
+    # Mock the request iter_content so it fails partway the first time.
+    # Python 2.7 doesn't have the nonlocal keyword, so here's a little class to
+    # track whether it's the first call.
+    class UnreliableIterContent:
+        def __init__(self):
+            self.first_try = True
+
+        def mock_iter_content(self, _):
+            chunks = [l.encode() for l in 'abcdef']
+            for i, chunk in enumerate(chunks):
+
+                # Fail partway through on the first try.
+                if self.first_try and i == 3:
+                    self.first_try = False
+                    raise requests.ConnectionError()
+
+                yield chunk
+
+    mock_requests.get.return_value.iter_content = \
+        UnreliableIterContent().mock_iter_content
+
+    # Add some data to the buffer to test that we seek to the right place
+    # when retrying.
+    buf = io.BytesIO(b'0123')
+    buf.seek(4)
+
+    _files.civis_to_file(137, buf, client=mock_civis)
+
+    # Check that retries work and that the buffer position is reset.
+    # If we didn't seek when retrying, we'd get abcabcdef.
+    # If we seek'd to position 0, then we'd get abcdef.
+    buf.seek(0)
+    assert buf.read() == b'0123abcdef'
+
+    mock_civis.files.get.assert_called_once_with(137)
+    assert mock_requests.get.call_count == 2
+    mock_requests.get.assert_called_with(
+         mock_civis.files.get.return_value.file_url, stream=True)
 
 
 @mock.patch.object(_files, 'requests', autospec=True)
