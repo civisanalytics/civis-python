@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.9.2 - 2018-12-03
+### Fixed
+- `civis.io.civis_to_file` will now retry on S3 connection errors (#273)
+- Buffers will be reset appropriately on connection failures during
+  `civis.io.file_to_civis` (#273)
+
+
 ## 1.9.1 - 2018-11-15
 ### Fixed
 - `_stash_dataframe_as_csv` in `civis/ml/_model.py` now uses a `StringIO`
