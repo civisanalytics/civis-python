@@ -97,9 +97,14 @@ def _single_upload(buf, name, client, **kwargs):
     form_key = OrderedDict(key=form.pop('key'))
     form_key.update(form)
 
+    # Store the current buffer position in case we need to retry below.
+    buf_orig_position = buf.tell()
+
     @retry(RETRY_EXCEPTIONS)
     def _post():
-        buf.seek(0)
+        # Reset the buffer in case we had to retry.
+        buf.seek(buf_orig_position)
+
         form_key['file'] = buf
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
@@ -315,11 +320,22 @@ def _civis_to_file(file_id, buf, api_key=None, client=None):
         raise EmptyResultError('Unable to locate file {}. If it previously '
                                'existed, it may have '
                                'expired.'.format(file_id))
-    response = requests.get(url, stream=True)
-    response.raise_for_status()
-    chunked = response.iter_content(CHUNK_SIZE)
-    for lines in chunked:
-        buf.write(lines)
+
+    # Store the current buffer position in case we need to retry below.
+    buf_orig_position = buf.tell()
+
+    @retry(RETRY_EXCEPTIONS)
+    def _download_url_to_buf():
+        # Reset the buffer in case we had to retry.
+        buf.seek(buf_orig_position)
+
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        chunked = response.iter_content(CHUNK_SIZE)
+        for lines in chunked:
+            buf.write(lines)
+
+    _download_url_to_buf()
 
 
 def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
