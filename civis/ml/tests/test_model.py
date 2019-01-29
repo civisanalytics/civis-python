@@ -451,7 +451,7 @@ def test_state():
 
 @mock.patch.object(_model.ModelFuture, "metadata",
                    return_value={'run': {'configuration':
-                            {'data': {'primary_key': 'foo'}}}})
+                                         {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
@@ -465,7 +465,7 @@ def test_table(mock_res, mock_lt, mock_meta):
 
 @mock.patch.object(_model.ModelFuture, "metadata",
                    return_value={'run': {'configuration':
-                            {'data': {'primary_key': None}}}})
+                                         {'data': {'primary_key': None}}}})
 @mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
@@ -479,7 +479,7 @@ def test_table_no_pkey(mock_res, mock_lt, mock_meta):
 
 @mock.patch.object(_model.ModelFuture, "metadata",
                    return_value={'run': {'configuration':
-                            {'data': {'primary_key': 'foo'}}}})
+                                         {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs")
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
