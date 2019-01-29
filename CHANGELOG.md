@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- `civis.ml.ModelFuture.table` checks for primary key before reading in
+  data (#276)
+
 
 ## 1.9.2 - 2018-12-03
 ### Fixed
