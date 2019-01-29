@@ -489,20 +489,23 @@ class ModelFuture(ContainerFuture):
 
         return self._train_data
 
+    def _table_primary_key(self):
+        # metadata path to input parameters is different
+        # for training and prediction
+        if self.is_training:
+            pkey = self.metadata[
+                'run']['configuration']['data']['primary_key']
+        else:
+            pkey = self.metadata[
+                'jobs'][0]['run']['configuration']['data']['primary_key']
+        return pkey
+
     @property
     def table(self):
         self.result()  # Block and raise errors if any
         if self._table is None:
             # An index column will only be present if primary key is
-            # metadata path to input parameters is different
-            # for training and prediction
-            if self.is_training:
-                pkey = self.metadata[
-                    'run']['configuration']['data']['primary_key']
-            else:
-                pkey = self.metadata[
-                    'jobs'][0]['run']['configuration']['data']['primary_key']
-            if pkey is None:
+            if self._table_primary_key() is None:
                 index_col = False
             else:
                 index_col = 0
