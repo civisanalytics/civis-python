@@ -489,17 +489,34 @@ class ModelFuture(ContainerFuture):
 
         return self._train_data
 
+    def _table_primary_key(self):
+        # metadata path to input parameters is different
+        # for training and prediction
+        if self.is_training:
+            pkey = self.metadata[
+                'run']['configuration']['data']['primary_key']
+        else:
+            pkey = self.metadata[
+                'jobs'][0]['run']['configuration']['data']['primary_key']
+        return pkey
+
     @property
     def table(self):
         self.result()  # Block and raise errors if any
         if self._table is None:
+            # An index column will only be present if primary key is
+            if self._table_primary_key() is None:
+                index_col = False
+            else:
+                index_col = 0
+
             if self.is_training:
                 try:
                     # Training jobs only have one output table, the OOS scores
                     self._table = _load_table_from_outputs(self.job_id,
                                                            self.run_id,
                                                            self.table_fname,
-                                                           index_col=0,
+                                                           index_col=index_col,
                                                            client=self.client)
                 except FileNotFoundError:
                     # Just pass here, because we want the table to stay None
@@ -514,7 +531,7 @@ class ModelFuture(ContainerFuture):
                           '["output_file_ids"]`.'.format(len(output_ids)))
                 self._table = cio.file_to_dataframe(output_ids[0],
                                                     client=self.client,
-                                                    index_col=0)
+                                                    index_col=index_col)
         return self._table
 
     @property
