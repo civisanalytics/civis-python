@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `civis.ml.ModelFuture.table` checks for primary key before reading in
   data (#276)
 
+### Added
+- Test for Python 3.7 compatibility (#277)
+
 
 ## 1.9.2 - 2018-12-03
 ### Fixed
