@@ -144,7 +144,7 @@ dependencies with
 Python version support
 ----------------------
 
-Python 2.7, 3.4, 3.5, and 3.6
+Python 2.7, 3.4, 3.5, 3.6, and 3.7
 
 .. end-include-marker-python-version-support-section
 
