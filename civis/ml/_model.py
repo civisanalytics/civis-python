@@ -36,13 +36,13 @@ SENTINEL = namedtuple('Sentinel', [])()
 
 # Map training template to prediction template so that we
 # always use a compatible version for predictions.
-_PRED_TEMPLATES = {10582: 10583,  # v2.1
+_PRED_TEMPLATES = {11219: 11220,  # v2.2
+                   11221: 11220,  # v2.2 registration
+                   10582: 10583,  # v2.1
                    9968: 9969,    # v2.0
                    9112: 9113,    # v1.1
                    8387: 8388,    # v1.0
                    7020: 7021,    # v0.5
-                   11219: 11220,  # v2.2
-                   11221: 11220,  # v2.2 registration
                    }
 _CIVISML_TEMPLATE = None  # CivisML training template to use
 REGISTRATION_TEMPLATES = [11221,  # v2.2
