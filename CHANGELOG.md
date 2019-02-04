@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+- Correct prediction template id for CivisML 1.0 (#278)
 - `civis.ml.ModelFuture.table` checks for primary key before reading in
   data. (#276)
 
