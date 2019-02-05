@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Test for Python 3.7 compatibility (#277)
 
+### Changed
+- Updated mock API specs (#281)
 
 ## 1.9.2 - 2018-12-03
 ### Fixed

@@ -4,7 +4,6 @@ import os
 
 from civis.cli.__main__ import generate_cli, invoke
 from civis.compat import mock
-from civis.resources._resources import BASE_RESOURCES_V1
 from civis.tests import TEST_SPEC
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -36,11 +35,6 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
     mock_retrieve_spec_dict.return_value = civis_spec
 
     cli = generate_cli()
-    expected_cli_keys = (
-        {x.replace('_', '-') for x in BASE_RESOURCES_V1} |
-        {'civis'}
-    )
-    assert sorted(cli.commands.keys()) == sorted(expected_cli_keys)
 
     # Check a regular command.
     list_runs_cmd = cli.commands['scripts'].commands['list-containers-runs']
