@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+
+## 1.9.3 - 2019-02-05
 ### Fixed
 - Correct prediction template id for CivisML 1.0 (#278)
 - `civis.ml.ModelFuture.table` checks for primary key before reading in
