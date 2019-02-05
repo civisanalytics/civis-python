@@ -846,7 +846,7 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
     mock_client.scripts.get_containers.return_value = \
         container_response_stub(from_template_id=8387)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    assert mp.predict_template_id == 9113, "Predict template v1.1"
+    assert mp.predict_template_id == 8388, "Predict template v1.0"
 
     # v0.5 training
     mock_client.scripts.get_containers.return_value = \
