@@ -259,8 +259,7 @@ class MetaMixin():
         Returns
         -------
         table_id : int
-            The ID of the table. Only returns exact match to specified
-            table.
+            The ID of the table.
 
         Raises
         ------
