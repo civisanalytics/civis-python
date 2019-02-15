@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-
+### Fixed
+- `get_table_id` will correctly handle quoted schema.tablename. (#283)
 
 ## 1.9.3 - 2019-02-05
 ### Fixed
