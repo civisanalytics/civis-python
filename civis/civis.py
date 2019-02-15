@@ -252,7 +252,9 @@ class MetaMixin():
         Parameters
         ----------
         table : str
-            The name of the table in format schema.table.
+            The name of the table in format schema.tablename.
+            Either schema or tablename, or both, can be double-quoted to
+            correctly parse special characters (such as '.').
         database : str or int
             The name or ID of the database.
 
@@ -265,6 +267,15 @@ class MetaMixin():
         ------
         ValueError
             If a table match can't be found.
+
+        Examples
+        --------
+        >>> import civis
+        >>> client = civis.APIClient()
+        >>> client.get_table_id('foo.bar', 'redshift-general')
+        123
+        >>> client.get_table_id('"schema.has.periods".bar', 'redshift-general')
+        456
         """
         database_id = self.get_database_id(database)
         schema, name = civis.io.split_schema_tablename(table)
