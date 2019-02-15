@@ -274,10 +274,6 @@ class MetaMixin():
         if not tables:
             msg = "No tables found for {} in database {}"
             raise ValueError(msg.format(table, database))
-        found_table = ".".join((tables[0].schema, tables[0].name))
-        if table != found_table:
-            msg = "Given table {} is not an exact match for returned table {}."
-            raise ValueError(msg.format(table, found_table))
 
         return tables[0].id
 
