@@ -265,7 +265,7 @@ class MetaMixin():
         Raises
         ------
         ValueError
-            If an exact table match can't be found.
+            If a table match can't be found.
         """
         database_id = self.get_database_id(database)
         schema, name = civis.io.split_schema_tablename(table)
