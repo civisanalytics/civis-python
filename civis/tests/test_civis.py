@@ -1,6 +1,5 @@
-from unittest import mock
-
 import civis
+from civis.compat import mock
 
 import pytest
 
