@@ -252,20 +252,30 @@ class MetaMixin():
         Parameters
         ----------
         table : str
-            The name of the table in format schema.table.
+            The name of the table in format schema.tablename.
+            Either schema or tablename, or both, can be double-quoted to
+            correctly parse special characters (such as '.').
         database : str or int
             The name or ID of the database.
 
         Returns
         -------
         table_id : int
-            The ID of the table. Only returns exact match to specified
-            table.
+            The ID of the table.
 
         Raises
         ------
         ValueError
-            If an exact table match can't be found.
+            If a table match can't be found.
+
+        Examples
+        --------
+        >>> import civis
+        >>> client = civis.APIClient()
+        >>> client.get_table_id('foo.bar', 'redshift-general')
+        123
+        >>> client.get_table_id('"schema.has.periods".bar', 'redshift-general')
+        456
         """
         database_id = self.get_database_id(database)
         schema, name = civis.io.split_schema_tablename(table)
@@ -274,10 +284,6 @@ class MetaMixin():
         if not tables:
             msg = "No tables found for {} in database {}"
             raise ValueError(msg.format(table, database))
-        found_table = ".".join((tables[0].schema, tables[0].name))
-        if table != found_table:
-            msg = "Given table {} is not an exact match for returned table {}."
-            raise ValueError(msg.format(table, found_table))
 
         return tables[0].id
 
