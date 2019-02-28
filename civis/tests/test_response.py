@@ -26,6 +26,7 @@ def _create_mock_response(data, headers):
 def _create_empty_response(code, headers):
     mock_response = mock.MagicMock(spec=requests.Response)
     mock_response.status_code = code
+    mock_response.content = b''
     mock_response.headers = headers
     return mock_response
 
@@ -101,7 +102,8 @@ def test_response_to_json_no_error():
 
 
 def test_response_to_no_content_snake():
-    for code in [204, 205]:
+    # Test empty response handling for codes where we're likely to see them.
+    for code in [202, 204, 205]:
         raw_response = _create_empty_response(code, {'header1': 'val1'})
         data = convert_response_data_type(raw_response, return_type='snake')
 
