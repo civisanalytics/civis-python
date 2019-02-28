@@ -32,7 +32,7 @@ def _response_to_json(response):
     CivisClientError
         If the data in the raw response cannot be parsed.
     """
-    if response.status_code in [204, 205]:
+    if response.content == b'':
         return None
     else:
         try:
