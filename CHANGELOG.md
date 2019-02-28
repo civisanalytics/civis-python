@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.9.4 - 2019-02-28
 ### Fixed
 - `get_table_id` will correctly handle quoted schema.tablename. (#285)
 - Fix parsing of empty responses from run cancellation endpoints. (#287)
