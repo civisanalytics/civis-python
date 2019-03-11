@@ -38,7 +38,11 @@ class _ResultPollingThread(threading.Thread):
         """Poll until done.
         """
         while not self.finished.wait(self.polling_interval):
-            if self.poller(*self.poller_args).state in DONE:
+            # Spotty internet connectivity can result in polling functions
+            # returning None. This treats None responses like responses which
+            # have a non-DONE state.
+            poller_result = self.poller(*self.poller_args)
+            if poller_result is not None and poller_result.state in DONE:
                 self.finished.set()
 
 
