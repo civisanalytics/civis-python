@@ -5,7 +5,7 @@ import unittest
 
 from civis.compat import mock
 from civis.response import Response
-from civis.polling import PollableResult
+from civis.polling import PollableResult, _ResultPollingThread
 
 import pytest
 
@@ -73,6 +73,17 @@ class TestPolling(unittest.TestCase):
         assert poller.call_count == 0
         time.sleep(0.02)
         assert poller.call_count > 0
+
+    def test_poller_returns_none(self):
+        poller = mock.Mock(side_effect=[None,
+                                        None,
+                                        Response({'state': 'success'})])
+        polling_thread = _ResultPollingThread(poller,
+                                              (),
+                                              polling_interval=0.01)
+        polling_thread.run()
+        time.sleep(0.05)
+        assert poller.call_count == 3
 
     def test_reset_polling_thread(self):
         pollable = PollableResult(
