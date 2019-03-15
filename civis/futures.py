@@ -104,6 +104,10 @@ class CivisFuture(PollableResult):
     >>> poller_args = (job_id, ) # (job_id, run_id) if poller requires run_id
     >>> polling_interval = 10
     >>> future = CivisFuture(poller, poller_args, polling_interval)
+    >>> future.job_id == job_id
+    True
+    >>> future.run_id is None  # an actual run_id if poller requires run_id
+    True
     """
     def __init__(self, poller, poller_args,
                  polling_interval=None, api_key=None, client=None,
