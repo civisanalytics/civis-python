@@ -136,6 +136,17 @@ class CivisFuture(PollableResult):
         return (hasattr(self, '_pubnub') and
                 len(self._pubnub.get_subscribed_channels()) > 0)
 
+    @property
+    def job_id(self):
+        return self.poller_args[0]
+
+    @property
+    def run_id(self):
+        try:
+            return self.poller_args[1]
+        except IndexError:
+            return None
+
     def cleanup(self):
         with self._condition:
             super().cleanup()
@@ -248,14 +259,6 @@ class ContainerFuture(CivisFuture):
                          client=client,
                          poll_on_creation=poll_on_creation)
         self._max_n_retries = max_n_retries
-
-    @property
-    def job_id(self):
-        return self.poller_args[0]
-
-    @property
-    def run_id(self):
-        return self.poller_args[1]
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
