@@ -87,6 +87,13 @@ class CivisFuture(PollableResult):
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
 
+    Attributes
+    ----------
+    job_id : int
+        First element of the tuple given to `poller_args`
+    run_id : int
+        Second element of the tuple given to `poller_args`, if any
+
     Examples
     --------
     This example is provided as a function at :func:`~civis.io.query_civis`.
