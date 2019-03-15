@@ -145,6 +145,7 @@ class CivisFuture(PollableResult):
         try:
             return self.poller_args[1]
         except IndexError:
+            # when poller function has job_id only but not run_id
             return None
 
     def cleanup(self):
