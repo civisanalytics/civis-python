@@ -285,7 +285,7 @@ def _check_executor(from_template_id=None):
     [((123, 456), 123, 456),
      ((123,), 123, None)]
 )
-def test_job_id_run_id(poller_args, expected_job_id, expected_run_id):
+def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     result = CivisFuture(
         poller=lambda x: x,
         poller_args=poller_args,
@@ -293,6 +293,17 @@ def test_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     )
     assert result.job_id == expected_job_id
     assert result.run_id == expected_run_id
+
+
+def test_container_future_job_id_run_id():
+    job_id, run_id = 123, 456
+    result = ContainerFuture(
+        job_id=job_id,
+        run_id=run_id,
+        client=create_client_mock(),
+    )
+    assert result.job_id == job_id
+    assert result.run_id == run_id
 
 
 def test_container_scripts():
