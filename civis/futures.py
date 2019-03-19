@@ -97,6 +97,8 @@ class CivisFuture(PollableResult):
 
     Examples
     --------
+    This example is provided as a function at :func:`~civis.io.query_civis`.
+
     >>> client = civis.APIClient()
     >>> database_id = client.get_database_id("my_database")
     >>> cred_id = client.default_credential
