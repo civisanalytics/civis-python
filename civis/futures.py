@@ -91,13 +91,12 @@ class CivisFuture(PollableResult):
     ----------
     job_id : int
         First element of the tuple given to `poller_args`
-    run_id : int
-        Second element of the tuple given to `poller_args`, if any
+    run_id : int or None
+        Second element of the tuple given to `poller_args`
+        (`None` if the poller function does not require a run ID)
 
     Examples
     --------
-    This example is provided as a function at :func:`~civis.io.query_civis`.
-
     >>> client = civis.APIClient()
     >>> database_id = client.get_database_id("my_database")
     >>> cred_id = client.default_credential
@@ -105,15 +104,14 @@ class CivisFuture(PollableResult):
     >>> preview_rows = 10
     >>> response = client.queries.post(database_id, sql, preview_rows,
     >>>                                credential=cred_id)
-    >>> job_id = response.id
     >>>
-    >>> poller = client.queries.get
-    >>> poller_args = (job_id, ) # (job_id, run_id) if poller requires run_id
+    >>> poller = client.queries.get_runs
+    >>> poller_args = response.id, response.last_run_id
     >>> polling_interval = 10
     >>> future = CivisFuture(poller, poller_args, polling_interval)
-    >>> future.job_id == job_id
+    >>> future.job_id == response.id
     True
-    >>> future.run_id is None  # an actual run_id if poller requires run_id
+    >>> future.run_id == response.last_run_id
     True
     """
     def __init__(self, poller, poller_args,
