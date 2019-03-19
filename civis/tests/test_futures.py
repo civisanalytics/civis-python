@@ -16,7 +16,7 @@ from civis.futures import (ContainerFuture,
 from civis.futures import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
-from civis.tests import TEST_SPEC
+from civis.tests import TEST_SPEC, create_client_mock
 from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
@@ -278,6 +278,32 @@ def _check_executor(from_template_id=None):
     assert future.done(), "shutdown() failed"
 
     return c
+
+
+@pytest.mark.parametrize(
+    'poller_args,expected_job_id,expected_run_id',
+    [((123, 456), 123, 456),
+     ((123,), 123, None)]
+)
+def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
+    result = CivisFuture(
+        poller=lambda x: x,
+        poller_args=poller_args,
+        client=create_client_mock(),
+    )
+    assert result.job_id == expected_job_id
+    assert result.run_id == expected_run_id
+
+
+def test_container_future_job_id_run_id():
+    job_id, run_id = 123, 456
+    result = ContainerFuture(
+        job_id=job_id,
+        run_id=run_id,
+        client=create_client_mock(),
+    )
+    assert result.job_id == job_id
+    assert result.run_id == run_id
 
 
 def test_container_scripts():

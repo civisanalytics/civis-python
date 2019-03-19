@@ -87,6 +87,14 @@ class CivisFuture(PollableResult):
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
 
+    Attributes
+    ----------
+    job_id : int
+        First element of the tuple given to `poller_args`
+    run_id : int or None
+        Second element of the tuple given to `poller_args`
+        (`None` if the poller function does not require a run ID)
+
     Examples
     --------
     This example is provided as a function at :func:`~civis.io.query_civis`.
@@ -98,12 +106,15 @@ class CivisFuture(PollableResult):
     >>> preview_rows = 10
     >>> response = client.queries.post(database_id, sql, preview_rows,
     >>>                                credential=cred_id)
-    >>> job_id = response.id
     >>>
-    >>> poller = client.queries.get
-    >>> poller_args = (job_id, ) # (job_id, run_id) if poller requires run_id
+    >>> poller = client.queries.get_runs
+    >>> poller_args = response.id, response.last_run_id
     >>> polling_interval = 10
     >>> future = CivisFuture(poller, poller_args, polling_interval)
+    >>> future.job_id == response.id
+    True
+    >>> future.run_id == response.last_run_id
+    True
     """
     def __init__(self, poller, poller_args,
                  polling_interval=None, api_key=None, client=None,
@@ -135,6 +146,18 @@ class CivisFuture(PollableResult):
     def subscribed(self):
         return (hasattr(self, '_pubnub') and
                 len(self._pubnub.get_subscribed_channels()) > 0)
+
+    @property
+    def job_id(self):
+        return self.poller_args[0]
+
+    @property
+    def run_id(self):
+        try:
+            return self.poller_args[1]
+        except IndexError:
+            # when poller function has job_id only but not run_id
+            return None
 
     def cleanup(self):
         with self._condition:
@@ -248,14 +271,6 @@ class ContainerFuture(CivisFuture):
                          client=client,
                          poll_on_creation=poll_on_creation)
         self._max_n_retries = max_n_retries
-
-    @property
-    def job_id(self):
-        return self.poller_args[0]
-
-    @property
-    def run_id(self):
-        return self.poller_args[1]
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
