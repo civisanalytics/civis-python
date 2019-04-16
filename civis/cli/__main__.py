@@ -52,7 +52,7 @@ class YAMLParamType(click.ParamType):
 
         try:
             with open(value) as f:
-                result = yaml.load(f)
+                result = yaml.safe_load(f)
                 return result
         except Exception:
             self.fail("Could not load YAML from path: %s" % value, param, ctx)

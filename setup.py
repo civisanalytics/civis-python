@@ -50,7 +50,7 @@ def main():
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
         install_requires=[
-            'pyyaml>=3.0,<=3.99',
+            'pyyaml>=3.0,<=5.99',
             'click>=6.0,<=6.99',
             'jsonref>=0.1.0,<=0.1.99',
             'requests>=2.12.0,==2.*',

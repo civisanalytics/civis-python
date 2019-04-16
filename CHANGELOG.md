@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`.
+
 ## 1.9.1 - 2018-11-15
 ### Fixed
 - `_stash_dataframe_as_csv` in `civis/ml/_model.py` now uses a `StringIO`
