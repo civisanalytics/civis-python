@@ -449,10 +449,13 @@ def test_state():
     assert mf.state == 'failed'
 
 
+@mock.patch.object(_model.ModelFuture, "metadata",
+                   return_value={'run': {'configuration':
+                                         {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
-def test_table(mock_res, mock_lt):
+def test_table(mock_res, mock_lt, mock_meta):
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     assert mf.table == 'bar'
@@ -460,10 +463,27 @@ def test_table(mock_res, mock_lt):
                                     index_col=0, client=c)
 
 
+@mock.patch.object(_model.ModelFuture, "metadata",
+                   return_value={'run': {'configuration':
+                                         {'data': {'primary_key': None}}}})
+@mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
+@mock.patch.object(_model.ModelFuture, "result")
+@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+def test_table_no_pkey(mock_res, mock_lt, mock_meta):
+    c = setup_client_mock(3, 7)
+    mf = _model.ModelFuture(3, 7, client=c)
+    assert mf.table == 'bar'
+    mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
+                                    index_col=False, client=c)
+
+
+@mock.patch.object(_model.ModelFuture, "metadata",
+                   return_value={'run': {'configuration':
+                                         {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs")
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
-def test_table_None(mock_res, mock_lt):
+def test_table_None(mock_res, mock_lt, mock_meta):
     mock_lt.side_effect = FileNotFoundError()
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
@@ -826,7 +846,7 @@ def test_modelpipeline_classmethod_constructor_old_version(mock_future):
     mock_client.scripts.get_containers.return_value = \
         container_response_stub(from_template_id=8387)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    assert mp.predict_template_id == 9113, "Predict template v1.1"
+    assert mp.predict_template_id == 8388, "Predict template v1.0"
 
     # v0.5 training
     mock_client.scripts.get_containers.return_value = \
