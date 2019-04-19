@@ -5,8 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Changed
+- Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
+- Surfaced `civis.io.split_schema_tablename` in the Sphinx docs. (#294)
 
-- Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`.
 ## 1.10.0 - 2019-04-09
 ### Added
 - `CivisFuture` has the `job_id` and `run_id` property attributes. (#290)
