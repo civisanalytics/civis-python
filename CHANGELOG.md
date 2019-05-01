@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
 - Loosened version requirement of `jsonref` to include `0.2` to fix a
   DeprecationWarning under Python 3.7. (#295)
+- Changed pubnub version requirement in requirements.txt to match setup.py
+  (#295)
 - Surfaced `civis.io.split_schema_tablename` in the Sphinx docs. (#294)
 
 ## 1.10.0 - 2019-04-09
