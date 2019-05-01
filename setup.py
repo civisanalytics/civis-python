@@ -53,7 +53,7 @@ def main():
         install_requires=[
             'pyyaml>=3.0,<=5.99',
             'click>=6.0,<=6.99',
-            'jsonref>=0.1.0,<=0.1.99',
+            'jsonref>=0.1.0,<=0.2',
             'requests>=2.12.0,==2.*',
             'jsonschema>=2.5.1,==2.*',
             'six>=1.10,<=1.99',
