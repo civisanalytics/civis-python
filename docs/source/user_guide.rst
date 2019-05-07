@@ -51,7 +51,7 @@ The :class:`CivisFuture <civis.futures.CivisFuture>` follows the
 :class:`python:concurrent.futures.Future` API fairly closely. For example,
 calling ``result()`` on ``fut`` above forces the program to wait for the
 job started with :func:`~civis.io.dataframe_to_civis` to finish and
-returns the result.
+returns the result or raise an exception.
 
 You can create :class:`CivisFuture <civis.futures.CivisFuture>` objects for
 many tasks (e.g., scripts, imports).  Here, we will create a container
@@ -82,7 +82,8 @@ it, and then wait for it to finish.
    ...     client.scripts.get_containers_runs, (script_id, run_id))
    >>>
    >>> # You can then have your code block and wait for the future to be done as
-   >>> # follows.
+   >>> # follows. Note that this does not raise an exception on error like
+   >>> `future.result()`.
    >>> concurrent.futures.wait([future])
    >>>
    >>> # Alternatively, you can call `future.result()` to block and get the
