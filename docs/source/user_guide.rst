@@ -83,7 +83,7 @@ it, and then wait for it to finish.
    >>>
    >>> # You can then have your code block and wait for the future to be done as
    >>> # follows. Note that this does not raise an exception on error like
-   >>> `future.result()`.
+   >>> # `future.result()`.
    >>> concurrent.futures.wait([future])
    >>>
    >>> # Alternatively, you can call `future.result()` to block and get the
