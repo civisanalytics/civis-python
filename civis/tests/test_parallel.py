@@ -267,7 +267,7 @@ def test_infer_update_args(mock_make_factory, mock_job):
 
 
 @mock.patch.object(civis.parallel, 'make_backend_factory')
-def test_infer_from_custom_job(mock_make_factory):
+def test_infer_from_custom_job(mock_make_factory, mock_job):
     # Test that `infer_backend_factory` can find needed
     # parameters if it's run inside a custom job created
     # from a template.
@@ -279,14 +279,13 @@ def test_infer_from_custom_job(mock_make_factory):
                                 docker_image_name='image_name',
                                 docker_image_tag='tag',
                                 repo_http_uri='cabbage', repo_ref='servant'))
-    mock_script = mock_job()
     mock_template = Response(dict(id=999, script_id=171))
 
     def _get_container(job_id):
         if int(job_id) == 42:
             return mock_custom
         elif int(job_id) == 171:
-            return mock_script
+            return mock_job
         else:
             raise ValueError("Got job_id {}".format(job_id))
 
@@ -315,7 +314,7 @@ def test_infer_from_custom_job(mock_make_factory):
                        'hidden': True,
                        'remote_backend': 'sequential'}
     for key in civis.parallel.KEYS_TO_INFER:
-        expected_kwargs[key] = mock_script[key]
+        expected_kwargs[key] = mock_job[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
 
 
