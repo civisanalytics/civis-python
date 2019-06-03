@@ -13,6 +13,7 @@ import requests
 
 import civis.parallel
 from civis.futures import ContainerFuture
+from civis.tests import create_client_mock
 
 
 @pytest.fixture
@@ -67,7 +68,7 @@ def _test_retries_helper(num_failures, max_submit_retries,
                          mock_custom_exec_cls, mock_executor_cls):
 
     mock_file_to_civis.return_value = 0
-    mock_result_cls.get.return_value = 123
+    mock_result_cls.return_value.get.return_value = [123]
 
     # A function to raise fake API errors the first num_failures times it is
     # called.
@@ -87,13 +88,17 @@ def _test_retries_helper(num_failures, max_submit_retries,
         factory = civis.parallel.make_backend_template_factory(
             from_template_id=from_template_id,
             max_submit_retries=max_submit_retries,
-            client=mock.Mock())
+            client=create_client_mock())
     else:
         factory = civis.parallel.make_backend_factory(
-            max_submit_retries=max_submit_retries, client=mock.Mock())
+            max_submit_retries=max_submit_retries, client=create_client_mock())
     register_parallel_backend('civis', factory)
     with parallel_backend('civis'):
-        parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+        # NB: joblib >v0.11 relies on callbacks from the result object to
+        # decide when it's done consuming inputs. We've mocked the result
+        # object here, so Parallel must be called either with n_jobs=1 or
+        # pre_dispatch='all' to consume the inputs all at once.
+        parallel = Parallel(n_jobs=1, pre_dispatch='n_jobs')
         if should_fail:
             with pytest.raises(civis.parallel.JobSubmissionError):
                 parallel(delayed(sqrt)(i ** 2) for i in range(3))
@@ -116,7 +121,11 @@ def test_template_submit(mock_file, mock_result, mock_pool):
     n_calls = 3
     register_parallel_backend('civis', factory)
     with parallel_backend('civis'):
-        parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+        # NB: joblib >v0.11 relies on callbacks from the result object to
+        # decide when it's done consuming inputs. We've mocked the result
+        # object here, so Parallel must be called either with n_jobs=1 or
+        # pre_dispatch='all' to consume the inputs all at once.
+        parallel = Parallel(n_jobs=1, pre_dispatch='n_jobs')
         parallel(delayed(sqrt)(i ** 2) for i in range(n_calls))
 
     assert mock_file.call_count == 3, "Upload 3 functions to run"
