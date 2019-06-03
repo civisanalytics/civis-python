@@ -293,7 +293,8 @@ def add_path_commands(path, path_dict, grp, resource):
                                        help="output in JSON instead of YAML"))
 
         if cmd.name in grp.commands:
-            warn("conflicting command name: %s" % cmd.name)
+            warn('conflicting command name "%s" for path "%s"' %
+                 (cmd.name, path))
 
         grp.add_command(cmd)
 

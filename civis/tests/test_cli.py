@@ -2,6 +2,8 @@ from collections import OrderedDict
 import json
 import os
 
+import pytest
+
 from civis.cli.__main__ import generate_cli, invoke
 from civis.compat import mock
 from civis.tests import TEST_SPEC
@@ -34,7 +36,9 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
         civis_spec = json.load(f, object_pairs_hook=OrderedDict)
     mock_retrieve_spec_dict.return_value = civis_spec
 
-    cli = generate_cli()
+    with pytest.warns(None) as warn_rec:
+        cli = generate_cli()
+    assert len(warn_rec) == 0
 
     # Check a regular command.
     list_runs_cmd = cli.commands['scripts'].commands['list-containers-runs']
