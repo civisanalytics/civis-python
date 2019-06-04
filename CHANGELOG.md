@@ -8,12 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
   (#262, #304)
 - Add the user's Python version to the User-Agent string. (#255, #301)
+- Added a `last_response` parameter to the `APIClient` object. (#153, #302)
 
 ### Fixed
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
-
-### Added
-- Added a `last_response` parameter to the `APIClient` object. (#153, #302)
 
 ### Changed
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
