@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changed pubnub version requirement in requirements.txt to match setup.py
   (#295)
 - Surfaced `civis.io.split_schema_tablename` in the Sphinx docs. (#294)
+- Loosen `joblib` version requirement to include v0.13 and add code to
+  the Civis joblib backend which newer versions of `joblib` can take
+  advantage of. Also loosed version requirement on `cloudpickle` to
+  include v1. (#296, #299)
 
 ## 1.10.0 - 2019-04-09
 ### Added
