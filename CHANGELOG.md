@@ -5,12 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 - Allow users to access `civis.utils.run_job` after an `import civis`. (#305)
-
-### Added
 - `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
   (#262, #304)
-
-### Added
 - Add the user's Python version to the User-Agent string. (#255, #301)
 
 ### Fixed
