@@ -38,7 +38,8 @@ log = logging.getLogger(__name__)
 # standard chunk size; provides good performance across various buffer sizes
 CHUNK_SIZE = 32 * 1024
 __all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
-           'file_to_dataframe', 'file_to_json']
+           'file_to_dataframe', 'dataframe_to_file',
+           'file_to_json', 'json_to_file']
 
 
 def _get_aws_error_message(response):
@@ -456,6 +457,49 @@ def file_to_dataframe(file_id, compression='infer', client=None,
     return pd.read_csv(file_url, compression=compression, **read_kwargs)
 
 
+def dataframe_to_file(df, name='data.csv', expires_at='DEFAULT',
+                      client=None, **to_csv_kws):
+    """Store a :class:`~pandas.DataFrame` as a CSV in Civis Platform
+
+    Parameters
+    ----------
+    df : :class:`~pandas.DataFrame`
+        The table to upload.
+    name : str, optional
+        The name of the Civis File
+    expires_at : str, optional
+        The date and time the file will expire. If not specified, the file will
+        expire in 30 days. To keep a file indefinitely, specify null.
+        If provided, this must be either `None` or
+        a valid RFC3339 date/Time string.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    **to_csv_kws
+        Additional keyword parameters will be passed directly to
+        :func:`~pandas.DataFrame.to_csv`.
+
+    Returns
+    -------
+    file_id : int
+        The integer ID of the new Civis File object
+
+    See Also
+    --------
+    :func:`file_to_civis`
+    :func:`~pandas.DataFrame.to_csv`
+    """
+    with TemporaryDirectory() as tdir:
+        path = os.path.join(tdir, name)
+        df.to_csv(path, **to_csv_kws)
+        file_kwargs = {'name': name}
+        if expires_at != 'DEFAULT':
+            # A missing parameter signifies the default value here.
+            file_kwargs['expires_at'] = expires_at
+        fid = file_to_civis(path, client=client, **file_kwargs)
+    return fid
+
+
 def file_to_json(file_id, client=None, **json_kwargs):
     """Restore JSON stored in a Civis File
 
@@ -484,3 +528,48 @@ def file_to_json(file_id, client=None, **json_kwargs):
     txt = io.TextIOWrapper(buf, encoding='utf-8')
     txt.seek(0)
     return json.load(txt, **json_kwargs)
+
+
+def json_to_file(obj, name='file.json', expires_at='DEFAULT',
+                 client=None, **json_kwargs):
+    """Store a JSON-serializable object in a Civis File
+
+    Parameters
+    ----------
+    obj
+        The object to be JSON-serialized and stored in a Civis File
+    name : str, optional
+        The name of the Civis File
+    expires_at : str, optional
+        The date and time the file will expire. If not specified, the file will
+        expire in 30 days. To keep a file indefinitely, specify null.
+        If provided, this must be either `None` or
+        a valid RFC3339 date/Time string.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    **json_kwargs
+        Additional keyword arguments will be passed directly to
+        :func:`json.dump`.
+
+    Returns
+    -------
+    file_id : int
+        The integer ID of the new Civis File object
+
+    See Also
+    --------
+    :func:`file_to_civis`
+    :func:`json.dump`
+    """
+    buf = io.BytesIO()
+    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    json.dump(obj, txt, **json_kwargs)
+    txt.seek(0)
+
+    file_kwargs = {'name': name}
+    if expires_at != 'DEFAULT':
+        # A missing parameter signifies the default value here.
+        file_kwargs['expires_at'] = expires_at
+    fid = file_to_civis(txt.buffer, client=client, **file_kwargs)
+    return fid
