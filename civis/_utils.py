@@ -3,6 +3,7 @@ from builtins import super
 import logging
 import os
 import re
+import sys
 import time
 import uuid
 
@@ -53,7 +54,11 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
     session = requests.Session()
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
-    user_agent = "{}/{} {}".format(user_agent, civis_version, session_agent)
+    ver_string = "{}.{}.{}".format(sys.version_info.major,
+                                   sys.version_info.minor,
+                                   sys.version_info.micro)
+    user_agent = "{}/Python v{} Civis v{} {}".format(
+        user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
     max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
                                   status_forcelist=civis.civis.RETRY_CODES)
