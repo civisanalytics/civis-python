@@ -79,10 +79,11 @@ class Endpoint(object):
 
     _lock = threading.Lock()
 
-    def __init__(self, session_kwargs, return_type='civis'):
+    def __init__(self, session_kwargs, client, return_type='civis'):
         self._session_kwargs = session_kwargs
         self._return_type = return_type
         self._base_url = get_base_url()
+        self._client = client
 
     def _build_path(self, path):
         if not path:
@@ -112,12 +113,13 @@ class Endpoint(object):
         iterator = kwargs.pop('iterator', False)
 
         if iterator:
-            return PaginatedResponse(path, params, self)
+            resp = PaginatedResponse(path, params, self)
         else:
             resp = self._make_request(method, path, params, data, **kwargs)
             resp = convert_response_data_type(resp,
                                               return_type=self._return_type)
-            return resp
+        self._client.last_response = resp
+        return resp
 
 
 class CivisAsyncResultBase(futures.Future):

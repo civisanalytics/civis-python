@@ -17,6 +17,18 @@ def test_base_url_from_env():
 @mock.patch('civis.base.get_base_url', return_value='https://base.api.url/')
 def test_endpoint_base_url(mock_get_base_url):
     session = mock.MagicMock(spec=requests.Session)
-    endpoint = Endpoint(session)
+    endpoint = Endpoint(session, 'client')
 
     assert endpoint._base_url == 'https://base.api.url/'
+
+
+def test_store_last_response():
+    mock_client = mock.Mock()
+    endpoint = Endpoint({}, client=mock_client, return_type='raw')
+
+    returned_resp = {'value': 'response'}
+    endpoint._make_request = mock.Mock(return_value=returned_resp)
+
+    resp = endpoint._call_api('GET')
+    assert resp == returned_resp
+    assert mock_client.last_response is resp

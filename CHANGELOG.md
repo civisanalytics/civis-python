@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+- Added a `last_response` parameter to the `APIClient` object. (#153, #302)
+
 ### Changed
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
 - Loosened version requirement of `jsonref` to include `0.2` to fix a

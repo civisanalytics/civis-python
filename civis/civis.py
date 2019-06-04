@@ -351,6 +351,7 @@ class APIClient(MetaMixin):
         session_auth_key = get_api_key(api_key)
         self._session_kwargs = {'api_key': session_auth_key,
                                 'max_retries': retry_total}
+        self.last_response = None
 
         # Catch deprecation warnings from generate_classes_maybe_cached and
         # the functions it calls until the `resources` argument is removed.
@@ -364,7 +365,8 @@ class APIClient(MetaMixin):
                                                     api_version,
                                                     resources)
         for class_name, cls in classes.items():
-            setattr(self, class_name, cls(self._session_kwargs, return_type))
+            setattr(self, class_name, cls(self._session_kwargs, client=self,
+                                          return_type=return_type))
 
     @property
     def feature_flags(self):
