@@ -37,6 +37,7 @@ try:
         NO_SKLEARN = False
 except ImportError:
     NO_SKLEARN = True
+    _sklearn_reg_para_backend = None
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))

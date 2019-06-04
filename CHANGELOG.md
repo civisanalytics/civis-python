@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Allow users to access `civis.utils.run_job` after an `import civis`. (#305)
+
+### Added
+- `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
+  (#262, #304)
+
+### Fixed
+- Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
 
 ### Added
 - Added a `last_response` parameter to the `APIClient` object. (#153, #302)
@@ -13,6 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   DeprecationWarning under Python 3.7. (#295)
 - Changed pubnub version requirement in requirements.txt to match setup.py
   (#295)
+- Loosened version requirements of `click` to include v7 and `jsonschema`
+  to include v3. (#286, #300)
 - Surfaced `civis.io.split_schema_tablename` in the Sphinx docs. (#294)
 - Loosen `joblib` version requirement to include v0.13 and add code to
   the Civis joblib backend which newer versions of `joblib` can take
