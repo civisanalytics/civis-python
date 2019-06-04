@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
   (#262, #304)
 - Add the user's Python version to the User-Agent string. (#255, #301)
+- Added a `last_response` parameter to the `APIClient` object. (#153, #302)
 
 ### Fixed
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
@@ -23,7 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Surfaced `civis.io.split_schema_tablename` in the Sphinx docs. (#294)
 - Loosen `joblib` version requirement to include v0.13 and add code to
   the Civis joblib backend which newer versions of `joblib` can take
-  advantage of. Also loosed version requirement on `cloudpickle` to
+  advantage of. Also loosened version requirement on `cloudpickle` to
   include v1. (#296, #299)
 
 ## 1.10.0 - 2019-04-09
