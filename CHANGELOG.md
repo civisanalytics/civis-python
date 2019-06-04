@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+- `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
+  (#262, #304)
+
 ### Fixed
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
 
