@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Fixed
+- Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
+
 ### Changed
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
 - Loosened version requirement of `jsonref` to include `0.2` to fix a
