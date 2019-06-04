@@ -52,14 +52,14 @@ def main():
         long_description=README,
         install_requires=[
             'pyyaml>=3.0,<=5.99',
-            'click>=6.0,<=6.99',
+            'click>=6.0,<=7',
             'jsonref>=0.1.0,<=0.2',
             'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,==2.*',
+            'jsonschema>=2.5.1,<=3',
             'six>=1.10,<=1.99',
-            'joblib>=0.11,<=0.11.99',
+            'joblib>=0.11,<=0.13.99',
             'pubnub>=4.0,<=4.99',
-            'cloudpickle>=0.2.0,<=0.99999',
+            'cloudpickle>=0.2.0,<=1.99999',
         ],
         extras_require={
             ':python_version=="2.7"': [

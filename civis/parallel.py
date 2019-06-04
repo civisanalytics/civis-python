@@ -9,6 +9,7 @@ import logging
 import os
 import pickle
 import time
+import warnings
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
@@ -23,11 +24,20 @@ from civis.compat import TemporaryDirectory
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
 try:
-    from sklearn.externals.joblib import (
-        register_parallel_backend as _sklearn_reg_para_backend)
-    NO_SKLEARN = False
+    with warnings.catch_warnings():
+        # Ignore the warning: "DeprecationWarning: sklearn.externals.joblib is
+        # deprecated in 0.21 and will be removed in 0.23. Please import this
+        # functionality directly from joblib, which can be installed with:
+        # pip install joblib. If this warning is raised when loading pickled
+        # models, you may need to re-serialize those models with
+        # scikit-learn 0.21+."
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from sklearn.externals.joblib import (
+            register_parallel_backend as _sklearn_reg_para_backend)
+        NO_SKLEARN = False
 except ImportError:
     NO_SKLEARN = True
+    _sklearn_reg_para_backend = None
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -716,8 +726,13 @@ class _CivisBackendResult:
 
         return _fetch_result
 
-    def get(self):
+    def get(self, timeout=None):
         """Block and return the result of the job
+
+        Parameters
+        ----------
+        timeout: float, optional
+            If provided, wait this many seconds before issuing a TimeoutError
 
         Returns
         -------
@@ -736,7 +751,7 @@ class _CivisBackendResult:
         """
         if self.result is None:
             # Wait for the script to complete.
-            wait([self._future])
+            wait([self._future], timeout=timeout)
             self.result = self._future.remote_func_output
 
         if self._future.exception() or not self._future.result_fetched:
@@ -761,11 +776,16 @@ class _CivisBackend(ParallelBackendBase):
 
     Users should interact with this through ``make_backend_factory``.
     """
+    uses_threads = False
+    supports_sharedmem = False
+    supports_timeout = True
+
     def __init__(self, setup_cmd=_DEFAULT_SETUP_CMD,
                  from_template_id=None,
                  max_submit_retries=0,
                  client=None,
                  remote_backend='sequential',
+                 nesting_level=0,
                  **executor_kwargs):
         self.setup_cmd = setup_cmd
         self.from_template_id = from_template_id
@@ -773,6 +793,7 @@ class _CivisBackend(ParallelBackendBase):
         self.client = client
         self.remote_backend = remote_backend
         self.executor_kwargs = executor_kwargs
+        self.nesting_level = nesting_level
         self._init_civis_backend()
 
     @classmethod
@@ -820,6 +841,10 @@ class _CivisBackend(ParallelBackendBase):
         self.executor.cancel_all()
         if not ensure_ready:
             self.executor.shutdown(wait=False)
+
+    def terminate(self):
+        """Shutdown the workers and free the shared memory."""
+        return self.abort_everything(ensure_ready=True)
 
     def apply_async(self, func, callback=None):
         """Schedule func to be run
