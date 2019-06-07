@@ -612,8 +612,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     return unload_manifest
 
 
-@deprecate_param('v2.0.0', 'api_key')
-@deprecate_param('v2.0.0', 'headers')
+@deprecate_param('v2.0.0', 'api_key', 'headers')
 def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
