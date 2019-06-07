@@ -4,7 +4,7 @@ import warnings
 from .compat import signature
 
 
-def deprecate_param(version_removed, parameter_name):
+def deprecate_param(version_removed, parameter_name, *additional_names):
     """Create a decorator which warns of parameter deprecation
 
     Use this to create a decorator which will watch for use of a
@@ -15,6 +15,10 @@ def deprecate_param(version_removed, parameter_name):
     and positional argument use. The default value of the parameter
     will not be affected.
 
+    Warning: This decorator can only be used multiple times in Python v3.
+    Use one call to the decorator with multiple parameter names instead
+    of multiple decorators for Python v2.7 compatibility.
+
     Parameters
     ----------
     version_removed: str
@@ -23,6 +27,9 @@ def deprecate_param(version_removed, parameter_name):
     parameter_name: str
         The name of the parameter to be deprecated, as it appears in the
         function signature.
+    *additional_names
+        Use additional positional arguments to indicate multiple parameters
+        to deprecate.
 
     Returns
     -------
@@ -48,25 +55,35 @@ def deprecate_param(version_removed, parameter_name):
     >>> adder(1, param3=13)
     14
     """
+    all_names = [parameter_name] + list(additional_names)
+
     def decorator(func):
         # Introspect the wrapped function so that we can find
         # where the parameter is in the order of the function's inputs.
         # Signature.parameters is a subclass of OrderedDict.
         sig = signature(func)
-        if parameter_name not in sig.parameters:
-            raise ValueError('"{}" is not a parameter of '
-                             '{}.'.format(parameter_name, str(func)))
-        i_arg = list(sig.parameters.keys()).index(parameter_name)
+        i_args = []
+        for name in all_names:
+            if name not in sig.parameters:
+                raise ValueError('"{}" is not a parameter of '
+                                 '{}.'.format(parameter_name, str(func)))
+            i_args.append(list(sig.parameters.keys()).index(parameter_name))
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if len(args) > i_arg or parameter_name in kwargs:
-                f_name = '{}.{}'.format(func.__module__, func.__name__)
-                warnings.warn('The "{}" parameter of "{}" is deprecated and '
-                              'will be removed in {}.'.format(parameter_name,
-                                                              f_name,
-                                                              version_removed),
-                              FutureWarning)
+            warn_list = []
+            for name, i_arg in zip(all_names, i_args):
+                # The len(args) check looks to see if the user has tried
+                # to call the deprecated parameter as a positional argument.
+                if len(args) > i_arg or name in kwargs:
+                    f_name = '{}.{}'.format(func.__module__, func.__name__)
+                    msg = ('The "{}" parameter of "{}" is deprecated and '
+                           'will be removed in {}.'.format(name,
+                                                           f_name,
+                                                           version_removed))
+                    warn_list.append(msg)
+            if warn_list:
+                warnings.warn('\n'.join(warn_list), FutureWarning)
             return func(*args, **kwargs)
         return wrapper
     return decorator
