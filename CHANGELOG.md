@@ -26,6 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   the Civis joblib backend which newer versions of `joblib` can take
   advantage of. Also loosened version requirement on `cloudpickle` to
   include v1. (#296, #299)
+- Run all tests in Ubuntu Xenial and test on Python 3.8 dev branch. (#308)
 
 ## 1.10.0 - 2019-04-09
 ### Added
