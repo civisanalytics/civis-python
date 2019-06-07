@@ -59,7 +59,8 @@ def main():
             'six>=1.10,<=1.99',
             'joblib>=0.11,<=0.13.99',
             'pubnub>=4.0,<=4.99',
-            'cloudpickle>=0.2.0,<=1.99999',
+            "cloudpickle>=0.2.0,<=1.99999 ; python_version != '3.4'",
+            "cloudpickle>=0.2.0,<1.2 ; python_version == '3.4'",
         ],
         extras_require={
             ':python_version=="2.7"': [
