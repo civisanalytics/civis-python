@@ -613,6 +613,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 
 
 @deprecate_param('v2.0.0', 'api_key')
+@deprecate_param('v2.0.0', 'headers')
 def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
@@ -658,10 +659,16 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
-    headers : bool, optional
+    headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
         or not the first row contains headers.
+
+        This parameter has no effect in versions >= 1.11 and will be
+        removed in v2.0. Tables will always be written with column
+        names read from the DataFrame. Use the `header` parameter
+        (which will be passed directly to :func:`~pandas.DataFrame.to_csv`)
+        to modify the column names in the Civis Table.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -687,6 +694,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     >>> fut = civis.io.dataframe_to_civis(df, 'my-database',
     ...                                   'scratch.df_table')
     >>> fut.result()
+
+    See Also
+    --------
+    :func:`~pandas.DataFrame.to_csv`
     """
     if client is None:
         client = APIClient(api_key=api_key)
@@ -694,6 +705,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
                       "Use `hidden` instead.", FutureWarning)
 
+    headers = False if kwargs.get('header') is False else True
     with TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
         to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
