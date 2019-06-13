@@ -34,7 +34,7 @@ from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
-_API_URL = "https://api.civisanalytics.com"
+_BASE_API_URL = "https://api.civisanalytics.com"
 CLI_USER_AGENT = 'civis-cli'
 
 
@@ -80,6 +80,10 @@ def get_api_key():
         print("You must set the CIVIS_API_KEY environment variable.",
               file=sys.stderr)
         sys.exit(1)
+
+
+def get_base_api_url():
+    return os.getenv('CIVIS_API_ENDPOINT') or _BASE_API_URL
 
 
 def camel_to_snake(s):
@@ -160,7 +164,7 @@ def invoke(method, path, op, *args, **kwargs):
     request_info = dict(
         params=query,
         json=body,
-        url=_API_URL + path.format(**kwargs),
+        url=get_base_api_url() + path.format(**kwargs),
         method=method
     )
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
