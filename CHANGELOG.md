@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Allow the CLI log level to be configured with the `CIVIS_LOG_LEVEL`
+  environment variable with the standard `logging` module levels.
+  For example: `CIVIS_LOG_LEVEL=DEBUG civis users list-me`
 - Allow users to access `civis.utils.run_job` after an `import civis`. (#305)
 - `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
   (#262, #304)

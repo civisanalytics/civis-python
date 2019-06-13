@@ -14,6 +14,7 @@ import calendar
 from collections import OrderedDict
 from functools import partial
 import json
+import logging
 import os
 import re
 import sys
@@ -34,7 +35,6 @@ from civis.compat import FileNotFoundError
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
 _API_URL = "https://api.civisanalytics.com"
-_OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
 CLI_USER_AGENT = 'civis-cli'
 
 
@@ -178,6 +178,7 @@ def invoke(method, path, op, *args, **kwargs):
         if json_output:
             json.dump(response.json(), output_file)
         else:
+
             yaml.safe_dump(response.json(), output_file,
                            default_flow_style=False)
         output_file.flush()
@@ -230,8 +231,13 @@ def add_extra_commands(cli):
     cli.add_command(civis_ascii_art)
 
 
-def generate_cli():
+def configure_log_level():
+    if os.getenv('CIVIS_LOG_LEVEL'):
+        logging.basicConfig(level=os.getenv('CIVIS_LOG_LEVEL'))
 
+
+def generate_cli():
+    configure_log_level()
     spec = retrieve_spec_dict()
 
     # Replace references in the spec so that we don't have to worry about them
