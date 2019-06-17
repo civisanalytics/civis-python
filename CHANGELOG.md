@@ -9,11 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   (#262, #304)
 - Add the user's Python version to the User-Agent string. (#255, #301)
 - Added a `last_response` parameter to the `APIClient` object. (#153, #302)
+- The deprecate_param decorator can take multiple parameter names, to allow
+  Python 2.7 compatibility for multiple deprecations. (#311)
 
 ### Fixed
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
 - Deprecate the `headers` parameter of `dataframe_to_civis` and always tell Civis
   whether the import has headers or not, rather than autodetecting. (#263, #307)
+- Set `cloudpickle` requirements to <1.2 on Python v3.4. (#309)
 
 ### Changed
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
@@ -28,6 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   the Civis joblib backend which newer versions of `joblib` can take
   advantage of. Also loosened version requirement on `cloudpickle` to
   include v1. (#296, #299)
+- Run all tests in Ubuntu Xenial. (#310)
 
 ## 1.10.0 - 2019-04-09
 ### Added
