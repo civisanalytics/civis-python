@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
+- Deprecate the `headers` parameter of `dataframe_to_civis` and always tell Civis
+  whether the import has headers or not, rather than autodetecting. (#263, #307)
 - Set `cloudpickle` requirements to <1.2 on Python v3.4. (#309)
 
 ### Changed
