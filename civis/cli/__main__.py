@@ -182,7 +182,6 @@ def invoke(method, path, op, *args, **kwargs):
         if json_output:
             json.dump(response.json(), output_file)
         else:
-
             yaml.safe_dump(response.json(), output_file,
                            default_flow_style=False)
         output_file.flush()
