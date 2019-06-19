@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Allow the base URL of the CLI to be configured through the
+  `CIVIS_API_ENDPOINT` environment variable, like the civis Python module. (#312)
+- Allow the CLI log level to be configured with the `CIVIS_LOG_LEVEL`
+  environment variable with the standard `logging` module levels.
+  For example: `CIVIS_LOG_LEVEL=DEBUG civis users list-me` (#312)
 - Allow users to access `civis.utils.run_job` after an `import civis`. (#305)
 - `civis.io.dataframe_to_file` and `civis.io.json_to_file` convenience functions.
   (#262, #304)

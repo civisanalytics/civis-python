@@ -14,6 +14,7 @@ import calendar
 from collections import OrderedDict
 from functools import partial
 import json
+import logging
 import os
 import re
 import sys
@@ -33,8 +34,7 @@ from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
-_API_URL = "https://api.civisanalytics.com"
-_OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
+_BASE_API_URL = "https://api.civisanalytics.com"
 CLI_USER_AGENT = 'civis-cli'
 
 
@@ -80,6 +80,10 @@ def get_api_key():
         print("You must set the CIVIS_API_KEY environment variable.",
               file=sys.stderr)
         sys.exit(1)
+
+
+def get_base_api_url():
+    return os.getenv('CIVIS_API_ENDPOINT') or _BASE_API_URL
 
 
 def camel_to_snake(s):
@@ -160,7 +164,7 @@ def invoke(method, path, op, *args, **kwargs):
     request_info = dict(
         params=query,
         json=body,
-        url=_API_URL + path.format(**kwargs),
+        url=get_base_api_url() + path.format(**kwargs),
         method=method
     )
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
@@ -230,8 +234,13 @@ def add_extra_commands(cli):
     cli.add_command(civis_ascii_art)
 
 
-def generate_cli():
+def configure_log_level():
+    if os.getenv('CIVIS_LOG_LEVEL'):
+        logging.basicConfig(level=os.getenv('CIVIS_LOG_LEVEL'))
 
+
+def generate_cli():
+    configure_log_level()
     spec = retrieve_spec_dict()
 
     # Replace references in the spec so that we don't have to worry about them
