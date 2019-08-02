@@ -1,9 +1,16 @@
+from collections import namedtuple
+
 from civis import APIClient
 from civis.ml._model import _PRED_TEMPLATES
 
+__all__ = ['list_models']
 
-def list_models(job_type=None, client=None, **kwargs):
-    """List the current user's CivisML models.
+# sentinel value for default author value
+SENTINEL = namedtuple('Sentinel', [])()
+
+
+def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
+    """List a user's CivisML models.
 
     Parameters
     ----------
@@ -11,11 +18,18 @@ def list_models(job_type=None, client=None, **kwargs):
         The type of model job to list. If "train", list training jobs
         only (including registered models trained outside of CivisML).
         If "predict", list prediction jobs only. If None, list both.
+    author : int, optional
+        User id of the user whose models you want to list. Defaults to
+        the current user. Use ``None`` to list models from all users.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
     **kwargs : kwargs
         Extra keyword arguments passed to `client.scripts.list_custom()`
+
+    See Also
+    --------
+    APIClient.scripts.list_custom
     """
     if job_type == "train":
         template_id_list = list(_PRED_TEMPLATES.keys())
@@ -34,7 +48,10 @@ def list_models(job_type=None, client=None, **kwargs):
     if client is None:
         client = APIClient()
 
+    if author is SENTINEL:
+        author = client.users.list_me().id
+
     models = client.scripts.list_custom(from_template_id=template_id_str,
-                                        author=client.users.list_me().id,
+                                        author=author,
                                         **kwargs)
     return models
