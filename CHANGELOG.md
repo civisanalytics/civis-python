@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Add helper function to list CivisML models. (#314)
 - Allow the base URL of the CLI to be configured through the
   `CIVIS_API_ENDPOINT` environment variable, like the civis Python module. (#312)
 - Allow the CLI log level to be configured with the `CIVIS_LOG_LEVEL`
