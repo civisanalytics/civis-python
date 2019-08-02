@@ -51,6 +51,9 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     if author is SENTINEL:
         author = client.users.list_me().id
 
+    # default to showing most recent models first
+    kwargs.setdefault('order_dir', 'desc')
+
     models = client.scripts.list_custom(from_template_id=template_id_str,
                                         author=author,
                                         **kwargs)
