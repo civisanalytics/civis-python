@@ -14,7 +14,7 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
 
     Parameters
     ----------
-    job_type : {None, "train", "predict"}
+    job_type : {"train", "predict", None}
         The type of model job to list. If "train", list training jobs
         only (including registered models trained outside of CivisML).
         If "predict", list prediction jobs only. If None, list both.
