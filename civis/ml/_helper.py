@@ -199,26 +199,26 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
     """
     client = client or APIClient()
     if entity_type not in ['groups', 'users']:
-        raise ValueError(f"'entity_type' must be one of ['groups', 'users']. "
-                         f"Got '{entity_type}'.")
+        raise ValueError("'entity_type' must be one of ['groups', 'users']. "
+                         "Got '{0}'.".format(entity_type))
 
-    log.debug(f"Sharing object {job_id} with {entity_type} {entity_ids} at "
-              f"permission level {permission_level}.")
-    _func = getattr(client.scripts, f"put_containers_shares_{entity_type}")
+    log.debug("Sharing object %d with %s %s at permission level %s.",
+              job_id, entity_type, entity_ids, permission_level)
+    _func = getattr(client.scripts, "put_containers_shares_" + entity_type)
     result = _func(job_id, entity_ids, permission_level, **kwargs)
 
     # CivisML relies on several run outputs attached to each model run.
     # Go through and share all outputs on each run.
     runs = client.scripts.list_containers_runs(job_id, iterator=True)
     for run in runs:
-        log.debug(f"Sharing outputs on {job_id}, run {run.id}.")
+        log.debug("Sharing outputs on %d, run %s.", job_id, run.id)
         outputs = client.scripts.list_containers_runs_outputs(job_id, run.id)
         for _output in outputs:
             if _output['object_type'] == 'File':
-                _func = getattr(client.files, f"put_shares_{entity_type}")
+                _func = getattr(client.files, "put_shares_" + entity_type)
                 obj_permission = permission_level
             elif _output['object_type'] == 'Project':
-                _func = getattr(client.projects, f"put_shares_{entity_type}")
+                _func = getattr(client.projects, "put_shares_" + entity_type)
                 if permission_level == 'read':
                     # Users must be able to add to projects to use the model
                     obj_permission = 'write'
@@ -226,7 +226,7 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
                     obj_permission = permission_level
             elif _output['object_type'] == 'JSONValue':
                 _func = getattr(client.json_values,
-                                f"put_shares_{entity_type}")
+                                "put_shares_" + entity_type)
                 obj_permission = permission_level
             else:
                 continue
