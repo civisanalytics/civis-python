@@ -113,11 +113,11 @@ def put_models_shares_users(id, user_ids, permission_level, *,
             - id : integer
             - name : string
     total_user_shares : integer
-        For owners, the number of total users shared. For writers and readers, the
-        number of visible users shared.
+        For owners, the number of total users shared. For writers and readers,
+        the number of visible users shared.
     total_group_shares : integer
-        For owners, the number of total groups shared. For writers and readers, the
-        number of visible groups shared.
+        For owners, the number of total groups shared. For writers and readers,
+        the number of visible groups shared.
     """
     kwargs = {}
     if send_shared_email != 'DEFAULT':
@@ -178,11 +178,11 @@ def put_models_shares_groups(id, group_ids, permission_level, *,
             - id : integer
             - name : string
     total_user_shares : integer
-        For owners, the number of total users shared. For writers and readers, the
-        number of visible users shared.
+        For owners, the number of total users shared. For writers and readers,
+        the number of visible users shared.
     total_group_shares : integer
-        For owners, the number of total groups shared. For writers and readers, the
-        number of visible groups shared.
+        For owners, the number of total groups shared. For writers and readers,
+        the number of visible groups shared.
     """
     kwargs = {}
     if send_shared_email != 'DEFAULT':
@@ -225,7 +225,8 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
                 else:
                     obj_permission = permission_level
             elif _output['object_type'] == 'JSONValue':
-                _func = getattr(client.json_values, f"put_shares_{entity_type}")
+                _func = getattr(client.json_values,
+                                f"put_shares_{entity_type}")
                 obj_permission = permission_level
             else:
                 continue

@@ -109,7 +109,7 @@ def test_put_models_shares_groups(mock_share):
 
 
 @mock.patch('civis.ml._helper._share_model')
-def test_put_models_shares_groups(mock_share):
+def test_put_models_shares_users(mock_share):
     mock_share.return_value = 'retval'
     out = put_models_shares_users(1, [7, 8], 'read')
 
