@@ -63,7 +63,7 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     return models
 
 
-def put_models_shares_users(id, user_ids, permission_level, *,
+def put_models_shares_users(id, user_ids, permission_level,
                             client=None,
                             share_email_body='DEFAULT',
                             send_shared_email='DEFAULT'):
@@ -128,7 +128,7 @@ def put_models_shares_users(id, user_ids, permission_level, *,
                         client=client, **kwargs)
 
 
-def put_models_shares_groups(id, group_ids, permission_level, *,
+def put_models_shares_groups(id, group_ids, permission_level,
                              client=None,
                              share_email_body='DEFAULT',
                              send_shared_email='DEFAULT'):
