@@ -29,6 +29,7 @@ from civis.cli._cli_commands import (
     notebooks_download_cmd, notebooks_new_cmd,
     notebooks_up, notebooks_down, notebooks_open)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
+from civis.resources._resources import parse_method_name
 from civis._utils import open_session
 from civis.compat import FileNotFoundError
 
@@ -99,27 +100,19 @@ def munge_name(s):
 def make_operation_name(path, method, resource_name):
     """Create an appropriate CLI command for an operation.
 
-    E.g., '/imports/files/{id}/runs/{run_id}' -> 'get_imports_files_runs'
+    Examples
+    --------
+    >>> make_operation_name('/imports/files/{id}/runs/{run_id}', 'get', 'imports')
+    get-files-runs
     """
-
-    name = path.lower()
-    name = re.sub(r'{[^}]+}', '', name)
-    name = munge_name(name)
+    path = path.lower().lstrip('/')
 
     # Remove resource prefix. Note that the path name for some operations is
     # just the resource name (e.g., /databases).
-    # Munge the resource name for consistency (e.g.,
-    # remote_hosts -> remote-hosts).
-    if name.startswith(munge_name(resource_name)):
-        name = name[len(resource_name):].strip("-")
+    if path.startswith(resource_name):
+        path = path[len(resource_name):].strip("-")
 
-    # If there's no ID argument at the end, then it'll be a listing operation.
-    if method == 'get' and not path.endswith('}'):
-        method = 'list'
-
-    # Add HTTP method prefix. For operations whose path name is the resource,
-    # make the command just be the HTTP method.
-    name = '{}-{}'.format(method, name) if name else method
+    name = parse_method_name(method, path).replace("_", "-")
     return name
 
 

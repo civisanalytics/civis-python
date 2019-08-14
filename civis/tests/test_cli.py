@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from civis.cli.__main__ import generate_cli, invoke
+from civis.cli.__main__ import generate_cli, invoke, make_operation_name
 from civis.compat import mock
 from civis.tests import TEST_SPEC
 
@@ -106,3 +106,14 @@ def test_parameter_case(mock_session):
         json={},
         params={'firstParameter': 'a', 'secondParameter': 'b'},
         method='WIBBLE')
+
+@pytest.mark.parametrize(
+    "path,method,resource_name,exp",
+    [('/imports/files/{id}/runs/{run_id}', 'get', 'imports', 'get-files-runs'),
+     ('/aliases/{object_type}/{alias}', 'get', 'aliases', 'get-object-type'),
+     ('/workflows/', 'get', 'workflows', 'list'),
+     ('/results/{id}/grants', 'delete', 'results', 'delete-grants'),
+     ]
+)
+def test_make_operation_name(path, method, resource_name, exp):
+    assert make_operation_name(path, method, resource_name) == exp
