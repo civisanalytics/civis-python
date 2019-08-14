@@ -102,8 +102,8 @@ def make_operation_name(path, method, resource_name):
 
     Examples
     --------
-    >>> make_operation_name('/imports/files/{id}/runs/{run_id}', 'get', 'imports')
-    get-files-runs
+    >>> make_operation_name('/scripts/r/{id}/runs/{run_id}', 'get', 'scripts')
+    get-r-runs
     """
     path = path.lower().lstrip('/')
 

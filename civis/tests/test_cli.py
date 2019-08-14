@@ -107,6 +107,7 @@ def test_parameter_case(mock_session):
         params={'firstParameter': 'a', 'secondParameter': 'b'},
         method='WIBBLE')
 
+
 @pytest.mark.parametrize(
     "path,method,resource_name,exp",
     [('/imports/files/{id}/runs/{run_id}', 'get', 'imports', 'get-files-runs'),
