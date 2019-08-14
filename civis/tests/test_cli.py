@@ -2,7 +2,9 @@ from collections import OrderedDict
 import json
 import os
 
-from civis.cli.__main__ import generate_cli, invoke
+import pytest
+
+from civis.cli.__main__ import generate_cli, invoke, make_operation_name
 from civis.compat import mock
 from civis.tests import TEST_SPEC
 
@@ -34,7 +36,9 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
         civis_spec = json.load(f, object_pairs_hook=OrderedDict)
     mock_retrieve_spec_dict.return_value = civis_spec
 
-    cli = generate_cli()
+    with pytest.warns(None) as warn_rec:
+        cli = generate_cli()
+    assert len(warn_rec) == 0
 
     # Check a regular command.
     list_runs_cmd = cli.commands['scripts'].commands['list-containers-runs']
@@ -102,3 +106,15 @@ def test_parameter_case(mock_session):
         json={},
         params={'firstParameter': 'a', 'secondParameter': 'b'},
         method='WIBBLE')
+
+
+@pytest.mark.parametrize(
+    "path,method,resource_name,exp",
+    [('/imports/files/{id}/runs/{run_id}', 'get', 'imports', 'get-files-runs'),
+     ('/aliases/{object_type}/{alias}', 'get', 'aliases', 'get-object-type'),
+     ('/workflows/', 'get', 'workflows', 'list'),
+     ('/results/{id}/grants', 'delete', 'results', 'delete-grants'),
+     ]
+)
+def test_make_operation_name(path, method, resource_name, exp):
+    assert make_operation_name(path, method, resource_name) == exp

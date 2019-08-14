@@ -23,6 +23,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecate the `headers` parameter of `dataframe_to_civis` and always tell Civis
   whether the import has headers or not, rather than autodetecting. (#263, #307)
 - Set `cloudpickle` requirements to <1.2 on Python v3.4. (#309)
+- Fixed an issue in the CLI which prevented users from accessing GET /aliases/{id}
+  and simultaneously generated a warning message. (#298, #316)
 
 ### Changed
 - Loosened version requirements of `pyyaml` to include `pyyaml<=5.99`. (#293)
