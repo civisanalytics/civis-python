@@ -216,6 +216,10 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
         for _output in outputs:
             if _output['object_type'] == 'File':
                 _func = getattr(client.files, "put_shares_" + entity_type)
+                if _output['name'] == 'log.txt' and permission_level == 'read':
+                    # Require "write" level permission or higher to view
+                    # the debug logs.
+                    continue
                 obj_permission = permission_level
             elif _output['object_type'] == 'Project':
                 _func = getattr(client.projects, "put_shares_" + entity_type)
