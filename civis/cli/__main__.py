@@ -27,7 +27,8 @@ import yaml
 from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
     notebooks_download_cmd, notebooks_new_cmd,
-    notebooks_up, notebooks_down, notebooks_open)
+    notebooks_up, notebooks_down, notebooks_open,
+    sql_run_cmd, sql_cmd_cmd, sql_download_cmd)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
 from civis._utils import open_session
@@ -225,6 +226,13 @@ def add_extra_commands(cli):
     notebooks_cmd.add_command(notebooks_down)
     notebooks_cmd.add_command(notebooks_open)
     cli.add_command(civis_ascii_art)
+
+    sql_grp = click.Group('sql', short_help='Run SQL in Civis Platform')
+    cli.add_command(sql_grp)
+    sql_cmd = cli.commands['sql']
+    sql_cmd.add_command(sql_run_cmd)
+    sql_cmd.add_command(sql_cmd_cmd)
+    sql_cmd.add_command(sql_download_cmd)
 
 
 def configure_log_level():
