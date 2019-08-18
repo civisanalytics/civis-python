@@ -388,6 +388,21 @@ execution environment, you must provide them to the ``dependencies``
 parameter of the :meth:`~civis.ml.ModelPipeline.register_pretrained_model`
 function, just as with the :class:`~civis.ml.ModelPipeline` constructor.
 
+.. _model-sharing:
+
+Sharing Models
+==============
+
+Models produced by CivisML can't be shared directly through the Civis Platform
+UI or API. The :module:`~civis.ml` namespace provides functions which will
+let you share your CivisML models with other Civis Platform users.
+To share your models, use the functions
+
+- :func:`~civis.ml.put_models_shares_users`
+- :func:`~civis.ml.put_models_shares_groups`
+- :func:`~civis.ml.delete_models_shares_users`
+- :func:`~civis.ml.delete_models_shares_groups`
+
 
 Object reference
 ================
