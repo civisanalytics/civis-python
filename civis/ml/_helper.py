@@ -5,7 +5,8 @@ from civis import APIClient
 from civis.ml._model import _PRED_TEMPLATES
 
 __all__ = ['list_models', 'put_models_shares_groups',
-           'put_models_shares_users']
+           'put_models_shares_users', 'delete_models_shares_groups',
+           'delete_models_shares_users']
 log = logging.getLogger(__name__)
 
 # sentinel value for default author value
@@ -195,8 +196,7 @@ def put_models_shares_groups(id, group_ids, permission_level,
 
 def _share_model(job_id, entity_ids, permission_level, entity_type,
                  client=None, **kwargs):
-    """Share a container job and all run outputs with requested entities
-    """
+    """Share a container job and all run outputs with requested entities"""
     client = client or APIClient()
     if entity_type not in ['groups', 'users']:
         raise ValueError("'entity_type' must be one of ['groups', 'users']. "
@@ -237,5 +237,86 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
             _oid = _output['object_id']
             # Don't send share emails for any of the run outputs.
             _func(_oid, entity_ids, obj_permission, send_shared_email=False)
+
+    return result
+
+
+def delete_models_shares_users(id, user_id, client=None):
+    """Revoke the permissions a user has on this object
+
+    Use this function on both training and scoring jobs.
+
+    Parameters
+    ----------
+    id : integer
+        The ID of the resource that is shared.
+    user_id : integer
+        The ID of the user.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+
+    Returns
+    -------
+    None
+        Response code 204: success
+    """
+    return _unshare_model(id, user_id, entity_type='users', client=client)
+
+
+def delete_models_shares_groups(id, group_id, client=None):
+    """Revoke the permissions a group has on this object
+
+    Use this function on both training and scoring jobs.
+
+    Parameters
+    ----------
+    id : integer
+        The ID of the resource that is shared.
+    group_id : integer
+        The ID of the group.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+
+    Returns
+    -------
+    None
+        Response code 204: success
+    """
+    return _unshare_model(id, group_id, entity_type='groups', client=client)
+
+
+def _unshare_model(job_id, entity_id, entity_type, client=None):
+    """Revoke permissions on a container job and all run outputs
+    for the requested entity (singular)
+    """
+    client = client or APIClient()
+    if entity_type not in ['groups', 'users']:
+        raise ValueError("'entity_type' must be one of ['groups', 'users']. "
+                         "Got '{0}'.".format(entity_type))
+
+    log.debug("Revoking permissions on object %d for %s %s.",
+              job_id, entity_type, entity_id)
+    _func = getattr(client.scripts, "delete_containers_shares_" + entity_type)
+    result = _func(job_id, entity_id)
+
+    # CivisML relies on several run outputs attached to each model run.
+    # Go through and revoke permissions for outputs on each run.
+    runs = client.scripts.list_containers_runs(job_id, iterator=True)
+    for run in runs:
+        log.debug("Unsharing outputs on %d, run %s.", job_id, run.id)
+        outputs = client.scripts.list_containers_runs_outputs(job_id, run.id)
+        for _output in outputs:
+            if _output['object_type'] == 'File':
+                _func = getattr(client.files, "delete_shares_" + entity_type)
+            elif _output['object_type'] == 'Project':
+                _func = getattr(client.projects, "delete_shares_" + entity_type)
+            elif _output['object_type'] == 'JSONValue':
+                _func = getattr(client.json_values,
+                                "delete_shares_" + entity_type)
+            else:
+                continue
+            _func(_output['object_id'], entity_id)
 
     return result
