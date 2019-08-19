@@ -48,14 +48,14 @@ def run_template(id, arguments, JSONValue=False):
         json_output = [
             o.value for o in outputs if o.object_type == "JSONValue"
         ]
-        if len(json_output) > 1:
-            raise RuntimeError(
-                'Error in returning JSON outputs for template {}'
-                ' -- too many JSON outputs'.format(id)
-            )
         if len(json_output) == 0:
-            log.debug('No JSON output for template {}'.format(id))
+            log.warning('No JSON output for template {}'.format(id))
             return
+        if len(json_output) > 1:
+            log.warning(
+                'More than 1 JSON output for template {}'
+                ' -- returning only the first one.'.format(id)
+            )
         return json_output[0]
     else:
         file_ids = {o.name: o.object_id for o in outputs}
