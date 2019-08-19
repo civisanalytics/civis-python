@@ -55,7 +55,7 @@ def run_template(id, arguments, JSONValue=False):
             )
         if len(json_output) == 0:
             log.debug('No JSON output for template {}'.format(id))
-            return ()
+            return
         return json_output[0]
     else:
         file_ids = {o.name: o.object_id for o in outputs}
