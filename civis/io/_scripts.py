@@ -51,7 +51,7 @@ def run_template(id, arguments, JSONValue=False):
         if len(json_output) > 1:
             raise RuntimeError(
                 'Error in returning JSON outputs for template {}'
-                'run -- too many JSON outputs'.format(id)
+                ' -- too many JSON outputs'.format(id)
             )
         if len(json_output) == 0:
             log.debug('No JSON output for template {}'.format(id))
