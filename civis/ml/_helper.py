@@ -304,17 +304,17 @@ def _unshare_model(job_id, entity_id, entity_type, client=None):
     # CivisML relies on several run outputs attached to each model run.
     # Go through and revoke permissions for outputs on each run.
     runs = client.scripts.list_containers_runs(job_id, iterator=True)
+    endpoint_name = "delete_shares_" + entity_type
     for run in runs:
         log.debug("Unsharing outputs on %d, run %s.", job_id, run.id)
         outputs = client.scripts.list_containers_runs_outputs(job_id, run.id)
         for _output in outputs:
             if _output['object_type'] == 'File':
-                _func = getattr(client.files, "delete_shares_" + entity_type)
+                _func = getattr(client.files, endpoint_name)
             elif _output['object_type'] == 'Project':
-                _func = getattr(client.projects, "delete_shares_" + entity_type)
+                _func = getattr(client.projects, endpoint_name)
             elif _output['object_type'] == 'JSONValue':
-                _func = getattr(client.json_values,
-                                "delete_shares_" + entity_type)
+                _func = getattr(client.json_values, endpoint_name)
             else:
                 continue
             _func(_output['object_id'], entity_id)
