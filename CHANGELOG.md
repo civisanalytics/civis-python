@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Add helper function (run_template) to run a template given its id and return
+  either the JSON output or the associated file ids. (#318)
 - Add helper function to list CivisML models. (#314)
 - Allow the base URL of the CLI to be configured through the
   `CIVIS_API_ENDPOINT` environment variable, like the civis Python module. (#312)
