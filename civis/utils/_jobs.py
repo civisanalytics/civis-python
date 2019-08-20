@@ -6,6 +6,7 @@ from civis._deprecation import deprecate_param
 
 log = logging.getLogger(__name__)
 
+
 @deprecate_param('v2.0.0', 'api_key')
 def run_job(job_id, api_key=None, client=None):
     """Run a job.
