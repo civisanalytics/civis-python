@@ -42,10 +42,12 @@ be stored in platform via the files endpoint.
    :toctree: generated
 
    civis_to_file
+   dataframe_to_file
    file_id_from_run_output
    file_to_civis
    file_to_dataframe
    file_to_json
+   json_to_file
 
 Databases
 ---------

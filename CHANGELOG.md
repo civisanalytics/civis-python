@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Python 2.7 compatibility for multiple deprecations. (#311)
 
 ### Fixed
+- Added missing docs for `json_to_file` and `dataframe_to_file`.
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
 - Deprecate the `headers` parameter of `dataframe_to_civis` and always tell Civis
   whether the import has headers or not, rather than autodetecting. (#263, #307)
