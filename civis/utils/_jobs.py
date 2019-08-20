@@ -68,8 +68,10 @@ def run_template(id, arguments, JSONValue=False, client=None):
     --------
     >>> # Run template to return file_ids
     >>> run_template(my_template_id, arguments=my_dict_of_args)
+    {'output': 1234567}
     >>> # Run template to return JSON output
     >>> run_template(my_template_id, arguments=my_dict_of_args, JSONValue=True)
+    {'result1': 'aaa', 'result2': 123}
     """
     if client is None:
         client = APIClient()
