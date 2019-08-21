@@ -45,7 +45,7 @@ def run_template(id, arguments, JSONValue=False, client=None):
         The template id to be run.
     arguments : dict
         Dictionary of arguments to be passed to the template.
-    JSONValue : bool
+    JSONValue : bool, optional
         If True, will return the JSON output of the template.
         If False, will return the file ids associated with the
         output results.
