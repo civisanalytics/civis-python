@@ -89,7 +89,13 @@ def sql_download_cmd(database_name, file_name, output_file):
 @click.option('-n', type=int, default=100,
               help="Display up to this many rows of the result. Max 100.")
 def sql_run_cmd(database_name, file_name, n):
-    """Run the SQL in the specified file."""
+    """\b Run SQL from a file and preview results
+
+    This command will read a SQL query from the specified text file
+    and run it in Civis Platform on the specified database.
+    The command will block on completion and display a preview
+    of the results, as per the Civis Platform "query" functionality.
+    """
     with open(file_name, 'rt') as f:
         sql_cmd = f.read()
     print('\nExecuting query...')
@@ -106,7 +112,15 @@ def sql_run_cmd(database_name, file_name, n):
 @click.option('-n', type=int, default=100,
               help="Display up to this many rows of the result. Max 100.")
 def sql_cmd_cmd(database_name, sql_cmd, n):
-    """Run a SQL command."""
+    """\b Run SQL from text input and preview results
+
+    This command will read a SQL query from the command line
+    and run it in Civis Platform on the specified database.
+    If you run the command without providing a SQL query, you'll
+    be able to input a multi-line query on the following lines,
+    ending with a blank line.
+    The command will block on completion and display a preview
+    of the results, as per the Civis Platform "query" functionality."""
     if sql_cmd is None:
         # Read the SQL query from user input. This also allows use of a heredoc
         lines = []
