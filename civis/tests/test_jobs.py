@@ -5,9 +5,6 @@ from civis.response import Response
 from civis.tests.mocks import create_client_mock
 from civis.utils._jobs import logging
 
-# from civis.compat import mock
-# from civis.futures import CivisFuture
-
 
 def create_mock_client_with_job():
     mock_client = create_client_mock()
@@ -88,9 +85,6 @@ def mock_client_no_json_output():
     return mock_client
 
 
-# @mock.patch.object('civis.utils._jobs.CivisFuture',
-# 'class_method', autospec=True)
-# @mock.patch.object(CivisFuture, '_subscribe')
 def test_run_template_json_output_fileids_returned(
     mock_client_single_json_output
 ):
