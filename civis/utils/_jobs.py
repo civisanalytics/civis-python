@@ -80,10 +80,13 @@ def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     print(client)
     run = client.scripts.post_custom_runs(job.id)
     print(client)
-    fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id))
+    fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
     print(client)
+    print(fut)
     fut.result()
+    #raise RuntimeError("sdfads")
     outputs = client.scripts.list_containers_runs_outputs(job.id, run.id)
+    print(outputs)
     print(client)
     if JSONValue:
         json_output = [

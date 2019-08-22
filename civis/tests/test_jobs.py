@@ -4,7 +4,9 @@ import civis
 from civis.response import Response
 from civis.tests.mocks import create_client_mock
 from civis.utils._jobs import logging
-from civis.compat import mock
+
+# from civis.compat import mock
+# from civis.futures import CivisFuture
 
 
 def create_mock_client_with_job():
@@ -13,7 +15,13 @@ def create_mock_client_with_job():
     job_response = Response({"id": 1, "name": "test"})
     run_post_response = Response({"id": 1})
     run_get_response = Response(
-        {"id": run_post_response.id, "state": "succeeded"}
+        {
+            "id": run_post_response.id,
+            "state": "succeeded",
+            "is_cancel_requested": False,
+            "error": None,
+            "custom_id": run_post_response.id,
+        }
     )
     mock_client.scripts.post_custom.return_value = job_response
     mock_client.scripts.post_custom_runs.return_value = run_post_response
@@ -80,7 +88,9 @@ def mock_client_no_json_output():
     return mock_client
 
 
-@mock.patch('civis.utils._jobs.CivisFuture')
+# @mock.patch.object('civis.utils._jobs.CivisFuture',
+# 'class_method', autospec=True)
+# @mock.patch.object(CivisFuture, '_subscribe')
 def test_run_template_json_output_fileids_returned(
     mock_client_single_json_output
 ):
