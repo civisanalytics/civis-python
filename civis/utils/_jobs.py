@@ -7,7 +7,7 @@ from civis._deprecation import deprecate_param
 log = logging.getLogger(__name__)
 
 
-@deprecate_param('v2.0.0', 'api_key')
+@deprecate_param("v2.0.0", "api_key")
 def run_job(job_id, api_key=None, client=None):
     """Run a job.
 
@@ -30,13 +30,15 @@ def run_job(job_id, api_key=None, client=None):
     if client is None:
         client = APIClient(api_key=api_key)
     run = client.jobs.post_runs(job_id)
-    return CivisFuture(client.jobs.get_runs,
-                       (job_id, run['id']),
-                       client=client,
-                       poll_on_creation=False)
+    return CivisFuture(
+        client.jobs.get_runs,
+        (job_id, run["id"]),
+        client=client,
+        poll_on_creation=False,
+    )
 
 
-@deprecate_param('v2.0.0', 'api_key')
+@deprecate_param("v2.0.0", "api_key")
 def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     """Run a template and return the results.
 
@@ -80,11 +82,13 @@ def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     print(client)
     run = client.scripts.post_custom_runs(job.id)
     print(client)
-    fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
+    fut = CivisFuture(
+        client.scripts.get_custom_runs, (job.id, run.id), client=client
+    )
     print(client)
     print(fut)
     fut.result()
-    #raise RuntimeError("sdfads")
+    # raise RuntimeError("sdfads")
     outputs = client.scripts.list_containers_runs_outputs(job.id, run.id)
     print(outputs)
     print(client)
@@ -93,12 +97,12 @@ def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
             o.value for o in outputs if o.object_type == "JSONValue"
         ]
         if len(json_output) == 0:
-            log.warning('No JSON output for template {}'.format(id))
+            log.warning("No JSON output for template {}".format(id))
             return
         if len(json_output) > 1:
             log.warning(
-                'More than 1 JSON output for template {}'
-                ' -- returning only the first one.'.format(id)
+                "More than 1 JSON output for template {}"
+                " -- returning only the first one.".format(id)
             )
         return dict(json_output[0])
     else:
