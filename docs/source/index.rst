@@ -47,7 +47,7 @@ Client API Reference
    parallel
    client
    cli
-   jobs
+   utils
 
 
 Indices and tables

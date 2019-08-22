@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import logging
 
 from civis import APIClient
@@ -13,18 +14,18 @@ def run_job(job_id, api_key=None, client=None):
 
     Parameters
     ----------
-    job_id : str or int
+    job_id: str or int
         The ID of the job.
-    api_key : DEPRECATED str, optional
+    api_key: DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
-    client : :class:`civis.APIClient`, optional
+    client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
 
     Returns
     -------
-    results : :class:`~civis.futures.CivisFuture`
+    results: :class:`~civis.futures.CivisFuture`
         A `CivisFuture` object.
     """
     if client is None:
@@ -43,28 +44,27 @@ def run_template(id, arguments, JSONValue=False, client=None):
 
     Parameters
     ----------
-    id : int
+    id: int
         The template id to be run.
-    arguments : dict
+    arguments: dict
         Dictionary of arguments to be passed to the template.
-    JSONValue : bool, optional
+    JSONValue: bool, optional
         If True, will return the JSON output of the template.
         If False, will return the file ids associated with the
         output results.
-    client : :class:`civis.APIClient`, optional
+    client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
 
     Returns
     -------
-    If JSONValue = False:
-      file_ids : dict
-        Dictionary of file ids with the keys being their output names.
-    If JSONValue = True:
-      json_output : dict
-        JSON dict containing the results of the template run.
-        Expects only a single JSON result. Will return nothing if
-        either there is no JSON result or there is more than 1 JSON result.
+    output: dict
+        If JSONValue = False, dictionary of file ids with the keys
+        being their output names.
+        If JSONValue = True, JSON dict containing the results of the
+        template run. Expects only a single JSON result. Will return
+        nothing if either there is no JSON result or there is more
+        than 1 JSON result.
 
     Examples
     --------
