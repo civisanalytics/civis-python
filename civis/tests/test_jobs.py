@@ -80,7 +80,7 @@ def mock_client_no_json_output():
     return mock_client
 
 
-@mock.patch('civis.io._utils.CivisFuture')
+@mock.patch('civis.utils._jobs.CivisFuture')
 def test_run_template_json_output_fileids_returned(
     mock_client_single_json_output
 ):
