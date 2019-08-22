@@ -4,6 +4,7 @@ import civis
 from civis.response import Response
 from civis.tests.mocks import create_client_mock
 from civis.utils._jobs import logging
+from civis.compat import mock
 
 
 def create_mock_client_with_job():
@@ -89,6 +90,7 @@ def test_run_template_json_output_fileids_returned(
         template_id, arguments=args, client=mock_client_single_json_output
     )
     assert result == {"output": 10}
+
 
 """
 def test_run_template_no_json_output_fileids_returned(
