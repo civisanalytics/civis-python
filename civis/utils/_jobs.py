@@ -36,7 +36,8 @@ def run_job(job_id, api_key=None, client=None):
                        poll_on_creation=False)
 
 
-def run_template(id, arguments, JSONValue=False, client=None):
+@deprecate_param('v2.0.0', 'api_key')
+def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     """Run a template and return the results.
 
     Parameters
