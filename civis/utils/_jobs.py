@@ -38,8 +38,7 @@ def run_job(job_id, api_key=None, client=None):
     )
 
 
-@deprecate_param("v2.0.0", "api_key")
-def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
+def run_template(id, arguments, JSONValue=False, client=None):
     """Run a template and return the results.
 
     Parameters
@@ -79,19 +78,12 @@ def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     if client is None:
         client = APIClient()
     job = client.scripts.post_custom(id, arguments=arguments)
-    print(client)
     run = client.scripts.post_custom_runs(job.id)
-    print(client)
     fut = CivisFuture(
         client.scripts.get_custom_runs, (job.id, run.id), client=client
     )
-    print(client)
-    print(fut)
     fut.result()
-    # raise RuntimeError("sdfads")
     outputs = client.scripts.list_containers_runs_outputs(job.id, run.id)
-    print(outputs)
-    print(client)
     if JSONValue:
         json_output = [
             o.value for o in outputs if o.object_type == "JSONValue"
