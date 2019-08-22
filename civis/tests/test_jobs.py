@@ -92,7 +92,6 @@ def test_run_template_json_output_fileids_returned(
     assert result == {"output": 10}
 
 
-"""
 def test_run_template_no_json_output_fileids_returned(
     mock_client_no_json_output
 ):
@@ -168,4 +167,3 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
         )
     ]
     assert result is None
-"""
