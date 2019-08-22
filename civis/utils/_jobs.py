@@ -85,7 +85,6 @@ def run_template(id, arguments, api_key=None, JSONValue=False, client=None):
     fut.result()
     outputs = client.scripts.list_containers_runs_outputs(job.id, run.id)
     print(client)
-    raise RuntimeError("not here")
     if JSONValue:
         json_output = [
             o.value for o in outputs if o.object_type == "JSONValue"
