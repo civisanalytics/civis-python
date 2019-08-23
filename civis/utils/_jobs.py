@@ -96,6 +96,8 @@ def run_template(id, arguments, JSONValue=False, client=None):
                 "More than 1 JSON output for template {}"
                 " -- returning only the first one.".format(id)
             )
+        # Note that the cast to a dict is to convert
+        # an expected Response object.
         return dict(json_output[0])
     else:
         file_ids = {o.name: o.object_id for o in outputs}
