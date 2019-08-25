@@ -66,20 +66,20 @@ SQL
 The Civis CLI allows for easy running of SQL queries on Civis Platform
 through the following commands:
 
-- ``civis sql run [-n $MAX_LINES] $DATABASE_NAME $FILE_NAME``
+- ``civis sql [-n $MAX_LINES] -d $DATABASE_NAME -f $FILE_NAME``
 
   Read a SQL query from a text file and run it on the specified database.
-  The results of the query, if any, will be shown after it completes.
+  The results of the query, if any, will be shown after it completes
+  (up to a maximum of $MAX_LINES rows, defaulting to 100).
 
-- ``civis sql cmd [-n $MAX_LINES] $DATABASE_NAME [$SQL_QUERY]``
+- ``civis sql [-n $MAX_LINES] -d $DATABASE_NAME -c [$SQL_QUERY]``
 
-  Similar to ``civis sql run``, but read query text from the command line
-  argument instead of from a file. If you do not provide a query on the
-  command line, you may type a multi-line query beneath, ending with a
-  blank line.
+  Instead of reading from a file, read query text from a command line
+  argument. If you do not provide a query on the command line,
+  the query text will be taken from stdin.
 
-- ``civis sql download $DATABASE_NAME $SQL_FILE_NAME $OUTPUT_FILE_NAME
+- ``civis sql -d $DATABASE_NAME [-f $SQL_FILE_NAME] -o $OUTPUT_FILE_NAME``
 
-  Read a SQL query from a text file and run it on the specified database.
-  The complete results of the query will be downloaded to a CSV file
-  at the requested location after the query completes.
+  With the `-o` or `--output` option specified, the complete results
+  of the query will be downloaded to a CSV file at the requested location
+  after the query completes.

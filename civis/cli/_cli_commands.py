@@ -70,58 +70,32 @@ def files_download_cmd(file_id, path):
         civis_to_file(file_id, f)
 
 
-@click.command('download')
-@click.argument('database_name', type=str)
-@click.argument('file_name', type=click.Path(exists=True))
-@click.argument('output_file', type=click.Path())
-def sql_download_cmd(database_name, file_name, output_file):
-    """Download results of a query."""
-    with open(file_name, 'rt') as f:
-        sql = f.read()
-    fut = civis.io.civis_to_csv(output_file, sql, database=database_name)
-    fut.result()
-    print("Downloaded the result of the query to %s." % output_file)
-
-
-@click.command('run')
-@click.argument('database_name', type=str)
-@click.argument('file_name', type=click.Path(exists=True))
+@click.command('sql')
+@click.option('--dbname', '-d', type=str, required=True,
+              help='Execute the query on this Civis Platform database')
+@click.option('--command', '-c', type=str, default=None,
+              help='Execute a single input command string')
+@click.option('--filename', '-f', type=click.Path(exists=True),
+              help='Execute a query read from the given file')
+@click.option('--output', '-o', type=click.Path(),
+              help='Download query results to this file')
+@click.option('--quiet', '-q', is_flag=True, help='Suppress screen output')
 @click.option('-n', type=int, default=100,
               help="Display up to this many rows of the result. Max 100.")
-def sql_run_cmd(database_name, file_name, n):
-    """\b Run SQL from a file and preview results
+def sql_cmd(dbname, command, filename, output, quiet, n):
+    """\b Execute a SQL query in Civis Platform
 
-    This command will read a SQL query from the specified text file
-    and run it in Civis Platform on the specified database.
-    The command will block on completion and display a preview
-    of the results, as per the Civis Platform "query" functionality.
+    If neither a command nor an input file is specified, read
+    the SQL command from stdin.
+    If writing to an output file, use a Civis SQL script and write the
+    entire query output to the specified file.
+    If not writing to an output file, use a Civis Query, and return a
+    preview of the results, up to a maximum of 100 rows.
     """
-    with open(file_name, 'rt') as f:
-        sql_cmd = f.read()
-    print('\nExecuting query...')
-    fut = civis.io.query_civis(sql_cmd, database=database_name, preview_rows=n,
-                               polling_interval=3)
-    cols, rows = fut.result()['result_columns'], fut.result()['result_rows']
-    print('...Query complete.\n')
-    print(_str_table_result(cols, rows))
-
-
-@click.command('cmd')
-@click.argument('database_name', type=str)
-@click.argument('sql_cmd', type=str, default=None, required=False)
-@click.option('-n', type=int, default=100,
-              help="Display up to this many rows of the result. Max 100.")
-def sql_cmd_cmd(database_name, sql_cmd, n):
-    """\b Run SQL from text input and preview results
-
-    This command will read a SQL query from the command line
-    and run it in Civis Platform on the specified database.
-    If you run the command without providing a SQL query, you'll
-    be able to input a multi-line query on the following lines,
-    ending with a blank line.
-    The command will block on completion and display a preview
-    of the results, as per the Civis Platform "query" functionality."""
-    if sql_cmd is None:
+    if filename:
+        with open(filename, 'rt') as f:
+            sql = f.read()
+    elif not command:
         # Read the SQL query from user input. This also allows use of a heredoc
         lines = []
         while True:
@@ -134,13 +108,31 @@ def sql_cmd_cmd(database_name, sql_cmd, n):
                 break
             else:
                 lines.append(_i)
-        sql_cmd = '\n'.join(lines)
-    print('\nExecuting query...')
-    fut = civis.io.query_civis(sql_cmd, database=database_name, preview_rows=n,
-                               polling_interval=3)
-    cols, rows = fut.result()['result_columns'], fut.result()['result_rows']
-    print('...Query complete.\n')
-    print(_str_table_result(cols, rows))
+        sql = '\n'.join(lines)
+    else:
+        sql = command
+
+    if not sql:
+        # If the user didn't enter a query, exit.
+        if not quiet:
+            print('Did not receive a SQL query.')
+        return
+
+    if not quiet:
+        print('\nExecuting query...')
+    if output:
+        fut = civis.io.civis_to_csv(output, sql, database=dbname)
+        fut.result()  # Block for completion and raise exceptions if any
+        if not quiet:
+            print("Downloaded the result of the query to %s." % output)
+    else:
+        fut = civis.io.query_civis(sql, database=dbname,
+                                   preview_rows=n, polling_interval=3)
+        cols = fut.result()['result_columns']
+        rows = fut.result()['result_rows']
+        if not quiet:
+            print('...Query complete.\n')
+            print(_str_table_result(cols, rows))
 
 
 def _str_table_result(cols, rows):
