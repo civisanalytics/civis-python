@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 - Add CLI commands "sql run", "sql cmd", and "sql download". (#319)
+- Add helper function (run_template) to run a template given its id and return
+  either the JSON output or the associated file ids. (#318)
 - Add helper function to list CivisML models. (#314)
 - Allow the base URL of the CLI to be configured through the
   `CIVIS_API_ENDPOINT` environment variable, like the civis Python module. (#312)
@@ -20,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Python 2.7 compatibility for multiple deprecations. (#311)
 
 ### Fixed
+- Added missing docs for `json_to_file` and `dataframe_to_file` (#320).
 - Fix unintentional dependency on scikit-learn for `parallel` module tests. (#245, #303)
 - Deprecate the `headers` parameter of `dataframe_to_civis` and always tell Civis
   whether the import has headers or not, rather than autodetecting. (#263, #307)
