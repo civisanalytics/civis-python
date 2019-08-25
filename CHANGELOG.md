@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-- Add CLI commands "sql run", "sql cmd", and "sql download". (#319)
+- Add CLI command "sql" for command line SQL query execution. (#319)
 - Add helper function (run_template) to run a template given its id and return
   either the JSON output or the associated file ids. (#318)
 - Add helper function to list CivisML models. (#314)
