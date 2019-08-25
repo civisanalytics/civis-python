@@ -216,10 +216,6 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
         for _output in outputs:
             if _output['object_type'] == 'File':
                 _func = getattr(client.files, "put_shares_" + entity_type)
-                if _output['name'] == 'log.txt' and permission_level == 'read':
-                    # Require "write" level permission or higher to view
-                    # the debug logs.
-                    continue
                 obj_permission = permission_level
             elif _output['object_type'] == 'Project':
                 _func = getattr(client.projects, "put_shares_" + entity_type)
@@ -233,6 +229,8 @@ def _share_model(job_id, entity_ids, permission_level, entity_type,
                                 "put_shares_" + entity_type)
                 obj_permission = permission_level
             else:
+                log.debug("Found a run output of type %s, ID %s; not sharing "
+                          "it.", _output['object_type'],  _output['object_id'])
                 continue
             _oid = _output['object_id']
             # Don't send share emails for any of the run outputs.
@@ -316,6 +314,8 @@ def _unshare_model(job_id, entity_id, entity_type, client=None):
             elif _output['object_type'] == 'JSONValue':
                 _func = getattr(client.json_values, endpoint_name)
             else:
+                log.debug("Found run output of type %s, ID %s; not unsharing "
+                          "it.", _output['object_type'],  _output['object_id'])
                 continue
             _func(_output['object_id'], entity_id)
 

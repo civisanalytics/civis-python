@@ -101,21 +101,6 @@ def test_share_model_project_permissions():
         31, [7, 8], 'write', send_shared_email=False)
 
 
-def test_share_model_debug_log():
-    # Debug logs need "write" permission to be shared
-    m_client = _create_share_model_client_mock([11])
-    m_client.scripts.list_containers_runs_outputs.return_value = [
-        Response({'object_id': 117, 'object_type': 'File', 'name': 'log.txt'})]
-
-    helper._share_model(3, [7], 'read', 'users', client=m_client)
-
-    assert m_client.files.put_shares_users.call_count == 0
-
-    helper._share_model(3, [7], 'write', 'users', client=m_client)
-
-    assert m_client.files.put_shares_users.call_count == 1
-
-
 def test_unshare_model_users():
     m_cl = _create_share_model_client_mock([11])
 
