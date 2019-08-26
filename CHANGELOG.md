@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+
+## 1.11.0 - 2019-08-26
 ### Added
 - Add CLI command "sql" for command line SQL query execution. (#319)
 - Add helper function (run_template) to run a template given its id and return
