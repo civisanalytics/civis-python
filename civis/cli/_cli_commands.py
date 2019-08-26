@@ -5,6 +5,7 @@ Additional commands to add to the CLI beyond the OpenAPI spec.
 """
 import functools
 import os
+import sys
 
 import click
 import requests
@@ -115,23 +116,24 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
     if not sql:
         # If the user didn't enter a query, exit.
         if not quiet:
-            print('Did not receive a SQL query.')
+            print('Did not receive a SQL query.', file=sys.stderr)
         return
 
     if not quiet:
-        print('\nExecuting query...')
+        print('\nExecuting query...', file=sys.stderr)
     if output:
         fut = civis.io.civis_to_csv(output, sql, database=dbname)
         fut.result()  # Block for completion and raise exceptions if any
         if not quiet:
-            print("Downloaded the result of the query to %s." % output)
+            print("Downloaded the result of the query to %s." % output,
+                  file=sys.stderr)
     else:
         fut = civis.io.query_civis(sql, database=dbname,
                                    preview_rows=n, polling_interval=3)
         cols = fut.result()['result_columns']
         rows = fut.result()['result_rows']
         if not quiet:
-            print('...Query complete.\n')
+            print('...Query complete.\n', file=sys.stderr)
             print(_str_table_result(cols, rows))
 
 
