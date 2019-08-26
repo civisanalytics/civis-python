@@ -3,6 +3,7 @@
 """
 Additional commands to add to the CLI beyond the OpenAPI spec.
 """
+from __future__ import print_function
 import functools
 import os
 import sys
