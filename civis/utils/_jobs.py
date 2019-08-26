@@ -83,7 +83,7 @@ def run_template(id, arguments, JSONValue=False, client=None):
         client.scripts.get_custom_runs, (job.id, run.id), client=client
     )
     fut.result()
-    outputs = client.scripts.list_containers_runs_outputs(job.id, run.id)
+    outputs = client.scripts.list_custom_runs_outputs(job.id, run.id)
     if JSONValue:
         json_output = [
             o.value for o in outputs if o.object_type == "JSONValue"

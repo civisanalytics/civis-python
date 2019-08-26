@@ -39,7 +39,7 @@ def mock_client_single_json_output():
             }
         )
     ]
-    mock_client.scripts.list_containers_runs_outputs.return_value = mock_output
+    mock_client.scripts.list_custom_runs_outputs.return_value = mock_output
     return mock_client
 
 
@@ -64,7 +64,7 @@ def mock_client_multiple_json_output():
             }
         ),
     ]
-    mock_client.scripts.list_containers_runs_outputs.return_value = mock_output
+    mock_client.scripts.list_custom_runs_outputs.return_value = mock_output
     return mock_client
 
 
@@ -81,7 +81,7 @@ def mock_client_no_json_output():
             }
         )
     ]
-    mock_client.scripts.list_containers_runs_outputs.return_value = mock_output
+    mock_client.scripts.list_custom_runs_outputs.return_value = mock_output
     return mock_client
 
 
