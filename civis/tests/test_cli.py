@@ -5,6 +5,7 @@ import os
 import pytest
 
 from civis.cli.__main__ import generate_cli, invoke, make_operation_name
+from civis.cli._cli_commands import _str_table_result
 from civis.compat import mock
 from civis.tests import TEST_SPEC
 
@@ -118,3 +119,11 @@ def test_parameter_case(mock_session):
 )
 def test_make_operation_name(path, method, resource_name, exp):
     assert make_operation_name(path, method, resource_name) == exp
+
+
+def test_str_table_result():
+    cols = ['a', 'snake!']
+    rows = [['2', '3'], ['1.1', '3.3']]
+
+    out = _str_table_result(cols, rows)
+    assert out == "a   | snake!\n------------\n  2 |      3\n1.1 |    3.3"

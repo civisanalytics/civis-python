@@ -59,3 +59,27 @@ backend for your Jupyter notebooks.
 - ``civis notebooks open $NOTEBOOK_ID``
 
   Open an existing notebook (which may or may not be running) in your default browser.
+
+SQL
+---
+
+The Civis CLI allows for easy running of SQL queries on Civis Platform
+through the following commands:
+
+- ``civis sql [-n $MAX_LINES] -d $DATABASE_NAME -f $FILE_NAME``
+
+  Read a SQL query from a text file and run it on the specified database.
+  The results of the query, if any, will be shown after it completes
+  (up to a maximum of $MAX_LINES rows, defaulting to 100).
+
+- ``civis sql [-n $MAX_LINES] -d $DATABASE_NAME -c [$SQL_QUERY]``
+
+  Instead of reading from a file, read query text from a command line
+  argument. If you do not provide a query on the command line,
+  the query text will be taken from stdin.
+
+- ``civis sql -d $DATABASE_NAME [-f $SQL_FILE_NAME] -o $OUTPUT_FILE_NAME``
+
+  With the `-o` or `--output` option specified, the complete results
+  of the query will be downloaded to a CSV file at the requested location
+  after the query completes.
