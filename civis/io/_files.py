@@ -211,6 +211,11 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     >>> with open("my_data.csv", "r") as f:
     ...     file_id = file_to_civis(f, 'my_data', expires_at=None)
 
+    Raises
+    ------
+    ValueError
+        If `name` is not provided and cannot be inferred from `buf`
+
     Notes
     -----
     If you are opening a binary file (e.g., a compressed archive) to
