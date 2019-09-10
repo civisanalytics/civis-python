@@ -183,8 +183,8 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
         treated as paths to local files to open.
     name : str, optional
         The name you wish to give the file. If not given, it will be inferred
-        from the basename of `buf` (if `buf` is a string for a file path) or
-        `buf.name` (if `buf` is a file-like object).
+        from the basename of ``buf`` (if ``buf`` is a string for a file path)
+        or ``buf.name`` (if ``buf`` is a file-like object).
     api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
@@ -200,21 +200,23 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     file_id : int
         The new Civis file ID.
 
+    Raises
+    ------
+    ValueError
+        If ``name`` is not provided and cannot be inferred from ``buf``
+
     Examples
     --------
     >>> # Upload file at a given path on the local filesystem.
     >>> file_id = file_to_civis("my_data.csv", 'my_data')
+    >>> # If not given, ``name`` will be the basename of the given file path.
+    >>> file_id = file_to_civis("foo/bar/data.csv")  # ``name`` is 'data.csv'
     >>> # Upload file which expires in 30 days
     >>> with open("my_data.csv", "r") as f:
     ...     file_id = file_to_civis(f, 'my_data')
     >>> # Upload file which never expires
     >>> with open("my_data.csv", "r") as f:
     ...     file_id = file_to_civis(f, 'my_data', expires_at=None)
-
-    Raises
-    ------
-    ValueError
-        If `name` is not provided and cannot be inferred from `buf`
 
     Notes
     -----
