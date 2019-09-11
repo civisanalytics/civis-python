@@ -173,7 +173,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
 
 @deprecate_param('v2.0.0', 'api_key')
-def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
+def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     """Upload a file to Civis.
 
     Parameters
@@ -181,8 +181,10 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     buf : file-like object or str
         The file or other buffer that you wish to upload. Strings will be
         treated as paths to local files to open.
-    name : str
-        The name you wish to give the file.
+    name : str, optional
+        The name you wish to give the file. If not given, it will be inferred
+        from the basename of ``buf`` (if ``buf`` is a string for a file path)
+        or ``buf.name`` (if ``buf`` is a file-like object).
     api_key : DEPRECATED str, optional
         Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
         environment variable will be used.
@@ -198,10 +200,17 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     file_id : int
         The new Civis file ID.
 
+    Raises
+    ------
+    TypeError
+        If ``name`` is not provided and cannot be inferred from ``buf``
+
     Examples
     --------
     >>> # Upload file at a given path on the local filesystem.
     >>> file_id = file_to_civis("my_data.csv", 'my_data')
+    >>> # If not given, ``name`` will be the basename of the given file path.
+    >>> file_id = file_to_civis("foo/bar/data.csv")  # ``name`` is 'data.csv'
     >>> # Upload file which expires in 30 days
     >>> with open("my_data.csv", "r") as f:
     ...     file_id = file_to_civis(f, 'my_data')
@@ -224,6 +233,18 @@ def file_to_civis(buf, name, api_key=None, client=None, **kwargs):
     Small or non-seekable file-like objects will be uploaded with a
     single post.
     """
+    if name is None:
+        if isinstance(buf, six.string_types):
+            name = os.path.basename(buf)
+        elif hasattr(buf, 'name'):
+            name = buf.name
+        else:
+            msg = (
+                "`buf` is a file-like object, but its name cannot be inferred."
+                " Please provide `name` explicitly."
+            )
+            raise TypeError(msg)
+
     if isinstance(buf, six.string_types):
         with open(buf, 'rb') as f:
             return _file_to_civis(

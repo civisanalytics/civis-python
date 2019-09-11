@@ -477,18 +477,19 @@ def test_civis_to_file_retries(mock_requests):
          mock_civis.files.get.return_value.file_url, stream=True)
 
 
+@pytest.mark.parametrize('input_filename', ['newname', None])
 @mock.patch.object(_files, 'requests', autospec=True)
-def test_file_to_civis(mock_requests):
+def test_file_to_civis(mock_requests, input_filename):
     # Test that file_to_civis posts a Civis File with the API client
     # and calls `requests.post` on the returned URL.
     mock_civis = create_client_mock()
     civis_name, expected_id = 'newname', 137
     mock_civis.files.post.return_value.id = expected_id
     with TemporaryDirectory() as tdir:
-        fname = os.path.join(tdir, 'testfile')
+        fname = os.path.join(tdir, 'newname')
         with open(fname, 'wt') as _fout:
             _fout.write('abcdef')
-        fid = _files.file_to_civis(fname, civis_name, expires_at=None,
+        fid = _files.file_to_civis(fname, input_filename, expires_at=None,
                                    client=mock_civis)
     assert fid == expected_id
     mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
