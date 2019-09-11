@@ -202,7 +202,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
 
     Raises
     ------
-    ValueError
+    TypeError
         If ``name`` is not provided and cannot be inferred from ``buf``
 
     Examples
@@ -243,7 +243,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
                 "`buf` is a file-like object, but its name cannot be inferred."
                 " Please provide `name` explicitly."
             )
-            raise ValueError(msg)
+            raise TypeError(msg)
 
     if isinstance(buf, six.string_types):
         with open(buf, 'rb') as f:
