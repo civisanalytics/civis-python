@@ -25,3 +25,25 @@ def test_get_table_id(schema_tablename):
         schema='foo',
         name='bar'
     )
+
+def test_get_storage_host_id():
+    client = civis.APIClient(local_api_spec=TEST_SPEC, api_key='none')
+
+    class StorageHost:
+        def __init__(self, id, name):
+            self.id = id
+            self.name = name
+
+        def __getitem__(self, key):
+            return getattr(self, key)
+
+    storage_hosts = [StorageHost(1234, 'test'), StorageHost(5678,'othertest')]
+    client.storage_hosts.list = mock.Mock(return_value=storage_hosts)
+
+    assert client.get_storage_host_id('test') == 1234
+
+    client.storage_hosts.list.assert_called_once_with()
+
+    assert client.get_storage_host_id(4732) == 4732
+    with pytest.raises(ValueError, match="Storage Host invalidname not found"):
+         client.get_storage_host_id('invalidname')
