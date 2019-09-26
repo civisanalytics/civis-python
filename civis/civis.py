@@ -287,6 +287,44 @@ class MetaMixin():
 
         return tables[0].id
 
+    @lru_cache(maxsize=128)
+    def get_storage_host_id(self, storage_host):
+        """Return the storage host ID for a given storage host name.
+
+        Parameters
+        ----------
+        storage_host : str or int
+            If an integer ID is given, passes through. If a str is given
+            the storage host ID corresponding to that storage host is returned.
+
+        Returns
+        -------
+        storage_host_id : int
+            The ID of the storage host.
+
+        Raises
+        ------
+        ValueError
+            If the storage host can't be found.
+
+        Examples
+        --------
+        >>> import civis
+        >>> client = civis.APIClient()
+        >>> client.get_storage_host_id('test host')
+        1234
+
+        >>> client.get_storage_host_id(1111)
+        1111
+        """
+        if isinstance(storage_host, int):
+            return storage_host
+        sh = find_one(self.storage_hosts.list(), name=storage_host)
+        if not sh:
+            raise ValueError("Storage Host {} not found.".format(storage_host))
+
+        return sh["id"]
+
     @property
     @lru_cache(maxsize=128)
     def default_credential(self):
