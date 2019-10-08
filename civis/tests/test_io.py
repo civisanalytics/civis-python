@@ -46,18 +46,17 @@ class ImportTests(CivisVCRTestCase):
     # the calls in the VCR cassette when testing later.
 
     @classmethod
-    def setUpClass(cls):
-        get_api_spec.cache_clear()
-        generate_classes.cache_clear()
-
-    @classmethod
     def tearDownClass(cls):
         get_api_spec.cache_clear()
         generate_classes.cache_clear()
 
     @classmethod
     @mock.patch(api_import_str, return_value=civis_api_spec)
-    def setup_class(cls, *mocks):
+    def setUpClass(cls, *mocks):
+        get_api_spec.cache_clear()
+        generate_classes.cache_clear()
+        cls.mock_client = create_client_mock()
+
         setup_vcr = vcr.VCR(filter_headers=['Authorization'])
         setup_cassette = os.path.join(cassette_dir(), 'io_setup.yml')
         with setup_vcr.use_cassette(setup_cassette):
@@ -98,6 +97,7 @@ class ImportTests(CivisVCRTestCase):
 
             cls.export_job_id = result.sql_id
 
+    @pytest.mark.file_to_civis
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_zip_member_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
@@ -120,6 +120,7 @@ class ImportTests(CivisVCRTestCase):
 
         assert isinstance(result, int)
 
+    @pytest.mark.file_to_civis
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_bytes_file_to_civis(self, *mocks):
         buf = BytesIO()
@@ -129,6 +130,7 @@ class ImportTests(CivisVCRTestCase):
 
         assert isinstance(result, int)
 
+    @pytest.mark.file_to_civis
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_large_file_to_civis(self, *mocks):
         curr_size = civis.io._files.MIN_MULTIPART_SIZE
@@ -144,6 +146,7 @@ class ImportTests(CivisVCRTestCase):
 
         assert isinstance(result, int)
 
+    @pytest.mark.civis_to_file
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_file(self, *mocks):
         buf = BytesIO()
@@ -151,35 +154,110 @@ class ImportTests(CivisVCRTestCase):
         buf.seek(0)
         assert buf.read() == b'a,b,c\n1,2,3'
 
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_csv_to_civis(self, *mocks):
-        with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, 'tempfile')
-            with open(fname, 'w+b') as tmp:
-                tmp.write(b'a,b,c\n1,2,3')
-
-            table = "scratch.api_client_test_fixture"
-            database = 'redshift-general'
-            result = civis.io.csv_to_civis(fname, database, table,
-                                           existing_table_rows='truncate',
-                                           polling_interval=POLL_INTERVAL)
-            result = result.result()  # block until done
-
-        assert isinstance(result.id, int)
-        assert result.state == 'succeeded'
-
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_civis_file_to_table(self, *mocks):
+    @pytest.mark.csv_to_civis
+    @mock.patch('civis.io._tables.file_to_civis')
+    @mock.patch('civis.io._tables.civis_file_to_table')
+    def test_csv_to_civis(self, m_civis_file_to_table, m_file_to_civis,
+                          _m_get_api_spec):
+        mock_file_id = 42
+        m_file_to_civis.return_value = mock_file_id
+        mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                           spec_set=True)
+        m_civis_file_to_table.return_value = mock_future
         table = "scratch.api_client_test_fixture"
         database = 'redshift-general'
-        result = civis.io.civis_file_to_table(self.file_id, database, table,
-                                              existing_table_rows='truncate',
-                                              polling_interval=POLL_INTERVAL)
-        result = result.result()  # block until done
 
-        assert isinstance(result.id, int)
-        assert result.state == 'succeeded'
+        fname = 'a/tempfile'
 
+        with mock.patch.object(civis.io._tables, 'open',
+                               mock.mock_open(read_data='some,test,data'),
+                               create=True) as m_open:
+
+            result = civis.io.csv_to_civis(fname, database, table,
+                                           client=self.mock_client,
+                                           existing_table_rows='truncate')
+
+            m_file_to_civis.assert_called_once_with(m_open.return_value,
+                                                    'tempfile',
+                                                    client=self.mock_client)
+
+        assert result == mock_future
+
+        m_civis_file_to_table.assert_called_once_with(
+            mock_file_id, database, table,
+            client=self.mock_client,
+            max_errors=None,
+            existing_table_rows='truncate',
+            diststyle=None, distkey=None,
+            sortkey1=None, sortkey2=None,
+            delimiter=",", headers=None,
+            credential_id=None, polling_interval=None,
+            hidden=True
+        )
+
+    @pytest.mark.civis_file_to_table
+    def test_civis_file_to_table(self, _m_get_api_spec):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        mock_file_id = 1234
+        mock_import_id = 8675309
+
+        self.mock_client.imports.post.return_value.id = mock_import_id
+        self.mock_client.get_database_id.return_value = 42
+        self.mock_client.default_credential = 713
+
+        mock_run_id = 2345
+        self.mock_client.jobs.post_runs.return_value = {'id': mock_run_id}
+
+        with mock.patch.object(
+                civis.io._tables, 'CivisFuture',
+                spec_set=True) as m_future:
+
+            m_future.return_value = mock.sentinel.a_future
+
+            result = civis.io.civis_file_to_table(
+                mock_file_id, database, table,
+                existing_table_rows='truncate',
+                client=self.mock_client
+            )
+
+            assert result is mock.sentinel.a_future
+
+            m_future.assert_called_once_with(
+                self.mock_client.jobs.get_runs,
+                (mock_import_id, mock_run_id),
+                polling_interval=None,
+                client=self.mock_client,
+                poll_on_creation=False
+            )
+
+        expected_dest = dict(remote_host_id=42, credential_id=713)
+        expected_name = 'CSV import to scratch.api_client_test_fixture'
+        self.mock_client.imports.post.assert_called_once_with(
+            expected_name, 'AutoImport',
+            is_outbound=False, destination=expected_dest, hidden=True)
+        expected_kwargs = {
+            'source': {'file': {'id': mock_file_id}},
+            'destination': {'database_table': {
+                'schema': 'scratch',
+                'table': 'api_client_test_fixture'
+            }},
+            'advanced_options': {
+                'max_errors': None,
+                'existing_table_rows': 'truncate',
+                'diststyle': None, 'distkey': None,
+                'sortkey1': None, 'sortkey2': None,
+                'column_delimiter': 'comma',
+                'first_row_is_header': None
+            }
+        }
+        self.mock_client.imports.post_syncs.assert_called_once_with(
+            mock_import_id,
+            **expected_kwargs
+        )
+        self.mock_client.jobs.post_runs.assert_called_once_with(mock_import_id)
+
+    @pytest.mark.read_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_pandas(self, *mocks):
@@ -189,6 +267,7 @@ class ImportTests(CivisVCRTestCase):
                                  polling_interval=POLL_INTERVAL)
         assert df.equals(expected)
 
+    @pytest.mark.read_civis
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_no_pandas(self, *mocks):
         expected = [['a', 'b', 'c'], ['1', '2', '3']]
@@ -197,6 +276,7 @@ class ImportTests(CivisVCRTestCase):
                                    polling_interval=POLL_INTERVAL)
         assert data == expected
 
+    @pytest.mark.read_civis_sql
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_read_civis_sql(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
@@ -206,29 +286,53 @@ class ImportTests(CivisVCRTestCase):
                                        polling_interval=POLL_INTERVAL)
         assert data == expected
 
+    @pytest.mark.dataframe_to_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_dataframe_to_civis(self, *mocks):
-        df = pd.DataFrame([['1', '2', '3']], columns=['a', 'b', 'c'])
-        result = civis.io.dataframe_to_civis(df, 'redshift-general',
-                                             'scratch.api_client_test_fixture',
-                                             existing_table_rows='truncate',
-                                             polling_interval=POLL_INTERVAL)
-        result = result.result()
-        assert result.state == 'succeeded'
+    @mock.patch('civis.io._tables.file_to_civis')
+    @mock.patch('civis.io._tables.civis_file_to_table')
+    def test_dataframe_to_civis(self, m_civis_file_to_table, m_file_to_civis,
+                                _m_get_api_spec):
+        df = mock.create_autospec(pd.DataFrame, spec_set=True)
+        m_file_to_civis.return_value = 42
+        mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                           spec_set=True)
+        m_civis_file_to_table.return_value = mock_future
 
-    @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_dataframe_to_civis_with_index(self, *mocks):
-        df = pd.DataFrame([['1', '2', '3']], columns=['a', 'b', 'c'])
-        result = civis.io.dataframe_to_civis(df, 'redshift-general',
-                                             'scratch.api_client_test_fixture',
-                                             existing_table_rows='truncate',
-                                             polling_interval=POLL_INTERVAL,
-                                             index=True)
-        result = result.result()
-        assert result.state == 'succeeded'
+        fixed_tmpdir = TemporaryDirectory()
+        with mock.patch.object(civis.io._tables, 'TemporaryDirectory',
+                               return_value=fixed_tmpdir):
 
+            with mock.patch.object(df, 'to_csv') as m_to_csv:
+                result = civis.io.dataframe_to_civis(
+                    df, 'redshift-general',
+                    'scratch.api_client_test_fixture',
+                    existing_table_rows='truncate',
+                    client=self.mock_client)
+                assert result == mock_future
+
+                expected_tmp_path = os.path.join(fixed_tmpdir.name,
+                                                 'dataframe_to_civis.csv')
+
+                m_to_csv.assert_called_once_with(expected_tmp_path,
+                                                 encoding='utf-8', index=False)
+
+        m_file_to_civis.assert_called_once_with(
+            expected_tmp_path, 'api_client_test_fixture',
+            client=self.mock_client
+        )
+        m_civis_file_to_table.assert_called_once_with(
+            42, 'redshift-general',
+            'scratch.api_client_test_fixture',
+            client=self.mock_client,
+            max_errors=None, existing_table_rows="truncate",
+            diststyle=None, distkey=None,
+            sortkey1=None, sortkey2=None,
+            delimiter=',',
+            headers=True, credential_id=None,
+            polling_interval=None,
+            hidden=True)
+
+    @pytest.mark.civis_to_multifile_csv
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
@@ -245,6 +349,7 @@ class ImportTests(CivisVCRTestCase):
                                                              'console.s3.'
                                                              'amazonaws.com/')
 
+    @pytest.mark.civis_to_multifile_csv
     @mock.patch('civis.io._tables.CivisFuture')
     @mock.patch('civis.io._tables.civis_to_file')
     @mock.patch('civis.io._tables._sql_script')
@@ -264,6 +369,7 @@ class ImportTests(CivisVCRTestCase):
             mock.ANY, mock.ANY, client=mock_client
         )
 
+    @pytest.mark.transfer_table
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_transfer_table(self, *mocks):
         result = civis.io.transfer_table('redshift-general', 'redshift-test',
@@ -279,6 +385,7 @@ class ImportTests(CivisVCRTestCase):
                                       polling_interval=POLL_INTERVAL).result()
         assert result.state == 'succeeded'
 
+    @pytest.mark.get_sql_select
     def test_get_sql_select(self, *mocks):
         x = "select * from schema.table"
         y = "select a, b, c from schema.table"
@@ -288,6 +395,7 @@ class ImportTests(CivisVCRTestCase):
         with pytest.raises(TypeError):
             civis.io._tables._get_sql_select(table, "column_a")
 
+    @pytest.mark.download_file
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
         with TemporaryDirectory() as temp_dir:
@@ -299,6 +407,7 @@ class ImportTests(CivisVCRTestCase):
         assert data == expected
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_exact():
     m_client = mock.Mock()
     m_client.scripts.list_containers_runs_outputs.return_value = \
@@ -309,6 +418,7 @@ def test_file_id_from_run_output_exact():
     assert fid == 2013
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_approximate():
     # Test fuzzy name matching
     m_client = mock.Mock()
@@ -321,6 +431,7 @@ def test_file_id_from_run_output_approximate():
     assert fid == 2013
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_approximate_multiple():
     # Fuzzy name matching with muliple matches should return the first
     m_cl = mock.Mock()
@@ -335,6 +446,7 @@ def test_file_id_from_run_output_approximate_multiple():
     assert fid == 2013
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_no_file():
     # Get an IOError if we request a file which doesn't exist
     m_client = mock.Mock()
@@ -347,6 +459,7 @@ def test_file_id_from_run_output_no_file():
     assert 'not an output' in str(err.value)
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_no_run():
     # Get an IOError if we request a file from a run which doesn't exist
     m_client = mock.Mock()
@@ -358,6 +471,7 @@ def test_file_id_from_run_output_no_run():
     assert 'could not find job/run id 17/13' in str(err.value).lower()
 
 
+@pytest.mark.file_id_from_run_output
 def test_file_id_from_run_output_platform_error():
     # Make sure we don't swallow real Platform errors
     m_client = mock.Mock()
@@ -367,6 +481,7 @@ def test_file_id_from_run_output_platform_error():
         civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
 
 
+@pytest.mark.file_to_dataframe
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
@@ -379,6 +494,7 @@ def test_file_to_dataframe_infer():
         mock_read_csv.assert_called_once_with(url, compression='infer')
 
 
+@pytest.mark.file_to_dataframe
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
     m_client = mock.Mock()
@@ -391,6 +507,7 @@ def test_file_to_dataframe_infer_gzip():
         mock_read_csv.assert_called_once_with(url, compression='gzip')
 
 
+@pytest.mark.file_to_dataframe
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
     m_client = mock.Mock()
@@ -405,6 +522,7 @@ def test_file_to_dataframe_kwargs():
                                               delimiter='|', nrows=10)
 
 
+@pytest.mark.file_to_json
 @mock.patch.object(civis.io._files, 'civis_to_file', autospec=True)
 def test_load_json(mock_c2f):
     obj = {'spam': 'eggs'}
@@ -416,6 +534,7 @@ def test_load_json(mock_c2f):
     assert out == obj
 
 
+@pytest.mark.civis_to_file
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_civis_to_file_local(mock_requests):
     # Test that a call to civis_to_file uses `requests` to grab the contents
@@ -433,6 +552,7 @@ def test_civis_to_file_local(mock_requests):
         mock_civis.files.get.return_value.file_url, stream=True)
 
 
+@pytest.mark.civis_to_file
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_civis_to_file_retries(mock_requests):
     mock_civis = create_client_mock()
@@ -477,6 +597,7 @@ def test_civis_to_file_retries(mock_requests):
          mock_civis.files.get.return_value.file_url, stream=True)
 
 
+@pytest.mark.file_to_civis
 @pytest.mark.parametrize('input_filename', ['newname', None])
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_file_to_civis(mock_requests, input_filename):
@@ -497,6 +618,7 @@ def test_file_to_civis(mock_requests, input_filename):
         mock_civis.files.post.return_value.upload_url, files=mock.ANY)
 
 
+@pytest.mark.split_schema_tablename
 @pytest.mark.parametrize("table,expected", [
     ('schema.table', ('schema', 'table')),
     ('schema."t.able"', ('schema', 't.able')),
@@ -509,12 +631,14 @@ def test_split_schema_tablename(table, expected):
     assert civis.io._tables.split_schema_tablename(table) == expected
 
 
+@pytest.mark.split_schema_tablename
 def test_split_schema_tablename_raises():
     s = "table.with.too.many.periods"
     with pytest.raises(ValueError):
         civis.io._tables.split_schema_tablename(s)
 
 
+@pytest.mark.export_to_civis_file
 @mock.patch.object(civis.io._tables, '_sql_script', autospec=True,
                    return_value=[700, 1000])
 def test_export_to_civis_file(mock_sql_script):
@@ -540,6 +664,7 @@ def test_export_to_civis_file(mock_sql_script):
                                             hidden=True)
 
 
+@pytest.mark.sql_script
 def test_sql_script():
     sql = "SELECT SPECIAL SQL QUERY"
     export_job_id = 32
