@@ -919,8 +919,9 @@ def civis_file_to_table(file_id, database, table, client=None,
         advanced_options=options)
 
     run = client.jobs.post_runs(import_job.id)
+    log.debug('Started run %d of sync for import %d', run.id, import_job.id)
     fut = CivisFuture(client.jobs.get_runs,
-                      (import_job.id, run['id']),
+                      (import_job.id, run.id),
                       polling_interval=polling_interval,
                       client=client,
                       poll_on_creation=False)
@@ -943,7 +944,7 @@ def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                                          csv_settings=csv_settings)
 
     run_job = client.scripts.post_sql_runs(export_job.id)
-
+    log.debug('Started run %d of SQL script %d', run_job.id, export_job.id)
     return export_job.id, run_job.id
 
 

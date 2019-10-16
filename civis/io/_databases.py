@@ -1,9 +1,13 @@
 from __future__ import absolute_import
 
+import logging
+
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.futures import CivisFuture
 from civis._deprecation import deprecate_param
+
+log = logging.getLogger(__name__)
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -133,7 +137,7 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
                               destination={'path': dest_table},
                               advanced_options=advanced_options)
     run_id = client.imports.post_runs(id=job_id).run_id
-
+    log.debug('Started run %d of sync for import %d', run_id, job_id)
     fut = CivisFuture(client.imports.get_files_runs, (job_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
