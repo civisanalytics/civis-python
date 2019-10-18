@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
+- Fixed issue in `civis.io.read_civis_sql` when returning data that contains 
+  double quotes
 
 ### Changed
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)

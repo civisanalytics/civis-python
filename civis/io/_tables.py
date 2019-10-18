@@ -4,7 +4,6 @@ from os import path
 import io
 import logging
 import os
-import re
 import six
 import shutil
 import warnings
@@ -295,19 +294,15 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
-    # determine if we can request headers separately; if we can then Platform
-    # will perform a parallel unload which is significantly more performant
-    # we start by assuming headers are requested
-    ovrd_include_header, headers = _include_header(client, sql, True,
-                                                   db_id, credential_id,
-                                                   polling_interval)
+    # Try to get headers separately. In most scenarios this will greatly
+    # reduce the work that Platform does to provide a single output file
+    # with headers prepended to it due to how distributed databases export
+    # data at scale.
+    headers = _get_headers(client, sql, db_id, credential_id, polling_interval)
+    # include_header defaults to True in the API.
+    include_header = True if headers is None else False
 
-    # if we retrieved headers then we are performing a parallel unload
-    # in which case we need to specify backslash as the escapechar
-    if headers is not None:
-        kwargs['escapechar'] = '\\'
-
-    csv_settings = dict(include_header=ovrd_include_header,
+    csv_settings = dict(include_header=include_header,
                         compression='gzip')
 
     script_id, run_id = _sql_script(client, sql, db_id,
@@ -956,31 +951,19 @@ def _get_sql_select(table, columns=None):
 
 
 def _get_headers(client, sql, database, credential_id, polling_interval=None):
-    # use 'begin read only;' to ensure we can't change state
-    sql = 'begin read only; select * from ({}) limit 1'.format(sql)
-    fut = query_civis(sql, database, client=client,
-                      credential_id=credential_id,
-                      polling_interval=polling_interval)
-    return fut.result()['result_columns']
-
-
-def _include_header(client, sql, include_header, database, credential_id,
-                    polling_interval=None):
     headers = None
 
-    # can't do a parallel unload when sql contains an order by
-    if not include_header or re.search(r'order\s+by', sql, re.I | re.M):
-        return include_header, headers
-
     try:
-        # if _get_headers throws an error then assume sql is not read only
-        headers = _get_headers(client, sql, database, credential_id,
-                               polling_interval=polling_interval)
-        include_header = False
+        # use 'begin read only;' to ensure we can't change state
+        sql = 'begin read only; select * from ({}) limit 1'.format(sql)
+        fut = query_civis(sql, database, client=client,
+                          credential_id=credential_id,
+                          polling_interval=polling_interval)
+        headers = fut.result()['result_columns']
     except Exception as exc:  # NOQA
         log.debug("Failed to retrieve headers due to %s", str(exc))
 
-    return include_header, headers
+    return headers
 
 
 def _decompress_stream(response, buf, write_bytes=True):
