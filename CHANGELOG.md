@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
+- Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints.
+- Added new arguments to `civis.io.civis_file_to_table` to expose additional functionality from new Civis API endpoints.
 
 ## 1.11.0 - 2019-08-26
 ### Added

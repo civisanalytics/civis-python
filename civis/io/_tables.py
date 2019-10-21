@@ -1,4 +1,5 @@
 import json
+import concurrent.futures
 import csv
 from os import path
 import io
@@ -14,10 +15,11 @@ import zipfile
 
 from civis import APIClient
 from civis._utils import maybe_get_random_name
-from civis.base import EmptyResultError
+from civis.base import EmptyResultError, CivisImportError
 from civis.compat import TemporaryDirectory
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis, query_civis
+from civis.utils import run_job
 from civis._deprecation import deprecate_param
 
 import requests
@@ -819,19 +821,21 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     return fut
 
 
-def civis_file_to_table(file_id, database, table, client=None,
+def civis_file_to_table(file_ids, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
                         sortkey1=None, sortkey2=None,
-                        delimiter=",", headers=None,
+                        primary_keys=None, last_modified_keys=None,
+                        escaped=False, execution="immediate",
+                        delimiter=None, headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
     """Upload the contents of a Civis file to a Civis table.
 
     Parameters
     ----------
-    file_id : int
-        Civis file ID.
+    file_ids : int or list[int]
+        Civis file ID or a list of Civis file IDs.
     database : str or int
         Upload data into this database. Can be the database name or ID.
     table : str
@@ -856,8 +860,26 @@ def civis_file_to_table(file_id, database, table, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table. If
+        existing_table_rows is "upsert", this field is required.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file has quotes
+        escaped with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     delimiter : string, optional
-        The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
+        The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``. If not
+        provided, will attempt to auto-detect.
     headers : bool, optional
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -887,39 +909,63 @@ def civis_file_to_table(file_id, database, table, client=None,
         client = APIClient()
 
     schema, table = split_schema_tablename(table)
+    if isinstance(file_ids, int):
+        file_ids = [file_ids]
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
-    delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    if delimiter is not None:  # i.e. it was provided as an argument
+        delimiter = DELIMITERS.get(delimiter)
+        assert delimiter, "delimiter must be one of {}".format(
+            DELIMITERS.keys()
+        )
 
-    destination = dict(remote_host_id=db_id, credential_id=cred_id)
+    try:
+        client.get_table_id(table, database)
+        log.debug('Table {table} already exists - skipping column '
+                  'detection'.format(table=table))
+        table_exists = True
+    except ValueError:
+        table_exists = False
+
+    # Use Preprocess endpoint to get the table columns as needed
+    # and perform necessary file cleaning
+    need_table_columns = not table_exists or existing_table_rows == 'drop'
+
+    cleaning_futures = _run_cleaning(file_ids, client, need_table_columns,
+                                     hidden)
+
+    (cleaned_file_ids, headers, compression, delimiter,
+     table_columns) = _process_cleaning_results(
+        cleaning_futures, client, headers, need_table_columns, delimiter
+    )
+
+    source = dict(file_ids=cleaned_file_ids)
+    destination = dict(schema=schema, table=table, remote_host_id=db_id,
+                       credential_id=cred_id, primary_keys=primary_keys,
+                       last_modified_keys=last_modified_keys)
+
+    redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
+                            diststyle=diststyle)
+
     import_name = 'CSV import to {}.{}'.format(schema, table)
-    import_job = client.imports.post(import_name, 'AutoImport',
-                                     is_outbound=False,
-                                     destination=destination,
-                                     hidden=hidden)
-
-    options = dict(max_errors=max_errors,
-                   existing_table_rows=existing_table_rows,
-                   diststyle=diststyle, distkey=distkey,
-                   sortkey1=sortkey1, sortkey2=sortkey2,
-                   column_delimiter=delimiter, first_row_is_header=headers)
-
-    client.imports.post_syncs(
-        import_job.id,
-        source=dict(file=dict(id=file_id)),
-        destination=dict(database_table=dict(schema=schema, table=table)),
-        advanced_options=options)
-
-    run = client.jobs.post_runs(import_job.id)
-    fut = CivisFuture(client.jobs.get_runs,
-                      (import_job.id, run['id']),
-                      polling_interval=polling_interval,
-                      client=client,
-                      poll_on_creation=False)
-
+    import_job = client.imports.post_files_csv(
+        source,
+        destination,
+        headers,
+        name=import_name,
+        max_errors=max_errors,
+        existing_table_rows=existing_table_rows,
+        column_delimiter=delimiter,
+        compression=compression,
+        escaped=escaped,
+        execution=execution,
+        table_columns=table_columns,
+        redshift_destination_options=redshift_options
+    )
+    log.debug('Import job ID is %s', import_job.id)
+    fut = run_job(import_job.id, client=client)
     return fut
 
 
@@ -1077,3 +1123,122 @@ def split_schema_tablename(table):
                          "Does '{}' follow the pattern 'schema.table'?"
                          .format(table))
     return tuple(schema_name_tup)
+
+
+def _replace_null_column_names(column_list):
+    """Replace null names in columns from file cleaning with an appropriately
+    blank column name.
+
+    Parameters
+    ----------
+    column_list: list[dict]
+      the list of columns from file cleaning.
+
+    Returns
+    --------
+    column_list: list[dict]
+    """
+
+    new_cols = []
+    for i, col in enumerate(column_list):
+        # Avoid mutating input arguments
+        new_col = dict(col)
+        if new_col.get('name') is None:
+            new_col['name'] = 'column_{}'.format(i)
+        new_cols.append(new_col)
+    return new_cols
+
+
+def _run_cleaning(file_ids, client, need_table_columns, hidden):
+    cleaning_futures = []
+    for fid in file_ids:
+        cleaner_job = client.files.post_preprocess_csv(
+            file_id=fid,
+            in_place=False,
+            detect_table_columns=need_table_columns,
+            force_character_set_conversion=True,
+            hidden=hidden
+        )
+        cleaning_futures.append(run_job(cleaner_job.id, client=client))
+    return cleaning_futures
+
+
+def _process_cleaning_results(cleaning_futures, client, headers,
+                              need_table_columns, delimiter):
+    cleaned_file_ids = []
+
+    done, still_going = concurrent.futures.wait(
+        cleaning_futures, return_when=concurrent.futures.FIRST_COMPLETED
+    )
+
+    # Set values from first completed file cleaning - other files will be
+    # compared to this one. If inconsistencies are detected, raise an error.
+    first_completed = done.pop()
+    output_file = client.jobs.list_runs_outputs(
+            first_completed.job_id,
+            first_completed.run_id
+        )[0]
+    detected_info = client.files.get(output_file.object_id).detected_info
+    table_columns = (detected_info['tableColumns'] if need_table_columns
+                     else None)
+    if headers is None:
+        headers = detected_info['includeHeader']
+    elif headers != detected_info['includeHeader']:
+        raise CivisImportError('Mismatch between detected and provided '
+                               'headers - please ensure all imported files '
+                               'either have a header or do not.')
+    if delimiter is None:
+        delimiter = detected_info['columnDelimiter']
+    elif delimiter != detected_info['columnDelimiter']:
+        raise CivisImportError('Provided delimiter "{}" does not match '
+                               'detected delimiter for {}: "{}"'.format(
+                                   delimiter,
+                                   output_file.id,
+                                   detected_info["columnDelimiter"])
+                               )
+
+    compression = detected_info['compression']
+
+    cleaned_file_ids.append(output_file.object_id)
+
+    for result in concurrent.futures.as_completed(done | still_going):
+        output_file = client.jobs.list_runs_outputs(
+            result.job_id,
+            result.run_id
+        )[0]
+        detected_info = client.files.get(output_file.object_id).detected_info
+        if need_table_columns:
+            file_columns = detected_info['tableColumns']
+            if table_columns != file_columns:
+                raise CivisImportError('All files should have the same '
+                                       'schema. Expected {}'
+                                       'but file {} has {}'.format(
+                                           table_columns,
+                                           output_file.object_id,
+                                           file_columns)
+                                       )
+        if headers != detected_info['includeHeader']:
+            raise CivisImportError('Mismatch between detected headers - '
+                                   'please ensure all imported files either '
+                                   'have a header or do not.')
+        if delimiter != detected_info['columnDelimiter']:
+            raise CivisImportError('Provided delimiter "{}" does not match '
+                                   'detected delimiter for {}: "{}"'.format(
+                                       delimiter,
+                                       output_file.object_id,
+                                       detected_info["columnDelimiter"])
+                                   )
+        if compression != detected_info['compression']:
+            raise CivisImportError('Mismatch between detected and provided '
+                                   'compressions - provided compression was {}'
+                                   ' but detected compression {}. Please '
+                                   'ensure all imported files have the same '
+                                   'compression.'.format(
+                                       compression,
+                                       detected_info['compression'])
+                                   )
+
+        cleaned_file_ids.append(output_file.object_id)
+    if need_table_columns:
+        table_columns = _replace_null_column_names(table_columns)
+    return cleaned_file_ids, headers, compression, delimiter, table_columns

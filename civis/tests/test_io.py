@@ -19,7 +19,7 @@ import civis
 from civis.io import _files
 from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
-from civis.base import CivisAPIError
+from civis.base import CivisAPIError, CivisImportError
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -45,6 +45,10 @@ class ImportTests(CivisVCRTestCase):
     # sensible polling intervals when recording, but speed through
     # the calls in the VCR cassette when testing later.
 
+    @pytest.fixture(autouse=True)
+    def client_mock(self):
+        self.mock_client = create_client_mock()
+
     @classmethod
     def tearDownClass(cls):
         get_api_spec.cache_clear()
@@ -55,7 +59,6 @@ class ImportTests(CivisVCRTestCase):
     def setUpClass(cls, *mocks):
         get_api_spec.cache_clear()
         generate_classes.cache_clear()
-        cls.mock_client = create_client_mock()
 
         setup_vcr = vcr.VCR(filter_headers=['Authorization'])
         setup_cassette = os.path.join(cassette_dir(), 'io_setup.yml')
@@ -196,24 +199,38 @@ class ImportTests(CivisVCRTestCase):
         )
 
     @pytest.mark.civis_file_to_table
-    def test_civis_file_to_table(self, _m_get_api_spec):
+    @mock.patch('civis.io._tables._process_cleaning_results')
+    @mock.patch('civis.io._tables._run_cleaning')
+    def test_civis_file_to_table_table_exists(self,
+                                              m_run_cleaning,
+                                              m_process_cleaning_results,
+                                              _m_get_api_spec):
         table = "scratch.api_client_test_fixture"
         database = 'redshift-general'
         mock_file_id = 1234
+        mock_cleaned_file_id = 1235
         mock_import_id = 8675309
 
-        self.mock_client.imports.post.return_value.id = mock_import_id
+        self.mock_client.imports.post_files_csv.return_value\
+            .id = mock_import_id
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
 
-        mock_run_id = 2345
-        self.mock_client.jobs.post_runs.return_value = {'id': mock_run_id}
+        self.mock_client.get_table_id.return_value = 42
+        m_process_cleaning_results.return_value = (
+            [mock_cleaned_file_id],
+            True,  # headers
+            'gzip',  # compression
+            'comma',  # delimiter
+            None  # table_columns
+        )
+        m_run_cleaning.return_value = [mock.sentinel.cleaning_future]
 
         with mock.patch.object(
-                civis.io._tables, 'CivisFuture',
-                spec_set=True) as m_future:
+                civis.io._tables, 'run_job',
+                spec_set=True) as m_run_job:
 
-            m_future.return_value = mock.sentinel.a_future
+            m_run_job.return_value = mock.sentinel.import_future
 
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
@@ -221,41 +238,259 @@ class ImportTests(CivisVCRTestCase):
                 client=self.mock_client
             )
 
-            assert result is mock.sentinel.a_future
+            assert result is mock.sentinel.import_future
+            m_run_job.assert_called_once_with(mock_import_id,
+                                              client=self.mock_client)
 
-            m_future.assert_called_once_with(
-                self.mock_client.jobs.get_runs,
-                (mock_import_id, mock_run_id),
-                polling_interval=None,
-                client=self.mock_client,
-                poll_on_creation=False
-            )
+        m_run_cleaning.assert_called_once_with(
+            [mock_file_id], self.mock_client, False, True
+        )
+        m_process_cleaning_results.assert_called_once_with(
+            [mock.sentinel.cleaning_future],
+            self.mock_client,
+            None,
+            False,
+            None
+        )
 
-        expected_dest = dict(remote_host_id=42, credential_id=713)
         expected_name = 'CSV import to scratch.api_client_test_fixture'
-        self.mock_client.imports.post.assert_called_once_with(
-            expected_name, 'AutoImport',
-            is_outbound=False, destination=expected_dest, hidden=True)
         expected_kwargs = {
-            'source': {'file': {'id': mock_file_id}},
-            'destination': {'database_table': {
-                'schema': 'scratch',
-                'table': 'api_client_test_fixture'
-            }},
-            'advanced_options': {
-                'max_errors': None,
-                'existing_table_rows': 'truncate',
+            'name': expected_name,
+            'max_errors': None,
+            'existing_table_rows': 'truncate',
+            'column_delimiter': 'comma',
+            'compression': 'gzip',
+            'escaped': False,
+            'execution': 'immediate',
+            'table_columns': None,
+            'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
-                'sortkey1': None, 'sortkey2': None,
-                'column_delimiter': 'comma',
-                'first_row_is_header': None
+                'sortkeys': [None, None]
             }
+
         }
-        self.mock_client.imports.post_syncs.assert_called_once_with(
-            mock_import_id,
+        self.mock_client.imports.post_files_csv.assert_called_once_with(
+            {'file_ids': [mock_cleaned_file_id]},
+            {
+                'schema': 'scratch',
+                'table': 'api_client_test_fixture',
+                'remote_host_id': 42,
+                'credential_id': 713,
+                'primary_keys': None,
+                'last_modified_keys': None
+            },
+            True,
             **expected_kwargs
         )
-        self.mock_client.jobs.post_runs.assert_called_once_with(mock_import_id)
+
+    @pytest.mark.civis_file_to_table
+    @mock.patch('civis.io._tables._process_cleaning_results')
+    @mock.patch('civis.io._tables._run_cleaning')
+    def test_civis_file_to_table_table_doesnt_exist(
+            self,
+            m_run_cleaning,
+            m_process_cleaning_results,
+            _m_get_api_spec
+    ):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        mock_file_id = 1234
+        mock_cleaned_file_id = 1235
+        mock_import_id = 8675309
+
+        self.mock_client.imports.post_files_csv.return_value\
+            .id = mock_import_id
+        self.mock_client.get_database_id.return_value = 42
+        self.mock_client.default_credential = 713
+
+        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
+        m_process_cleaning_results.return_value = (
+            [mock_cleaned_file_id],
+            True,  # headers
+            'gzip',  # compression
+            'comma',  # delimiter
+            mock_columns  # table_columns
+        )
+        m_run_cleaning.return_value = [mock.sentinel.cleaning_future]
+
+        with mock.patch.object(
+                civis.io._tables, 'run_job',
+                spec_set=True) as m_run_job:
+
+            m_run_job.return_value = mock.sentinel.import_future
+
+            result = civis.io.civis_file_to_table(
+                mock_file_id, database, table,
+                existing_table_rows='truncate',
+                client=self.mock_client
+            )
+
+            assert result is mock.sentinel.import_future
+            m_run_job.assert_called_once_with(mock_import_id,
+                                              client=self.mock_client)
+
+        m_run_cleaning.assert_called_once_with(
+            [mock_file_id], self.mock_client, True, True
+        )
+        m_process_cleaning_results.assert_called_once_with(
+            [mock.sentinel.cleaning_future],
+            self.mock_client,
+            None,
+            True,
+            None
+        )
+
+        expected_name = 'CSV import to scratch.api_client_test_fixture'
+        expected_kwargs = {
+            'name': expected_name,
+            'max_errors': None,
+            'existing_table_rows': 'truncate',
+            'column_delimiter': 'comma',
+            'compression': 'gzip',
+            'escaped': False,
+            'execution': 'immediate',
+            'table_columns': mock_columns,
+            'redshift_destination_options': {
+                'diststyle': None, 'distkey': None,
+                'sortkeys': [None, None]
+            }
+
+        }
+        self.mock_client.imports.post_files_csv.assert_called_once_with(
+            {'file_ids': [mock_cleaned_file_id]},
+            {
+                'schema': 'scratch',
+                'table': 'api_client_test_fixture',
+                'remote_host_id': 42,
+                'credential_id': 713,
+                'primary_keys': None,
+                'last_modified_keys': None
+            },
+            True,
+            **expected_kwargs
+        )
+
+    @pytest.mark.process_cleaning_results
+    def test_process_cleaning_results(self, _m_get_api_spec):
+        mock_job_id = 42
+        mock_run_id = 1776
+        mock_file_id = 312
+        fut = civis.futures.CivisFuture(poller=lambda j, r: (j, r),
+                                        poller_args=(mock_job_id, mock_run_id),
+                                        poll_on_creation=False)
+        fut.set_result(Response({'state': 'success'}))
+
+        self.mock_client.jobs.list_runs_outputs.return_value = [Response(
+            {'object_id': mock_file_id}
+        )]
+
+        expected_columns = [{'name': 'a', 'sql_type': 'INT'},
+                            {'name': 'column', 'sql_type': 'INT'}]
+        expected_compression = 'gzip'
+        expected_headers = True
+        expected_delimiter = ','
+        self.mock_client.files.get.return_value.detected_info = {
+            'tableColumns': expected_columns,
+            'compression': expected_compression,
+            'includeHeader': expected_headers,
+            'columnDelimiter': expected_delimiter
+        }
+
+        assert civis.io._tables._process_cleaning_results(
+            [fut], self.mock_client, None, True, None
+        ) == (
+            [mock_file_id], expected_headers, expected_compression,
+            expected_delimiter, expected_columns
+        )
+
+    @pytest.mark.process_cleaning_results
+    def test_process_cleaning_results_raises_imports(self, _m_get_api_spec):
+        mock_job_id = 42
+        mock_run_id = 1776
+        mock_file_id = 312
+        fut = civis.futures.CivisFuture(poller=lambda j, r: (j, r),
+                                        poller_args=(mock_job_id, mock_run_id),
+                                        poll_on_creation=False)
+        fut.set_result(Response({'state': 'success'}))
+
+        fut2 = civis.futures.CivisFuture(
+            poller=lambda j, r: (j, r),
+            poller_args=(mock_job_id, mock_run_id),
+            poll_on_creation=False
+        )
+        fut2.set_result(Response({'state': 'success'}))
+
+        self.mock_client.jobs.list_runs_outputs.return_value = [Response(
+            {'object_id': mock_file_id}
+        )]
+
+        expected_compression = 'gzip'
+        expected_headers = True
+        expected_delimiter = ','
+        resp1 = Response({
+            'detected_info':
+                {
+                    'tableColumns': [{'name': 'a', 'sql_type': 'INT'},
+                                     {'name': 'column', 'sql_type': 'INT'}],
+                    'compression': expected_compression,
+                    'includeHeader': expected_headers,
+                    'columnDelimiter': expected_delimiter
+                }
+        })
+
+        resp2 = Response({
+            'detected_info':
+                {
+                    'tableColumns': [{'name': 'different', 'sql_type': 'INT'},
+                                     {'name': 'cols', 'sql_type': 'INT'}],
+                    'compression': expected_compression,
+                    'includeHeader': expected_headers,
+                    'columnDelimiter': expected_delimiter
+                }
+        })
+        self.mock_client.files.get.side_effect = [resp1, resp2]
+
+        with pytest.raises(CivisImportError) as exc_info:
+            civis.io._tables._process_cleaning_results(
+                [fut, fut2], self.mock_client, None, True, None
+            )
+        assert ('All files should have the same schema'
+                in exc_info.value.args[0])
+
+    @pytest.mark.run_cleaning
+    @pytest.mark.parametrize('fids', ([42], [42, 43]))
+    @mock.patch('civis.io._tables.run_job',
+                return_value=mock.MagicMock(spec=civis.futures.CivisFuture))
+    def test_run_cleaning(self, m_run_job, fids):
+
+        def mock_preprocess(fid):
+            resp = Response({'id': fid})
+            return resp
+
+        self.mock_client.files.post_preprocess_csv\
+            .side_effect = mock_preprocess
+
+        res = civis.io._tables._run_cleaning(fids, self.mock_client, True,
+                                             True)
+
+        # We should have one cleaning job per provided file id
+        fid_count = len(fids)
+        assert len(res) == fid_count
+        self.mock_client.files.post_preprocess_csv.assert_has_calls((
+            mock.call(
+                file_id=fid,
+                in_place=False,
+                detect_table_columns=True,
+                force_character_set_conversion=True,
+                hidden=True)
+            for fid in fids
+        ))
+        m_run_job.assert_has_calls((
+            mock.call(
+                jid, client=self.mock_client
+            ) for jid in fids)
+        )
 
     @pytest.mark.read_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")

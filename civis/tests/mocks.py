@@ -12,7 +12,7 @@ TEST_SPEC_ALL = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                              "civis_api_spec_channels.json")
 
 
-def create_client_mock(cache=TEST_SPEC_ALL):
+def create_client_mock(cache=TEST_SPEC):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters
