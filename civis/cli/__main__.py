@@ -25,8 +25,8 @@ import click
 from jsonref import JsonRef
 import yaml
 from civis.cli._cli_commands import (
-    civis_ascii_art, files_download_cmd, files_upload_cmd,
-    notebooks_download_cmd, notebooks_new_cmd,
+    civis_ascii_art, civis_username, files_download_cmd,
+    files_upload_cmd, notebooks_download_cmd, notebooks_new_cmd,
     notebooks_up, notebooks_down, notebooks_open, sql_cmd)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
@@ -225,6 +225,7 @@ def add_extra_commands(cli):
     notebooks_cmd.add_command(notebooks_down)
     notebooks_cmd.add_command(notebooks_open)
     cli.add_command(civis_ascii_art)
+    cli.add_command(civis_username)
 
     cli.add_command(sql_cmd)
 

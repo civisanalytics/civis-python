@@ -242,3 +242,10 @@ def _notebooks_open(notebook_id):
 @click.command('civis', help="Print Civis")
 def civis_ascii_art():
     print(_CIVIS_ASCII_ART)
+
+
+@click.command('username', help="Print Civis username")
+def civis_username():
+    """Prints the username of the current user."""
+    client = civis.APIClient()
+    print(client.username)
