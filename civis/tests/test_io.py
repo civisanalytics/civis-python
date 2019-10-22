@@ -194,6 +194,9 @@ class ImportTests(CivisVCRTestCase):
             diststyle=None, distkey=None,
             sortkey1=None, sortkey2=None,
             delimiter=",", headers=None,
+            primary_keys=None,
+            last_modified_keys=None,
+            escaped=False, execution='immediate',
             credential_id=None, polling_interval=None,
             hidden=True
         )
@@ -563,6 +566,9 @@ class ImportTests(CivisVCRTestCase):
             diststyle=None, distkey=None,
             sortkey1=None, sortkey2=None,
             delimiter=',',
+            primary_keys=None,
+            last_modified_keys=None,
+            escaped=False, execution='immediate',
             headers=True, credential_id=None,
             polling_interval=None,
             hidden=True)

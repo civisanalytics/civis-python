@@ -615,7 +615,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
-                       polling_interval=None,
+                       primary_keys=None, last_modified_keys=None,
+                       execution="immediate",
+                       delimiter=None, polling_interval=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -668,6 +670,23 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table. If
+        existing_table_rows is "upsert", this field is required.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file has quotes
+        escaped with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
     archive : bool, optional (deprecated)
@@ -718,6 +737,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                               sortkey1=sortkey1, sortkey2=sortkey2,
                               delimiter=delimiter, headers=headers,
                               credential_id=credential_id,
+                              primary_keys=primary_keys,
+                              last_modified_keys=last_modified_keys,
+                              escaped=False, execution=execution,
                               polling_interval=polling_interval,
                               hidden=hidden)
 
@@ -730,8 +752,11 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                  diststyle=None, distkey=None,
                  sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
-                 credential_id=None, polling_interval=None,
-                 archive=False, hidden=True):
+                 primary_keys=None, last_modified_keys=None,
+                 escaped=False, execution="immediate",
+                 credential_id=None, polling_interval=None, archive=False,
+                 hidden=True):
+
     """Upload the contents of a local CSV file to Civis.
 
     Parameters
@@ -771,6 +796,23 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
         or not the first row contains headers.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table. If
+        existing_table_rows is "upsert", this field is required.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file has quotes
+        escaped with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -816,6 +858,9 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                                   sortkey1=sortkey1, sortkey2=sortkey2,
                                   delimiter=delimiter, headers=headers,
                                   credential_id=credential_id,
+                                  primary_keys=primary_keys,
+                                  last_modified_keys=last_modified_keys,
+                                  escaped=escaped, execution=execution,
                                   polling_interval=polling_interval,
                                   hidden=hidden)
     return fut
