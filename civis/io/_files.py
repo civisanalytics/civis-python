@@ -118,6 +118,7 @@ def _single_upload(buf, name, client, **kwargs):
 
     _post()
 
+    log.debug('Uploaded File %d', file_response.id)
     return file_response.id
 
 
@@ -169,6 +170,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         pool.terminate()
         client.files.post_multipart_complete(file_response.id)
 
+    log.debug('Uploaded File %d', file_response.id)
     return file_response.id
 
 

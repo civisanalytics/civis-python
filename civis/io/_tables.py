@@ -1009,8 +1009,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         table_columns=table_columns,
         redshift_destination_options=redshift_options
     )
-    log.debug('Import job ID is %s', import_job.id)
     fut = run_job(import_job.id, client=client)
+    log.debug('Started run %d of sync for import %d', fut.id, import_job.id)
     return fut
 
 
@@ -1029,7 +1029,7 @@ def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                                          csv_settings=csv_settings)
 
     run_job = client.scripts.post_sql_runs(export_job.id)
-
+    log.debug('Started run %d of SQL script %d', run_job.id, export_job.id)
     return export_job.id, run_job.id
 
 

@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added method `get_storage_host_id` to the APIClient
+- Added debug logging to some `civis.io` functions. (#325)
 
 ### Fixed
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
