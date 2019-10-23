@@ -646,8 +646,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -779,8 +779,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -894,8 +894,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
