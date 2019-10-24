@@ -875,7 +875,10 @@ def civis_file_to_table(file_ids, database, table, client=None,
                         delimiter=None, headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
-    """Upload the contents of a Civis file to a Civis table.
+    """Upload the contents of one or more Civis files to a Civis table.
+       All provided files will be loaded as an atomic unit in parallel, and
+       should share the same columns in the same order, and be in the same
+       format.
 
     Parameters
     ----------
@@ -891,7 +894,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         created from the :envvar:`CIVIS_API_KEY`.
     max_errors : int, optional
         The maximum number of rows with errors to remove from the import
-        before failing.
+        before failing. If multiple files are provided, this limit applies
+        across all files combined.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
         One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
@@ -912,8 +916,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
     escaped: bool, optional
-        A boolean value indicating whether or not the source file has quotes
-        escaped with a backslash. Defaults to false.
+        A boolean value indicating whether or not the source file(s) escape
+        quotes with a backslash. Defaults to false.
     execution: string, optional, default "immediate"
         One of "delayed" or "immediate". If "immediate", refresh column
         statistics as part of the run. If "delayed", flag the table for a
@@ -941,6 +945,14 @@ def civis_file_to_table(file_ids, database, table, client=None,
     -------
     results : :class:`~civis.futures.CivisFuture`
         A `CivisFuture` object.
+
+    Raises
+    ------
+    CivisImportError
+        If multiple files are given and determined to be incompatible for
+        import. This may be the case if their columns have different types,
+        their delimiters are different, headers are present in some but not
+        others, or compressions do not match.
 
     Examples
     --------
