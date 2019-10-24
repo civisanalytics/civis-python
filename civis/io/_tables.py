@@ -1246,6 +1246,11 @@ def _process_cleaning_results(cleaning_futures, client, headers,
 
     cleaned_file_ids.append(output_file.object_id)
 
+    # Ensure that all results from files are correctly accounted for -
+    # Since concurrent.futures.wait returns two sets, it is possible
+    # That done contains more than one Future. Thus it is necessary to account
+    # for these possible completed cleaning runs while waiting on those which
+    # are still running.
     for result in concurrent.futures.as_completed(done | still_going):
         output_file = client.jobs.list_runs_outputs(
             result.job_id,
