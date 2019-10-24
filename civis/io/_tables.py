@@ -1010,7 +1010,7 @@ def civis_file_to_table(file_ids, database, table, client=None,
         redshift_destination_options=redshift_options
     )
     fut = run_job(import_job.id, client=client)
-    log.debug('Started run %d of sync for import %d', fut.id, import_job.id)
+    log.debug('Started run %d for import %d', fut.run_id, import_job.id)
     return fut
 
 

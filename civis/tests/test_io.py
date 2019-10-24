@@ -233,7 +233,13 @@ class ImportTests(CivisVCRTestCase):
                 civis.io._tables, 'run_job',
                 spec_set=True) as m_run_job:
 
-            m_run_job.return_value = mock.sentinel.import_future
+            run_job_future = mock.MagicMock(
+                spec=civis.futures.CivisFuture,
+                job_id=123,
+                run_id=234
+            )
+
+            m_run_job.return_value = run_job_future
 
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
@@ -241,7 +247,7 @@ class ImportTests(CivisVCRTestCase):
                 client=self.mock_client
             )
 
-            assert result is mock.sentinel.import_future
+            assert result is run_job_future
             m_run_job.assert_called_once_with(mock_import_id,
                                               client=self.mock_client)
 
@@ -321,7 +327,13 @@ class ImportTests(CivisVCRTestCase):
                 civis.io._tables, 'run_job',
                 spec_set=True) as m_run_job:
 
-            m_run_job.return_value = mock.sentinel.import_future
+            run_job_future = mock.MagicMock(
+                spec=civis.futures.CivisFuture,
+                job_id=123,
+                run_id=234
+            )
+
+            m_run_job.return_value = run_job_future
 
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
@@ -329,7 +341,7 @@ class ImportTests(CivisVCRTestCase):
                 client=self.mock_client
             )
 
-            assert result is mock.sentinel.import_future
+            assert result is run_job_future
             m_run_job.assert_called_once_with(mock_import_id,
                                               client=self.mock_client)
 
