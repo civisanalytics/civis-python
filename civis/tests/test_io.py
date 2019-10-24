@@ -542,36 +542,40 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch('civis.io._tables.civis_file_to_table')
     def test_dataframe_to_civis(self, m_civis_file_to_table, m_file_to_civis,
                                 _m_get_api_spec):
-        df = mock.create_autospec(pd.DataFrame, spec_set=True)
+        df = pd.DataFrame([[1, 2, 3], [2, 3, 4]])
         m_file_to_civis.return_value = 42
         mock_future = mock.create_autospec(civis.futures.CivisFuture,
                                            spec_set=True)
         m_civis_file_to_table.return_value = mock_future
 
-        fixed_tmpdir = TemporaryDirectory()
-        with mock.patch.object(civis.io._tables, 'TemporaryDirectory',
-                               return_value=fixed_tmpdir):
+        # use a mock to spy on the dataframe's to_csv method so we can
+        # check on its calls without impeding its actual usage.
+        with mock.patch.object(df, 'to_csv', wraps=df.to_csv) as m_to_csv:
+            result = civis.io.dataframe_to_civis(
+                df, 'redshift-general',
+                'scratch.api_client_test_fixture',
+                existing_table_rows='truncate',
+                client=self.mock_client)
+            assert result == mock_future
 
-            with mock.patch.object(df, 'to_csv') as m_to_csv:
-                result = civis.io.dataframe_to_civis(
-                    df, 'redshift-general',
-                    'scratch.api_client_test_fixture',
-                    existing_table_rows='truncate',
-                    client=self.mock_client)
-                assert result == mock_future
-
-                expected_tmp_path = os.path.join(fixed_tmpdir.name,
-                                                 'dataframe_to_civis.csv')
-
-                m_to_csv.assert_called_once_with(expected_tmp_path,
-                                                 encoding='utf-8', index=False)
+            # ANY here represents the path to which the dataframe was written
+            # Since it's a temporary directory we don't know/care exactly what
+            # it is
+            m_to_csv.assert_called_once_with(mock.ANY, encoding='utf-8',
+                                             index=False)
+            out_path = m_to_csv.call_args.args[0]
 
         m_file_to_civis.assert_called_once_with(
-            expected_tmp_path, 'api_client_test_fixture',
+            mock.ANY, 'api_client_test_fixture',
             client=self.mock_client
         )
+
+        # Ensure that the file written to above is the same file as that
+        # uploaded to Civis in this call
+        assert m_file_to_civis.call_args.args[0] == out_path
+
         m_civis_file_to_table.assert_called_once_with(
-            42, 'redshift-general',
+            m_file_to_civis.return_value, 'redshift-general',
             'scratch.api_client_test_fixture',
             client=self.mock_client,
             max_errors=None, existing_table_rows="truncate",
