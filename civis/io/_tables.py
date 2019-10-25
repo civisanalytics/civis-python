@@ -1220,6 +1220,51 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden):
     return cleaning_futures
 
 
+def _check_all_detected_info(detected_info, headers, delimiter,
+                             compression, output_file_id):
+    """Check a single round of cleaning results as compared to provided values.
+
+    Parameters
+    ----------
+    detected_info: Dict[str, Any]
+      The detected info of the file as returned by the Civis API.
+    headers: bool
+      The provided value for whether or not the file contains errors.
+    delimiter: str
+      The provided value for the file delimiter.
+    compression: str
+      The provided value for the file compression.
+    output_file_id: int
+      The cleaned file's Civis ID. Used for debugging.
+
+    Raises
+    ------
+    CivisImportError
+      If the values detected on the file do not match their expected
+      attributes.
+    """
+    if headers != detected_info['includeHeader']:
+        raise CivisImportError('Mismatch between detected headers - '
+                               'please ensure all imported files either '
+                               'have a header or do not.')
+    if delimiter != detected_info['columnDelimiter']:
+        raise CivisImportError('Provided delimiter "{}" does not match '
+                               'detected delimiter for {}: "{}"'.format(
+                                    delimiter,
+                                    output_file_id,
+                                    detected_info["columnDelimiter"])
+                               )
+    if compression != detected_info['compression']:
+        raise CivisImportError('Mismatch between detected and provided '
+                               'compressions - provided compression was {}'
+                               ' but detected compression {}. Please '
+                               'ensure all imported files have the same '
+                               'compression.'.format(
+                                   compression,
+                                   detected_info['compression'])
+                               )
+
+
 def _process_cleaning_results(cleaning_futures, client, headers,
                               need_table_columns, delimiter):
     cleaned_file_ids = []
@@ -1240,21 +1285,13 @@ def _process_cleaning_results(cleaning_futures, client, headers,
                      else None)
     if headers is None:
         headers = detected_info['includeHeader']
-    elif headers != detected_info['includeHeader']:
-        raise CivisImportError('Mismatch between detected and provided '
-                               'headers - please ensure all imported files '
-                               'either have a header or do not.')
     if delimiter is None:
         delimiter = detected_info['columnDelimiter']
-    elif delimiter != detected_info['columnDelimiter']:
-        raise CivisImportError('Provided delimiter "{}" does not match '
-                               'detected delimiter for {}: "{}"'.format(
-                                   delimiter,
-                                   output_file.id,
-                                   detected_info["columnDelimiter"])
-                               )
 
     compression = detected_info['compression']
+
+    _check_all_detected_info(detected_info, headers, delimiter, compression,
+                             output_file.object_id)
 
     cleaned_file_ids.append(output_file.object_id)
 
@@ -1279,28 +1316,11 @@ def _process_cleaning_results(cleaning_futures, client, headers,
                                            output_file.object_id,
                                            file_columns)
                                        )
-        if headers != detected_info['includeHeader']:
-            raise CivisImportError('Mismatch between detected headers - '
-                                   'please ensure all imported files either '
-                                   'have a header or do not.')
-        if delimiter != detected_info['columnDelimiter']:
-            raise CivisImportError('Provided delimiter "{}" does not match '
-                                   'detected delimiter for {}: "{}"'.format(
-                                       delimiter,
-                                       output_file.object_id,
-                                       detected_info["columnDelimiter"])
-                                   )
-        if compression != detected_info['compression']:
-            raise CivisImportError('Mismatch between detected and provided '
-                                   'compressions - provided compression was {}'
-                                   ' but detected compression {}. Please '
-                                   'ensure all imported files have the same '
-                                   'compression.'.format(
-                                       compression,
-                                       detected_info['compression'])
-                                   )
 
+        _check_all_detected_info(detected_info, headers, delimiter,
+                                 compression, output_file.object_id)
         cleaned_file_ids.append(output_file.object_id)
+
     if need_table_columns:
         table_columns = _replace_null_column_names(table_columns)
     return cleaned_file_ids, headers, compression, delimiter, table_columns

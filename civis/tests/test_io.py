@@ -507,6 +507,37 @@ class ImportTests(CivisVCRTestCase):
             ) for jid in fids)
         )
 
+    @pytest.mark.check_all_detected_info
+    def test_check_all_detected_info_matching(self, _m_get_api_spec):
+        headers = True
+        compression = 'gzip'
+        delimiter = 'comma'
+        detected_info = {
+            'includeHeader': True,
+            'columnDelimiter': 'comma',
+            'compression': 'gzip'
+        }
+
+        civis.io._tables._check_all_detected_info(
+            detected_info, headers, delimiter, compression, 42
+        )
+
+    @pytest.mark.check_all_detected_info
+    def test_check_all_detected_info_raises(self, _m_get_api_spec):
+        headers = False
+        compression = 'gzip'
+        delimiter = 'comma'
+        detected_info = {
+            'includeHeader': True,
+            'columnDelimiter': 'comma',
+            'compression': 'gzip'
+        }
+
+        with pytest.raises(civis.base.CivisImportError):
+            civis.io._tables._check_all_detected_info(
+                detected_info, headers, delimiter, compression, 42
+            )
+
     @pytest.mark.read_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch(api_import_str, return_value=civis_api_spec)
