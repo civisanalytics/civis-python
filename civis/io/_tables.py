@@ -671,8 +671,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The ID of the database credential.  If ``None``, the default
         credential will be used.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
@@ -797,8 +799,10 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         headers. The default, ``None``, attempts to autodetect whether
         or not the first row contains headers.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
@@ -910,8 +914,10 @@ def civis_file_to_table(file_id, database, table, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
