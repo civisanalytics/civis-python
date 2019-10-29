@@ -866,7 +866,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     return fut
 
 
-def civis_file_to_table(file_ids, database, table, client=None,
+def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
                         sortkey1=None, sortkey2=None,
@@ -882,7 +882,7 @@ def civis_file_to_table(file_ids, database, table, client=None,
 
     Parameters
     ----------
-    file_ids : int or list[int]
+    file_id : int or list[int]
         Civis file ID or a list of Civis file IDs.
     database : str or int
         Upload data into this database. Can be the database name or ID.
@@ -966,8 +966,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         client = APIClient()
 
     schema, table = split_schema_tablename(table)
-    if isinstance(file_ids, int):
-        file_ids = [file_ids]
+    if isinstance(file_id, int):
+        file_id = [file_id]
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
@@ -990,7 +990,7 @@ def civis_file_to_table(file_ids, database, table, client=None,
     # and perform necessary file cleaning
     need_table_columns = not table_exists or existing_table_rows == 'drop'
 
-    cleaning_futures = _run_cleaning(file_ids, client, need_table_columns,
+    cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
