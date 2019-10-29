@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
-- Added method `get_storage_host_id` to the APIClient
+- Added method `get_storage_host_id` to the APIClient. (#328)
 - Added debug logging to some `civis.io` functions. (#325)
 
 ### Fixed
