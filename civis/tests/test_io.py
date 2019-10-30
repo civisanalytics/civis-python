@@ -249,7 +249,8 @@ class ImportTests(CivisVCRTestCase):
 
             assert result is run_job_future
             m_run_job.assert_called_once_with(mock_import_id,
-                                              client=self.mock_client)
+                                              client=self.mock_client,
+                                              polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
             [mock_file_id], self.mock_client, False, True
@@ -343,7 +344,8 @@ class ImportTests(CivisVCRTestCase):
 
             assert result is run_job_future
             m_run_job.assert_called_once_with(mock_import_id,
-                                              client=self.mock_client)
+                                              client=self.mock_client,
+                                              polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
             [mock_file_id], self.mock_client, True, True
@@ -503,7 +505,7 @@ class ImportTests(CivisVCRTestCase):
         ))
         m_run_job.assert_has_calls((
             mock.call(
-                jid, client=self.mock_client
+                jid, client=self.mock_client, polling_interval=None
             ) for jid in fids)
         )
 

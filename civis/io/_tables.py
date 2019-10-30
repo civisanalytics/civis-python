@@ -1029,7 +1029,8 @@ def civis_file_to_table(file_id, database, table, client=None,
         table_columns=table_columns,
         redshift_destination_options=redshift_options
     )
-    fut = run_job(import_job.id, client=client)
+    fut = run_job(import_job.id, client=client,
+                  polling_interval=polling_interval)
     log.debug('Started run %d for import %d', fut.run_id, import_job.id)
     return fut
 
@@ -1214,7 +1215,8 @@ def _replace_null_column_names(column_list):
     return new_cols
 
 
-def _run_cleaning(file_ids, client, need_table_columns, hidden):
+def _run_cleaning(file_ids, client, need_table_columns, hidden,
+                  polling_interval=None):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1224,7 +1226,8 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden):
             force_character_set_conversion=True,
             hidden=hidden
         )
-        cleaning_futures.append(run_job(cleaner_job.id, client=client))
+        cleaning_futures.append(run_job(cleaner_job.id, client=client,
+                                        polling_interval=polling_interval))
     return cleaning_futures
 
 
