@@ -444,36 +444,35 @@ class ImportTests(CivisVCRTestCase):
 
         expected_compression = 'gzip'
         expected_headers = True
-        expected_delimiter = ','
+        expected_cols = [{'name': 'a', 'sql_type': 'INT'},
+                         {'name': 'column', 'sql_type': 'INT'}]
         resp1 = Response({
             'detected_info':
                 {
-                    'tableColumns': [{'name': 'a', 'sql_type': 'INT'},
-                                     {'name': 'column', 'sql_type': 'INT'}],
+                    'tableColumns': expected_cols,
                     'compression': expected_compression,
                     'includeHeader': expected_headers,
-                    'columnDelimiter': expected_delimiter
+                    'columnDelimiter': ','
                 }
         })
 
         resp2 = Response({
             'detected_info':
                 {
-                    'tableColumns': [{'name': 'different', 'sql_type': 'INT'},
-                                     {'name': 'cols', 'sql_type': 'INT'}],
+                    'tableColumns': expected_cols,
                     'compression': expected_compression,
                     'includeHeader': expected_headers,
-                    'columnDelimiter': expected_delimiter
+                    'columnDelimiter': '|'
                 }
         })
         self.mock_client.files.get.side_effect = [resp1, resp2]
 
-        with pytest.raises(CivisImportError) as exc_info:
+        with pytest.raises(CivisImportError,
+                           match='Provided delimiter "|" does not match '
+                                 'detected delimiter'):
             civis.io._tables._process_cleaning_results(
                 [fut, fut2], self.mock_client, None, True, None
             )
-        assert ('All files should have the same schema'
-                in exc_info.value.args[0])
 
     @pytest.mark.run_cleaning
     @pytest.mark.parametrize('fids', ([42], [42, 43]))
@@ -539,6 +538,36 @@ class ImportTests(CivisVCRTestCase):
             civis.io._tables._check_all_detected_info(
                 detected_info, headers, delimiter, compression, 42
             )
+
+    @pytest.mark.check_column_types
+    def test_check_column_types_differing_numbers(self, _m_get_api_spec):
+        table_cols = [{'name': 'col1', 'sql_type': 'INT'}]
+        file_cols = [{'name': 'col1', 'sql_type': 'INT'},
+                     {'name': 'col2', 'sql_type': 'FLOAT'}]
+
+        with pytest.raises(civis.base.CivisImportError,
+                           match='Expected 1 columns but file 42 has 2 columns'
+                           ):
+            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+
+    @pytest.mark.check_column_types
+    def test_check_column_types_differing_types(self, _m_get_api_spec):
+        table_cols = [{'name': 'col1', 'sql_type': 'INT'}]
+        file_cols = [{'name': 'col1', 'sql_type': 'FLOAT'}]
+
+        with pytest.raises(civis.base.CivisImportError,
+                           match='Column 0: File base type was FLOAT, but '
+                                 'expected INT'):
+            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+
+    @pytest.mark.check_column_types
+    def test_check_column_types_passing(self, _m_get_api_spec):
+        table_cols = [{'name': 'col1', 'sql_type': 'INT'},
+                      {'name': 'col2', 'sql_type': 'VARCHAR(42)'}]
+        file_cols = [{'name': 'col1', 'sql_type': 'INT'},
+                     {'name': 'col2', 'sql_type': 'VARCHAR(47)'}]
+
+        civis.io._tables._check_column_types(table_cols, file_cols, 42)
 
     @pytest.mark.read_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
