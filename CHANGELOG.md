@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
 
 ### Changed
+- Update the Civis logo in the Sphinx documentation. (#330)
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
 
 ## 1.11.0 - 2019-08-26
