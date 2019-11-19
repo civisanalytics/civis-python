@@ -68,6 +68,10 @@ class CivisAPIKeyError(Exception):
     pass
 
 
+class CivisImportError(Exception):
+    pass
+
+
 def get_base_url():
     base_url = os.environ.get('CIVIS_API_ENDPOINT', DEFAULT_API_ENDPOINT)
     if not base_url.endswith('/'):

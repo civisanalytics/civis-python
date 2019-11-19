@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 
 @deprecate_param("v2.0.0", "api_key")
-def run_job(job_id, api_key=None, client=None):
+def run_job(job_id, api_key=None, client=None, polling_interval=None):
     """Run a job.
 
     Parameters
@@ -22,6 +22,9 @@ def run_job(job_id, api_key=None, client=None):
     client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
+    polling_interval : int or float, optional
+        The number of seconds between API requests to check whether a result
+        is ready.
 
     Returns
     -------
@@ -35,6 +38,7 @@ def run_job(job_id, api_key=None, client=None):
         client.jobs.get_runs,
         (job_id, run["id"]),
         client=client,
+        polling_interval=polling_interval,
         poll_on_creation=False,
     )
 

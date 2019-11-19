@@ -1,10 +1,10 @@
 import json
+import concurrent.futures
 import csv
 from os import path
 import io
 import logging
 import os
-import re
 import six
 import shutil
 import warnings
@@ -15,10 +15,11 @@ import zipfile
 
 from civis import APIClient
 from civis._utils import maybe_get_random_name
-from civis.base import EmptyResultError
+from civis.base import EmptyResultError, CivisImportError
 from civis.compat import TemporaryDirectory
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis, query_civis
+from civis.utils import run_job
 from civis._deprecation import deprecate_param
 
 import requests
@@ -295,19 +296,15 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
-    # determine if we can request headers separately; if we can then Platform
-    # will perform a parallel unload which is significantly more performant
-    # we start by assuming headers are requested
-    ovrd_include_header, headers = _include_header(client, sql, True,
-                                                   db_id, credential_id,
-                                                   polling_interval)
+    # Try to get headers separately. In most scenarios this will greatly
+    # reduce the work that Platform does to provide a single output file
+    # with headers prepended to it due to how distributed databases export
+    # data at scale.
+    headers = _get_headers(client, sql, db_id, credential_id, polling_interval)
+    # include_header defaults to True in the API.
+    include_header = True if headers is None else False
 
-    # if we retrieved headers then we are performing a parallel unload
-    # in which case we need to specify backslash as the escapechar
-    if headers is not None:
-        kwargs['escapechar'] = '\\'
-
-    csv_settings = dict(include_header=ovrd_include_header,
+    csv_settings = dict(include_header=include_header,
                         compression='gzip')
 
     script_id, run_id = _sql_script(client, sql, db_id,
@@ -618,7 +615,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
                        headers=None, credential_id=None,
-                       polling_interval=None,
+                       primary_keys=None, last_modified_keys=None,
+                       execution="immediate",
+                       delimiter=None, polling_interval=None,
                        archive=False, hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -647,8 +646,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -671,6 +670,25 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file has quotes
+        escaped with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
     archive : bool, optional (deprecated)
@@ -721,6 +739,9 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                               sortkey1=sortkey1, sortkey2=sortkey2,
                               delimiter=delimiter, headers=headers,
                               credential_id=credential_id,
+                              primary_keys=primary_keys,
+                              last_modified_keys=last_modified_keys,
+                              escaped=False, execution=execution,
                               polling_interval=polling_interval,
                               hidden=hidden)
 
@@ -733,8 +754,11 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                  diststyle=None, distkey=None,
                  sortkey1=None, sortkey2=None,
                  delimiter=",", headers=None,
-                 credential_id=None, polling_interval=None,
-                 archive=False, hidden=True):
+                 primary_keys=None, last_modified_keys=None,
+                 escaped=False, execution="immediate",
+                 credential_id=None, polling_interval=None, archive=False,
+                 hidden=True):
+
     """Upload the contents of a local CSV file to Civis.
 
     Parameters
@@ -757,8 +781,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -774,6 +798,25 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
         or not the first row contains headers.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file has quotes
+        escaped with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -819,24 +862,34 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                                   sortkey1=sortkey1, sortkey2=sortkey2,
                                   delimiter=delimiter, headers=headers,
                                   credential_id=credential_id,
+                                  primary_keys=primary_keys,
+                                  last_modified_keys=last_modified_keys,
+                                  escaped=escaped, execution=execution,
                                   polling_interval=polling_interval,
                                   hidden=hidden)
     return fut
 
 
+@deprecate_param('v2.0.0', 'file_id')
 def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
                         sortkey1=None, sortkey2=None,
-                        delimiter=",", headers=None,
+                        primary_keys=None, last_modified_keys=None,
+                        escaped=False, execution="immediate",
+                        delimiter=None, headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
-    """Upload the contents of a Civis file to a Civis table.
+    """Upload the contents of one or more Civis files to a Civis table.
+       All provided files will be loaded as an atomic unit in parallel, and
+       should share the same columns in the same order, and be in the same
+       format.
 
     Parameters
     ----------
-    file_id : int
-        Civis file ID.
+    file_id : int or list[int]
+        Civis file ID or a list of Civis file IDs. Reference by name to this
+        argument is deprecated, as the name will change in v2.0.0.
     database : str or int
         Upload data into this database. Can be the database name or ID.
     table : str
@@ -847,11 +900,12 @@ def civis_file_to_table(file_id, database, table, client=None,
         created from the :envvar:`CIVIS_API_KEY`.
     max_errors : int, optional
         The maximum number of rows with errors to remove from the import
-        before failing.
+        before failing. If multiple files are provided, this limit applies
+        across all files combined.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -861,8 +915,28 @@ def civis_file_to_table(file_id, database, table, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
+    primary_keys: list[str], optional
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
+    last_modified_keys: list[str], optional
+        A list of the columns indicating a record has been updated. If
+        existing_table_rows is "upsert", this field is required.
+    escaped: bool, optional
+        A boolean value indicating whether or not the source file(s) escape
+        quotes with a backslash. Defaults to false.
+    execution: string, optional, default "immediate"
+        One of "delayed" or "immediate". If "immediate", refresh column
+        statistics as part of the run. If "delayed", flag the table for a
+        deferred statistics update; column statistics may not be available
+        for up to 24 hours. In addition, if existing_table_rows is "upsert",
+        delayed executions move data from staging table to final table after a
+        brief delay, in order to accommodate multiple concurrent imports to the
+        same destination table.
     delimiter : string, optional
-        The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
+        The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``. If not
+        provided, will attempt to auto-detect.
     headers : bool, optional
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -880,6 +954,14 @@ def civis_file_to_table(file_id, database, table, client=None,
     results : :class:`~civis.futures.CivisFuture`
         A `CivisFuture` object.
 
+    Raises
+    ------
+    CivisImportError
+        If multiple files are given and determined to be incompatible for
+        import. This may be the case if their columns have different types,
+        their delimiters are different, headers are present in some but not
+        others, or compressions do not match.
+
     Examples
     --------
     >>> file_id = 100
@@ -892,40 +974,71 @@ def civis_file_to_table(file_id, database, table, client=None,
         client = APIClient()
 
     schema, table = split_schema_tablename(table)
+    if isinstance(file_id, int):
+        file_id = [file_id]
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
-    delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    if delimiter is not None:  # i.e. it was provided as an argument
+        delimiter = DELIMITERS.get(delimiter)
+        assert delimiter, "delimiter must be one of {}".format(
+            DELIMITERS.keys()
+        )
 
-    destination = dict(remote_host_id=db_id, credential_id=cred_id)
+    try:
+        client.get_table_id(table, database)
+        log.debug('Table {table} already exists - skipping column '
+                  'detection'.format(table=table))
+        table_exists = True
+    except ValueError:
+        table_exists = False
+
+    # Use Preprocess endpoint to get the table columns as needed
+    # and perform necessary file cleaning
+    need_table_columns = not table_exists or existing_table_rows == 'drop'
+
+    cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
+                                     hidden)
+
+    (cleaned_file_ids, headers, compression, delimiter,
+     table_columns) = _process_cleaning_results(
+        cleaning_futures, client, headers, need_table_columns, delimiter
+    )
+
+    source = dict(file_ids=cleaned_file_ids)
+    destination = dict(schema=schema, table=table, remote_host_id=db_id,
+                       credential_id=cred_id, primary_keys=primary_keys,
+                       last_modified_keys=last_modified_keys)
+
+    redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
+                            diststyle=diststyle)
+
+    # If multiple files are being imported, there might be differences in
+    # their precisions/lengths - setting this option will allow the Civis API
+    # to increase these values for the data types provided, and decreases the
+    # risk of a length-related import failure
+    loosen_types = len(file_id) > 1
+
     import_name = 'CSV import to {}.{}'.format(schema, table)
-    import_job = client.imports.post(import_name, 'AutoImport',
-                                     is_outbound=False,
-                                     destination=destination,
-                                     hidden=hidden)
-
-    options = dict(max_errors=max_errors,
-                   existing_table_rows=existing_table_rows,
-                   diststyle=diststyle, distkey=distkey,
-                   sortkey1=sortkey1, sortkey2=sortkey2,
-                   column_delimiter=delimiter, first_row_is_header=headers)
-
-    client.imports.post_syncs(
-        import_job.id,
-        source=dict(file=dict(id=file_id)),
-        destination=dict(database_table=dict(schema=schema, table=table)),
-        advanced_options=options)
-
-    run = client.jobs.post_runs(import_job.id)
-    log.debug('Started run %d of sync for import %d', run.id, import_job.id)
-    fut = CivisFuture(client.jobs.get_runs,
-                      (import_job.id, run.id),
-                      polling_interval=polling_interval,
-                      client=client,
-                      poll_on_creation=False)
-
+    import_job = client.imports.post_files_csv(
+        source,
+        destination,
+        headers,
+        name=import_name,
+        max_errors=max_errors,
+        existing_table_rows=existing_table_rows,
+        column_delimiter=delimiter,
+        compression=compression,
+        escaped=escaped,
+        execution=execution,
+        loosen_types=loosen_types,
+        table_columns=table_columns,
+        redshift_destination_options=redshift_options
+    )
+    fut = run_job(import_job.id, client=client,
+                  polling_interval=polling_interval)
+    log.debug('Started run %d for import %d', fut.run_id, import_job.id)
     return fut
 
 
@@ -957,31 +1070,19 @@ def _get_sql_select(table, columns=None):
 
 
 def _get_headers(client, sql, database, credential_id, polling_interval=None):
-    # use 'begin read only;' to ensure we can't change state
-    sql = 'begin read only; select * from ({}) limit 1'.format(sql)
-    fut = query_civis(sql, database, client=client,
-                      credential_id=credential_id,
-                      polling_interval=polling_interval)
-    return fut.result()['result_columns']
-
-
-def _include_header(client, sql, include_header, database, credential_id,
-                    polling_interval=None):
     headers = None
 
-    # can't do a parallel unload when sql contains an order by
-    if not include_header or re.search(r'order\s+by', sql, re.I | re.M):
-        return include_header, headers
-
     try:
-        # if _get_headers throws an error then assume sql is not read only
-        headers = _get_headers(client, sql, database, credential_id,
-                               polling_interval=polling_interval)
-        include_header = False
+        # use 'begin read only;' to ensure we can't change state
+        sql = 'begin read only; select * from ({}) limit 1'.format(sql)
+        fut = query_civis(sql, database, client=client,
+                          credential_id=credential_id,
+                          polling_interval=polling_interval)
+        headers = fut.result()['result_columns']
     except Exception as exc:  # NOQA
         log.debug("Failed to retrieve headers due to %s", str(exc))
 
-    return include_header, headers
+    return headers
 
 
 def _decompress_stream(response, buf, write_bytes=True):
@@ -1095,3 +1196,198 @@ def split_schema_tablename(table):
                          "Does '{}' follow the pattern 'schema.table'?"
                          .format(table))
     return tuple(schema_name_tup)
+
+
+def _replace_null_column_names(column_list):
+    """Replace null names in columns from file cleaning with an appropriately
+    blank column name.
+
+    Parameters
+    ----------
+    column_list: list[dict]
+      the list of columns from file cleaning.
+
+    Returns
+    --------
+    column_list: list[dict]
+    """
+
+    new_cols = []
+    for i, col in enumerate(column_list):
+        # Avoid mutating input arguments
+        new_col = dict(col)
+        if new_col.get('name') is None:
+            new_col['name'] = 'column_{}'.format(i)
+        new_cols.append(new_col)
+    return new_cols
+
+
+def _run_cleaning(file_ids, client, need_table_columns, hidden,
+                  polling_interval=None):
+    cleaning_futures = []
+    for fid in file_ids:
+        cleaner_job = client.files.post_preprocess_csv(
+            file_id=fid,
+            in_place=False,
+            detect_table_columns=need_table_columns,
+            force_character_set_conversion=True,
+            hidden=hidden
+        )
+        cleaning_futures.append(run_job(cleaner_job.id, client=client,
+                                        polling_interval=polling_interval))
+    return cleaning_futures
+
+
+def _check_all_detected_info(detected_info, headers, delimiter,
+                             compression, output_file_id):
+    """Check a single round of cleaning results as compared to provided values.
+
+    Parameters
+    ----------
+    detected_info: Dict[str, Any]
+      The detected info of the file as returned by the Civis API.
+    headers: bool
+      The provided value for whether or not the file contains errors.
+    delimiter: str
+      The provided value for the file delimiter.
+    compression: str
+      The provided value for the file compression.
+    output_file_id: int
+      The cleaned file's Civis ID. Used for debugging.
+
+    Raises
+    ------
+    CivisImportError
+      If the values detected on the file do not match their expected
+      attributes.
+    """
+    if headers != detected_info['includeHeader']:
+        raise CivisImportError('Mismatch between detected headers - '
+                               'please ensure all imported files either '
+                               'have a header or do not.')
+    if delimiter != detected_info['columnDelimiter']:
+        raise CivisImportError('Provided delimiter "{}" does not match '
+                               'detected delimiter for {}: "{}"'.format(
+                                    delimiter,
+                                    output_file_id,
+                                    detected_info["columnDelimiter"])
+                               )
+    if compression != detected_info['compression']:
+        raise CivisImportError('Mismatch between detected and provided '
+                               'compressions - provided compression was {}'
+                               ' but detected compression {}. Please '
+                               'ensure all imported files have the same '
+                               'compression.'.format(
+                                   compression,
+                                   detected_info['compression'])
+                               )
+
+
+def _process_cleaning_results(cleaning_futures, client, headers,
+                              need_table_columns, delimiter):
+    cleaned_file_ids = []
+
+    done, still_going = concurrent.futures.wait(
+        cleaning_futures, return_when=concurrent.futures.FIRST_COMPLETED
+    )
+
+    # Set values from first completed file cleaning - other files will be
+    # compared to this one. If inconsistencies are detected, raise an error.
+    first_completed = done.pop()
+    output_file = client.jobs.list_runs_outputs(
+            first_completed.job_id,
+            first_completed.run_id
+        )[0]
+    detected_info = client.files.get(output_file.object_id).detected_info
+    table_columns = (detected_info['tableColumns'] if need_table_columns
+                     else None)
+    if headers is None:
+        headers = detected_info['includeHeader']
+    if delimiter is None:
+        delimiter = detected_info['columnDelimiter']
+
+    compression = detected_info['compression']
+
+    _check_all_detected_info(detected_info, headers, delimiter, compression,
+                             output_file.object_id)
+
+    cleaned_file_ids.append(output_file.object_id)
+
+    # Ensure that all results from files are correctly accounted for -
+    # Since concurrent.futures.wait returns two sets, it is possible
+    # That done contains more than one Future. Thus it is necessary to account
+    # for these possible completed cleaning runs while waiting on those which
+    # are still running.
+    for result in concurrent.futures.as_completed(done | still_going):
+        output_file = client.jobs.list_runs_outputs(
+            result.job_id,
+            result.run_id
+        )[0]
+        detected_info = client.files.get(output_file.object_id).detected_info
+        if need_table_columns:
+            file_columns = detected_info['tableColumns']
+            _check_column_types(table_columns, file_columns,
+                                output_file.object_id)
+
+        _check_all_detected_info(detected_info, headers, delimiter,
+                                 compression, output_file.object_id)
+        cleaned_file_ids.append(output_file.object_id)
+
+    if need_table_columns:
+        table_columns = _replace_null_column_names(table_columns)
+    return cleaned_file_ids, headers, compression, delimiter, table_columns
+
+
+def _check_column_types(table_columns, file_columns, output_obj_id):
+    """Check that base column types match those current defined for the table.
+
+    Parameters
+    ----------
+
+    table_columns: List[Dict[str, str]]
+      The columns for the table to be created.
+    file_columns: List[Dict[str, str]]
+      The columns detected by the Civis API for the file.
+    output_obj_id: int
+      The file ID under consideration; used for error messaging.
+
+    Raises
+    ------
+
+    CivisImportError
+      If the table columns and the file columns have a type mismatch, or
+      differ in count.
+    """
+    if len(table_columns) != len(file_columns):
+        raise CivisImportError('All files should have the same number of '
+                               'columns. Expected {} columns but file {} '
+                               'has {} columns'.format(
+                                   len(table_columns),
+                                   output_obj_id,
+                                   len(file_columns))
+                               )
+
+    error_msgs = []
+    for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns)):
+        # for the purposes of type checking, we care only that the types
+        # share a base type (e.g. INT, VARCHAR, DECIMAl) rather than that
+        # they have the same precision and length
+        # (e.g VARCHAR(42), DECIMAL(8, 10))
+        tcol_base_type = tcol['sql_type'].split('(', 1)[0]
+        fcol_base_type = fcol['sql_type'].split('(', 1)[0]
+
+        if tcol_base_type != fcol_base_type:
+            error_msgs.append(
+                'Column {}: File base type was {}, but expected {}'.format(
+                    idx,
+                    fcol_base_type,
+                    tcol_base_type
+                )
+            )
+    if error_msgs:
+        raise CivisImportError(
+            'Encountered the following errors for file {}:\n\t{}'.format(
+                output_obj_id,
+                '\n\t'.join(error_msgs)
+            )
+        )
