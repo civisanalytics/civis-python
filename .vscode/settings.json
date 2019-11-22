@@ -1,0 +1,4 @@
+{
+    "restructuredtext.confPath": "${workspaceFolder}/docs/source",
+    "python.pythonPath": "/Users/zfriedlander/miniconda3/envs/civis-python-fork/bin/python"
+}

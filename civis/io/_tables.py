@@ -646,8 +646,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -671,8 +671,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The ID of the database credential.  If ``None``, the default
         credential will be used.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
@@ -779,8 +781,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         before failing.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -797,8 +799,10 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         headers. The default, ``None``, attempts to autodetect whether
         or not the first row contains headers.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
@@ -866,7 +870,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     return fut
 
 
-def civis_file_to_table(file_ids, database, table, client=None,
+@deprecate_param('v2.0.0', 'file_id')
+def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
                         sortkey1=None, sortkey2=None,
@@ -875,12 +880,16 @@ def civis_file_to_table(file_ids, database, table, client=None,
                         delimiter=None, headers=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
-    """Upload the contents of a Civis file to a Civis table.
+    """Upload the contents of one or more Civis files to a Civis table.
+       All provided files will be loaded as an atomic unit in parallel, and
+       should share the same columns in the same order, and be in the same
+       format.
 
     Parameters
     ----------
-    file_ids : int or list[int]
-        Civis file ID or a list of Civis file IDs.
+    file_id : int or list[int]
+        Civis file ID or a list of Civis file IDs. Reference by name to this
+        argument is deprecated, as the name will change in v2.0.0.
     database : str or int
         Upload data into this database. Can be the database name or ID.
     table : str
@@ -891,11 +900,12 @@ def civis_file_to_table(file_ids, database, table, client=None,
         created from the :envvar:`CIVIS_API_KEY`.
     max_errors : int, optional
         The maximum number of rows with errors to remove from the import
-        before failing.
+        before failing. If multiple files are provided, this limit applies
+        across all files combined.
     existing_table_rows : str, optional
         The behaviour if a table with the requested name already exists.
-        One of ``'fail'``, ``'truncate'``, ``'append'`` or ``'drop'``.
-        Defaults to ``'fail'``.
+        One of ``'fail'``, ``'truncate'``, ``'append'``, ``'drop'``, or
+        ``'upsert'``. Defaults to ``'fail'``.
     diststyle : str, optional
         The distribution style for the table.
         One of ``'even'``, ``'all'`` or ``'key'``.
@@ -906,14 +916,16 @@ def civis_file_to_table(file_ids, database, table, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     primary_keys: list[str], optional
-        A list of the primary key column(s) of the destination table. If
-        existing_table_rows is "upsert", this field is required.
+        A list of the primary key column(s) of the destination table that
+        uniquely identify a record. If existing_table_rows is "upsert", this
+        field is required. Note that this is true regardless of whether the
+        destination database itself requires a primary key.
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
     escaped: bool, optional
-        A boolean value indicating whether or not the source file has quotes
-        escaped with a backslash. Defaults to false.
+        A boolean value indicating whether or not the source file(s) escape
+        quotes with a backslash. Defaults to false.
     execution: string, optional, default "immediate"
         One of "delayed" or "immediate". If "immediate", refresh column
         statistics as part of the run. If "delayed", flag the table for a
@@ -942,6 +954,14 @@ def civis_file_to_table(file_ids, database, table, client=None,
     results : :class:`~civis.futures.CivisFuture`
         A `CivisFuture` object.
 
+    Raises
+    ------
+    CivisImportError
+        If multiple files are given and determined to be incompatible for
+        import. This may be the case if their columns have different types,
+        their delimiters are different, headers are present in some but not
+        others, or compressions do not match.
+
     Examples
     --------
     >>> file_id = 100
@@ -954,8 +974,8 @@ def civis_file_to_table(file_ids, database, table, client=None,
         client = APIClient()
 
     schema, table = split_schema_tablename(table)
-    if isinstance(file_ids, int):
-        file_ids = [file_ids]
+    if isinstance(file_id, int):
+        file_id = [file_id]
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
@@ -978,7 +998,7 @@ def civis_file_to_table(file_ids, database, table, client=None,
     # and perform necessary file cleaning
     need_table_columns = not table_exists or existing_table_rows == 'drop'
 
-    cleaning_futures = _run_cleaning(file_ids, client, need_table_columns,
+    cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
@@ -994,6 +1014,12 @@ def civis_file_to_table(file_ids, database, table, client=None,
     redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
                             diststyle=diststyle)
 
+    # If multiple files are being imported, there might be differences in
+    # their precisions/lengths - setting this option will allow the Civis API
+    # to increase these values for the data types provided, and decreases the
+    # risk of a length-related import failure
+    loosen_types = len(file_id) > 1
+
     import_name = 'CSV import to {}.{}'.format(schema, table)
     import_job = client.imports.post_files_csv(
         source,
@@ -1006,11 +1032,13 @@ def civis_file_to_table(file_ids, database, table, client=None,
         compression=compression,
         escaped=escaped,
         execution=execution,
+        loosen_types=loosen_types,
         table_columns=table_columns,
         redshift_destination_options=redshift_options
     )
-    log.debug('Import job ID is %s', import_job.id)
-    fut = run_job(import_job.id, client=client)
+    fut = run_job(import_job.id, client=client,
+                  polling_interval=polling_interval)
+    log.debug('Started run %d for import %d', fut.run_id, import_job.id)
     return fut
 
 
@@ -1029,7 +1057,7 @@ def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
                                          csv_settings=csv_settings)
 
     run_job = client.scripts.post_sql_runs(export_job.id)
-
+    log.debug('Started run %d of SQL script %d', run_job.id, export_job.id)
     return export_job.id, run_job.id
 
 
@@ -1194,7 +1222,8 @@ def _replace_null_column_names(column_list):
     return new_cols
 
 
-def _run_cleaning(file_ids, client, need_table_columns, hidden):
+def _run_cleaning(file_ids, client, need_table_columns, hidden,
+                  polling_interval=None):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1204,8 +1233,54 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden):
             force_character_set_conversion=True,
             hidden=hidden
         )
-        cleaning_futures.append(run_job(cleaner_job.id, client=client))
+        cleaning_futures.append(run_job(cleaner_job.id, client=client,
+                                        polling_interval=polling_interval))
     return cleaning_futures
+
+
+def _check_all_detected_info(detected_info, headers, delimiter,
+                             compression, output_file_id):
+    """Check a single round of cleaning results as compared to provided values.
+
+    Parameters
+    ----------
+    detected_info: Dict[str, Any]
+      The detected info of the file as returned by the Civis API.
+    headers: bool
+      The provided value for whether or not the file contains errors.
+    delimiter: str
+      The provided value for the file delimiter.
+    compression: str
+      The provided value for the file compression.
+    output_file_id: int
+      The cleaned file's Civis ID. Used for debugging.
+
+    Raises
+    ------
+    CivisImportError
+      If the values detected on the file do not match their expected
+      attributes.
+    """
+    if headers != detected_info['includeHeader']:
+        raise CivisImportError('Mismatch between detected headers - '
+                               'please ensure all imported files either '
+                               'have a header or do not.')
+    if delimiter != detected_info['columnDelimiter']:
+        raise CivisImportError('Provided delimiter "{}" does not match '
+                               'detected delimiter for {}: "{}"'.format(
+                                    delimiter,
+                                    output_file_id,
+                                    detected_info["columnDelimiter"])
+                               )
+    if compression != detected_info['compression']:
+        raise CivisImportError('Mismatch between detected and provided '
+                               'compressions - provided compression was {}'
+                               ' but detected compression {}. Please '
+                               'ensure all imported files have the same '
+                               'compression.'.format(
+                                   compression,
+                                   detected_info['compression'])
+                               )
 
 
 def _process_cleaning_results(cleaning_futures, client, headers,
@@ -1228,24 +1303,21 @@ def _process_cleaning_results(cleaning_futures, client, headers,
                      else None)
     if headers is None:
         headers = detected_info['includeHeader']
-    elif headers != detected_info['includeHeader']:
-        raise CivisImportError('Mismatch between detected and provided '
-                               'headers - please ensure all imported files '
-                               'either have a header or do not.')
     if delimiter is None:
         delimiter = detected_info['columnDelimiter']
-    elif delimiter != detected_info['columnDelimiter']:
-        raise CivisImportError('Provided delimiter "{}" does not match '
-                               'detected delimiter for {}: "{}"'.format(
-                                   delimiter,
-                                   output_file.id,
-                                   detected_info["columnDelimiter"])
-                               )
 
     compression = detected_info['compression']
 
+    _check_all_detected_info(detected_info, headers, delimiter, compression,
+                             output_file.object_id)
+
     cleaned_file_ids.append(output_file.object_id)
 
+    # Ensure that all results from files are correctly accounted for -
+    # Since concurrent.futures.wait returns two sets, it is possible
+    # That done contains more than one Future. Thus it is necessary to account
+    # for these possible completed cleaning runs while waiting on those which
+    # are still running.
     for result in concurrent.futures.as_completed(done | still_going):
         output_file = client.jobs.list_runs_outputs(
             result.job_id,
@@ -1254,36 +1326,68 @@ def _process_cleaning_results(cleaning_futures, client, headers,
         detected_info = client.files.get(output_file.object_id).detected_info
         if need_table_columns:
             file_columns = detected_info['tableColumns']
-            if table_columns != file_columns:
-                raise CivisImportError('All files should have the same '
-                                       'schema. Expected {}'
-                                       'but file {} has {}'.format(
-                                           table_columns,
-                                           output_file.object_id,
-                                           file_columns)
-                                       )
-        if headers != detected_info['includeHeader']:
-            raise CivisImportError('Mismatch between detected headers - '
-                                   'please ensure all imported files either '
-                                   'have a header or do not.')
-        if delimiter != detected_info['columnDelimiter']:
-            raise CivisImportError('Provided delimiter "{}" does not match '
-                                   'detected delimiter for {}: "{}"'.format(
-                                       delimiter,
-                                       output_file.object_id,
-                                       detected_info["columnDelimiter"])
-                                   )
-        if compression != detected_info['compression']:
-            raise CivisImportError('Mismatch between detected and provided '
-                                   'compressions - provided compression was {}'
-                                   ' but detected compression {}. Please '
-                                   'ensure all imported files have the same '
-                                   'compression.'.format(
-                                       compression,
-                                       detected_info['compression'])
-                                   )
+            _check_column_types(table_columns, file_columns,
+                                output_file.object_id)
 
+        _check_all_detected_info(detected_info, headers, delimiter,
+                                 compression, output_file.object_id)
         cleaned_file_ids.append(output_file.object_id)
+
     if need_table_columns:
         table_columns = _replace_null_column_names(table_columns)
     return cleaned_file_ids, headers, compression, delimiter, table_columns
+
+
+def _check_column_types(table_columns, file_columns, output_obj_id):
+    """Check that base column types match those current defined for the table.
+
+    Parameters
+    ----------
+
+    table_columns: List[Dict[str, str]]
+      The columns for the table to be created.
+    file_columns: List[Dict[str, str]]
+      The columns detected by the Civis API for the file.
+    output_obj_id: int
+      The file ID under consideration; used for error messaging.
+
+    Raises
+    ------
+
+    CivisImportError
+      If the table columns and the file columns have a type mismatch, or
+      differ in count.
+    """
+    if len(table_columns) != len(file_columns):
+        raise CivisImportError('All files should have the same number of '
+                               'columns. Expected {} columns but file {} '
+                               'has {} columns'.format(
+                                   len(table_columns),
+                                   output_obj_id,
+                                   len(file_columns))
+                               )
+
+    error_msgs = []
+    for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns)):
+        # for the purposes of type checking, we care only that the types
+        # share a base type (e.g. INT, VARCHAR, DECIMAl) rather than that
+        # they have the same precision and length
+        # (e.g VARCHAR(42), DECIMAL(8, 10))
+        tcol_base_type = tcol['sql_type'].split('(', 1)[0]
+        fcol_base_type = fcol['sql_type'].split('(', 1)[0]
+
+        if tcol_base_type != fcol_base_type:
+            error_msgs.append(
+                'Column {}: File base type was {}, but expected {}'.format(
+                    idx,
+                    fcol_base_type,
+                    tcol_base_type
+                )
+            )
+    if error_msgs:
+        raise CivisImportError(
+            'Encountered the following errors for file {}:\n\t{}'.format(
+                output_obj_id,
+                '\n\t'.join(error_msgs)
+            )
+        )
