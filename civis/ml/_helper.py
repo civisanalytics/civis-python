@@ -2,7 +2,7 @@ from collections import namedtuple
 import logging
 
 from civis import APIClient
-from civis.ml._model import _PRED_TEMPLATES
+from civis.ml._model import _get_template_ids_all_versions
 
 __all__ = ['list_models', 'put_models_shares_groups',
            'put_models_shares_users', 'delete_models_shares_groups',
@@ -11,6 +11,8 @@ log = logging.getLogger(__name__)
 
 # sentinel value for default author value
 SENTINEL = namedtuple('Sentinel', [])()
+
+_TEMPLATE_IDS = None  # To be updated by _get_template_ids_all_versions
 
 
 def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
@@ -35,22 +37,32 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     --------
     APIClient.scripts.list_custom
     """
+    global _TEMPLATE_IDS
+
     if job_type == "train":
-        template_id_list = list(_PRED_TEMPLATES.keys())
+        job_type_keys = ('training',)
     elif job_type == "predict":
-        # get a unique list of prediction ids
-        template_id_list = list(set(_PRED_TEMPLATES.values()))
+        job_type_keys = ('prediction',)
     elif job_type is None:
-        # use sets to make sure there's no duplicate ids
-        template_id_list = list(set(_PRED_TEMPLATES.keys()).union(
-                            set(_PRED_TEMPLATES.values())))
+        job_type_keys = ('training', 'prediction')
     else:
         raise ValueError("Parameter 'job_type' must be None, 'train', "
                          "or 'predict'.")
-    template_id_str = ', '.join([str(tmp) for tmp in template_id_list])
 
     if client is None:
         client = APIClient()
+
+    if _TEMPLATE_IDS is None:
+        _TEMPLATE_IDS = _get_template_ids_all_versions(client)
+
+    template_id_list = [
+        ids[job_type_key]
+        for job_type_key in job_type_keys
+        for ids in _TEMPLATE_IDS.values()
+    ]
+    # Applying set() because we don't want repeated IDs
+    # between the version-less production alias and the versioned alias.
+    template_id_str = ', '.join(str(tmp) for tmp in set(template_id_list))
 
     if author is SENTINEL:
         author = client.users.list_me().id
