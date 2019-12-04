@@ -33,6 +33,7 @@ from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
+from civis.tests import create_client_mock
 import pytest
 
 from civis.ml import _model
@@ -40,6 +41,32 @@ from civis.ml import _model
 
 LATEST_TRAIN_TEMPLATE = 11219
 LATEST_PRED_TEMPLATE = 11220
+
+TEST_TEMPLATE_ID_ALIAS_OBJECTS = [
+    # Version-less aliases for the latest production code.
+    Response(dict(alias='civis-civisml-training', object_id=123)),
+    Response(dict(alias='civis-civisml-prediction', object_id=456)),
+    Response(dict(alias='civis-civisml-registration', object_id=789)),
+    # Versioned aliases
+    Response(dict(alias='civis-civisml-training-v2-3', object_id=123)),
+    Response(dict(alias='civis-civisml-prediction-v2-3', object_id=456)),
+    Response(dict(alias='civis-civisml-registration-v2-3', object_id=789)),
+    # Versioned aliases. Versions older than v2.2 don't have registration ID.
+    Response(dict(alias='civis-civisml-training-v1-4', object_id=135)),
+    Response(dict(alias='civis-civisml-prediction-v1-4', object_id=791)),
+    # Other special versions, e.g., "dev"
+    Response(dict(alias='civis-civisml-training-dev', object_id=345)),
+    Response(dict(alias='civis-civisml-prediction-dev', object_id=678)),
+    Response(dict(alias='civis-civisml-registration-dev', object_id=901)),
+]
+TEST_TEMPLATE_IDS = {
+    # Key `None` from the version-less alias, for the latest production version
+    None: {'training': 123, 'prediction': 456, 'registration': 789},
+    '2.3': {'training': 123, 'prediction': 456, 'registration': 789},
+    # Pre-trained model registration is available for CivisML v2.2 or above
+    '1.4': {'training': 135, 'prediction': 791, 'registration': None},
+    'dev': {'training': 345, 'prediction': 678, 'registration': 901},
+}
 
 
 def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
@@ -664,6 +691,49 @@ def test_metrics_prediction(mock_file_id_from_run_output):
     assert mf.metrics == 'foo'
     mock_file_id_from_run_output.assert_called_with('metrics.json', 3, 7,
                                                     client=mock.ANY)
+
+
+###############################################
+# Tests of utilities for CivisML template IDs #
+###############################################
+@pytest.mark.parametrize(
+    'alias, expected_job_type, expected_version',
+    [
+        ('civis-civisml-training', 'training', None),
+        ('civis-civisml-training-v2-3', 'training', '2.3'),
+        ('civis-civisml-training-dev', 'training', 'dev'),
+    ],
+)
+def test__get_job_type_version(alias, expected_job_type, expected_version):
+    actual_job_type, actual_version = _model._get_job_type_version(alias)
+    assert actual_job_type == expected_job_type
+    assert actual_version == expected_version
+
+
+def test__get_template_ids_all_versions():
+    m_client = create_client_mock()
+    m_client.aliases.list.return_value = TEST_TEMPLATE_ID_ALIAS_OBJECTS
+    actual_template_ids = _model._get_template_ids_all_versions(m_client)
+    expected_template_ids = TEST_TEMPLATE_IDS
+    assert actual_template_ids == expected_template_ids
+
+
+@pytest.mark.parametrize(
+    'version, expected_train_id, expected_predict_id, expected_register_id',
+    [(version, ids['training'], ids['prediction'], ids['registration'])
+     for version, ids in TEST_TEMPLATE_IDS.items()],
+)
+def test__get_template_ids(
+        version, expected_train_id, expected_predict_id, expected_register_id):
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
+    actual_train_id, actual_predict_id, actual_register_id = (
+        _model._get_template_ids(version, mock.ANY)
+    )
+    assert actual_train_id == expected_train_id
+    assert actual_predict_id == expected_predict_id
+    assert actual_register_id == expected_register_id
+    # clean up
+    _model._TEMPLATE_IDS = None
 
 
 #####################################
