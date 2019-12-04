@@ -1060,3 +1060,37 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     with pytest.raises(ValueError) as exc:
         mp_setup.predict(file_id=7, manifest=123)
     assert str(exc.value) == "Provide a single source of data."
+
+
+@set_global_template_ids
+def test_modelpipeline_pickling_preserves_already_set_template_ids():
+    # Test that pickling a ModelPipeline object preserves the template IDs
+    # that have already been set during object instantiation.
+    with TemporaryDirectory() as temp_dir:
+        # For whatever reason, pytest.mark.parametrize doesn't play nice with
+        # the generic set_global_template_ids decorator
+
+        # Based on TEST_TEMPLATE_ID_ALIAS_OBJECTS
+        versions_train_predict_ids = (
+            ('2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
+            ('1.4', TRAIN_ID_OLD, PREDICT_ID_OLD),
+        )
+        for version, train_id, predict_id in versions_train_predict_ids:
+            mp = _model.ModelPipeline('wf', 'dv',
+                                      civisml_version=version, client=mock.ANY)
+
+            # Before pickling, make sure the template IDs are set as expected
+            assert mp.train_template_id == train_id
+            assert mp.predict_template_id == predict_id
+
+            pickle_path = os.path.join(temp_dir, 'model.pkl')
+
+            with open(pickle_path, 'wb') as f:
+                pickle.dump(mp, f)
+
+            with open(pickle_path, 'rb') as f:
+                mp_unpickled = pickle.load(f)
+
+            # After unpickling, the template IDs should remain.
+            assert mp_unpickled.train_template_id == train_id
+            assert mp_unpickled.predict_template_id == predict_id
