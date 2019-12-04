@@ -693,6 +693,15 @@ def test_metrics_prediction(mock_file_id_from_run_output):
 ###############################################
 # Tests of utilities for CivisML template IDs #
 ###############################################
+def set_global_template_ids(func):
+    def wrapper(*args, **kwargs):
+        _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
+        func(*args, **kwargs)
+        # clean up
+        _model._TEMPLATE_IDS = None
+    return wrapper
+
+
 @pytest.mark.parametrize(
     'alias, expected_job_type, expected_version',
     [
@@ -715,22 +724,21 @@ def test__get_template_ids_all_versions():
     assert actual_template_ids == expected_template_ids
 
 
-@pytest.mark.parametrize(
-    'version, expected_train_id, expected_predict_id, expected_register_id',
-    [(version, ids['training'], ids['prediction'], ids['registration'])
-     for version, ids in TEST_TEMPLATE_IDS.items()],
-)
-def test__get_template_ids(
-        version, expected_train_id, expected_predict_id, expected_register_id):
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
-    actual_train_id, actual_predict_id, actual_register_id = (
-        _model._get_template_ids(version, mock.ANY)
-    )
-    assert actual_train_id == expected_train_id
-    assert actual_predict_id == expected_predict_id
-    assert actual_register_id == expected_register_id
-    # clean up
-    _model._TEMPLATE_IDS = None
+@set_global_template_ids
+def test__get_template_ids():
+    # For whatever reason, pytest.mark.parametrize doesn't play nice with
+    # the generic set_global_template_ids decorator
+    versions_ids = [
+        (version, ids['training'], ids['prediction'], ids['registration'])
+        for version, ids in TEST_TEMPLATE_IDS.items()
+    ]
+    for v, expected_train_id, expected_predict_id, expected_register_id in versions_ids:  # noqa
+        actual_train_id, actual_predict_id, actual_register_id = (
+            _model._get_template_ids(v, mock.ANY)
+        )
+        assert actual_train_id == expected_train_id
+        assert actual_predict_id == expected_predict_id
+        assert actual_register_id == expected_register_id
 
 
 #####################################
@@ -742,15 +750,6 @@ def mp_setup():
     mock_api.aliases.list.return_value = TEST_TEMPLATE_ID_ALIAS_OBJECTS
     mp = _model.ModelPipeline('wf', 'dv', client=mock_api)
     return mp
-
-
-def set_global_template_ids(func):
-    def wrapper(*args, **kwargs):
-        _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
-        func(*args, **kwargs)
-        # clean up
-        _model._TEMPLATE_IDS = None
-    return wrapper
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
