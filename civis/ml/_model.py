@@ -260,7 +260,7 @@ def _show_civisml_warnings(warn_list):
 def _get_job_type_version(alias):
     match_production = re.search(r'\Acivis-civisml-(\w+)\Z', alias)
     match_v = re.search(r'\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z', alias)
-    match_special = re.search(r'\Acivis-civisml-(\w+)-(\w+)\Z', alias)
+    match_special = re.search(r'\Acivis-civisml-(\w+)-(\S+[^-])\Z', alias)
 
     if match_production:
         # A production alias, e.g., "civis-civisml-training"

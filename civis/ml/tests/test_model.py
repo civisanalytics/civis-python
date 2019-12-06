@@ -699,12 +699,23 @@ def test_metrics_prediction(mock_file_id_from_run_output):
         ('civis-civisml-training', 'training', None),
         ('civis-civisml-training-v2-3', 'training', 'v2.3'),
         ('civis-civisml-training-dev', 'training', 'dev'),
+        ('civis-civisml-training-foo-bar', 'training', 'foo-bar'),
     ],
 )
 def test__get_job_type_version(alias, expected_job_type, expected_version):
     actual_job_type, actual_version = _model._get_job_type_version(alias)
     assert actual_job_type == expected_job_type
     assert actual_version == expected_version
+
+
+@pytest.mark.parametrize(
+    'invalid_alias',
+    ['foobar', 'civis-civisml', 'civis-civisml-', 'civis-civisml-training-',
+     'civis-civisml-training-foobar-']
+)
+def test__get_job_type_version_invalid_alias(invalid_alias):
+    with pytest.raises(ValueError):
+        _model._get_job_type_version(invalid_alias)
 
 
 def test__get_template_ids_all_versions():
