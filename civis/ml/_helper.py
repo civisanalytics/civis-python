@@ -40,11 +40,11 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     global _TEMPLATE_IDS
 
     if job_type == "train":
-        job_type_keys = ('training',)
+        job_types = ('training',)
     elif job_type == "predict":
-        job_type_keys = ('prediction',)
+        job_types = ('prediction',)
     elif job_type is None:
-        job_type_keys = ('training', 'prediction')
+        job_types = ('training', 'prediction')
     else:
         raise ValueError("Parameter 'job_type' must be None, 'train', "
                          "or 'predict'.")
@@ -56,8 +56,8 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
         _TEMPLATE_IDS = _get_template_ids_all_versions(client)
 
     template_id_list = [
-        ids[job_type_key]
-        for job_type_key in job_type_keys
+        ids[job_type]
+        for job_type in job_types
         for ids in _TEMPLATE_IDS.values()
     ]
     # Applying set() because we don't want repeated IDs
