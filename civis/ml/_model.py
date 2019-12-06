@@ -269,7 +269,7 @@ def _get_job_type_version(alias):
     elif match_v:
         # A versioned alias, e.g., "civis-civisml-training-v2-3"
         job_type = match_v.group(1)
-        version = '%s.%s' % match_v.group(2, 3)
+        version = 'v%s.%s' % match_v.group(2, 3)
     elif match_special:
         # A special-version alias, "civis-civisml-training-dev"
         job_type = match_special.group(1)
@@ -309,7 +309,7 @@ def _get_template_ids(civisml_version, client):
     except KeyError:
         msg = (
             '%r is an invalid CivisML version. Valid versions are in the '
-            'form of "2.3", "2.2", etc., '
+            'form of "v2.3", "v2.2", etc., '
             'or simply None for the latest production version.'
         )
         raise ValueError(msg % civisml_version)
@@ -958,8 +958,8 @@ class ModelPipeline:
             msg = (
                 'No registration template ID is available. '
                 'Pre-trained model registration is available for CivisML '
-                'v2.2 (for which `civisml_version` would be "2.2") or above, '
-                'but you have specified CivisML version %r'
+                'v2.2 (for which `civisml_version` would be "v2.2") or above, '
+                'but you have specified CivisML version "%r"'
             )
             raise ValueError(msg % civisml_version)
         container = client.scripts.post_custom(

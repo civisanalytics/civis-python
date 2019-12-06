@@ -60,8 +60,8 @@ TEST_TEMPLATE_ID_ALIAS_OBJECTS = [
 ]
 TEST_TEMPLATE_IDS = {  # Must match TEST_TEMPLATE_ID_ALIAS_OBJECTS
     None: {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': 789},  # noqa
-    '2.3': {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': 789},  # noqa
-    '1.4': {'training': TRAIN_ID_OLD, 'prediction': PREDICT_ID_OLD, 'registration': None},  # noqa
+    'v2.3': {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': 789},  # noqa
+    'v1.4': {'training': TRAIN_ID_OLD, 'prediction': PREDICT_ID_OLD, 'registration': None},  # noqa
     'dev': {'training': 345, 'prediction': 678, 'registration': 901},
 }
 
@@ -697,7 +697,7 @@ def test_metrics_prediction(mock_file_id_from_run_output):
     'alias, expected_job_type, expected_version',
     [
         ('civis-civisml-training', 'training', None),
-        ('civis-civisml-training-v2-3', 'training', '2.3'),
+        ('civis-civisml-training-v2-3', 'training', 'v2.3'),
         ('civis-civisml-training-dev', 'training', 'dev'),
     ],
 )
@@ -715,21 +715,19 @@ def test__get_template_ids_all_versions():
     assert actual_template_ids == expected_template_ids
 
 
-def test__get_template_ids():
+@pytest.mark.parametrize(
+    'version, train_id, predict_id, register_id',
+    [(version, ids['training'], ids['prediction'], ids['registration'])
+     for version, ids in TEST_TEMPLATE_IDS.items()]
+)
+def test__get_template_ids(version, train_id, predict_id, register_id):
     _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
-    # For whatever reason, pytest.mark.parametrize doesn't play nice with
-    # the generic set_global_template_ids decorator
-    versions_ids = [
-        (version, ids['training'], ids['prediction'], ids['registration'])
-        for version, ids in TEST_TEMPLATE_IDS.items()
-    ]
-    for v, expected_train_id, expected_predict_id, expected_register_id in versions_ids:  # noqa
-        actual_train_id, actual_predict_id, actual_register_id = (
-            _model._get_template_ids(v, mock.ANY)
-        )
-        assert actual_train_id == expected_train_id
-        assert actual_predict_id == expected_predict_id
-        assert actual_register_id == expected_register_id
+    actual_train_id, actual_predict_id, actual_register_id = (
+        _model._get_template_ids(version, mock.ANY)
+    )
+    assert actual_train_id == train_id
+    assert actual_predict_id == predict_id
+    assert actual_register_id == register_id
     _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
 
 
@@ -1062,8 +1060,8 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
 
 @pytest.mark.parametrize(
     'version, train_id, predict_id',
-    [('2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
-     ('1.4', TRAIN_ID_OLD, PREDICT_ID_OLD)],
+    [('v2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
+     ('v1.4', TRAIN_ID_OLD, PREDICT_ID_OLD)],
 )
 def test_modelpipeline_pickling_preserves_template_ids(
         version, train_id, predict_id):
