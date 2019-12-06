@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   double quotes. (#328)
 
 ### Changed
+- CivisML uses platform aliases instead of hard-coded template IDs. (#331)
+- CivisML versions and pre-installed packages are documented on Zendesk instead. (#331)
 - Update the Civis logo in the Sphinx documentation. (#330)
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
 - Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints for cleaning and importing CSV files. (#328)
