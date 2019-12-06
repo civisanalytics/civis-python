@@ -853,6 +853,8 @@ class ModelPipeline:
             The model object. This must be a fitted scikit-learn compatible
             Estimator object, or else the integer Civis File ID of a
             pickle or joblib-serialized file which stores such an object.
+            If an Estimator object is provided, it will be uploaded to the
+            Civis Files endpoint and set to be available indefinitely.
         dependent_variable : string or List[str], optional
             The dependent variable of the training dataset.
             For a multi-target problem, this should be a list of
@@ -929,8 +931,8 @@ class ModelPipeline:
                     # NB: Using the name "estimator.pkl" means that
                     # CivisML doesn't need to copy this input to a file
                     # with a different name.
-                    model_file_id = cio.file_to_civis(_fout, 'estimator.pkl',
-                                                      client=client)
+                    model_file_id = cio.file_to_civis(
+                        _fout, 'estimator.pkl', expires_at=None, client=client)
             finally:
                 shutil.rmtree(tempdir)
 
