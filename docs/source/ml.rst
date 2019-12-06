@@ -11,7 +11,7 @@ API for interoperability with other platforms and to allow you to leverage
 resources in the open-source software community when creating machine learning models.
 
 
-Optional dependencies
+Optional Dependencies
 =====================
 
 You do not need any external libraries installed to use CivisML, but
@@ -411,9 +411,10 @@ To share your models, use the functions
 - :func:`~civis.ml.delete_models_shares_users`
 - :func:`~civis.ml.delete_models_shares_groups`
 
+To find out what models a user has, use :func:`~civis.ml.list_models`.
 
-Object reference
-================
+Object and Function Reference
+=============================
 
 .. autoclass:: civis.ml.ModelPipeline
 	       :members:
@@ -422,3 +423,9 @@ Object reference
 .. autoclass:: civis.ml.ModelFuture
 	       :members:
 	       :inherited-members:
+
+.. autofunction:: civis.ml.put_models_shares_users
+.. autofunction:: civis.ml.put_models_shares_groups
+.. autofunction:: civis.ml.delete_models_shares_users
+.. autofunction:: civis.ml.delete_models_shares_groups
+.. autofunction:: civis.ml.list_models
