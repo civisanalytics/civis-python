@@ -693,15 +693,6 @@ def test_metrics_prediction(mock_file_id_from_run_output):
 ###############################################
 # Tests of utilities for CivisML template IDs #
 ###############################################
-def set_global_template_ids(func):
-    def wrapper(*args, **kwargs):
-        _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
-        func(*args, **kwargs)
-        # clean up
-        _model._TEMPLATE_IDS = None
-    return wrapper
-
-
 @pytest.mark.parametrize(
     'alias, expected_job_type, expected_version',
     [
@@ -724,8 +715,8 @@ def test__get_template_ids_all_versions():
     assert actual_template_ids == expected_template_ids
 
 
-@set_global_template_ids
 def test__get_template_ids():
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     # For whatever reason, pytest.mark.parametrize doesn't play nice with
     # the generic set_global_template_ids decorator
     versions_ids = [
@@ -739,6 +730,7 @@ def test__get_template_ids():
         assert actual_train_id == expected_train_id
         assert actual_predict_id == expected_predict_id
         assert actual_register_id == expected_register_id
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
 
 
 #####################################
@@ -753,27 +745,29 @@ def mp_setup():
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
-@set_global_template_ids
 def test_modelpipeline_etl_init_err():
     # If users don't have access to >= v2.0 temlates, then passing
     # `etl` to a new ModelPipeline should produce a NotImplementedError.
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.MagicMock()
     with pytest.raises(NotImplementedError):
         _model.ModelPipeline(LogisticRegression(), 'test',
                              etl=LogisticRegression(),
                              client=mock_client)
+    _model._TEMPLATE_IDS = None  # clean up
 
 
-@set_global_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
     # catch 404 error if model isn't found and throw ValueError
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.Mock()
     response = namedtuple('Reponse', ['content', 'response', 'reason',
                                       'status_code'])(False, None, None, 404)
     mock_future.side_effect = CivisAPIError(response)
     with pytest.raises(ValueError):
         _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    _model._TEMPLATE_IDS = None  # clean up
 
 
 def _container_response_stub(from_template_id=8387):
@@ -813,9 +807,9 @@ def _container_response_stub(from_template_id=8387):
                          ))
 
 
-@set_global_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor(mock_future):
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = \
         container = _container_response_stub(TRAIN_ID_PROD)
@@ -843,11 +837,12 @@ def test_modelpipeline_classmethod_constructor(mock_future):
     deps = container.arguments.get('DEPENDENCIES', None)
     assert mp.dependencies == deps.split() if deps else None
     assert mp.git_token_name == 'Token'
+    _model._TEMPLATE_IDS = None  # clean up
 
 
-@set_global_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_defaults(mock_future):
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     container_response_stub = _container_response_stub(TRAIN_ID_PROD)
     del container_response_stub.arguments['PARAMS']
     del container_response_stub.arguments['CVPARAMS']
@@ -859,14 +854,15 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert mp.cv_params == {}
     assert mp.parameters == {}
+    _model._TEMPLATE_IDS = None  # clean up
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
-@set_global_template_ids
 def test_modelpipeline_classmethod_constructor_nonint_id():
     # Verify that we can still JSON-serialize job and run IDs even
     # if they're entered in a non-JSON-able format.
     # We need to turn them into JSON to set them as script arguments.
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = setup_client_mock(1, 2)
     container_response_stub = _container_response_stub(TRAIN_ID_PROD)
     mock_client.scripts.get_containers.return_value = container_response_stub
@@ -877,23 +873,25 @@ def test_modelpipeline_classmethod_constructor_nonint_id():
     out = json.dumps({'job': mp.train_result_.job_id,
                       'run': mp.train_result_.run_id})
     assert out == '{"job": 1, "run": 2}' or out == '{"run": 2, "job": 1}'
+    _model._TEMPLATE_IDS = None  # clean up
 
 
-@set_global_template_ids
+@pytest.mark.parametrize(
+    'train_id, predict_id',
+    [(TRAIN_ID_PROD, PREDICT_ID_PROD), (TRAIN_ID_OLD, PREDICT_ID_OLD)],
+)
 @mock.patch.object(_model, 'ModelFuture', autospec=True)
-def test_modelpipeline_classmethod_constructor_old_version(mock_future):
+def test_modelpipeline_classmethod_constructor_old_version(
+        mock_future, train_id, predict_id):
     # Test that we select the correct prediction template for different
     # versions of a training job.
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = setup_client_mock()
-
-    # For whatever reason, pytest.mark.parametrize doesn't play nice with
-    # the generic set_global_template_ids decorator
-    for train_id, predict_id in ((TRAIN_ID_PROD, PREDICT_ID_PROD),
-                                 (TRAIN_ID_OLD, PREDICT_ID_OLD)):
-        mock_client.scripts.get_containers.return_value = \
-            _container_response_stub(from_template_id=train_id)
-        mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-        assert mp.predict_template_id == predict_id
+    mock_client.scripts.get_containers.return_value = \
+        _container_response_stub(from_template_id=train_id)
+    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+    assert mp.predict_template_id == predict_id
+    _model._TEMPLATE_IDS = None  # clean up
 
 
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
@@ -907,12 +905,12 @@ def test_modelpipeline_train(mock_ccr, mp_setup):
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
-@set_global_template_ids
 @mock.patch.object(_model, "APIClient", mock.Mock())
 @mock.patch.object(_model.cio, "file_to_civis")
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     # Provide a model as a pre-made model and make sure we can train.
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_f2c.return_value = -21
 
     est = LogisticRegression()
@@ -923,6 +921,7 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     assert 'res' == mp.train(file_id=7)
     assert mp.train_result_ == 'res'
     assert mock_f2c.call_count == 1  # Called once to store input Estimator
+    _model._TEMPLATE_IDS = None  # clean up
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
@@ -1061,35 +1060,33 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     assert str(exc.value) == "Provide a single source of data."
 
 
-@set_global_template_ids
-def test_modelpipeline_pickling_preserves_already_set_template_ids():
+@pytest.mark.parametrize(
+    'version, train_id, predict_id',
+    [('2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
+     ('1.4', TRAIN_ID_OLD, PREDICT_ID_OLD)],
+)
+def test_modelpipeline_pickling_preserves_template_ids(
+        version, train_id, predict_id):
     # Test that pickling a ModelPipeline object preserves the template IDs
     # that have already been set during object instantiation.
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     with TemporaryDirectory() as temp_dir:
-        # For whatever reason, pytest.mark.parametrize doesn't play nice with
-        # the generic set_global_template_ids decorator
+        mp = _model.ModelPipeline('wf', 'dv',
+                                  civisml_version=version, client=mock.ANY)
 
-        # Based on TEST_TEMPLATE_ID_ALIAS_OBJECTS
-        versions_train_predict_ids = (
-            ('2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
-            ('1.4', TRAIN_ID_OLD, PREDICT_ID_OLD),
-        )
-        for version, train_id, predict_id in versions_train_predict_ids:
-            mp = _model.ModelPipeline('wf', 'dv',
-                                      civisml_version=version, client=mock.ANY)
+        # Before pickling, make sure the template IDs are set as expected
+        assert mp.train_template_id == train_id
+        assert mp.predict_template_id == predict_id
 
-            # Before pickling, make sure the template IDs are set as expected
-            assert mp.train_template_id == train_id
-            assert mp.predict_template_id == predict_id
+        pickle_path = os.path.join(temp_dir, 'model.pkl')
 
-            pickle_path = os.path.join(temp_dir, 'model.pkl')
+        with open(pickle_path, 'wb') as f:
+            pickle.dump(mp, f)
 
-            with open(pickle_path, 'wb') as f:
-                pickle.dump(mp, f)
+        with open(pickle_path, 'rb') as f:
+            mp_unpickled = pickle.load(f)
 
-            with open(pickle_path, 'rb') as f:
-                mp_unpickled = pickle.load(f)
-
-            # After unpickling, the template IDs should remain.
-            assert mp_unpickled.train_template_id == train_id
-            assert mp_unpickled.predict_template_id == predict_id
+        # After unpickling, the template IDs should remain.
+        assert mp_unpickled.train_template_id == train_id
+        assert mp_unpickled.predict_template_id == predict_id
+    _model._TEMPLATE_IDS = None  # clean up
