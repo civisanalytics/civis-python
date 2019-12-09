@@ -28,6 +28,8 @@ from civis.base import CivisAPIError, CivisJobFailure
 from civis.compat import FileNotFoundError, TemporaryDirectory
 import civis.io as cio
 from civis.futures import ContainerFuture
+from civis.response import Response
+
 
 __all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
 log = logging.getLogger(__name__)
@@ -323,7 +325,10 @@ def _get_template_ids_all_versions(client):
         job_type, version = _get_job_type_version(alias_obj.alias)
         ids[version][job_type] = alias_obj.object_id
     if not ids:
-        raise CivisAPIError('No CivisML template IDs are accessible.')
+        r = Response({'status_code': 404,
+                      'reason': 'No CivisML template IDs are accessible.',
+                      'content': None})
+        raise CivisAPIError(r)
     return ids
 
 
