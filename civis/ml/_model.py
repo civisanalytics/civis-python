@@ -258,6 +258,20 @@ def _show_civisml_warnings(warn_list):
 
 
 def _get_job_type_version(alias):
+    """Derive the job type and version from the given alias.
+
+    Parameters
+    ----------
+    alias : str
+        CivisML alias
+
+    Returns
+    -------
+    str
+        Job type, one of {training, prediction, registration}.
+    str
+        CivisML version, e.g., "v2.2".
+    """
     match_production = re.search(r'\Acivis-civisml-(\w+)\Z', alias)
     match_v = re.search(r'\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z', alias)
     match_special = re.search(r'\Acivis-civisml-(\w+)-(\S+[^-])\Z', alias)
@@ -282,6 +296,19 @@ def _get_job_type_version(alias):
 
 
 def _get_template_ids_all_versions(client):
+    """Get templates IDs for all accessible CivisML versions.
+
+    Parameters
+    ----------
+    client : APIClient
+        Civis API client object
+
+    Returns
+    -------
+    Dict[str, Dict[str, int]]
+        Mapping between versions (e.g., "v2.2") and template Ids for the given
+        version (e.g., {'training': 1, 'prediction': 2, 'registration': 3}).
+    """
     template_alias_objects = client.aliases.list(
         object_type='template_script', iterator=True
     )
@@ -301,6 +328,24 @@ def _get_template_ids_all_versions(client):
 
 
 def _get_template_ids(civisml_version, client):
+    """Get template IDs for the specified CivisML version.
+
+    Parameters
+    ----------
+    civisml_version : str
+        CivisML version
+    client : APIClient
+        Civis API client object
+
+    Returns
+    -------
+    int
+        Template ID for training
+    int
+        Template ID for prediction
+    int
+        Template ID for pre-trained model registration
+    """
     global _TEMPLATE_IDS
     if _TEMPLATE_IDS is None:
         _TEMPLATE_IDS = _get_template_ids_all_versions(client)
