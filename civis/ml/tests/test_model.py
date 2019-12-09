@@ -742,6 +742,13 @@ def test__get_template_ids(version, train_id, predict_id, register_id):
     _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
 
 
+def test__get_template_ids_invalid_version():
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
+    with pytest.raises(ValueError):
+        _model._get_template_ids('not_a_version', mock.ANY)
+    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
+
+
 #####################################
 # Tests of ModelPipeline below here #
 #####################################

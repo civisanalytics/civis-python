@@ -308,11 +308,20 @@ def _get_template_ids(civisml_version, client):
         ids = _TEMPLATE_IDS[civisml_version]
     except KeyError:
         msg = (
-            '%r is an invalid CivisML version. Valid versions are in the '
-            'form of "v2.3", "v2.2", etc., '
-            'or simply None for the latest production version.'
+            '"{civisml_version}" is an invalid CivisML version. '
+            'Either this version does not exist, or you do not have access '
+            'to this version. '
+            'Versions accessible to you are {{{accessible_versions}}}, '
+            'as well as `None` for the latest production version.'
+        ).format(
+            civisml_version=civisml_version,
+            accessible_versions=', '.join(
+                '"%s"' % v
+                # Don't include None, or else it would crash sorted()
+                for v in sorted(v for v in _TEMPLATE_IDS.keys() if v)
+            )
         )
-        raise ValueError(msg % civisml_version)
+        raise ValueError(msg)
     return ids['training'], ids['prediction'], ids['registration']
 
 
