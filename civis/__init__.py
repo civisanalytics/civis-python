@@ -10,7 +10,7 @@ from civis import io, ml, parallel, utils
 if six.PY2:
     warnings.warn("Support for Python 2 is deprecated will be "
                   "removed in the next version release after "
-                  "April 1, 2020.", DeprecationWarning)
+                  "April 1, 2020.", FutureWarning)
 
 
 __all__ = ["__version__", "APIClient", "find", "find_one", "io",
