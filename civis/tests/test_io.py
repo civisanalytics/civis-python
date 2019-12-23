@@ -244,6 +244,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -253,7 +255,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, False, True
+            [mock_file_id], self.mock_client, False, True, ',', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
@@ -340,6 +342,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -349,7 +353,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, True, True
+            [mock_file_id], self.mock_client, True, True, ',', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
@@ -437,6 +441,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -446,7 +452,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            mock_file_id, self.mock_client, True, True
+            mock_file_id, self.mock_client, True, True, ',', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future1,
