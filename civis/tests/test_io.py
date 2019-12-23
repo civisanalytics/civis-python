@@ -260,9 +260,9 @@ class ImportTests(CivisVCRTestCase):
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
+            True,
             False,
-            None
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -358,9 +358,9 @@ class ImportTests(CivisVCRTestCase):
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -458,9 +458,9 @@ class ImportTests(CivisVCRTestCase):
             [mock.sentinel.cleaning_future1,
              mock.sentinel.cleaning_future2],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
