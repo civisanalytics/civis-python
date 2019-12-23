@@ -255,7 +255,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, False, True, ',', True
+            [mock_file_id], self.mock_client, False, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
@@ -353,7 +353,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, True, True, ',', True
+            [mock_file_id], self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
@@ -452,7 +452,7 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            mock_file_id, self.mock_client, True, True, ',', True
+            mock_file_id, self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future1,
@@ -594,7 +594,7 @@ class ImportTests(CivisVCRTestCase):
             .side_effect = mock_preprocess
 
         res = civis.io._tables._run_cleaning(fids, self.mock_client, True,
-                                             True)
+                                             True, 'comma', True)
 
         # We should have one cleaning job per provided file id
         fid_count = len(fids)
@@ -605,6 +605,8 @@ class ImportTests(CivisVCRTestCase):
                 in_place=False,
                 detect_table_columns=True,
                 force_character_set_conversion=True,
+                include_header=True,
+                column_delimiter='comma',
                 hidden=True)
             for fid in fids
         ))
