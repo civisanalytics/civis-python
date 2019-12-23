@@ -51,8 +51,50 @@ The :class:`CivisFuture <civis.futures.CivisFuture>` follows the
 :class:`python:concurrent.futures.Future` API fairly closely. For example,
 calling ``result()`` on ``fut`` above forces the program to wait for the
 job started with :func:`~civis.io.dataframe_to_civis` to finish and
-returns the result.
+returns the result or raises an exception.
 
+You can create :class:`CivisFuture <civis.futures.CivisFuture>` objects for
+many tasks (e.g., scripts, imports).  Here, we will create a container
+script that does the simple task of printing the text "HELLO WORLD", execute
+it, and then wait for it to finish.
+
+.. code-block:: python
+
+   >>> import civis
+   >>> import concurrent.futures
+   >>>
+   >>> client = civis.APIClient()
+   >>>
+   >>> # Create a container script. This is just a simple example. Futures can
+   >>> # also be used with SQL queries, imports, etc.
+   >>> response_script = client.scripts.post_containers(
+   ...     required_resources={'cpu': 512, 'memory': 1024},
+   ...     docker_command="echo 'HELLO WORLD'",
+   ...     docker_image_name='civisanalytics/datascience-python')
+   >>> script_id = response_script.id
+   >>>
+   >>> # Create a run in order to execute the script.
+   >>> response_run = client.scripts.post_containers_runs(script_id)
+   >>> run_id = response_run.id
+   >>>
+   >>> # Create a future to represent the result of the run.
+   >>> future = civis.futures.CivisFuture(
+   ...     client.scripts.get_containers_runs, (script_id, run_id))
+   >>>
+   >>> # You can then have your code block and wait for the future to be done as
+   >>> # follows. Note that this does not raise an exception on error like
+   >>> # `future.result()`.
+   >>> concurrent.futures.wait([future])
+   >>>
+   >>> # Alternatively, you can call `future.result()` to block and get the
+   >>> # status of the run once it finishes. If the run is already completed, the
+   >>> # result will be returned immediately.
+   >>> result = future.result()
+   >>>
+   >>> # Alternatively, one can start a run and get a future for it with the helper
+   >>> # function `civis.utils.run_job`:
+   >>> future2 = civis.utils.run_job(script_id)
+   >>> future2.result()
 
 Working Directly with the Client
 ================================
@@ -72,10 +114,7 @@ request. To make a call, first instantiate an :class:`~civis.APIClient` object:
    Creating an instance of :class:`~civis.APIClient` makes an HTTP request to
    determine the functions to attach to the object.  You must have an
    API key and internet connection to create an :class:`~civis.APIClient`
-   object. By default, the functions attached to the object come from a base
-   set of Civis API endpoints. Based on your user profile, you may have access
-   to a set of developmental endpoints.  To access these, instantiate the
-   client with ``client = civis.APIClient(resources='all')``.
+   object.
 
 With the client object instantiated, you can now make API requests like listing
 your user information:
@@ -147,3 +186,14 @@ example, with pandas.
 .. code:: python
 
    >>> url = export_result.output[0].path
+
+
+API Response Types and Functions
+================================
+
+Many API requests via an :class:`~civis.APIClient` instance return an iterable
+of :class:`civis.response.Response` objects.
+For endpoints that support pagination when the `iterator` kwarg is specified,
+a :class:`civis.response.PaginatedResponse` object is returned.
+To facilitate working with :class:`civis.response.Response` objects,
+the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.

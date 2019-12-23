@@ -16,13 +16,14 @@ from civis.futures import (ContainerFuture,
 from civis.futures import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
+from civis.tests import TEST_SPEC, create_client_mock
 from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(THIS_DIR, "civis_api_spec.json")) as f:
+with open(TEST_SPEC) as f:
     civis_api_spec_base = json.load(f, object_pairs_hook=OrderedDict)
 
 with open(os.path.join(THIS_DIR, "civis_api_spec_channels.json")) as f:
@@ -279,6 +280,32 @@ def _check_executor(from_template_id=None):
     return c
 
 
+@pytest.mark.parametrize(
+    'poller_args,expected_job_id,expected_run_id',
+    [((123, 456), 123, 456),
+     ((123,), 123, None)]
+)
+def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
+    result = CivisFuture(
+        poller=lambda x: x,
+        poller_args=poller_args,
+        client=create_client_mock(),
+    )
+    assert result.job_id == expected_job_id
+    assert result.run_id == expected_run_id
+
+
+def test_container_future_job_id_run_id():
+    job_id, run_id = 123, 456
+    result = ContainerFuture(
+        job_id=job_id,
+        run_id=run_id,
+        client=create_client_mock(),
+    )
+    assert result.job_id == job_id
+    assert result.run_id == run_id
+
+
 def test_container_scripts():
     c = _check_executor()
     assert c.scripts.post_custom.call_count == 0
@@ -286,9 +313,36 @@ def test_container_scripts():
 
 
 def test_custom_scripts():
-    c = _check_executor(133)
+    with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': '12',
+                                        'CIVIS_RUN_ID': '40'}):
+        c = _check_executor(133)
     assert c.scripts.post_custom.call_count > 0
     assert c.scripts.post_containers.call_count == 0
+
+    # Verify that this script's job and run ID are passed to arguments
+    args = c.scripts.post_custom.call_args[1].get('arguments')
+    for k, v in (('CIVIS_PARENT_JOB_ID', '12'), ('CIVIS_PARENT_RUN_ID', '40')):
+        assert args.get(k) == v
+
+
+def test_container_script_param_injection():
+    # Test that child jobs created by the shell executor have the
+    # job and run IDs of the script which created them (if any).
+    job_id, run_id = '123', '13'
+    c = _setup_client_mock(42, 43, n_failures=0)
+    with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': job_id,
+                                        'CIVIS_RUN_ID': run_id}):
+        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01)
+        bpe.submit("foo")
+
+    params = c.scripts.post_containers.call_args[1].get('params')
+    assert params is not None
+    assert {'name': 'CIVIS_PARENT_JOB_ID', 'type': 'integer',
+            'value': job_id} in params, \
+        "The creator's job ID wasn't passed to the child."
+    assert {'name': 'CIVIS_PARENT_RUN_ID', 'type': 'integer',
+            'value': run_id} in params, \
+        "The creator's run ID wasn't passed to the child."
 
 
 def test_create_docker_command():
@@ -381,6 +435,28 @@ def _setup_client_mock(job_id=-10, run_id=100, n_failures=8,
     del c.channels  # Remove "channels" endpoint to fall back on polling
 
     return c
+
+
+def test_cancel_finished_job():
+    # If we try to cancel a completed job, we get a 404 error.
+    # That shouldn't be sent to the user.
+
+    # Set up a mock client which will give an exception when
+    # you try to cancel any job.
+    c = _setup_client_mock()
+    err_resp = response.Response({
+        'status_code': 404,
+        'error': 'not_found',
+        'errorDescription': 'The requested resource could not be found.',
+        'content': True})
+    err_resp.json = lambda: err_resp.json_data
+    c.scripts.post_cancel.side_effect = CivisAPIError(err_resp)
+    c.scripts.post_containers_runs.return_value.state = 'running'
+
+    fut = ContainerFuture(-10, 100, polling_interval=1, client=c,
+                          poll_on_creation=False)
+    assert not fut.done()
+    assert fut.cancel() is False
 
 
 def test_future_no_retry_error():

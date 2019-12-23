@@ -1,3 +1,5 @@
+from glob import glob
+import os
 import re
 import setuptools
 from setuptools import find_packages, setup
@@ -7,7 +9,10 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
 ]
 
 
@@ -41,17 +46,21 @@ def main():
         url="https://www.civisanalytics.com",
         description="Access the Civis Platform API",
         packages=find_packages(),
+        include_package_data=True,
+        data_files=[(os.path.join('civis', 'tests'),
+                     glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
         install_requires=[
-            'pyyaml>=3.0,<=3.99',
-            'click>=6.0,<=6.99',
-            'jsonref>=0.1.0,<=0.1.99',
+            'pyyaml>=3.0,<=5.99',
+            'click>=6.0,<=7',
+            'jsonref>=0.1.0,<=0.2',
             'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,==2.*',
+            'jsonschema>=2.5.1,<=3',
             'six>=1.10,<=1.99',
-            'joblib>=0.11,<=0.11.99',
+            'joblib>=0.11,<=0.13.99',
             'pubnub>=4.0,<=4.99',
-            'cloudpickle>=0.2.0,<=0.3.99',
+            "cloudpickle>=0.2.0,<=1.99999 ; python_version != '3.4'",
+            "cloudpickle>=0.2.0,<1.2 ; python_version == '3.4'",
         ],
         extras_require={
             ':python_version=="2.7"': [

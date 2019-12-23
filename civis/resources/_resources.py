@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import json
+import os
 import re
 import textwrap
 try:
@@ -9,16 +10,51 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
+import six
 
 from civis.base import Endpoint, get_base_url
 from civis.compat import lru_cache
-from civis._utils import camel_to_snake, to_camelcase, open_session
+from civis._deprecation import deprecate_param
+from civis._utils import (camel_to_snake, to_camelcase,
+                          open_session, get_api_key)
 
 
 API_VERSIONS = ["1.0"]
-BASE_RESOURCES_V1 = ["credentials", "databases", "files", "imports",
-                     "jobs", "models", "predictions", "projects",
-                     "queries", "reports", "scripts", "tables", "users"]
+BASE_RESOURCES_V1 = [
+    'announcements',
+    'apps',
+    'civis',
+    'clusters',
+    'codes',
+    'credentials',
+    'databases',
+    'endpoints',
+    'enhancements',
+    'exports',
+    'files',
+    'groups',
+    'imports',
+    'jobs',
+    'match_targets',
+    'media',
+    'models',
+    'notebooks',
+    'notifications',
+    'ontology',
+    'predictions',
+    'projects',
+    'queries',
+    'remote_hosts',
+    'reports',
+    'results',
+    'scripts',
+    'search',
+    'tables',
+    'templates',
+    'users',
+    'workflows'
+]
+
 TYPE_MAP = {"array": "list", "object": "dict"}
 ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
@@ -26,8 +62,11 @@ ITERATOR_PARAM_DESC = (
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
 MAX_RETRIES = 10
+CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
+                                ".civis_api_spec.json")
 
 
+@deprecate_param('v2.0.0', 'resources')
 def exclude_resource(path, api_version, resources):
     if api_version == "1.0" and resources == "base":
         include = any([path.startswith(x) for x in BASE_RESOURCES_V1])
@@ -145,7 +184,7 @@ def iterable_method(method, params):
     return (method.lower() == 'get' and params_present)
 
 
-def create_signature(args, kwargs):
+def create_signature(args, optional_args):
     """ Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -156,7 +195,7 @@ def create_signature(args, kwargs):
     ----------
     args : list
         List of strings that name the required arguments of a function.
-    kwargs : list
+    optional_args : list
         List of strings that name the optional arguments of a function.
 
     Returns
@@ -166,14 +205,18 @@ def create_signature(args, kwargs):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    if kwargs:
-        p.append(Parameter('kwargs', Parameter.VAR_KEYWORD))
+    if six.PY3:
+        opt_par_type = Parameter.KEYWORD_ONLY
+    else:
+        opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
+    p += [Parameter(x, opt_par_type, default='DEFAULT')
+          for x in optional_args]
     return Signature(p)
 
 
 def split_method_params(params):
     args = []
-    kwargs = []
+    optional_args = []
     body_params = []
     query_params = []
     path_params = []
@@ -182,14 +225,14 @@ def split_method_params(params):
         if param["required"]:
             args.append(name)
         else:
-            kwargs.append(name)
+            optional_args.append(name)
         if param["in"] == "body":
             body_params.append(name)
         elif param["in"] == "query":
             query_params.append(name)
         elif param["in"] == "path":
             path_params.append(name)
-    return args, kwargs, body_params, query_params, path_params
+    return args, optional_args, body_params, query_params, path_params
 
 
 def create_method(params, verb, method_name, path, doc):
@@ -222,25 +265,26 @@ def create_method(params, verb, method_name, path, doc):
         A function which will make an API call
     """
     elements = split_method_params(params)
-    sig_args, sig_kwargs, body_params, query_params, path_params = elements
-    sig = create_signature(sig_args, sig_kwargs)
+    sig_args, sig_opt_args, body_params, query_params, path_params = elements
+    sig = create_signature(sig_args, sig_opt_args)
     is_iterable = iterable_method(verb, query_params)
 
     def f(self, *args, **kwargs):
+        raise_for_unexpected_kwargs(method_name, kwargs, sig_args,
+                                    sig_opt_args, is_iterable)
+
+        iterator = kwargs.pop('iterator', False)
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
-        raise_for_unexpected_kwargs(method_name, arguments, sig_args,
-                                    sig_kwargs, is_iterable)
         body = {x: arguments[x] for x in body_params if x in arguments}
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        iterator = arguments.get('iterator', False)
         return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(["self"] + sig_args, sig_kwargs)
+    sig_self = create_signature(["self"] + sig_args, sig_opt_args)
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
@@ -380,25 +424,26 @@ def parse_method(verb, operation, path):
     return name, method
 
 
+@deprecate_param('v2.0.0', 'resources')
 def parse_path(path, operations, api_version, resources):
     """ Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
     attached to the class as a method.
     """
     path = path.strip('/')
-    base_path = path.split('/')[0]
-    class_name = to_camelcase(base_path)
+    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
     methods = []
     if exclude_resource(path, api_version, resources):
-        return class_name, methods
+        return modified_base_path, methods
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
         if method is None:
             continue
         methods.append(method)
-    return class_name, methods
+    return modified_base_path, methods
 
 
+@deprecate_param('v2.0.0', 'resources')
 def parse_api_spec(api_spec, api_version, resources):
     """ Dynamically create classes to interface with the Civis API.
 
@@ -423,12 +468,12 @@ def parse_api_spec(api_spec, api_version, resources):
     paths = api_spec['paths']
     classes = {}
     for path, ops in paths.items():
-        class_name, methods = parse_path(path, ops, api_version, resources)
-        class_name_lower = class_name.lower()
-        if methods and classes.get(class_name_lower) is None:
-            classes[class_name_lower] = type(str(class_name), (Endpoint,), {})
+        base_path, methods = parse_path(path, ops, api_version, resources)
+        class_name = to_camelcase(base_path)
+        if methods and classes.get(base_path) is None:
+            classes[base_path] = type(str(class_name), (Endpoint,), {})
         for method_name, method in methods:
-            setattr(classes[class_name_lower], method_name, method)
+            setattr(classes[base_path], method_name, method)
     return classes
 
 
@@ -462,7 +507,8 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
 
 
 @lru_cache(maxsize=4)
-def generate_classes(api_key, api_version="1.0", resources="base"):
+@deprecate_param('v2.0.0', 'resources')
+def generate_classes(api_key, api_version="1.0", resources="all"):
     """ Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -494,6 +540,27 @@ def generate_classes(api_key, api_version="1.0", resources="base"):
     return parse_api_spec(spec, api_version, resources)
 
 
+def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
+    """Cache a local copy of the Civis Data Science API spec
+
+    Parameters
+    ----------
+    cache : str, optional
+        File in which to store the cache of the API spec
+    api_key : str, optional
+        Your API key obtained from the Civis Platform. If not given, the
+        client will use the :envvar:`CIVIS_API_KEY` environment variable.
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions.  Currently only "1.0" is supported.
+    """
+    api_key = get_api_key(api_key)
+    spec = get_api_spec(api_key, api_version=api_version)
+    with open(cache, "wt") as _fout:
+        json.dump(spec, _fout)
+
+
+@deprecate_param('v2.0.0', 'resources')
 def generate_classes_maybe_cached(cache, api_key, api_version, resources):
     """Generate class objects either from /endpoints or a local cache."""
     if cache is None:
@@ -509,4 +576,27 @@ def generate_classes_maybe_cached(cache, api_key, api_version, resources):
             raise ValueError(msg.format(type(cache)))
         spec = JsonRef.replace_refs(raw_spec)
         classes = parse_api_spec(spec, api_version, resources)
-    return classes
+    classes_ = _add_no_underscore_compatibility(classes)
+    return classes_
+
+
+def _add_no_underscore_compatibility(classes):
+    """ Add class names without underscores for compatibility.
+
+    Previously, no resources had underscores in APIClient.  Parsing of
+    resources has been fixed so now these resources will have underscores.
+    This adds an extra class for those resources without an underscore
+    for compatibility. Additionally, this removes the resource "feature_flags"
+    as APIClient has a name collision with this resource. This will
+    be removed in v2.0.0.
+    """
+    new = ["bocce_clusters", "match_targets", "remote_hosts", "feature_flags"]
+    classes_ = {}
+    class_names = list(classes.keys())
+    for class_name in class_names:
+        if class_name != "feature_flags":
+            classes_[class_name] = classes[class_name]
+        if class_name in new:
+            class_name_no_us = "".join(class_name.split("_"))
+            classes_[class_name_no_us] = classes[class_name]
+    return classes_

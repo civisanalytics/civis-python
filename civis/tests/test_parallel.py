@@ -1,4 +1,5 @@
 from math import sqrt
+import io
 import pickle
 from civis.compat import mock
 
@@ -12,6 +13,7 @@ import requests
 
 import civis.parallel
 from civis.futures import ContainerFuture
+from civis.tests import create_client_mock
 
 
 @pytest.fixture
@@ -66,7 +68,7 @@ def _test_retries_helper(num_failures, max_submit_retries,
                          mock_custom_exec_cls, mock_executor_cls):
 
     mock_file_to_civis.return_value = 0
-    mock_result_cls.get.return_value = 123
+    mock_result_cls.return_value.get.return_value = [123]
 
     # A function to raise fake API errors the first num_failures times it is
     # called.
@@ -86,13 +88,17 @@ def _test_retries_helper(num_failures, max_submit_retries,
         factory = civis.parallel.make_backend_template_factory(
             from_template_id=from_template_id,
             max_submit_retries=max_submit_retries,
-            client=mock.Mock())
+            client=create_client_mock())
     else:
         factory = civis.parallel.make_backend_factory(
-            max_submit_retries=max_submit_retries, client=mock.Mock())
+            max_submit_retries=max_submit_retries, client=create_client_mock())
     register_parallel_backend('civis', factory)
     with parallel_backend('civis'):
-        parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+        # NB: joblib >v0.11 relies on callbacks from the result object to
+        # decide when it's done consuming inputs. We've mocked the result
+        # object here, so Parallel must be called either with n_jobs=1 or
+        # pre_dispatch='all' to consume the inputs all at once.
+        parallel = Parallel(n_jobs=1, pre_dispatch='n_jobs')
         if should_fail:
             with pytest.raises(civis.parallel.JobSubmissionError):
                 parallel(delayed(sqrt)(i ** 2) for i in range(3))
@@ -115,7 +121,11 @@ def test_template_submit(mock_file, mock_result, mock_pool):
     n_calls = 3
     register_parallel_backend('civis', factory)
     with parallel_backend('civis'):
-        parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+        # NB: joblib >v0.11 relies on callbacks from the result object to
+        # decide when it's done consuming inputs. We've mocked the result
+        # object here, so Parallel must be called either with n_jobs=1 or
+        # pre_dispatch='all' to consume the inputs all at once.
+        parallel = Parallel(n_jobs=1, pre_dispatch='n_jobs')
         parallel(delayed(sqrt)(i ** 2) for i in range(n_calls))
 
     assert mock_file.call_count == 3, "Upload 3 functions to run"
@@ -201,6 +211,7 @@ def test_infer(mock_make_factory, mock_job):
         max_submit_retries=0,
         max_job_retries=0,
         hidden=True,
+        remote_backend='sequential',
         **expected)
 
 
@@ -265,7 +276,7 @@ def test_infer_update_args(mock_make_factory, mock_job):
 
 
 @mock.patch.object(civis.parallel, 'make_backend_factory')
-def test_infer_from_custom_job(mock_make_factory):
+def test_infer_from_custom_job(mock_make_factory, mock_job):
     # Test that `infer_backend_factory` can find needed
     # parameters if it's run inside a custom job created
     # from a template.
@@ -277,14 +288,13 @@ def test_infer_from_custom_job(mock_make_factory):
                                 docker_image_name='image_name',
                                 docker_image_tag='tag',
                                 repo_http_uri='cabbage', repo_ref='servant'))
-    mock_script = mock_job()
     mock_template = Response(dict(id=999, script_id=171))
 
     def _get_container(job_id):
         if int(job_id) == 42:
             return mock_custom
         elif int(job_id) == 171:
-            return mock_script
+            return mock_job
         else:
             raise ValueError("Got job_id {}".format(job_id))
 
@@ -310,9 +320,10 @@ def test_infer_from_custom_job(mock_make_factory):
                        'setup_cmd': None,
                        'max_submit_retries': mock.ANY,
                        'max_job_retries': mock.ANY,
-                       'hidden': True}
+                       'hidden': True,
+                       'remote_backend': 'sequential'}
     for key in civis.parallel.KEYS_TO_INFER:
-        expected_kwargs[key] = mock_script[key]
+        expected_kwargs[key] = mock_job[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
 
 
@@ -437,3 +448,66 @@ def test_result_eventual_failure(mock_civis):
     with pytest.raises(requests.ConnectionError):
         res.get()
     assert callback.call_count == 0
+
+
+@mock.patch.object(civis.parallel, 'civis')
+@mock.patch.object(civis.parallel, '_sklearn_reg_para_backend')
+@mock.patch.object(civis.parallel, '_joblib_reg_para_backend')
+def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
+    # Test that the civis backend is properly registered w/ joblib and sklearn.
+    for no_sk in [True, False]:
+        with mock.patch.object(civis.parallel, 'NO_SKLEARN', no_sk):
+            backend = civis.parallel._CivisBackend()
+            backend_name = civis.parallel._setup_remote_backend(backend)
+            assert backend_name == 'civis'
+            assert mock_jl.call_count == 1
+            if no_sk:
+                assert mock_sk.call_count == 0
+            else:
+                assert mock_sk.call_count == 1
+            mock_jl.reset_mock()
+            mock_sk.reset_mock()
+
+
+def test_civis_backend_from_existing():
+    # Test to make sure that making a new backend from an existing one makes
+    # an exact copy.
+    backend = civis.parallel._CivisBackend(
+        setup_cmd='blah',
+        from_template_id=-1,
+        max_submit_retries=10,
+        client='ha',
+        remote_backend='cool',
+        hidden=False)
+
+    new_backend = civis.parallel._CivisBackend.from_existing(backend)
+
+    assert new_backend.setup_cmd == 'blah'
+    assert new_backend.from_template_id == -1
+    assert new_backend.max_submit_retries == 10
+    assert new_backend.client == 'ha'
+    assert new_backend.remote_backend == 'cool'
+    assert new_backend.executor_kwargs == {'hidden': False}
+
+
+@mock.patch.object(civis.parallel, 'civis')
+def test_civis_backend_pickles(mock_civis):
+    # Test to make sure the backend will pickle.
+    backend = civis.parallel._CivisBackend(
+        setup_cmd='blah',
+        from_template_id=-1,
+        max_submit_retries=10,
+        client='ha',
+        remote_backend='cool',
+        hidden=False)
+
+    with parallel_backend(backend):
+        Parallel(n_jobs=-1)([])
+
+    buff = io.BytesIO()
+    pickle.dump(backend, buff)
+    buff.seek(0)
+    new_backend = pickle.load(buff)
+
+    with parallel_backend(new_backend):
+        Parallel(n_jobs=-1)([])

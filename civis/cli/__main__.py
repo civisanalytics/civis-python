@@ -14,6 +14,7 @@ import calendar
 from collections import OrderedDict
 from functools import partial
 import json
+import logging
 import os
 import re
 import sys
@@ -23,18 +24,18 @@ from warnings import warn
 import click
 from jsonref import JsonRef
 import yaml
-from civis.cli._cli_commands import \
-    civis_ascii_art, files_download_cmd, files_upload_cmd
-from civis.resources import get_api_spec
+from civis.cli._cli_commands import (
+    civis_ascii_art, files_download_cmd, files_upload_cmd,
+    notebooks_download_cmd, notebooks_new_cmd,
+    notebooks_up, notebooks_down, notebooks_open, sql_cmd)
+from civis.resources import get_api_spec, CACHED_SPEC_PATH
+from civis.resources._resources import parse_method_name
 from civis._utils import open_session
 from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
-_API_URL = "https://api.civisanalytics.com"
-_OPENAPI_SPEC_URL = "https://api.civisanalytics.com/endpoints"
-_CACHED_SPEC_PATH = \
-    os.path.join(os.path.expanduser('~'), ".civis_api_spec.json")
+_BASE_API_URL = "https://api.civisanalytics.com"
 CLI_USER_AGENT = 'civis-cli'
 
 
@@ -52,7 +53,7 @@ class YAMLParamType(click.ParamType):
 
         try:
             with open(value) as f:
-                result = yaml.load(f)
+                result = yaml.safe_load(f)
                 return result
         except Exception:
             self.fail("Could not load YAML from path: %s" % value, param, ctx)
@@ -82,6 +83,10 @@ def get_api_key():
         sys.exit(1)
 
 
+def get_base_api_url():
+    return os.getenv('CIVIS_API_ENDPOINT') or _BASE_API_URL
+
+
 def camel_to_snake(s):
     return re.sub(r'([A-Z]+)', r'_\1', s).lower()
 
@@ -95,27 +100,19 @@ def munge_name(s):
 def make_operation_name(path, method, resource_name):
     """Create an appropriate CLI command for an operation.
 
-    E.g., '/imports/files/{id}/runs/{run_id}' -> 'get_imports_files_runs'
+    Examples
+    --------
+    >>> make_operation_name('/scripts/r/{id}/runs/{run_id}', 'get', 'scripts')
+    get-r-runs
     """
-
-    name = path.lower()
-    name = re.sub(r'{[^}]+}', '', name)
-    name = munge_name(name)
+    path = path.lower().lstrip('/')
 
     # Remove resource prefix. Note that the path name for some operations is
     # just the resource name (e.g., /databases).
-    # Munge the resource name for consistency (e.g.,
-    # remote_hosts -> remote-hosts).
-    if name.startswith(munge_name(resource_name)):
-        name = name[len(resource_name):].strip("-")
+    if path.startswith(resource_name):
+        path = path[len(resource_name):].strip("-")
 
-    # If there's no ID argument at the end, then it'll be a listing operation.
-    if method == 'get' and not path.endswith('}'):
-        method = 'list'
-
-    # Add HTTP method prefix. For operations whose path name is the resource,
-    # make the command just be the HTTP method.
-    name = '{}-{}'.format(method, name) if name else method
+    name = parse_method_name(method, path).replace("_", "-")
     return name
 
 
@@ -160,7 +157,7 @@ def invoke(method, path, op, *args, **kwargs):
     request_info = dict(
         params=query,
         json=body,
-        url=_API_URL + path.format(**kwargs),
+        url=get_base_api_url() + path.format(**kwargs),
         method=method
     )
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
@@ -198,10 +195,10 @@ def retrieve_spec_dict(api_version="1.0"):
 
     try:
         # If the cached spec is from the last 24 hours, use it.
-        modified_time = os.path.getmtime(_CACHED_SPEC_PATH)
+        modified_time = os.path.getmtime(CACHED_SPEC_PATH)
         if now_timestamp - modified_time < 24 * 3600:
             refresh_spec = False
-            with open(_CACHED_SPEC_PATH) as f:
+            with open(CACHED_SPEC_PATH) as f:
                 spec_dict = json.load(f, object_pairs_hook=OrderedDict)
     except (FileNotFoundError, ValueError):
         # If the file doesn't exist or we can't parse it, just keep going.
@@ -211,7 +208,7 @@ def retrieve_spec_dict(api_version="1.0"):
     if refresh_spec:
         spec_dict = get_api_spec(get_api_key(), api_version=api_version,
                                  user_agent=CLI_USER_AGENT)
-        with open(_CACHED_SPEC_PATH, "w") as f:
+        with open(CACHED_SPEC_PATH, "w") as f:
             json.dump(spec_dict, f)
     return spec_dict
 
@@ -221,11 +218,24 @@ def add_extra_commands(cli):
     files_cmd = cli.commands['files']
     files_cmd.add_command(files_download_cmd)
     files_cmd.add_command(files_upload_cmd)
+    notebooks_cmd = cli.commands['notebooks']
+    notebooks_cmd.add_command(notebooks_download_cmd)
+    notebooks_cmd.add_command(notebooks_new_cmd)
+    notebooks_cmd.add_command(notebooks_up)
+    notebooks_cmd.add_command(notebooks_down)
+    notebooks_cmd.add_command(notebooks_open)
     cli.add_command(civis_ascii_art)
+
+    cli.add_command(sql_cmd)
+
+
+def configure_log_level():
+    if os.getenv('CIVIS_LOG_LEVEL'):
+        logging.basicConfig(level=os.getenv('CIVIS_LOG_LEVEL'))
 
 
 def generate_cli():
-
+    configure_log_level()
     spec = retrieve_spec_dict()
 
     # Replace references in the spec so that we don't have to worry about them
@@ -278,7 +288,8 @@ def add_path_commands(path, path_dict, grp, resource):
                                        help="output in JSON instead of YAML"))
 
         if cmd.name in grp.commands:
-            warn("conflicting command name: %s" % cmd.name)
+            warn('conflicting command name "%s" for path "%s"' %
+                 (cmd.name, path))
 
         grp.add_command(cmd)
 

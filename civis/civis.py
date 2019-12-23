@@ -1,10 +1,12 @@
 from __future__ import absolute_import
 import logging
-import os
+import warnings
 
+import civis
 from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
-from civis._utils import open_session
+from civis._utils import get_api_key
+from civis._deprecation import deprecate_param
 
 
 log = logging.getLogger(__name__)
@@ -12,20 +14,49 @@ log = logging.getLogger(__name__)
 RETRY_CODES = [429, 502, 503, 504]
 
 
-def _get_api_key(api_key):
-    """Pass-through if `api_key` is not None otherwise tries the CIVIS_API_KEY
-    environmental variable.
-    """
-    if api_key is not None:  # always prefer user given one
-        return api_key
-    api_key = os.environ.get("CIVIS_API_KEY", None)
-    if api_key is None:
-        raise EnvironmentError("No Civis API key found. Please store in "
-                               "CIVIS_API_KEY environment variable")
-    return api_key
-
-
 def find(object_list, filter_func=None, **kwargs):
+    """Filter :class:`civis.response.Response` objects.
+
+    Parameters
+    ----------
+    object_list : iterable
+        An iterable of arbitrary objects, particularly those with attributes
+        that can be targeted by the filters in `kwargs`. A major use case is
+        an iterable of :class:`civis.response.Response` objects.
+    filter_func : callable, optional
+        A one-argument function. If specified, `kwargs` are ignored.
+        An `object` from the input iterable is kept in the returned list
+        if and only if ``bool(filter_func(object))`` is ``True``.
+    **kwargs
+        Key-value pairs for more fine-grained filtering; they cannot be used
+        in conjunction with `filter_func`. All keys must be strings.
+        For an `object` from the input iterable to be included in the
+        returned list, all the `key`s must be attributes of `object`, plus
+        any one of the following conditions for a given `key`:
+
+        - `value` is a one-argument function and
+          ``bool(value(getattr(object, key)))`` is ``True``
+        - `value` is ``True``
+        - ``getattr(object, key)`` is equal to ``value``
+
+    Returns
+    -------
+    list
+
+    Examples
+    --------
+    >>> import civis
+    >>> client = civis.APIClient()
+    >>> # creds is a list of civis.response.Response objects
+    >>> creds = client.credentials.list()
+    >>> # target_creds contains civis.response.Response objects
+    >>> # with the attribute 'name' == 'username'
+    >>> target_creds = find(creds, name='username')
+
+    See Also
+    --------
+    civis.find_one
+    """
     _func = filter_func
     if not filter_func:
         def default_filter(o):
@@ -48,6 +79,21 @@ def find(object_list, filter_func=None, **kwargs):
 
 
 def find_one(object_list, filter_func=None, **kwargs):
+    """Return one satisfying :class:`civis.response.Response` object.
+
+    The arguments are the same as those for :func:`civis.find`.
+    If more than one object satisfies the filtering criteria,
+    the first one is returned.
+    If no satisfying objects are found, ``None`` is returned.
+
+    Returns
+    -------
+    object or None
+
+    See Also
+    --------
+    civis.find
+    """
     results = find(object_list, filter_func, **kwargs)
 
     return results[0] if results else None
@@ -206,34 +252,78 @@ class MetaMixin():
         Parameters
         ----------
         table : str
-            The name of the table in format schema.table.
+            The name of the table in format schema.tablename.
+            Either schema or tablename, or both, can be double-quoted to
+            correctly parse special characters (such as '.').
         database : str or int
             The name or ID of the database.
 
         Returns
         -------
         table_id : int
-            The ID of the table. Only returns exact match to specified
-            table.
+            The ID of the table.
 
         Raises
         ------
         ValueError
-            If an exact table match can't be found.
+            If a table match can't be found.
+
+        Examples
+        --------
+        >>> import civis
+        >>> client = civis.APIClient()
+        >>> client.get_table_id('foo.bar', 'redshift-general')
+        123
+        >>> client.get_table_id('"schema.has.periods".bar', 'redshift-general')
+        456
         """
         database_id = self.get_database_id(database)
-        schema, name = table.split('.')
+        schema, name = civis.io.split_schema_tablename(table)
         tables = self.tables.list(database_id=database_id, schema=schema,
                                   name=name)
         if not tables:
             msg = "No tables found for {} in database {}"
             raise ValueError(msg.format(table, database))
-        found_table = ".".join((tables[0].schema, tables[0].name))
-        if table != found_table:
-            msg = "Given table {} is not an exact match for returned table {}."
-            raise ValueError(msg.format(table, found_table))
 
         return tables[0].id
+
+    @lru_cache(maxsize=128)
+    def get_storage_host_id(self, storage_host):
+        """Return the storage host ID for a given storage host name.
+
+        Parameters
+        ----------
+        storage_host : str or int
+            If an integer ID is given, passes through. If a str is given
+            the storage host ID corresponding to that storage host is returned.
+
+        Returns
+        -------
+        storage_host_id : int
+            The ID of the storage host.
+
+        Raises
+        ------
+        ValueError
+            If the storage host can't be found.
+
+        Examples
+        --------
+        >>> import civis
+        >>> client = civis.APIClient()
+        >>> client.get_storage_host_id('test host')
+        1234
+
+        >>> client.get_storage_host_id(1111)
+        1111
+        """
+        if isinstance(storage_host, int):
+            return storage_host
+        sh = find_one(self.storage_hosts.list(), name=storage_host)
+        if not sh:
+            raise ValueError("Storage Host {} not found.".format(storage_host))
+
+        return sh["id"]
 
     @property
     @lru_cache(maxsize=128)
@@ -278,7 +368,8 @@ class APIClient(MetaMixin):
         When set to "base", only the default endpoints will be exposed in the
         client object. Set to "all" to include all endpoints available for
         a given user, including those that may be in development and subject
-        to breaking changes at a later date.
+        to breaking changes at a later date. This will be removed in a future
+        version of the API client.
     local_api_spec : collections.OrderedDict or string, optional
         The methods on this class are dynamically built from the Civis API
         specification, which can be retrieved from the /endpoints endpoint.
@@ -287,22 +378,33 @@ class APIClient(MetaMixin):
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
     """
+    @deprecate_param('v2.0.0', 'resources')
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0", resources="base",
+                 retry_total=6, api_version="1.0", resources="all",
                  local_api_spec=None):
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
                              "'pandas'")
         self._feature_flags = ()
-        session_auth_key = _get_api_key(api_key)
-        self._session = session = open_session(session_auth_key, retry_total)
+        session_auth_key = get_api_key(api_key)
+        self._session_kwargs = {'api_key': session_auth_key,
+                                'max_retries': retry_total}
+        self.last_response = None
 
-        classes = generate_classes_maybe_cached(local_api_spec,
-                                                session_auth_key,
-                                                api_version,
-                                                resources)
+        # Catch deprecation warnings from generate_classes_maybe_cached and
+        # the functions it calls until the `resources` argument is removed.
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                category=FutureWarning,
+                module='civis')
+            classes = generate_classes_maybe_cached(local_api_spec,
+                                                    session_auth_key,
+                                                    api_version,
+                                                    resources)
         for class_name, cls in classes.items():
-            setattr(self, class_name, cls(session, return_type))
+            setattr(self, class_name, cls(self._session_kwargs, client=self,
+                                          return_type=return_type))
 
     @property
     def feature_flags(self):
@@ -312,3 +414,6 @@ class APIClient(MetaMixin):
         self._feature_flags = tuple(flag for flag, value
                                     in me['feature_flags'].items() if value)
         return self._feature_flags
+
+    def __getstate__(self):
+        raise RuntimeError("The APIClient object can't be pickled.")

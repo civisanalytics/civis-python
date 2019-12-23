@@ -8,10 +8,10 @@ Tables
 ------
 
 Often, your data will be in structured format like a table in a relational
-database, a CSV or a dataframe. The following functions handle moving
+database, a CSV, or a dataframe. The following functions handle moving
 structured data to and from Civis. When using these functions, it is
-recommended to have `pandas` installed and to pass `use_pandas=True` in
-the appropriate functions. If `pandas` is not installed, data returned
+recommended to have ``pandas`` installed and to pass ``use_pandas=True`` in
+the appropriate functions. If ``pandas`` is not installed, data returned
 from Civis will all be treated as strings.
 
 .. currentmodule:: civis.io
@@ -21,10 +21,13 @@ from Civis will all be treated as strings.
 
    civis_to_csv
    civis_to_multifile_csv
+   civis_file_to_table
    csv_to_civis
    dataframe_to_civis
    read_civis
    read_civis_sql
+   export_to_civis_file
+   split_schema_tablename
 
 Files
 -----
@@ -39,10 +42,12 @@ be stored in platform via the files endpoint.
    :toctree: generated
 
    civis_to_file
+   dataframe_to_file
    file_id_from_run_output
    file_to_civis
    file_to_dataframe
    file_to_json
+   json_to_file
 
 Databases
 ---------

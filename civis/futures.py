@@ -7,14 +7,16 @@ from concurrent import futures
 import copy
 import datetime
 import logging
+import os
 import time
 import threading
+import warnings
 
 import six
 
 from civis import APIClient
-from civis.base import DONE
-from civis.polling import PollableResult, _ResultPollingThread
+from civis.base import CivisAPIError, DONE
+from civis.polling import PollableResult
 
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
@@ -85,6 +87,14 @@ class CivisFuture(PollableResult):
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
 
+    Attributes
+    ----------
+    job_id : int
+        First element of the tuple given to `poller_args`
+    run_id : int or None
+        Second element of the tuple given to `poller_args`
+        (`None` if the poller function does not require a run ID)
+
     Examples
     --------
     This example is provided as a function at :func:`~civis.io.query_civis`.
@@ -96,18 +106,21 @@ class CivisFuture(PollableResult):
     >>> preview_rows = 10
     >>> response = client.queries.post(database_id, sql, preview_rows,
     >>>                                credential=cred_id)
-    >>> job_id = response.id
     >>>
-    >>> poller = client.queries.get
-    >>> poller_args = (job_id, ) # (job_id, run_id) if poller requires run_id
+    >>> poller = client.queries.get_runs
+    >>> poller_args = response.id, response.last_run_id
     >>> polling_interval = 10
     >>> future = CivisFuture(poller, poller_args, polling_interval)
+    >>> future.job_id == response.id
+    True
+    >>> future.run_id == response.last_run_id
+    True
     """
     def __init__(self, poller, poller_args,
                  polling_interval=None, api_key=None, client=None,
                  poll_on_creation=True):
         if client is None:
-            client = APIClient(api_key=api_key, resources='all')
+            client = APIClient(api_key=api_key)
 
         if polling_interval is None and hasattr(client, 'channels'):
             polling_interval = _LONG_POLLING_INTERVAL
@@ -119,14 +132,32 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-        if hasattr(client, 'channels'):
-            config, channels = self._pubnub_config()
-            self._pubnub = self._subscribe(config, channels)
+    def _begin_tracking(self, start_thread=False):
+        # Be sure to subscribe to the PubNub channel before polling.
+        # Otherwise the job might complete after polling and before
+        # we subscribe, causing us to miss the notification.
+        with self._condition:
+            if hasattr(self.client, 'channels') and not self.subscribed:
+                config, channels = self._pubnub_config()
+                self._pubnub = self._subscribe(config, channels)
+            super()._begin_tracking(start_thread)  # superclass does polling
 
     @property
     def subscribed(self):
         return (hasattr(self, '_pubnub') and
                 len(self._pubnub.get_subscribed_channels()) > 0)
+
+    @property
+    def job_id(self):
+        return self.poller_args[0]
+
+    @property
+    def run_id(self):
+        try:
+            return self.poller_args[1]
+        except IndexError:
+            # when poller function has job_id only but not run_id
+            return None
 
     def cleanup(self):
         with self._condition:
@@ -134,13 +165,31 @@ class CivisFuture(PollableResult):
             if hasattr(self, '_pubnub'):
                 self._pubnub.unsubscribe_all()
 
+                # Pubnub doesn't close its open session, so do that ourselves
+                # to free up sockets. We have to access a private attribute,
+                # but this exists at least in (4.0.0 <= versions <= 4.0.11).
+                # After closing the Session, remove it so that PubNub
+                # can't reopen it.
+                self._pubnub._request_handler.session.close()
+                del self._pubnub._request_handler.session
+
+                # The PubNub object is no longer usable.
+                # Note that it can't be garbage collected because of circular
+                # references, so this represents a (small) memory leak.
+                del self._pubnub
+
     def _subscribe(self, pnconfig, channels):
         listener = JobCompleteListener(self._check_message,
                                        self._poll_and_set_api_result,
                                        self._reset_polling_thread)
         pubnub = PubNub(pnconfig)
         pubnub.add_listener(listener)
-        pubnub.subscribe().channels(channels).execute()
+
+        # Start our subscription 30 seconds in the past to catch any
+        # missed messages.
+        # https://www.pubnub.com/docs/python/api-reference-misc#time
+        token = int((time.time() - 30) * 10**7)
+        pubnub.subscribe().channels(channels).with_timetoken(token).execute()
         return pubnub
 
     def _pubnub_config(self):
@@ -151,7 +200,7 @@ class CivisFuture(PollableResult):
         pnconfig.cipher_key = channel_config['cipher_key']
         pnconfig.auth_key = channel_config['auth_key']
         pnconfig.ssl = True
-        pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
+        pnconfig.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
         return pnconfig, channels
 
     def _check_message(self, message):
@@ -215,21 +264,13 @@ class ContainerFuture(CivisFuture):
                  client=None,
                  poll_on_creation=True):
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         super().__init__(client.scripts.get_containers_runs,
                          [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
         self._max_n_retries = max_n_retries
-
-    @property
-    def job_id(self):
-        return self.poller_args[0]
-
-    @property
-    def run_id(self):
-        return self.poller_args[1]
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
@@ -251,13 +292,8 @@ class ContainerFuture(CivisFuture):
                 # you shut down the old thread too soon after starting it.
                 # In practice this only happens when testing retries
                 # with extremely short polling intervals.
-                self._polling_thread = _ResultPollingThread(
-                    self._check_result, (), self.polling_interval)
-                self._polling_thread.start()
+                self._begin_tracking(start_thread=True)
 
-                if hasattr(self, '_pubnub'):
-                    # Subscribe to the new run's notifications endpoint
-                    self._pubnub = self._subscribe(*self._pubnub_config())
                 log.debug('Job ID %d / Run ID %d failed. Retrying '
                           'with run %d. %d retries remaining.',
                           self.job_id, orig_run_id,
@@ -279,7 +315,18 @@ class ContainerFuture(CivisFuture):
             elif not self.done():
                 # Cancel the job and store the result of the cancellation in
                 # the "finished result" attribute, `_result`.
-                self._result = self.client.scripts.post_cancel(self.job_id)
+                try:
+                    self._result = self.client.scripts.post_cancel(self.job_id)
+                except CivisAPIError as exc:
+                    if exc.status_code == 404:
+                        # The most likely way to get this error
+                        # is for the job to already be completed.
+                        return False
+                    else:
+                        warnings.warn("Unexpected error when attempting to "
+                                      "cancel job ID %d / run ID %d:\n%s" %
+                                      (self.job_id, self.run_id, str(exc)))
+                        return False
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
@@ -324,7 +371,7 @@ class _CivisExecutor(Executor):
         self._shutdown_thread = False
 
         if client is None:
-            client = APIClient(resources='all')
+            client = APIClient()
         self.client = client
 
         # A list of ContainerFuture objects for submitted jobs.
@@ -375,7 +422,10 @@ class _CivisExecutor(Executor):
             its ``.result()``. The user is responsible for downloading
             outputs produced by the script, if any.
         """
-        arguments = kwargs.pop('arguments', None)
+        arguments = kwargs.pop('arguments', {})
+        arguments.update({'CIVIS_PARENT_JOB_ID': os.getenv('CIVIS_JOB_ID'),
+                          'CIVIS_PARENT_RUN_ID': os.getenv('CIVIS_RUN_ID')})
+
         with self._shutdown_lock:
             if self._shutdown_thread:
                 raise RuntimeError('cannot schedule new '
@@ -441,6 +491,13 @@ class _ContainerShellExecutor(_CivisExecutor):
     with necessary changes for parallelizing over different Container
     Script inputs rather than over functions.
 
+    Jobs created through this executor will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs
               (via `max_n_retries`) to protect against network and
@@ -502,6 +559,14 @@ class _ContainerShellExecutor(_CivisExecutor):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
 
+        params = [{'name': 'CIVIS_PARENT_JOB_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_JOB_ID')},
+                  {'name': 'CIVIS_PARENT_RUN_ID',
+                   'type': 'integer',
+                   'value': os.getenv('CIVIS_RUN_ID')}]
+        self.container_kwargs.setdefault('params', []).extend(params)
+
         if required_resources is None:
             required_resources = {'cpu': 1024, 'memory': 1024}
         self.required_resources = required_resources
@@ -544,6 +609,13 @@ class CustomScriptExecutor(_CivisExecutor):
     Each Custom Script will be created from the same template, but may
     use different arguments. This class follows the implementations in
     :ref:`concurrent.futures`.
+
+    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
+    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs

@@ -1,13 +1,14 @@
+dist: xenial
 language: python
 python:
     - "2.7"
     - "3.4"
     - "3.5"
     - "3.6"
+    - "3.7"
 install:
     - pip install --upgrade pip setuptools
     - pip install -r dev-requirements.txt
-    - pip install pandas scikit-learn scipy
     - pip install -e .
 env:
   global:

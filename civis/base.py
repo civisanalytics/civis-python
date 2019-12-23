@@ -8,6 +8,7 @@ import six
 import warnings
 
 from civis.response import PaginatedResponse, convert_response_data_type
+from civis._utils import open_session
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -67,6 +68,10 @@ class CivisAPIKeyError(Exception):
     pass
 
 
+class CivisImportError(Exception):
+    pass
+
+
 def get_base_url():
     base_url = os.environ.get('CIVIS_API_ENDPOINT', DEFAULT_API_ENDPOINT)
     if not base_url.endswith('/'):
@@ -78,10 +83,11 @@ class Endpoint(object):
 
     _lock = threading.Lock()
 
-    def __init__(self, session, return_type='civis'):
-        self._session = session
+    def __init__(self, session_kwargs, client, return_type='civis'):
+        self._session_kwargs = session_kwargs
         self._return_type = return_type
         self._base_url = get_base_url()
+        self._client = client
 
     def _build_path(self, path):
         if not path:
@@ -93,8 +99,9 @@ class Endpoint(object):
         url = self._build_path(path)
 
         with self._lock:
-            response = self._session.request(method, url, json=data,
-                                             params=params, **kwargs)
+            with open_session(**self._session_kwargs) as sess:
+                response = sess.request(method, url, json=data,
+                                        params=params, **kwargs)
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]
@@ -110,12 +117,13 @@ class Endpoint(object):
         iterator = kwargs.pop('iterator', False)
 
         if iterator:
-            return PaginatedResponse(path, params, self)
+            resp = PaginatedResponse(path, params, self)
         else:
             resp = self._make_request(method, path, params, data, **kwargs)
             resp = convert_response_data_type(resp,
                                               return_type=self._return_type)
-            return resp
+        self._client.last_response = resp
+        return resp
 
 
 class CivisAsyncResultBase(futures.Future):

@@ -9,11 +9,12 @@ import logging
 import os
 import pickle
 import time
+import warnings
 
 import cloudpickle
-import joblib
 from joblib._parallel_backends import ParallelBackendBase
 from joblib.my_exceptions import TransportableException
+from joblib import register_parallel_backend as _joblib_reg_para_backend
 import requests
 
 import civis
@@ -21,6 +22,22 @@ from civis.base import CivisAPIError
 
 from civis.compat import TemporaryDirectory
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
+
+try:
+    with warnings.catch_warnings():
+        # Ignore the warning: "DeprecationWarning: sklearn.externals.joblib is
+        # deprecated in 0.21 and will be removed in 0.23. Please import this
+        # functionality directly from joblib, which can be installed with:
+        # pip install joblib. If this warning is raised when loading pickled
+        # models, you may need to re-serialize those models with
+        # scikit-learn 0.21+."
+        warnings.simplefilter('ignore', DeprecationWarning)
+        from sklearn.externals.joblib import (
+            register_parallel_backend as _sklearn_reg_para_backend)
+        NO_SKLEARN = False
+except ImportError:
+    NO_SKLEARN = True
+    _sklearn_reg_para_backend = None
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -44,6 +61,7 @@ def infer_backend_factory(required_resources=None,
                           max_submit_retries=0,
                           max_job_retries=0,
                           hidden=True,
+                          remote_backend='sequential',
                           **kwargs):
     """Infer the container environment and return a backend factory.
 
@@ -51,6 +69,13 @@ def infer_backend_factory(required_resources=None,
     inside a Civis container job. The function reads settings for
     relevant parameters (e.g. the Docker image) of the container
     it's running inside of.
+
+    Jobs created through this backend will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     .. note:: This function will read the state of the parent
               container job at the time this function executes. If the
@@ -124,6 +149,14 @@ def infer_backend_factory(required_resources=None,
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    remote_backend : str or object, optional
+        The name of a joblib backend or a joblib backend itself. This parameter
+        is the joblib backend to use when executing code within joblib in the
+        container. The default of 'sequential' uses the joblib sequential
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container. Note that with the
+        value 'civis', one can potentially use more jobs than specified by
+        ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed directly to
         :func:`~civis.APIClient.scripts.post_containers`, potentially
@@ -139,7 +172,7 @@ def infer_backend_factory(required_resources=None,
     civis.parallel.make_backend_factory
     """
     if client is None:
-        client = civis.APIClient(resources='all')
+        client = civis.APIClient()
 
     if not os.environ.get('CIVIS_JOB_ID'):
         raise RuntimeError('This function must be run '
@@ -194,6 +227,7 @@ def infer_backend_factory(required_resources=None,
                                 max_submit_retries=max_submit_retries,
                                 max_job_retries=max_job_retries,
                                 hidden=hidden,
+                                remote_backend=remote_backend,
                                 **kwargs)
 
 
@@ -207,8 +241,16 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                          max_submit_retries=0,
                          max_job_retries=0,
                          hidden=True,
+                         remote_backend='sequential',
                          **kwargs):
     """Create a joblib backend factory that uses Civis Container Scripts
+
+    Jobs created through this backend will have environment variables
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     .. note:: The total size of function parameters in `Parallel()`
               calls on this backend must be less than 5 GB due to
@@ -262,6 +304,14 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The hidden status of the object. Setting this to true
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
+    remote_backend : str or object, optional
+        The name of a joblib backend or a joblib backend itself. This parameter
+        is the joblib backend to use when executing code within joblib in the
+        container. The default of 'sequential' uses the joblib sequential
+        backend in the container. The value 'civis' uses an exact copy of the
+        Civis joblib backend that launched the container. Note that with the
+        value 'civis', one can potentially use more jobs than specified by
+        ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed
         directly to :func:`~civis.APIClient.scripts.post_containers`.
@@ -351,6 +401,7 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
                              max_submit_retries=max_submit_retries,
                              max_n_retries=max_job_retries,
                              hidden=hidden,
+                             remote_backend=remote_backend,
                              **kwargs)
 
     return backend_factory
@@ -364,6 +415,13 @@ def make_backend_template_factory(from_template_id,
                                   max_job_retries=0,
                                   hidden=True):
     """Create a joblib backend factory that uses Civis Custom Scripts.
+
+    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
+    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
+    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
+    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    environment variables available, the child will not have
+    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
 
     Parameters
     ----------
@@ -445,7 +503,7 @@ def _robust_pickle_download(output_file_id, client=None,
     --------
     cloudpickle.load
     """
-    client = client or civis.APIClient(resources='all')
+    client = client or civis.APIClient()
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -504,7 +562,7 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
     --------
     civis.io.file_to_civis
     """
-    client = client or civis.APIClient(resources='all')
+    client = client or civis.APIClient()
     retry_exc = (requests.HTTPError,
                  requests.ConnectionError,
                  requests.ConnectTimeout)
@@ -524,6 +582,43 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
                 raise
         else:
             return file_id
+
+
+def _setup_remote_backend(remote_backend):
+    """Setup the remote backend while in a Civis container.
+
+    Parameters
+    ----------
+    remote_backend : str or object
+        The name of a joblib backend or a joblib backend itself. If the object
+        is an instance of `_CivisBackend`, it is registered with joblib.
+
+    Returns
+    -------
+    backend : str
+        The name of the backend to use.
+    """
+    if isinstance(remote_backend, _CivisBackend):
+        def backend_factory():
+            return _CivisBackend.from_existing(remote_backend)
+        # joblib and global state: fun!
+        #
+        # joblib internally maintains a global list of backends and
+        # specifically tracks which backend is currently in use. Further,
+        # sklearn ships its own COPY of the entire joblib package at
+        # `sklearn.externals.joblib`. Thus there are TWO copies of joblib
+        # in use (the joblib package and the one in sklearn) and thus different
+        # global states that need to be handeled. Whew.
+        #
+        # Therefore, we have to register our backend with both copies in order
+        # to allow our containers to run `Parallel` objects from both copies
+        # of joblib. Yay!
+        _joblib_reg_para_backend('civis', backend_factory)
+        if not NO_SKLEARN:
+            _sklearn_reg_para_backend('civis', backend_factory)
+        return 'civis'
+    else:
+        return remote_backend
 
 
 class _CivisBackendResult:
@@ -561,7 +656,7 @@ class _CivisBackendResult:
         if hasattr(future, 'client'):
             self._client = future.client
         else:
-            self._client = civis.APIClient(resources='all')
+            self._client = civis.APIClient()
 
         # Download results and trigger the next job as a callback
         # so that we don't have to wait for `get` to be called.
@@ -631,8 +726,13 @@ class _CivisBackendResult:
 
         return _fetch_result
 
-    def get(self):
+    def get(self, timeout=None):
         """Block and return the result of the job
+
+        Parameters
+        ----------
+        timeout: float, optional
+            If provided, wait this many seconds before issuing a TimeoutError
 
         Returns
         -------
@@ -651,7 +751,7 @@ class _CivisBackendResult:
         """
         if self.result is None:
             # Wait for the script to complete.
-            wait([self._future])
+            wait([self._future], timeout=timeout)
             self.result = self._future.remote_func_output
 
         if self._future.exception() or not self._future.result_fetched:
@@ -676,29 +776,54 @@ class _CivisBackend(ParallelBackendBase):
 
     Users should interact with this through ``make_backend_factory``.
     """
+    uses_threads = False
+    supports_sharedmem = False
+    supports_timeout = True
+
     def __init__(self, setup_cmd=_DEFAULT_SETUP_CMD,
                  from_template_id=None,
                  max_submit_retries=0,
                  client=None,
+                 remote_backend='sequential',
+                 nesting_level=0,
                  **executor_kwargs):
-        if max_submit_retries < 0:
+        self.setup_cmd = setup_cmd
+        self.from_template_id = from_template_id
+        self.max_submit_retries = max_submit_retries
+        self.client = client
+        self.remote_backend = remote_backend
+        self.executor_kwargs = executor_kwargs
+        self.nesting_level = nesting_level
+        self._init_civis_backend()
+
+    @classmethod
+    def from_existing(cls, klass):
+        """Build a new `_CivisBackend` from an existing one."""
+        return cls(
+            setup_cmd=klass.setup_cmd,
+            from_template_id=klass.from_template_id,
+            max_submit_retries=klass.max_submit_retries,
+            client=klass.client,
+            remote_backend=klass.remote_backend,
+            **klass.executor_kwargs)
+
+    def _init_civis_backend(self):
+        """init the Civis API client and the executors"""
+        self.using_template = (self.from_template_id is not None)
+
+        if self.max_submit_retries < 0:
             raise ValueError(
                 "max_submit_retries cannot be negative (value = %d)" %
-                max_submit_retries)
+                self.max_submit_retries)
 
-        if client is None:
-            client = civis.APIClient(resources='all')
-        self._client = client
-        if from_template_id:
-            self.executor = CustomScriptExecutor(from_template_id,
-                                                 client=client,
-                                                 **executor_kwargs)
+        self.client = self.client or civis.APIClient()
+        if self.from_template_id:
+            self.executor = CustomScriptExecutor(self.from_template_id,
+                                                 client=self.client,
+                                                 **self.executor_kwargs)
         else:
-            self.executor = _ContainerShellExecutor(client=client,
-                                                    **executor_kwargs)
-        self.setup_cmd = setup_cmd
-        self.max_submit_retries = max_submit_retries
-        self.using_template = (from_template_id is not None)
+            self.executor = _ContainerShellExecutor(client=self.client,
+                                                    **self.executor_kwargs)
 
     def effective_n_jobs(self, n_jobs):
         if n_jobs == -1:
@@ -717,6 +842,10 @@ class _CivisBackend(ParallelBackendBase):
         if not ensure_ready:
             self.executor.shutdown(wait=False)
 
+    def terminate(self):
+        """Shutdown the workers and free the shared memory."""
+        return self.abort_everything(ensure_ready=True)
+
     def apply_async(self, func, callback=None):
         """Schedule func to be run
         """
@@ -726,7 +855,12 @@ class _CivisBackend(ParallelBackendBase):
         with TemporaryDirectory() as tempdir:
             temppath = os.path.join(tempdir, "civis_joblib_backend_func")
             with open(temppath, "wb") as tmpfile:
-                cloudpickle.dump(func, tmpfile, pickle.HIGHEST_PROTOCOL)
+                cloudpickle.dump(
+                    (func,
+                     self if self.remote_backend == 'civis'
+                     else self.remote_backend),
+                    tmpfile,
+                    pickle.HIGHEST_PROTOCOL)
             with open(temppath, "rb") as tmpfile:
                 func_file_id = \
                     _robust_file_to_civis(tmpfile,
@@ -734,7 +868,7 @@ class _CivisBackend(ParallelBackendBase):
                                           n_retries=5,
                                           delay=0.5,
                                           expires_at=expires_at,
-                                          client=self._client)
+                                          client=self.client)
                 log.debug("uploaded serialized function to File: %d",
                           func_file_id)
 
@@ -747,9 +881,8 @@ class _CivisBackend(ParallelBackendBase):
                    "if command -v {runner_remote_path} >/dev/null; "
                    "then exec {runner_remote_path} {func_file_id}; "
                    "else pip install civis=={civis_version} && "
-                   "exec {runner_remote_path} {func_file_id}; fi"
-                   .format(jl_version=joblib.__version__,
-                           civis_version=civis.__version__,
+                   "exec {runner_remote_path} {func_file_id}; fi "
+                   .format(civis_version=civis.__version__,
                            runner_remote_path=runner_remote_path,
                            func_file_id=func_file_id,
                            setup_cmd=self.setup_cmd))
@@ -796,3 +929,21 @@ class _CivisBackend(ParallelBackendBase):
             result = _CivisBackendResult(future, callback)
 
         return result
+
+    def __getstate__(self):
+        """override pickle to remove threading and civis APIClient objects"""
+        state = self.__dict__.copy()
+        if 'client' in state:
+            state['client'] = None
+        if 'executor' in state:
+            del state['executor']
+        # the parallel attribute gets added by the parent class when the
+        # backend is in use.
+        if 'parallel' in state:
+            state['parallel'] = None
+        return state
+
+    def __setstate__(self, state):
+        """re-init the backend when unpickling"""
+        self.__dict__.update(state)
+        self._init_civis_backend()
