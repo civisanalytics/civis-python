@@ -999,7 +999,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     need_table_columns = not table_exists or existing_table_rows == 'drop'
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
-                                     hidden)
+                                     headers, delimiter, hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
      table_columns) = _process_cleaning_results(
@@ -1222,8 +1222,8 @@ def _replace_null_column_names(column_list):
     return new_cols
 
 
-def _run_cleaning(file_ids, client, need_table_columns, hidden,
-                  polling_interval=None):
+def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
+                  hidden, polling_interval=None):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1231,6 +1231,8 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden,
             in_place=False,
             detect_table_columns=need_table_columns,
             force_character_set_conversion=True,
+            include_header=headers,
+            column_delimiter=delimiter,
             hidden=hidden
         )
         cleaning_futures.append(run_job(cleaner_job.id, client=client,
