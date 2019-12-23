@@ -21,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints for cleaning and importing CSV files. (#328)
 - Added new arguments to `civis.io.civis_file_to_table` to expose additional functionality from new Civis API endpoints. (#328)
 - Added new arguments from `civis.io.civis_file_to_table` to `dataframe_to_civis` and `csv_to_civis` methods. (#328)
-- Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#TBD)
+- Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
 
 ## 1.11.0 - 2019-08-26
 ### Added
