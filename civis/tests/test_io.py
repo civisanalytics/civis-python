@@ -244,6 +244,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -253,14 +255,14 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, False, True
+            [mock_file_id], self.mock_client, False, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
+            True,
             False,
-            None
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -340,6 +342,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -349,14 +353,14 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, True, True
+            [mock_file_id], self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -437,6 +441,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -446,15 +452,15 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            mock_file_id, self.mock_client, True, True
+            mock_file_id, self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future1,
              mock.sentinel.cleaning_future2],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -588,7 +594,7 @@ class ImportTests(CivisVCRTestCase):
             .side_effect = mock_preprocess
 
         res = civis.io._tables._run_cleaning(fids, self.mock_client, True,
-                                             True)
+                                             True, 'comma', True)
 
         # We should have one cleaning job per provided file id
         fid_count = len(fids)
@@ -599,6 +605,8 @@ class ImportTests(CivisVCRTestCase):
                 in_place=False,
                 detect_table_columns=True,
                 force_character_set_conversion=True,
+                include_header=True,
+                column_delimiter='comma',
                 hidden=True)
             for fid in fids
         ))
