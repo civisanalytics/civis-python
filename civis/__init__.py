@@ -12,7 +12,7 @@ if six.PY2:
     warnings.warn("Support for Python 2 is deprecated and will be "
                   "removed in the next version release after "
                   "April 1, 2020.", FutureWarning)
-if version_info.major == 3 & version_info.minor == 4:
+if version_info.major == 3 and version_info.minor == 4:
     warnings.warn("Support for Python 3.4 is deprecated and will be "
                   "removed in the next version release after "
                   "April 1, 2020.", FutureWarning)
