@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added debug logging to some `civis.io` functions. (#325)
 
 ### Fixed
+- Removed incorrect "optional" marker for the `sql` argument in I/O
+  functions. (#338)
 - `ModelPipeline.register_pretrained_model` should persist the user-supplied
   estimator object indefinitely. (#331)
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)

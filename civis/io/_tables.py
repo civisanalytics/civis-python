@@ -148,7 +148,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -220,7 +220,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -369,7 +369,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     ----------
     filename : str
         Download exported data into this file.
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Export data from this database. Can be the database name or ID.
@@ -490,7 +490,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
