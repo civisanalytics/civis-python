@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Raise a more informative exception when calling `file_to_dataframe`
-  on an expired file. (#335)
+  on an expired file. (#337)
 - `ModelPipeline.register_pretrained_model` should persist the user-supplied
   estimator object indefinitely. (#331)
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
