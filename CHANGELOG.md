@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added debug logging to some `civis.io` functions. (#325)
 
 ### Fixed
+- Raise a more informative exception when calling `file_to_dataframe`
+  on an expired file. (#337)
 - `ModelPipeline.register_pretrained_model` should persist the user-supplied
   estimator object indefinitely. (#331)
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
@@ -16,13 +18,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   double quotes. (#328)
 
 ### Changed
+- Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
 - Issue a `FutureWarning` on import for Python 2 users. (#333)
 - Update the Civis logo in the Sphinx documentation. (#330)
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
 - Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints for cleaning and importing CSV files. (#328)
 - Added new arguments to `civis.io.civis_file_to_table` to expose additional functionality from new Civis API endpoints. (#328)
 - Added new arguments from `civis.io.civis_file_to_table` to `dataframe_to_civis` and `csv_to_civis` methods. (#328)
-- Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
 
 ## 1.11.0 - 2019-08-26
 ### Added
