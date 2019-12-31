@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added debug logging to some `civis.io` functions. (#325)
 
 ### Fixed
+- Removed incorrect "optional" marker for the `sql` argument in I/O
+  functions. (#338)
 - Raise a more informative exception when calling `file_to_dataframe`
   on an expired file. (#337)
 - `ModelPipeline.register_pretrained_model` should persist the user-supplied
