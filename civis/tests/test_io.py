@@ -19,7 +19,7 @@ import civis
 from civis.io import _files
 from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
-from civis.base import CivisAPIError, CivisImportError
+from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -915,8 +915,9 @@ def test_file_to_dataframe_expired():
     url = None
     m_client.files.get.return_value = Response({'name': 'spam.csv',
                                                 'file_url': url})
-    expected_err = "File url does not exist for file 121. File may be expired."
-    with pytest.raises(ValueError, match=expected_err):
+    expected_err = 'Unable to locate file 121. If it previously ' + \
+        'existed, it may have expired.'
+    with pytest.raises(EmptyResultError, match=expected_err):
         civis.io.file_to_dataframe(121, client=m_client)
 
 
