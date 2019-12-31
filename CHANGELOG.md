@@ -16,7 +16,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   double quotes. (#328)
 
 ### Changed
-- Issue a `FutureWarning` on import for Python 2 users. (#333)
+- Issue a `FutureWarning` on import for Python 2 and 3.4 users. (#333,
+  #340)
 - Update the Civis logo in the Sphinx documentation. (#330)
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
 - Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints for cleaning and importing CSV files. (#328)
