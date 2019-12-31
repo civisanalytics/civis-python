@@ -910,6 +910,18 @@ def test_file_id_from_run_output_platform_error():
 
 @pytest.mark.file_to_dataframe
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_file_to_dataframe_expired():
+    m_client = mock.Mock()
+    url = None
+    m_client.files.get.return_value = Response({'name': 'spam.csv',
+                                                'file_url': url})
+    expected_err = "File url does not exist for file 121. File may be expired."
+    with pytest.raises(ValueError, match=expected_err):
+        civis.io.file_to_dataframe(121, client=m_client)
+
+
+@pytest.mark.file_to_dataframe
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
     url = 'url'

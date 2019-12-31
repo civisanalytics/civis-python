@@ -470,6 +470,10 @@ def file_to_dataframe(file_id, compression='infer', client=None,
     client = APIClient() if client is None else client
     file_info = client.files.get(file_id)
     file_url = file_info.file_url
+    if not file_url:
+        raise ValueError(
+            "File url does not exist for file {}. File may be expired.".format(
+                file_id))
     file_name = file_info.name
     if compression == 'infer':
         comp_exts = {'.gz': 'gzip', '.xz': 'xz', '.bz2': 'bz2', '.zip': 'zip'}
