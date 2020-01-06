@@ -479,9 +479,9 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
                            include_header=True,
                            compression='none', delimiter='|',
+                           max_file_size=None,
                            unquoted=False, prefix=None,
-                           polling_interval=None, hidden=True,
-                           max_file_size=None):
+                           polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
@@ -517,6 +517,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``'|'``.
+    max_file_size: int, optional
+        Maximum number of Megabytes each created file will be.
     unquoted: bool, optional
         Whether or not to quote fields. Default: ``False``.
     prefix: str, optional
@@ -526,8 +528,6 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
         Number of seconds to wait between checks for query completion.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
-    max_file_size: int, optional
-        Maximum number of Megabytes each created file will be.
 
     Returns
     -------
