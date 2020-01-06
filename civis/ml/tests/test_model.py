@@ -1076,6 +1076,7 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     assert str(exc.value) == "Provide a single source of data."
 
 
+@mock.patch.object(_model, "APIClient", mock.Mock())
 @pytest.mark.parametrize(
     'version, train_id, predict_id',
     [('v2.3', TRAIN_ID_PROD, PREDICT_ID_PROD),
@@ -1087,8 +1088,7 @@ def test_modelpipeline_pickling_preserves_template_ids(
     # that have already been set during object instantiation.
     _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     with TemporaryDirectory() as temp_dir:
-        mp = _model.ModelPipeline('wf', 'dv',
-                                  civisml_version=version, client=mock.ANY)
+        mp = _model.ModelPipeline('wf', 'dv', civisml_version=version)
 
         # Before pickling, make sure the template IDs are set as expected
         assert mp.train_template_id == train_id
