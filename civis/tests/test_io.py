@@ -802,7 +802,9 @@ class ImportTests(CivisVCRTestCase):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         max_file_size = 32
         result = civis.io.civis_to_multifile_csv(
-            sql, database='redshift-general', polling_interval=POLL_INTERVAL, max_file_size=max_file_size)
+            sql, database='redshift-general',
+            polling_interval=POLL_INTERVAL,
+            max_file_size=max_file_size)
         assert set(result.keys()) == {'entries', 'query', 'header',
                                       'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql

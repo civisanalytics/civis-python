@@ -480,7 +480,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            include_header=True,
                            compression='none', delimiter='|',
                            unquoted=False, prefix=None,
-                           polling_interval=None, hidden=True, max_file_size=None):
+                           polling_interval=None, hidden=True,
+                           max_file_size=None):
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
