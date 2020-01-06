@@ -777,26 +777,6 @@ class ImportTests(CivisVCRTestCase):
                                                              'amazonaws.com/')
 
     @pytest.mark.civis_to_multifile_csv
-    @mock.patch('civis.io._tables.CivisFuture')
-    @mock.patch('civis.io._tables.civis_to_file')
-    @mock.patch('civis.io._tables._sql_script')
-    def test_civis_to_multifile_passes_client(
-            self, m_sql_script, m_civis_to_file, m_CivisFuture, *mocks):
-        """Ensure the client kwarg is passed forward."""
-        m_sql_script.return_value = (mock.MagicMock(), mock.MagicMock())
-        # We need to write some JSON into the buffer to avoid errors.
-        m_civis_to_file.side_effect = (
-            lambda _, buf, *args, **kwargs: buf.write(b'{}')
-        )
-        mock_client = mock.MagicMock()
-
-        civis.io.civis_to_multifile_csv('sql', 'db', client=mock_client)
-
-        m_civis_to_file.assert_called_once_with(
-            mock.ANY, mock.ANY, client=mock_client
-        )
-
-    @pytest.mark.civis_to_multifile_csv
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv_max_file_size_followed(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
@@ -817,6 +797,26 @@ class ImportTests(CivisVCRTestCase):
                                                              'amazonaws.com/')
         for entry in result['entries']:
             assert entry['size'] <= max_file_size
+
+    @pytest.mark.civis_to_multifile_csv
+    @mock.patch('civis.io._tables.CivisFuture')
+    @mock.patch('civis.io._tables.civis_to_file')
+    @mock.patch('civis.io._tables._sql_script')
+    def test_civis_to_multifile_passes_client(
+            self, m_sql_script, m_civis_to_file, m_CivisFuture, *mocks):
+        """Ensure the client kwarg is passed forward."""
+        m_sql_script.return_value = (mock.MagicMock(), mock.MagicMock())
+        # We need to write some JSON into the buffer to avoid errors.
+        m_civis_to_file.side_effect = (
+            lambda _, buf, *args, **kwargs: buf.write(b'{}')
+        )
+        mock_client = mock.MagicMock()
+
+        civis.io.civis_to_multifile_csv('sql', 'db', client=mock_client)
+
+        m_civis_to_file.assert_called_once_with(
+            mock.ANY, mock.ANY, client=mock_client
+        )
 
     @pytest.mark.transfer_table
     @mock.patch(api_import_str, return_value=civis_api_spec)
