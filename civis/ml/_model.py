@@ -274,20 +274,20 @@ def _get_job_type_version(alias):
     str
         CivisML version, e.g., "v2.2".
     """
+    # A version-less alias for production, e.g., "civis-civisml-training"
     match_production = re.search(r'\Acivis-civisml-(\w+)\Z', alias)
+    # A versioned alias, e.g., "civis-civisml-training-v2-3"
     match_v = re.search(r'\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z', alias)
+    # A special-version alias, e.g., "civis-civisml-training-dev"
     match_special = re.search(r'\Acivis-civisml-(\w+)-(\S+[^-])\Z', alias)
 
     if match_production:
-        # A production alias, e.g., "civis-civisml-training"
         job_type = match_production.group(1)
         version = None
     elif match_v:
-        # A versioned alias, e.g., "civis-civisml-training-v2-3"
         job_type = match_v.group(1)
         version = 'v%s.%s' % match_v.group(2, 3)
     elif match_special:
-        # A special-version alias, "civis-civisml-training-dev"
         job_type = match_special.group(1)
         version = match_special.group(2)
     else:
@@ -308,7 +308,7 @@ def _get_template_ids_all_versions(client):
     Returns
     -------
     Dict[str, Dict[str, int]]
-        Mapping between versions (e.g., "v2.2") and template Ids for the given
+        Mapping between versions (e.g., "v2.2") and template IDs for the given
         version (e.g., {'training': 1, 'prediction': 2, 'registration': 3}).
     """
     template_alias_objects = client.aliases.list(
