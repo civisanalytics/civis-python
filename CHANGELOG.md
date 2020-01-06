@@ -20,8 +20,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   double quotes. (#328)
 
 ### Changed
-- CivisML uses platform aliases instead of hard-coded template IDs. (#332)
-- CivisML versions and pre-installed packages are documented on Zendesk instead. (#332)
+- CivisML uses platform aliases instead of hard-coded template IDs. (#341)
+- CivisML versions and pre-installed packages are documented on Zendesk instead. (#341)
 - Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
 - Issue a `FutureWarning` on import for Python 2 users. (#333)
 - Update the Civis logo in the Sphinx documentation. (#330)
