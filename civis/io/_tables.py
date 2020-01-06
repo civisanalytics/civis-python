@@ -480,7 +480,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            include_header=True,
                            compression='none', delimiter='|',
                            unquoted=False, prefix=None,
-                           polling_interval=None, hidden=True):
+                           polling_interval=None, hidden=True, max_file_size=None):
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
@@ -525,6 +525,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
         Number of seconds to wait between checks for query completion.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
+    max_file_size: int, optional
+        Maximum number of Megabytes each created file will be.
 
     Returns
     -------
@@ -586,7 +588,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                         column_delimiter=delimiter,
                         unquoted=unquoted,
                         filename_prefix=prefix,
-                        force_multifile=True)
+                        force_multifile=True,
+                        max_file_size=max_file_size)
     script_id, run_id = _sql_script(client, sql, database, job_name,
                                     credential_id, hidden,
                                     csv_settings=csv_settings)
