@@ -148,7 +148,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -220,7 +220,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -369,7 +369,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     ----------
     filename : str
         Download exported data into this file.
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Export data from this database. Can be the database name or ID.
@@ -490,7 +490,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -999,7 +999,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     need_table_columns = not table_exists or existing_table_rows == 'drop'
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
-                                     hidden)
+                                     headers, delimiter, hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
      table_columns) = _process_cleaning_results(
@@ -1222,8 +1222,8 @@ def _replace_null_column_names(column_list):
     return new_cols
 
 
-def _run_cleaning(file_ids, client, need_table_columns, hidden,
-                  polling_interval=None):
+def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
+                  hidden, polling_interval=None):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1231,6 +1231,8 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden,
             in_place=False,
             detect_table_columns=need_table_columns,
             force_character_set_conversion=True,
+            include_header=headers,
+            column_delimiter=delimiter,
             hidden=hidden
         )
         cleaning_futures.append(run_job(cleaner_job.id, client=client,

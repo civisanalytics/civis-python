@@ -15,6 +15,10 @@ Civis API Python Client
    :target: https://pypi.org/project/civis/
    :alt: Supported python versions for civis-python
 
+**Deprecation Warning:** Civis will no longer support Python 2.7 as of
+April 1, 2020. The first Civis API Python Client release made after
+that date will remove Python 2 support.
+
 
 Introduction
 ------------
