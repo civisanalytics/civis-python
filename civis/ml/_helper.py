@@ -56,8 +56,8 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
         _TEMPLATE_IDS = _get_template_ids_all_versions(client)
 
     template_id_list = [
-        ids[job_type]
-        for job_type in job_types
+        ids[_job_type]
+        for _job_type in job_types
         for ids in _TEMPLATE_IDS.values()
     ]
     # Applying set() because we don't want repeated IDs
