@@ -13,10 +13,17 @@ from civis._utils import to_camelcase
 
 
 def auth_service_session(session, service_id):
-    # civis api error?
-    service = civis.APIClient().services.get(service_id)
+    try:
+        service = civis.APIClient().services.get(service_id)
+    except CivisAPIError as err:
+        if err.status_code == 404:
+                    msg = 'There was an issue connecting to your service!'
+                    six.raise_from(ValueError(msg), err)
+        else:
+            raise
+
     auth_url = service['current_deployment']['displayUrl']
-    # Make request for Authentication Cookie
+    # Make request for adding Authentication Cookie to session
     session.get(auth_url)
 
 
@@ -115,8 +122,6 @@ class ServiceClient():
     def get_api_spec(self):
         swagger_url = self._base_url + self._swagger_path
 
-        # add swagger validation ?
-
         with requests.Session() as sess:
             auth_service_session(sess, self._service_id)
             response = sess.get(swagger_url)
@@ -133,10 +138,10 @@ class ServiceClient():
         try:
             client = civis.APIClient()
             service = client.services.get(self._service_id)
-        except CivisAPIError as api_err:
-            if api_err.status_code == 404:
+        except CivisAPIError as err:
+            if err.status_code == 404:
                 msg = ('There is no Civis Service with '
                        'ID {}!'.format(self._service_id))
-                six.raise_from(ValueError(msg), api_err)
+                six.raise_from(ValueError(msg), err)
             raise
         return service['current_url']
