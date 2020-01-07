@@ -479,6 +479,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
                            include_header=True,
                            compression='none', delimiter='|',
+                           max_file_size=None,
                            unquoted=False, prefix=None,
                            polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
@@ -516,6 +517,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``'|'``.
+    max_file_size: int, optional
+        Maximum number of Megabytes each created file will be.
     unquoted: bool, optional
         Whether or not to quote fields. Default: ``False``.
     prefix: str, optional
@@ -586,7 +589,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                         column_delimiter=delimiter,
                         unquoted=unquoted,
                         filename_prefix=prefix,
-                        force_multifile=True)
+                        force_multifile=True,
+                        max_file_size=max_file_size)
     script_id, run_id = _sql_script(client, sql, database, job_name,
                                     credential_id, hidden,
                                     csv_settings=csv_settings)

@@ -1,4 +1,6 @@
 pytest>=3.6,<4
+pyyaml>=3.0,<=5.99 ; python_version != '3.4'
+pyyaml>=3.0,<=5.2 ; python_version == '3.4'
 sphinx>=1.7.0,<2.0.0
 flake8>=3.0.4,==3.*
 mock==2.0.0 ; python_version == '2.7'

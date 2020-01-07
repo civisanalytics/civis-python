@@ -763,8 +763,10 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
+        max_file_size = 32
         result = civis.io.civis_to_multifile_csv(
-            sql, database='redshift-general', polling_interval=POLL_INTERVAL)
+            sql, database='redshift-general', polling_interval=POLL_INTERVAL,
+            max_file_size=max_file_size)
         assert set(result.keys()) == {'entries', 'query', 'header',
                                       'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql
@@ -775,6 +777,8 @@ class ImportTests(CivisVCRTestCase):
         assert result['entries'][0]['url_signed'].startswith('https://civis-'
                                                              'console.s3.'
                                                              'amazonaws.com/')
+        for entry in result['entries']:
+            assert entry['size'] <= max_file_size
 
     @pytest.mark.civis_to_multifile_csv
     @mock.patch('civis.io._tables.CivisFuture')
