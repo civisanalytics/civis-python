@@ -2,6 +2,7 @@ from builtins import super
 from collections import namedtuple
 from concurrent.futures import CancelledError
 from six import StringIO
+import functools
 import json
 import os
 import pickle
@@ -693,6 +694,15 @@ def test_metrics_prediction(mock_file_id_from_run_output):
 ###############################################
 # Tests of utilities for CivisML template IDs #
 ###############################################
+def set_up_test_template_ids(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
+        func(*args, **kwargs)
+        _model._TEMPLATE_IDS = None  # clean up
+    return wrapper
+
+
 @pytest.mark.parametrize(
     'alias, expected_job_type, expected_version',
     [
@@ -726,27 +736,25 @@ def test__get_template_ids_all_versions():
     assert actual_template_ids == expected_template_ids
 
 
+@set_up_test_template_ids
 @pytest.mark.parametrize(
     'version, train_id, predict_id, register_id',
     [(version, ids['training'], ids['prediction'], ids['registration'])
      for version, ids in TEST_TEMPLATE_IDS.items()]
 )
 def test__get_template_ids(version, train_id, predict_id, register_id):
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     actual_train_id, actual_predict_id, actual_register_id = (
         _model._get_template_ids(version, mock.ANY)
     )
     assert actual_train_id == train_id
     assert actual_predict_id == predict_id
     assert actual_register_id == register_id
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
 
 
+@set_up_test_template_ids
 def test__get_template_ids_invalid_version():
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     with pytest.raises(ValueError):
         _model._get_template_ids('not_a_version', mock.ANY)
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS  # clean up
 
 
 #####################################
@@ -760,30 +768,28 @@ def mp_setup():
     return mp
 
 
+@set_up_test_template_ids
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
 def test_modelpipeline_etl_init_err():
     # If users don't have access to >= v2.0 temlates, then passing
     # `etl` to a new ModelPipeline should produce a NotImplementedError.
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.MagicMock()
     with pytest.raises(NotImplementedError):
         _model.ModelPipeline(LogisticRegression(), 'test',
                              etl=LogisticRegression(),
                              client=mock_client)
-    _model._TEMPLATE_IDS = None  # clean up
 
 
+@set_up_test_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_errors(mock_future):
     # catch 404 error if model isn't found and throw ValueError
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.Mock()
     response = namedtuple('Reponse', ['content', 'response', 'reason',
                                       'status_code'])(False, None, None, 404)
     mock_future.side_effect = CivisAPIError(response)
     with pytest.raises(ValueError):
         _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    _model._TEMPLATE_IDS = None  # clean up
 
 
 def _container_response_stub(from_template_id=8387):
@@ -823,9 +829,9 @@ def _container_response_stub(from_template_id=8387):
                          ))
 
 
+@set_up_test_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor(mock_future):
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = mock.Mock()
     mock_client.scripts.get_containers.return_value = \
         container = _container_response_stub(TRAIN_ID_PROD)
@@ -853,12 +859,11 @@ def test_modelpipeline_classmethod_constructor(mock_future):
     deps = container.arguments.get('DEPENDENCIES', None)
     assert mp.dependencies == deps.split() if deps else None
     assert mp.git_token_name == 'Token'
-    _model._TEMPLATE_IDS = None  # clean up
 
 
+@set_up_test_template_ids
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_defaults(mock_future):
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     container_response_stub = _container_response_stub(TRAIN_ID_PROD)
     del container_response_stub.arguments['PARAMS']
     del container_response_stub.arguments['CVPARAMS']
@@ -870,15 +875,14 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert mp.cv_params == {}
     assert mp.parameters == {}
-    _model._TEMPLATE_IDS = None  # clean up
 
 
+@set_up_test_template_ids
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 def test_modelpipeline_classmethod_constructor_nonint_id():
     # Verify that we can still JSON-serialize job and run IDs even
     # if they're entered in a non-JSON-able format.
     # We need to turn them into JSON to set them as script arguments.
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = setup_client_mock(1, 2)
     container_response_stub = _container_response_stub(TRAIN_ID_PROD)
     mock_client.scripts.get_containers.return_value = container_response_stub
@@ -889,9 +893,9 @@ def test_modelpipeline_classmethod_constructor_nonint_id():
     out = json.dumps({'job': mp.train_result_.job_id,
                       'run': mp.train_result_.run_id})
     assert out == '{"job": 1, "run": 2}' or out == '{"run": 2, "job": 1}'
-    _model._TEMPLATE_IDS = None  # clean up
 
 
+@set_up_test_template_ids
 @pytest.mark.parametrize(
     'train_id, predict_id',
     [(TRAIN_ID_PROD, PREDICT_ID_PROD), (TRAIN_ID_OLD, PREDICT_ID_OLD)],
@@ -901,13 +905,11 @@ def test_modelpipeline_classmethod_constructor_old_version(
         mock_future, train_id, predict_id):
     # Test that we select the correct prediction template for different
     # versions of a training job.
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_client = setup_client_mock()
     mock_client.scripts.get_containers.return_value = \
         _container_response_stub(from_template_id=train_id)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
     assert mp.predict_template_id == predict_id
-    _model._TEMPLATE_IDS = None  # clean up
 
 
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
@@ -921,12 +923,12 @@ def test_modelpipeline_train(mock_ccr, mp_setup):
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
+@set_up_test_template_ids
 @mock.patch.object(_model, "APIClient", mock.Mock())
 @mock.patch.object(_model.cio, "file_to_civis")
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     # Provide a model as a pre-made model and make sure we can train.
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     mock_f2c.return_value = -21
 
     est = LogisticRegression()
@@ -937,7 +939,6 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
     assert 'res' == mp.train(file_id=7)
     assert mp.train_result_ == 'res'
     assert mock_f2c.call_count == 1  # Called once to store input Estimator
-    _model._TEMPLATE_IDS = None  # clean up
 
 
 @pytest.mark.skipif(not HAS_SKLEARN, reason="scikit-learn not installed")
@@ -1076,6 +1077,7 @@ def test_modelpipeline_predict_value_too_much_input_error(mp_setup):
     assert str(exc.value) == "Provide a single source of data."
 
 
+@set_up_test_template_ids
 @mock.patch.object(_model, "APIClient", mock.Mock())
 @pytest.mark.parametrize(
     'version, train_id, predict_id',
@@ -1086,7 +1088,6 @@ def test_modelpipeline_pickling_preserves_template_ids(
         version, train_id, predict_id):
     # Test that pickling a ModelPipeline object preserves the template IDs
     # that have already been set during object instantiation.
-    _model._TEMPLATE_IDS = TEST_TEMPLATE_IDS
     with TemporaryDirectory() as temp_dir:
         mp = _model.ModelPipeline('wf', 'dv', civisml_version=version)
 
@@ -1105,4 +1106,3 @@ def test_modelpipeline_pickling_preserves_template_ids(
         # After unpickling, the template IDs should remain.
         assert mp_unpickled.train_template_id == train_id
         assert mp_unpickled.predict_template_id == predict_id
-    _model._TEMPLATE_IDS = None  # clean up
