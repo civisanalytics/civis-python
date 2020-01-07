@@ -12,8 +12,6 @@ log = logging.getLogger(__name__)
 # sentinel value for default author value
 SENTINEL = namedtuple('Sentinel', [])()
 
-_TEMPLATE_IDS = None  # To be updated by _get_template_ids_all_versions
-
 
 def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     """List a user's CivisML models.
@@ -37,8 +35,6 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     --------
     APIClient.scripts.list_custom
     """
-    global _TEMPLATE_IDS
-
     if job_type == "train":
         job_types = ('training',)
     elif job_type == "predict":
@@ -52,13 +48,10 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     if client is None:
         client = APIClient()
 
-    if _TEMPLATE_IDS is None:
-        _TEMPLATE_IDS = _get_template_ids_all_versions(client)
-
     template_id_list = [
         ids[_job_type]
         for _job_type in job_types
-        for ids in _TEMPLATE_IDS.values()
+        for ids in _get_template_ids_all_versions(client).values()
     ]
     # Applying set() because we don't want repeated IDs
     # between the version-less production alias and the versioned alias.

@@ -25,7 +25,7 @@ except ImportError:
 from civis import APIClient, find, find_one
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import FileNotFoundError, TemporaryDirectory
+from civis.compat import FileNotFoundError, TemporaryDirectory, lru_cache
 import civis.io as cio
 from civis.futures import ContainerFuture
 from civis.response import Response
@@ -36,8 +36,6 @@ log = logging.getLogger(__name__)
 
 # sentinel value for default primary key value
 SENTINEL = collections.namedtuple('Sentinel', [])()
-
-_TEMPLATE_IDS = None  # To be updated by _get_template_ids_all_versions
 
 
 class ModelError(RuntimeError):
@@ -297,6 +295,7 @@ def _get_job_type_version(alias):
     return job_type, version
 
 
+@lru_cache()
 def _get_template_ids_all_versions(client):
     """Get templates IDs for all accessible CivisML versions.
 
@@ -351,11 +350,9 @@ def _get_template_ids(civisml_version, client):
     int
         Template ID for pre-trained model registration
     """
-    global _TEMPLATE_IDS
-    if _TEMPLATE_IDS is None:
-        _TEMPLATE_IDS = _get_template_ids_all_versions(client)
+    template_ids_all_versions = _get_template_ids_all_versions(client)
     try:
-        ids = _TEMPLATE_IDS[civisml_version]
+        ids = template_ids_all_versions[civisml_version]
     except KeyError:
         msg = (
             '"{civisml_version}" is an invalid CivisML version. '
@@ -368,7 +365,9 @@ def _get_template_ids(civisml_version, client):
             accessible_versions=', '.join(
                 '"%s"' % v
                 # Don't include None, or else it would crash sorted()
-                for v in sorted(v for v in _TEMPLATE_IDS.keys() if v)
+                for v in sorted(
+                    v for v in template_ids_all_versions.keys() if v
+                )
             )
         )
         raise ValueError(msg)
@@ -1073,13 +1072,9 @@ class ModelPipeline:
         >>> model.train_result_.metrics['roc_auc']
         0.843
         """
-        global _TEMPLATE_IDS
-
         train_job_id = int(train_job_id)  # Convert np.int to int
         if client is None:
             client = APIClient()
-        if _TEMPLATE_IDS is None:
-            _TEMPLATE_IDS = _get_template_ids_all_versions(client)
         train_run_id = _decode_train_run(train_job_id, train_run_id, client)
         try:
             fut = ModelFuture(train_job_id, train_run_id, client=client)
@@ -1141,7 +1136,7 @@ class ModelPipeline:
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
         ids = find_one(
-            _TEMPLATE_IDS.values(),
+            _get_template_ids_all_versions(client).values(),
             lambda ids: ids['training'] == template_id
         )
         p_id = ids['prediction']
