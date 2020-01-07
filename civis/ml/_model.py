@@ -289,7 +289,8 @@ def _get_job_type_version(alias):
         job_type = match_special.group(1)
         version = match_special.group(2)
     else:
-        msg = '"%r" does not look like a CivisML alias'
+        msg = ('Unable to parse the job type and version '
+               'from the CivisML alias "%r"')
         raise ValueError(msg % alias)
 
     return job_type, version
@@ -321,7 +322,15 @@ def _get_template_ids_all_versions(client):
         lambda: {'training': None, 'prediction': None, 'registration': None}
     )
     for alias_obj in civisml_template_alias_objects:
-        job_type, version = _get_job_type_version(alias_obj.alias)
+        try:
+            job_type, version = _get_job_type_version(alias_obj.alias)
+        except ValueError:
+            msg = (
+                '%r looks like a CivisML alias for the prefix "civis-civisml-"'
+                ', but it is impossible to parse its job type and version'
+            )
+            log.debug(msg % alias_obj)
+            continue
         ids[version][job_type] = alias_obj.object_id
     if not ids:
         r = Response({'status_code': 404,
