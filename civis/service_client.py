@@ -1,15 +1,17 @@
 import civis
 from collections import OrderedDict
 import re
-import six
+import requests
 import warnings
 
 from jsonref import JsonRef
-import requests
+import six
 
 from civis.base import Endpoint, CivisAPIError, CivisAPIKeyError, tostr_urljoin
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
+
+from openapi_spec_validator import validate_v2_spec
 
 
 def auth_service_session(session, service_id):
@@ -17,8 +19,8 @@ def auth_service_session(session, service_id):
         service = civis.APIClient().services.get(service_id)
     except CivisAPIError as err:
         if err.status_code == 404:
-                    msg = 'There was an issue connecting to your service!'
-                    six.raise_from(ValueError(msg), err)
+            msg = 'There was an issue finding service {}.'.format(service_id)
+            six.raise_from(ValueError(msg), err)
         else:
             raise
 
@@ -79,8 +81,8 @@ class ServiceClient():
                 category=FutureWarning,
                 module='civis')
             classes = self.generate_classes()
-        for class_name, cls in classes.items():
-            setattr(self, class_name, cls(self._session_kwargs, client=self,
+        for class_name, klass in classes.items():
+            setattr(self, class_name, klass(self._session_kwargs, client=self,
                                           return_type=return_type,
                                           root_path=root_path))
 
@@ -123,6 +125,12 @@ class ServiceClient():
             response = sess.get(swagger_url)
             response.raise_for_status()
         spec = response.json(object_pairs_hook=OrderedDict)
+        try:
+            validate_v2_spec(spec)
+        except:
+            msg = ('There was an issue validating your API spec. '
+                   'Ensure it complies with Swagger 2.0')
+                six.raise_from(ValueError(msg), ValueError)
         return spec
 
     def generate_classes(self):
