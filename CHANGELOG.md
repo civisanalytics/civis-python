@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added method `get_storage_host_id` to the APIClient. (#328)
 - Added debug logging to some `civis.io` functions. (#325)
+- Added new arguments to `civis.io.civis_to_multifile_csv` to expose max_file_size parameter. (#342)
 
 ### Fixed
 - Removed incorrect "optional" marker for the `sql` argument in I/O
@@ -16,8 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `ModelPipeline.register_pretrained_model` should persist the user-supplied
   estimator object indefinitely. (#331)
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
-- Fixed issue in `civis.io.read_civis_sql` when returning data that contains 
+- Fixed issue in `civis.io.read_civis_sql` when returning data that contains
   double quotes. (#328)
+- Fixed issue with pyyaml version for Python 3.4 by requiring pyyaml version <=5.2
 
 ### Changed
 - Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
