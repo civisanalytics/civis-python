@@ -55,13 +55,9 @@ class ServiceEndpoint(Endpoint):
                 response = sess.request(method, url, json=data,
                                         params=params, **kwargs)
 
-        if response.status_code == 401:
-            auth_error = response.headers["www-authenticate"]
-            six.raise_from(CivisAPIKeyError(auth_error),
-                           CivisAPIError(response))
-
         if not response.ok:
-            raise CivisAPIError(response)
+            six.raise_from(ValueError(response.text),
+                           ValueError)
 
         return response
 
