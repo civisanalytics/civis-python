@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
 - Fixed issue in `civis.io.read_civis_sql` when returning data that contains
   double quotes. (#328)
+- Fixed issue with pyyaml version for Python 3.4 by requiring pyyaml version <=5.2
 
 ### Changed
 - Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
