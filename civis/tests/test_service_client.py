@@ -90,11 +90,35 @@ def mock_swagger():
 
 
 @pytest.fixture
-def mock_operations():
+def mock_operations(mock_swagger):
     ops_json = mock_swagger["paths"]["/some-resources"]
     mock_ops_str = str(ops_json).replace('\'', '\"')
     mock_operations = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(mock_ops_str)  # noqa: E501
     return mock_operations
+
+
+@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.civis')
+def test_service_client(mock_civis, classes_mock):
+    mock_client = mock_civis.APIClient()
+    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+    classes_mock.return_value = {}
+
+    sc = ServiceClient(mock_service_id)
+
+    assert sc._session_kwargs == {}
+    assert sc._service_id == mock_service_id
+    assert sc._base_url == mock_survey_url
+    assert sc._root_path == None
+    assert sc._swagger_path == "/endpoints"
+
+    # Custom root path
+    sc = ServiceClient(mock_service_id, root_path='/api')
+    assert sc._root_path == '/api'
+
+    # Custom Swagger path
+    sc = ServiceClient(mock_service_id, swagger_path='/spec')
+    assert sc._swagger_path == "/spec"
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
