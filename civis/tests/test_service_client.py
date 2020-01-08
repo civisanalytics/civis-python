@@ -1,12 +1,11 @@
 from collections import OrderedDict
 import json
 
-
 from civis import response
 from civis.base import CivisAPIError
+from civis.compat import mock
 from civis.service_client import ServiceClient, ServiceEndpoint
 import pytest
-from unittest import mock
 
 mock_service_id = 0
 
