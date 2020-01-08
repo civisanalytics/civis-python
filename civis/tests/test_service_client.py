@@ -106,7 +106,7 @@ def test_service_client(mock_civis, classes_mock):
 
     sc = ServiceClient(mock_service_id)
 
-    spec_endpoint = "/endpoint"
+    spec_endpoint = "/endpoints"
 
     assert sc._session_kwargs == {}
     assert sc._service_id == mock_service_id
@@ -242,7 +242,8 @@ def test_get_base_url__not_found(mock_civis, classes_mock):
     with pytest.raises(ValueError) as excinfo:
         ServiceClient(mock_service_id)
 
-    expected_error = f'There is no Civis Service with ID {mock_service_id}!'
+    expected_error = ('There was an issue '
+                      'finding service with ID {}.').format(mock_service_id)
     assert str(excinfo.value) == expected_error
 
 
