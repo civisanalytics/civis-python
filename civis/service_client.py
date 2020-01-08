@@ -1,10 +1,10 @@
 import civis
 from collections import OrderedDict
 import re
-import requests
 import warnings
 
 from jsonref import JsonRef
+import requests
 import six
 
 from civis.base import Endpoint, CivisAPIError, tostr_urljoin
