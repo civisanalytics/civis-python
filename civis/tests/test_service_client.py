@@ -121,6 +121,15 @@ def test_service_client(url_mock, classes_mock):
     assert sc._swagger_path == "/spec"
 
 
+def test_service_endpoint():
+    service_client_mock = mock.Mock()
+    se = ServiceEndpoint({}, service_client_mock)
+
+    assert se._session_kwargs == {}
+    assert se._return_type == 'civis'
+    assert se._client == service_client_mock
+
+
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_path(url_mock, classes_mock, mock_operations):
@@ -191,7 +200,7 @@ def test_get_api_spec(url_mock, classes_mock,
 def test_generate_classes(url_mock, api_spec_mock,
                           parse_mock, mock_swagger):
     api_spec_mock.return_value = {}
-    mock_class_function = (lambda s, client, return_type, root_path: '/api')
+    mock_class_function = (lambda s, client, return_type: "return")
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = mock_survey_url
 
@@ -218,7 +227,6 @@ def test_get_base_url(mock_client, classes_mock):
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.APIClient')
 def test_get_base_url__not_found(mock_client, classes_mock):
-
     err_resp = response.Response({
         'status_code': 404,
         'error': 'not_found',
@@ -238,7 +246,8 @@ def test_get_base_url__not_found(mock_client, classes_mock):
 
 
 def test_build_path():
-    service_client_mock = mock.Mock(_base_url='www.service_url.com')
+    service_client_mock = mock.Mock(_base_url='www.service_url.com',
+                                    _root_path=None)
     se = ServiceEndpoint({}, service_client_mock)
     path = se._build_path('/resources')
 
@@ -246,8 +255,9 @@ def test_build_path():
 
 
 def test_build_path__with_root():
-    service_client_mock = mock.Mock(_base_url='www.service_url.com')
-    se = ServiceEndpoint({}, service_client_mock, root_path='/api')
+    service_client_mock = mock.Mock(_base_url='www.service_url.com',
+                                    _root_path='/api')
+    se = ServiceEndpoint({}, service_client_mock)
     path = se._build_path('/resources')
 
     assert path == 'www.service_url.com/api/resources'

@@ -31,19 +31,18 @@ def auth_service_session(session, service_id):
 class ServiceEndpoint(Endpoint):
 
     def __init__(self, session_kwargs, client,
-                 return_type='civis', root_path=None):
+                 return_type='civis'):
         self._session_kwargs = session_kwargs
         self._return_type = return_type
         self._client = client
-        self._root_path = root_path
 
     def _build_path(self, path):
         if not path:
             return self._client._base_url
-        if not self._root_path:
+        if not self._client._root_path:
             return tostr_urljoin(self._client._base_url, path.strip("/"))
         return tostr_urljoin(self._client._base_url,
-                             self._root_path.strip("/"),
+                             self._client._root_path.strip("/"),
                              path.strip("/"))
 
     def _make_request(self, method, path=None, params=None, data=None,
@@ -82,8 +81,7 @@ class ServiceClient():
             classes = self.generate_classes()
         for class_name, klass in classes.items():
             setattr(self, class_name, klass(self._session_kwargs, client=self,
-                                            return_type=return_type,
-                                            root_path=root_path))
+                                            return_type=return_type))
 
     def parse_path(self, path, operations):
         """ Parse an endpoint into a class where each valid http request
