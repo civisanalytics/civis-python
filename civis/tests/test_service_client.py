@@ -191,13 +191,11 @@ def test_get_api_spec(mock_civis, classes_mock,
     assert spec == mock_swagger
 
 
-@mock.patch('civis.service_client.setattr')
 @mock.patch('civis.service_client.ServiceClient.parse_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_api_spec')
 @mock.patch('civis.service_client.civis')
 def test_generate_classes(mock_civis, api_spec_mock,
-                          parse_mock, setattr_mock, mock_swagger):
-    setattr_mock.return_value = {}
+                          parse_mock, mock_swagger):
     api_spec_mock.return_value = {}
     mock_class_function = (lambda s, client, return_type, root_path: '/api')
     parse_mock.return_value = {'class': mock_class_function}
