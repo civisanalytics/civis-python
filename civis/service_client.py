@@ -6,10 +6,10 @@ from jsonref import JsonRef
 import requests
 import six
 
-from civis import APIClient
 from civis.base import Endpoint, CivisAPIError, tostr_urljoin
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
+from civis import APIClient
 
 
 def auth_service_session(session, service_id):
