@@ -41,7 +41,7 @@ class ServiceEndpoint(Endpoint):
     def _build_path(self, path):
         if not path:
             return self._client._base_url
-        if self._root_path is None:
+        if not self._root_path:
             return tostr_urljoin(self._client._base_url, path.strip("/"))
         return tostr_urljoin(self._client._base_url,
                              self._root_path.strip("/"),
@@ -130,7 +130,7 @@ class ServiceClient():
         except:
             msg = ('There was an issue validating your API spec. '
                    'Ensure it complies with Swagger 2.0')
-                six.raise_from(ValueError(msg), ValueError)
+            six.raise_from(ValueError(msg), ValueError)
         return spec
 
     def generate_classes(self):
