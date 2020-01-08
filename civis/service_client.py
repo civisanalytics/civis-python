@@ -7,22 +7,18 @@ import warnings
 from jsonref import JsonRef
 import six
 
-from civis.base import Endpoint, CivisAPIError, CivisAPIKeyError, tostr_urljoin
+from civis.base import Endpoint, CivisAPIError, tostr_urljoin
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
-
-from openapi_spec_validator import validate_v2_spec
 
 
 def auth_service_session(session, service_id):
     try:
         service = civis.APIClient().services.get(service_id)
     except CivisAPIError as err:
-        if err.status_code == 404:
-            msg = 'There was an issue finding service {}.'.format(service_id)
-            six.raise_from(ValueError(msg), err)
-        else:
-            raise
+        msg = ('There was an issue '
+               'finding service with ID {}.').format(service_id)
+        six.raise_from(ValueError(msg), err)
 
     auth_url = service['current_deployment']['displayUrl']
     # Make request for adding Authentication Cookie to session
@@ -83,8 +79,8 @@ class ServiceClient():
             classes = self.generate_classes()
         for class_name, klass in classes.items():
             setattr(self, class_name, klass(self._session_kwargs, client=self,
-                                          return_type=return_type,
-                                          root_path=root_path))
+                                            return_type=return_type,
+                                            root_path=root_path))
 
     def parse_path(self, path, operations):
         """ Parse an endpoint into a class where each valid http request
@@ -125,12 +121,6 @@ class ServiceClient():
             response = sess.get(swagger_url)
             response.raise_for_status()
         spec = response.json(object_pairs_hook=OrderedDict)
-        try:
-            validate_v2_spec(spec)
-        except:
-            msg = ('There was an issue validating your API spec. '
-                   'Ensure it complies with Swagger 2.0')
-            six.raise_from(ValueError(msg), ValueError)
         return spec
 
     def generate_classes(self):
@@ -143,9 +133,7 @@ class ServiceClient():
             client = civis.APIClient()
             service = client.services.get(self._service_id)
         except CivisAPIError as err:
-            if err.status_code == 404:
-                msg = ('There is no Civis Service with '
-                       'ID {}!'.format(self._service_id))
-                six.raise_from(ValueError(msg), err)
-            raise
+            msg = ('There was an issue '
+                   'finding service with ID {}.').format(service_id)
+            six.raise_from(ValueError(msg), err)
         return service['current_url']
