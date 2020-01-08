@@ -1,4 +1,3 @@
-import civis
 from collections import OrderedDict
 import re
 import warnings
@@ -7,6 +6,7 @@ from jsonref import JsonRef
 import requests
 import six
 
+from civis import APIClient
 from civis.base import Endpoint, CivisAPIError, tostr_urljoin
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
@@ -14,7 +14,8 @@ from civis._utils import to_camelcase
 
 def auth_service_session(session, service_id):
     try:
-        service = civis.APIClient().services.get(service_id)
+        client = APIClient()
+        service = client.services.get(service_id)
     except CivisAPIError as err:
         msg = ('There was an issue '
                'finding service with ID {}.').format(service_id)
@@ -130,7 +131,7 @@ class ServiceClient():
 
     def get_base_url(self):
         try:
-            client = civis.APIClient()
+            client = APIClient()
             service = client.services.get(self._service_id)
         except CivisAPIError as err:
             msg = ('There was an issue '

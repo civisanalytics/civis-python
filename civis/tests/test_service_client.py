@@ -8,7 +8,7 @@ from civis.base import CivisAPIError
 import pytest
 from unittest import mock
 
-mock_service_id = 1
+mock_service_id = 0
 
 mock_survey_url = "www.survey-url.com"
 
@@ -98,10 +98,9 @@ def mock_operations(mock_swagger):
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_service_client(mock_civis, classes_mock):
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_service_client(url_mock, classes_mock):
+    url_mock.return_value = mock_survey_url
     classes_mock.return_value = {}
 
     sc = ServiceClient(mock_service_id)
@@ -124,10 +123,9 @@ def test_service_client(mock_civis, classes_mock):
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_parse_path(mock_civis, classes_mock, mock_operations):
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_parse_path(url_mock, classes_mock, mock_operations):
+    url_mock.return_value = mock_survey_url
     classes_mock.return_value = {}
     sc = ServiceClient(mock_service_id)
 
@@ -145,10 +143,9 @@ def test_parse_path(mock_civis, classes_mock, mock_operations):
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_parse_path__with_root(mock_civis, classes_mock, mock_operations):
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
+    url_mock.return_value = mock_survey_url
     classes_mock.return_value = {}
     sc = ServiceClient(mock_service_id, root_path='/some-resource')
 
@@ -160,10 +157,9 @@ def test_parse_path__with_root(mock_civis, classes_mock, mock_operations):
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_parse_api_spec(mock_civis, classes_mock, mock_swagger):
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_parse_api_spec(url_mock, classes_mock, mock_swagger):
+    url_mock.return_value = mock_survey_url
     classes_mock.return_value = {}
 
     sc = ServiceClient(mock_service_id)
@@ -175,14 +171,13 @@ def test_parse_api_spec(mock_civis, classes_mock, mock_swagger):
 @mock.patch('civis.service_client.requests.Session.get')
 @mock.patch('civis.service_client.auth_service_session')
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_get_api_spec(mock_civis, classes_mock,
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_get_api_spec(url_mock, classes_mock,
                       auth_session_mock, mock_response, mock_swagger):
     mock_response.return_value = mock.Mock(ok=True)
     mock_response.return_value.json.return_value = mock_swagger
 
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+    url_mock.return_value = mock_survey_url
     classes_mock.return_value = {}
 
     sc = ServiceClient(mock_service_id)
@@ -193,14 +188,13 @@ def test_get_api_spec(mock_civis, classes_mock,
 
 @mock.patch('civis.service_client.ServiceClient.parse_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_api_spec')
-@mock.patch('civis.service_client.civis')
-def test_generate_classes(mock_civis, api_spec_mock,
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_generate_classes(url_mock, api_spec_mock,
                           parse_mock, mock_swagger):
     api_spec_mock.return_value = {}
     mock_class_function = (lambda s, client, return_type, root_path: '/api')
     parse_mock.return_value = {'class': mock_class_function}
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+    url_mock.return_value = mock_survey_url
 
     sc = ServiceClient(mock_service_id)
 
@@ -210,21 +204,21 @@ def test_generate_classes(mock_civis, api_spec_mock,
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_get_base_url(mock_civis, classes_mock):
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.return_value = {"current_url": mock_survey_url}
+@mock.patch('civis.service_client.APIClient')
+def test_get_base_url(mock_client, classes_mock):
+    mock_api_call = mock_client.return_value
+    mock_api_call.services.get.return_value = {'current_url': mock_survey_url}
     classes_mock.return_value = {}
 
     sc = ServiceClient(mock_service_id)
 
     assert sc._base_url == mock_survey_url
-    mock_client.services.get.assert_called_once_with(mock_service_id)
+    mock_api_call.services.get.assert_called_once_with(mock_service_id)
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.civis')
-def test_get_base_url__not_found(mock_civis, classes_mock):
+@mock.patch('civis.service_client.APIClient')
+def test_get_base_url__not_found(mock_client, classes_mock):
 
     err_resp = response.Response({
         'status_code': 404,
@@ -233,8 +227,7 @@ def test_get_base_url__not_found(mock_civis, classes_mock):
         'content': True})
     err_resp.json = lambda: err_resp.json_data
 
-    mock_client = mock_civis.APIClient()
-    mock_client.services.get.side_effect = CivisAPIError(err_resp)
+    mock_client.return_value.services.get.side_effect = CivisAPIError(err_resp)
     classes_mock.return_value = {}
 
     with pytest.raises(ValueError) as excinfo:
@@ -263,8 +256,7 @@ def test_build_path__with_root():
 
 @mock.patch('civis.service_client.requests.Session.request')
 @mock.patch('civis.service_client.auth_service_session')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_make_request(mock_base_url, auth_mock, request_mock):
+def test_make_request(auth_mock, request_mock):
     service_client_mock = mock.Mock(_base_url='www.service_url.com')
     se = ServiceEndpoint({}, service_client_mock)
 
