@@ -111,7 +111,7 @@ def test_service_client(mock_civis, classes_mock):
     assert sc._session_kwargs == {}
     assert sc._service_id == mock_service_id
     assert sc._base_url == mock_survey_url
-    assert sc._root_path == None
+    assert sc._root_path is None
     assert sc._swagger_path == spec_endpoint
 
     # Custom root path
