@@ -134,6 +134,6 @@ class ServiceClient():
             service = client.services.get(self._service_id)
         except CivisAPIError as err:
             msg = ('There was an issue '
-                   'finding service with ID {}.').format(service_id)
+                   'finding service with ID {}.').format(self._service_id)
             six.raise_from(ValueError(msg), err)
         return service['current_url']
