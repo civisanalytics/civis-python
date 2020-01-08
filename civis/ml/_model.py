@@ -2,10 +2,11 @@
 """
 import builtins
 from builtins import super
-from collections import namedtuple
+import collections
 import json
 import logging
 import os
+import re
 import shutil
 import six
 import tempfile
@@ -21,32 +22,20 @@ try:
 except ImportError:
     HAS_SKLEARN = False
 
-from civis import APIClient, find, find_one, __version__
+from civis import APIClient, find, find_one
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import FileNotFoundError, TemporaryDirectory
+from civis.compat import FileNotFoundError, TemporaryDirectory, lru_cache
 import civis.io as cio
 from civis.futures import ContainerFuture
+from civis.response import Response
+
 
 __all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
 log = logging.getLogger(__name__)
 
 # sentinel value for default primary key value
-SENTINEL = namedtuple('Sentinel', [])()
-
-# Map training template to prediction template so that we
-# always use a compatible version for predictions.
-_PRED_TEMPLATES = {11219: 11220,  # v2.2
-                   11221: 11220,  # v2.2 registration
-                   10582: 10583,  # v2.1
-                   9968: 9969,    # v2.0
-                   9112: 9113,    # v1.1
-                   8387: 8388,    # v1.0
-                   7020: 7021,    # v0.5
-                   }
-_CIVISML_TEMPLATE = None  # CivisML training template to use
-REGISTRATION_TEMPLATES = [11221,  # v2.2
-                          ]
+SENTINEL = collections.namedtuple('Sentinel', [])()
 
 
 class ModelError(RuntimeError):
@@ -266,6 +255,132 @@ def _show_civisml_warnings(warn_list):
         except Exception:  # NOQA
             warn_str = "Remote warning from CivisML:\n" + warn_str
             warnings.warn(warn_str, RuntimeWarning)
+
+
+def _get_job_type_version(alias):
+    """Derive the job type and version from the given alias.
+
+    Parameters
+    ----------
+    alias : str
+        CivisML alias
+
+    Returns
+    -------
+    str
+        Job type, one of {training, prediction, registration}.
+    str
+        CivisML version, e.g., "v2.2".
+    """
+    # A version-less alias for production, e.g., "civis-civisml-training"
+    match_production = re.search(r'\Acivis-civisml-(\w+)\Z', alias)
+    # A versioned alias, e.g., "civis-civisml-training-v2-3"
+    match_v = re.search(r'\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z', alias)
+    # A special-version alias, e.g., "civis-civisml-training-dev"
+    match_special = re.search(r'\Acivis-civisml-(\w+)-(\S+[^-])\Z', alias)
+
+    if match_production:
+        job_type = match_production.group(1)
+        version = None
+    elif match_v:
+        job_type = match_v.group(1)
+        version = 'v%s.%s' % match_v.group(2, 3)
+    elif match_special:
+        job_type = match_special.group(1)
+        version = match_special.group(2)
+    else:
+        msg = ('Unable to parse the job type and version '
+               'from the CivisML alias "%r"')
+        raise ValueError(msg % alias)
+
+    return job_type, version
+
+
+@lru_cache()
+def _get_template_ids_all_versions(client):
+    """Get templates IDs for all accessible CivisML versions.
+
+    Parameters
+    ----------
+    client : APIClient
+        Civis API client object
+
+    Returns
+    -------
+    Dict[str, Dict[str, int]]
+        Mapping between versions (e.g., "v2.2") and template IDs for the given
+        version (e.g., {'training': 1, 'prediction': 2, 'registration': 3}).
+    """
+    template_alias_objects = client.aliases.list(
+        object_type='template_script', iterator=True
+    )
+    civisml_template_alias_objects = find(
+        template_alias_objects,
+        alias=lambda alias: alias.startswith('civis-civisml-')
+    )
+    ids = collections.defaultdict(
+        lambda: {'training': None, 'prediction': None, 'registration': None}
+    )
+    for alias_obj in civisml_template_alias_objects:
+        try:
+            job_type, version = _get_job_type_version(alias_obj.alias)
+        except ValueError:
+            msg = (
+                '%r looks like a CivisML alias for the prefix "civis-civisml-"'
+                ', but it is impossible to parse its job type and version'
+            )
+            log.debug(msg % alias_obj)
+            continue
+        ids[version][job_type] = alias_obj.object_id
+    if not ids:
+        r = Response({'status_code': 404,
+                      'reason': 'No CivisML template IDs are accessible.',
+                      'content': None})
+        raise CivisAPIError(r)
+    return ids
+
+
+def _get_template_ids(civisml_version, client):
+    """Get template IDs for the specified CivisML version.
+
+    Parameters
+    ----------
+    civisml_version : str
+        CivisML version
+    client : APIClient
+        Civis API client object
+
+    Returns
+    -------
+    int
+        Template ID for training
+    int
+        Template ID for prediction
+    int
+        Template ID for pre-trained model registration
+    """
+    template_ids_all_versions = _get_template_ids_all_versions(client)
+    try:
+        ids = template_ids_all_versions[civisml_version]
+    except KeyError:
+        msg = (
+            '"{civisml_version}" is an invalid CivisML version. '
+            'Either this version does not exist, or you do not have access '
+            'to this version. '
+            'Versions accessible to you are {{{accessible_versions}}}, '
+            'as well as `None` for the latest production version.'
+        ).format(
+            civisml_version=civisml_version,
+            accessible_versions=', '.join(
+                '"%s"' % v
+                # Don't include None, or else it would crash sorted()
+                for v in sorted(
+                    v for v in template_ids_all_versions.keys() if v
+                )
+            )
+        )
+        raise ValueError(msg)
+    return ids['training'], ids['prediction'], ids['registration']
 
 
 class ModelFuture(ContainerFuture):
@@ -665,6 +780,9 @@ class ModelPipeline:
     etl : Estimator, optional
         Custom ETL estimator which overrides the default ETL, and
         is run before training and validation.
+    civisml_version : str, optional
+        CivisML version to use for training and prediction.
+        If not provided, the latest version in production is used.
 
     Methods
     -------
@@ -723,32 +841,6 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    def _get_template_ids(self, client):
-        """Determine which version of CivisML to use.
-
-        Select the most recent template to which the user has access.
-        Used for internal or limited releases of new CivisML versions.
-        """
-        global _CIVISML_TEMPLATE
-        if _CIVISML_TEMPLATE is None:
-            for t_id in sorted(_PRED_TEMPLATES)[::-1]:
-                if t_id in REGISTRATION_TEMPLATES:
-                    continue
-                try:
-                    # Check that we can access the template
-                    client.templates.get_scripts(id=t_id)
-                    client.templates.get_scripts(id=_PRED_TEMPLATES[t_id])
-                except CivisAPIError:
-                    continue
-                else:
-                    # Store the template ID so we don't need to repeat
-                    # these API calls in this session.
-                    _CIVISML_TEMPLATE = t_id
-                    break
-            else:
-                raise RuntimeError("Unable to find a CivisML template.")
-        return _CIVISML_TEMPLATE, _PRED_TEMPLATES[_CIVISML_TEMPLATE]
-
     def __init__(self, model, dependent_variable,
                  primary_key=None, parameters=None,
                  cross_validation_parameters=None, model_name=None,
@@ -756,7 +848,7 @@ class ModelPipeline:
                  cpu_requested=None, memory_requested=None,
                  disk_requested=None, notifications=None,
                  dependencies=None, git_token_name=None, verbose=False,
-                 etl=None):
+                 etl=None, civisml_version=None):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, six.string_types):
@@ -784,8 +876,8 @@ class ModelPipeline:
         self._client = client
         self.train_result_ = None
 
-        template_ids = self._get_template_ids(self._client)
-        self.train_template_id, self.predict_template_id = template_ids
+        template_ids = _get_template_ids(civisml_version, self._client)
+        self.train_template_id, self.predict_template_id, _ = template_ids
 
         self.etl = etl
         if self.train_template_id < 9968 and self.etl is not None:
@@ -801,8 +893,6 @@ class ModelPipeline:
     def __setstate__(self, state):
         self.__dict__ = state
         self._client = APIClient()
-        template_ids = self._get_template_ids(self._client)
-        self.train_template_id, self.predict_template_id = template_ids
 
     @classmethod
     def register_pretrained_model(cls, model, dependent_variable=None,
@@ -810,7 +900,7 @@ class ModelPipeline:
                                   model_name=None, dependencies=None,
                                   git_token_name=None,
                                   skip_model_check=False, verbose=False,
-                                  client=None):
+                                  client=None, civisml_version=None):
         """Use a fitted scikit-learn model with CivisML scoring
 
         Use this function to set up your own fitted scikit-learn-compatible
@@ -864,6 +954,9 @@ class ModelPipeline:
         client : :class:`~civis.APIClient`, optional
             If not provided, an :class:`~civis.APIClient` object will be
             created from the :envvar:`CIVIS_API_KEY`.
+        civisml_version : str, optional
+            CivisML version to use.
+            If not provided, the latest version in production is used.
 
         Returns
         -------
@@ -873,6 +966,7 @@ class ModelPipeline:
         --------
         This example assumes that you already have training data
         ``X`` and ``y``, where ``X`` is a :class:`~pandas.DataFrame`.
+
         >>> from civis.ml import ModelPipeline
         >>> from sklearn.linear_model import Lasso
         >>> est = Lasso().fit(X, y)
@@ -928,7 +1022,15 @@ class ModelPipeline:
                                  .format(git_token_name))
             args['GIT_CRED'] = creds[0].id
 
-        template_id = max(REGISTRATION_TEMPLATES)
+        _, _, template_id = _get_template_ids(civisml_version, client)
+        if template_id is None:
+            msg = (
+                'No registration template ID is available. '
+                'Pre-trained model registration is available for CivisML '
+                'v2.2 (for which `civisml_version` would be "v2.2") or above, '
+                'but you have specified CivisML version "%r"'
+            )
+            raise ValueError(msg % civisml_version)
         container = client.scripts.post_custom(
             from_template_id=template_id,
             name=model_name,
@@ -1042,17 +1144,11 @@ class ModelPipeline:
 
         # Set prediction template corresponding to training template
         template_id = int(container['from_template_id'])
-        p_id = _PRED_TEMPLATES.get(template_id)
-        if p_id is None:
-            warnings.warn('Model %s was trained with a newer version of '
-                          'CivisML than is available in the API client '
-                          'version %s. Please update your API client version. '
-                          'Attempting to use an older version of the '
-                          'prediction code. Prediction will either fail '
-                          'immediately or succeed.'
-                          % (train_job_id, __version__), RuntimeWarning)
-            p_id = max([v for k, v in _PRED_TEMPLATES.items()
-                        if k not in REGISTRATION_TEMPLATES])
+        ids = find_one(
+            _get_template_ids_all_versions(client).values(),
+            lambda ids: ids['training'] == template_id
+        )
+        p_id = ids['prediction']
         klass.predict_template_id = p_id
 
         return klass

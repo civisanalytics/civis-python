@@ -11,7 +11,7 @@ API for interoperability with other platforms and to allow you to leverage
 resources in the open-source software community when creating machine learning models.
 
 
-Optional dependencies
+Optional Dependencies
 =====================
 
 You do not need any external libraries installed to use CivisML, but
@@ -130,13 +130,8 @@ the pre-defined ones. Create the object and pass it as the ``model`` parameter
 of the :class:`~civis.ml.ModelPipeline`. Your model must follow the
 scikit-learn API, and you will need to include any dependencies as
 :ref:`custom-dependencies` if they are not already installed in
-CivisML. Preinstalled libraries available for your use include:
-
-- `scikit-learn <http://scikit-learn.org>`_ v0.19.1
-- `glmnet <https://github.com/civisanalytics/python-glmnet>`_ v2.0.0
-- `xgboost <http://xgboost.readthedocs.io>`_ v0.6a2
-- `muffnn <https://github.com/civisanalytics/muffnn>`_ v1.2.0
-- `civisml-extensions <https://github.com/civisanalytics/civisml-extensions>`_ v.0.1.6
+CivisML. Please check `here <https://civis.zendesk.com/hc/en-us/articles/360000260011-CivisML>`_
+for the available pre-installed libraries and their versions.
 
 When you're assembling your own model, remember that you'll have to make certain that
 either you add a missing value imputation step or that your data doesn't have any
@@ -290,6 +285,19 @@ A simple example of how to do this with API looks as follows
 
 Note, installing private dependencies with submodules is not supported.
 
+.. _civisml-versions:
+
+CivisML Versions
+----------------
+
+By default, CivisML uses its latest version in production.
+Under special circumstances, if you would like a specific version
+(e.g., an older version),
+:class:`~civis.ml.ModelPipeline` (both its constructor and the class method
+:meth:`civis.ml.ModelPipeline.register_pretrained_model`) has the optional
+parameter ``civisml_version`` that accepts a string, e.g., ``'v2.3'``
+for CivisML v2.3. Please see `here <https://civis.zendesk.com/hc/en-us/articles/360000260011-CivisML>`_
+for the list of CivisML versions.
 
 Asynchronous Execution
 ======================
@@ -403,9 +411,10 @@ To share your models, use the functions
 - :func:`~civis.ml.delete_models_shares_users`
 - :func:`~civis.ml.delete_models_shares_groups`
 
+To find out what models a user has, use :func:`~civis.ml.list_models`.
 
-Object reference
-================
+Object and Function Reference
+=============================
 
 .. autoclass:: civis.ml.ModelPipeline
 	       :members:
@@ -414,3 +423,9 @@ Object reference
 .. autoclass:: civis.ml.ModelFuture
 	       :members:
 	       :inherited-members:
+
+.. autofunction:: civis.ml.put_models_shares_users
+.. autofunction:: civis.ml.put_models_shares_groups
+.. autofunction:: civis.ml.delete_models_shares_users
+.. autofunction:: civis.ml.delete_models_shares_groups
+.. autofunction:: civis.ml.list_models
