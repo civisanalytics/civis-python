@@ -6,4 +6,4 @@ from civis.service_client import ServiceClient
 from civis import io, ml, parallel, utils
 
 __all__ = ["__version__", "APIClient", "find", "find_one", "io",
-           "ml", "parallel", "utils", "ServiceClient"]
+           "ml", "parallel", "ServiceClient", "utils"]
