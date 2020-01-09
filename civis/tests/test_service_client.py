@@ -4,12 +4,12 @@ import json
 from civis import response
 from civis.base import CivisAPIError
 from civis.compat import mock
-from civis.service_client import ServiceClient, ServiceEndpoint
+from civis.service_client import ServiceClient, ServiceEndpoint, _get_service
 import pytest
 
-mock_service_id = 0
+MOCK_SERVICE_ID = 0
 
-mock_survey_url = "www.survey-url.com"
+MOCK_URL = "www.survey-url.com"
 
 
 @pytest.fixture
@@ -99,25 +99,25 @@ def mock_operations(mock_swagger):
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_service_client(url_mock, classes_mock):
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
     classes_mock.return_value = {}
 
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
     spec_endpoint = "/endpoints"
 
     assert sc._session_kwargs == {}
-    assert sc._service_id == mock_service_id
-    assert sc._base_url == mock_survey_url
+    assert sc._service_id == MOCK_SERVICE_ID
+    assert sc._base_url == MOCK_URL
     assert sc._root_path is None
     assert sc._swagger_path == spec_endpoint
 
     # Custom root path
-    sc = ServiceClient(mock_service_id, root_path='/api')
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/api')
     assert sc._root_path == '/api'
 
     # Custom Swagger path
-    sc = ServiceClient(mock_service_id, swagger_path='/spec')
+    sc = ServiceClient(MOCK_SERVICE_ID, swagger_path='/spec')
     assert sc._swagger_path == "/spec"
 
 
@@ -133,9 +133,9 @@ def test_service_endpoint():
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_path(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
     classes_mock.return_value = {}
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
     mock_path = '/some-resource/sub-resource/{id}'
     base_path, methods = sc.parse_path(mock_path, mock_operations)
@@ -153,9 +153,9 @@ def test_parse_path(url_mock, classes_mock, mock_operations):
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
     classes_mock.return_value = {}
-    sc = ServiceClient(mock_service_id, root_path='/some-resource')
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/some-resource')
 
     mock_path = '/some-resource/sub-resource/{id}'
     base_path, methods = sc.parse_path(mock_path, mock_operations)
@@ -167,10 +167,10 @@ def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_api_spec(url_mock, classes_mock, mock_swagger):
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
     classes_mock.return_value = {}
 
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
     classes = sc.parse_api_spec(mock_swagger)
     assert 'some_resources' in classes
@@ -185,10 +185,10 @@ def test_get_api_spec(url_mock, classes_mock,
     mock_response.return_value = mock.Mock(ok=True)
     mock_response.return_value.json.return_value = mock_swagger
 
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
     classes_mock.return_value = {}
 
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
     spec = sc.get_api_spec()
     assert spec == mock_swagger
@@ -202,9 +202,9 @@ def test_generate_classes(url_mock, api_spec_mock,
     api_spec_mock.return_value = {}
     mock_class_function = (lambda s, client, return_type: "return")
     parse_mock.return_value = {'class': mock_class_function}
-    url_mock.return_value = mock_survey_url
+    url_mock.return_value = MOCK_URL
 
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
     classes = sc.generate_classes()
 
@@ -212,21 +212,27 @@ def test_generate_classes(url_mock, api_spec_mock,
 
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
-@mock.patch('civis.service_client.APIClient')
-def test_get_base_url(mock_client, classes_mock):
-    mock_api_call = mock_client.return_value
-    mock_api_call.services.get.return_value = {'current_url': mock_survey_url}
+@mock.patch('civis.service_client._get_service')
+def test_get_base_url(get_service_client, classes_mock):
+    get_service_client.return_value = {'current_url': MOCK_URL}
     classes_mock.return_value = {}
 
-    sc = ServiceClient(mock_service_id)
+    sc = ServiceClient(MOCK_SERVICE_ID)
 
-    assert sc._base_url == mock_survey_url
-    mock_api_call.services.get.assert_called_once_with(mock_service_id)
+    assert sc._base_url == MOCK_URL
+    get_service_client.assert_called_once_with(MOCK_SERVICE_ID)
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.APIClient')
-def test_get_base_url__not_found(mock_client, classes_mock):
+def test_get_service(mock_client):
+    expected_service = {'current_url': MOCK_URL}
+    mock_client.return_value.services.get.return_value = expected_service
+    service = _get_service(MOCK_SERVICE_ID)
+    assert service == expected_service
+
+
+@mock.patch('civis.service_client.APIClient')
+def test_get_service__not_found(mock_client):
     err_resp = response.Response({
         'status_code': 404,
         'error': 'not_found',
@@ -235,13 +241,12 @@ def test_get_base_url__not_found(mock_client, classes_mock):
     err_resp.json = lambda: err_resp.json_data
 
     mock_client.return_value.services.get.side_effect = CivisAPIError(err_resp)
-    classes_mock.return_value = {}
 
     with pytest.raises(ValueError) as excinfo:
-        ServiceClient(mock_service_id)
+        _get_service(MOCK_SERVICE_ID)
 
     expected_error = ('There was an issue '
-                      'finding service with ID {}.').format(mock_service_id)
+                      'finding service with ID {}.').format(MOCK_SERVICE_ID)
     assert str(excinfo.value) == expected_error
 
 

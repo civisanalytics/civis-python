@@ -14,7 +14,7 @@ from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
 
 
-def auth_service_session(session, service_id):
+def _get_service(service_id):
     try:
         client = APIClient()
         service = client.services.get(service_id)
@@ -22,7 +22,11 @@ def auth_service_session(session, service_id):
         msg = ('There was an issue '
                'finding service with ID {}.').format(service_id)
         six.raise_from(ValueError(msg), err)
+    return service
 
+
+def auth_service_session(session, service_id):
+    service = _get_service(service_id)
     auth_url = service['current_deployment']['displayUrl']
     # Make request for adding Authentication Cookie to session
     session.get(auth_url)
@@ -130,11 +134,5 @@ class ServiceClient():
         return self.parse_api_spec(spec)
 
     def get_base_url(self):
-        try:
-            client = APIClient()
-            service = client.services.get(self._service_id)
-        except CivisAPIError as err:
-            msg = ('There was an issue '
-                   'finding service with ID {}.').format(self._service_id)
-            six.raise_from(ValueError(msg), err)
+        service = _get_service(self._service_id)
         return service['current_url']
