@@ -9,6 +9,7 @@ import six
 
 from civis import APIClient
 from civis.base import Endpoint, tostr_urljoin
+from civis.compat import lru_cache
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
 
@@ -66,7 +67,7 @@ class ServiceClient():
 
     def __init__(self, service_id, root_path=None,
                  swagger_path="/endpoints", api_key=None,
-                 return_type='snake'):
+                 return_type='snake', local_api_spec=None):
         """Create an API Client from a Civis service.
 
         Parameters
@@ -98,6 +99,13 @@ class ServiceClient():
             - ``'pandas'`` Returns a :class:`pandas:pandas.DataFrame` for
             list-like responses and a :class:`pandas:pandas.Series` for
             single a json response.
+        local_api_spec : collections.OrderedDict or string, optional
+            The methods on this class are dynamically built from the Service API
+            specification, which can be retrieved from the /endpoints endpoint.
+            When local_api_spec is None, the default, this specification is
+            downloaded the first time APIClient is instantiated. Alternatively,
+            a local cache of the specification may be passed as either an
+            OrderedDict or a filename which points to a json file.
         """
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
@@ -107,7 +115,7 @@ class ServiceClient():
         self._base_url = self.get_base_url()
         self._root_path = root_path
         self._swagger_path = swagger_path
-        classes = self.generate_classes()
+        classes = self.generate_classes_maybe_cached(local_api_spec)
         for class_name, klass in classes.items():
             setattr(self, class_name, klass(client=self,
                                             return_type=return_type))
@@ -143,6 +151,7 @@ class ServiceClient():
                 setattr(classes[base_path], method_name, method)
         return classes
 
+    @lru_cache(maxsize=4)
     def get_api_spec(self):
         swagger_url = self._base_url + self._swagger_path
 
@@ -153,6 +162,7 @@ class ServiceClient():
         spec = response.json(object_pairs_hook=OrderedDict)
         return spec
 
+    @lru_cache(maxsize=4)
     def generate_classes(self):
         raw_spec = self.get_api_spec()
         spec = JsonRef.replace_refs(raw_spec)
@@ -161,3 +171,20 @@ class ServiceClient():
     def get_base_url(self):
         service = _get_service(self)
         return service['current_url']
+
+    def generate_classes_maybe_cached(self, cache):
+        """Generate class objects either from /endpoints or a local cache."""
+        if cache is None:
+            classes = self.generate_classes()
+        else:
+            if isinstance(cache, OrderedDict):
+                raw_spec = cache
+            elif isinstance(cache, str):
+                with open(cache, "r") as f:
+                    raw_spec = json.load(f, object_pairs_hook=OrderedDict)
+            else:
+                msg = "cache must be an OrderedDict or str, given {}"
+                raise ValueError(msg.format(type(cache)))
+            spec = JsonRef.replace_refs(raw_spec)
+            classes = self.parse_api_spec(spec)
+        return classes
