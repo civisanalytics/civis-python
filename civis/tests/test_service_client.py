@@ -106,6 +106,7 @@ def test_service_client(url_mock, classes_mock):
 
     spec_endpoint = "/endpoints"
 
+    assert sc._api_key == None
     assert sc._service_id == MOCK_SERVICE_ID
     assert sc._base_url == MOCK_URL
     assert sc._root_path is None
@@ -118,6 +119,10 @@ def test_service_client(url_mock, classes_mock):
     # Custom Swagger path
     sc = ServiceClient(MOCK_SERVICE_ID, swagger_path='/spec')
     assert sc._swagger_path == "/spec"
+
+    # Passed in API Key
+    sc = ServiceClient(MOCK_SERVICE_ID, api_key="this_is_an_API_key")
+    assert sc._api_key == "this_is_an_API_key"
 
 
 def test_service_endpoint():
