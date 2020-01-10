@@ -106,7 +106,7 @@ def test_service_client(url_mock, classes_mock):
 
     spec_endpoint = "/endpoints"
 
-    assert sc._api_key == None
+    assert sc._api_key is None
     assert sc._service_id == MOCK_SERVICE_ID
     assert sc._base_url == MOCK_URL
     assert sc._root_path is None
