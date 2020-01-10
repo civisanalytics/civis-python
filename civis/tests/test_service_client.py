@@ -106,7 +106,6 @@ def test_service_client(url_mock, classes_mock):
 
     spec_endpoint = "/endpoints"
 
-    assert sc._session_kwargs == {}
     assert sc._service_id == MOCK_SERVICE_ID
     assert sc._base_url == MOCK_URL
     assert sc._root_path is None
@@ -123,9 +122,8 @@ def test_service_client(url_mock, classes_mock):
 
 def test_service_endpoint():
     service_client_mock = mock.Mock()
-    se = ServiceEndpoint({}, service_client_mock)
+    se = ServiceEndpoint(service_client_mock)
 
-    assert se._session_kwargs == {}
     assert se._return_type == 'civis'
     assert se._client == service_client_mock
 
@@ -200,7 +198,7 @@ def test_get_api_spec(url_mock, classes_mock,
 def test_generate_classes(url_mock, api_spec_mock,
                           parse_mock, mock_swagger):
     api_spec_mock.return_value = {}
-    mock_class_function = (lambda s, client, return_type: "return")
+    mock_class_function = (lambda client, return_type: "return")
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = MOCK_URL
 
@@ -213,26 +211,32 @@ def test_generate_classes(url_mock, api_spec_mock,
 
 @mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client._get_service')
-def test_get_base_url(get_service_client, classes_mock):
-    get_service_client.return_value = {'current_url': MOCK_URL}
+def test_get_base_url(get_service_mock, classes_mock):
+    get_service_mock.return_value = {'current_url': MOCK_URL}
     classes_mock.return_value = {}
 
     sc = ServiceClient(MOCK_SERVICE_ID)
 
     assert sc._base_url == MOCK_URL
-    get_service_client.assert_called_once_with(MOCK_SERVICE_ID)
+    get_service_mock.assert_called_once_with(sc)
 
 
+@mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.APIClient')
-def test_get_service(mock_client):
+def test_get_service(mock_client, classes_mock):
+    classes_mock.return_value = {}
+    sc = ServiceClient(MOCK_SERVICE_ID)
     expected_service = {'current_url': MOCK_URL}
     mock_client.return_value.services.get.return_value = expected_service
-    service = _get_service(MOCK_SERVICE_ID)
+    service = _get_service(sc)
     assert service == expected_service
 
 
+@mock.patch('civis.service_client.ServiceClient.generate_classes')
 @mock.patch('civis.service_client.APIClient')
-def test_get_service__not_found(mock_client):
+def test_get_service__not_found(mock_client, classes_mock):
+    classes_mock.return_value = {}
+    sc = ServiceClient(MOCK_SERVICE_ID)
     err_resp = response.Response({
         'status_code': 404,
         'error': 'not_found',
@@ -242,18 +246,17 @@ def test_get_service__not_found(mock_client):
 
     mock_client.return_value.services.get.side_effect = CivisAPIError(err_resp)
 
-    with pytest.raises(ValueError) as excinfo:
-        _get_service(MOCK_SERVICE_ID)
+    with pytest.raises(CivisAPIError) as excinfo:
+        _get_service(sc)
 
-    expected_error = ('There was an issue '
-                      'finding service with ID {}.').format(MOCK_SERVICE_ID)
+    expected_error = ('(404) The requested resource could not be found.')
     assert str(excinfo.value) == expected_error
 
 
 def test_build_path():
     service_client_mock = mock.Mock(_base_url='www.service_url.com',
                                     _root_path=None)
-    se = ServiceEndpoint({}, service_client_mock)
+    se = ServiceEndpoint(service_client_mock)
     path = se._build_path('/resources')
 
     assert path == 'www.service_url.com/resources'
@@ -262,7 +265,7 @@ def test_build_path():
 def test_build_path__with_root():
     service_client_mock = mock.Mock(_base_url='www.service_url.com',
                                     _root_path='/api')
-    se = ServiceEndpoint({}, service_client_mock)
+    se = ServiceEndpoint(service_client_mock)
     path = se._build_path('/resources')
 
     assert path == 'www.service_url.com/api/resources'
@@ -272,7 +275,7 @@ def test_build_path__with_root():
 @mock.patch('civis.service_client.auth_service_session')
 def test_make_request(auth_mock, request_mock):
     service_client_mock = mock.Mock(_base_url='www.service_url.com')
-    se = ServiceEndpoint({}, service_client_mock)
+    se = ServiceEndpoint(service_client_mock)
 
     expected_value = [{'id': 1, 'url': 'www.survey_url.com/1'},
                       {'id': 2, 'url': 'www.survey_url.com/2'}]
