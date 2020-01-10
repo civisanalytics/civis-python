@@ -91,7 +91,7 @@ def mock_swagger():
 @pytest.fixture
 def mock_operations(mock_swagger):
     ops_json = mock_swagger["paths"]["/some-resources"]
-    mock_ops_str = str(ops_json).replace('\'', '\"')
+    mock_ops_str = str(json.dumps(ops_json))
     mock_operations = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(mock_ops_str)  # noqa: E501
     return mock_operations
 
@@ -221,7 +221,9 @@ def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
 
     sc = ServiceClient(MOCK_SERVICE_ID)
 
-    classes = sc.generate_classes_maybe_cached(mock_swagger)
+    mock_spec_str = str(json.dumps(mock_swagger))
+    mock_spec = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(mock_spec_str)  # noqa: E501
+    classes = sc.generate_classes_maybe_cached(mock_spec)
 
     assert 'class' in classes
 
