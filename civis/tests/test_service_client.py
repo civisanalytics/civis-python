@@ -213,7 +213,7 @@ def test_generate_classes(url_mock, api_spec_mock,
 @mock.patch('civis.service_client.ServiceClient.get_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
-                          parse_mock, mock_swagger):
+                                       parse_mock, mock_swagger):
     api_spec_mock.return_value = {}
     mock_class_function = (lambda client, return_type: "return")
     parse_mock.return_value = {'class': mock_class_function}

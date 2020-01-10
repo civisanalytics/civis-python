@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from collections import OrderedDict
+import json
 import re
 
 from jsonref import JsonRef
@@ -100,12 +101,13 @@ class ServiceClient():
             list-like responses and a :class:`pandas:pandas.Series` for
             single a json response.
         local_api_spec : collections.OrderedDict or string, optional
-            The methods on this class are dynamically built from the Service API
-            specification, which can be retrieved from the /endpoints endpoint.
-            When local_api_spec is None, the default, this specification is
-            downloaded the first time APIClient is instantiated. Alternatively,
-            a local cache of the specification may be passed as either an
-            OrderedDict or a filename which points to a json file.
+            The methods on this class are dynamically built from the Service
+            API specification, which can be retrieved from the /endpoints
+            endpoint. When local_api_spec is None, the default, this
+            specification is downloaded the first time APIClient is
+            instantiated. Alternatively, a local cache of the specification
+            may be passed as either an OrderedDict or a filename which
+            points to a json file.
         """
         if return_type not in ['snake', 'raw', 'pandas']:
             raise ValueError("Return type must be one of 'snake', 'raw', "
