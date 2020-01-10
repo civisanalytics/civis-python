@@ -96,7 +96,7 @@ def mock_operations(mock_swagger):
     return mock_operations
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_service_client(url_mock, classes_mock):
     url_mock.return_value = MOCK_URL
@@ -128,7 +128,7 @@ def test_service_endpoint():
     assert se._client == service_client_mock
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_path(url_mock, classes_mock, mock_operations):
     url_mock.return_value = MOCK_URL
@@ -148,7 +148,7 @@ def test_parse_path(url_mock, classes_mock, mock_operations):
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
     url_mock.return_value = MOCK_URL
@@ -162,7 +162,7 @@ def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_parse_api_spec(url_mock, classes_mock, mock_swagger):
     url_mock.return_value = MOCK_URL
@@ -176,7 +176,7 @@ def test_parse_api_spec(url_mock, classes_mock, mock_swagger):
 
 @mock.patch('civis.service_client.requests.Session.get')
 @mock.patch('civis.service_client.auth_service_session')
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_get_api_spec(url_mock, classes_mock,
                       auth_session_mock, mock_response, mock_swagger):
@@ -209,7 +209,24 @@ def test_generate_classes(url_mock, api_spec_mock,
     assert 'class' in classes
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.parse_api_spec')
+@mock.patch('civis.service_client.ServiceClient.get_api_spec')
+@mock.patch('civis.service_client.ServiceClient.get_base_url')
+def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
+                          parse_mock, mock_swagger):
+    api_spec_mock.return_value = {}
+    mock_class_function = (lambda client, return_type: "return")
+    parse_mock.return_value = {'class': mock_class_function}
+    url_mock.return_value = MOCK_URL
+
+    sc = ServiceClient(MOCK_SERVICE_ID)
+
+    classes = sc.generate_classes_maybe_cached(mock_swagger)
+
+    assert 'class' in classes
+
+
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client._get_service')
 def test_get_base_url(get_service_mock, classes_mock):
     get_service_mock.return_value = {'current_url': MOCK_URL}
@@ -221,7 +238,7 @@ def test_get_base_url(get_service_mock, classes_mock):
     get_service_mock.assert_called_once_with(sc)
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.APIClient')
 def test_get_service(mock_client, classes_mock):
     classes_mock.return_value = {}
@@ -232,7 +249,7 @@ def test_get_service(mock_client, classes_mock):
     assert service == expected_service
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes')
+@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
 @mock.patch('civis.service_client.APIClient')
 def test_get_service__not_found(mock_client, classes_mock):
     classes_mock.return_value = {}
