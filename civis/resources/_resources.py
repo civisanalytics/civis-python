@@ -409,7 +409,7 @@ def parse_method_name(verb, path):
 def parse_method(verb, operation, path):
     """ Generate a python function from a specification of that function."""
     summary = operation["summary"]
-    params = operation["parameters"]
+    params = operation.get("parameters", [])
     responses = operation["responses"]
     deprecated = operation.get('deprecated', False)
     if 'deprecated' in summary.lower() or deprecated:

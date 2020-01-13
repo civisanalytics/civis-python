@@ -6,6 +6,7 @@ import warnings
 
 from civis._version import __version__
 from civis.civis import APIClient, find, find_one
+from civis.service_client import ServiceClient
 from civis import io, ml, parallel, utils
 
 if six.PY2:
@@ -19,4 +20,4 @@ if version_info.major == 3 and version_info.minor == 4:
 
 
 __all__ = ["__version__", "APIClient", "find", "find_one", "io",
-           "ml", "parallel", "utils"]
+           "ml", "parallel", "ServiceClient", "utils"]
