@@ -337,6 +337,9 @@ def _get_template_ids_all_versions(client):
                       'reason': 'No CivisML template IDs are accessible.',
                       'content': None})
         raise CivisAPIError(r)
+    # Disallow a defaultdict in the output, so that a non-existent CivisML
+    # version as key should trigger a KeyError.
+    ids = dict(ids)
     return ids
 
 
