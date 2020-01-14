@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added method `get_storage_host_id` to the APIClient. (#328)
 - Added debug logging to some `civis.io` functions. (#325)
+- Added `ServiceClient` and `ServiceEndpoint` class. (#343)
 - Added new arguments to `civis.io.civis_to_multifile_csv` to expose max_file_size parameter. (#342)
 
 ### Fixed
