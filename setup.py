@@ -58,9 +58,9 @@ def main():
             'requests>=2.12.0,==2.*',
             'jsonschema>=2.5.1,<=3',
             'six>=1.10,<=1.99',
-            'joblib>=0.11,<=0.13.99',
+            'joblib>=0.11,<0.15',
             'pubnub>=4.0,<=4.99',
-            "cloudpickle>=0.2.0,<=1.99999 ; python_version != '3.4'",
+            "cloudpickle>=0.2.0,<2 ; python_version != '3.4'",
             "cloudpickle>=0.2.0,<1.2 ; python_version == '3.4'",
         ],
         extras_require={
