@@ -23,7 +23,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated cloudpickle and joblib dependencies. (#349)
-- CivisML uses platform aliases instead of hard-coded template IDs. (#341)
 - CivisML uses platform aliases instead of hard-coded template IDs. (#341, #347)
 - CivisML versions and pre-installed packages are documented on Zendesk instead. (#341)
 - Issue a `FutureWarning` on import for Python 2 and 3.4 users. (#333,
