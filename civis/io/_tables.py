@@ -148,7 +148,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -220,7 +220,7 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -369,7 +369,7 @@ def civis_to_csv(filename, sql, database, job_name=None, api_key=None,
     ----------
     filename : str
         Download exported data into this file.
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Export data from this database. Can be the database name or ID.
@@ -479,6 +479,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                            client=None, credential_id=None,
                            include_header=True,
                            compression='none', delimiter='|',
+                           max_file_size=None,
                            unquoted=False, prefix=None,
                            polling_interval=None, hidden=True):
     """Unload the result of SQL query and return presigned urls.
@@ -490,7 +491,7 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
 
     Parameters
     ----------
-    sql : str, optional
+    sql : str
         The SQL select string to be executed.
     database : str or int
         Execute the query against this database. Can be the database name
@@ -516,6 +517,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     delimiter: str, optional
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``'|'``.
+    max_file_size: int, optional
+        Maximum number of Megabytes each created file will be.
     unquoted: bool, optional
         Whether or not to quote fields. Default: ``False``.
     prefix: str, optional
@@ -586,7 +589,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
                         column_delimiter=delimiter,
                         unquoted=unquoted,
                         filename_prefix=prefix,
-                        force_multifile=True)
+                        force_multifile=True,
+                        max_file_size=max_file_size)
     script_id, run_id = _sql_script(client, sql, database, job_name,
                                     credential_id, hidden,
                                     csv_settings=csv_settings)
@@ -999,7 +1003,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     need_table_columns = not table_exists or existing_table_rows == 'drop'
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
-                                     hidden)
+                                     headers, delimiter, hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
      table_columns) = _process_cleaning_results(
@@ -1222,8 +1226,8 @@ def _replace_null_column_names(column_list):
     return new_cols
 
 
-def _run_cleaning(file_ids, client, need_table_columns, hidden,
-                  polling_interval=None):
+def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
+                  hidden, polling_interval=None):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1231,6 +1235,8 @@ def _run_cleaning(file_ids, client, need_table_columns, hidden,
             in_place=False,
             detect_table_columns=need_table_columns,
             force_character_set_conversion=True,
+            include_header=headers,
+            column_delimiter=delimiter,
             hidden=hidden
         )
         cleaning_futures.append(run_job(cleaner_job.id, client=client,
