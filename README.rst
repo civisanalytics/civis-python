@@ -1,5 +1,5 @@
-Civis API Python Client
-=======================
+Civis Platform API Python Client
+================================
 
 |Travis| |PyPI| |PyVersions|
 
@@ -16,7 +16,7 @@ Civis API Python Client
    :alt: Supported python versions for civis-python
 
 **Deprecation Warning:** Civis will no longer support Python 2.7 or
-Python 3.4 as of April 1, 2020. The first Civis API Python Client
+Python 3.4 as of April 1, 2020. The first Civis Platform API Python Client
 release made after that date will remove Python 2 support.
 
 
@@ -25,8 +25,8 @@ Introduction
 
 .. start-include-marker-introductory-paragraph
 
-The Civis API Python client is a Python package that helps analysts and
-developers interact with the Civis Platform. The package includes a set of
+The Civis Platform API Python client is a Python package that helps analysts
+and developers interact with the Civis Platform. The package includes a set of
 tools around common workflows as well as a convenient interface to make
 requests directly to the Civis API.
 
