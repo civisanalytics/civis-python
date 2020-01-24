@@ -126,6 +126,18 @@ def test_docs_from_properties():
     assert sorted(y) == sorted(['    - a : string', '    - b : integer'])
 
 
+def test_deprecated_notice():
+    deprecation_warning = "This endpoint is no longer supported. Please use the following:"
+    notice = deprecated_notice(deprecation_warning)
+
+    assert "Deprecation warning!" in notice
+    assert deprecation_warning in notice
+
+
+def test_deprecated_notice_handles_none():
+    assert _resources.deprecated_notice(None) == ""
+
+
 def test_doc_from_responses():
     responses = OrderedDict([('200', OrderedDict([('description', 'success'), ('schema', OrderedDict([('type', 'array'), ('items', OrderedDict([('type', 'object'), ('properties', OrderedDict([('id', OrderedDict([('description', 'The ID of the credential.'), ('type', 'integer')])), ('name', OrderedDict([('description', 'The name identifying the credential'), ('type', 'string')])), ('type', OrderedDict([('description', "The credential's type."), ('type', 'string')])), ('username', OrderedDict([('description', 'The username for the credential.'), ('type', 'string')])), ('description', OrderedDict([('description', 'A long description of the credential.'), ('type', 'string')])), ('owner', OrderedDict([('description', 'The name of the user who this credential belongs to.'), ('type', 'string')])), ('remoteHostId', OrderedDict([('description', 'The ID of the remote host associated with this credential.'), ('type', 'integer')])), ('remoteHostName', OrderedDict([('description', 'The name of the remote host associated with this credential.'), ('type', 'string')])), ('createdAt', OrderedDict([('description', 'The creation time for this credential.'), ('type', 'string'), ('format', 'time')])), ('updatedAt', OrderedDict([('description', 'The last modification time for this credential.'), ('type', 'string'), ('format', 'time')]))]))]))]))]))])  # noqa: E501
     x = _resources.doc_from_responses(responses)
