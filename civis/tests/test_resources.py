@@ -127,8 +127,8 @@ def test_docs_from_properties():
 
 
 def test_deprecated_notice():
-    deprecation_warning = "This endpoint is no longer supported. Please use the following:"
-    notice = deprecated_notice(deprecation_warning)
+    deprecation_warning = "This endpoint is no longer supported"
+    notice = _resources.deprecated_notice(deprecation_warning)
 
     assert "Deprecation warning!" in notice
     assert deprecation_warning in notice

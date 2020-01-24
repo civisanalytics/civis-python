@@ -421,7 +421,6 @@ def parse_method(verb, operation, path):
     summary = operation["summary"]
     params = operation.get("parameters", [])
     responses = operation["responses"]
-    deprecated = operation.get('deprecated', False)
     deprecation_warning = operation.get("x-deprecation-warning", None)
     if 'deprecated' in summary.lower():
         return None
