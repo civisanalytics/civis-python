@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Fixed
+- Fixed issue where client did not generate functions for deprecated API endpoints. (#353)
 ### Changed
 
 ## 1.12.0 - 2020-01-14
