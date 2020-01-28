@@ -132,6 +132,16 @@ def docs_from_properties(properties, level=0):
     return docs
 
 
+def deprecated_notice(deprecation_warning):
+    """ Return a doc string element for the deprecation notice. The
+    doc string can be an empty string if the warning is None
+    """
+    if deprecation_warning is None:
+        return ""
+
+    return "Deprecation warning!\n------------------\n" + deprecation_warning
+
+
 def doc_from_responses(responses):
     """ Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
@@ -411,13 +421,14 @@ def parse_method(verb, operation, path):
     summary = operation["summary"]
     params = operation.get("parameters", [])
     responses = operation["responses"]
-    deprecated = operation.get('deprecated', False)
-    if 'deprecated' in summary.lower() or deprecated:
+    deprecation_warning = operation.get("x-deprecation-warning", None)
+    if 'deprecated' in summary.lower():
         return None
 
     args, param_doc = parse_params(params, summary, verb)
     response_doc = doc_from_responses(responses)
-    docs = join_doc_elements(param_doc, response_doc)
+    deprecation_notice = deprecated_notice(deprecation_warning)
+    docs = join_doc_elements(deprecation_notice, param_doc, response_doc)
     name = parse_method_name(verb, path)
 
     method = create_method(args, verb, name, path, docs)
