@@ -3,11 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-
 ### Added
+### Fixed
+### Changed
+
+## 1.12.1 - 2020-01-31
 ### Fixed
 - Fixed issue where client did not generate functions for deprecated API endpoints. (#353)
 ### Changed
+- Changed `ServiceClient` to raise `CivisAPIError`. (#355)
 
 ## 1.12.0 - 2020-01-14
 ### Added
