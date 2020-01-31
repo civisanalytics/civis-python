@@ -6,7 +6,6 @@ import re
 
 from jsonref import JsonRef
 import requests
-import six
 
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
