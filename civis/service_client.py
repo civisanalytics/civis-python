@@ -9,7 +9,7 @@ import requests
 import six
 
 from civis import APIClient
-from civis.base import Endpoint, tostr_urljoin
+from civis.base import CivisAPIError, Endpoint, tostr_urljoin
 from civis.compat import lru_cache
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
@@ -58,8 +58,7 @@ class ServiceEndpoint(Endpoint):
                                         params=params, **kwargs)
 
         if not response.ok:
-            six.raise_from(ValueError(response.text),
-                           ValueError)
+            raise CivisAPIError(response)
 
         return response
 
