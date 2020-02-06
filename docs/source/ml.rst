@@ -291,8 +291,8 @@ CivisML Versions
 ----------------
 
 By default, CivisML uses its latest version in production.
-Under special circumstances, if you would like a specific version
-(e.g., an older version),
+If you would like a specific version
+(e.g., for a production pipeline where pinning the CivisML version is desirable),
 :class:`~civis.ml.ModelPipeline` (both its constructor and the class method
 :meth:`civis.ml.ModelPipeline.register_pretrained_model`) has the optional
 parameter ``civisml_version`` that accepts a string, e.g., ``'v2.3'``
