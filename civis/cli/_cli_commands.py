@@ -5,8 +5,10 @@ Additional commands to add to the CLI beyond the OpenAPI spec.
 """
 from __future__ import print_function
 import functools
+import operator
 import os
 import sys
+import time
 
 import click
 import requests
@@ -32,6 +34,7 @@ _CIVIS_ASCII_ART = r"""
  \   \ .'  '---'         '---" '---'
   `---`
 """
+_LOG_POLL_INTERVAL_SEC = 3
 
 
 @click.command('upload')
@@ -154,6 +157,41 @@ def _str_table_result(cols, rows):
         tb_strs.append(" | ".join("{0:>{width}}".format(_v, width=_l)
                                   for _l, _v in zip(max_len, row)))
     return '\n'.join(tb_strs)
+
+
+@click.command('follow-runs-logs')
+@click.argument('id', type=int)
+@click.argument('run_id', type=int)
+def jobs_follow_run_logs(id, run_id):
+    """Output live run logs.
+
+    NOTE: This command could miss some log entries from a currently-running
+    job. It does not re-fetch logs that might have been saved out of order, to
+    preserve the chronological order of the logs and without duplication.
+    """
+    client = civis.APIClient(return_type='raw')
+    seen_max_log_id = None
+    continue_polling = True
+
+    while continue_polling:
+        response = client.jobs.list_runs_logs(id, run_id,
+                                              last_id=seen_max_log_id)
+        if 'civis-max-id' in response.headers:
+            remote_max_log_id = int(response.headers['civis-max-id'])
+        log_finished = response.headers['civis-cache-control'] != 'no-store'
+        logs = response.json()
+        if logs:
+            seen_max_log_id = max(log['id'] for log in logs)
+            logs.sort(key=operator.itemgetter('createdAt'))
+        for log in logs:
+            print(' '.join((log['createdAt'], log['message'])))
+        # if output is a pipe, write the buffered output immediately:
+        sys.stdout.flush()
+        if seen_max_log_id == remote_max_log_id:
+            if log_finished:
+                continue_polling = False
+            else:
+                time.sleep(_LOG_POLL_INTERVAL_SEC)
 
 
 @click.command('download')
