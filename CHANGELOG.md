@@ -7,11 +7,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Changed
 
-## 1.12.1 - 2020-01-31
+## 1.12.1 - 2020-02-10
 ### Fixed
 - Fixed issue where client did not generate functions for deprecated API endpoints. (#353)
 ### Changed
 - Changed `ServiceClient` to raise `CivisAPIError`. (#355)
+- Updated documentation language for CivisML version. (#358)
 
 ## 1.12.0 - 2020-01-14
 ### Added
