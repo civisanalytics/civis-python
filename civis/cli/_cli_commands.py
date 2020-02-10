@@ -34,7 +34,13 @@ _CIVIS_ASCII_ART = r"""
  \   \ .'  '---'         '---" '---'
   `---`
 """
-_LOG_POLL_INTERVAL_SEC = 3
+_FOLLOW_LOG_NOTE = """
+
+    NOTE: This command could miss some log entries from a currently-running
+    job. It does not re-fetch logs that might have been saved out of order, to
+    preserve the chronological order of the logs and without duplication.
+"""
+_FOLLOW_POLL_INTERVAL_SEC = 3
 
 
 @click.command('upload')
@@ -120,7 +126,7 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
     if not sql:
         # If the user didn't enter a query, exit.
         if not quiet:
-            print('Did not receive a SQL query.', file=sys.stderr)
+            print('ERROR: Did not receive a SQL query.', file=sys.stderr)
         return
 
     if not quiet:
@@ -159,16 +165,30 @@ def _str_table_result(cols, rows):
     return '\n'.join(tb_strs)
 
 
-@click.command('follow-runs-logs')
+@click.command(
+    'follow-log',
+    help='Output live log from the most recent job run.' + _FOLLOW_LOG_NOTE)
+@click.argument('id', type=int)
+def jobs_follow_log(id):
+    client = civis.APIClient()
+    runs = client.jobs.list_runs(id, limit=1, order='id', order_dir='desc')
+    if not runs:
+        raise click.ClickException('No runs found for that job ID.')
+    run_id = runs[0].id
+    print('Run ID: ' + str(run_id))
+    _jobs_follow_run_log(id, run_id)
+
+
+@click.command(
+    'follow-run-log',
+    help='Output live run log.' + _FOLLOW_LOG_NOTE)
 @click.argument('id', type=int)
 @click.argument('run_id', type=int)
-def jobs_follow_run_logs(id, run_id):
-    """Output live run logs.
+def jobs_follow_run_log(id, run_id):
+    _jobs_follow_run_log(id, run_id)
 
-    NOTE: This command could miss some log entries from a currently-running
-    job. It does not re-fetch logs that might have been saved out of order, to
-    preserve the chronological order of the logs and without duplication.
-    """
+
+def _jobs_follow_run_log(id, run_id):
     client = civis.APIClient(return_type='raw')
     seen_max_log_id = None
     continue_polling = True
@@ -182,7 +202,7 @@ def jobs_follow_run_logs(id, run_id):
         logs = response.json()
         if logs:
             seen_max_log_id = max(log['id'] for log in logs)
-            logs.sort(key=operator.itemgetter('createdAt'))
+            logs.sort(key=operator.itemgetter('createdAt', 'id'))
         for log in logs:
             print(' '.join((log['createdAt'], log['message'])))
         # if output is a pipe, write the buffered output immediately:
@@ -191,7 +211,7 @@ def jobs_follow_run_logs(id, run_id):
             if log_finished:
                 continue_polling = False
             else:
-                time.sleep(_LOG_POLL_INTERVAL_SEC)
+                time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
 
 
 @click.command('download')
