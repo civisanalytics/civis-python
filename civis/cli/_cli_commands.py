@@ -204,7 +204,7 @@ def _jobs_follow_run_log(id, run_id):
             seen_max_log_id = max(log['id'] for log in logs)
             logs.sort(key=operator.itemgetter('createdAt', 'id'))
         for log in logs:
-            print(' '.join((log['createdAt'], log['message'])))
+            print(' '.join((log['createdAt'], log['message'].rstrip())))
         # if output is a pipe, write the buffered output immediately:
         sys.stdout.flush()
         if seen_max_log_id == remote_max_log_id:
