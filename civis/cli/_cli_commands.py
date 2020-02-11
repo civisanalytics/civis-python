@@ -190,7 +190,7 @@ def jobs_follow_run_log(id, run_id):
 
 def _jobs_follow_run_log(id, run_id):
     client = civis.APIClient(return_type='raw')
-    seen_max_log_id = None
+    seen_max_log_id = 0
     continue_polling = True
 
     while continue_polling:
