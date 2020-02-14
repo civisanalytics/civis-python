@@ -34,12 +34,18 @@ _CIVIS_ASCII_ART = r"""
  \   \ .'  '---'         '---" '---'
   `---`
 """
-_FOLLOW_LOG_NOTE = """
+_FOLLOW_LOG_NOTE = '''
 
-    NOTE: This command could miss some log entries from a currently-running
-    job. It does not re-fetch logs that might have been saved out of order, to
-    preserve the chronological order of the logs and without duplication.
-"""
+Outputs job run logs in the format: "datetime message\\n" where
+datetime is in ISO8601 format, like "2020-02-14T20:28:18.722Z".
+If the job is still running, this command will continue outputting logs
+until the run is done and then exit. If the run is already finished, it
+will output all the logs from that run and then exit.
+
+NOTE: This command could miss some log entries from a currently-running
+job. It does not re-fetch logs that might have been saved out of order, to
+preserve the chronological order of the logs and without duplication.
+'''
 _FOLLOW_POLL_INTERVAL_SEC = 3
 
 
