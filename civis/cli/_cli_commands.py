@@ -198,7 +198,8 @@ def _jobs_follow_run_log(id, run_id):
                                               last_id=seen_max_log_id)
         if 'civis-max-id' in response.headers:
             remote_max_log_id = int(response.headers['civis-max-id'])
-        log_finished = response.headers['civis-cache-control'] != 'no-store'
+        else:
+            remote_max_log_id = None
         logs = response.json()
         if logs:
             seen_max_log_id = max(log['id'] for log in logs)
@@ -207,7 +208,10 @@ def _jobs_follow_run_log(id, run_id):
             print(' '.join((log['createdAt'], log['message'].rstrip())))
         # if output is a pipe, write the buffered output immediately:
         sys.stdout.flush()
-        if seen_max_log_id == remote_max_log_id:
+        log_finished = response.headers['civis-cache-control'] != 'no-store'
+        if remote_max_log_id is None:
+            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
+        elif seen_max_log_id == remote_max_log_id:
             if log_finished:
                 continue_polling = False
             else:
