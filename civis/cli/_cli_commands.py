@@ -196,19 +196,19 @@ def jobs_follow_run_log(id, run_id):
 
 def _jobs_follow_run_log(id, run_id):
     client = civis.APIClient(return_type='raw')
-    seen_max_log_id = 0
+    local_max_log_id = 0
     continue_polling = True
 
     while continue_polling:
         response = client.jobs.list_runs_logs(id, run_id,
-                                              last_id=seen_max_log_id)
+                                              last_id=local_max_log_id)
         if 'civis-max-id' in response.headers:
             remote_max_log_id = int(response.headers['civis-max-id'])
         else:
             remote_max_log_id = None
         logs = response.json()
         if logs:
-            seen_max_log_id = max(log['id'] for log in logs)
+            local_max_log_id = max(log['id'] for log in logs)
             logs.sort(key=operator.itemgetter('createdAt', 'id'))
         for log in logs:
             print(' '.join((log['createdAt'], log['message'].rstrip())))
@@ -217,7 +217,7 @@ def _jobs_follow_run_log(id, run_id):
         log_finished = response.headers['civis-cache-control'] != 'no-store'
         if remote_max_log_id is None:
             time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
-        elif seen_max_log_id == remote_max_log_id:
+        elif local_max_log_id == remote_max_log_id:
             if log_finished:
                 continue_polling = False
             else:
