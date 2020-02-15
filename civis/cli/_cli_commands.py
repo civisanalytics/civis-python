@@ -200,11 +200,15 @@ def _jobs_follow_run_log(id, run_id):
     continue_polling = True
 
     while continue_polling:
+        # This call gets all available log messages since last_id up to
+        # the page size, ordered by log ID. We leave it to Platform to decide
+        # the best page size.
         response = client.jobs.list_runs_logs(id, run_id,
                                               last_id=local_max_log_id)
         if 'civis-max-id' in response.headers:
             remote_max_log_id = int(response.headers['civis-max-id'])
         else:
+            # Platform hasn't seen any logs at all yet
             remote_max_log_id = None
         logs = response.json()
         if logs:
@@ -214,14 +218,19 @@ def _jobs_follow_run_log(id, run_id):
             print(' '.join((log['createdAt'], log['message'].rstrip())))
         # if output is a pipe, write the buffered output immediately:
         sys.stdout.flush()
+
         log_finished = response.headers['civis-cache-control'] != 'no-store'
         if remote_max_log_id is None:
-            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
+            remote_has_more_logs_to_get_now = False
         elif local_max_log_id == remote_max_log_id:
+            remote_has_more_logs_to_get_now = False
             if log_finished:
                 continue_polling = False
-            else:
-                time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
+        else:
+            remote_has_more_logs_to_get_now = True
+
+        if continue_polling and not remote_has_more_logs_to_get_now:
+            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
 
 
 @click.command('download')
