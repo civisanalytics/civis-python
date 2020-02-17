@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands (#359)
 ### Fixed
 ### Changed
 

@@ -215,10 +215,16 @@ Then open ``docs/build/html/index.html``.
 Note that this will use your API key in the ``CIVIS_API_KEY`` environment
 variable so it will generate documentation for all the endpoints that you have access to.
 
+Command-line Interface (CLI)
+----------------------------
+
+After installing the Python package, you'll also have a ``civis`` command accessible from your shell. It surfaces a commandline interface to all of the regular Civis API endpoints, plus a few helpers. To get started, run ``civis``. You can find out more information about a command by adding a ``--help`` option, like ``civis scripts list --help``.
+
+
 Contributing
 ------------
 
-See ``CONTRIBUTING.md`` for information about contributing to this project.
+See `CONTRIBUTING.md <CONTRIBUTING.md>`_ for information about contributing to this project.
 
 
 License
@@ -226,4 +232,4 @@ License
 
 BSD-3
 
-See ``LICENSE.md`` for details.
+See `LICENSE.md <LICENSE.md>`_ for details.
