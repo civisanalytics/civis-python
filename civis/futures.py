@@ -559,13 +559,21 @@ class _ContainerShellExecutor(_CivisExecutor):
         self.docker_image_name = docker_image_name
         self.container_kwargs = kwargs
 
-        params = [{'name': 'CIVIS_PARENT_JOB_ID',
-                   'type': 'integer',
-                   'value': os.getenv('CIVIS_JOB_ID')},
-                  {'name': 'CIVIS_PARENT_RUN_ID',
-                   'type': 'integer',
-                   'value': os.getenv('CIVIS_RUN_ID')}]
-        self.container_kwargs.setdefault('params', []).extend(params)
+        # Add params for parent job info.
+        # Overwrite them if they already exist to avoid duplicates, which would
+        # lead to job failure.
+        params = [p for p in self.container_kwargs.get('params', [])
+                  if p['name'].upper() not in
+                  ('CIVIS_PARENT_JOB_ID', 'CIVIS_PARENT_RUN_ID')]
+        params.extend([
+            {'name': 'CIVIS_PARENT_JOB_ID',
+             'type': 'integer',
+             'value': os.getenv('CIVIS_JOB_ID')},
+            {'name': 'CIVIS_PARENT_RUN_ID',
+             'type': 'integer',
+             'value': os.getenv('CIVIS_RUN_ID')}
+        ])
+        self.container_kwargs['params'] = params
 
         if required_resources is None:
             required_resources = {'cpu': 1024, 'memory': 1024}

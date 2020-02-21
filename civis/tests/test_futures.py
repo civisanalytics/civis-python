@@ -1,6 +1,7 @@
 import os
 import json
 from collections import OrderedDict
+from operator import itemgetter
 
 import pytest
 
@@ -325,24 +326,32 @@ def test_custom_scripts():
         assert args.get(k) == v
 
 
-def test_container_script_param_injection():
+@pytest.mark.parametrize('is_child_job', [False, True])
+def test_container_script_param_injection(is_child_job):
     # Test that child jobs created by the shell executor have the
     # job and run IDs of the script which created them (if any).
     job_id, run_id = '123', '13'
     c = _setup_client_mock(42, 43, n_failures=0)
-    with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': job_id,
-                                        'CIVIS_RUN_ID': run_id}):
-        bpe = _ContainerShellExecutor(client=c, polling_interval=0.01)
+    mock_env = {'CIVIS_JOB_ID': job_id, 'CIVIS_RUN_ID': run_id}
+
+    with mock.patch.dict('os.environ', mock_env):
+        init_kwargs = dict(client=c, polling_interval=0.01)
+        if is_child_job:
+            init_kwargs['params'] = [
+                {'name': 'CIVIS_PARENT_JOB_ID', 'type': 'integer',
+                 'value': '888'},
+                {'name': 'CIVIS_PARENT_RUN_ID', 'type': 'integer',
+                 'value': '999'},
+            ]
+        bpe = _ContainerShellExecutor(**init_kwargs)
         bpe.submit("foo")
 
-    params = c.scripts.post_containers.call_args[1].get('params')
-    assert params is not None
-    assert {'name': 'CIVIS_PARENT_JOB_ID', 'type': 'integer',
-            'value': job_id} in params, \
-        "The creator's job ID wasn't passed to the child."
-    assert {'name': 'CIVIS_PARENT_RUN_ID', 'type': 'integer',
-            'value': run_id} in params, \
-        "The creator's run ID wasn't passed to the child."
+    params = sorted(c.scripts.post_containers.call_args[1].get('params'),
+                    key=itemgetter('name'))
+    assert params == [
+        {'name': 'CIVIS_PARENT_JOB_ID', 'type': 'integer', 'value': job_id},
+        {'name': 'CIVIS_PARENT_RUN_ID', 'type': 'integer', 'value': run_id}
+    ], "The parent job parameters were not set correctly."
 
 
 def test_create_docker_command():
