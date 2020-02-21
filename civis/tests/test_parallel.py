@@ -16,22 +16,38 @@ from civis.futures import ContainerFuture
 from civis.tests import create_client_mock
 
 
+_MOCK_JOB_KWARGS = dict(
+    from_template_id=None,
+    id='42',
+    required_resources={'cpu': 11},
+    docker_image_name='image_name',
+    docker_image_tag='tag',
+    repo_http_uri='cabbage',
+    repo_ref='servant',
+    remote_host_credential_id=171,
+    git_credential_id=213,
+    cancel_timeout=23,
+    time_zone="America/Chicago",
+)
+
+
 @pytest.fixture
 def mock_job():
-    return Response(dict(from_template_id=None,
-                         id='42',
-                         required_resources={'cpu': 11},
-                         params=[{'name': 'spam'}],
-                         arguments={'spam': 'eggs'},
-                         docker_image_name='image_name',
-                         docker_image_tag='tag',
-                         repo_http_uri='cabbage',
-                         repo_ref='servant',
-                         remote_host_credential_id=171,
-                         git_credential_id=213,
-                         cancel_timeout=23,
-                         time_zone="America/Chicago",
-                         ))
+    return Response(dict(
+        params=[{'name': 'spam'}],
+        arguments={'spam': 'eggs'},
+        **_MOCK_JOB_KWARGS))
+
+
+@pytest.fixture
+def mock_child_job():
+    params = [
+        {'name': 'spam'},
+        {'name': 'CIVIS_PARENT_JOB_ID', 'value': '123'},
+        {'name': 'CIVIS_PARENT_RUN_ID', 'value': '456'}
+    ]
+    args = {'spam': 'eggs'}
+    return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
 def test_retries():
@@ -325,6 +341,22 @@ def test_infer_from_custom_job(mock_make_factory, mock_job):
     for key in civis.parallel.KEYS_TO_INFER:
         expected_kwargs[key] = mock_job[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
+
+
+@mock.patch.object(civis.parallel, 'make_backend_factory')
+def test_infer_in_child_job(mock_make_factory, mock_child_job):
+    # Verify that infer_backend_factory doesn't include CIVIS_PARENT_JOB_ID and
+    # CIVIS_PARENT_RUN_ID since those will be automatically added later.
+    mock_client = mock.MagicMock()
+    mock_client.scripts.get_containers.return_value = mock_child_job
+    mock_env = {
+        'CIVIS_JOB_ID': "test_job",
+        'CIVIS_RUN_ID': "test_run"
+    }
+    with mock.patch.dict('os.environ', mock_env):
+        civis.parallel.infer_backend_factory(client=mock_client)
+
+    assert mock_make_factory.call_args[1]['params'] == [{'name': 'spam'}]
 
 
 def make_to_file_mock(result, max_n_err=0, exc=None):
