@@ -1038,7 +1038,8 @@ def civis_file_to_table(file_id, database, table, client=None,
         execution=execution,
         loosen_types=loosen_types,
         table_columns=table_columns,
-        redshift_destination_options=redshift_options
+        redshift_destination_options=redshift_options,
+        hidden=hidden
     )
     fut = run_job(import_job.id, client=client,
                   polling_interval=polling_interval)
