@@ -6,14 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands (#359)
 ### Fixed
+- Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
 ### Changed
 
 ## 1.12.1 - 2020-02-10
 ### Fixed
 - Fixed issue where client did not generate functions for deprecated API endpoints. (#353)
-
-- Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
-
 ### Changed
 - Changed `ServiceClient` to raise `CivisAPIError`. (#355)
 - Updated documentation language for CivisML version. (#358)
