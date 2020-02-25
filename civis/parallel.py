@@ -218,8 +218,13 @@ def infer_backend_factory(required_resources=None,
     for key in KEYS_TO_INFER:
         kwargs.setdefault(key, state[key])
 
+    # Don't include parent job params since they're added automatically
+    # in _ContainerShellExecutor.__init__.
+    filtered_params = [p for p in state.params if p['name'].upper()
+                       not in ('CIVIS_PARENT_JOB_ID', 'CIVIS_PARENT_RUN_ID')]
+
     return make_backend_factory(required_resources=state.required_resources,
-                                params=state.params,
+                                params=filtered_params,
                                 arguments=state.arguments,
                                 client=client,
                                 polling_interval=polling_interval,

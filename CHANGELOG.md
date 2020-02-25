@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands (#359)
 ### Fixed
+- Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
 ### Changed
 
 ## 1.12.1 - 2020-02-10
