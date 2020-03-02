@@ -155,17 +155,18 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
 
 def _str_table_result(cols, rows):
     """Turn a Civis Query result into a readable table."""
+    str_rows = [['NULL' if _v is None else _v for _v in row] for row in rows]
     # Determine the maximum width of each column.
     # First find the width of each element in each row, then find the max
     # width in each position.
     max_len = functools.reduce(
         lambda x, y: [max(z) for z in zip(x, y)],
-        [[len(_v) for _v in _r] for _r in [cols] + rows])
+        [[len(_v) for _v in _r] for _r in [cols] + str_rows])
 
     header_str = " | ".join("{0:<{width}}".format(_v, width=_l)
                             for _l, _v in zip(max_len, cols))
     tb_strs = [header_str, len(header_str) * '-']
-    for row in rows:
+    for row in str_rows:
         tb_strs.append(" | ".join("{0:>{width}}".format(_v, width=_l)
                                   for _l, _v in zip(max_len, row)))
     return '\n'.join(tb_strs)
