@@ -155,7 +155,7 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
 
 def _str_table_result(cols, rows):
     """Turn a Civis Query result into a readable table."""
-    str_rows = [['NULL' if _v is None else _v for _v in row] for row in rows]
+    str_rows = [['' if _v is None else _v for _v in row] for row in rows]
     # Determine the maximum width of each column.
     # First find the width of each element in each row, then find the max
     # width in each position.
