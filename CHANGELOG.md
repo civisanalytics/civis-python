@@ -4,13 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands (#359)
-- Add documentation for follow-log CLI Commands to main docs (#367)
+- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands. (#359)
+- Add documentation for follow-log CLI Commands to main docs. (#367)
 
 ### Fixed
 - Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
-- Fixed crashing on NULL fields in `civis sql` CLI command (#366)
-- Fixed `hidden` parameter not getting used in `civis.io.civis_file_to_table` (#364)
+- Fixed crashing on NULL fields in `civis sql` CLI command. (#366)
+- Fixed `hidden` parameter not getting used in `civis.io.civis_file_to_table`. (#364)
 
 ### Changed
 
