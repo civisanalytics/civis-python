@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
 - Fixed crashing on NULL fields in `civis sql` CLI command (#366)
+- Fixed `hidden` parameter not getting used in `civis.io.civis_file_to_table` (#364)
+
 ### Changed
 
 ## 1.12.1 - 2020-02-10
