@@ -27,6 +27,30 @@ endpoints to make uploading and downloading files easier:
 The default output format is YAML, but the ``--json-output`` allows you to
 get output in JSON.
 
+You can find out more information about a command by adding a ``--help`` option,
+like ``civis scripts list --help``.
+
+Job Logs
+----
+
+These commands show job run logs in the format: "datetime message\\n" where
+datetime is in ISO8601 format, like "2020-02-14T20:28:18.722Z".
+If the job is still running, this command will continue outputting logs
+until the run is done and then exit. If the run is already finished, it
+will output all the logs from that run and then exit.
+
+NOTE: These commands could miss some log entries from a currently-running
+job. It does not re-fetch logs that might have been saved out of order, to
+preserve the chronological order of the logs and without duplication.
+
+- ``civis jobs follow-logs $JOB_ID``
+
+  Output live log from the most recent job run for the given job ID.
+
+- ``civis jobs follow-run-logs $JOB_ID $RUN_ID``
+
+  Output live log from the given job and run ID.
+
 Notebooks
 ---------
 
