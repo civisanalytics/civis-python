@@ -1145,11 +1145,12 @@ class ModelPipeline:
                     verbose=args.get('DEBUG', False))
         klass.train_result_ = fut
 
-        # Set prediction template corresponding to training template
+        # Set prediction template corresponding to training
+        # or registration template
         template_id = int(container['from_template_id'])
         ids = find_one(
             _get_template_ids_all_versions(client).values(),
-            lambda ids: ids['training'] == template_id
+            lambda ids: ids['training'] == template_id or ids['registration'] == template_id  # noqa
         )
         p_id = ids['prediction']
         klass.predict_template_id = p_id
