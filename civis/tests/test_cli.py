@@ -123,7 +123,7 @@ def test_make_operation_name(path, method, resource_name, exp):
 
 def test_str_table_result():
     cols = ['a', 'snake!']
-    rows = [['2', '3'], ['1.1', '3.3']]
+    rows = [['2', '3'], ['1.1', None]]
 
     out = _str_table_result(cols, rows)
-    assert out == "a   | snake!\n------------\n  2 |      3\n1.1 |    3.3"
+    assert out == "a   | snake!\n------------\n  2 |      3\n1.1 |       "
