@@ -831,6 +831,8 @@ class _CivisBackend(ParallelBackendBase):
                                                     **self.executor_kwargs)
 
     def effective_n_jobs(self, n_jobs):
+        if n_jobs is None:
+            n_jobs = 1
         if n_jobs == -1:
             n_jobs = _ALL_JOBS
         if n_jobs <= 0:
