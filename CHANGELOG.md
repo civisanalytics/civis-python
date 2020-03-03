@@ -9,7 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
+- Fixed `effective_n_jobs` to account for `n_jobs=None`, which is a default for the LogisticsRegression in `sklearn=0.22.x`. (#365)
 - Fixed crashing on NULL fields in `civis sql` CLI command (#366)
+
 ### Changed
 
 ## 1.12.1 - 2020-02-10
