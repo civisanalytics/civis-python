@@ -39,7 +39,7 @@ import pytest
 from civis.ml import _model
 
 
-TRAIN_ID_PROD, PREDICT_ID_PROD = 654, 321
+TRAIN_ID_PROD, PREDICT_ID_PROD, REGISTRATION_ID_PROD = 654, 321, 789
 TRAIN_ID_OLD, PREDICT_ID_OLD = 123, 456
 TEST_TEMPLATE_ID_ALIAS_OBJECTS = [
     # Version-less aliases for the latest production code.
@@ -59,8 +59,8 @@ TEST_TEMPLATE_ID_ALIAS_OBJECTS = [
     Response(dict(alias='civis-civisml-registration-dev', object_id=901)),
 ]
 TEST_TEMPLATE_IDS = {  # Must match TEST_TEMPLATE_ID_ALIAS_OBJECTS
-    None: {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': 789},  # noqa
-    'v2.3': {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': 789},  # noqa
+    None: {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': REGISTRATION_ID_PROD},  # noqa
+    'v2.3': {'training': TRAIN_ID_PROD, 'prediction': PREDICT_ID_PROD, 'registration': REGISTRATION_ID_PROD},  # noqa
     'v1.4': {'training': TRAIN_ID_OLD, 'prediction': PREDICT_ID_OLD, 'registration': None},  # noqa
     'dev': {'training': 345, 'prediction': 678, 'registration': 901},
 }
@@ -860,17 +860,20 @@ def test_modelpipeline_classmethod_constructor(mock_future):
                    mock.Mock(return_value=TEST_TEMPLATE_IDS))
 @mock.patch.object(_model, 'ModelFuture')
 def test_modelpipeline_classmethod_constructor_defaults(mock_future):
-    container_response_stub = _container_response_stub(TRAIN_ID_PROD)
-    del container_response_stub.arguments['PARAMS']
-    del container_response_stub.arguments['CVPARAMS']
-    mock_client = mock.Mock()
-    mock_client.scripts.get_containers.return_value = container_response_stub
-    mock_client.credentials.get.return_value = Response({'name': 'Token'})
 
-    # test everything is working fine
-    mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
-    assert mp.cv_params == {}
-    assert mp.parameters == {}
+    # checks that it works with a registration template and train template
+    for template_id in [TRAIN_ID_PROD, REGISTRATION_ID_PROD]:
+        container_response_stub = _container_response_stub(template_id)
+        del container_response_stub.arguments['PARAMS']
+        del container_response_stub.arguments['CVPARAMS']
+        mock_client = mock.Mock()
+        mock_client.scripts.get_containers.return_value = container_response_stub  # noqa
+        mock_client.credentials.get.return_value = Response({'name': 'Token'})
+
+        # test everything is working fine
+        mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
+        assert mp.cv_params == {}
+        assert mp.parameters == {}
 
 
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
