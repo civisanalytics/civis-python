@@ -50,6 +50,7 @@ def main():
         data_files=[(os.path.join('civis', 'tests'),
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
+        long_description_content_type="text/x-rst",
         install_requires=[
             "pyyaml>=3.0,<=5.99 ; python_version != '3.4'",
             "pyyaml>=3.0,<=5.2 ; python_version == '3.4'",

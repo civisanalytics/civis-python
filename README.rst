@@ -173,7 +173,7 @@ The Civis API may also be directly accessed via the ``APIClient`` class.
     client = civis.APIClient()
     database = client.databases.list()
 
-See the `full documentation <https://civis-python.readthedocs.io>`_ for a more
+See the `documentation <https://civis-python.readthedocs.io>`_ for a more
 complete user guide.
 
 
@@ -219,7 +219,7 @@ Command-line Interface (CLI)
 ----------------------------
 
 After installing the Python package, you'll also have a ``civis`` command accessible from your shell. It surfaces a commandline interface to all of the regular Civis API endpoints, plus a few helpers. To get started, run ``civis --help``.
-Please see the `full documentation <https://civis-python.readthedocs.io/en/stable/cli.html>`_ for more details.
+Please see the `CLI documentation <https://civis-python.readthedocs.io/en/stable/cli.html>`_ for more details.
 
 
 Contributing
