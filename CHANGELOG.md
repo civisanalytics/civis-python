@@ -4,11 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands (#359)
-- Add documentation for follow-log CLI Commands to main docs (#367)
+- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands. (#359)
+- Add documentation for follow-log CLI Commands to main docs. (#367)
 
 ### Fixed
 - Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
+- Fixed crashing on NULL fields in `civis sql` CLI command. (#366)
+- Fixed `hidden` parameter not getting used in `civis.io.civis_file_to_table`. (#364)
 - Fixed `effective_n_jobs` to account for `n_jobs=None`, which is a default for the LogisticsRegression in `sklearn=0.22.x`. (#365)
 - Fixed crashing on NULL fields in `civis sql` CLI command (#366)
 - Fixed a bug related to creating a ModelPipeline from a registered model. (#369)
