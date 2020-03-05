@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed `effective_n_jobs` to account for `n_jobs=None`, which is a default for the LogisticsRegression in `sklearn=0.22.x`. (#365)
 - Fixed crashing on NULL fields in `civis sql` CLI command (#366)
 - Fixed a bug related to creating a ModelPipeline from a registered model. (#369)
+- Fixed readme and setup.py to appease twine. (#373)
 
 ### Changed
 - Made repeated invocations of `civis.tests.create_client_mock` faster by caching the real APIClient that the mock spec is based on (#371)
