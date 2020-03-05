@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+### Fixed
+### Changed
+
+## 1.13.0 - 2020-03-05
+### Added
 - Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands. (#359)
 - Add documentation for follow-log CLI Commands to main docs. (#367)
 
