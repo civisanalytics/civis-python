@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed a bug related to creating a ModelPipeline from a registered model. (#369)
 
 ### Changed
+- Made repeated invocations of `civis.tests.create_client_mock` faster by caching the real APIClient that the mock spec is based on (#371)
 
 ## 1.12.1 - 2020-02-10
 ### Fixed
