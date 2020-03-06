@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Changed
 
+## 1.13.1 - 2020-03-06
+### Added
+- Suppressed FutureWarning from sklearn.externals.joblib. (#375)
+
 ## 1.13.0 - 2020-03-05
 ### Added
 - Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands. (#359)
