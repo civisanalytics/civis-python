@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Suppressed FutureWarning from sklearn.externals.joblib 0.22.x. (#375)
+
 ### Fixed
 ### Changed
 

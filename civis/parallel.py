@@ -32,6 +32,8 @@ try:
         # models, you may need to re-serialize those models with
         # scikit-learn 0.21+."
         warnings.simplefilter('ignore', DeprecationWarning)
+        # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
+        warnings.simplefilter('ignore', FutureWarning)
         from sklearn.externals.joblib import (
             register_parallel_backend as _sklearn_reg_para_backend)
         NO_SKLEARN = False
