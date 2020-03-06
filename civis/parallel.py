@@ -36,6 +36,11 @@ try:
         warnings.simplefilter('ignore', FutureWarning)
         from sklearn.externals.joblib import (
             register_parallel_backend as _sklearn_reg_para_backend)
+
+        # NO_SKLEARN_BACKEND would be a better name here since it’ll be true
+        # for future scikit-learn versions that won't include the joblib
+        # module as well as when scikit-learn isn’t installed, but changing
+        # the name would technically be a breaking change.
         NO_SKLEARN = False
 except ImportError:
     NO_SKLEARN = True
