@@ -36,9 +36,9 @@ try:
         from sklearn.externals.joblib import (
             parallel_backend as _sklearn_para_backend)
 
-        # NO_SKLEARN_BACKEND would be a better name here since it’ll be true
+        # NO_SKLEARN_BACKEND would be a better name here since it'll be true
         # for future scikit-learn versions that won't include the joblib
-        # module as well as when scikit-learn isn’t installed, but changing
+        # module as well as when scikit-learn isn't installed, but changing
         # the name would technically be a breaking change.
         NO_SKLEARN = False
 except ImportError:
