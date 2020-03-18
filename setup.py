@@ -54,10 +54,10 @@ def main():
         install_requires=[
             "pyyaml>=3.0,<=5.99 ; python_version != '3.4'",
             "pyyaml>=3.0,<=5.2 ; python_version == '3.4'",
-            'click>=6.0,<=7',
-            'jsonref>=0.1.0,<=0.2',
+            'click>=6.0,<=7.99',
+            'jsonref>=0.1.0,<=0.2.99',
             'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,<=3',
+            'jsonschema>=2.5.1,<=3.99',
             'six>=1.10,<=1.99',
             'joblib>=0.11,<0.15',
             'pubnub>=4.0,<=4.99',

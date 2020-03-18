@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 ### Fixed
+
+- Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
+
 ### Changed
 
 ## 1.13.1 - 2020-03-06
