@@ -7,7 +7,6 @@ deserializes it, calls the callable, serializes the result,
 and uploads the result to another Civis File. The output file's ID
 will be set as an output on this run.
 """
-from __future__ import absolute_import, print_function
 
 from datetime import datetime, timedelta
 from io import BytesIO

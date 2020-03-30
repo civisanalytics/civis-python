@@ -8,7 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
 
-### Changed
+### Removed
+
+- Removed support for Python 2.7 and 3.4. (#378)
 
 ## 1.13.1 - 2020-03-06
 ### Added

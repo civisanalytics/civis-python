@@ -1,10 +1,12 @@
 from builtins import super
 from collections import namedtuple
 from concurrent.futures import CancelledError
-from six import StringIO
+from io import StringIO
 import json
 import os
 import pickle
+from tempfile import TemporaryDirectory
+from unittest import mock
 
 import joblib
 try:
@@ -31,7 +33,6 @@ except ImportError:
 from civis import APIClient
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 from civis.tests import create_client_mock
 import pytest

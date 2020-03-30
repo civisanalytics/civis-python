@@ -1,7 +1,7 @@
 from math import sqrt
 import io
 import pickle
-from civis.compat import mock
+from unittest import mock
 
 import pytest
 from joblib import delayed, Parallel

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import requests
 
 from civis._utils import camel_to_snake
@@ -200,5 +199,3 @@ class PaginatedResponse:
         if self._iter is None:
             self._iter = self._get_iter()
         return next(self._iter)
-
-    next = __next__  # Python 2 compatibility

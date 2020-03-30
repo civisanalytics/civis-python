@@ -2,8 +2,8 @@
 import time
 from concurrent import futures
 import unittest
+from unittest import mock
 
-from civis.compat import mock
 from civis.response import Response
 from civis.polling import PollableResult, _ResultPollingThread
 
@@ -101,7 +101,6 @@ class TestPolling(unittest.TestCase):
         # Check that the _polling_thread is a new thread
         assert pollable._polling_thread != initial_polling_thread
         # Check that the old thread was stopped
-        time.sleep(0.001)  # Needs extra time to shut down in Python 2.7
         assert not initial_polling_thread.is_alive()
 
 

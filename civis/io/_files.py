@@ -8,13 +8,13 @@ from multiprocessing.dummy import Pool
 import os
 import re
 import shutil
-import six
+from tempfile import TemporaryDirectory
+
 import requests
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis.compat import FileNotFoundError, TemporaryDirectory
 from civis._deprecation import deprecate_param
 from civis._utils import BufferedPartialReader, retry
 
@@ -236,7 +236,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     single post.
     """
     if name is None:
-        if isinstance(buf, six.string_types):
+        if isinstance(buf, str):
             name = os.path.basename(buf)
         elif hasattr(buf, 'name'):
             name = buf.name
@@ -247,7 +247,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
             )
             raise TypeError(msg)
 
-    if isinstance(buf, six.string_types):
+    if isinstance(buf, str):
         with open(buf, 'rb') as f:
             return _file_to_civis(
                 f, name, api_key=api_key, client=client, **kwargs)
@@ -258,7 +258,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
             buf.tell() != 0:
         # determine mode for writing
         mode = 'w'
-        if isinstance(buf.read(0), six.binary_type):
+        if isinstance(buf.read(0), bytes):
             mode += 'b'
         with TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
@@ -327,7 +327,7 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     >>> # Note that s could be converted to a string with s.decode('utf-8').
     >>> s = buf.read()
     """
-    if isinstance(buf, six.string_types):
+    if isinstance(buf, str):
         with open(buf, 'wb') as f:
             _civis_to_file(file_id, f, api_key=api_key, client=client)
     else:
@@ -406,8 +406,8 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
         outputs = client.scripts.list_containers_runs_outputs(job_id, run_id)
     except CivisAPIError as err:
         if err.status_code == 404:
-            six.raise_from(IOError('Could not find job/run ID {}/{}'
-                           .format(job_id, run_id)), err)
+            raise IOError('Could not find job/run ID {}/{}'
+                          .format(job_id, run_id)) from err
         else:
             raise
 

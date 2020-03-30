@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from abc import ABCMeta, abstractmethod
 from builtins import super
 from concurrent.futures import Executor
@@ -11,8 +9,6 @@ import os
 import time
 import threading
 import warnings
-
-import six
 
 from civis import APIClient
 from civis.base import CivisAPIError, DONE
@@ -351,8 +347,7 @@ def _create_docker_command(*args, **kwargs):
                      for k, v in sorted(kwargs.items())])
 
 
-@six.add_metaclass(ABCMeta)
-class _CivisExecutor(Executor):
+class _CivisExecutor(Executor, metaclass=ABCMeta):
     def __init__(self,
                  name=None,
                  hidden=True,
@@ -431,7 +426,7 @@ class _CivisExecutor(Executor):
                 raise RuntimeError('cannot schedule new '
                                    'futures after shutdown')
 
-            if isinstance(fn, six.string_types):
+            if isinstance(fn, str):
                 cmd = fn
             else:
                 if fn is None:

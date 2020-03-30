@@ -3,12 +3,13 @@
 import builtins
 from builtins import super
 import collections
+from functools import lru_cache
+import io
 import json
 import logging
 import os
 import re
 import shutil
-import six
 import tempfile
 import threading
 import warnings
@@ -25,7 +26,6 @@ except ImportError:
 from civis import APIClient, find, find_one
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import FileNotFoundError, TemporaryDirectory, lru_cache
 import civis.io as cio
 from civis.futures import ContainerFuture
 from civis.response import Response
@@ -70,7 +70,7 @@ def _block_and_handle_missing(method):
             # We get here if the modeling job failed to produce
             # any output and we don't have metadata.
             if self.exception():
-                six.raise_from(self.exception(), None)
+                raise self.exception() from None
             else:
                 raise
     return wrapper
@@ -95,16 +95,15 @@ def _stash_local_dataframe(df, template_id, client=None):
             # The original exception should tell users if they need
             # to upgrade pandas (an AttributeError)
             # # or if they need to install "feather-format" (ImportError).
-            six.raise_from(ValueError(
+            raise ValueError(
                 'Categorical columns can only be handled with pandas '
-                'version >= 0.20 and `feather-format` installed.'),
-                exc)
+                'version >= 0.20 and `feather-format` installed.') from exc
         return _stash_dataframe_as_csv(df, client)
 
 
 def _stash_dataframe_as_feather(df, client):
     civis_fname = 'modelpipeline_data.feather'
-    with TemporaryDirectory() as tdir:
+    with tempfile.TemporaryDirectory() as tdir:
         path = os.path.join(tdir, civis_fname)
         df.to_feather(path)
         file_id = cio.file_to_civis(path, name=civis_fname, client=client)
@@ -113,10 +112,7 @@ def _stash_dataframe_as_feather(df, client):
 
 def _stash_dataframe_as_csv(df, client):
     civis_fname = 'modelpipeline_data.csv'
-    if six.PY3:
-        txt = six.StringIO()
-    else:
-        txt = six.BytesIO()
+    txt = io.StringIO()
     df.to_csv(txt, encoding='utf-8', index=False)
     txt.flush()
     txt.seek(0)
@@ -153,7 +149,7 @@ def _decode_train_run(train_job_id, train_run_id, client):
             msg = ('Please provide valid train_run_id! Needs to be '
                    'integer corresponding to a training run ID '
                    'or one of "active" or "latest".')
-            six.raise_from(ValueError(msg), exc)
+            raise ValueError(msg) from exc
 
 
 def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
@@ -601,7 +597,7 @@ class ModelFuture(ContainerFuture):
             except CivisAPIError as err:
                 if err.status_code == 404:
                     msg = 'There is no training data stored for this job!'
-                    six.raise_from(ValueError(msg), err)
+                    raise ValueError(msg) from err
                 else:
                     raise
 
@@ -854,7 +850,7 @@ class ModelPipeline:
                  etl=None, civisml_version=None):
         self.model = model
         self._input_model = model  # In case we need to modify the input
-        if isinstance(dependent_variable, six.string_types):
+        if isinstance(dependent_variable, str):
             # Standardize the dependent variable as a list.
             dependent_variable = [dependent_variable]
         self.dependent_variable = dependent_variable
@@ -979,18 +975,18 @@ class ModelPipeline:
         """
         client = client or APIClient()
 
-        if isinstance(dependent_variable, six.string_types):
+        if isinstance(dependent_variable, str):
             dependent_variable = [dependent_variable]
-        if isinstance(features, six.string_types):
+        if isinstance(features, str):
             features = [features]
-        if isinstance(dependencies, six.string_types):
+        if isinstance(dependencies, str):
             dependencies = [dependencies]
         if not model_name:
             model_name = ("Pretrained {} model for "
                           "CivisML".format(model.__class__.__name__))
             model_name = model_name[:255]  # Max size is 255 characters
 
-        if isinstance(model, (int, float, six.string_types)):
+        if isinstance(model, (int, float, str)):
             model_file_id = int(model)
         else:
             try:
@@ -1096,7 +1092,7 @@ class ModelPipeline:
                 msg = ('There is no Civis Platform job with '
                        'script ID {} and run ID {}!'.format(train_job_id,
                                                             train_run_id))
-                six.raise_from(ValueError(msg), api_err)
+                raise ValueError(msg) from api_err
             raise
 
         args = container.arguments
@@ -1541,7 +1537,7 @@ class ModelPipeline:
         if n_jobs:
             predict_args['N_JOBS'] = n_jobs
         if dvs_to_predict:
-            if isinstance(dvs_to_predict, six.string_types):
+            if isinstance(dvs_to_predict, str):
                 dvs_to_predict = [dvs_to_predict]
             if self.predict_template_id > 10583:
                 # This feature was added in v2.2; 10583 is the v2.1 template
