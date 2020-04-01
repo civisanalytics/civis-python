@@ -82,15 +82,18 @@ def main():
 
     # Test modeling.
     logger.info('Testing Civis-ML...')
-    mp = civis.ml.ModelPipeline(
-        model="sparse_logistic",
-        dependent_variable="type",
-        primary_key="index",
-        client=client
-    )
-    result = mp.train(
-        table_name="datascience.iris", database_name=database).result()
-    assert result['state'] == 'succeeded'
+    for civisml_version in (None, 'v2.2'):  # None = latest production version
+        logger.info('CivisML version: %r', civisml_version)
+        mp = civis.ml.ModelPipeline(
+            model="sparse_logistic",
+            dependent_variable="type",
+            primary_key="index",
+            client=client,
+            civisml_version=civisml_version,
+        )
+        result = mp.train(
+            table_name="datascience.iris", database_name=database).result()
+        assert result['state'] == 'succeeded'
 
     logger.info("%.1f seconds elapsed in total.", time.time() - t0)
 

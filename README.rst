@@ -1,5 +1,5 @@
-Civis API Python Client
-=======================
+Civis Platform API Python Client
+================================
 
 |Travis| |PyPI| |PyVersions|
 
@@ -15,14 +15,18 @@ Civis API Python Client
    :target: https://pypi.org/project/civis/
    :alt: Supported python versions for civis-python
 
+**Deprecation Warning:** Civis will no longer support Python 2.7 or
+Python 3.4 as of April 1, 2020. The first Civis Platform API Python Client
+release made after that date will remove Python 2 support.
+
 
 Introduction
 ------------
 
 .. start-include-marker-introductory-paragraph
 
-The Civis API Python client is a Python package that helps analysts and
-developers interact with the Civis Platform. The package includes a set of
+The Civis Platform API Python client is a Python package that helps analysts
+and developers interact with the Civis Platform. The package includes a set of
 tools around common workflows as well as a convenient interface to make
 requests directly to the Civis API.
 
@@ -144,7 +148,7 @@ dependencies with
 Python version support
 ----------------------
 
-Python 2.7, 3.4, 3.5, 3.6, and 3.7
+Python 3.5, 3.6, and 3.7
 
 .. end-include-marker-python-version-support-section
 
@@ -169,7 +173,7 @@ The Civis API may also be directly accessed via the ``APIClient`` class.
     client = civis.APIClient()
     database = client.databases.list()
 
-See the `full documentation <https://civis-python.readthedocs.io>`_ for a more
+See the `documentation <https://civis-python.readthedocs.io>`_ for a more
 complete user guide.
 
 
@@ -211,10 +215,17 @@ Then open ``docs/build/html/index.html``.
 Note that this will use your API key in the ``CIVIS_API_KEY`` environment
 variable so it will generate documentation for all the endpoints that you have access to.
 
+Command-line Interface (CLI)
+----------------------------
+
+After installing the Python package, you'll also have a ``civis`` command accessible from your shell. It surfaces a commandline interface to all of the regular Civis API endpoints, plus a few helpers. To get started, run ``civis --help``.
+Please see the `CLI documentation <https://civis-python.readthedocs.io/en/stable/cli.html>`_ for more details.
+
+
 Contributing
 ------------
 
-See ``CONTRIBUTING.md`` for information about contributing to this project.
+See `CONTRIBUTING.md <CONTRIBUTING.md>`_ for information about contributing to this project.
 
 
 License
@@ -222,4 +233,4 @@ License
 
 BSD-3
 
-See ``LICENSE.md`` for details.
+See `LICENSE.md <LICENSE.md>`_ for details.

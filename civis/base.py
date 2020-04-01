@@ -1,10 +1,8 @@
-from __future__ import absolute_import
 from builtins import super
 import os
 from posixpath import join
 import threading
 from concurrent import futures
-import six
 import warnings
 
 from civis.response import PaginatedResponse, convert_response_data_type
@@ -105,8 +103,7 @@ class Endpoint(object):
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]
-            six.raise_from(CivisAPIKeyError(auth_error),
-                           CivisAPIError(response))
+            raise CivisAPIKeyError(auth_error) from CivisAPIError(response)
 
         if not response.ok:
             raise CivisAPIError(response)

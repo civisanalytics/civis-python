@@ -3,19 +3,73 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+### Fixed
 
+- Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
+
+### Removed
+
+- Removed support for Python 2.7 and 3.4. (#378)
+
+## 1.13.1 - 2020-03-06
+### Added
+- Suppressed FutureWarning from sklearn.externals.joblib. (#375)
+
+## 1.13.0 - 2020-03-05
+### Added
+- Add `civis jobs follow-log` and `civis jobs follow-run-log` CLI commands. (#359)
+- Add documentation for follow-log CLI Commands to main docs. (#367)
+
+### Fixed
+- Fixed a bug related to duplicating parent job parameters when using `civis.parallel.infer_backend_factory`. (#363)
+- Fixed crashing on NULL fields in `civis sql` CLI command. (#366)
+- Fixed `hidden` parameter not getting used in `civis.io.civis_file_to_table`. (#364)
+- Fixed `effective_n_jobs` to account for `n_jobs=None`, which is a default for the LogisticsRegression in `sklearn=0.22.x`. (#365)
+- Fixed crashing on NULL fields in `civis sql` CLI command (#366)
+- Fixed a bug related to creating a ModelPipeline from a registered model. (#369)
+- Fixed readme and setup.py to appease twine. (#373)
+
+### Changed
+- Made repeated invocations of `civis.tests.create_client_mock` faster by caching the real APIClient that the mock spec is based on (#371)
+
+## 1.12.1 - 2020-02-10
+### Fixed
+- Fixed issue where client did not generate functions for deprecated API endpoints. (#353)
+### Changed
+- Changed `ServiceClient` to raise `CivisAPIError`. (#355)
+- Updated documentation language for CivisML version. (#358)
+
+## 1.12.0 - 2020-01-14
 ### Added
 - Added method `get_storage_host_id` to the APIClient
 - Added method `get_storage_host_id` to the APIClient. (#328)
 - Added debug logging to some `civis.io` functions. (#325)
+- Added `ServiceClient` and `ServiceEndpoint` class. (#343)
+- Added new arguments to `civis.io.civis_to_multifile_csv` to expose max_file_size parameter. (#342)
 
 ### Fixed
+- Removed incorrect "optional" marker for the `sql` argument in I/O
+  functions. (#338)
+- Raise a more informative exception when calling `file_to_dataframe`
+  on an expired file. (#337)
+- `ModelPipeline.register_pretrained_model` should persist the user-supplied
+  estimator object indefinitely. (#331)
 - Fixed requirements.txt listing for `cloudpickle` -- `>=0.2`, not `<=0.2`. (#323)
 - Fixed issue in `civis.io.read_civis_sql` when returning data that contains 
   double quotes
+- Fixed issue in `civis.io.read_civis_sql` when returning data that contains
   double quotes. (#328)
+- Fixed issue with pyyaml version for Python 3.4 by requiring pyyaml version <=5.2
 
 ### Changed
+- Updated cloudpickle and joblib dependencies. (#349)
+- CivisML uses platform aliases instead of hard-coded template IDs. (#341, #347)
+- CivisML versions and pre-installed packages are documented on Zendesk instead. (#341)
+- Issue a `FutureWarning` on import for Python 2 and 3.4 users. (#333,
+  #340)
+- Pass `headers` and `delimiter` to Civis API endpoint for cleaning files in `civis.io.civis_file_to_table`. (#334)
+- Issue a `FutureWarning` on import for Python 2 users. (#333)
 - Update the Civis logo in the Sphinx documentation. (#330)
 - Allow the `name` arg to be optional in `civis.io.file_to_civis`. (#324)
 - Refactor `civis.io.civis_file_to_table` to use a new set of Civis API endpoints.

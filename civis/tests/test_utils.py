@@ -1,6 +1,7 @@
+from unittest import mock
+
 from requests import ConnectionError, ConnectTimeout
 
-from civis.compat import mock
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
 

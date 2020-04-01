@@ -2,7 +2,9 @@ from collections import OrderedDict
 import io
 import json
 import os
-from six import StringIO, BytesIO
+from io import StringIO, BytesIO
+from unittest import mock
+from tempfile import TemporaryDirectory
 import zipfile
 
 import pytest
@@ -17,9 +19,8 @@ except ImportError:
 
 import civis
 from civis.io import _files
-from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
-from civis.base import CivisAPIError, CivisImportError
+from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
@@ -244,6 +245,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -253,14 +256,14 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, False, True
+            [mock_file_id], self.mock_client, False, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
+            True,
             False,
-            None
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -268,6 +271,7 @@ class ImportTests(CivisVCRTestCase):
             'name': expected_name,
             'max_errors': None,
             'existing_table_rows': 'truncate',
+            'hidden': True,
             'column_delimiter': 'comma',
             'compression': 'gzip',
             'escaped': False,
@@ -340,6 +344,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -349,14 +355,14 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, True, True
+            [mock_file_id], self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -364,6 +370,7 @@ class ImportTests(CivisVCRTestCase):
             'name': expected_name,
             'max_errors': None,
             'existing_table_rows': 'truncate',
+            'hidden': True,
             'column_delimiter': 'comma',
             'compression': 'gzip',
             'escaped': False,
@@ -437,6 +444,8 @@ class ImportTests(CivisVCRTestCase):
             result = civis.io.civis_file_to_table(
                 mock_file_id, database, table,
                 existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
                 client=self.mock_client
             )
 
@@ -446,15 +455,15 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            mock_file_id, self.mock_client, True, True
+            mock_file_id, self.mock_client, True, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future1,
              mock.sentinel.cleaning_future2],
             self.mock_client,
-            None,
             True,
-            None
+            True,
+            'comma'
         )
 
         expected_name = 'CSV import to scratch.api_client_test_fixture'
@@ -462,6 +471,7 @@ class ImportTests(CivisVCRTestCase):
             'name': expected_name,
             'max_errors': None,
             'existing_table_rows': 'truncate',
+            'hidden': True,
             'column_delimiter': 'comma',
             'compression': 'gzip',
             'escaped': False,
@@ -588,7 +598,7 @@ class ImportTests(CivisVCRTestCase):
             .side_effect = mock_preprocess
 
         res = civis.io._tables._run_cleaning(fids, self.mock_client, True,
-                                             True)
+                                             True, 'comma', True)
 
         # We should have one cleaning job per provided file id
         fid_count = len(fids)
@@ -599,6 +609,8 @@ class ImportTests(CivisVCRTestCase):
                 in_place=False,
                 detect_table_columns=True,
                 force_character_set_conversion=True,
+                include_header=True,
+                column_delimiter='comma',
                 hidden=True)
             for fid in fids
         ))
@@ -755,8 +767,10 @@ class ImportTests(CivisVCRTestCase):
     @mock.patch(api_import_str, return_value=civis_api_spec)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
+        max_file_size = 32
         result = civis.io.civis_to_multifile_csv(
-            sql, database='redshift-general', polling_interval=POLL_INTERVAL)
+            sql, database='redshift-general', polling_interval=POLL_INTERVAL,
+            max_file_size=max_file_size)
         assert set(result.keys()) == {'entries', 'query', 'header',
                                       'delimiter', 'compression', 'unquoted'}
         assert result['query'] == sql
@@ -767,6 +781,8 @@ class ImportTests(CivisVCRTestCase):
         assert result['entries'][0]['url_signed'].startswith('https://civis-'
                                                              'console.s3.'
                                                              'amazonaws.com/')
+        for entry in result['entries']:
+            assert entry['size'] <= max_file_size
 
     @pytest.mark.civis_to_multifile_csv
     @mock.patch('civis.io._tables.CivisFuture')
@@ -902,6 +918,19 @@ def test_file_id_from_run_output_platform_error():
 
 @pytest.mark.file_to_dataframe
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_file_to_dataframe_expired():
+    m_client = mock.Mock()
+    url = None
+    m_client.files.get.return_value = Response({'name': 'spam.csv',
+                                                'file_url': url})
+    expected_err = 'Unable to locate file 121. If it previously ' + \
+        'existed, it may have expired.'
+    with pytest.raises(EmptyResultError, match=expected_err):
+        civis.io.file_to_dataframe(121, client=m_client)
+
+
+@pytest.mark.file_to_dataframe
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
     url = 'url'
@@ -976,26 +1005,22 @@ def test_civis_to_file_local(mock_requests):
 def test_civis_to_file_retries(mock_requests):
     mock_civis = create_client_mock()
 
+    first_try = True
+
     # Mock the request iter_content so it fails partway the first time.
-    # Python 2.7 doesn't have the nonlocal keyword, so here's a little class to
-    # track whether it's the first call.
-    class UnreliableIterContent:
-        def __init__(self):
-            self.first_try = True
+    def mock_iter_content(_):
+        nonlocal first_try
+        chunks = [l.encode() for l in 'abcdef']
+        for i, chunk in enumerate(chunks):
 
-        def mock_iter_content(self, _):
-            chunks = [l.encode() for l in 'abcdef']
-            for i, chunk in enumerate(chunks):
+            # Fail partway through on the first try.
+            if first_try and i == 3:
+                first_try = False
+                raise requests.ConnectionError()
 
-                # Fail partway through on the first try.
-                if self.first_try and i == 3:
-                    self.first_try = False
-                    raise requests.ConnectionError()
+            yield chunk
 
-                yield chunk
-
-    mock_requests.get.return_value.iter_content = \
-        UnreliableIterContent().mock_iter_content
+    mock_requests.get.return_value.iter_content = mock_iter_content
 
     # Add some data to the buffer to test that we seek to the right place
     # when retrying.

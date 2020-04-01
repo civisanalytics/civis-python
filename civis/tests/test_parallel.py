@@ -1,7 +1,7 @@
 from math import sqrt
 import io
 import pickle
-from civis.compat import mock
+from unittest import mock
 
 import pytest
 from joblib import delayed, Parallel
@@ -16,22 +16,38 @@ from civis.futures import ContainerFuture
 from civis.tests import create_client_mock
 
 
+_MOCK_JOB_KWARGS = dict(
+    from_template_id=None,
+    id='42',
+    required_resources={'cpu': 11},
+    docker_image_name='image_name',
+    docker_image_tag='tag',
+    repo_http_uri='cabbage',
+    repo_ref='servant',
+    remote_host_credential_id=171,
+    git_credential_id=213,
+    cancel_timeout=23,
+    time_zone="America/Chicago",
+)
+
+
 @pytest.fixture
 def mock_job():
-    return Response(dict(from_template_id=None,
-                         id='42',
-                         required_resources={'cpu': 11},
-                         params=[{'name': 'spam'}],
-                         arguments={'spam': 'eggs'},
-                         docker_image_name='image_name',
-                         docker_image_tag='tag',
-                         repo_http_uri='cabbage',
-                         repo_ref='servant',
-                         remote_host_credential_id=171,
-                         git_credential_id=213,
-                         cancel_timeout=23,
-                         time_zone="America/Chicago",
-                         ))
+    return Response(dict(
+        params=[{'name': 'spam'}],
+        arguments={'spam': 'eggs'},
+        **_MOCK_JOB_KWARGS))
+
+
+@pytest.fixture
+def mock_child_job():
+    params = [
+        {'name': 'spam'},
+        {'name': 'CIVIS_PARENT_JOB_ID', 'value': '123'},
+        {'name': 'CIVIS_PARENT_RUN_ID', 'value': '456'}
+    ]
+    args = {'spam': 'eggs'}
+    return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
 def test_retries():
@@ -112,7 +128,7 @@ def _test_retries_helper(num_failures, max_submit_retries,
 def test_template_submit(mock_file, mock_result, mock_pool):
     # Verify that creating child jobs from a template looks like we expect
     file_id = 17
-    mock_client = mock.Mock()
+    mock_client = create_client_mock()
     mock_file.return_value = file_id
 
     factory = civis.parallel.make_backend_template_factory(
@@ -184,7 +200,7 @@ def test_default_setup_cmd_with_repo(mock_backend):
 def test_infer_no_job_id_error(mock_make_factory, mock_job):
     # The `infer_backend_factory` should give a RuntimeError
     # if there's no CIVIS_JOB_ID in the environment.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     with mock.patch.dict('os.environ', {}, clear=True):
         with pytest.raises(RuntimeError):
@@ -195,7 +211,7 @@ def test_infer_no_job_id_error(mock_make_factory, mock_job):
 def test_infer(mock_make_factory, mock_job):
     # Verify that `infer_backend_factory` passes through
     # the expected arguments to `make_backend_factory`.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': "test_job",
                                         'CIVIS_RUN_ID': "test_run"}):
@@ -218,7 +234,7 @@ def test_infer(mock_make_factory, mock_job):
 @mock.patch.object(civis.parallel, 'make_backend_factory')
 def test_infer_new_params(mock_make_factory, mock_job):
     # Test overwriting existing job parameters with new parameters
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     new_params = [{'name': 'spam', 'type': 'fun'},
                   {'name': 'foo', 'type': 'bar'}]
@@ -234,7 +250,7 @@ def test_infer_new_params(mock_make_factory, mock_job):
 def test_infer_extra_param(mock_make_factory, mock_job):
     # Test adding a new parameter and keeping
     # the existing parameter unchanged.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     new_params = [{'name': 'foo', 'type': 'bar'}]
     with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': "test_job",
@@ -249,7 +265,7 @@ def test_infer_extra_param(mock_make_factory, mock_job):
 @mock.patch.object(civis.parallel, 'make_backend_factory')
 def test_infer_update_resources(mock_make_factory, mock_job):
     # Verify that users can modify requested resources for jobs.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': "test_job",
                                         'CIVIS_RUN_ID': "test_run"}):
@@ -264,7 +280,7 @@ def test_infer_update_resources(mock_make_factory, mock_job):
 def test_infer_update_args(mock_make_factory, mock_job):
     # Verify that users can modify the existing job's
     # arguments for sub-processes.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_client.scripts.get_containers.return_value = mock_job
     with mock.patch.dict('os.environ', {'CIVIS_JOB_ID': "test_job",
                                         'CIVIS_RUN_ID': "test_run"}):
@@ -280,7 +296,7 @@ def test_infer_from_custom_job(mock_make_factory, mock_job):
     # Test that `infer_backend_factory` can find needed
     # parameters if it's run inside a custom job created
     # from a template.
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
     mock_custom = Response(dict(from_template_id=999, id=42,
                                 required_resources=None,
                                 params=[{'name': 'spam'}],
@@ -325,6 +341,22 @@ def test_infer_from_custom_job(mock_make_factory, mock_job):
     for key in civis.parallel.KEYS_TO_INFER:
         expected_kwargs[key] = mock_job[key]
     mock_make_factory.assert_called_once_with(**expected_kwargs)
+
+
+@mock.patch.object(civis.parallel, 'make_backend_factory')
+def test_infer_in_child_job(mock_make_factory, mock_child_job):
+    # Verify that infer_backend_factory doesn't include CIVIS_PARENT_JOB_ID and
+    # CIVIS_PARENT_RUN_ID since those will be automatically added later.
+    mock_client = create_client_mock()
+    mock_client.scripts.get_containers.return_value = mock_child_job
+    mock_env = {
+        'CIVIS_JOB_ID': "test_job",
+        'CIVIS_RUN_ID': "test_run"
+    }
+    with mock.patch.dict('os.environ', mock_env):
+        civis.parallel.infer_backend_factory(client=mock_client)
+
+    assert mock_make_factory.call_args[1]['params'] == [{'name': 'spam'}]
 
 
 def make_to_file_mock(result, max_n_err=0, exc=None):
@@ -387,7 +419,7 @@ def test_result_exception_no_result():
     # Passing the client mock as an argument instead of globally
     # patching the client tests that the _CivisBackendResult
     # uses the client object on the input CivisFuture.
-    mock_client = mock.MagicMock().APIClient()
+    mock_client = create_client_mock()
     mock_client.scripts.list_containers_runs_outputs.return_value = []
     fut = ContainerFuture(1, 2, client=mock_client)
     fut._set_api_exception(Response({'state': 'failed'}))

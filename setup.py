@@ -6,13 +6,11 @@ from setuptools import find_packages, setup
 
 CLASSIFIERS = [
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3 :: Only',
 ]
 
 
@@ -50,26 +48,17 @@ def main():
         data_files=[(os.path.join('civis', 'tests'),
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
+        long_description_content_type="text/x-rst",
         install_requires=[
             'pyyaml>=3.0,<=5.99',
-            'click>=6.0,<=7',
-            'jsonref>=0.1.0,<=0.2',
+            'click>=6.0,<=7.99',
+            'jsonref>=0.1.0,<=0.2.99',
             'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,<=3',
-            'six>=1.10,<=1.99',
-            'joblib>=0.11,<=0.13.99',
+            'jsonschema>=2.5.1,<=3.99',
+            'joblib>=0.11,<0.15',
             'pubnub>=4.0,<=4.99',
-            "cloudpickle>=0.2.0,<=1.99999 ; python_version != '3.4'",
-            "cloudpickle>=0.2.0,<1.2 ; python_version == '3.4'",
+            'cloudpickle>=0.2.0,<2',
         ],
-        extras_require={
-            ':python_version=="2.7"': [
-                'funcsigs==1.0.2',
-                'future>=0.16,<=0.99',
-                'futures==3.1.1',
-                'functools32>=3.2,<=3.99'
-            ],
-        },
         entry_points={
             'console_scripts': [
                 'civis = civis.cli.__main__:main',

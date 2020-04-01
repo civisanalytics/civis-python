@@ -7,13 +7,13 @@ deserializes it, calls the callable, serializes the result,
 and uploads the result to another Civis File. The output file's ID
 will be set as an output on this run.
 """
-from __future__ import absolute_import, print_function
 
 from datetime import datetime, timedelta
 from io import BytesIO
 import os
 import pickle
 import sys
+import warnings
 
 import civis
 import cloudpickle
@@ -22,9 +22,24 @@ from joblib.format_stack import format_exc
 from joblib import parallel_backend as _joblib_para_backend
 
 try:
-    from sklearn.externals.joblib import (
-        parallel_backend as _sklearn_para_backend)
-    NO_SKLEARN = False
+    with warnings.catch_warnings():
+        # Ignore the warning: "DeprecationWarning: sklearn.externals.joblib is
+        # deprecated in 0.21 and will be removed in 0.23. Please import this
+        # functionality directly from joblib, which can be installed with:
+        # pip install joblib. If this warning is raised when loading pickled
+        # models, you may need to re-serialize those models with
+        # scikit-learn 0.21+."
+        warnings.simplefilter('ignore', DeprecationWarning)
+        # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
+        warnings.simplefilter('ignore', FutureWarning)
+        from sklearn.externals.joblib import (
+            parallel_backend as _sklearn_para_backend)
+
+        # NO_SKLEARN_BACKEND would be a better name here since it'll be true
+        # for future scikit-learn versions that won't include the joblib
+        # module as well as when scikit-learn isn't installed, but changing
+        # the name would technically be a breaking change.
+        NO_SKLEARN = False
 except ImportError:
     NO_SKLEARN = True
 

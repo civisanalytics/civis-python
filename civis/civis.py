@@ -1,9 +1,8 @@
-from __future__ import absolute_import
+from functools import lru_cache
 import logging
 import warnings
 
 import civis
-from civis.compat import lru_cache
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
 from civis._deprecation import deprecate_param

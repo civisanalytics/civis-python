@@ -26,12 +26,11 @@ from jsonref import JsonRef
 import yaml
 from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
-    notebooks_download_cmd, notebooks_new_cmd,
-    notebooks_up, notebooks_down, notebooks_open, sql_cmd)
+    jobs_follow_log, jobs_follow_run_log, notebooks_download_cmd,
+    notebooks_new_cmd, notebooks_up, notebooks_down, notebooks_open, sql_cmd)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
 from civis._utils import open_session
-from civis.compat import FileNotFoundError
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
@@ -224,6 +223,9 @@ def add_extra_commands(cli):
     notebooks_cmd.add_command(notebooks_up)
     notebooks_cmd.add_command(notebooks_down)
     notebooks_cmd.add_command(notebooks_open)
+    jobs_cmd = cli.commands['jobs']
+    jobs_cmd.add_command(jobs_follow_log)
+    jobs_cmd.add_command(jobs_follow_run_log)
     cli.add_command(civis_ascii_art)
 
     cli.add_command(sql_cmd)

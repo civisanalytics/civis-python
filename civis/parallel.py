@@ -1,6 +1,5 @@
 """Parallel computations using the Civis Platform infrastructure
 """
-from __future__ import absolute_import
 
 from concurrent.futures import wait
 from datetime import datetime, timedelta
@@ -8,8 +7,10 @@ from io import BytesIO
 import logging
 import os
 import pickle
+from tempfile import TemporaryDirectory
 import time
 import warnings
+
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
@@ -20,7 +21,6 @@ import requests
 import civis
 from civis.base import CivisAPIError
 
-from civis.compat import TemporaryDirectory
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
 try:
@@ -32,8 +32,15 @@ try:
         # models, you may need to re-serialize those models with
         # scikit-learn 0.21+."
         warnings.simplefilter('ignore', DeprecationWarning)
+        # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
+        warnings.simplefilter('ignore', FutureWarning)
         from sklearn.externals.joblib import (
             register_parallel_backend as _sklearn_reg_para_backend)
+
+        # NO_SKLEARN_BACKEND would be a better name here since it'll be true
+        # for future scikit-learn versions that won't include the joblib
+        # module as well as when scikit-learn isn't installed, but changing
+        # the name would technically be a breaking change.
         NO_SKLEARN = False
 except ImportError:
     NO_SKLEARN = True
@@ -218,8 +225,13 @@ def infer_backend_factory(required_resources=None,
     for key in KEYS_TO_INFER:
         kwargs.setdefault(key, state[key])
 
+    # Don't include parent job params since they're added automatically
+    # in _ContainerShellExecutor.__init__.
+    filtered_params = [p for p in state.params if p['name'].upper()
+                       not in ('CIVIS_PARENT_JOB_ID', 'CIVIS_PARENT_RUN_ID')]
+
     return make_backend_factory(required_resources=state.required_resources,
-                                params=state.params,
+                                params=filtered_params,
                                 arguments=state.arguments,
                                 client=client,
                                 polling_interval=polling_interval,
@@ -319,7 +331,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     Examples
     --------
     >>> # Without joblib:
-    >>> from __future__ import print_function
     >>> from math import sqrt
     >>> print([sqrt(i ** 2) for i in range(10)])
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
@@ -826,6 +837,8 @@ class _CivisBackend(ParallelBackendBase):
                                                     **self.executor_kwargs)
 
     def effective_n_jobs(self, n_jobs):
+        if n_jobs is None:
+            n_jobs = 1
         if n_jobs == -1:
             n_jobs = _ALL_JOBS
         if n_jobs <= 0:

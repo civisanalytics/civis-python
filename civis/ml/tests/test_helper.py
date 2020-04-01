@@ -1,11 +1,13 @@
+from unittest import mock
+
 import pytest
 
-from civis.compat import mock
 from civis.response import Response
 from civis.ml import (list_models, put_models_shares_groups,
                       put_models_shares_users, delete_models_shares_groups,
                       delete_models_shares_users)
 from civis.ml import _helper as helper
+from civis.ml.tests import test_model
 from civis.tests.mocks import create_client_mock
 
 
@@ -17,6 +19,7 @@ def test_list_models_bad_job_type():
 def test_list_models():
     resp = [Response({'id': 2834, 'name': 'RFC model'})]
     m_client = create_client_mock()
+    m_client.aliases.list.return_value = test_model.TEST_TEMPLATE_ID_ALIAS_OBJECTS  # noqa
     m_client.scripts.list_custom.return_value = resp
     out = list_models(job_type='train', client=m_client)
     assert out == resp

@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from functools import lru_cache
 import json
 import os
 import re
@@ -10,10 +11,8 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
-import six
 
 from civis.base import Endpoint, get_base_url
-from civis.compat import lru_cache
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
                           open_session, get_api_key)
@@ -132,6 +131,16 @@ def docs_from_properties(properties, level=0):
     return docs
 
 
+def deprecated_notice(deprecation_warning):
+    """ Return a doc string element for the deprecation notice. The
+    doc string can be an empty string if the warning is None
+    """
+    if deprecation_warning is None:
+        return ""
+
+    return "Deprecation warning!\n------------------\n" + deprecation_warning
+
+
 def doc_from_responses(responses):
     """ Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
@@ -205,11 +214,7 @@ def create_signature(args, optional_args):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    if six.PY3:
-        opt_par_type = Parameter.KEYWORD_ONLY
-    else:
-        opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
-    p += [Parameter(x, opt_par_type, default='DEFAULT')
+    p += [Parameter(x, Parameter.KEYWORD_ONLY, default='DEFAULT')
           for x in optional_args]
     return Signature(p)
 
@@ -409,15 +414,16 @@ def parse_method_name(verb, path):
 def parse_method(verb, operation, path):
     """ Generate a python function from a specification of that function."""
     summary = operation["summary"]
-    params = operation["parameters"]
+    params = operation.get("parameters", [])
     responses = operation["responses"]
-    deprecated = operation.get('deprecated', False)
-    if 'deprecated' in summary.lower() or deprecated:
+    deprecation_warning = operation.get("x-deprecation-warning", None)
+    if 'deprecated' in summary.lower():
         return None
 
     args, param_doc = parse_params(params, summary, verb)
     response_doc = doc_from_responses(responses)
-    docs = join_doc_elements(param_doc, response_doc)
+    deprecation_notice = deprecated_notice(deprecation_warning)
+    docs = join_doc_elements(deprecation_notice, param_doc, response_doc)
     name = parse_method_name(verb, path)
 
     method = create_method(args, verb, name, path, docs)

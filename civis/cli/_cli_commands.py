@@ -5,8 +5,10 @@ Additional commands to add to the CLI beyond the OpenAPI spec.
 """
 from __future__ import print_function
 import functools
+import operator
 import os
 import sys
+import time
 
 import click
 import requests
@@ -32,6 +34,19 @@ _CIVIS_ASCII_ART = r"""
  \   \ .'  '---'         '---" '---'
   `---`
 """
+_FOLLOW_LOG_NOTE = '''
+
+Outputs job run logs in the format: "datetime message\\n" where
+datetime is in ISO8601 format, like "2020-02-14T20:28:18.722Z".
+If the job is still running, this command will continue outputting logs
+until the run is done and then exit. If the run is already finished, it
+will output all the logs from that run and then exit.
+
+NOTE: This command could miss some log entries from a currently-running
+job. It does not re-fetch logs that might have been saved out of order, to
+preserve the chronological order of the logs and without duplication.
+'''
+_FOLLOW_POLL_INTERVAL_SEC = 3
 
 
 @click.command('upload')
@@ -117,7 +132,7 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
     if not sql:
         # If the user didn't enter a query, exit.
         if not quiet:
-            print('Did not receive a SQL query.', file=sys.stderr)
+            print('ERROR: Did not receive a SQL query.', file=sys.stderr)
         return
 
     if not quiet:
@@ -140,20 +155,83 @@ def sql_cmd(dbname, command, filename, output, quiet, n):
 
 def _str_table_result(cols, rows):
     """Turn a Civis Query result into a readable table."""
+    str_rows = [['' if _v is None else _v for _v in row] for row in rows]
     # Determine the maximum width of each column.
     # First find the width of each element in each row, then find the max
     # width in each position.
     max_len = functools.reduce(
         lambda x, y: [max(z) for z in zip(x, y)],
-        [[len(_v) for _v in _r] for _r in [cols] + rows])
+        [[len(_v) for _v in _r] for _r in [cols] + str_rows])
 
     header_str = " | ".join("{0:<{width}}".format(_v, width=_l)
                             for _l, _v in zip(max_len, cols))
     tb_strs = [header_str, len(header_str) * '-']
-    for row in rows:
+    for row in str_rows:
         tb_strs.append(" | ".join("{0:>{width}}".format(_v, width=_l)
                                   for _l, _v in zip(max_len, row)))
     return '\n'.join(tb_strs)
+
+
+@click.command(
+    'follow-log',
+    help='Output live log from the most recent job run.' + _FOLLOW_LOG_NOTE)
+@click.argument('id', type=int)
+def jobs_follow_log(id):
+    client = civis.APIClient()
+    runs = client.jobs.list_runs(id, limit=1, order='id', order_dir='desc')
+    if not runs:
+        raise click.ClickException('No runs found for that job ID.')
+    run_id = runs[0].id
+    print('Run ID: ' + str(run_id))
+    _jobs_follow_run_log(id, run_id)
+
+
+@click.command(
+    'follow-run-log',
+    help='Output live run log.' + _FOLLOW_LOG_NOTE)
+@click.argument('id', type=int)
+@click.argument('run_id', type=int)
+def jobs_follow_run_log(id, run_id):
+    _jobs_follow_run_log(id, run_id)
+
+
+def _jobs_follow_run_log(id, run_id):
+    client = civis.APIClient(return_type='raw')
+    local_max_log_id = 0
+    continue_polling = True
+
+    while continue_polling:
+        # This call gets all available log messages since last_id up to
+        # the page size, ordered by log ID. We leave it to Platform to decide
+        # the best page size.
+        response = client.jobs.list_runs_logs(id, run_id,
+                                              last_id=local_max_log_id)
+        if 'civis-max-id' in response.headers:
+            remote_max_log_id = int(response.headers['civis-max-id'])
+        else:
+            # Platform hasn't seen any logs at all yet
+            remote_max_log_id = None
+        logs = response.json()
+        if logs:
+            local_max_log_id = max(log['id'] for log in logs)
+            logs.sort(key=operator.itemgetter('createdAt', 'id'))
+        for log in logs:
+            print(' '.join((log['createdAt'], log['message'].rstrip())))
+        # if output is a pipe, write the buffered output immediately:
+        sys.stdout.flush()
+
+        log_finished = response.headers['civis-cache-control'] != 'no-store'
+        if remote_max_log_id is None:
+            remote_has_more_logs_to_get_now = False
+        elif local_max_log_id == remote_max_log_id:
+            remote_has_more_logs_to_get_now = False
+            if log_finished:
+                continue_polling = False
+        else:
+            remote_has_more_logs_to_get_now = True
+
+        if continue_polling and not remote_has_more_logs_to_get_now:
+            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
 
 
 @click.command('download')

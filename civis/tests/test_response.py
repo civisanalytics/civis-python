@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 
 import requests
@@ -8,7 +10,6 @@ try:
 except ImportError:
     has_pandas = False
 
-from civis.compat import mock
 from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
     convert_response_data_type, Response
