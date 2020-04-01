@@ -2,7 +2,9 @@ from collections import OrderedDict
 import io
 import json
 import os
-from six import StringIO, BytesIO
+from io import StringIO, BytesIO
+from unittest import mock
+from tempfile import TemporaryDirectory
 import zipfile
 
 import pytest
@@ -17,7 +19,6 @@ except ImportError:
 
 import civis
 from civis.io import _files
-from civis.compat import mock, FileNotFoundError, TemporaryDirectory
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.resources._resources import get_api_spec, generate_classes
@@ -1004,26 +1005,22 @@ def test_civis_to_file_local(mock_requests):
 def test_civis_to_file_retries(mock_requests):
     mock_civis = create_client_mock()
 
+    first_try = True
+
     # Mock the request iter_content so it fails partway the first time.
-    # Python 2.7 doesn't have the nonlocal keyword, so here's a little class to
-    # track whether it's the first call.
-    class UnreliableIterContent:
-        def __init__(self):
-            self.first_try = True
+    def mock_iter_content(_):
+        nonlocal first_try
+        chunks = [l.encode() for l in 'abcdef']
+        for i, chunk in enumerate(chunks):
 
-        def mock_iter_content(self, _):
-            chunks = [l.encode() for l in 'abcdef']
-            for i, chunk in enumerate(chunks):
+            # Fail partway through on the first try.
+            if first_try and i == 3:
+                first_try = False
+                raise requests.ConnectionError()
 
-                # Fail partway through on the first try.
-                if self.first_try and i == 3:
-                    self.first_try = False
-                    raise requests.ConnectionError()
+            yield chunk
 
-                yield chunk
-
-    mock_requests.get.return_value.iter_content = \
-        UnreliableIterContent().mock_iter_content
+    mock_requests.get.return_value.iter_content = mock_iter_content
 
     # Add some data to the buffer to test that we seek to the right place
     # when retrying.

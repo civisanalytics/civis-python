@@ -1,6 +1,5 @@
-from __future__ import absolute_import
-
 from collections import OrderedDict
+from functools import lru_cache
 import json
 import re
 
@@ -9,7 +8,6 @@ import requests
 
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
-from civis.compat import lru_cache
 from civis.resources._resources import parse_method
 from civis._utils import to_camelcase
 

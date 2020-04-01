@@ -2,12 +2,12 @@ import os
 import json
 from collections import OrderedDict
 from operator import itemgetter
+from unittest import mock
 
 import pytest
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.compat import mock
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,

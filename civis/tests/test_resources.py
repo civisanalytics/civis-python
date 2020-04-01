@@ -1,19 +1,16 @@
 from collections import defaultdict, OrderedDict
 import json
 import pytest
-import six
+from unittest import mock
 
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
-from civis.compat import mock
 from civis.resources import _resources
 from civis.tests import TEST_SPEC
 
 with open(TEST_SPEC) as f:
     civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
-
-MOCKED_OPEN = 'builtins.open' if six.PY3 else '__builtin__.open'
 
 
 RESPONSE_DOC = (
@@ -260,12 +257,8 @@ def test_create_method_unexpected_kwargs():
         'get', '/objects', {"foo": 0, "bar": 0}, {}, iterator=False)
 
     # Method raises TypeError with unexpected kwarg
-    if six.PY3:
-        expected_msg = ("mock_name() got an unexpected keyword argument(s) "
-                        "{'baz'}")
-    else:
-        expected_msg = ("mock_name() got an unexpected keyword argument(s) "
-                        "set(['baz'])")
+    expected_msg = ("mock_name() got an unexpected keyword argument(s) "
+                    "{'baz'}")
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, foo=0, bar=0, baz=0)
     assert str(excinfo.value) == expected_msg
@@ -289,8 +282,6 @@ def test_create_method_multiple_values():
     assert str(excinfo.value) == "multiple values for argument 'foo'"
 
 
-@pytest.mark.skipif(six.PY2, reason='Keyword-only parameters are '
-                                    'not in Python 2')
 def test_create_method_keyword_only():
     # Verify that optional arguments are keyword-only
     # (This language feature is only present in Python 3)
@@ -301,7 +292,7 @@ def test_create_method_keyword_only():
     assert str(excinfo.value) == "too many positional arguments"
 
 
-@mock.patch(MOCKED_OPEN, new_callable=mock.mock_open,
+@mock.patch('builtins.open', new_callable=mock.mock_open,
             read_data='{"test": true}')
 @mock.patch('civis.resources._resources.generate_classes', autospec=True)
 @mock.patch('civis.resources._resources.parse_api_spec', autospec=True)

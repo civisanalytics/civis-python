@@ -1,7 +1,6 @@
 from functools import wraps
+from inspect import signature
 import warnings
-
-from .compat import signature
 
 
 def deprecate_param(version_removed, parameter_name, *additional_names):
@@ -14,10 +13,6 @@ def deprecate_param(version_removed, parameter_name, *additional_names):
     wrapped function's signature so that it catches both keyword
     and positional argument use. The default value of the parameter
     will not be affected.
-
-    Warning: This decorator can only be used multiple times in Python v3.
-    Use one call to the decorator with multiple parameter names instead
-    of multiple decorators for Python v2.7 compatibility.
 
     Parameters
     ----------

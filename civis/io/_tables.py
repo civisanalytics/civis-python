@@ -5,8 +5,8 @@ from os import path
 import io
 import logging
 import os
-import six
 import shutil
+from tempfile import TemporaryDirectory
 import warnings
 import zlib
 
@@ -16,7 +16,6 @@ import zipfile
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError, CivisImportError
-from civis.compat import TemporaryDirectory
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis, query_civis
 from civis.utils import run_job
@@ -1189,7 +1188,7 @@ def split_schema_tablename(table):
         If the input ``table`` is not separable into a schema and
         table name.
     """
-    reader = csv.reader(StringIO(six.text_type(table)),
+    reader = csv.reader(StringIO(str(table)),
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')

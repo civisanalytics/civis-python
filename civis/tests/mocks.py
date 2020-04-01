@@ -1,9 +1,10 @@
 """Mock client creation and tooling
 """
+from functools import lru_cache
 import os
+from unittest import mock
 
 from civis import APIClient
-from civis.compat import lru_cache, mock
 
 
 TEST_SPEC = os.path.join(os.path.dirname(os.path.realpath(__file__)),

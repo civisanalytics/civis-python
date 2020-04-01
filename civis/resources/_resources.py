@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from functools import lru_cache
 import json
 import os
 import re
@@ -10,10 +11,8 @@ except ImportError:
 
 from jsonref import JsonRef
 import requests
-import six
 
 from civis.base import Endpoint, get_base_url
-from civis.compat import lru_cache
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
                           open_session, get_api_key)
@@ -215,11 +214,7 @@ def create_signature(args, optional_args):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    if six.PY3:
-        opt_par_type = Parameter.KEYWORD_ONLY
-    else:
-        opt_par_type = Parameter.POSITIONAL_OR_KEYWORD
-    p += [Parameter(x, opt_par_type, default='DEFAULT')
+    p += [Parameter(x, Parameter.KEYWORD_ONLY, default='DEFAULT')
           for x in optional_args]
     return Signature(p)
 

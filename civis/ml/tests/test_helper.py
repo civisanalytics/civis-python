@@ -1,6 +1,7 @@
+from unittest import mock
+
 import pytest
 
-from civis.compat import mock
 from civis.response import Response
 from civis.ml import (list_models, put_models_shares_groups,
                       put_models_shares_users, delete_models_shares_groups,

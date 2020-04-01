@@ -1,6 +1,5 @@
 """Parallel computations using the Civis Platform infrastructure
 """
-from __future__ import absolute_import
 
 from concurrent.futures import wait
 from datetime import datetime, timedelta
@@ -8,8 +7,10 @@ from io import BytesIO
 import logging
 import os
 import pickle
+from tempfile import TemporaryDirectory
 import time
 import warnings
+
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
@@ -20,7 +21,6 @@ import requests
 import civis
 from civis.base import CivisAPIError
 
-from civis.compat import TemporaryDirectory
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
 try:
@@ -331,7 +331,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     Examples
     --------
     >>> # Without joblib:
-    >>> from __future__ import print_function
     >>> from math import sqrt
     >>> print([sqrt(i ** 2) for i in range(10)])
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]

@@ -1,9 +1,9 @@
 from collections import OrderedDict
 import json
+from unittest import mock
 
 from civis import response
 from civis.base import CivisAPIError
-from civis.compat import mock
 from civis.service_client import ServiceClient, ServiceEndpoint, _get_service
 import pytest
 

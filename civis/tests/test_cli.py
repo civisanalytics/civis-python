@@ -1,12 +1,12 @@
 from collections import OrderedDict
 import json
 import os
+from unittest import mock
 
 import pytest
 
 from civis.cli.__main__ import generate_cli, invoke, make_operation_name
 from civis.cli._cli_commands import _str_table_result
-from civis.compat import mock
 from civis.tests import TEST_SPEC
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
