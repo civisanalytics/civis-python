@@ -461,8 +461,8 @@ class ImportTests(CivisVCRTestCase):
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            False,
             True,
+            False,
             'comma'
         )
 
