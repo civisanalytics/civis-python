@@ -1024,11 +1024,11 @@ def civis_file_to_table(file_id, database, table, client=None,
                                      headers, delimiter, hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
-     cleaning_table_columns) = _process_cleaning_results(
+     cleaned_table_columns) = _process_cleaning_results(
         cleaning_futures, client, headers, need_table_columns, delimiter
     )
 
-    table_columns = table_columns or cleaning_table_columns
+    table_columns = table_columns or cleaned_table_columns
 
     source = dict(file_ids=cleaned_file_ids)
     destination = dict(schema=schema, table=table, remote_host_id=db_id,
