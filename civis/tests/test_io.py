@@ -456,13 +456,13 @@ class ImportTests(CivisVCRTestCase):
                                               polling_interval=None)
 
         m_run_cleaning.assert_called_once_with(
-            [mock_file_id], self.mock_client, True, False, 'comma', True
+            [mock_file_id], self.mock_client, False, True, 'comma', True
         )
         m_process_cleaning_results.assert_called_once_with(
             [mock.sentinel.cleaning_future],
             self.mock_client,
-            True,
             False,
+            True,
             'comma'
         )
 
