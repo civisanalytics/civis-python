@@ -1016,10 +1016,9 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    if not table_columns:
-        need_table_columns = not table_exists or existing_table_rows == 'drop'
-    else:
-        need_table_columns = False
+    need_table_columns = (table_columns is None
+                          or not table_exists
+                          or existing_table_rows == 'drop')
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
@@ -1029,8 +1028,7 @@ def civis_file_to_table(file_id, database, table, client=None,
         cleaning_futures, client, headers, need_table_columns, delimiter
     )
 
-    if not table_columns:
-        table_columns = cleaning_table_columns
+    table_columns = table_columns or cleaning_table_columns
 
     source = dict(file_ids=cleaned_file_ids)
     destination = dict(schema=schema, table=table, remote_host_id=db_id,
