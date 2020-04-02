@@ -1016,9 +1016,8 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    need_table_columns = (table_columns is None
-                          or not table_exists
-                          or existing_table_rows == 'drop')
+    need_table_columns = ((not table_exists or existing_table_rows == 'drop')
+                          and table_columns is None)
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
