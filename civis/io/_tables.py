@@ -662,9 +662,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An list of dictionaries corresponding to the columns in
+        A list of dictionaries corresponding to the columns in
         the source file. Each dictionary should have keys
-        for column "name" and "sqlType"
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -803,9 +804,10 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An list of dictionaries corresponding to the columns in
+        A list of dictionaries corresponding to the columns in
         the source file. Each dictionary should have keys
-        for column "name" and "sqlType"
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
     headers : bool, optional
@@ -932,9 +934,10 @@ def civis_file_to_table(file_id, database, table, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An list of dictionaries corresponding to the columns in
+        A list of dictionaries corresponding to the columns in
         the source file. Each dictionary should have keys
-        for column "name" and "sqlType"
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
         uniquely identify a record. If existing_table_rows is "upsert", this
