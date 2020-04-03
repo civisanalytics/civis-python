@@ -1002,7 +1002,8 @@ def civis_file_to_table(file_id, database, table, client=None,
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     if table_columns is not None and not isinstance(table_columns, list):
-        raise ValueError("Provide table_columns as a list of dictionaries with keys of `name` and `sqlType`.")
+        raise ValueError("Provide table_columns as a list of dictionaries"
+                         " with keys of `name` and `sqlType`.")
     db_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     if delimiter is not None:  # i.e. it was provided as an argument
