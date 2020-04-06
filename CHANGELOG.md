@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added `table_columns` parameter to `civis.io.civis_file_to_table`, `civis.io.dataframe_to_civis`, and `civis.io.csv_to_civis` (#379)
+
 ### Fixed
 
 - Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
