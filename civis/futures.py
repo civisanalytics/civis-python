@@ -221,6 +221,12 @@ class CivisFuture(PollableResult):
             except Exception as e:
                 self._set_api_exception(exc=e)
 
+    def outputs(self):
+        """Block on job completion and return a list of run outputs."""
+        self.result()
+        outputs = self.client.jobs.list_runs_outputs(self.job_id, self.run_id)
+        return outputs
+
 
 class ContainerFuture(CivisFuture):
     """Encapsulates asynchronous execution of a Civis Container Script

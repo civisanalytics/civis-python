@@ -183,6 +183,20 @@ class CivisFutureTests(CivisVCRTestCase):
         assert result._state == 'FINISHED'
         with pytest.raises(CivisJobFailure):
             result.result()
+        with pytest.raises(CivisJobFailure):
+            result.outputs()
+
+    def test_outputs_succeeded(self):
+        poller = mock.Mock()
+        api_result = mock.Mock()
+        api_result.state = 'succeeded'
+        mock_client = create_client_mock()
+        expected_return = [{'test': 'test_result'}]
+        mock_client.jobs.list_runs_outputs.return_value = expected_return
+
+        result = CivisFuture(poller, (1, 2), client=mock_client)
+        result._set_api_result(api_result)
+        assert result.outputs() == expected_return
 
     @mock.patch(api_import_str, return_value=civis_api_spec_channels)
     @mock.patch.object(CivisFuture, '_subscribe')

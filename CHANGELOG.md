@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added `.outputs` method to retrieve outputs from `CivisFuture`
+  objects. (#381)
+
 ### Fixed
 
 - Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
