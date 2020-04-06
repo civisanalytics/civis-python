@@ -617,6 +617,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
+                       table_columns=None,
                        headers=None, credential_id=None,
                        primary_keys=None, last_modified_keys=None,
                        execution="immediate",
@@ -660,6 +661,11 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
+    table_columns : list[Dict[str, str]], optional
+        A list of dictionaries corresponding to the columns in
+        the source file. Each dictionary should have keys
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -740,6 +746,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
                               existing_table_rows=existing_table_rows,
                               diststyle=diststyle, distkey=distkey,
                               sortkey1=sortkey1, sortkey2=sortkey2,
+                              table_columns=table_columns,
                               delimiter=delimiter, headers=headers,
                               credential_id=credential_id,
                               primary_keys=primary_keys,
@@ -756,6 +763,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                  max_errors=None, existing_table_rows="fail",
                  diststyle=None, distkey=None,
                  sortkey1=None, sortkey2=None,
+                 table_columns=None,
                  delimiter=",", headers=None,
                  primary_keys=None, last_modified_keys=None,
                  escaped=False, execution="immediate",
@@ -795,6 +803,11 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
+    table_columns : list[Dict[str, str]], optional
+        A list of dictionaries corresponding to the columns in
+        the source file. Each dictionary should have keys
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
     headers : bool, optional
@@ -863,6 +876,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
                                   existing_table_rows=existing_table_rows,
                                   diststyle=diststyle, distkey=distkey,
                                   sortkey1=sortkey1, sortkey2=sortkey2,
+                                  table_columns=table_columns,
                                   delimiter=delimiter, headers=headers,
                                   credential_id=credential_id,
                                   primary_keys=primary_keys,
@@ -878,6 +892,7 @@ def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
                         sortkey1=None, sortkey2=None,
+                        table_columns=None,
                         primary_keys=None, last_modified_keys=None,
                         escaped=False, execution="immediate",
                         delimiter=None, headers=None,
@@ -918,6 +933,11 @@ def civis_file_to_table(file_id, database, table, client=None,
         The column to use as the sortkey for the table.
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
+    table_columns : list[Dict[str, str]], optional
+        A list of dictionaries corresponding to the columns in
+        the source file. Each dictionary should have keys
+        for column "name" and "sqlType". The import will only copy these
+        columns regardless if there are more columns in the table.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
         uniquely identify a record. If existing_table_rows is "upsert", this
@@ -999,15 +1019,18 @@ def civis_file_to_table(file_id, database, table, client=None,
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    need_table_columns = not table_exists or existing_table_rows == 'drop'
+    need_table_columns = ((not table_exists or existing_table_rows == 'drop')
+                          and table_columns is None)
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
 
     (cleaned_file_ids, headers, compression, delimiter,
-     table_columns) = _process_cleaning_results(
+     cleaned_table_columns) = _process_cleaning_results(
         cleaning_futures, client, headers, need_table_columns, delimiter
     )
+
+    table_columns = table_columns or cleaned_table_columns
 
     source = dict(file_ids=cleaned_file_ids)
     destination = dict(schema=schema, table=table, remote_host_id=db_id,
