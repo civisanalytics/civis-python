@@ -222,7 +222,20 @@ class CivisFuture(PollableResult):
                 self._set_api_exception(exc=e)
 
     def outputs(self):
-        """Block on job completion and return a list of run outputs."""
+        """
+        Block on job completion and return a list of run outputs if the
+        job is successful.
+
+        Returns
+        -------
+        list[dict]
+            List of run outputs from a successfully completed job.
+
+        Raises
+        ------
+        CivisAPIError
+            If the job fails.
+        """
         self.result()
         outputs = self.client.jobs.list_runs_outputs(self.job_id, self.run_id)
         return outputs
