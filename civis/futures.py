@@ -54,8 +54,7 @@ class JobCompleteListener(SubscribeCallback):
 
 
 class CivisFuture(PollableResult):
-    """
-    A class for tracking future results.
+    """A class for tracking future results.
 
     This class will attempt to subscribe to a Pubnub channel to listen for
     job completion events. If you don't have access to Pubnub channels, then
@@ -222,8 +221,7 @@ class CivisFuture(PollableResult):
                 self._set_api_exception(exc=e)
 
     def outputs(self):
-        """
-        Block on job completion and return a list of run outputs.
+        """Block on job completion and return a list of run outputs.
 
         The method will only return run outputs for successful jobs.
         Failed jobs will raise an exception.
