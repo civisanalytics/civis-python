@@ -223,8 +223,10 @@ class CivisFuture(PollableResult):
 
     def outputs(self):
         """
-        Block on job completion and return a list of run outputs if the
-        job is successful.
+        Block on job completion and return a list of run outputs.
+
+        The method will only return run outputs for successful jobs.
+        Failed jobs will raise an exception.
 
         Returns
         -------
@@ -233,7 +235,7 @@ class CivisFuture(PollableResult):
 
         Raises
         ------
-        CivisAPIError
+        CivisJobFailure
             If the job fails.
         """
         self.result()
