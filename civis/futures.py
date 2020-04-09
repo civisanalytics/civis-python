@@ -235,7 +235,7 @@ class CivisFuture(PollableResult):
 
         Raises
         ------
-        CivisJobFailure
+        civis.base.CivisJobFailure
             If the job fails.
         """
         self.result()
