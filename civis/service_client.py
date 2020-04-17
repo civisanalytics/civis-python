@@ -1,10 +1,10 @@
 from collections import OrderedDict
 from functools import lru_cache
 import json
-import re
-
 from jsonref import JsonRef
+import re
 import requests
+import warnings
 
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
@@ -28,13 +28,13 @@ def auth_service_session(session, client):
     session.get(auth_url)
 
 
-def _parse_service_path(path, operations, service_client=None):
+def _parse_service_path(path, operations, root_path=None):
     """ Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
     attached to the class as a method.
     """
-    if service_client and service_client._root_path is not None:
-        path = path.replace(service_client._root_path, '')
+    if root_path is not None:
+        path = path.replace(root_path, '')
     path = path.strip('/')
     modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
     methods = []
@@ -46,12 +46,26 @@ def _parse_service_path(path, operations, service_client=None):
     return modified_base_path, methods
 
 
-def parse_service_api_spec(api_spec, service_client=None):
+def parse_service_api_spec(api_spec, root_path=None):
+    """Dynamically create classes to interface with a Civis Service API.
+
+    Parse an OpenAPI (Swagger) specification into a dictionary of classes
+    where each class represents an endpoint resource and contains
+    methods to make http requests on that resource.
+
+    Parameters
+    ----------
+    api_spec : OrderedDict
+        The Civis Service API specification to parse.  References should be
+        resolved before passing, typically using jsonref.JsonRef().
+
+
+    """
     paths = api_spec['paths']
     classes = {}
     for path, ops in paths.items():
         base_path, methods = _parse_service_path(
-            path, ops, service_client=service_client)
+            path, ops, root_path=root_path)
         class_name = to_camelcase(base_path)
         if methods and classes.get(base_path) is None:
             classes[base_path] = type(str(class_name),
@@ -151,6 +165,22 @@ class ServiceClient():
         for class_name, klass in classes.items():
             setattr(self, class_name, klass(client=self,
                                             return_type=return_type))
+
+    def parse_path(self, path, operations):
+        """ Parse an endpoint into a class where each valid http request
+        on that endpoint is converted into a convenience function and
+        attached to the class as a method.
+        """
+        warnings.warn("This method is deprecated and will be removed in "
+                      "v2.0.0. Use the `_parse_service_path` function "
+                      "instead.")
+        return _parse_service_path(path, operations, root_path=self.root_path)
+
+    def parse_api_spec(self, api_spec):
+        warnings.warn("This method is deprecated and will be removed in "
+                      "v2.0.0. Use the `parse_service_api_spec` function "
+                      "instead.")
+        return parse_service_api_spec(api_spec, root_path=self._root_path)
 
     @lru_cache(maxsize=4)
     def get_api_spec(self):

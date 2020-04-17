@@ -134,52 +134,33 @@ def test_service_endpoint():
     assert se._client == service_client_mock
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_service_path(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-    sc = ServiceClient(MOCK_SERVICE_ID)
-
+def test_parse_service_path(mock_operations):
     mock_path = '/some-resource/sub-resource/{id}'
-    base_path, methods = _parse_service_path(mock_path, mock_operations,
-                                             service_client=sc)
+    base_path, methods = _parse_service_path(mock_path, mock_operations)
 
     assert base_path == "some_resource"
     assert 'get_sub_resource' in methods[0]
 
     mock_path = '/some-resource/{id}'
-    base_path, methods = _parse_service_path(mock_path, mock_operations,
-                                             service_client=sc)
+    base_path, methods = _parse_service_path(mock_path, mock_operations)
 
     assert base_path == "some_resource"
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/some-resource')
+def test_parse_path__with_root(mock_operations):
+    root_path = '/some-resource'
 
     mock_path = '/some-resource/sub-resource/{id}'
     base_path, methods = _parse_service_path(mock_path, mock_operations,
-                                             service_client=sc)
+                                             root_path=root_path)
 
     assert base_path == "sub_resource"
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_service_api_spec(url_mock, classes_mock, mock_swagger):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-
-    sc = ServiceClient(MOCK_SERVICE_ID)
-
-    classes = parse_service_api_spec(mock_swagger, service_client=sc)
+def test_parse_service_api_spec(mock_swagger):
+    classes = parse_service_api_spec(mock_swagger)
     assert 'some_resources' in classes
 
 
