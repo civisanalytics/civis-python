@@ -28,6 +28,40 @@ def auth_service_session(session, client):
     session.get(auth_url)
 
 
+def _parse_service_path(path, operations, service_client=None):
+    """ Parse an endpoint into a class where each valid http request
+    on that endpoint is converted into a convenience function and
+    attached to the class as a method.
+    """
+    if service_client and service_client._root_path is not None:
+        path = path.replace(service_client._root_path, '')
+    path = path.strip('/')
+    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
+    methods = []
+    for verb, op in operations.items():
+        method = parse_method(verb, op, path)
+        if method is None:
+            continue
+        methods.append(method)
+    return modified_base_path, methods
+
+
+def parse_service_api_spec(api_spec, service_client=None):
+    paths = api_spec['paths']
+    classes = {}
+    for path, ops in paths.items():
+        base_path, methods = _parse_service_path(
+            path, ops, service_client=service_client)
+        class_name = to_camelcase(base_path)
+        if methods and classes.get(base_path) is None:
+            classes[base_path] = type(str(class_name),
+                                      (ServiceEndpoint,),
+                                      {})
+        for method_name, method in methods:
+            setattr(classes[base_path], method_name, method)
+    return classes
+
+
 class ServiceEndpoint(Endpoint):
 
     def __init__(self, client,
@@ -118,37 +152,6 @@ class ServiceClient():
             setattr(self, class_name, klass(client=self,
                                             return_type=return_type))
 
-    def parse_path(self, path, operations):
-        """ Parse an endpoint into a class where each valid http request
-        on that endpoint is converted into a convenience function and
-        attached to the class as a method.
-        """
-        if self._root_path is not None:
-            path = path.replace(self._root_path, '')
-        path = path.strip('/')
-        modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
-        methods = []
-        for verb, op in operations.items():
-            method = parse_method(verb, op, path)
-            if method is None:
-                continue
-            methods.append(method)
-        return modified_base_path, methods
-
-    def parse_api_spec(self, api_spec):
-        paths = api_spec['paths']
-        classes = {}
-        for path, ops in paths.items():
-            base_path, methods = self.parse_path(path, ops)
-            class_name = to_camelcase(base_path)
-            if methods and classes.get(base_path) is None:
-                classes[base_path] = type(str(class_name),
-                                          (ServiceEndpoint,),
-                                          {})
-            for method_name, method in methods:
-                setattr(classes[base_path], method_name, method)
-        return classes
-
     @lru_cache(maxsize=4)
     def get_api_spec(self):
         swagger_url = self._base_url + self._swagger_path
@@ -164,7 +167,7 @@ class ServiceClient():
     def generate_classes(self):
         raw_spec = self.get_api_spec()
         spec = JsonRef.replace_refs(raw_spec)
-        return self.parse_api_spec(spec)
+        return parse_service_api_spec(spec)
 
     def get_base_url(self):
         service = _get_service(self)
@@ -184,5 +187,5 @@ class ServiceClient():
                 msg = "cache must be an OrderedDict or str, given {}"
                 raise ValueError(msg.format(type(cache)))
             spec = JsonRef.replace_refs(raw_spec)
-            classes = self.parse_api_spec(spec)
+            classes = parse_service_api_spec(spec)
         return classes
