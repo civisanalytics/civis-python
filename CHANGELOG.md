@@ -9,12 +9,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `table_columns` parameter to `civis.io.civis_file_to_table`, `civis.io.dataframe_to_civis`, and `civis.io.csv_to_civis` (#379)
 
 ### Fixed
-
 - Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
 
 ### Removed
 
 - Removed support for Python 2.7 and 3.4. (#378)
+
+### Changed
+- No longer require ServiceClient to be instantiated to parse a
+  service api spec. (#382)
+
 
 ## 1.13.1 - 2020-03-06
 ### Added
