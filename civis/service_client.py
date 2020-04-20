@@ -58,8 +58,10 @@ def parse_service_api_spec(api_spec, root_path=None):
     api_spec : OrderedDict
         The Civis Service API specification to parse.  References should be
         resolved before passing, typically using jsonref.JsonRef().
-
-
+    root_path : str, optional
+        An additional path for APIs that are not hosted on the service's
+        root level. An example root_path would be '/api' for an app with
+        resource endpoints that all begin with '/api'.
     """
     paths = api_spec['paths']
     classes = {}
