@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 1.14.0 - 2020-04-22
 ### Added
 - Added `.outputs` method to retrieve outputs from `CivisFuture`
   objects. (#381)
