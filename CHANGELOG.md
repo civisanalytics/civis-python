@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.14.1 - 2020-04-22
+### Fixed
+- Fixed a bug in the `ServiceClient` where the API root path was not passed when generating classes. (#384)
+
 ## 1.14.0 - 2020-04-22
 ### Added
 - Added `.outputs` method to retrieve outputs from `CivisFuture`

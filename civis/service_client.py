@@ -176,7 +176,7 @@ class ServiceClient():
         warnings.warn("This method is deprecated and will be removed in "
                       "v2.0.0. Use the `_parse_service_path` function "
                       "instead.")
-        return _parse_service_path(path, operations, root_path=self.root_path)
+        return _parse_service_path(path, operations, root_path=self._root_path)
 
     def parse_api_spec(self, api_spec):
         warnings.warn("This method is deprecated and will be removed in "
@@ -199,7 +199,7 @@ class ServiceClient():
     def generate_classes(self):
         raw_spec = self.get_api_spec()
         spec = JsonRef.replace_refs(raw_spec)
-        return parse_service_api_spec(spec)
+        return parse_service_api_spec(spec, root_path=self._root_path)
 
     def get_base_url(self):
         service = _get_service(self)
@@ -219,5 +219,5 @@ class ServiceClient():
                 msg = "cache must be an OrderedDict or str, given {}"
                 raise ValueError(msg.format(type(cache)))
             spec = JsonRef.replace_refs(raw_spec)
-            classes = parse_service_api_spec(spec)
+            classes = parse_service_api_spec(spec, root_path=self._root_path)
         return classes
