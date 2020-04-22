@@ -192,9 +192,11 @@ def test_generate_classes(url_mock, api_spec_mock,
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = MOCK_URL
 
-    sc = ServiceClient(MOCK_SERVICE_ID)
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/foo')
 
     classes = sc.generate_classes()
+    parse_mock.assert_called_once_with(api_spec_mock.return_value,
+                                       root_path='/foo')
 
     assert 'class' in classes
 
@@ -209,11 +211,18 @@ def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = MOCK_URL
 
-    sc = ServiceClient(MOCK_SERVICE_ID)
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/foo')
 
     mock_spec_str = str(json.dumps(mock_swagger))
     mock_spec = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(mock_spec_str)  # noqa: E501
     classes = sc.generate_classes_maybe_cached(mock_spec)
+
+    parse_mock.assert_has_calls([
+        # the call from generate_classes_maybe_cached in ServiceClient.__init__
+        mock.call({}, root_path='/foo'),
+        # the call from generate_classes_maybe_cached in this test
+        mock.call(mock_spec, root_path='/foo')
+    ])
 
     assert 'class' in classes
 
