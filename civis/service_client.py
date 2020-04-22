@@ -199,7 +199,7 @@ class ServiceClient():
     def generate_classes(self):
         raw_spec = self.get_api_spec()
         spec = JsonRef.replace_refs(raw_spec)
-        return parse_service_api_spec(spec)
+        return parse_service_api_spec(spec, root_path=self._root_path)
 
     def get_base_url(self):
         service = _get_service(self)
@@ -219,5 +219,5 @@ class ServiceClient():
                 msg = "cache must be an OrderedDict or str, given {}"
                 raise ValueError(msg.format(type(cache)))
             spec = JsonRef.replace_refs(raw_spec)
-            classes = parse_service_api_spec(spec)
+            classes = parse_service_api_spec(spec, root_path=self._root_path)
         return classes
