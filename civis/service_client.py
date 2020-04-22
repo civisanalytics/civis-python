@@ -176,7 +176,7 @@ class ServiceClient():
         warnings.warn("This method is deprecated and will be removed in "
                       "v2.0.0. Use the `_parse_service_path` function "
                       "instead.")
-        return _parse_service_path(path, operations, root_path=self.root_path)
+        return _parse_service_path(path, operations, root_path=self._root_path)
 
     def parse_api_spec(self, api_spec):
         warnings.warn("This method is deprecated and will be removed in "
