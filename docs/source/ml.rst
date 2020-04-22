@@ -212,7 +212,7 @@ distributions:
 +------------------------------------+--------------------+-----------------------------------------------------------------------------+
 | | random_forest_classifier         | | ``n_estimators`` | | ``criterion: ['gini', 'entropy']``                                        |
 | | random_forest_regressor          | | ``min = 100,``   | | ``max_features: truncexpon(b=10., loc=.01, scale=1./10.11)``              |
-| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10]``                                  |
+| | extra_trees_classifier           | | ``max = 1000``   | | ``max_depth: [1, 2, 3, 4, 6, 10]``                                        |
 | | extra_trees_regressor            |                    |                                                                             |
 | | RF step in stacking_classifier   |                    |                                                                             |
 | | RF step in stacking_regressor    |                    |                                                                             |
@@ -402,7 +402,7 @@ Sharing Models
 ==============
 
 Models produced by CivisML can't be shared directly through the Civis Platform
-UI or API. The :module:`~civis.ml` namespace provides functions which will
+UI or API. The :mod:`~civis.ml` namespace provides functions which will
 let you share your CivisML models with other Civis Platform users.
 To share your models, use the functions
 
