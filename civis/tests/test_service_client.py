@@ -4,7 +4,8 @@ from unittest import mock
 
 from civis import response
 from civis.base import CivisAPIError
-from civis.service_client import ServiceClient, ServiceEndpoint, _get_service
+from civis.service_client import ServiceClient, ServiceEndpoint, \
+    _get_service, _parse_service_path, parse_service_api_spec
 import pytest
 
 MOCK_SERVICE_ID = 0
@@ -133,49 +134,33 @@ def test_service_endpoint():
     assert se._client == service_client_mock
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_path(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-    sc = ServiceClient(MOCK_SERVICE_ID)
-
+def test_parse_service_path(mock_operations):
     mock_path = '/some-resource/sub-resource/{id}'
-    base_path, methods = sc.parse_path(mock_path, mock_operations)
+    base_path, methods = _parse_service_path(mock_path, mock_operations)
 
     assert base_path == "some_resource"
     assert 'get_sub_resource' in methods[0]
 
     mock_path = '/some-resource/{id}'
-    base_path, methods = sc.parse_path(mock_path, mock_operations)
+    base_path, methods = _parse_service_path(mock_path, mock_operations)
 
     assert base_path == "some_resource"
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_path__with_root(url_mock, classes_mock, mock_operations):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/some-resource')
+def test_parse_path__with_root(mock_operations):
+    root_path = '/some-resource'
 
     mock_path = '/some-resource/sub-resource/{id}'
-    base_path, methods = sc.parse_path(mock_path, mock_operations)
+    base_path, methods = _parse_service_path(mock_path, mock_operations,
+                                             root_path=root_path)
 
     assert base_path == "sub_resource"
     assert 'get' in methods[0]
 
 
-@mock.patch('civis.service_client.ServiceClient.generate_classes_maybe_cached')
-@mock.patch('civis.service_client.ServiceClient.get_base_url')
-def test_parse_api_spec(url_mock, classes_mock, mock_swagger):
-    url_mock.return_value = MOCK_URL
-    classes_mock.return_value = {}
-
-    sc = ServiceClient(MOCK_SERVICE_ID)
-
-    classes = sc.parse_api_spec(mock_swagger)
+def test_parse_service_api_spec(mock_swagger):
+    classes = parse_service_api_spec(mock_swagger)
     assert 'some_resources' in classes
 
 
@@ -197,7 +182,7 @@ def test_get_api_spec(url_mock, classes_mock,
     assert spec == mock_swagger
 
 
-@mock.patch('civis.service_client.ServiceClient.parse_api_spec')
+@mock.patch('civis.service_client.parse_service_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_generate_classes(url_mock, api_spec_mock,
@@ -207,14 +192,16 @@ def test_generate_classes(url_mock, api_spec_mock,
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = MOCK_URL
 
-    sc = ServiceClient(MOCK_SERVICE_ID)
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/foo')
 
     classes = sc.generate_classes()
+    parse_mock.assert_called_once_with(api_spec_mock.return_value,
+                                       root_path='/foo')
 
     assert 'class' in classes
 
 
-@mock.patch('civis.service_client.ServiceClient.parse_api_spec')
+@mock.patch('civis.service_client.parse_service_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_api_spec')
 @mock.patch('civis.service_client.ServiceClient.get_base_url')
 def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
@@ -224,11 +211,18 @@ def test_generate_classes_maybe_cached(url_mock, api_spec_mock,
     parse_mock.return_value = {'class': mock_class_function}
     url_mock.return_value = MOCK_URL
 
-    sc = ServiceClient(MOCK_SERVICE_ID)
+    sc = ServiceClient(MOCK_SERVICE_ID, root_path='/foo')
 
     mock_spec_str = str(json.dumps(mock_swagger))
     mock_spec = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(mock_spec_str)  # noqa: E501
     classes = sc.generate_classes_maybe_cached(mock_spec)
+
+    parse_mock.assert_has_calls([
+        # the call from generate_classes_maybe_cached in ServiceClient.__init__
+        mock.call({}, root_path='/foo'),
+        # the call from generate_classes_maybe_cached in this test
+        mock.call(mock_spec, root_path='/foo')
+    ])
 
     assert 'class' in classes
 

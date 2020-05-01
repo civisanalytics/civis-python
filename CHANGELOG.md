@@ -3,14 +3,28 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-### Added
-### Fixed
 
+## 1.14.1 - 2020-04-22
+### Fixed
+- Fixed a bug in the `ServiceClient` where the API root path was not passed when generating classes. (#384)
+
+## 1.14.0 - 2020-04-22
+### Added
+- Added `.outputs` method to retrieve outputs from `CivisFuture`
+  objects. (#381)
+- Added `table_columns` parameter to `civis.io.civis_file_to_table`, `civis.io.dataframe_to_civis`, and `civis.io.csv_to_civis` (#379)
+
+### Fixed
 - Fixed/relaxed version specifications for click, jsonref, and jsonschema. (#377)
 
 ### Removed
 
 - Removed support for Python 2.7 and 3.4. (#378)
+
+### Changed
+- No longer require ServiceClient to be instantiated to parse a
+  service api spec. (#382)
+
 
 ## 1.13.1 - 2020-03-06
 ### Added

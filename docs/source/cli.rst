@@ -31,7 +31,7 @@ You can find out more information about a command by adding a ``--help`` option,
 like ``civis scripts list --help``.
 
 Job Logs
-----
+--------
 
 These commands show job run logs in the format: "datetime message\\n" where
 datetime is in ISO8601 format, like "2020-02-14T20:28:18.722Z".

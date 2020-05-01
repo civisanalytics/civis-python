@@ -1,10 +1,10 @@
 from collections import OrderedDict
 from functools import lru_cache
 import json
-import re
-
 from jsonref import JsonRef
+import re
 import requests
+import warnings
 
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
@@ -26,6 +26,56 @@ def auth_service_session(session, client):
     auth_url = service['current_deployment']['displayUrl']
     # Make request for adding Authentication Cookie to session
     session.get(auth_url)
+
+
+def _parse_service_path(path, operations, root_path=None):
+    """ Parse an endpoint into a class where each valid http request
+    on that endpoint is converted into a convenience function and
+    attached to the class as a method.
+    """
+    if root_path is not None:
+        path = path.replace(root_path, '')
+    path = path.strip('/')
+    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
+    methods = []
+    for verb, op in operations.items():
+        method = parse_method(verb, op, path)
+        if method is None:
+            continue
+        methods.append(method)
+    return modified_base_path, methods
+
+
+def parse_service_api_spec(api_spec, root_path=None):
+    """Dynamically create classes to interface with a Civis Service API.
+
+    Parse an OpenAPI (Swagger) specification into a dictionary of classes
+    where each class represents an endpoint resource and contains
+    methods to make http requests on that resource.
+
+    Parameters
+    ----------
+    api_spec : OrderedDict
+        The Civis Service API specification to parse.  References should be
+        resolved before passing, typically using jsonref.JsonRef().
+    root_path : str, optional
+        An additional path for APIs that are not hosted on the service's
+        root level. An example root_path would be '/api' for an app with
+        resource endpoints that all begin with '/api'.
+    """
+    paths = api_spec['paths']
+    classes = {}
+    for path, ops in paths.items():
+        base_path, methods = _parse_service_path(
+            path, ops, root_path=root_path)
+        class_name = to_camelcase(base_path)
+        if methods and classes.get(base_path) is None:
+            classes[base_path] = type(str(class_name),
+                                      (ServiceEndpoint,),
+                                      {})
+        for method_name, method in methods:
+            setattr(classes[base_path], method_name, method)
+    return classes
 
 
 class ServiceEndpoint(Endpoint):
@@ -123,31 +173,16 @@ class ServiceClient():
         on that endpoint is converted into a convenience function and
         attached to the class as a method.
         """
-        if self._root_path is not None:
-            path = path.replace(self._root_path, '')
-        path = path.strip('/')
-        modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
-        methods = []
-        for verb, op in operations.items():
-            method = parse_method(verb, op, path)
-            if method is None:
-                continue
-            methods.append(method)
-        return modified_base_path, methods
+        warnings.warn("This method is deprecated and will be removed in "
+                      "v2.0.0. Use the `_parse_service_path` function "
+                      "instead.")
+        return _parse_service_path(path, operations, root_path=self._root_path)
 
     def parse_api_spec(self, api_spec):
-        paths = api_spec['paths']
-        classes = {}
-        for path, ops in paths.items():
-            base_path, methods = self.parse_path(path, ops)
-            class_name = to_camelcase(base_path)
-            if methods and classes.get(base_path) is None:
-                classes[base_path] = type(str(class_name),
-                                          (ServiceEndpoint,),
-                                          {})
-            for method_name, method in methods:
-                setattr(classes[base_path], method_name, method)
-        return classes
+        warnings.warn("This method is deprecated and will be removed in "
+                      "v2.0.0. Use the `parse_service_api_spec` function "
+                      "instead.")
+        return parse_service_api_spec(api_spec, root_path=self._root_path)
 
     @lru_cache(maxsize=4)
     def get_api_spec(self):
@@ -164,7 +199,7 @@ class ServiceClient():
     def generate_classes(self):
         raw_spec = self.get_api_spec()
         spec = JsonRef.replace_refs(raw_spec)
-        return self.parse_api_spec(spec)
+        return parse_service_api_spec(spec, root_path=self._root_path)
 
     def get_base_url(self):
         service = _get_service(self)
@@ -184,5 +219,5 @@ class ServiceClient():
                 msg = "cache must be an OrderedDict or str, given {}"
                 raise ValueError(msg.format(type(cache)))
             spec = JsonRef.replace_refs(raw_spec)
-            classes = self.parse_api_spec(spec)
+            classes = parse_service_api_spec(spec, root_path=self._root_path)
         return classes
