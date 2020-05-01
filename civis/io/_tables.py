@@ -681,7 +681,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         credential will be used.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
-        uniquely identify a record. If existing_table_rows is "upsert", this
+        uniquely identify a record. These columns must not contain null values.
+        If existing_table_rows is "upsert", this
         field is required. Note that this is true regardless of whether the
         destination database itself requires a primary key.
     last_modified_keys: list[str], optional
@@ -816,7 +817,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         or not the first row contains headers.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
-        uniquely identify a record. If existing_table_rows is "upsert", this
+        uniquely identify a record. These columns must not contain null values.
+        If existing_table_rows is "upsert", this
         field is required. Note that this is true regardless of whether the
         destination database itself requires a primary key.
     last_modified_keys: list[str], optional
@@ -940,7 +942,8 @@ def civis_file_to_table(file_id, database, table, client=None,
         columns regardless if there are more columns in the table.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
-        uniquely identify a record. If existing_table_rows is "upsert", this
+        uniquely identify a record. These columns must not contain null values.
+        If existing_table_rows is "upsert", this
         field is required. Note that this is true regardless of whether the
         destination database itself requires a primary key.
     last_modified_keys: list[str], optional
