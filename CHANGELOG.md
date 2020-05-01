@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+- Added additional detail to `civis.io.dataframe_to_civis`, `civis.io.csv_to_civis`, and `civis.io.civis_file_to_table`'s docstrings on the primary key parameter.
+
 ## 1.14.1 - 2020-04-22
 ### Fixed
 - Fixed a bug in the `ServiceClient` where the API root path was not passed when generating classes. (#384)
