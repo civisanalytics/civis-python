@@ -165,7 +165,7 @@ def invoke(method, path, op, *args, **kwargs):
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
     exit_code = 0
-    if response.status_code != 200:
+    if not (200 <= response.status_code < 300):
         output_file = sys.stderr
         exit_code = 1
 
