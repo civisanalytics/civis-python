@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Fixed a bug in the CLI tool which caused failed commands to exit with a 0 exit status. (#389)
 
 ### Changed
 - Added additional detail to `civis.io.dataframe_to_civis`, `civis.io.csv_to_civis`, and `civis.io.civis_file_to_table`'s docstrings on the primary key parameter. (#388)
