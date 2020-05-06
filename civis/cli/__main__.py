@@ -162,10 +162,12 @@ def invoke(method, path, op, *args, **kwargs):
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
         response = sess.request(**request_info)
 
-    # Print the response to stderr if there was an error.
+    # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
-    if response.status_code != 200:
+    exit_code = 0
+    if not (200 <= response.status_code < 300):
         output_file = sys.stderr
+        exit_code = 1
 
     # Print the output, if there is any.
     # For commands such as DELETE /scripts/containers/{script_id}/runs/{id},
@@ -184,6 +186,8 @@ def invoke(method, path, op, *args, **kwargs):
         # Otherwise, do nothing.
         if response.text.strip():
             print("Error parsing response: {}".format(e), file=sys.stderr)
+
+    sys.exit(exit_code)
 
 
 def retrieve_spec_dict(api_version="1.0"):
