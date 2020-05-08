@@ -161,10 +161,6 @@ class CivisAsyncResultBase(futures.Future):
         self.poller = poller
         self.poller_args = poller_args
         self.polling_interval = polling_interval
-
-        # TODO explain this. also, maybe rename to _state_override or something
-        self.__state = None
-
         if api_key is not None:
             warnings.warn('The "api_key" parameter is deprecated and will be '
                           'removed in v2. Please use the `client` parameter '
@@ -224,27 +220,42 @@ class CivisAsyncResultBase(futures.Future):
     @property
     def _state(self):
         """State of the CivisAsyncResultBase in `future` language."""
-        if self.__state is not None:
-            return self.__state
         with self._condition:
             return STATE_TRANS[self._civis_state]
 
     @_state.setter
     def _state(self, value):
         # Ignore attempts to set the _state from the `Future` superclass
-        # TODO explain
-        self.__state = value
+        pass
 
     def set_result(self, result):
-        # TODO explain this
-        self.__state = futures._base.RUNNING
-        super().set_result(result)
-        self.__state = None
+        """Sets the return value of work associated with the future.
+
+        This is adapted from
+        https://github.com/python/cpython/blob/3.8/Lib/concurrent/futures/_base.py#L517-L530
+        This version does not try to change the _state or check that the
+        initial _state is running since the Civis implementation has _state
+        depend on the Platform job state.
+        """
+        with self._condition:
+            self._result = result
+            for waiter in self._waiters:
+                waiter.add_result(self)
+            self._condition.notify_all()
+        self._invoke_callbacks()
 
     def set_exception(self, exception):
-        # TODO explain this
-        self.__state = futures._base.RUNNING
-        super().set_exception(exception)
-        self.__state = None
+        """Sets the result of the future as being the given exception.
 
-    # TODO set docstrings for set_result and set_exception
+        This is adapted from
+        https://github.com/python/cpython/blob/3.8/Lib/concurrent/futures/_base.py#L532-L545
+        This version does not try to change the _state or check that the
+        initial _state is running since the Civis implementation has _state
+        depend on the Platform job state.
+        """
+        with self._condition:
+            self._exception = exception
+            for waiter in self._waiters:
+                waiter.add_exception(self)
+            self._condition.notify_all()
+        self._invoke_callbacks()
