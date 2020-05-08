@@ -1022,7 +1022,7 @@ def test_modelpipeline_state(mp_setup):
     mp = mp_setup
 
     with pytest.raises(ValueError,
-                       message="This model hasn't been trained yet."):
+                       match="This model hasn't been trained yet."):
         mp.state
 
     mp.train_result_ = mock.Mock()
@@ -1033,7 +1033,7 @@ def test_modelpipeline_state(mp_setup):
 def test_modelpipeline_estimator(mp_setup):
     mp = mp_setup
     with pytest.raises(ValueError,
-                       message="This model hasn't been trained yet."):
+                       match="This model hasn't been trained yet."):
         mp.estimator
 
     mp.train_result_ = mock.Mock()
@@ -1044,7 +1044,7 @@ def test_modelpipeline_estimator(mp_setup):
 def test_modelpipeline_predict_value_error(mp_setup):
     mp = mp_setup
     with pytest.raises(ValueError,
-                       message="This model hasn't been trained yet."):
+                       match="This model hasn't been trained yet."):
         mp.predict()
 
     mp.train_result_ = mock.Mock()
