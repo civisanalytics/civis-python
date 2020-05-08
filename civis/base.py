@@ -161,6 +161,10 @@ class CivisAsyncResultBase(futures.Future):
         self.poller = poller
         self.poller_args = poller_args
         self.polling_interval = polling_interval
+
+        # TODO explain this. also, maybe rename to _state_override or something
+        self.__state = None
+
         if api_key is not None:
             warnings.warn('The "api_key" parameter is deprecated and will be '
                           'removed in v2. Please use the `client` parameter '
@@ -220,10 +224,27 @@ class CivisAsyncResultBase(futures.Future):
     @property
     def _state(self):
         """State of the CivisAsyncResultBase in `future` language."""
+        if self.__state is not None:
+            return self.__state
         with self._condition:
             return STATE_TRANS[self._civis_state]
 
     @_state.setter
     def _state(self, value):
         # Ignore attempts to set the _state from the `Future` superclass
-        pass
+        # TODO explain
+        self.__state = value
+
+    def set_result(self, result):
+        # TODO explain this
+        self.__state = futures._base.RUNNING
+        super().set_result(result)
+        self.__state = None
+
+    def set_exception(self, exception):
+        # TODO explain this
+        self.__state = futures._base.RUNNING
+        super().set_exception(exception)
+        self.__state = None
+
+    # TODO set docstrings for set_result and set_exception
