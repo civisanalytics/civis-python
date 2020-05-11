@@ -14,7 +14,32 @@ requests are made with the following syntax:
 
 The methods on :class:`~civis.APIClient` are created dynamically at runtime
 by parsing an :class:`python:collections.OrderedDict` representation of the
-Civis API specification.  By default, this specification is downloaded from
+Civis API specification.
+The methods are generated based on the path and HTTP method used with each
+endpoint. For example, ``GET /workflows/1`` can be accessed with
+``client.workflows.get(1)``. ``GET`` endpoints that don’t end in a parameter
+use a ``list`` method instead.
+Below are examples of endpoints and how they map to API Client methods:
+
++-----------------------------------+-------------------------------------------+
+| Endpoint                          | API Client Method                         |
++===================================+===========================================+
+| ``GET /workflows``                | ``client.workflows.list()``               |
++-----------------------------------+-------------------------------------------+
+| ``GET /workflows/1``              | ``client.workflows.get(1)``               |
++-----------------------------------+-------------------------------------------+
+| ``GET /workflows/1/executions``   | ``client.workflows.list_executions(1)``   |
++-----------------------------------+-------------------------------------------+
+| ``PATCH /workflows/1``            | ``client.workflows.patch(1)``             |
++-----------------------------------+-------------------------------------------+
+| ``POST /workflows/1/executions``  | ``client.workflows.post_executions(1)``   |
++-----------------------------------+-------------------------------------------+
+| ``GET /workflows/1/executions/2`` | ``client.workflows.get_executions(1, 2)`` |
++-----------------------------------+-------------------------------------------+
+| ``DELETE /workflows/1``           | ``client.workflows.delete(1)``            |
++-----------------------------------+-------------------------------------------+
+
+By default, the Civis API specification specification is downloaded from
 the ``/endpoints`` endpoint the first time :class:`~civis.APIClient` is
 instantiated (and cached in memory for the remainder of the program's run).
 In some circumstances, it may be useful to use a local cache of the API
