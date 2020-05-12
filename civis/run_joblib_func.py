@@ -105,8 +105,7 @@ def worker_func(func_file_id):
                                                    client=client)
             client.scripts.post_containers_runs_outputs(job_id, run_id,
                                                         'File', output_file_id)
-            print("Results output to file ID: {}".format(output_name,
-                                                         output_file_id))
+            print("Results output to file ID: {}".format(output_file_id))
 
 
 def main():

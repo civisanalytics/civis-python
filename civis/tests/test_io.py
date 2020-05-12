@@ -1091,7 +1091,7 @@ def test_civis_to_file_local(mock_requests):
     # of a URL given by the API client and writes it to a file.
     mock_civis = create_client_mock()
     mock_requests.get.return_value.iter_content.return_value =\
-        (l.encode() for l in 'abcdef')
+        (ch.encode() for ch in 'abcdef')
     with TemporaryDirectory() as tdir:
         fname = os.path.join(tdir, 'testfile')
         _files.civis_to_file(137, fname, client=mock_civis)
@@ -1112,7 +1112,7 @@ def test_civis_to_file_retries(mock_requests):
     # Mock the request iter_content so it fails partway the first time.
     def mock_iter_content(_):
         nonlocal first_try
-        chunks = [l.encode() for l in 'abcdef']
+        chunks = [ch.encode() for ch in 'abcdef']
         for i, chunk in enumerate(chunks):
 
             # Fail partway through on the first try.
