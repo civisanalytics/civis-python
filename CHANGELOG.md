@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed a bug in the CLI tool which caused failed commands to exit with a 0 exit status. (#389)
+- Fixed some issues that the newly-released flake8 3.8 complained about, including a buggy print statement for logging in run_joblib_func.py. (#394)
 
 ### Changed
 - Added additional detail to `civis.io.dataframe_to_civis`, `civis.io.csv_to_civis`, and `civis.io.civis_file_to_table`'s docstrings on the primary key parameter. (#388)

@@ -374,7 +374,7 @@ def test_set_model_exception_unknown_error():
              'id': 10000,
              'level': 'error',
              'message': 'Oops'}]
-    err_msg = '\n'.join([l['message'] for l in logs])
+    err_msg = '\n'.join([x['message'] for x in logs])
     mock_client.scripts.list_containers_runs_logs.return_value = logs
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:

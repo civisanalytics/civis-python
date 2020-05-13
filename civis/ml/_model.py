@@ -196,13 +196,13 @@ def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
     logs = client.scripts.list_containers_runs_logs(job_id, run_id, limit=nlog)
 
     # Check for memory errors
-    msgs = [l['message'] for l in logs if l['level'] == 'error']
+    msgs = [x['message'] for x in logs if x['level'] == 'error']
     mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
     if mem_err:
         exc = MemoryError(mem_err[0])
     else:
         # Unknown error; return logs to the user as a sort of traceback
-        all_logs = '\n'.join([l['message'] for l in logs])
+        all_logs = '\n'.join([x['message'] for x in logs])
         if isinstance(exc, CivisJobFailure):
             exc.error_message = all_logs + '\n' + exc.error_message
         else:
