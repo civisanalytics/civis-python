@@ -889,7 +889,6 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     return fut
 
 
-@deprecate_param('v2.0.0', 'file_id')
 def civis_file_to_table(file_id, database, table, client=None,
                         max_errors=None, existing_table_rows="fail",
                         diststyle=None, distkey=None,
@@ -908,8 +907,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     Parameters
     ----------
     file_id : int or list[int]
-        Civis file ID or a list of Civis file IDs. Reference by name to this
-        argument is deprecated, as the name will change in v2.0.0.
+        Civis file ID or a list of Civis file IDs.
     database : str or int
         Upload data into this database. Can be the database name or ID.
     table : str
