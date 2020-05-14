@@ -730,6 +730,8 @@ class _CivisBackendResult:
                 fut.remote_func_output = exc
             else:
                 fut.result_fetched = True
+                print('cancelled={} \tjob_id={}'.format(fut.cancelled(),
+                                                        fut.job_id))
                 if not fut.cancelled() and not fut.exception():
                     # The next job will start when this callback is called.
                     # Only run it if the job was a success.

@@ -136,6 +136,9 @@ class PollableResult(CivisAsyncResultBase):
     def _check_result(self):
         """Return the job result from Civis. Once the job completes, store the
         result and never poll again."""
+
+        print('polling \tjob_id={}'.format(self.poller_args[0]))
+
         with self._condition:
             # Start a single thread continuously polling.
             # It will stop once the job completes.

@@ -324,6 +324,7 @@ class ContainerFuture(CivisFuture):
         bool
             Whether or not the job is in a cancelled state.
         """
+        print('cancelling \tjob_id={}'.format(self.job_id))
         with self._condition:
             if self.cancelled():
                 return True
