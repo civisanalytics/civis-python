@@ -333,6 +333,8 @@ class ContainerFuture(CivisFuture):
                 # the "finished result" attribute, `_result`.
                 try:
                     self._result = self.client.scripts.post_cancel(self.job_id)
+                    self.is_cancel_requested = \
+                        self._result.get('is_cancel_requested', False)
                 except CivisAPIError as exc:
                     if exc.status_code == 404:
                         # The most likely way to get this error
