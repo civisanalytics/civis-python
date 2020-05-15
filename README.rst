@@ -143,7 +143,7 @@ dependencies with
 Python version support
 ----------------------
 
-Python 3.5, 3.6, and 3.7
+Python 3.5, 3.6, 3.7, and 3.8
 
 .. end-include-marker-python-version-support-section
 

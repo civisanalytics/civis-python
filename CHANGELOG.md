@@ -3,11 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Added support for Python 3.8 (#391)
+
 ### Fixed
 - Fixed a bug in the CLI tool which caused failed commands to exit with a 0 exit status. (#389)
+- Fixed some issues that the newly-released flake8 3.8 complained about, including a buggy print statement for logging in run_joblib_func.py. (#394)
 
 ### Changed
 - Added additional detail to `civis.io.dataframe_to_civis`, `civis.io.csv_to_civis`, and `civis.io.civis_file_to_table`'s docstrings on the primary key parameter. (#388)
+- Made polling threads for Civis futures be daemon threads so that Python processes will shut down properly in Python 3.8 (#391)
+- Removed deprecation warning on the `file_id` parameter of `civis.io.civis_file_to_table`. The parameter name will be kept in v2. (#360, #393)
 
 ## 1.14.1 - 2020-04-22
 ### Fixed

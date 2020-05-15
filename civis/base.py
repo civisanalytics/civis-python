@@ -227,3 +227,35 @@ class CivisAsyncResultBase(futures.Future):
     def _state(self, value):
         # Ignore attempts to set the _state from the `Future` superclass
         pass
+
+    def set_result(self, result):
+        """Sets the return value of work associated with the future.
+
+        This is adapted from
+        https://github.com/python/cpython/blob/3.8/Lib/concurrent/futures/_base.py#L517-L530
+        This version does not try to change the _state or check that the
+        initial _state is running since the Civis implementation has _state
+        depend on the Platform job state.
+        """
+        with self._condition:
+            self._result = result
+            for waiter in self._waiters:
+                waiter.add_result(self)
+            self._condition.notify_all()
+        self._invoke_callbacks()
+
+    def set_exception(self, exception):
+        """Sets the result of the future as being the given exception.
+
+        This is adapted from
+        https://github.com/python/cpython/blob/3.8/Lib/concurrent/futures/_base.py#L532-L545
+        This version does not try to change the _state or check that the
+        initial _state is running since the Civis implementation has _state
+        depend on the Platform job state.
+        """
+        with self._condition:
+            self._exception = exception
+            for waiter in self._waiters:
+                waiter.add_exception(self)
+            self._condition.notify_all()
+        self._invoke_callbacks()

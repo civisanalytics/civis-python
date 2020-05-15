@@ -16,7 +16,7 @@ class _ResultPollingThread(threading.Thread):
     # Inspired by `threading.Timer`
 
     def __init__(self, poller, poller_args, polling_interval):
-        super().__init__()
+        super().__init__(daemon=True)
         self.polling_interval = polling_interval
         self.poller = poller
         self.poller_args = poller_args
