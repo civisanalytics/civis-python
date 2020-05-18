@@ -732,6 +732,10 @@ class _CivisBackendResult:
                 fut.result_fetched = True
                 cancelled = fut.cancelled()
                 try:
+                    # After requesting cancellation, a script stays in a
+                    # running state and sets _result.is_cancel_requested
+                    # to True to allow for clean up logic. Here, we make sure
+                    # to treat these runs the same as cancelled runs.
                     cancelled |= fut._result.is_cancel_requested
                 except AttributeError:
                     pass
