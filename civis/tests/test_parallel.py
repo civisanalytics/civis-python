@@ -483,6 +483,22 @@ def test_result_eventual_failure(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
+def test_result_running_and_cancel_requested(mock_civis):
+    callback = mock.MagicMock()
+    mock_civis.io.civis_to_file.side_effect = make_to_file_mock('spam')
+    response = Response({'is_cancel_requested': True,
+                         'state': 'running'})
+    client = mock.MagicMock()
+    client.scripts.post_cancel.return_value = response
+    fut = ContainerFuture(1, 2, client=client)
+    fut.set_result(response)
+    civis.parallel._CivisBackendResult(fut, callback)
+    fut.cancel()
+
+    assert callback.call_count == 0
+
+
+@mock.patch.object(civis.parallel, 'civis')
 @mock.patch.object(civis.parallel, '_sklearn_reg_para_backend')
 @mock.patch.object(civis.parallel, '_joblib_reg_para_backend')
 def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
