@@ -484,14 +484,15 @@ def test_result_eventual_failure(mock_civis):
 
 @mock.patch.object(civis.parallel, 'civis')
 def test_result_running_and_cancel_requested(mock_civis):
-    callback = mock.MagicMock()
-    mock_civis.io.civis_to_file.side_effect = make_to_file_mock('spam')
+    # When scripts request cancellation, they remain in a running
+    # state. Make sure these are treated as cancelled runs.
     response = Response({'is_cancel_requested': True,
                          'state': 'running'})
     client = mock.MagicMock()
     client.scripts.post_cancel.return_value = response
     fut = ContainerFuture(1, 2, client=client)
     fut.set_result(response)
+    callback = mock.MagicMock()
     civis.parallel._CivisBackendResult(fut, callback)
     fut.cancel()
 
