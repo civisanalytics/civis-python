@@ -493,6 +493,9 @@ def test_result_running_and_cancel_requested(mock_civis):
     fut = ContainerFuture(1, 2, client=client)
     fut.set_result(response)
     callback = mock.MagicMock()
+    # When a _CivisBackendResult created by the Civis joblib backend completes
+    # successfully, a callback is executed. When cancelled, this callback
+    # shouldn't  be run
     civis.parallel._CivisBackendResult(fut, callback)
     fut.cancel()
 
