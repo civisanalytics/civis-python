@@ -730,7 +730,16 @@ class _CivisBackendResult:
                 fut.remote_func_output = exc
             else:
                 fut.result_fetched = True
-                if not fut.cancelled() and not fut.exception():
+                cancelled = fut.cancelled()
+                try:
+                    # After requesting cancellation, a script stays in a
+                    # running state and sets _result.is_cancel_requested
+                    # to True to allow for clean up logic. Here, we make sure
+                    # to treat these runs the same as cancelled runs.
+                    cancelled |= fut._result.is_cancel_requested
+                except AttributeError:
+                    pass
+                if not cancelled and not fut.exception():
                     # The next job will start when this callback is called.
                     # Only run it if the job was a success.
                     joblib_callback(fut.remote_func_output)

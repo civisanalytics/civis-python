@@ -483,6 +483,26 @@ def test_result_eventual_failure(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
+def test_result_running_and_cancel_requested(mock_civis):
+    # When scripts request cancellation, they remain in a running
+    # state. Make sure these are treated as cancelled runs.
+    response = Response({'is_cancel_requested': True,
+                         'state': 'running'})
+    client = mock.MagicMock()
+    client.scripts.post_cancel.return_value = response
+    fut = ContainerFuture(1, 2, client=client)
+    fut.set_result(response)
+    callback = mock.MagicMock()
+    # When a _CivisBackendResult created by the Civis joblib backend completes
+    # successfully, a callback is executed. When cancelled, this callback
+    # shouldn't  be run
+    civis.parallel._CivisBackendResult(fut, callback)
+    fut.cancel()
+
+    assert callback.call_count == 0
+
+
+@mock.patch.object(civis.parallel, 'civis')
 @mock.patch.object(civis.parallel, '_sklearn_reg_para_backend')
 @mock.patch.object(civis.parallel, '_joblib_reg_para_backend')
 def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
