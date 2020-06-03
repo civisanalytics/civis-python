@@ -344,7 +344,6 @@ def _attach_classes_to_module(module, class_data):
 _autodoc_fmt = ('.. autoclass:: {}\n'
                 '   :members:\n'
                 '   :exclude-members: __init__\n\n'
-                '   .. rubric:: Methods\n'
                 '   .. generatedautosummary:: {}\n\n')
 
 
