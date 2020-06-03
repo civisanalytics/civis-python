@@ -307,8 +307,8 @@ nitpick_ignore = [
     ('py:class', 'concurrent.futures._base.Future'),
     ('py:class', 'civis.base.CivisAsyncResultBase')
 ]
-numpydoc_show_class_members = False
-
+# Show tables of functions for each Resource class.
+numpydoc_show_class_members = True
 
 # Preserve signatures of a few methods wrapped with lru_cache. Need to set
 # this before we import civis. See https://stackoverflow.com/a/28371786.
