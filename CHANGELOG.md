@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+- Bump minimum pubnub version to `4.1.12` (#397)
+
 ## 1.14.2 - 2020-06-03
 ### Added
 - Added support for Python 3.8 (#391)
