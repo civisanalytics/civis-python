@@ -57,7 +57,7 @@ def main():
             'requests>=2.12.0,==2.*',
             'jsonschema>=2.5.1,<=3.99',
             'joblib>=0.11,<0.15',
-            'pubnub>=4.0,<=4.99',
+            'pubnub>=4.1.12,<=4.99',
             'cloudpickle>=0.2.0,<2',
         ],
         entry_points={
