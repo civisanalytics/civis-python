@@ -43,11 +43,11 @@ NOTE: These commands could miss some log entries from a currently-running
 job. It does not re-fetch logs that might have been saved out of order, to
 preserve the chronological order of the logs and without duplication.
 
-- ``civis jobs follow-logs $JOB_ID``
+- ``civis jobs follow-log $JOB_ID``
 
   Output live log from the most recent job run for the given job ID.
 
-- ``civis jobs follow-run-logs $JOB_ID $RUN_ID``
+- ``civis jobs follow-run-log $JOB_ID $RUN_ID``
 
   Output live log from the given job and run ID.
 
