@@ -667,7 +667,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         database column "name" and "sqlType". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The “sqlType” key is not required
+        as in the destination table. The "sqlType" key is not required
         when appending to an existing table.
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
@@ -813,7 +813,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         database column "name" and "sqlType". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The “sqlType” key is not required
+        as in the destination table. The "sqlType" key is not required
         when appending to an existing table.
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
@@ -945,7 +945,7 @@ def civis_file_to_table(file_id, database, table, client=None,
         database column "name" and "sqlType". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The “sqlType” key is not required
+        as in the destination table. The "sqlType" key is not required
         when appending to an existing table.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
