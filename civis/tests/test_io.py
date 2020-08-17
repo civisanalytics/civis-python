@@ -401,7 +401,7 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
-    def test_civis_file_to_table_table_exists_sql_type_missing(
+    def test_civis_file_to_table_table_exists_all_sql_types_missing(
             self,
             m_run_cleaning,
             m_process_cleaning_results,
@@ -418,8 +418,7 @@ class ImportTests(CivisVCRTestCase):
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
 
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
-        table_columns = [{'name': 'a', 'sql_type': 'INT'},
+        table_columns = [{'name': 'a', 'sql_type': ''},
                          {'name': 'b', 'sql_type': ''}]
         m_process_cleaning_results.return_value = (
             [mock_cleaned_file_id],
@@ -498,6 +497,47 @@ class ImportTests(CivisVCRTestCase):
             True,
             **expected_kwargs
         )
+
+    @pytest.mark.civis_file_to_table
+    @mock.patch('civis.io._tables._process_cleaning_results')
+    @mock.patch('civis.io._tables._run_cleaning')
+    def test_civis_file_to_table_table_exists_some_sql_types_missing(
+            self,
+            m_run_cleaning,
+            m_process_cleaning_results,
+            _m_get_api_spec
+    ):
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        mock_file_id = 1234
+        mock_cleaned_file_id = 1235
+        mock_import_id = 8675309
+
+        self.mock_client.imports.post_files_csv.return_value\
+            .id = mock_import_id
+        self.mock_client.get_database_id.return_value = 42
+        self.mock_client.default_credential = 713
+
+        table_columns = [{'name': 'a', 'sql_type': 'INT'},
+                         {'name': 'b', 'sql_type': ''}]
+        m_process_cleaning_results.return_value = (
+            [mock_cleaned_file_id],
+            True,  # headers
+            'gzip',  # compression
+            'comma',  # delimiter
+            table_columns  # table_columns
+        )
+        m_run_cleaning.return_value = [mock.sentinel.cleaning_future]
+
+        with pytest.raises(ValueError):
+            civis.io.civis_file_to_table(
+                mock_file_id, database, table,
+                existing_table_rows='truncate',
+                delimiter=',',
+                headers=True,
+                client=self.mock_client,
+                table_columns=table_columns
+            )
 
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')

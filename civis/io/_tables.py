@@ -1026,19 +1026,20 @@ def civis_file_to_table(file_id, database, table, client=None,
         table_exists = True
     except ValueError:
         table_exists = False
+    
+    table_columns_valid = True
+    if table_columns:
+        table_columns_valid = True if table_columns[0]['sql_type'] else False
+        for i in range (0, len(table_columns)-1):
+            if not table_columns[i]['sql_type'] == table_columns[i+1]['sql_type']:
+                raise ValueError('Some table columns do not have a sql type provided')
+                break
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    table_columns_have_sql = True
-    if table_columns:
-        for col in table_columns:
-            if not col['sql_type']:
-                table_columns_have_sql = False
-                break
-
     need_table_columns = (((not table_exists or existing_table_rows == 'drop')
                           and table_columns is None)
-                          or not table_columns_have_sql)
+                          or not table_columns_valid)
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
