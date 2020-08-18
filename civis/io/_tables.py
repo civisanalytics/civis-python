@@ -1033,12 +1033,11 @@ def civis_file_to_table(file_id, database, table, client=None,
         for i in range(0, len(table_columns)-1):
             this_sql_type = table_columns[i]['sql_type']
             next_sql_type = table_columns[i+1]['sql_type']
-            if not this_sql_type == next_sql_type:
+            if (not this_sql_type) == bool(next_sql_type):
                 error_message = 'Some table columns ' \
                                 'have a sql type provided, ' \
                                 'but others do not.'
                 raise ValueError(error_message)
-        print(str(table_columns_valid))
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
