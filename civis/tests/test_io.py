@@ -401,7 +401,7 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
-    def test_civis_file_to_table_table_doesnt_exist_valid_table_columns_provided(
+    def test_civis_file_to_table_table_doesnt_exist_all_sql_types_provided(
             self,
             m_run_cleaning,
             m_process_cleaning_results,
@@ -613,7 +613,6 @@ class ImportTests(CivisVCRTestCase):
         table = "scratch.api_client_test_fixture"
         database = 'redshift-general'
         mock_file_id = 1234
-        mock_cleaned_file_id = 1235
         mock_import_id = 8675309
 
         self.mock_client.imports.post_files_csv.return_value\
