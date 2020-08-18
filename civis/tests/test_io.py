@@ -320,8 +320,7 @@ class ImportTests(CivisVCRTestCase):
         self.mock_client.default_credential = 713
 
         self.mock_client.get_table_id.side_effect = ValueError('no table')
-        mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'},
-                        {'name': 'bar', 'sql_type': 'VARCHAR(42)'}]
+        mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
         m_process_cleaning_results.return_value = (
             [mock_cleaned_file_id],
             True,  # headers
@@ -378,7 +377,7 @@ class ImportTests(CivisVCRTestCase):
             'escaped': False,
             'execution': 'immediate',
             'loosen_types': False,
-            'table_columns': mock_columns,
+            #'table_columns': mock_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
                 'sortkeys': [None, None]

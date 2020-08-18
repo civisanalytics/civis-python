@@ -1038,6 +1038,7 @@ def civis_file_to_table(file_id, database, table, client=None,
                                 'have a sql type provided, ' \
                                 'but others do not.'
                 raise ValueError(error_message)
+        print(str(table_columns_valid))
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
