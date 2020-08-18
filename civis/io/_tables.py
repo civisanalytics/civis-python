@@ -1031,19 +1031,18 @@ def civis_file_to_table(file_id, database, table, client=None,
     if table_columns:
         table_columns_valid = True if table_columns[0]['sql_type'] else False
         for i in range(0, len(table_columns)-1):
-            thisSqlType = table_columns[i]['sql_type']
-            nextSqlType = table_columns[i+1]['sql_type']
-            if not thisSqlType == nextSqlType:
-                error_message = 'Some table columns do not ' \
-                                'have a sql type provided'
+            this_sql_type = table_columns[i]['sql_type']
+            next_sql_type = table_columns[i+1]['sql_type']
+            if not this_sql_type == next_sql_type:
+                error_message = 'Some table columns ' \
+                                'have a sql type provided, ' \
+                                'but others do not.'
                 raise ValueError(error_message)
-                break
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    need_table_columns = (((not table_exists or existing_table_rows == 'drop')
-                          and table_columns is None)
-                          or not table_columns_valid)
+    need_table_columns = ((not table_exists or existing_table_rows == 'drop')
+                          and (table_columns is None or not table_columns_valid))
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
@@ -1053,7 +1052,7 @@ def civis_file_to_table(file_id, database, table, client=None,
         cleaning_futures, client, headers, need_table_columns, delimiter
     )
 
-    table_columns = table_columns or cleaned_table_columns
+    table_columns = cleaned_table_columns if need_table_columns else table_columns
 
     source = dict(file_ids=cleaned_file_ids)
     destination = dict(schema=schema, table=table, remote_host_id=db_id,
