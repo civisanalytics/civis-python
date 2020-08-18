@@ -377,7 +377,7 @@ class ImportTests(CivisVCRTestCase):
             'escaped': False,
             'execution': 'immediate',
             'loosen_types': False,
-            #'table_columns': mock_columns,
+            'table_columns': mock_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
                 'sortkeys': [None, None]
