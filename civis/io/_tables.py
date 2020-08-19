@@ -1027,11 +1027,11 @@ def civis_file_to_table(file_id, database, table, client=None,
     except ValueError:
         table_exists = False
 
-    table_columns_valid = True
+    sql_types_provided = True
     if table_columns:
         sql_type_cnt = sum(1 for col in table_columns if col.get('sql_type'))
         if sql_type_cnt == 0:
-            table_columns_valid = False
+            sql_types_provided = False
         elif sql_type_cnt != len(table_columns):
             error_message = 'Some table columns ' \
                            'have a sql type provided, ' \
@@ -1042,7 +1042,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     # and perform necessary file cleaning
     need_table_columns = ((not table_exists or existing_table_rows == 'drop')
                           and
-                          (table_columns is None or not table_columns_valid))
+                          (table_columns is None or not sql_types_provided))
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
