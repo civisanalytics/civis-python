@@ -1027,10 +1027,22 @@ def civis_file_to_table(file_id, database, table, client=None,
     except ValueError:
         table_exists = False
 
+    sql_types_provided = True
+    if table_columns:
+        sql_type_cnt = sum(1 for col in table_columns if col.get('sql_type'))
+        if sql_type_cnt == 0:
+            sql_types_provided = False
+        elif sql_type_cnt != len(table_columns):
+            error_message = 'Some table columns ' \
+                           'have a sql type provided, ' \
+                           'but others do not.'
+            raise ValueError(error_message)
+
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
     need_table_columns = ((not table_exists or existing_table_rows == 'drop')
-                          and table_columns is None)
+                          and
+                          (table_columns is None or not sql_types_provided))
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
@@ -1040,7 +1052,8 @@ def civis_file_to_table(file_id, database, table, client=None,
         cleaning_futures, client, headers, need_table_columns, delimiter
     )
 
-    table_columns = table_columns or cleaned_table_columns
+    table_columns = (cleaned_table_columns if need_table_columns
+                     else table_columns)
 
     source = dict(file_ids=cleaned_file_ids)
     destination = dict(schema=schema, table=table, remote_host_id=db_id,
