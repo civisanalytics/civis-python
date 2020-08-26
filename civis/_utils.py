@@ -53,6 +53,7 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = civis.__version__
     session = requests.Session()
+    # local testing
     session.verify = False
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
