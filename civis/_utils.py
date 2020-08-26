@@ -75,6 +75,7 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
 # Retry POSTs on 429s and 503s.
 def retry_configuration(max_retries=10):
     r = tenacity.Retrying(
+        retry=tenacity.retry_if_exception_type(IOError),
         # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
         wait=tenacity.wait_random_exponential(multiplier=2, max=60),
         stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(max_retries)),
