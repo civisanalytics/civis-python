@@ -3,15 +3,18 @@ import logging
 import os
 import re
 import sys
-import time
+# import time
 import uuid
 
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util import Retry
+import tenacity
+import logging
+logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+# from requests.adapters import HTTPAdapter
+# from requests.packages.urllib3.util import Retry
 
 import civis
-
 
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
@@ -46,93 +49,110 @@ def get_api_key(api_key):
                                "CIVIS_API_KEY environment variable")
     return api_key
 
-
 def open_session(api_key, max_retries=5, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = civis.__version__
     session = requests.Session()
+    session.verify = False
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
-    ver_string = "{}.{}.{}".format(sys.version_info.major,
-                                   sys.version_info.minor,
-                                   sys.version_info.micro)
+    ver_string = "{}.{}.{}".format(tenacity.sys.version_info.major,
+                                   tenacity.sys.version_info.minor,
+                                   tenacity.sys.version_info.micro)
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
-                                  status_forcelist=civis.civis.RETRY_CODES)
-    adapter = HTTPAdapter(max_retries=max_retries)
-    session.mount("https://", adapter)
+    # tearout
+    # max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
+    #                               status_forcelist=civis.civis.RETRY_CODES)
+    # adapter = HTTPAdapter(max_retries=max_retries)
+    # session.mount("https://", adapter)
 
     return session
 
+# retry on is [429, 502, 503, and 504]
+# retry on ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
+# Retry-After header is present, we use that value for the retry interval.
+# Retry POSTs on 429s and 503s.
+def retry_configuration(max_retries=10):
+    r = tenacity.Retrying(
+        # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
+        wait=tenacity.wait_random_exponential(multiplier=2, max=60),
+        stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(max_retries)),
+        # using for testing
+        before=tenacity.before_log(logger, logging.ERROR))
 
-class AggressiveRetry(Retry):
-    # Subclass Retry so that it retries more things. In particular,
-    # always retry API requests with a Retry-After header, regardless
-    # of the verb.
-    def is_retry(self, method, status_code, has_retry_after=False):
-        """ Is this method/status code retryable? (Based on whitelists and control
-        variables such as the number of total retries to allow, whether to
-        respect the Retry-After header, whether this header is present, and
-        whether the returned status code is on the list of status codes to
-        be retried upon on the presence of the aforementioned header)
-        """
-        if (self.total and
-                self.respect_retry_after_header and
-                has_retry_after and
-                (status_code in self.RETRY_AFTER_STATUS_CODES)):
-            return True
-
-        else:
-            return super().is_retry(method=method, status_code=status_code,
-                                    has_retry_after=has_retry_after)
+    return r
 
 
-def retry(exceptions, retries=5, delay=0.5, backoff=2):
-    """
-    Retry decorator
-
-    Parameters
-    ----------
-    exceptions: Exception
-        exceptions to trigger retry
-    retries: int, optional
-        number of retries to perform
-    delay: float, optional
-        delay before next retry
-    backoff: int, optional
-        factor used to increase delay after each retry
-
-    Returns
-    -------
-    retry decorator
-
-    Raises
-    ------
-    exception raised by decorator function
-    """
-    def deco_retry(f):
-        def f_retry(*args, **kwargs):
-            n_failed = 0
-            new_delay = delay
-            while True:
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as exc:
-                    if n_failed < retries:
-                        n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % \
-                              (str(exc), new_delay)
-                        log.debug(msg)
-                        time.sleep(new_delay)
-                        new_delay *= backoff
-                    else:
-                        raise exc
-
-        return f_retry
-
-    return deco_retry
+# tearout
+# class AggressiveRetry(Retry):
+#     # Subclass Retry so that it retries more things. In particular,
+#     # always retry API requests with a Retry-After header, regardless
+#     # of the verb.
+#     def is_retry(self, method, status_code, has_retry_after=False):
+#         """ Is this method/status code retryable? (Based on whitelists and control
+#         variables such as the number of total retries to allow, whether to
+#         respect the Retry-After header, whether this header is present, and
+#         whether the returned status code is on the list of status codes to
+#         be retried upon on the presence of the aforementioned header)
+#         """
+#         if (self.total and
+#                 self.respect_retry_after_header and
+#                 has_retry_after and
+#                 (status_code in self.RETRY_AFTER_STATUS_CODES)):
+#             return True
+#
+#         else:
+#             return super().is_retry(method=method, status_code=status_code,
+#                                     has_retry_after=has_retry_after)
+#
+#
+# tearout
+# def retry(exceptions, retries=5, delay=0.5, backoff=2):
+#     """
+#     Retry decorator
+#
+#     Parameters
+#     ----------
+#     exceptions: Exception
+#         exceptions to trigger retry
+#     retries: int, optional
+#         number of retries to perform
+#     delay: float, optional
+#         delay before next retry
+#     backoff: int, optional
+#         factor used to increase delay after each retry
+#
+#     Returns
+#     -------
+#     retry decorator
+#
+#     Raises
+#     ------
+#     exception raised by decorator function
+#     """
+#     def deco_retry(f):
+#         def f_retry(*args, **kwargs):
+#             n_failed = 0
+#             new_delay = delay
+#             while True:
+#                 try:
+#                     return f(*args, **kwargs)
+#                 except exceptions as exc:
+#                     if n_failed < retries:
+#                         n_failed += 1
+#                         msg = "%s, Retrying in %d seconds..." % \
+#                               (str(exc), new_delay)
+#                         log.debug(msg)
+#                         time.sleep(new_delay)
+#                         new_delay *= backoff
+#                     else:
+#                         raise exc
+#
+#         return f_retry
+#
+#     return deco_retry
 
 
 class BufferedPartialReader(object):

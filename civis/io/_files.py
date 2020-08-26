@@ -16,7 +16,8 @@ from requests import HTTPError
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis._deprecation import deprecate_param
-from civis._utils import BufferedPartialReader, retry
+# from civis._utils import BufferedPartialReader, retry
+from civis._utils import BufferedPartialReader
 
 try:
     import pandas as pd
@@ -101,7 +102,7 @@ def _single_upload(buf, name, client, **kwargs):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @retry(RETRY_EXCEPTIONS)
+    # @retry(RETRY_EXCEPTIONS)
     def _post():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -139,7 +140,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         "There are {} file parts but only {} urls".format(num_parts, len(urls))
 
     # upload function wrapped with a retry decorator
-    @retry(RETRY_EXCEPTIONS)
+    # @retry(RETRY_EXCEPTIONS)
     def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
         offset = part_size * part_num
@@ -348,7 +349,7 @@ def _civis_to_file(file_id, buf, api_key=None, client=None):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @retry(RETRY_EXCEPTIONS)
+    # @retry(RETRY_EXCEPTIONS)
     def _download_url_to_buf():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)

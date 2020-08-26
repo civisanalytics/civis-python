@@ -59,6 +59,7 @@ def main():
             'joblib>=0.11,<0.15',
             'pubnub>=4.1.12,<=4.99',
             'cloudpickle>=0.2.0,<2',
+            'tenacity>=6.2,<7',
         ],
         entry_points={
             'console_scripts': [

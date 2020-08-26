@@ -15,7 +15,7 @@ import requests
 from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
-                          open_session, get_api_key)
+                          open_session, get_api_key, retry_configuration)
 
 
 API_VERSIONS = ["1.0"]
@@ -500,7 +500,8 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
-            response = sess.get("{}endpoints".format(get_base_url()))
+            retry = retry_configuration(MAX_RETRIES)
+            response = retry.call(sess.get("{}endpoints".format(get_base_url())))
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
