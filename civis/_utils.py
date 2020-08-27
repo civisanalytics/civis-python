@@ -3,7 +3,7 @@ import logging
 import os
 import re
 import sys
-# import time
+import time
 import uuid
 
 import requests
@@ -82,8 +82,8 @@ def retry_configuration(max_retries=10):
         # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
         wait=tenacity.wait_random_exponential(multiplier=2, max=60),
         stop=(
-                tenacity.stop_after_delay(600) |
-                tenacity.stop_after_attempt(max_retries)
+                tenacity.stop_after_delay(600)
+                | tenacity.stop_after_attempt(max_retries)
         ),
         # using for testing
         before=tenacity.before_log(logger, logging.ERROR))
@@ -98,17 +98,7 @@ def check_retry_valid(method, status_code):
         return True
     return False
 
-# @retry(
-#     retry=(retry_if_exception_type(requests.exceptions.HTTPError)),
-#     # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
-#     wait=wait_random_exponential(multiplier=2, max=60),
-#     stop=(
-#             stop_after_delay(600) |
-#             stop_after_attempt(5)
-#     ),
-#     # using for testing
-#     before=before_log(logger, logging.ERROR),
-# )
+
 # tearout
 # class AggressiveRetry(Retry):
 #     # Subclass Retry so that it retries more things. In particular,
@@ -132,51 +122,50 @@ def check_retry_valid(method, status_code):
 #                                     has_retry_after=has_retry_after)
 #
 #
-# tearout
-# def retry(exceptions, retries=5, delay=0.5, backoff=2):
-#     """
-#     Retry decorator
-#
-#     Parameters
-#     ----------
-#     exceptions: Exception
-#         exceptions to trigger retry
-#     retries: int, optional
-#         number of retries to perform
-#     delay: float, optional
-#         delay before next retry
-#     backoff: int, optional
-#         factor used to increase delay after each retry
-#
-#     Returns
-#     -------
-#     retry decorator
-#
-#     Raises
-#     ------
-#     exception raised by decorator function
-#     """
-#     def deco_retry(f):
-#         def f_retry(*args, **kwargs):
-#             n_failed = 0
-#             new_delay = delay
-#             while True:
-#                 try:
-#                     return f(*args, **kwargs)
-#                 except exceptions as exc:
-#                     if n_failed < retries:
-#                         n_failed += 1
-#                         msg = "%s, Retrying in %d seconds..." % \
-#                               (str(exc), new_delay)
-#                         log.debug(msg)
-#                         time.sleep(new_delay)
-#                         new_delay *= backoff
-#                     else:
-#                         raise exc
-#
-#         return f_retry
-#
-#     return deco_retry
+def retry(exceptions, retries=5, delay=0.5, backoff=2):
+    """
+    Retry decorator
+
+    Parameters
+    ----------
+    exceptions: Exception
+        exceptions to trigger retry
+    retries: int, optional
+        number of retries to perform
+    delay: float, optional
+        delay before next retry
+    backoff: int, optional
+        factor used to increase delay after each retry
+
+    Returns
+    -------
+    retry decorator
+
+    Raises
+    ------
+    exception raised by decorator function
+    """
+    def deco_retry(f):
+        def f_retry(*args, **kwargs):
+            n_failed = 0
+            new_delay = delay
+            while True:
+                try:
+                    return f(*args, **kwargs)
+                except exceptions as exc:
+                    if n_failed < retries:
+                        n_failed += 1
+                        msg = "%s, Retrying in %d seconds..." % \
+                              (str(exc), new_delay)
+                        log.debug(msg)
+                        time.sleep(new_delay)
+                        new_delay *= backoff
+                    else:
+                        raise exc
+
+        return f_retry
+
+    return deco_retry
 
 
 class BufferedPartialReader(object):

@@ -198,7 +198,6 @@ def invoke(method, path, op, *args, **kwargs):
 
 def retrieve_spec_dict(api_version="1.0"):
     """Retrieve the API specification from a cached version or from Civis."""
-
     refresh_spec = True
     now_timestamp = calendar.timegm(time.gmtime())
 
@@ -290,9 +289,9 @@ def add_path_commands(path, path_dict, grp, resource):
         if description:
             op_help += '\n\n' + description
         op_help += '\n\n' + path
-        retry = retry_configuration(MAX_RETRIES)
-        # raw_spec = retry(get_api_spec, api_key, api_version)
-        callback = partial(retry(invoke, method=method, path=path, op=op_dict))
+        # retry = retry_configuration(MAX_RETRIES)
+        # callback = partial(retry(invoke, method=method, path=path, op=op_dict))
+        callback = partial(invoke, method=method, path=path, op=op_dict)
         cmd = click.Command(name,
                             callback=callback,
                             short_help=summary,
