@@ -7,11 +7,11 @@ import time
 import uuid
 
 import requests
-# from requests import HTTPError
 import tenacity
 import logging
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+# tearout
 # from requests.adapters import HTTPAdapter
 # from requests.packages.urllib3.util import Retry
 
@@ -20,10 +20,6 @@ import civis
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
-
-RETRY_EXCEPTIONS = (requests.exceptions.HTTPError,
-                    requests.exceptions.ConnectionError,
-                    requests.exceptions.ConnectTimeout)
 
 
 def maybe_get_random_name(name):
