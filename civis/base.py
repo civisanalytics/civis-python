@@ -5,8 +5,10 @@ import threading
 from concurrent import futures
 import warnings
 
+# from civis.resources._resources import MAX_RETRIES
+MAX_RETRIES = 10
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import open_session
+from civis._utils import open_session, check_retry_valid, retry_configuration
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -70,6 +72,10 @@ class CivisImportError(Exception):
     pass
 
 
+class APIRetryError(Exception):
+    pass
+
+
 def get_base_url():
     base_url = os.environ.get('CIVIS_API_ENDPOINT', DEFAULT_API_ENDPOINT)
     if not base_url.endswith('/'):
@@ -105,6 +111,9 @@ class Endpoint(object):
             auth_error = response.headers["www-authenticate"]
             raise CivisAPIKeyError(auth_error) from CivisAPIError(response)
 
+        if check_retry_valid(method, response.status_code):
+            raise APIRetryError
+
         if not response.ok:
             raise CivisAPIError(response)
 
@@ -116,7 +125,8 @@ class Endpoint(object):
         if iterator:
             resp = PaginatedResponse(path, params, self)
         else:
-            resp = self._make_request(method, path, params, data, **kwargs)
+            retry = retry_configuration(MAX_RETRIES)
+            resp = retry(self._make_request, method, path, params, data, **kwargs)
             resp = convert_response_data_type(resp,
                                               return_type=self._return_type)
         self._client.last_response = resp

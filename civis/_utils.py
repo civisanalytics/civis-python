@@ -7,6 +7,7 @@ import sys
 import uuid
 
 import requests
+# from requests import HTTPError
 import tenacity
 import logging
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
@@ -19,6 +20,10 @@ import civis
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
+
+RETRY_EXCEPTIONS = (requests.exceptions.HTTPError,
+                    requests.exceptions.ConnectionError,
+                    requests.exceptions.ConnectTimeout)
 
 
 def maybe_get_random_name(name):
@@ -55,9 +60,9 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
     session = requests.Session()
     session.auth = (api_key, '')
     session_agent = session.headers.get('User-Agent', '')
-    ver_string = "{}.{}.{}".format(tenacity.sys.version_info.major,
-                                   tenacity.sys.version_info.minor,
-                                   tenacity.sys.version_info.micro)
+    ver_string = "{}.{}.{}".format(sys.version_info.major,
+                                   sys.version_info.minor,
+                                   sys.version_info.micro)
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
@@ -69,22 +74,41 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
 
     return session
 
-# retry on is [429, 502, 503, and 504]
-# retry on ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
+
 # Retry-After header is present, we use that value for the retry interval.
-# Retry POSTs on 429s and 503s.
 def retry_configuration(max_retries=10):
     r = tenacity.Retrying(
-        # retry=tenacity.retry_if_exception_type(requests.HTTPError),
+        retry=(tenacity.retry_if_exception_type(civis.base.APIRetryError)),
         # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
         wait=tenacity.wait_random_exponential(multiplier=2, max=60),
-        stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(max_retries)),
+        stop=(
+                tenacity.stop_after_delay(600) |
+                tenacity.stop_after_attempt(max_retries)
+        ),
         # using for testing
         before=tenacity.before_log(logger, logging.ERROR))
 
     return r
 
 
+def check_retry_valid(method, status_code):
+    if method in civis.civis.RETRY_VERBS and status_code in civis.civis.RETRY_CODES:
+        return True
+    elif method == 'post' and status_code in civis.civis.POST_RETRY_CODES:
+        return True
+    return False
+
+# @retry(
+#     retry=(retry_if_exception_type(requests.exceptions.HTTPError)),
+#     # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
+#     wait=wait_random_exponential(multiplier=2, max=60),
+#     stop=(
+#             stop_after_delay(600) |
+#             stop_after_attempt(5)
+#     ),
+#     # using for testing
+#     before=before_log(logger, logging.ERROR),
+# )
 # tearout
 # class AggressiveRetry(Retry):
 #     # Subclass Retry so that it retries more things. In particular,

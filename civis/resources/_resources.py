@@ -9,13 +9,14 @@ try:
 except ImportError:
     from funcsigs import Signature, Parameter
 
-from jsonref import JsonRef
 import requests
+from jsonref import JsonRef
 
-from civis.base import Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url, APIRetryError
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
-                          open_session, get_api_key, retry_configuration)
+                          open_session, get_api_key,
+                          check_retry_valid, retry_configuration)
 
 
 API_VERSIONS = ["1.0"]
@@ -256,6 +257,7 @@ def create_method(params, verb, method_name, path, doc):
     verb : str
         HTTP verb to call
     method_name : str
+
         The name to give the returned function f
     path : str
         Endpoint path, possibly including replacement fields
@@ -500,8 +502,6 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
-            # retry = retry_configuration(2)
-            # response = retry(sess.get("{}endpoints".format(get_base_url())))
             response = sess.get("{}endpoints".format(get_base_url()))
     else:
         msg = "API specification for api version {} cannot be found"
@@ -509,6 +509,8 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     if response.status_code in (401, 403):
         msg = "{} error downloading API specification. API key may be expired."
         raise requests.exceptions.HTTPError(msg.format(response.status_code))
+    if check_retry_valid('get', response.status_code):
+        raise APIRetryError
     response.raise_for_status()
     spec = response.json(object_pairs_hook=OrderedDict)
     return spec

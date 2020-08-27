@@ -11,6 +11,8 @@ from civis._deprecation import deprecate_param
 log = logging.getLogger(__name__)
 
 RETRY_CODES = [429, 502, 503, 504]
+RETRY_VERBS = ['head', 'trace', 'get', 'put', 'options', 'delete']
+POST_RETRY_CODES = [429, 503]
 
 
 def find(object_list, filter_func=None, **kwargs):
