@@ -500,8 +500,9 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
-            retry = retry_configuration(MAX_RETRIES)
-            response = retry.call(sess.get("{}endpoints".format(get_base_url())))
+            # retry = retry_configuration(2)
+            # response = retry(sess.get("{}endpoints".format(get_base_url())))
+            response = sess.get("{}endpoints".format(get_base_url()))
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
@@ -542,7 +543,9 @@ def generate_classes(api_key, api_version="1.0", resources="all"):
         "APIClient api_version must be one of {}".format(API_VERSIONS))
     assert resources in ["base", "all"], (
         "resources must be one of {}".format(["base", "all"]))
-    raw_spec = get_api_spec(api_key, api_version)
+    retry = retry_configuration(MAX_RETRIES)
+    raw_spec = retry(get_api_spec, api_key, api_version)
+    # raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
 
@@ -562,7 +565,9 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
         objects with different versions.  Currently only "1.0" is supported.
     """
     api_key = get_api_key(api_key)
-    spec = get_api_spec(api_key, api_version=api_version)
+    retry = retry_configuration(MAX_RETRIES)
+    spec = retry(get_api_spec, api_key, api_version=api_version)
+    # spec = get_api_spec(api_key, api_version=api_version)
     with open(cache, "wt") as _fout:
         json.dump(spec, _fout)
 
