@@ -256,7 +256,6 @@ def create_method(params, verb, method_name, path, doc):
     verb : str
         HTTP verb to call
     method_name : str
-
         The name to give the returned function f
     path : str
         Endpoint path, possibly including replacement fields

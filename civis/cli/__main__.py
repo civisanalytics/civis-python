@@ -25,7 +25,6 @@ import click
 from jsonref import JsonRef
 import yaml
 from requests import Request
-
 from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
     jobs_follow_log, jobs_follow_run_log, notebooks_download_cmd,
@@ -196,6 +195,7 @@ def invoke(method, path, op, *args, **kwargs):
 
 def retrieve_spec_dict(api_version="1.0"):
     """Retrieve the API specification from a cached version or from Civis."""
+
     refresh_spec = True
     now_timestamp = calendar.timegm(time.gmtime())
 
