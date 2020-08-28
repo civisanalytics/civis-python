@@ -8,10 +8,19 @@ import uuid
 
 import requests
 import tenacity
+from tenacity import (
+    Retrying,
+    retry_if_result,
+    stop_after_attempt,
+    stop_after_delay,
+    wait_random_exponential
+)
+# TEAROUT
+from tenacity import after_log, before_log
 import logging
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-# tearout
+# TEAROUT
 # from requests.adapters import HTTPAdapter
 # from requests.packages.urllib3.util import Retry
 
@@ -62,29 +71,13 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
-    # tearout
+    # TEAROUT
     # max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
     #                               status_forcelist=civis.civis.RETRY_CODES)
     # adapter = HTTPAdapter(max_retries=max_retries)
     # session.mount("https://", adapter)
 
     return session
-
-
-# Retry-After header is present, we use that value for the retry interval.
-def retry_configuration(max_retries=10):
-    r = tenacity.Retrying(
-        retry=(tenacity.retry_if_exception_type(civis.base.APIRetryError)),
-        # Randomly wait up to 2^x * 2 seconds between each retry until the range reaches 60 seconds, then randomly up to 60 seconds afterwards
-        wait=tenacity.wait_random_exponential(multiplier=2, max=60),
-        stop=(
-                tenacity.stop_after_delay(600)
-                | tenacity.stop_after_attempt(max_retries)
-        ),
-        # using for testing
-        before=tenacity.before_log(logger, logging.ERROR))
-
-    return r
 
 
 def check_retry_valid(method, status_code):
@@ -95,7 +88,37 @@ def check_retry_valid(method, status_code):
     return False
 
 
-# tearout
+def make_request(prepared_req, session):
+    response = session.send(prepared_req)
+    return response
+
+
+# Retry-After header is present, we use that value for the retry interval.
+def retry_request(method, prepared_req, session, max_retries=10):
+    if method == 'post':
+        retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.POST_RETRY_CODES))
+    elif method in civis.civis.RETRY_VERBS:
+        retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.RETRY_CODES))
+
+    if retry_conditions:
+        retry_config = Retrying(
+            retry=retry_conditions,
+            wait=wait_random_exponential(multiplier=2, max=60),
+            stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
+            # retry_error_callback=_result_if_max_retry_count,
+            # using for testing
+            # TEAROUT
+            before=before_log(logger, logging.INFO),
+            after=after_log(logger, logging.INFO),
+        )
+        response = retry_config(make_request, prepared_req, session)
+        return response
+
+    response = make_request(prepared_req, session)
+    return response
+
+
+# TEAROUT
 # class AggressiveRetry(Retry):
 #     # Subclass Retry so that it retries more things. In particular,
 #     # always retry API requests with a Retry-After header, regardless
@@ -116,8 +139,8 @@ def check_retry_valid(method, status_code):
 #         else:
 #             return super().is_retry(method=method, status_code=status_code,
 #                                     has_retry_after=has_retry_after)
-#
-#
+
+
 def retry(exceptions, retries=5, delay=0.5, backoff=2):
     """
     Retry decorator

@@ -12,11 +12,10 @@ except ImportError:
 import requests
 from jsonref import JsonRef
 
-from civis.base import Endpoint, get_base_url, APIRetryError
+from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
-                          open_session, get_api_key,
-                          check_retry_valid, retry_configuration)
+                          open_session, get_api_key, retry_request)
 
 
 API_VERSIONS = ["1.0"]
@@ -61,7 +60,7 @@ ITERATOR_PARAM_DESC = (
     "    If True, return a generator to iterate over all responses. Use when\n"
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
-MAX_RETRIES = 10
+MAX_RETRIES = 2
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
 
@@ -502,15 +501,17 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
-            response = sess.get("{}endpoints".format(get_base_url()))
+            # tearout
+            # response = sess.get("{}endpoints".format(get_base_url()))
+            request = requests.Request('get', "{}endpoints".format(get_base_url()))
+            pre_request = sess.prepare_request(request)
+            response = retry_request('get', pre_request, sess, MAX_RETRIES)
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
     if response.status_code in (401, 403):
         msg = "{} error downloading API specification. API key may be expired."
         raise requests.exceptions.HTTPError(msg.format(response.status_code))
-    if check_retry_valid('get', response.status_code):
-        raise APIRetryError
     response.raise_for_status()
     spec = response.json(object_pairs_hook=OrderedDict)
     return spec
@@ -545,9 +546,7 @@ def generate_classes(api_key, api_version="1.0", resources="all"):
         "APIClient api_version must be one of {}".format(API_VERSIONS))
     assert resources in ["base", "all"], (
         "resources must be one of {}".format(["base", "all"]))
-    retry = retry_configuration(MAX_RETRIES)
-    raw_spec = retry(get_api_spec, api_key, api_version)
-    # raw_spec = get_api_spec(api_key, api_version)
+    raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
 
@@ -567,9 +566,7 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
         objects with different versions.  Currently only "1.0" is supported.
     """
     api_key = get_api_key(api_key)
-    retry = retry_configuration(MAX_RETRIES)
-    spec = retry(get_api_spec, api_key, api_version=api_version)
-    # spec = get_api_spec(api_key, api_version=api_version)
+    spec = get_api_spec(api_key, api_version=api_version)
     with open(cache, "wt") as _fout:
         json.dump(spec, _fout)
 

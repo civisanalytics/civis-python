@@ -24,7 +24,7 @@ from warnings import warn
 import click
 from jsonref import JsonRef
 import yaml
-from civis.base import APIRetryError
+
 from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
     jobs_follow_log, jobs_follow_run_log, notebooks_download_cmd,
@@ -164,9 +164,6 @@ def invoke(method, path, op, *args, **kwargs):
     )
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
         response = sess.request(**request_info)
-
-    if check_retry_valid('get', response.status_code):
-        raise APIRetryError
 
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
