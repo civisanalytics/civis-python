@@ -7,13 +7,11 @@ import uuid
 
 import requests
 import tenacity
-from tenacity import (
-    Retrying,
-    retry_if_result,
-    stop_after_attempt,
-    stop_after_delay,
-    wait_random_exponential
-)
+from tenacity import (Retrying, retry_if_result, retry_if_exception_type,
+                      stop_after_attempt, stop_after_delay, wait_random_exponential)
+from tenacity.wait import wait_base
+import urllib.error
+
 # TEAROUT
 from tenacity import after_log, before_log
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
@@ -25,7 +23,7 @@ import civis
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
-MAX_RETRIES = 2
+MAX_RETRIES = 10
 
 
 def maybe_get_random_name(name):
@@ -93,7 +91,8 @@ def retry_request(method, prepared_req, session, max_retries=10):
     if retry_conditions:
         retry_config = Retrying(
             retry=retry_conditions,
-            wait=wait_random_exponential(multiplier=2, max=60),
+            wait=wait_for_retry_after_header(fallback=wait_random_exponential(multiplier=2, max=60)),
+            # wait=wait_random_exponential(multiplier=2, max=60),
             stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
             retry_error_callback=_return_last_value,
             # using for testing
@@ -172,3 +171,23 @@ class BufferedPartialReader(object):
         data = self.buf.read(bytes_to_read)
         self.bytes_read += len(data)
         return data
+
+
+class wait_for_retry_after_header(wait_base):
+    """Wait strategy that first looks for Retry-After header. If not
+        present it uses the fallback strategy as the wait param"""
+    """Wait strategy that tries to wait for the length specified by
+        the Retry-After header, or the underlying wait strategy if not."""
+    def __init__(self, fallback):
+        self.fallback = fallback
+
+    def __call__(self, retry_state):
+        # retry_state is an instance of tenacity.RetryCallState.  The .outcome
+        # property is the result/exception that came from the underlying function.
+        result_headers = retry_state.outcome._result.headers
+        retry_after = result_headers.get("Retry-After")
+        try:
+            return int(retry_after)
+        except (TypeError, ValueError):
+            pass
+        return self.fallback(retry_state)

@@ -9,9 +9,9 @@ try:
 except ImportError:
     from funcsigs import Signature, Parameter
 
+from jsonref import JsonRef
 import requests
 from requests import Request
-from jsonref import JsonRef
 
 from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
