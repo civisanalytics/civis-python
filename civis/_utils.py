@@ -167,10 +167,9 @@ class wait_for_retry_after_header(wait_base):
 
     def __call__(self, retry_state):
         # retry_state is an instance of tenacity.RetryCallState.  The .outcome
-        # property is the result/exception that came from the underlying function.
+        # property contains the result/exception that came from the underlying function.
         result_headers = retry_state.outcome._result.headers
         retry_after = result_headers.get("Retry-After")
-        import pdb; pdb.set_trace()
         try:
             return int(retry_after)
         except (TypeError, ValueError):
