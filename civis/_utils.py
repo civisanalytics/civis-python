@@ -4,6 +4,7 @@ import re
 import sys
 import time
 import uuid
+import random
 
 import requests
 from tenacity import (Retrying, retry_if_result, stop_after_attempt,
@@ -115,7 +116,8 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
     delay: float, optional
         delay before next retry
     backoff: int, optional
-        factor used to increase delay after each retry
+        factor used to calculate the exponential increase
+        delay after each retry
 
     Returns
     -------
@@ -137,9 +139,12 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                         n_failed += 1
                         msg = "%s, Retrying in %d seconds..." % \
                               (str(exc), new_delay)
-                        log.debug(msg)
+                        log.error(msg)
                         time.sleep(new_delay)
-                        new_delay *= backoff
+                        new_delay = min(
+                            (pow(2, n_failed) / 4) *
+                            (random() + backoff), 50 + 10 * random()
+                        )
                     else:
                         raise exc
 
