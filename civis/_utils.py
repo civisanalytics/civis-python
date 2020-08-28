@@ -1,4 +1,5 @@
-from builtins import super
+# TEAROUT
+# from builtins import super
 import logging
 import os
 import re
@@ -17,7 +18,6 @@ from tenacity import (
 )
 # TEAROUT
 from tenacity import after_log, before_log
-import logging
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 # TEAROUT
@@ -26,9 +26,11 @@ logger = logging.getLogger(__name__)
 
 import civis
 
+
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
+MAX_RETRIES = 10
 
 
 def maybe_get_random_name(name):
@@ -59,7 +61,8 @@ def get_api_key(api_key):
                                "CIVIS_API_KEY environment variable")
     return api_key
 
-def open_session(api_key, max_retries=5, user_agent="civis-python"):
+
+def open_session(api_key, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = civis.__version__
     session = requests.Session()
@@ -88,13 +91,13 @@ def check_retry_valid(method, status_code):
     return False
 
 
-def make_request(prepared_req, session):
-    response = session.send(prepared_req)
-    return response
-
-
 # Retry-After header is present, we use that value for the retry interval.
 def retry_request(method, prepared_req, session, max_retries=10):
+
+    def _make_request(req, sess):
+        response = sess.send(req)
+        return response
+
     if method == 'post':
         retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.POST_RETRY_CODES))
     elif method in civis.civis.RETRY_VERBS:
@@ -111,10 +114,10 @@ def retry_request(method, prepared_req, session, max_retries=10):
             before=before_log(logger, logging.INFO),
             after=after_log(logger, logging.INFO),
         )
-        response = retry_config(make_request, prepared_req, session)
+        response = retry_config(_make_request, prepared_req, session)
         return response
 
-    response = make_request(prepared_req, session)
+    response = _make_request(prepared_req, session)
     return response
 
 

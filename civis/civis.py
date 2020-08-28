@@ -388,8 +388,7 @@ class APIClient(MetaMixin):
                              "'pandas'")
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
-        self._session_kwargs = {'api_key': session_auth_key,
-                                'max_retries': retry_total}
+        self._session_kwargs = {'api_key': session_auth_key}
         self.last_response = None
 
         # Catch deprecation warnings from generate_classes_maybe_cached and

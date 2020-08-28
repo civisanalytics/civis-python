@@ -32,9 +32,7 @@ from civis.cli._cli_commands import (
     notebooks_new_cmd, notebooks_up, notebooks_down, notebooks_open, sql_cmd)
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
-# from civis.resources._resources import parse_method_name, MAX_RETRIES
-MAX_RETRIES = 10
-from civis._utils import open_session, retry_request
+from civis._utils import open_session, retry_request, MAX_RETRIES
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')

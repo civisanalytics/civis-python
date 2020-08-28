@@ -16,7 +16,7 @@ from jsonref import JsonRef
 from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
-                          open_session, get_api_key, retry_request)
+                          open_session, get_api_key, retry_request, MAX_RETRIES)
 
 
 API_VERSIONS = ["1.0"]
@@ -61,7 +61,6 @@ ITERATOR_PARAM_DESC = (
     "    If True, return a generator to iterate over all responses. Use when\n"
     "    more results than the maximum allowed by limit are needed. When\n"
     "    True, limit and page_num are ignored. Defaults to False.\n")
-MAX_RETRIES = 2
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
 
@@ -501,7 +500,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         API client version tag and ``requests`` version tag.
     """
     if api_version == "1.0":
-        with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
+        with open_session(api_key, user_agent=user_agent) as sess:
             # tearout
             # response = sess.get("{}endpoints".format(get_base_url()))
             request = Request('get', "{}endpoints".format(get_base_url()))

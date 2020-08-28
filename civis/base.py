@@ -6,10 +6,9 @@ from concurrent import futures
 import warnings
 from requests import Request
 
-# from civis.resources._resources import MAX_RETRIES
-MAX_RETRIES = 10
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import open_session, retry_request
+from civis._utils import open_session, retry_request, MAX_RETRIES
+# MAX_RETRIES = 10
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
