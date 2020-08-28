@@ -10,6 +10,7 @@ except ImportError:
     from funcsigs import Signature, Parameter
 
 import requests
+from requests import Request
 from jsonref import JsonRef
 
 from civis.base import Endpoint, get_base_url
@@ -503,7 +504,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         with open_session(api_key, MAX_RETRIES, user_agent=user_agent) as sess:
             # tearout
             # response = sess.get("{}endpoints".format(get_base_url()))
-            request = requests.Request('get', "{}endpoints".format(get_base_url()))
+            request = Request('get', "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
             response = retry_request('get', pre_request, sess, MAX_RETRIES)
     else:

@@ -24,6 +24,7 @@ from warnings import warn
 import click
 from jsonref import JsonRef
 import yaml
+from requests import Request
 
 from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
@@ -33,7 +34,7 @@ from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
 # from civis.resources._resources import parse_method_name, MAX_RETRIES
 MAX_RETRIES = 10
-from civis._utils import open_session, check_retry_valid, retry_configuration
+from civis._utils import open_session, retry_request
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
@@ -163,7 +164,11 @@ def invoke(method, path, op, *args, **kwargs):
         method=method
     )
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
-        response = sess.request(**request_info)
+        request = Request(**request_info)
+        pre_request = sess.prepare_request(request)
+        response = retry_request(method, pre_request, sess, MAX_RETRIES)
+        # tearout
+        # response = sess.request(**request_info)
 
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
@@ -211,11 +216,8 @@ def retrieve_spec_dict(api_version="1.0"):
 
     # Download the spec and cache it in the user's home directory.
     if refresh_spec:
-        retry = retry_configuration(MAX_RETRIES)
-        spec_dict = retry(get_api_spec, get_api_key(), api_version=api_version,
-                          user_agent=CLI_USER_AGENT)
-        # spec_dict = get_api_spec(get_api_key(), api_version=api_version,
-        #                          user_agent=CLI_USER_AGENT)
+        spec_dict = get_api_spec(get_api_key(), api_version=api_version,
+                                 user_agent=CLI_USER_AGENT)
         with open(CACHED_SPEC_PATH, "w") as f:
             json.dump(spec_dict, f)
     return spec_dict
@@ -286,8 +288,6 @@ def add_path_commands(path, path_dict, grp, resource):
         if description:
             op_help += '\n\n' + description
         op_help += '\n\n' + path
-        # retry = retry_configuration(MAX_RETRIES)
-        # callback = partial(retry(invoke, method=method, path=path, op=op_dict))
         callback = partial(invoke, method=method, path=path, op=op_dict)
         cmd = click.Command(name,
                             callback=callback,
