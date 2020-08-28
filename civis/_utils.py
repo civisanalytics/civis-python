@@ -1,5 +1,3 @@
-# TEAROUT
-# from builtins import super
 import logging
 import os
 import re
@@ -20,9 +18,6 @@ from tenacity import (
 from tenacity import after_log, before_log
 logging.basicConfig(stream=tenacity.sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-# TEAROUT
-# from requests.adapters import HTTPAdapter
-# from requests.packages.urllib3.util import Retry
 
 import civis
 
@@ -74,11 +69,6 @@ def open_session(api_key, user_agent="civis-python"):
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
-    # TEAROUT
-    # max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
-    #                               status_forcelist=civis.civis.RETRY_CODES)
-    # adapter = HTTPAdapter(max_retries=max_retries)
-    # session.mount("https://", adapter)
 
     return session
 
@@ -116,29 +106,6 @@ def retry_request(method, prepared_req, session, max_retries=10):
 
     response = _make_request(prepared_req, session)
     return response
-
-
-# TEAROUT
-# class AggressiveRetry(Retry):
-#     # Subclass Retry so that it retries more things. In particular,
-#     # always retry API requests with a Retry-After header, regardless
-#     # of the verb.
-#     def is_retry(self, method, status_code, has_retry_after=False):
-#         """ Is this method/status code retryable? (Based on whitelists and control
-#         variables such as the number of total retries to allow, whether to
-#         respect the Retry-After header, whether this header is present, and
-#         whether the returned status code is on the list of status codes to
-#         be retried upon on the presence of the aforementioned header)
-#         """
-#         if (self.total and
-#                 self.respect_retry_after_header and
-#                 has_retry_after and
-#                 (status_code in self.RETRY_AFTER_STATUS_CODES)):
-#             return True
-#
-#         else:
-#             return super().is_retry(method=method, status_code=status_code,
-#                                     has_retry_after=has_retry_after)
 
 
 def retry(exceptions, retries=5, delay=0.5, backoff=2):
