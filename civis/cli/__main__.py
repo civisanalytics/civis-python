@@ -165,8 +165,6 @@ def invoke(method, path, op, *args, **kwargs):
         request = Request(**request_info)
         pre_request = sess.prepare_request(request)
         response = retry_request(method, pre_request, sess, MAX_RETRIES)
-        # tearout
-        # response = sess.request(**request_info)
 
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
