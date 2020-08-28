@@ -102,7 +102,8 @@ class Endpoint(object):
                 request = Request(method, url, json=data,
                                   params=params, **kwargs)
                 pre_request = sess.prepare_request(request)
-                response = retry_request(method, pre_request, sess, MAX_RETRIES)
+                response = retry_request(method, pre_request,
+                                         sess, MAX_RETRIES)
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]

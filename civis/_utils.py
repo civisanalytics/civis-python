@@ -6,7 +6,8 @@ import time
 import uuid
 
 import requests
-from tenacity import (Retrying, retry_if_result, stop_after_attempt, stop_after_delay, wait_random_exponential)
+from tenacity import (Retrying, retry_if_result, stop_after_attempt,
+                      stop_after_delay, wait_random_exponential)
 from tenacity.wait import wait_base
 
 import civis
@@ -71,18 +72,26 @@ def retry_request(method, prepared_req, session, max_retries=10):
         return response
 
     def _return_last_value(retry_state):
-        """return the result of the last call attempt and let code pick up the error"""
+        """return the result of the last call attempt
+        and let code pick up the error"""
         return retry_state.outcome.result()
 
     if method == 'post':
-        retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.POST_RETRY_CODES))
+        retry_conditions = (
+            retry_if_result(
+                lambda res: res.status_code in civis.civis.POST_RETRY_CODES)
+        )
     elif method in civis.civis.RETRY_VERBS:
-        retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.RETRY_CODES))
+        retry_conditions = (
+            retry_if_result(
+                lambda res: res.status_code in civis.civis.RETRY_CODES)
+        )
 
     if retry_conditions:
         retry_config = Retrying(
             retry=retry_conditions,
-            wait=wait_for_retry_after_header(fallback=wait_random_exponential(multiplier=2, max=60)),
+            wait=wait_for_retry_after_header(
+                fallback=wait_random_exponential(multiplier=2, max=60)),
             stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
             retry_error_callback=_return_last_value,
         )
@@ -166,8 +175,9 @@ class wait_for_retry_after_header(wait_base):
         self.fallback = fallback
 
     def __call__(self, retry_state):
-        # retry_state is an instance of tenacity.RetryCallState.  The .outcome
-        # property contains the result/exception that came from the underlying function.
+        # retry_state is an instance of tenacity.RetryCallState.
+        # The .outcome property contains the result/exception
+        # that came from the underlying function.
         result_headers = retry_state.outcome._result.headers
         retry_after = result_headers.get("Retry-After")
         try:

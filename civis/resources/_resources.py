@@ -16,7 +16,8 @@ from requests import Request
 from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake, to_camelcase,
-                          open_session, get_api_key, retry_request, MAX_RETRIES)
+                          open_session, get_api_key,
+                          retry_request, MAX_RETRIES)
 
 
 API_VERSIONS = ["1.0"]
