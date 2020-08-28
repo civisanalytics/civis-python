@@ -1063,11 +1063,12 @@ def civis_file_to_table(file_id, database, table, client=None,
     redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
                             diststyle=diststyle)
 
-    # If multiple files are being imported, there might be differences in
+    # If multiple files are being imported and the user hasn't explicitly
+    # provided table column info, then there might be differences in
     # their precisions/lengths - setting this option will allow the Civis API
     # to increase these values for the data types provided, and decreases the
-    # risk of a length-related import failure
-    loosen_types = len(file_id) > 1
+    # risk of a length-related import failure when types are inferred.
+    loosen_types = need_table_columns and len(file_id) > 1
 
     import_name = 'CSV import to {}.{}'.format(schema, table)
     import_job = client.imports.post_files_csv(
