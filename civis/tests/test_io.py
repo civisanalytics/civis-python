@@ -650,7 +650,6 @@ class ImportTests(CivisVCRTestCase):
                 m_process_cleaning_results.reset_mock()
                 run_subtest(mock_file_ids)
 
-
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
