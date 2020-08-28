@@ -30,7 +30,7 @@ import civis
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
-MAX_RETRIES = 10
+MAX_RETRIES = 2
 
 
 def maybe_get_random_name(name):
@@ -83,20 +83,17 @@ def open_session(api_key, user_agent="civis-python"):
     return session
 
 
-def check_retry_valid(method, status_code):
-    if method in civis.civis.RETRY_VERBS and status_code in civis.civis.RETRY_CODES:
-        return True
-    elif method == 'post' and status_code in civis.civis.POST_RETRY_CODES:
-        return True
-    return False
-
-
 # Retry-After header is present, we use that value for the retry interval.
 def retry_request(method, prepared_req, session, max_retries=10):
 
     def _make_request(req, sess):
+        """send the prepared session request"""
         response = sess.send(req)
         return response
+
+    def _return_last_value(retry_state):
+        """return the result of the last call attempt and let code pick up the error"""
+        return retry_state.outcome.result()
 
     if method == 'post':
         retry_conditions = (retry_if_result(lambda res: res.status_code in civis.civis.POST_RETRY_CODES))
@@ -108,7 +105,7 @@ def retry_request(method, prepared_req, session, max_retries=10):
             retry=retry_conditions,
             wait=wait_random_exponential(multiplier=2, max=60),
             stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
-            # retry_error_callback=_result_if_max_retry_count,
+            retry_error_callback=_return_last_value,
             # using for testing
             # TEAROUT
             before=before_log(logger, logging.INFO),
