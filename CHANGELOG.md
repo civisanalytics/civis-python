@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Bump minimum pubnub version to `4.1.12` (#397)
+- Retain specific sql types when there are multiple input files and `table_columns` specified in `civis.io.civis_file_to_table` ()
 
 ## 1.14.2 - 2020-06-03
 ### Added
