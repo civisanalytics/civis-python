@@ -4,7 +4,7 @@ import re
 import sys
 import time
 import uuid
-import random
+from random import random
 
 import requests
 from tenacity import (Retrying, retry_if_result, stop_after_attempt,
@@ -66,6 +66,8 @@ def open_session(api_key, user_agent="civis-python"):
 
 
 def retry_request(method, prepared_req, session, max_retries=10):
+
+    retry_conditions = None
 
     def _make_request(req, sess):
         """send the prepared session request"""
