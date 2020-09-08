@@ -64,7 +64,8 @@ def main():
                 'civis = civis.cli.__main__:main',
                 'civis_joblib_worker = civis.run_joblib_func:main',
             ]
-        }
+        },
+        python_requires=">=3.6"
     )
 
 
