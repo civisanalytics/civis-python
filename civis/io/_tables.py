@@ -1285,8 +1285,10 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
             column_delimiter=delimiter,
             hidden=hidden
         )
-        fut = run_job(cleaner_job.id, client=client, polling_interval=polling_interval)
-        log.debug('Started run %d for pre process job %d', fut.run_id, cleaner_job.id)
+        fut = run_job(cleaner_job.id, client=client,
+                      polling_interval=polling_interval)
+        log.debug('Started run %d for pre process job %d',
+                  fut.run_id, cleaner_job.id)
         cleaning_futures.append(fut)
     return cleaning_futures
 
