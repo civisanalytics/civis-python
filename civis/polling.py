@@ -92,7 +92,7 @@ class PollableResult(CivisAsyncResultBase):
     # Implementation notes: The `PollableResult` depends on some private
     # features of the `concurrent.futures.Future` class, so it's possible
     # that future versions of Python could break something here.
-    # (It works under at least 3.4, 3.5, and 3.6)
+    # (It works under at least 3.6)
     # We use the following `Future` implementation details
     # - The `Future` checks its state against predefined strings. We use
     #   `STATE_TRANS` to translate from the Civis platform states to `Future`
