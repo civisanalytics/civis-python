@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bump minimum pubnub version to `4.1.12` (#397)
 - In `civis.io.civis_file_to_table`, ensure that data types are detected when table_columns are provided with no sql_types. Additionally, throw an error if some sql_types are provided and not others.
 - Retain specific sql types when there are multiple input files and `table_columns` specified in `civis.io.civis_file_to_table` ()
+- Removed Python 3.5 support (#404)
 
 ## 1.14.2 - 2020-06-03
 ### Added
