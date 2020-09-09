@@ -105,3 +105,18 @@ def test_io_retry_unexpected_exception():
         raise ValueError('unexpected error')
 
     pytest.raises(ValueError, raise_unexpected_error)
+
+# @mock.patch("civis._utils.open_session", autospec=True)
+# # @mock.patch("civis.cli.__main__.Request", autospec=True)
+# def test_no_retry_on_success(mock_session):
+#
+#     import pdb; pdb.set_trace()
+#     # retry_request(method, prepared_req, session, max_retries=10)
+#     # need session
+#     # need prepared req
+# #     retry_request(method, prepared_req, session, max_retries=10):
+#
+# # test retry on method list with error codes
+# # test no retry with success code
+# # test no retry with negative error codes on non protected methods
+# # test respect retry header

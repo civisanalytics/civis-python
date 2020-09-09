@@ -2,7 +2,6 @@ from collections import OrderedDict
 import json
 import os
 from unittest import mock
-import requests_mock
 
 import pytest
 
