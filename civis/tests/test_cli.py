@@ -2,6 +2,7 @@ from collections import OrderedDict
 import json
 import os
 from unittest import mock
+import requests_mock
 
 import pytest
 
@@ -116,7 +117,8 @@ def test_failure_exit_code(mock_session):
 
 
 @mock.patch("civis.cli.__main__.open_session", autospec=True)
-def test_parameter_case(mock_session):
+@mock.patch("civis.cli.__main__.Request", autospec=True)
+def test_parameter_case(mock_request, mock_session):
     """
     Test that parameter names are sent in camelCase rather than snake_case.
     """
@@ -134,16 +136,12 @@ def test_parameter_case(mock_session):
 
     mock_session.call_args[1]['user_agent'] = 'civis-cli'
 
-    # session_context.send.assert_called_with(
-    #     url='https://api.civisanalytics.com/wobble/wubble',
-    #     json={},
-    #     params={'firstParameter': 'a', 'secondParameter': 'b'},
-    #     method='WIBBLE')
+    mock_request.assert_called_with(
+        url='https://api.civisanalytics.com/wobble/wubble',
+        json={},
+        params={'firstParameter': 'a', 'secondParameter': 'b'},
+        method='WIBBLE')
 
-    try:
-        session_context.send.assert_called_with(url='https://api.civisanalytics.com/wobble/wubble', json={}, params={'firstParameter': 'a', 'secondParameter': 'b'}, method='WIBBLE')
-    except:
-        import pdb; pdb.set_trace()
 
 @pytest.mark.parametrize(
     "path,method,resource_name,exp",
