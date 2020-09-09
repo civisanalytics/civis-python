@@ -107,7 +107,7 @@ def test_io_retry_unexpected_exception():
     pytest.raises(ValueError, raise_unexpected_error)
 
 # @mock.patch("civis._utils.open_session", autospec=True)
-# # @mock.patch("civis.cli.__main__.Request", autospec=True)
+# # # @mock.patch("civis.cli.__main__.Request", autospec=True)
 # def test_no_retry_on_success(mock_session):
 #
 #     import pdb; pdb.set_trace()
