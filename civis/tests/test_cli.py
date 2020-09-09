@@ -79,13 +79,11 @@ def test_blank_output(mock_session):
     """
     # The response object's json method will raise a ValueError when the output
     # is blank.
-    # import pdb; pdb.set_trace()
     session_context = mock_session.return_value.__enter__.return_value
-    session_context.request.return_value.json.side_effect = ValueError()
-    session_context.request.return_value.status_code = 200
+    session_context.send.return_value.json.side_effect = ValueError()
+    session_context.send.return_value.status_code = 200
 
     op = {"parameters": []}
-    # import pdb; pdb.set_trace()
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         invoke("WIBBLE", "/wobble/wubble", op)
 
@@ -93,54 +91,59 @@ def test_blank_output(mock_session):
     assert pytest_wrapped_e.value.code == 0
 
 
-# @mock.patch("civis.cli.__main__.open_session", autospec=True)
-# def test_failure_exit_code(mock_session):
-#     """
-#     Test that we return a nonzero exit code when the API request fails.
-#     """
-#     # first test that we get a zero exit code when the API request succeeds
-#     session_context = mock_session.return_value.__enter__.return_value
-#     session_context.request.return_value.json.side_effect = ValueError()
-#     session_context.request.return_value.status_code = 200
-#
-#     op = {"parameters": []}
-#
-#     with pytest.raises(SystemExit) as pytest_wrapped_e:
-#         invoke("WIBBLE", "/wobble/wubble", op)
-#     assert pytest_wrapped_e.value.code == 0
-#
-#     # now test that we get a nonzero exit code when the API request fails
-#     session_context.request.return_value.status_code = 404
-#
-#     with pytest.raises(SystemExit) as pytest_wrapped_e:
-#         invoke("WIBBLE", "/wobble/wubble", op)
-#     assert pytest_wrapped_e.value.code != 0
+@mock.patch("civis.cli.__main__.open_session", autospec=True)
+def test_failure_exit_code(mock_session):
+    """
+    Test that we return a nonzero exit code when the API request fails.
+    """
+    # first test that we get a zero exit code when the API request succeeds
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.side_effect = ValueError()
+    session_context.send.return_value.status_code = 200
+
+    op = {"parameters": []}
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        invoke("WIBBLE", "/wobble/wubble", op)
+    assert pytest_wrapped_e.value.code == 0
+
+    # now test that we get a nonzero exit code when the API request fails
+    session_context.send.return_value.status_code = 404
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        invoke("WIBBLE", "/wobble/wubble", op)
+    assert pytest_wrapped_e.value.code != 0
 
 
-# @mock.patch("civis.cli.__main__.open_session", autospec=True)
-# def test_parameter_case(mock_session):
-#     """
-#     Test that parameter names are sent in camelCase rather than snake_case.
-#     """
-#     api_response = {'key': 'value'}
-#     session_context = mock_session.return_value.__enter__.return_value
-#     session_context.request.return_value.json.return_value = api_response
-#     session_context.request.return_value.status_code = 200
-#
-#     # To avoid needing CIVIS_API_KEY set in the environment.
-#     op = {"parameters": [{'name': 'firstParameter', 'in': 'query'},
-#                          {'name': 'secondParameter', 'in': 'query'}]}
-#     with pytest.raises(SystemExit):
-#         invoke("WIBBLE", "/wobble/wubble", op,
-#                first_parameter='a', second_parameter='b')
-#
-#     mock_session.call_args[1]['user_agent'] = 'civis-cli'
-#     session_context.request.assert_called_with(
-#         url='https://api.civisanalytics.com/wobble/wubble',
-#         json={},
-#         params={'firstParameter': 'a', 'secondParameter': 'b'},
-#         method='WIBBLE')
+@mock.patch("civis.cli.__main__.open_session", autospec=True)
+def test_parameter_case(mock_session):
+    """
+    Test that parameter names are sent in camelCase rather than snake_case.
+    """
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+    session_context.send.return_value.status_code = 200
 
+    # To avoid needing CIVIS_API_KEY set in the environment.
+    op = {"parameters": [{'name': 'firstParameter', 'in': 'query'},
+                         {'name': 'secondParameter', 'in': 'query'}]}
+    with pytest.raises(SystemExit):
+        invoke("WIBBLE", "/wobble/wubble", op,
+               first_parameter='a', second_parameter='b')
+
+    mock_session.call_args[1]['user_agent'] = 'civis-cli'
+
+    # session_context.send.assert_called_with(
+    #     url='https://api.civisanalytics.com/wobble/wubble',
+    #     json={},
+    #     params={'firstParameter': 'a', 'secondParameter': 'b'},
+    #     method='WIBBLE')
+
+    try:
+        session_context.send.assert_called_with(url='https://api.civisanalytics.com/wobble/wubble', json={}, params={'firstParameter': 'a', 'secondParameter': 'b'}, method='WIBBLE')
+    except:
+        import pdb; pdb.set_trace()
 
 @pytest.mark.parametrize(
     "path,method,resource_name,exp",
