@@ -41,7 +41,7 @@ def test_maybe_random_name_not_random():
     assert maybe_get_random_name(given_name) == given_name
 
 
-def test_no_retry():
+def test_io_no_retry():
     @retry(ConnectionError, retries=4, delay=0.1)
     def succeeds():
         counter['i'] += 1
@@ -54,7 +54,7 @@ def test_no_retry():
     assert counter['i'] == 1
 
 
-def test_retry_once():
+def test_io_retry_once():
     @retry(ConnectionError, retries=4, delay=0.1)
     def fails_once():
         counter['i'] += 1
@@ -70,7 +70,7 @@ def test_retry_once():
     assert counter['i'] == 2
 
 
-def test_retry_limit_reached():
+def test_io_retry_limit_reached():
     @retry(ConnectionError, retries=4, delay=0.1)
     def always_fails():
         counter['i'] += 1
@@ -81,7 +81,7 @@ def test_retry_limit_reached():
     assert counter['i'] == 5
 
 
-def test_retry_multiple_exceptions():
+def test_io_retry_multiple_exceptions():
     @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
     def raise_multiple_exceptions():
         counter['i'] += 1
@@ -99,7 +99,7 @@ def test_retry_multiple_exceptions():
     assert counter['i'] == 3
 
 
-def test_retry_unexpected_exception():
+def test_io_retry_unexpected_exception():
     @retry(ConnectionError, retries=4, delay=0.1)
     def raise_unexpected_error():
         raise ValueError('unexpected error')
