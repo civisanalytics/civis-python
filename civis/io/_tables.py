@@ -1030,13 +1030,13 @@ def civis_file_to_table(file_id, database, table, client=None,
     sql_types_provided = False
     if table_columns:
         sql_type_cnt = sum(1 for col in table_columns if col.get('sql_type'))
-        if sql_type_cnt != len(table_columns):
+        if sql_type_cnt == len(table_columns):
+            sql_types_provided = True
+        elif sql_type_cnt != 0:
             error_message = 'Some table columns ' \
                            'have a sql type provided, ' \
                            'but others do not.'
             raise ValueError(error_message)
-        else:
-            sql_types_provided = True
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
