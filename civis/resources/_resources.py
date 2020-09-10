@@ -22,6 +22,7 @@ from civis._utils import (camel_to_snake, to_camelcase,
 
 API_VERSIONS = ["1.0"]
 BASE_RESOURCES_V1 = [
+    'aliases',
     'announcements',
     'apps',
     'civis',
@@ -33,9 +34,11 @@ BASE_RESOURCES_V1 = [
     'enhancements',
     'exports',
     'files',
+    'git_repos',
     'groups',
     'imports',
     'jobs',
+    'json_values',
     'match_targets',
     'media',
     'models',
@@ -50,6 +53,8 @@ BASE_RESOURCES_V1 = [
     'results',
     'scripts',
     'search',
+    'services',
+    'storage_hosts',
     'tables',
     'templates',
     'users',

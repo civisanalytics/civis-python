@@ -7,6 +7,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Bump minimum pubnub version to `4.1.12` (#397)
 - Refactored retry logic to use tenacity package, added random jitter on retries, and retry on POST 429 and 503s. (#401)
+- In `civis.io.civis_file_to_table`, ensure that data types are detected when table_columns are provided with no sql_types. Additionally, throw an error if some sql_types are provided and not others. (#400)
+- Retain specific sql types when there are multiple input files and `table_columns` specified in `civis.io.civis_file_to_table` (#402)
+- Removed Python 3.5 support (#404)
+- Updated list of base API resources to include `aliases`, `git_repos`, `json_values`, `services`, and `storage_hosts` so that they show up in the sphinx docs (#406)
+- Update the API spec at `civis/tests/civis_api_spec.json` so that new endpoints are included (e.g., `/exports/files/csv`) (#407)
+- Refactor file cleaning logic for `civis.io.civis_file_to_table` (#405)
+
+### Fixed
+- Fixed a workflows usage example in `docs/source/client.rst` that had an incorrect endpoint. (#409)
 
 ## 1.14.2 - 2020-06-03
 ### Added
