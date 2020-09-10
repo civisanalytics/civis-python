@@ -186,7 +186,7 @@ before retrying the request.
 
 If the error is one of [429, 502, 503, 504] and the request is not a ``patch*`` or ``post*``
 method, then the API client will retry the request several times, with an exponential delay,
-to see if it will succeed. If the request is of type ``post*`` it will retry withthe same parameters
+to see if it will succeed. If the request is of type ``post*`` it will retry with the same parameters
 for error codes [429, 503].
 
 .. end-include-marker-retires-section
