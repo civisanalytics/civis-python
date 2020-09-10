@@ -506,7 +506,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, user_agent=user_agent) as sess:
-            request = Request('get', "{}endpoints".format(get_base_url()))
+            request = Request('GET', "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
             response = retry_request('get', pre_request, sess, MAX_RETRIES)
     else:
