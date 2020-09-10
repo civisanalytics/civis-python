@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Bump minimum pubnub version to `4.1.12` (#397)
+- Refactored retry logic to use tenacity package, added random jitter on retries, and retry on POST 429 and 503s. (#401)
 
 ## 1.14.2 - 2020-06-03
 ### Added
