@@ -30,13 +30,11 @@ Below are examples of endpoints and how they map to API Client methods:
 +-----------------------------------+-------------------------------------------+
 | ``GET /workflows/1/executions``   | ``client.workflows.list_executions(1)``   |
 +-----------------------------------+-------------------------------------------+
-| ``PATCH /workflows/1``            | ``client.workflows.patch(1)``             |
+| ``PATCH /workflows/1``            | ``client.workflows.patch(1, ...)``        |
 +-----------------------------------+-------------------------------------------+
 | ``POST /workflows/1/executions``  | ``client.workflows.post_executions(1)``   |
 +-----------------------------------+-------------------------------------------+
 | ``GET /workflows/1/executions/2`` | ``client.workflows.get_executions(1, 2)`` |
-+-----------------------------------+-------------------------------------------+
-| ``DELETE /workflows/1``           | ``client.workflows.delete(1)``            |
 +-----------------------------------+-------------------------------------------+
 
 By default, the Civis API specification specification is downloaded from
