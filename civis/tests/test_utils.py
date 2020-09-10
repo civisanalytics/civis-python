@@ -5,13 +5,11 @@ from requests import ConnectionError, ConnectTimeout
 
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
-from civis._utils import open_session, retry_request, MAX_RETRIES
+from civis._utils import retry_request
 
 from civis.civis import RETRY_VERBS, RETRY_CODES, POST_RETRY_CODES
 
 import pytest
-
-import os
 
 
 def test_camel_to_snake():
@@ -112,9 +110,6 @@ def test_io_retry_unexpected_exception():
 
     pytest.raises(ValueError, raise_unexpected_error)
 
-# RETRY_CODES = [429, 502, 503, 504]
-# RETRY_VERBS = ['head', 'trace', 'get', 'put', 'options', 'delete']
-# POST_RETRY_CODES = [429, 503]
 
 @mock.patch('civis._utils.open_session')
 def test_no_retry_on_success(mock_session):
@@ -138,7 +133,6 @@ def test_no_retry_on_success(mock_session):
         retry_request(verb, pre_request, session_context, 3)
 
         assert session_context.send.call_count == expected_call_count
-
 
 
 @mock.patch('civis._utils.open_session')

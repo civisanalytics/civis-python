@@ -165,7 +165,6 @@ def invoke(method, path, op, *args, **kwargs):
         pre_request = sess.prepare_request(request)
         response = retry_request(method, pre_request, sess, MAX_RETRIES)
 
-    import pdb; pdb.set_trace()
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout
     exit_code = 0
