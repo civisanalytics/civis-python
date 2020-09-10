@@ -141,7 +141,7 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                         n_failed += 1
                         msg = "%s, Retrying in %d seconds..." % \
                               (str(exc), new_delay)
-                        log.error(msg)
+                        log.debug(msg)
                         time.sleep(new_delay)
                         new_delay = min(
                             (pow(2, n_failed) / 4) *

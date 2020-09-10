@@ -3,7 +3,6 @@ pyyaml>=3.0,<=5.99
 sphinx>=1.7.0,<2.0.0
 flake8>=3.0.4,==3.*
 pytest-cov>=2.4.0,==2.*
-requests-mock>=1.8.0,<2.0.0
 vcrpy>=1.11.0,<=1.11.99
 vcrpy-unittest==0.1.6
 sphinx_rtd_theme>=0.2.4,<1.0.0
