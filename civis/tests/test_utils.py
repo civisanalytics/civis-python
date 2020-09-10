@@ -1,11 +1,17 @@
 from unittest import mock
 
+from requests import Request
 from requests import ConnectionError, ConnectTimeout
 
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
+from civis._utils import open_session, retry_request, MAX_RETRIES
+
+from civis.civis import RETRY_VERBS, RETRY_CODES, POST_RETRY_CODES
 
 import pytest
+
+import os
 
 
 def test_camel_to_snake():
@@ -106,17 +112,129 @@ def test_io_retry_unexpected_exception():
 
     pytest.raises(ValueError, raise_unexpected_error)
 
-# @mock.patch("civis._utils.open_session", autospec=True)
-# # # @mock.patch("civis.cli.__main__.Request", autospec=True)
-# def test_no_retry_on_success(mock_session):
-#
-#     import pdb; pdb.set_trace()
-#     # retry_request(method, prepared_req, session, max_retries=10)
-#     # need session
-#     # need prepared req
-# #     retry_request(method, prepared_req, session, max_retries=10):
-#
-# # test retry on method list with error codes
-# # test no retry with success code
-# # test no retry with negative error codes on non protected methods
-# # test respect retry header
+# RETRY_CODES = [429, 502, 503, 504]
+# RETRY_VERBS = ['head', 'trace', 'get', 'put', 'options', 'delete']
+# POST_RETRY_CODES = [429, 503]
+
+@mock.patch('civis._utils.open_session')
+def test_no_retry_on_success(mock_session):
+    expected_call_count = 0
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+
+    for verb in RETRY_VERBS:
+        expected_call_count += 1
+        session_context.send.return_value.status_code = 200
+
+        request_info = dict(
+            params={'secondParameter': 'b', 'firstParameter': 'a'},
+            json={},
+            url='https://api.civisanalytics.com/wobble/wubble',
+            method=verb.capitalize()
+        )
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+        retry_request(verb, pre_request, session_context, 3)
+
+        assert session_context.send.call_count == expected_call_count
+
+
+
+@mock.patch('civis._utils.open_session')
+def test_no_retry_on_get_no_retry_failure(mock_session):
+    expected_call_count = 0
+    max_calls = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+
+    for verb in RETRY_VERBS:
+        expected_call_count += 1
+        session_context.send.return_value.status_code = 403
+
+        request_info = dict(
+            params={'secondParameter': 'b', 'firstParameter': 'a'},
+            json={},
+            url='https://api.civisanalytics.com/wobble/wubble',
+            method=verb.capitalize()
+        )
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+        retry_request(verb, pre_request, session_context, max_calls)
+
+        assert session_context.send.call_count == expected_call_count
+
+
+@mock.patch('civis._utils.open_session')
+def test_retry_on_retry_eligible_failures(mock_session):
+    expected_call_count = 0
+    max_calls = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+    for verb in RETRY_VERBS:
+        for code in RETRY_CODES:
+            expected_call_count += max_calls
+            session_context.send.return_value.status_code = code
+
+            request_info = dict(
+                params={'secondParameter': 'b', 'firstParameter': 'a'},
+                json={},
+                url='https://api.civisanalytics.com/wobble/wubble',
+                method=verb.capitalize()
+            )
+
+            request = Request(**request_info)
+            pre_request = session_context.prepare_request(request)
+            retry_request(verb, pre_request, session_context, max_calls)
+
+            assert session_context.send.call_count == expected_call_count
+
+
+@mock.patch('civis._utils.open_session')
+def test_no_retry_on_post_success(mock_session):
+    expected_call_count = 1
+    max_calls = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+
+    session_context.send.return_value.status_code = 200
+
+    request_info = dict(
+        params={'secondParameter': 'b', 'firstParameter': 'a'},
+        json={},
+        url='https://api.civisanalytics.com/wobble/wubble',
+        method='POST'
+    )
+    request = Request(**request_info)
+    pre_request = session_context.prepare_request(request)
+    retry_request('post', pre_request, session_context, max_calls)
+
+    assert session_context.send.call_count == expected_call_count
+
+
+@mock.patch('civis._utils.open_session')
+def test_retry_on_retry_eligible_post_failures(mock_session):
+    expected_call_count = 0
+    max_calls = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+
+    for code in POST_RETRY_CODES:
+        expected_call_count += max_calls
+        session_context.send.return_value.status_code = code
+
+        request_info = dict(
+            params={'secondParameter': 'b', 'firstParameter': 'a'},
+            json={},
+            url='https://api.civisanalytics.com/wobble/wubble',
+            method='POST'
+        )
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+        retry_request('post', pre_request, session_context, max_calls)
+
+        assert session_context.send.call_count == expected_call_count
