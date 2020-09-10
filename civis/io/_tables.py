@@ -1006,7 +1006,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     if client is None:
         client = APIClient()
 
-    schema, table = split_schema_tablename(table)
+    schema, table_name = split_schema_tablename(table)
     if isinstance(file_id, int):
         file_id = [file_id]
     if schema is None:
@@ -1027,12 +1027,12 @@ def civis_file_to_table(file_id, database, table, client=None,
     except ValueError:
         table_exists = False
 
-    sql_types_provided = True
+    sql_types_provided = False
     if table_columns:
         sql_type_cnt = sum(1 for col in table_columns if col.get('sql_type'))
-        if sql_type_cnt == 0:
-            sql_types_provided = False
-        elif sql_type_cnt != len(table_columns):
+        if sql_type_cnt == len(table_columns):
+            sql_types_provided = True
+        elif sql_type_cnt != 0:
             error_message = 'Some table columns ' \
                            'have a sql type provided, ' \
                            'but others do not.'
@@ -1041,8 +1041,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
     need_table_columns = ((not table_exists or existing_table_rows == 'drop')
-                          and
-                          (table_columns is None or not sql_types_provided))
+                          and (not sql_types_provided))
 
     cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
                                      headers, delimiter, hidden)
@@ -1056,7 +1055,7 @@ def civis_file_to_table(file_id, database, table, client=None,
                      else table_columns)
 
     source = dict(file_ids=cleaned_file_ids)
-    destination = dict(schema=schema, table=table, remote_host_id=db_id,
+    destination = dict(schema=schema, table=table_name, remote_host_id=db_id,
                        credential_id=cred_id, primary_keys=primary_keys,
                        last_modified_keys=last_modified_keys)
 
@@ -1070,7 +1069,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     # risk of a length-related import failure when types are inferred.
     loosen_types = need_table_columns and len(file_id) > 1
 
-    import_name = 'CSV import to {}.{}'.format(schema, table)
+    import_name = 'CSV import to {}.{}'.format(schema, table_name)
     import_job = client.imports.post_files_csv(
         source,
         destination,
@@ -1286,8 +1285,11 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
             column_delimiter=delimiter,
             hidden=hidden
         )
-        cleaning_futures.append(run_job(cleaner_job.id, client=client,
-                                        polling_interval=polling_interval))
+        fut = run_job(cleaner_job.id, client=client,
+                      polling_interval=polling_interval)
+        log.debug('Started run %d for pre process job %d',
+                  fut.run_id, cleaner_job.id)
+        cleaning_futures.append(fut)
     return cleaning_futures
 
 
