@@ -37,10 +37,10 @@ Below are examples of endpoints and how they map to API Client methods:
 | ``GET /workflows/1/executions/2`` | ``client.workflows.get_executions(1, 2)`` |
 +-----------------------------------+-------------------------------------------+
 
-Note that Python's built-in `help` function can be used to see lists of
-available endpoints for a resource (e.g., `help(client.workflows)`) or to get
+Note that Python's built-in ``help`` function can be used to see lists of
+available endpoints for a resource (e.g., ``help(client.workflows)``) or to get
 documentation for a specific endpoint function (e.g.,
-`help(client.workflows.list)`). The `?` operator in IPython (e.g., `?client.workflows`) and the `shift-tab`
+``help(client.workflows.list)``). The ``?`` operator in IPython (e.g., ``?client.workflows``) and the ``shift-tab``
 hotkey in a Jupyter notebook also cause documentation to be displayed.
 
 By default, the Civis API specification specification is downloaded from
