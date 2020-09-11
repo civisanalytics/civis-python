@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated list of base API resources to include `aliases`, `git_repos`, `json_values`, `services`, and `storage_hosts` so that they show up in the sphinx docs (#406)
 - Update the API spec at `civis/tests/civis_api_spec.json` so that new endpoints are included (e.g., `/exports/files/csv`) (#407)
 
+### Fixed
+
+- Fixed a bug in parsing responses that included "update" as a key (e.g., in column information from `client.tables.get(...)`). (#)
+
 ## 1.14.2 - 2020-06-03
 ### Added
 - Added support for Python 3.8 (#391)

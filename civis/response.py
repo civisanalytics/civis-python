@@ -118,6 +118,9 @@ class Response(dict):
             self.calls_remaining = headers.get('X-RateLimit-Remaining')
             self.rate_limit = headers.get('X-RateLimit-Limit')
 
+        # Keys to update for this response object.
+        self_updates = {}
+
         if json_data is not None:
             for key, v in json_data.items():
                 if snake_case:
@@ -131,8 +134,11 @@ class Response(dict):
                 else:
                     val = v
 
-                self.update({key: val})
-                self.__dict__.update({key: val})
+                self_updates[key] = val
+
+        self.update(self_updates)
+        # Update self.__dict__ at the end to avoid replacing the update method.
+        self.__dict__.update(self_updates)
 
 
 class PaginatedResponse:
