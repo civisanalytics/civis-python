@@ -16,6 +16,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed a workflows usage example in `docs/source/client.rst` that had an incorrect endpoint. (#409)
 
+### Fixed
+
+- Fixed a bug in parsing responses that included "update" as a key (e.g., in column information from `client.tables.get(...)`). (#)
+
 ## 1.14.2 - 2020-06-03
 ### Added
 - Added support for Python 3.8 (#391)

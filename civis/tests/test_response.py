@@ -174,3 +174,15 @@ def test_convert_data_type_civis_list():
     assert isinstance(data[0], Response)
     assert data[0]['foo'] == 'bar'
     assert data[0].headers == {'header': 'val'}
+
+
+def test_parse_column_names():
+    """Check that responses that include 'update' as a key are parsed right."""
+    resp_dict = {
+        'columns': [
+            {'valueDistributionPercent': {'update': 50.0, 'foo': 50.0},
+             'valueDistribution': {'update': 1, 'foo': 1}}
+        ]
+    }
+    resp = Response(resp_dict)
+    assert resp.columns[0].value_distribution_percent['update'] == 50.0
