@@ -11,6 +11,8 @@ from civis._deprecation import deprecate_param
 log = logging.getLogger(__name__)
 
 RETRY_CODES = [429, 502, 503, 504]
+RETRY_VERBS = ['head', 'trace', 'get', 'put', 'options', 'delete']
+POST_RETRY_CODES = [429, 503]
 
 
 def find(object_list, filter_func=None, **kwargs):
@@ -386,8 +388,7 @@ class APIClient(MetaMixin):
                              "'pandas'")
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
-        self._session_kwargs = {'api_key': session_auth_key,
-                                'max_retries': retry_total}
+        self._session_kwargs = {'api_key': session_auth_key}
         self.last_response = None
 
         # Catch deprecation warnings from generate_classes_maybe_cached and
