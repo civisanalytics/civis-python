@@ -6,9 +6,10 @@ import threading
 from concurrent import futures
 import six
 import warnings
+from requests import Request
 
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import open_session
+from civis._utils import open_session, retry_request, MAX_RETRIES
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -100,8 +101,11 @@ class Endpoint(object):
 
         with self._lock:
             with open_session(**self._session_kwargs) as sess:
-                response = sess.request(method, url, json=data,
-                                        params=params, **kwargs)
+                request = Request(method, url, json=data,
+                                  params=params, **kwargs)
+                pre_request = sess.prepare_request(request)
+                response = retry_request(method, pre_request,
+                                         sess, MAX_RETRIES)
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]

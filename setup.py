@@ -63,6 +63,7 @@ def main():
             'pubnub>=4.0,<=4.99',
             "cloudpickle>=0.2.0,<2 ; python_version != '3.4'",
             "cloudpickle>=0.2.0,<1.2 ; python_version == '3.4'",
+            'tenacity>=6.2,<7',
         ],
         extras_require={
             ':python_version=="2.7"': [

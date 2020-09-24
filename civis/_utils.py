@@ -6,10 +6,12 @@ import re
 import sys
 import time
 import uuid
+from random import random
 
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util import Retry
+from tenacity import (Retrying, retry_if_result, stop_after_attempt,
+                      stop_after_delay, wait_random_exponential)
+from tenacity.wait import wait_base
 
 import civis
 
@@ -17,6 +19,7 @@ import civis
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
+MAX_RETRIES = 10
 
 
 def maybe_get_random_name(name):
@@ -48,7 +51,7 @@ def get_api_key(api_key):
     return api_key
 
 
-def open_session(api_key, max_retries=5, user_agent="civis-python"):
+def open_session(api_key, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = civis.__version__
     session = requests.Session()
@@ -60,34 +63,48 @@ def open_session(api_key, max_retries=5, user_agent="civis-python"):
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
     session.headers.update({"User-Agent": user_agent.strip()})
-    max_retries = AggressiveRetry(max_retries, backoff_factor=.75,
-                                  status_forcelist=civis.civis.RETRY_CODES)
-    adapter = HTTPAdapter(max_retries=max_retries)
-    session.mount("https://", adapter)
 
     return session
 
 
-class AggressiveRetry(Retry):
-    # Subclass Retry so that it retries more things. In particular,
-    # always retry API requests with a Retry-After header, regardless
-    # of the verb.
-    def is_retry(self, method, status_code, has_retry_after=False):
-        """ Is this method/status code retryable? (Based on whitelists and control
-        variables such as the number of total retries to allow, whether to
-        respect the Retry-After header, whether this header is present, and
-        whether the returned status code is on the list of status codes to
-        be retried upon on the presence of the aforementioned header)
-        """
-        if (self.total and
-                self.respect_retry_after_header and
-                has_retry_after and
-                (status_code in self.RETRY_AFTER_STATUS_CODES)):
-            return True
+def retry_request(method, prepared_req, session, max_retries=10):
 
-        else:
-            return super().is_retry(method=method, status_code=status_code,
-                                    has_retry_after=has_retry_after)
+    retry_conditions = None
+
+    def _make_request(req, sess):
+        """send the prepared session request"""
+        response = sess.send(req)
+        return response
+
+    def _return_last_value(retry_state):
+        """return the result of the last call attempt
+        and let code pick up the error"""
+        return retry_state.outcome.result()
+
+    if method == 'post':
+        retry_conditions = (
+            retry_if_result(
+                lambda res: res.status_code in civis.civis.POST_RETRY_CODES)
+        )
+    elif method in civis.civis.RETRY_VERBS:
+        retry_conditions = (
+            retry_if_result(
+                lambda res: res.status_code in civis.civis.RETRY_CODES)
+        )
+
+    if retry_conditions:
+        retry_config = Retrying(
+            retry=retry_conditions,
+            wait=wait_for_retry_after_header(
+                fallback=wait_random_exponential(multiplier=2, max=60)),
+            stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
+            retry_error_callback=_return_last_value,
+        )
+        response = retry_config(_make_request, prepared_req, session)
+        return response
+
+    response = _make_request(prepared_req, session)
+    return response
 
 
 def retry(exceptions, retries=5, delay=0.5, backoff=2):
@@ -103,7 +120,8 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
     delay: float, optional
         delay before next retry
     backoff: int, optional
-        factor used to increase delay after each retry
+        factor used to calculate the exponential increase
+        delay after each retry
 
     Returns
     -------
@@ -127,7 +145,10 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                               (str(exc), new_delay)
                         log.debug(msg)
                         time.sleep(new_delay)
-                        new_delay *= backoff
+                        new_delay = min(
+                            (pow(2, n_failed) / 4) *
+                            (random() + backoff), 50 + 10 * random()
+                        )
                     else:
                         raise exc
 
@@ -154,3 +175,22 @@ class BufferedPartialReader(object):
         data = self.buf.read(bytes_to_read)
         self.bytes_read += len(data)
         return data
+
+
+class wait_for_retry_after_header(wait_base):
+    """Wait strategy that first looks for Retry-After header. If not
+        present it uses the fallback strategy as the wait param"""
+    def __init__(self, fallback):
+        self.fallback = fallback
+
+    def __call__(self, retry_state):
+        # retry_state is an instance of tenacity.RetryCallState.
+        # The .outcome property contains the result/exception
+        # that came from the underlying function.
+        result_headers = retry_state.outcome._result.headers
+        retry_after = result_headers.get("Retry-After")
+        try:
+            return int(retry_after)
+        except (TypeError, ValueError):
+            pass
+        return self.fallback(retry_state)
