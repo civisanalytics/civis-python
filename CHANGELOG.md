@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.15.0 - 2020-09-29
 ### Changed
 - Bump minimum pubnub version to `4.1.12` (#397)
 - In `civis.io.civis_file_to_table`, ensure that data types are detected when table_columns are provided with no sql_types. Additionally, throw an error if some sql_types are provided and not others. (#400)
@@ -16,10 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed a workflows usage example in `docs/source/client.rst` that had an incorrect endpoint. (#409)
-
-### Fixed
-
-- Fixed a bug in parsing responses that included "update" as a key (e.g., in column information from `client.tables.get(...)`). (#)
+- Fixed a bug in parsing responses that included "update" as a key (e.g., in column information from `client.tables.get(...)`). (#410)
 
 ## 1.14.2 - 2020-06-03
 ### Added
