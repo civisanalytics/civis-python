@@ -103,6 +103,8 @@ def read_civis(table, database, columns=None, use_pandas=False,
     ------
     ImportError
         If `use_pandas` is ``True`` and `pandas` is not installed.
+    EmptyResultError
+        If the table is empty.
 
     Examples
     --------
@@ -263,6 +265,8 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     ------
     ImportError
         If `use_pandas` is ``True`` and `pandas` is not installed.
+    EmptyResultError
+        If no rows were returned as a result of the query.
 
     Examples
     --------
