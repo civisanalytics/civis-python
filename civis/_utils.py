@@ -79,12 +79,12 @@ def retry_request(method, prepared_req, session, max_retries=10):
         and let code pick up the error"""
         return retry_state.outcome.result()
 
-    if method == 'post':
+    if method.upper() == 'POST':
         retry_conditions = (
             retry_if_result(
                 lambda res: res.status_code in civis.civis.POST_RETRY_CODES)
         )
-    elif method in civis.civis.RETRY_VERBS:
+    elif method.upper() in civis.civis.RETRY_VERBS:
         retry_conditions = (
             retry_if_result(
                 lambda res: res.status_code in civis.civis.RETRY_CODES)
