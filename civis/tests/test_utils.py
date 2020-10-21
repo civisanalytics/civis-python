@@ -304,43 +304,8 @@ def test_retry_respect_retry_after_headers(mock_session):
         'Retry-After': str(retry_after)
     }
 
-    for verb in ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE', 'POST']:
-        expected_call_count += max_calls
-
-        request_info = dict(
-            params={'secondParameter': 'b', 'firstParameter': 'a'},
-            json={},
-            url='https://api.civisanalytics.com/wobble/wubble',
-            method=verb
-        )
-
-        request = Request(**request_info)
-        pre_request = session_context.prepare_request(request)
-
-        start_time = datetime.now().timestamp()
-        retry_request(verb, pre_request, session_context, max_calls)
-        end_time = datetime.now().timestamp()
-        duration = end_time - start_time
-
-        assert session_context.send.call_count == expected_call_count
-        assert floor(duration) == retry_after * (max_calls - 1)
-
-
-@mock.patch('civis._utils.open_session')
-def test_retry_respect_retry_after_headers_lowercase_verb(mock_session):
-    expected_call_count = 0
-    max_calls = 3
-    retry_after = 3
-    api_response = {'key': 'value'}
-    session_context = mock_session.return_value.__enter__.return_value
-    session_context.send.return_value.json.return_value = api_response
-
-    session_context.send.return_value.status_code = 429
-    session_context.send.return_value.headers = {
-        'Retry-After': str(retry_after)
-    }
-
-    for verb in ['head', 'trace', 'get', 'put', 'options', 'delete', 'post']:
+    for verb in ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE', 'POST',
+                 'head', 'trace', 'get', 'put', 'options', 'delete', 'post']:
         expected_call_count += max_calls
 
         request_info = dict(
