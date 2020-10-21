@@ -127,7 +127,6 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
     ------
     exception raised by decorator function
     """
-
     def deco_retry(f):
         def f_retry(*args, **kwargs):
             n_failed = 0
@@ -177,7 +176,6 @@ class BufferedPartialReader(object):
 class wait_for_retry_after_header(wait_base):
     """Wait strategy that first looks for Retry-After header. If not
         present it uses the fallback strategy as the wait param"""
-
     def __init__(self, fallback):
         self.fallback = fallback
 
@@ -190,7 +188,7 @@ class wait_for_retry_after_header(wait_base):
                       or result_headers.get("retry-after")
 
         try:
-            log.warning('Retrying after {} seconds'.format(retry_after))
+            log.info('Retrying after {} seconds'.format(retry_after))
             return int(retry_after)
         except (TypeError, ValueError):
             pass
