@@ -300,7 +300,9 @@ def test_retry_respect_retry_after_headers(mock_session):
     session_context.send.return_value.json.return_value = api_response
 
     session_context.send.return_value.status_code = 429
-    session_context.send.return_value.headers = {'Retry-After': str(retry_after)}
+    session_context.send.return_value.headers = {
+        'Retry-After': str(retry_after)
+    }
 
     for verb in ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE', 'POST']:
         expected_call_count += max_calls
@@ -334,7 +336,9 @@ def test_retry_respect_retry_after_headers_lowercase_verb(mock_session):
     session_context.send.return_value.json.return_value = api_response
 
     session_context.send.return_value.status_code = 429
-    session_context.send.return_value.headers = {'Retry-After': str(retry_after)}
+    session_context.send.return_value.headers = {
+        'Retry-After': str(retry_after)
+    }
 
     for verb in ['head', 'trace', 'get', 'put', 'options', 'delete', 'post']:
         expected_call_count += max_calls

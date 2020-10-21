@@ -184,8 +184,8 @@ class wait_for_retry_after_header(wait_base):
         # The .outcome property contains the result/exception
         # that came from the underlying function.
         result_headers = retry_state.outcome._result.headers
-        retry_after = result_headers.get("Retry-After") \
-                      or result_headers.get("retry-after")
+        retry_after = result_headers.get("Retry-After") or \
+            result_headers.get("retry-after")
 
         try:
             log.info('Retrying after {} seconds'.format(retry_after))
