@@ -11,7 +11,7 @@ from civis._deprecation import deprecate_param
 log = logging.getLogger(__name__)
 
 RETRY_CODES = [429, 502, 503, 504]
-RETRY_VERBS = ['head', 'trace', 'get', 'put', 'options', 'delete']
+RETRY_VERBS = ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
 POST_RETRY_CODES = [429, 503]
 
 

@@ -2,6 +2,8 @@ from unittest import mock
 
 from requests import Request
 from requests import ConnectionError, ConnectTimeout
+from datetime import datetime
+from math import floor
 
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
@@ -126,7 +128,7 @@ def test_no_retry_on_success(mock_session):
             params={'secondParameter': 'b', 'firstParameter': 'a'},
             json={},
             url='https://api.civisanalytics.com/wobble/wubble',
-            method=verb.capitalize()
+            method=verb
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
@@ -151,7 +153,7 @@ def test_no_retry_on_get_no_retry_failure(mock_session):
             params={'secondParameter': 'b', 'firstParameter': 'a'},
             json={},
             url='https://api.civisanalytics.com/wobble/wubble',
-            method=verb.capitalize()
+            method=verb
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
@@ -176,7 +178,33 @@ def test_retry_on_retry_eligible_failures(mock_session):
                 params={'secondParameter': 'b', 'firstParameter': 'a'},
                 json={},
                 url='https://api.civisanalytics.com/wobble/wubble',
-                method=verb.capitalize()
+                method=verb
+            )
+
+            request = Request(**request_info)
+            pre_request = session_context.prepare_request(request)
+            retry_request(verb, pre_request, session_context, max_calls)
+
+            assert session_context.send.call_count == expected_call_count
+
+
+@mock.patch('civis._utils.open_session')
+def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session):
+    expected_call_count = 0
+    max_calls = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+    for verb in RETRY_VERBS:
+        for code in RETRY_CODES:
+            expected_call_count += max_calls
+            session_context.send.return_value.status_code = code
+
+            request_info = dict(
+                params={'secondParameter': 'b', 'firstParameter': 'a'},
+                json={},
+                url='https://api.civisanalytics.com/wobble/wubble',
+                method=verb.lower()
             )
 
             request = Request(**request_info)
@@ -248,7 +276,7 @@ def test_no_retry_on_connection_error(mock_session):
             params={'secondParameter': 'b', 'firstParameter': 'a'},
             json={},
             url='https://api.civisanalytics.com/wobble/wubble',
-            method=verb.capitalize()
+            method=verb
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
@@ -260,3 +288,40 @@ def test_no_retry_on_connection_error(mock_session):
             pass
 
         assert session_context.send.call_count == expected_call_count
+
+
+@mock.patch('civis._utils.open_session')
+def test_retry_respect_retry_after_headers(mock_session):
+    expected_call_count = 0
+    max_calls = 3
+    retry_after = 3
+    api_response = {'key': 'value'}
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+
+    session_context.send.return_value.status_code = 429
+    session_context.send.return_value.headers = {
+        'Retry-After': str(retry_after)
+    }
+
+    for verb in ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE', 'POST',
+                 'head', 'trace', 'get', 'put', 'options', 'delete', 'post']:
+        expected_call_count += max_calls
+
+        request_info = dict(
+            params={'secondParameter': 'b', 'firstParameter': 'a'},
+            json={},
+            url='https://api.civisanalytics.com/wobble/wubble',
+            method=verb
+        )
+
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+
+        start_time = datetime.now().timestamp()
+        retry_request(verb, pre_request, session_context, max_calls)
+        end_time = datetime.now().timestamp()
+        duration = end_time - start_time
+
+        assert session_context.send.call_count == expected_call_count
+        assert floor(duration) == retry_after * (max_calls - 1)

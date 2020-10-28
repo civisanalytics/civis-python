@@ -13,7 +13,6 @@ from tenacity.wait import wait_base
 
 import civis
 
-
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
@@ -66,7 +65,6 @@ def open_session(api_key, user_agent="civis-python"):
 
 
 def retry_request(method, prepared_req, session, max_retries=10):
-
     retry_conditions = None
 
     def _make_request(req, sess):
@@ -79,12 +77,12 @@ def retry_request(method, prepared_req, session, max_retries=10):
         and let code pick up the error"""
         return retry_state.outcome.result()
 
-    if method == 'post':
+    if method.upper() == 'POST':
         retry_conditions = (
             retry_if_result(
                 lambda res: res.status_code in civis.civis.POST_RETRY_CODES)
         )
-    elif method in civis.civis.RETRY_VERBS:
+    elif method.upper() in civis.civis.RETRY_VERBS:
         retry_conditions = (
             retry_if_result(
                 lambda res: res.status_code in civis.civis.RETRY_CODES)
@@ -186,8 +184,11 @@ class wait_for_retry_after_header(wait_base):
         # The .outcome property contains the result/exception
         # that came from the underlying function.
         result_headers = retry_state.outcome._result.headers
-        retry_after = result_headers.get("Retry-After")
+        retry_after = result_headers.get("Retry-After") or \
+            result_headers.get("retry-after")
+
         try:
+            log.info('Retrying after {} seconds'.format(retry_after))
             return int(retry_after)
         except (TypeError, ValueError):
             pass

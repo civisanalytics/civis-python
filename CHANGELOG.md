@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+
+### Fixed
+- fixes bug whereby calls with iterate=True do not retry (#413)
 
 ## 1.15.0 - 2020-09-29
 ### Changed
