@@ -185,31 +185,6 @@ def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
     return obj
 
 
-def _exception_from_logs(exc, job_id, run_id, client, nlog=15):
-    """Create an exception if the log has a recognizable error
-
-    Search "error" emits in the last ``n_log`` lines.
-    This function presently recognizes the following errors:
-
-    - MemoryError
-    """
-    logs = client.scripts.list_containers_runs_logs(job_id, run_id, limit=nlog)
-
-    # Check for memory errors
-    msgs = [x['message'] for x in logs if x['level'] == 'error']
-    mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
-    if mem_err:
-        exc = MemoryError(mem_err[0])
-    else:
-        # Unknown error; return logs to the user as a sort of traceback
-        all_logs = '\n'.join([x['message'] for x in logs])
-        if isinstance(exc, CivisJobFailure):
-            exc.error_message = all_logs + '\n' + exc.error_message
-        else:
-            exc = CivisJobFailure(all_logs)
-    return exc
-
-
 def _parse_warning(warn_str):
     """Reverse-engineer a warning string
 
@@ -527,7 +502,7 @@ class ModelFuture(ContainerFuture):
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
             # check the tail of the log for a clearer exception.
-            exc = _exception_from_logs(exc, fut.job_id, fut.run_id, fut.client)
+            exc = fut._exception_from_logs(exc)
             fut.set_exception(exc)
         except futures.CancelledError:
             # We don't need to change the exception if the run was cancelled
