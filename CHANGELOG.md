@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- `ContainerFuture` returns error logs as an error message when a job
+  fails but no message is returned (#413)
 - Added EmptyResultError to `civis.io.read_civis` docs (#412)
 
 ## 1.15.1 - 2020-10-28

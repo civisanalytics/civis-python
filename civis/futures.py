@@ -299,8 +299,6 @@ class ContainerFuture(CivisFuture):
             fut._exception_handled = True
 
         if fut.failed():
-            import ipdb
-            ipdb.set_trace()
             # Container scripts do not return the error message,
             # so we override with an exception we can pull from the
             # logs
@@ -318,8 +316,6 @@ class ContainerFuture(CivisFuture):
         - MemoryError
         """
 
-        import ipdb
-        ipdb.set_trace()
         logs = self.client.scripts.list_containers_runs_logs(self.job_id,
                                                              self.run_id,
                                                              limit=nlog)
