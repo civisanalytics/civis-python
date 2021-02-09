@@ -1128,7 +1128,11 @@ def _get_headers(client, sql, database, credential_id, polling_interval=None):
 
     try:
         # use 'begin read only;' to ensure we can't change state
-        sql = 'begin read only; select * from ({}) limit 1'.format(sql)
+        # also, look for a terminating ';', as it will invoke an
+        # error and skip this silently
+        sql = 'begin read only; select * from ({}) limit 1'.format(
+            sql.strip().rstrip(';')
+        )
         fut = query_civis(sql, database, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval)
