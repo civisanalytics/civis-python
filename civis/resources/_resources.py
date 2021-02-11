@@ -211,8 +211,9 @@ def create_signature(args, optional_args):
     ----------
     args : list
         List of strings that name the required arguments of a function.
-    optional_args : list
-        List of strings that name the optional arguments of a function.
+    optional_args : dict
+        Dict of strings that name the optional arguments of a function,
+        and their default values.
 
     Returns
     -------
@@ -377,11 +378,11 @@ def parse_param_body(parameter):
     for name, prop in properties.items():
         snake_name = camel_to_snake(name)
         is_req = name in req
-        default = prop.get('default', DEFAULT_STR)
         doc_list = docs_from_property(name, prop, properties, 0, not is_req)
         doc = "\n".join(doc_list) + "\n"
-        a = {"name": snake_name, "in": "body", "required": is_req,
-             "doc": doc, "default": default}
+        a = {"name": snake_name, "in": "body", "required": is_req, "doc": doc}
+        if not is_req:
+            a['default'] = prop.get('default', DEFAULT_STR)
         arguments.append(a)
     return arguments
 
