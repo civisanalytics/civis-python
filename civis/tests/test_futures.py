@@ -316,7 +316,7 @@ def test_container_future_job_id_run_id():
     result = ContainerFuture(
         job_id=job_id,
         run_id=run_id,
-        client=create_client_mock(),
+        client=create_client_container_mock(),
     )
     assert result.job_id == job_id
     assert result.run_id == run_id
