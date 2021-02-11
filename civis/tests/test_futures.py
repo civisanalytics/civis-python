@@ -17,7 +17,8 @@ from civis.futures import (ContainerFuture,
 from civis.futures import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
-from civis.tests import TEST_SPEC, create_client_mock
+from civis.tests import TEST_SPEC, create_client_mock, \
+    create_client_container_mock
 from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
@@ -534,3 +535,23 @@ def test_future_retry_error():
     fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01,
                           client=c)
     assert fut.result().state == 'succeeded'
+
+
+def test_container_exception_no_result_logs():
+    # If the job errored with no output but with logs,
+    # we should return error logs with the future exception.
+    msg = 'Failed: The job container failed. Exit code 1'
+    logs = [{'id': 111, 'created_at': 'abc',
+             'message': 'Run used approximately 2 millicores '
+             'of its 256 millicore CPU limit',
+             'level': 'info'},
+            {'id': 222,
+             'created_at': 'def',
+             'message': msg,
+             'level': 'error'}]
+    mock_client = create_client_container_mock(1, 2, state='failed',
+                                               run_outputs=[],
+                                               log_outputs=logs)
+    fut = ContainerFuture(1, 2, client=mock_client)
+
+    assert msg in str(fut._exception.error_message)
