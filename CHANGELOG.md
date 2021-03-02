@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added EmptyResultError to `civis.io.read_civis` docs (#412)
 - Added default values from swagger in client method's signature (#416)
 
+### Fixed
+- Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
+
 ## 1.15.1 - 2020-10-28
 ### Fixed
 - fixes bug whereby calls with iterate=True do not retry (#413)
