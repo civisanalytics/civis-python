@@ -668,10 +668,10 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     table_columns : list[Dict[str, str]], optional
         An array of hashes corresponding to the columns in the order
         they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
+        database column "name" and "sql_type". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
+        as in the destination table. The "sql_type" key is not required
         when appending to an existing table.
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
@@ -814,10 +814,10 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     table_columns : list[Dict[str, str]], optional
         An array of hashes corresponding to the columns in the order
         they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
+        database column "name" and "sql_type". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
+        as in the destination table. The "sql_type" key is not required
         when appending to an existing table.
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
@@ -946,10 +946,10 @@ def civis_file_to_table(file_id, database, table, client=None,
     table_columns : list[Dict[str, str]], optional
         An array of hashes corresponding to the columns in the order
         they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
+        database column "name" and "sql_type". This parameter is
         required if the table does not exist, the table is being dropped,
         or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
+        as in the destination table. The "sql_type" key is not required
         when appending to an existing table.
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
@@ -1022,6 +1022,23 @@ def civis_file_to_table(file_id, database, table, client=None,
         assert delimiter, "delimiter must be one of {}".format(
             DELIMITERS.keys()
         )
+    if table_columns:
+        # If the data cleaning code doesn't find a "sql_type" for each
+        # entry, it will silently replace the input table_columns with
+        # an inferred table_columns. Make sure there's no typos in the input.
+        keys = set(key for hash in table_columns for key in hash)
+        valid_keys = {'name', 'sql_type'}
+        invalid_keys = keys - valid_keys
+        if invalid_keys:
+            # Sort the sets for display to allow for deterministic testing in
+            # Python versions < 3.7.
+            raise ValueError(
+                "Keys of the dictionaries contained in `table_columns` must "
+                "be one of {}. The input `table_columns` also has "
+                "{}.".format(
+                    tuple(sorted(valid_keys)), tuple(sorted(invalid_keys))
+                )
+            )
 
     try:
         client.get_table_id(table, database)

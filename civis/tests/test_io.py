@@ -535,6 +535,42 @@ class ImportTests(CivisVCRTestCase):
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
+    def test_civis_file_to_table_table_columns_keys_misspelled(
+            self,
+            m_run_cleaning,
+            m_process_cleaning_results,
+            _m_get_api_spec
+    ):
+        # Check for an error message if the `table_columns` input
+        # contains keys other than the accepted ones.
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        mock_file_id = 1234
+        mock_import_id = 8675309
+
+        self.mock_client.imports.post_files_csv.return_value\
+            .id = mock_import_id
+        self.mock_client.get_database_id.return_value = 42
+        self.mock_client.default_credential = 713
+        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        table_columns = [{'name': 'a', 'sqlType': 'INT'},
+                         {'name': 'b', 'bad_type': ''}]
+
+        with pytest.raises(ValueError) as err:
+            civis.io.civis_file_to_table(
+                mock_file_id, database, table,
+                existing_table_rows='drop',
+                delimiter=',',
+                headers=True,
+                client=self.mock_client,
+                table_columns=table_columns
+            )
+        assert "must be one of ('name', 'sql_type')" in str(err.value)
+        assert "also has ('bad_type', 'sqlType')" in str(err.value)
+
+    @pytest.mark.civis_file_to_table
+    @mock.patch('civis.io._tables._process_cleaning_results')
+    @mock.patch('civis.io._tables._run_cleaning')
     def test_civis_file_to_table_table_doesnt_exist_provide_table_columns(
         self,
         m_run_cleaning,
