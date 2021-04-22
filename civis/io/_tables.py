@@ -784,7 +784,7 @@ def dask_dataframe_to_civis(df, database, table, api_key=None, client=None,
 
     Parameters
     ----------
-    df : :class:`pandas:pandas.DataFrame`
+    df : :class:`dask.dataframe:dask.dataframe.DataFrame`
         The `DataFrame` to upload to Civis.
     database : str or int
         Upload data into this database. Can be the database name or ID.
@@ -863,24 +863,26 @@ def dask_dataframe_to_civis(df, database, table, api_key=None, client=None,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments will be passed to
-        :meth:`pandas:pandas.DataFrame.to_csv`.
+        :meth:`dask.dataframe:dask.dataframe.DataFrame.to_csv`.
 
     Returns
     -------
-    fut : :class:`~civis.futures.CivisFuture`
-        A `CivisFuture` object.
+    futs : :class:`~civis.futures.CivisFuture`
+        A list of `CivisFuture` objects.
 
     Examples
     --------
+    >>> import dask.dataframe as dd
     >>> import pandas as pd
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
-    >>> fut = civis.io.dataframe_to_civis(df, 'my-database',
+    >>> ddf = dd.from_pandas(df, npartitions=20)
+    >>> futs = civis.io.dask_dataframe_to_civis(ddf, 'my-database',
     ...                                   'scratch.df_table')
-    >>> fut.result()
+    >>> [fut.result() for fut in futs]
 
     See Also
     --------
-    :func:`~pandas.DataFrame.to_csv`
+    :func:`~dask.dataframe.DataFrame.to_csv`
     """
     if client is None:
         client = APIClient(api_key=api_key)
