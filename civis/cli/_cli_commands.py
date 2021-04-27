@@ -251,7 +251,7 @@ def notebooks_download_cmd(notebook_id, path):
 
 
 @click.command('new')
-@click.argument('language', type=click.Choice(['python3', 'python2', 'r']),
+@click.argument('language', type=click.Choice(['python3', 'r']),
                 default='python3')
 @click.option('--mem', type=int, default=None,
               help='Memory allocated for this notebook in MiB.')
