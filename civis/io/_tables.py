@@ -36,7 +36,8 @@ except ImportError:
 CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
 __all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
-           'civis_to_multifile_csv', 'dataframe_to_civis', 'dask_dataframe_to_civis', 'csv_to_civis',
+           'civis_to_multifile_csv', 'dataframe_to_civis',
+           'dask_dataframe_to_civis', 'csv_to_civis',
            'civis_file_to_table', 'split_schema_tablename',
            'export_to_civis_file']
 
@@ -765,17 +766,18 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
 
     return fut
 
+
 @deprecate_param('v2.0.0', 'api_key', 'headers')
 def dask_dataframe_to_civis(df, database, table, api_key=None, client=None,
-                       max_errors=None, existing_table_rows="fail",
-                       diststyle=None, distkey=None,
-                       sortkey1=None, sortkey2=None,
-                       table_columns=None,
-                       headers=None, credential_id=None,
-                       primary_keys=None, last_modified_keys=None,
-                       execution="immediate",
-                       delimiter=None, polling_interval=None,
-                       archive=False, hidden=True, **kwargs):
+                            max_errors=None, existing_table_rows="fail",
+                            diststyle=None, distkey=None,
+                            sortkey1=None, sortkey2=None,
+                            table_columns=None,
+                            headers=None, credential_id=None,
+                            primary_keys=None, last_modified_keys=None,
+                            execution="immediate",
+                            delimiter=None, polling_interval=None,
+                            archive=False, hidden=True, **kwargs):
     """Upload a `dask` `DataFrame` into a Civis table.
 
     The `DataFrame`'s index will not be included. To store the index
@@ -898,24 +900,48 @@ def dask_dataframe_to_civis(df, database, table, api_key=None, client=None,
         df.to_csv(tmp_path, **to_csv_kwargs)
         _, name = split_schema_tablename(table)
         file_paths = os.listdir(tmp_dir)
-        file_ids = [file_to_civis(os.path.join(tmp_dir, file_path), name, client=client) for file_path in file_paths]
+        file_ids = [
+            file_to_civis(
+                os.path.join(tmp_dir, file_path),
+                name,
+                client=client) for file_path in file_paths]
 
     delimiter = ','
-    futs = [civis_file_to_table(file_id, database, table,
-                              client=client, max_errors=max_errors,
-                              existing_table_rows=existing_table_rows,
-                              diststyle=diststyle, distkey=distkey,
-                              sortkey1=sortkey1, sortkey2=sortkey2,
-                              table_columns=table_columns,
-                              delimiter=delimiter, headers=headers,
-                              credential_id=credential_id,
-                              primary_keys=primary_keys,
-                              last_modified_keys=last_modified_keys,
-                              escaped=False, execution=execution,
-                              polling_interval=polling_interval,
-                              hidden=hidden) for file_id in file_ids]
+    futs = []
+    if existing_table_rows in ['truncate', 'drop', 'fail']:
+        first_file_id = file_ids.pop(0)
+        futs.append(civis_file_to_table(
+            first_file_id, database, table,
+            client=client, max_errors=max_errors,
+            existing_table_rows=existing_table_rows,
+            diststyle=diststyle, distkey=distkey,
+            sortkey1=sortkey1, sortkey2=sortkey2,
+            table_columns=table_columns,
+            delimiter=delimiter, headers=headers,
+            credential_id=credential_id,
+            primary_keys=primary_keys,
+            last_modified_keys=last_modified_keys,
+            escaped=False, execution=execution,
+            polling_interval=polling_interval,
+            hidden=hidden))
+        existing_table_rows = 'append'
 
+    futs.extend([civis_file_to_table(
+        file_id, database, table,
+        client=client, max_errors=max_errors,
+        existing_table_rows=existing_table_rows,
+        diststyle=diststyle, distkey=distkey,
+        sortkey1=sortkey1, sortkey2=sortkey2,
+        table_columns=table_columns,
+        delimiter=delimiter, headers=headers,
+        credential_id=credential_id,
+        primary_keys=primary_keys,
+        last_modified_keys=last_modified_keys,
+        escaped=False, execution=execution,
+        polling_interval=polling_interval,
+        hidden=hidden) for file_id in file_ids])
     return futs
+
 
 @deprecate_param('v2.0.0', 'api_key')
 def csv_to_civis(filename, database, table, api_key=None, client=None,
