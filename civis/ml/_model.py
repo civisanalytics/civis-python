@@ -451,27 +451,25 @@ class ModelFuture(ContainerFuture):
 
     def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
                  polling_interval=None, client=None, poll_on_creation=True):
-        super().__init__(job_id, run_id,
-                         polling_interval=polling_interval,
-                         client=client,
-                         poll_on_creation=poll_on_creation)
         if train_job_id and train_run_id:
             self.is_training = False
             self.train_job_id = train_job_id
             self.train_run_id = train_run_id
         else:
             self.is_training = True
-            self.train_job_id = self.job_id
-            self.train_run_id = self.run_id
+            self.train_job_id = job_id
+            self.train_run_id = run_id
         self._metadata, self._val_metadata = None, None
         self._train_data, self._train_data_fname = None, None
         self._train_metadata = None
         self._table, self._estimator = None, None
-        self._exception_handled = False
-        self.add_done_callback(self._set_model_exception)
+        super().__init__(job_id, run_id,
+                         polling_interval=polling_interval,
+                         client=client,
+                         poll_on_creation=poll_on_creation)
 
     @staticmethod
-    def _set_model_exception(fut):
+    def _set_job_exception(fut):
         """Callback: On job completion, check the metadata.
         If it indicates an exception, replace the generic
         ``CivisJobFailure`` by a more informative ``ModelError``.
@@ -533,7 +531,7 @@ class ModelFuture(ContainerFuture):
         self.client = APIClient()
         self.poller = self.client.scripts.get_containers_runs
         self._begin_tracking()
-        self.add_done_callback(self._set_model_exception)
+        self.add_done_callback(self._set_job_exception)
 
     @property
     def state(self):

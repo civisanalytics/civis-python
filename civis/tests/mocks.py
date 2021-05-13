@@ -38,9 +38,14 @@ def create_client_mock(cache=TEST_SPEC):
     return mock_client
 
 
-def create_client_container_mock(script_id=-10, run_id=100, state='succeeded',
-                                 run_outputs=None, log_outputs=None):
-    """Return a Mock set up for use in testing container scripts
+def create_client_mock_for_container_tests(
+        script_id=-10, run_id=100, state='succeeded',
+        run_outputs=None, log_outputs=None):
+    """Returns a CivisAPIClient Mock set up for testing methods that use
+    container scripts. Contains endpoint method mocks and return values
+    for posting container jobs, retrieving outputs, and reading logs.
+    Also contains the mocks to cancel the container when the state
+    is set to 'failed'.
 
     Parameters
     ----------
@@ -60,8 +65,7 @@ def create_client_container_mock(script_id=-10, run_id=100, state='succeeded',
         With scripts endpoints `post_containers`, `post_containers_runs`,
         `post_cancel`, and `get_containers_runs` set up.
     """
-    c = mock.Mock()
-    c.__class__ = APIClient
+    c = create_client_mock()
 
     mock_container = Response({'id': script_id})
     c.scripts.post_containers.return_value = mock_container

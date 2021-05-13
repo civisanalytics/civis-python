@@ -291,6 +291,10 @@ class ContainerFuture(CivisFuture):
 
     @staticmethod
     def _set_job_exception(fut):
+        """Callback: On job completion, check the status.
+        If the job has failed, and has no pre-existing error message,
+        populate the error message with recent logs.
+        """
         # Prevent infinite recursion: this function calls `set_exception`,
         # which triggers callbacks (i.e. re-calls this function).
         if fut._exception_handled:
@@ -304,6 +308,7 @@ class ContainerFuture(CivisFuture):
             # logs
             if isinstance(fut._exception, CivisJobFailure) and \
                fut._exception.error_message == 'None':
+                fut._exception.error_message = ''
                 exc = fut._exception_from_logs(fut._exception)
                 fut.set_exception(exc)
 
@@ -315,7 +320,6 @@ class ContainerFuture(CivisFuture):
 
         - MemoryError
         """
-
         logs = self.client.scripts.list_containers_runs_logs(self.job_id,
                                                              self.run_id,
                                                              limit=nlog)

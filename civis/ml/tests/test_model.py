@@ -274,7 +274,7 @@ def test_show_civisml_warnings_error():
 ###################################
 # Tests of ModelFuture below here #
 ###################################
-@mock.patch.object(_model.ModelFuture, "_set_model_exception", autospec=True)
+@mock.patch.object(_model.ModelFuture, "_set_job_exception", autospec=True)
 @mock.patch.object(_model.ModelFuture, "add_done_callback", autospec=True)
 def test_modelfuture_constructor(mock_adc, mock_spe):
     c = setup_client_mock(7, 17)
@@ -303,7 +303,7 @@ def test_modelfuture_pickle_smoke(mock_client):
     pickle.loads(mf_pickle)
 
 
-def test_set_model_exception_metadata_exception():
+def test_set_job_exception_metadata_exception():
     """Tests cases where accessing metadata throws exceptions
     """
     # State "running" prevents termination when the object is created.
@@ -321,19 +321,19 @@ def test_set_model_exception_metadata_exception():
     # exception types get caught!
     for exc in [FileNotFoundError, CivisJobFailure, CancelledError]:
         fut = ModelFutureRaiseExc(exc, 1, 2, client=mock_client)
-        _model.ModelFuture._set_model_exception(fut)
+        _model.ModelFuture._set_job_exception(fut)
 
     with pytest.warns(UserWarning):
         # The KeyError is caught, but sends a warning
         fut = ModelFutureRaiseExc(KeyError, 1, 2, client=mock_client)
-        _model.ModelFuture._set_model_exception(fut)
+        _model.ModelFuture._set_job_exception(fut)
 
     fut = ModelFutureRaiseExc(RuntimeError, 1, 2, client=mock_client)
     with pytest.raises(RuntimeError):
-        _model.ModelFuture._set_model_exception(fut)
+        _model.ModelFuture._set_job_exception(fut)
 
 
-def test_set_model_exception_memory_error():
+def test_set_job_exception_memory_error():
     mock_client = setup_client_mock(1, 2, state='failed')
     err_msg = ('Process ran out of its allowed 3000 MiB of '
                'memory and was killed.')
@@ -357,7 +357,7 @@ def test_set_model_exception_memory_error():
     assert str(err.value) == err_msg
 
 
-def test_set_model_exception_unknown_error():
+def test_set_job_exception_unknown_error():
     # If we really don't recognize the error, at least give the
     # user a few lines of logs so they can maybe figure it out themselves.
     mock_client = setup_client_mock(1, 2, state='failed')
@@ -379,13 +379,16 @@ def test_set_model_exception_unknown_error():
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
+    print(str(err))
+    print(str(err.value))
+    print(err_msg)
     assert str(err.value).startswith(err_msg)
 
 
 @mock.patch.object(_model.cio, "file_to_json", autospec=True,
                    return_value={'run': {'status': 'succeeded',
                                          'stack_trace': None}})
-def test_set_model_exception_no_exception(mock_f2j):
+def test_set_job_exception_no_exception(mock_f2j):
     # If nothing went wrong, we shouldn't set an exception
     ro = [{'name': 'model_info.json', 'object_id': 137, 'object_type': 'File'},
           {'name': 'metrics.json', 'object_id': 139, 'object_type': 'File'}]
@@ -412,18 +415,18 @@ def _test_set_model_exc(trn, val, exc):
     fut = ModelFutureStub(exc, trn, val)
 
     assert isinstance(fut._exception, type(exc))
-    _model.ModelFuture._set_model_exception(fut)
+    _model.ModelFuture._set_job_exception(fut)
     assert isinstance(fut._exception, _model.ModelError)
     assert 'this is a trace' in str(fut._exception)
 
     # don't change attribute if it's already a ModelError
     fut._exception = _model.ModelError('undecipherable message')
-    _model.ModelFuture._set_model_exception(fut)
+    _model.ModelFuture._set_job_exception(fut)
     assert isinstance(fut._exception, _model.ModelError)
     assert 'undecipherable message' in str(fut._exception)
 
 
-def test_set_model_exception_training_metadata():
+def test_set_job_exception_training_metadata():
     trn = {'run': {'status': 'exception', 'stack_trace': 'this is a trace'}}
     val = None
     exc = FileNotFoundError('Look, no mocks!')
@@ -431,7 +434,7 @@ def test_set_model_exception_training_metadata():
     _test_set_model_exc(trn, val, exc)
 
 
-def test_set_model_exception_validation_metadata():
+def test_set_job_exception_validation_metadata():
     trn = {'run': {'status': 'succeeded'}}
     val = {'run': {'status': 'exception', 'stack_trace': 'this is a trace'}}
     exc = FileNotFoundError('Hahaha, zero mocks here!')
@@ -441,7 +444,7 @@ def test_set_model_exception_validation_metadata():
 
 @mock.patch.object(_model.cio, "file_to_json",
                    mock.Mock(return_value='bar', spec_set=True))
-@mock.patch.object(_model.ModelFuture, "_set_model_exception",
+@mock.patch.object(_model.ModelFuture, "_set_job_exception",
                    lambda *args: None)
 def test_getstate():
     c = setup_client_mock(3, 7)
@@ -479,7 +482,7 @@ def test_state():
                                          {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
-@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+@mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table(mock_res, mock_lt, mock_meta):
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
@@ -493,7 +496,7 @@ def test_table(mock_res, mock_lt, mock_meta):
                                          {'data': {'primary_key': None}}}})
 @mock.patch.object(_model, "_load_table_from_outputs", return_value='bar')
 @mock.patch.object(_model.ModelFuture, "result")
-@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+@mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table_no_pkey(mock_res, mock_lt, mock_meta):
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
@@ -507,7 +510,7 @@ def test_table_no_pkey(mock_res, mock_lt, mock_meta):
                                          {'data': {'primary_key': 'foo'}}}})
 @mock.patch.object(_model, "_load_table_from_outputs")
 @mock.patch.object(_model.ModelFuture, "result")
-@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+@mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table_None(mock_res, mock_lt, mock_meta):
     mock_lt.side_effect = FileNotFoundError()
     c = setup_client_mock(3, 7)
@@ -520,7 +523,7 @@ def test_table_None(mock_res, mock_lt, mock_meta):
 @mock.patch.object(_model.cio, "file_id_from_run_output",
                    mock.Mock(return_value=11, spec_set=True))
 @mock.patch.object(_model.cio, "file_to_json", return_value={'foo': 'bar'})
-@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+@mock.patch.object(_model.ModelFuture, "_set_job_exception")
 def test_metadata(mock_spec, mock_f2j):
     c = setup_client_mock(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
@@ -579,7 +582,7 @@ def test_train_data_exc_handling(mock_load_table):
 
 
 @mock.patch.object(_model, "_load_estimator", return_value='spam')
-@mock.patch.object(_model.ModelFuture, "_set_model_exception", mock.Mock())
+@mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_estimator(mock_le):
     c = setup_client_mock(3, 7)
 
@@ -596,7 +599,7 @@ def test_estimator(mock_le):
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json", return_value='foo',
                    autospec=True)
-@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+@mock.patch.object(_model.ModelFuture, "_set_job_exception")
 def test_validation_metadata_training(mock_spe, mock_f2f,
                                       mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
@@ -611,7 +614,7 @@ def test_validation_metadata_training(mock_spe, mock_f2f,
 
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json", autospec=True)
-@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+@mock.patch.object(_model.ModelFuture, "_set_job_exception")
 def test_validation_metadata_missing(mock_spe, mock_f2f,
                                      mock_file_id_from_run_output):
     # Make sure that missing validation metadata doesn't cause an error
@@ -628,7 +631,7 @@ def test_validation_metadata_missing(mock_spe, mock_f2f,
 @mock.patch.object(_model.cio, "file_id_from_run_output", autospec=True)
 @mock.patch.object(_model.cio, "file_to_json", return_value='foo',
                    autospec=True)
-@mock.patch.object(_model.ModelFuture, "_set_model_exception")
+@mock.patch.object(_model.ModelFuture, "_set_job_exception")
 def test_validation_metadata_prediction(mock_spe, mock_f2f,
                                         mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11

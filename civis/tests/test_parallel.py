@@ -13,7 +13,8 @@ import requests
 
 import civis.parallel
 from civis.futures import ContainerFuture
-from civis.tests import create_client_mock, create_client_container_mock
+from civis.tests import (
+    create_client_mock, create_client_mock_for_container_tests)
 
 
 _MOCK_JOB_KWARGS = dict(
@@ -376,8 +377,9 @@ def test_result_success(mock_civis):
     # Test that we can get a result back from a succeeded job.
     callback = mock.MagicMock()
     mock_civis.io.civis_to_file.side_effect = make_to_file_mock('spam')
-    mock_client = create_client_container_mock(1, 2, state='success',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='success',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
 
@@ -390,8 +392,9 @@ def test_result_callback_no_get(mock_civis):
     # Test that the completed callback happens even if we don't call `get`
     callback = mock.MagicMock()
     mock_civis.io.civis_to_file.side_effect = make_to_file_mock('spam')
-    mock_client = create_client_container_mock(1, 2, state='success',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='success',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     civis.parallel._CivisBackendResult(fut, callback)
     assert callback.call_count == 1
@@ -403,8 +406,9 @@ def test_result_exception(mock_civis):
     callback = mock.MagicMock()
     exc = ZeroDivisionError()
     mock_civis.io.civis_to_file.side_effect = make_to_file_mock(exc)
-    mock_client = create_client_container_mock(1, 2, state='failed',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
 
@@ -418,8 +422,9 @@ def test_result_exception_no_result():
     # a generic TransportableException back.
     callback = mock.MagicMock()
 
-    mock_client = create_client_container_mock(1, 2, state='failed',
-                                               run_outputs=[])
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed',
+        run_outputs=[])
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
     fut._set_api_exception(CivisJobFailure(
@@ -440,8 +445,9 @@ def test_result_callback_exception(mock_civis):
     mock_civis.io.civis_to_file.side_effect = exc
     # We're simulating a job which succeeded but generated an
     # exception when we try to download the outputs.
-    mock_client = create_client_container_mock(1, 2, state='succeeded',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='succeeded',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
 
     res = civis.parallel._CivisBackendResult(fut, callback)
@@ -459,8 +465,9 @@ def test_result_eventual_success(mock_civis):
     exc = requests.ConnectionError()
     se = make_to_file_mock('spam', max_n_err=2, exc=exc)
     mock_civis.io.civis_to_file.side_effect = se
-    mock_client = create_client_container_mock(1, 2, state='success',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='success',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
 
@@ -476,8 +483,9 @@ def test_result_eventual_failure(mock_civis):
     exc = requests.ConnectionError()
     se = make_to_file_mock('spam', max_n_err=10, exc=exc)
     mock_civis.io.civis_to_file.side_effect = se
-    mock_client = create_client_container_mock(1, 2, state='success',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='success',
+        run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
 
@@ -492,8 +500,9 @@ def test_result_running_and_cancel_requested(mock_civis):
     # state. Make sure these are treated as cancelled runs.
     response = Response({'is_cancel_requested': True,
                          'state': 'running'})
-    mock_client = create_client_container_mock(1, 2, state='running',
-                                               run_outputs=mock.MagicMock())
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='running',
+        run_outputs=mock.MagicMock())
     mock_client.scripts.post_cancel.return_value = response
     fut = ContainerFuture(1, 2, client=mock_client)
     callback = mock.MagicMock()
