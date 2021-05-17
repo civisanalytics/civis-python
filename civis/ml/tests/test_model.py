@@ -379,9 +379,6 @@ def test_set_job_exception_unknown_error():
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
-    print(str(err))
-    print(str(err.value))
-    print(err_msg)
     assert str(err.value).startswith(err_msg)
 
 
