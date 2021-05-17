@@ -11,7 +11,7 @@ import threading
 import warnings
 
 from civis import APIClient
-from civis.base import CivisAPIError, DONE
+from civis.base import CivisAPIError, CivisJobFailure, DONE
 from civis.polling import PollableResult
 
 from pubnub.pubnub import PubNub
@@ -286,6 +286,57 @@ class ContainerFuture(CivisFuture):
                          client=client,
                          poll_on_creation=poll_on_creation)
         self._max_n_retries = max_n_retries
+        self._exception_handled = False
+        self.add_done_callback(self._set_job_exception)
+
+    @staticmethod
+    def _set_job_exception(fut):
+        """Callback: On job completion, check the status.
+        If the job has failed, and has no pre-existing error message,
+        populate the error message with recent logs.
+        """
+        # Prevent infinite recursion: this function calls `set_exception`,
+        # which triggers callbacks (i.e. re-calls this function).
+        if fut._exception_handled:
+            return
+        else:
+            fut._exception_handled = True
+
+        if fut.failed():
+            # Container scripts do not return the error message,
+            # so we override with an exception we can pull from the
+            # logs
+            if isinstance(fut._exception, CivisJobFailure) and \
+               fut._exception.error_message == 'None':
+                fut._exception.error_message = ''
+                exc = fut._exception_from_logs(fut._exception)
+                fut.set_exception(exc)
+
+    def _exception_from_logs(self, exc, nlog=15):
+        """Create an exception if the log has a recognizable error
+
+        Search "error" emits in the last ``n_log`` lines.
+        This function presently recognizes the following errors:
+
+        - MemoryError
+        """
+        logs = self.client.scripts.list_containers_runs_logs(self.job_id,
+                                                             self.run_id,
+                                                             limit=nlog)
+
+        # Check for memory errors
+        msgs = [x['message'] for x in logs if x['level'] == 'error']
+        mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
+        if mem_err:
+            exc = MemoryError(mem_err[0])
+        else:
+            # Unknown error; return logs to the user as a sort of traceback
+            all_logs = '\n'.join([x['message'] for x in logs])
+            if isinstance(exc, CivisJobFailure):
+                exc.error_message = all_logs + '\n' + exc.error_message
+            else:
+                exc = CivisJobFailure(all_logs)
+        return exc
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries

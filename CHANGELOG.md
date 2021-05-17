@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- `ContainerFuture` propagates error messages from logs (#416)
 - Added EmptyResultError to `civis.io.read_civis` docs (#412)
 - Added default values from swagger in client method's signature (#416)
 

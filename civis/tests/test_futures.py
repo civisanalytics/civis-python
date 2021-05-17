@@ -17,7 +17,8 @@ from civis.futures import (ContainerFuture,
 from civis.futures import (CivisFuture,
                            JobCompleteListener,
                            _LONG_POLLING_INTERVAL)
-from civis.tests import TEST_SPEC, create_client_mock
+from civis.tests import TEST_SPEC, create_client_mock, \
+    create_client_mock_for_container_tests
 from pubnub.enums import PNStatusCategory
 
 from civis.tests.testcase import CivisVCRTestCase
@@ -315,7 +316,7 @@ def test_container_future_job_id_run_id():
     result = ContainerFuture(
         job_id=job_id,
         run_id=run_id,
-        client=create_client_mock(),
+        client=create_client_mock_for_container_tests(),
     )
     assert result.job_id == job_id
     assert result.run_id == run_id
@@ -534,3 +535,56 @@ def test_future_retry_error():
     fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01,
                           client=c)
     assert fut.result().state == 'succeeded'
+
+
+def test_container_exception_no_result_logs():
+    # If the job errored with no output but with logs,
+    # we should return error logs with the future exception.
+    mem_msg = ('Run used approximately 2 millicores '
+               'of its 256 millicore CPU limit')
+    failed_msg = 'Failed: The job container failed. Exit code 1'
+    logs = [{'id': 111, 'created_at': 'abc',
+             'message': mem_msg,
+             'level': 'info'},
+            {'id': 222,
+             'created_at': 'def',
+             'message': failed_msg,
+             'level': 'error'}]
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed',
+        run_outputs=[],
+        log_outputs=logs)
+    fut = ContainerFuture(1, 2, client=mock_client)
+
+    with pytest.raises(CivisJobFailure) as err:
+        fut.result()
+    expected_msg = ('\n'.join([mem_msg, failed_msg, '']))
+    assert expected_msg == str(fut._exception.error_message)
+    assert str(err.value) == expected_msg
+
+
+def test_container_exception_memory_error():
+    err_msg = ('Process ran out of its allowed 3000 MiB of '
+               'memory and was killed.')
+    logs = [{'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10005,
+             'level': 'error',
+             'message': 'Failed'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10003,
+             'level': 'error',
+             'message': 'Error on job: Process ended with an '
+                        'error, exiting: 137.'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10000,
+             'level': 'error',
+             'message': err_msg}]
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed',
+        run_outputs=[],
+        log_outputs=logs)
+    fut = ContainerFuture(1, 2, client=mock_client)
+
+    with pytest.raises(MemoryError) as err:
+        fut.result()
+    assert str(err.value) == err_msg
