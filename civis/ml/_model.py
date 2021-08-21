@@ -382,9 +382,7 @@ class ModelFuture(ContainerFuture):
         run, and ``train_run_id`` will equal ``run_id``.
     polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready. The default intelligently switches between a short
-        interval if ``pubnub`` is not available and a long interval
-        for ``pubnub`` backup if that library is installed.
+        is ready.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -518,8 +516,6 @@ class ModelFuture(ContainerFuture):
         del state['client']
         del state['poller']
         del state['_condition']
-        if '_pubnub' in state:
-            state['_pubnub'] = True  # Replace with a boolean flag
         state['_done_callbacks'] = []
         state['_self_polling_executor'] = None
 

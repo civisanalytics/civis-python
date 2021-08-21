@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
+- Removed no-longer-used PubNub code
 
 ## 1.15.1 - 2020-10-28
 ### Fixed
