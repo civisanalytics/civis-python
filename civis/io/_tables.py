@@ -43,7 +43,6 @@ DELIMITERS = {
 }
 
 
-# TODO: Write tests.
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
                job_name=None, api_key=None, client=None, credential_id=None,
