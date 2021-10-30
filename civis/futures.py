@@ -16,10 +16,6 @@ from civis.polling import PollableResult
 
 log = logging.getLogger(__name__)
 
-# Polling on a 9.5 minute interval is used as a
-# fallback in case the job complete message is missed in an outage.
-_LONG_POLLING_INTERVAL = 9.5 * 60
-
 
 class CivisFuture(PollableResult):
     """A class for tracking future results.
