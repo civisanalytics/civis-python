@@ -33,6 +33,7 @@ except ImportError:
 from civis import APIClient
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
+from civis.futures import _format_job_run_ids_in_exception
 from civis.response import Response
 from civis.tests import create_client_mock
 import pytest
@@ -371,7 +372,9 @@ def test_set_job_exception_unknown_error():
              'id': 10000,
              'level': 'error',
              'message': 'Oops'}]
-    err_msg = '\n'.join([x['message'] for x in logs])
+    err_msg = (_format_job_run_ids_in_exception(1, 2)
+               + " "
+               + '\n'.join([x['message'] for x in logs]))
     mock_client.scripts.list_containers_runs_logs.return_value = logs
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:

@@ -12,7 +12,8 @@ from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
                            CustomScriptExecutor,
-                           _create_docker_command)
+                           _create_docker_command,
+                           _format_job_run_ids_in_exception)
 
 from civis.futures import CivisFuture
 from civis.tests import TEST_SPEC, create_client_mock, \
@@ -436,7 +437,10 @@ def test_container_exception_no_result_logs():
 
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
-    expected_msg = ('\n'.join([mem_msg, failed_msg, '']))
+    expected_msg = (
+        _format_job_run_ids_in_exception(1, 2)
+        + " "
+        + '\n'.join([mem_msg, failed_msg, '']))
     assert expected_msg == str(fut._exception.error_message)
     assert str(err.value) == expected_msg
 

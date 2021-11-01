@@ -228,7 +228,12 @@ class ContainerFuture(CivisFuture):
             exc = MemoryError(mem_err[0])
         else:
             # Unknown error; return logs to the user as a sort of traceback
-            all_logs = '\n'.join([x['message'] for x in logs])
+            job_run_ids_in_exc = _format_job_run_ids_in_exception(
+                self.job_id, self.run_id)
+            all_logs = (
+                f"{job_run_ids_in_exc} "
+                + '\n'.join([x['message'] for x in logs])
+            )
             if isinstance(exc, CivisJobFailure):
                 exc.error_message = all_logs + '\n' + exc.error_message
             else:
@@ -297,6 +302,10 @@ class ContainerFuture(CivisFuture):
                 self._invoke_callbacks()
                 return self.cancelled()
             return False
+
+
+def _format_job_run_ids_in_exception(job_id: int, run_id: int) -> str:
+    return f"(Job ID {job_id} / Run ID {run_id})"
 
 
 def _create_docker_command(*args, **kwargs):
