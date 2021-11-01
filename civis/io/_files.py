@@ -181,10 +181,11 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     Parameters
     ----------
     buf : file-like object or str
-        Either a file-like object for the buffer or a string for a local file
+        Either a file-like object for a buffer or a string for a local file
         path.
         Note that if a file-like object is provided and it's not
-        an ``io.BufferedReader`` or ``io.TextIoWrapper`` object,
+        an :class:`io.BufferedReader <io.BufferedReader>`
+        or :class:`io.TextIoWrapper <io.TextIoWrapper>` object,
         the current implementation requires extra disk space
         (which could be an issue if your file is large).
     name : str, optional
@@ -205,8 +206,9 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
         will expire in 30 days. To keep a file indefinitely, specify ``None``.
         To specify a date and time, format it by the ISO 8601 standard,
         e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what is returned by :func:`datetime.date.isoformat`
-        or :func:`datetime.datetime.isoformat`.
+        and what the ``isoformat()`` method returns from
+        a :class:`datetime.date <datetime.date>`
+        or :class:`datetime.datetime <datetime.datetime>` object.
 
     Returns
     -------
@@ -510,8 +512,9 @@ def dataframe_to_file(df, name='data.csv', expires_at='DEFAULT',
         will expire in 30 days. To keep a file indefinitely, specify ``None``.
         To specify a date and time, format it by the ISO 8601 standard,
         e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what is returned by :func:`datetime.date.isoformat`
-        or :func:`datetime.datetime.isoformat`.
+        and what the ``isoformat()`` method returns from
+        a :class:`datetime.date <datetime.date>`
+        or :class:`datetime.datetime <datetime.datetime>` object.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -585,8 +588,9 @@ def json_to_file(obj, name='file.json', expires_at='DEFAULT',
         will expire in 30 days. To keep a file indefinitely, specify ``None``.
         To specify a date and time, format it by the ISO 8601 standard,
         e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what is returned by :func:`datetime.date.isoformat`
-        or :func:`datetime.datetime.isoformat`.
+        and what the ``isoformat()`` method returns from
+        a :class:`datetime.date <datetime.date>`
+        or :class:`datetime.datetime <datetime.datetime>` object.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
