@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added job ID and run ID to the exception message of `CivisJobFailure`
+  coming from a `ContainerFuture` object (#426)
 - Added the `encoding` parameter to both `civis.io.read_civis` and `civis.io.read_civis_sql`,
   so that these two functions can retrieve non-UTF-8 data when `use_pandas` is `False`. (#424)
 - `ContainerFuture` propagates error messages from logs (#416)
