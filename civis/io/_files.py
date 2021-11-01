@@ -181,8 +181,12 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     Parameters
     ----------
     buf : file-like object or str
-        The file or other buffer that you wish to upload. Strings will be
-        treated as paths to local files to open.
+        Either a file-like object for the buffer or a string for a local file
+        path.
+        Note that if a file-like object is provided and it's not
+        an ``io.BufferedReader`` or ``io.TextIoWrapper`` object,
+        the current implementation requires extra disk space
+        (which could be an issue if your file is large).
     name : str, optional
         The name you wish to give the file. If not given, it will be inferred
         from the basename of ``buf`` (if ``buf`` is a string for a file path)
