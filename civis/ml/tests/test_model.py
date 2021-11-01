@@ -111,9 +111,6 @@ def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
 
-    # Avoid channels endpoint while testing here
-    del c.channels
-
     return c
 
 

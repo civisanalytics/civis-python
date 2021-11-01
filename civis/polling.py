@@ -1,5 +1,3 @@
-from builtins import super
-
 import time
 import threading
 

@@ -10,8 +10,6 @@ from civis.response import Response
 
 TEST_SPEC = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                          "civis_api_spec.json")
-TEST_SPEC_ALL = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                             "civis_api_spec_channels.json")
 
 
 def create_client_mock(cache=TEST_SPEC):
@@ -88,9 +86,6 @@ def create_client_mock_for_container_tests(
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
 
-    # Avoid channels endpoint while testing here
-    del c.channels
-
     return c
 
 
@@ -98,8 +93,4 @@ def create_client_mock_for_container_tests(
 def _real_client(local_api_spec):
     real_client = APIClient(local_api_spec=local_api_spec, api_key='none')
     real_client._feature_flags = {'noflag': None}
-    if hasattr(real_client, 'channels'):
-        # Deleting "channels" causes the client to fall back on
-        # regular polling for completion, which greatly eases testing.
-        delattr(real_client, 'channels')
     return real_client
