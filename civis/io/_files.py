@@ -200,6 +200,13 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     **kwargs : kwargs
         Extra keyword arguments will be passed to the file creation
         endpoint. See :func:`~civis.resources._resources.Files.post`.
+        In particular, ``expires_at`` can be specified for
+        the date and time the file will expire. If not specified, the file
+        will expire in 30 days. To keep a file indefinitely, specify ``None``.
+        To specify a date and time, format it by the ISO 8601 standard,
+        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
+        and what is returned by :func:`datetime.date.isoformat`
+        or :func:`datetime.datetime.isoformat`.
 
     Returns
     -------
@@ -499,10 +506,12 @@ def dataframe_to_file(df, name='data.csv', expires_at='DEFAULT',
     name : str, optional
         The name of the Civis File
     expires_at : str, optional
-        The date and time the file will expire. If not specified, the file will
-        expire in 30 days. To keep a file indefinitely, specify null.
-        If provided, this must be either `None` or
-        a valid RFC3339 date/Time string.
+        The date and time the file will expire. If not specified, the file
+        will expire in 30 days. To keep a file indefinitely, specify ``None``.
+        To specify a date and time, format it by the ISO 8601 standard,
+        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
+        and what is returned by :func:`datetime.date.isoformat`
+        or :func:`datetime.datetime.isoformat`.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -572,10 +581,12 @@ def json_to_file(obj, name='file.json', expires_at='DEFAULT',
     name : str, optional
         The name of the Civis File
     expires_at : str, optional
-        The date and time the file will expire. If not specified, the file will
-        expire in 30 days. To keep a file indefinitely, specify null.
-        If provided, this must be either `None` or
-        a valid RFC3339 date/Time string.
+        The date and time the file will expire. If not specified, the file
+        will expire in 30 days. To keep a file indefinitely, specify ``None``.
+        To specify a date and time, format it by the ISO 8601 standard,
+        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
+        and what is returned by :func:`datetime.date.isoformat`
+        or :func:`datetime.datetime.isoformat`.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
