@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added EmptyResultError to `civis.io.read_civis` docs (#412)
 - Added default values from swagger in client method's signature (#417)
 
+### Changed
+- Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
+  `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
+
 ### Fixed
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
