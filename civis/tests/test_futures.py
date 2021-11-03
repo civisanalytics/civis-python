@@ -34,6 +34,14 @@ def clear_lru_cache():
     generate_classes.cache_clear()
 
 
+def _create_poller_mock(state: str) -> mock.Mock:
+    poller = mock.Mock()
+    api_result = mock.Mock()
+    api_result.state = state
+    poller.return_value = api_result
+    return poller
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -87,24 +95,18 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
-    def test_set_api_result_result_succeeded(self, mock_api):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'succeeded'
+    def test_set_api_result_succeeded(self, mock_api):
+        poller = _create_poller_mock("succeeded")
 
         result = CivisFuture(poller, (1, 2))
-        result._set_api_result(api_result)
-        assert poller.call_count == 0
+        assert poller.call_count == 1
         assert result._state == 'FINISHED'
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
     def test_set_api_result_failed(self, mock_api):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'failed'
+        poller = _create_poller_mock("failed")
 
         result = CivisFuture(poller, (1, 2))
-        result._set_api_result(api_result)
         assert result._state == 'FINISHED'
         with pytest.raises(CivisJobFailure):
             result.result()
@@ -112,15 +114,12 @@ class CivisFutureTests(CivisVCRTestCase):
             result.outputs()
 
     def test_outputs_succeeded(self):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'succeeded'
+        poller = _create_poller_mock("succeeded")
         mock_client = create_client_mock()
         expected_return = [{'test': 'test_result'}]
         mock_client.jobs.list_runs_outputs.return_value = expected_return
 
         result = CivisFuture(poller, (1, 2), client=mock_client)
-        result._set_api_result(api_result)
         assert result.outputs() == expected_return
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
@@ -183,7 +182,7 @@ def _check_executor(from_template_id=None):
 )
 def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     result = CivisFuture(
-        poller=lambda x: x,
+        poller=_create_poller_mock("succeeded"),
         poller_args=poller_args,
         client=create_client_mock(),
     )

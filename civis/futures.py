@@ -234,12 +234,14 @@ class ContainerFuture(CivisFuture):
                  poll_on_creation=True):
         if client is None:
             client = APIClient()
+
+        self._max_n_retries = max_n_retries
+
         super().__init__(client.scripts.get_containers_runs,
                          [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
-        self._max_n_retries = max_n_retries
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
