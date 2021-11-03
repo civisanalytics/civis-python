@@ -210,7 +210,6 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
     return fut
 
 
-# TODO: Write tests.
 @deprecate_param('v2.0.0', 'api_key')
 def read_civis_sql(sql, database, use_pandas=False,
                    encoding=None, job_name=None,
@@ -1386,10 +1385,16 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     # Set values from first completed file cleaning - other files will be
     # compared to this one. If inconsistencies are detected, raise an error.
     first_completed = done.pop()
-    output_file = client.jobs.list_runs_outputs(
+    try:
+        output_file = client.jobs.list_runs_outputs(
             first_completed.job_id,
             first_completed.run_id
         )[0]
+    except IndexError:
+        raise CivisImportError(
+            "Unable to retrieve output from CSV preprocess "
+            f"job {first_completed.job_id} run {first_completed.run_id}"
+        )
     detected_info = client.files.get(output_file.object_id).detected_info
     table_columns = (detected_info['tableColumns'] if need_table_columns
                      else None)
@@ -1411,10 +1416,16 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     # for these possible completed cleaning runs while waiting on those which
     # are still running.
     for result in concurrent.futures.as_completed(done | still_going):
-        output_file = client.jobs.list_runs_outputs(
-            result.job_id,
-            result.run_id
-        )[0]
+        try:
+            output_file = client.jobs.list_runs_outputs(
+                result.job_id,
+                result.run_id
+            )[0]
+        except IndexError:
+            raise CivisImportError(
+                "Unable to retrieve output fro CSV preprocess "
+                f"job {result.job_id} run {result.run_id}"
+            )
         detected_info = client.files.get(output_file.object_id).detected_info
         if need_table_columns:
             file_columns = detected_info['tableColumns']
