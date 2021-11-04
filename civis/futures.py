@@ -101,7 +101,7 @@ class CivisFuture(PollableResult):
             fut._exception_handled = True
 
         if fut.failed():
-            # Container scripts do not return the error message,
+            # Some platform script types do not return the error message,
             # so we override with an exception we can pull from the
             # logs
             if isinstance(fut._exception, CivisJobFailure) and \
