@@ -306,6 +306,20 @@ def test_set_job_exception_metadata_exception():
     """
     # State "running" prevents termination when the object is created.
     mock_client = setup_client_mock(1, 2, state='running')
+    logs = [{'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10005,
+             'level': 'error',
+             'message': 'Failed'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10003,
+             'level': 'error',
+             'message': 'Error on job: Process ended with an '
+                        'error, exiting: 137.'},
+            {'created_at': '2017-05-10T12:00:00.000Z',
+             'id': 10000,
+             'level': 'error',
+             'message': 'something went wrong'}]
+    mock_client.jobs.list_runs_logs.return_value = logs
 
     class ModelFutureRaiseExc(_model.ModelFuture):
         def __init__(self, exc, *args, **kwargs):
@@ -348,7 +362,7 @@ def test_set_job_exception_memory_error():
              'id': 10000,
              'level': 'error',
              'message': err_msg}]
-    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    mock_client.jobs.list_runs_logs.return_value = logs
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(MemoryError) as err:
         fut.result()
@@ -375,7 +389,7 @@ def test_set_job_exception_unknown_error():
     err_msg = (_format_job_run_ids_in_exception(1, 2)
                + " "
                + '\n'.join([x['message'] for x in logs]))
-    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    mock_client.jobs.list_runs_logs.return_value = logs
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
