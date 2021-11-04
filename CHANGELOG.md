@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Moved the changes from #416 for propagating error messages
   from `ContainerFuture` to `CivisFuture` (#426)
+- Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
+  `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
 
 ### Fixed
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
