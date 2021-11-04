@@ -166,14 +166,6 @@ class CivisFuture(PollableResult):
             return False
         return match
 
-    def _poll_and_set_api_result(self):
-        with self._condition:
-            try:
-                result = self.poller(*self.poller_args)
-                self._set_api_result(result)
-            except Exception as e:
-                self._set_api_exception(exc=e)
-
     def outputs(self):
         """Block on job completion and return a list of run outputs.
 
