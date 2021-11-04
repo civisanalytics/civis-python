@@ -118,9 +118,8 @@ class CivisFuture(PollableResult):
 
         - MemoryError
         """
-        logs = self.client.scripts.list_containers_runs_logs(self.job_id,
-                                                             self.run_id,
-                                                             limit=nlog)
+        logs = self.client.jobs.list_runs_logs(
+            self.job_id, self.run_id, limit=nlog)
 
         # Check for memory errors
         msgs = [x['message'] for x in logs if x['level'] == 'error']
