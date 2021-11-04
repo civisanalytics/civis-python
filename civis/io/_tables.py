@@ -1323,8 +1323,8 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
         )
         fut = run_job(cleaner_job.id, client=client,
                       polling_interval=polling_interval)
-        log.debug('Started CSV preprocess job %d run %d for "%s"',
-                  cleaner_job.id, fut.run_id, client.files.get(fid).name)
+        log.debug('Started CSV preprocess job %d run %d for file %d (%s)',
+                  cleaner_job.id, fut.run_id, fid, client.files.get(fid).name)
         cleaning_futures.append(fut)
     return cleaning_futures
 
