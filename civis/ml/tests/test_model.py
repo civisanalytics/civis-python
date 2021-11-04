@@ -104,7 +104,7 @@ def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run
     c.scripts.list_containers_runs_outputs.return_value = (run_outputs or [])
-    c.scripts.list_containers_runs_logs.return_value = []
+    c.jobs.list_runs_logs.return_value = []
 
     def change_state_to_cancelled(script_id):
         mock_container_run.state = "cancelled"
