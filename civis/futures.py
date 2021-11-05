@@ -105,7 +105,7 @@ class CivisFuture(PollableResult):
             # so we override with an exception we can pull from the
             # logs
             if isinstance(fut._exception, CivisJobFailure) and \
-               fut._exception.error_message == 'None':
+               fut._exception._original_err_msg in ('None', "", None):
                 fut._exception.error_message = ''
                 exc = fut._exception_from_logs(fut._exception)
                 fut.set_exception(exc)
@@ -128,16 +128,12 @@ class CivisFuture(PollableResult):
             exc = MemoryError(mem_err[0])
         else:
             # Unknown error; return logs to the user as a sort of traceback
-            job_run_ids_in_exc = _format_job_run_ids_in_exception(
-                self.job_id, self.run_id)
-            all_logs = (
-                f"{job_run_ids_in_exc} "
-                + '\n'.join([x['message'] for x in logs])
-            )
+            all_logs = '\n'.join([x['message'] for x in logs])
             if isinstance(exc, CivisJobFailure):
-                exc.error_message = all_logs + '\n' + exc.error_message
+                exc._update_error_message(all_logs + '\n' + exc.error_message)
             else:
-                exc = CivisJobFailure(all_logs)
+                exc = CivisJobFailure(
+                    all_logs, job_id=self.job_id, run_id=self.run_id)
         return exc
 
     @property
@@ -296,10 +292,6 @@ class ContainerFuture(CivisFuture):
                 self._invoke_callbacks()
                 return self.cancelled()
             return False
-
-
-def _format_job_run_ids_in_exception(job_id: int, run_id: int) -> str:
-    return f"(Job ID {job_id} / Run ID {run_id})"
 
 
 def _create_docker_command(*args, **kwargs):
