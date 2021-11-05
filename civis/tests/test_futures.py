@@ -34,10 +34,8 @@ def clear_lru_cache():
 
 
 def _create_poller_mock(state: str) -> mock.Mock:
-    poller = mock.Mock()
-    api_result = mock.Mock()
-    api_result.state = state
-    poller.return_value = api_result
+    api_result = mock.Mock(state=state)
+    poller = mock.Mock(return_value=api_result)
     return poller
 
 
