@@ -24,10 +24,6 @@ from civis._deprecation import deprecate_param
 import requests
 
 try:
-    from io import StringIO
-except ImportError:
-    from cStringIO import StringIO
-try:
     import pandas as pd
     NO_PANDAS = False
 except ImportError:
@@ -48,7 +44,7 @@ DELIMITERS = {
 
 
 @deprecate_param('v2.0.0', 'api_key')
-def read_civis(table, database, columns=None, use_pandas=False,
+def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
                job_name=None, api_key=None, client=None, credential_id=None,
                polling_interval=None, archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
@@ -67,6 +63,14 @@ def read_civis(table, database, columns=None, use_pandas=False,
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    encoding : str, optional
+        If ``use_pandas`` is ``True``, this parameter is passed to
+        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
+        If ``use_pandas`` is ``False``, and if this parameter isn't provided,
+        then the UTF-8 encoding is assumed. In case you encounter
+        a ``UnicodeDecodeError``, consider choosing an encoding suitable
+        for your data; see the `list of standard encodings
+        <https://docs.python.org/3/library/codecs.html#standard-encodings>`_.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -87,22 +91,22 @@ def read_civis(table, database, columns=None, use_pandas=False,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
-        passed into :func:`python:csv.reader` if `use_pandas` is
+        :func:`pandas:pandas.read_csv` if ``use_pandas`` is ``True`` or
+        passed into :func:`python:csv.reader` if ``use_pandas`` is
         ``False``.
 
     Returns
     -------
     data : :class:`pandas:pandas.DataFrame` or list
-        A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
-        `use_pandas` is ``False``, no parsing of types is performed and
+        A list of rows (with header as first row) if ``use_pandas`` is
+        ``False``, otherwise a :class:`pandas:pandas.DataFrame`. Note that if
+        ``use_pandas`` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
     Raises
     ------
     ImportError
-        If `use_pandas` is ``True`` and `pandas` is not installed.
+        If ``use_pandas`` is ``True`` and pandas is not installed.
     EmptyResultError
         If the table is empty.
 
@@ -135,7 +139,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
         client = APIClient(api_key=api_key)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, client=client,
+                          encoding=encoding, job_name=job_name, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
@@ -206,8 +210,10 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
     return fut
 
 
+# TODO: Write tests.
 @deprecate_param('v2.0.0', 'api_key')
-def read_civis_sql(sql, database, use_pandas=False, job_name=None,
+def read_civis_sql(sql, database, use_pandas=False,
+                   encoding=None, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
                    hidden=True, **kwargs):
@@ -229,6 +235,14 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    encoding : str, optional
+        If ``use_pandas`` is ``True``, this parameter is passed to
+        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
+        If ``use_pandas`` is ``False``, and if this parameter isn't provided,
+        then the UTF-8 encoding is assumed. In case you encounter
+        a ``UnicodeDecodeError``, consider choosing an encoding suitable
+        for your data; see the `list of standard encodings
+        <https://docs.python.org/3/library/codecs.html#standard-encodings>`_.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -249,22 +263,22 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
-        passed into :func:`python:csv.reader` if `use_pandas` is
+        :func:`pandas:pandas.read_csv` if ``use_pandas`` is ``True`` or
+        passed into :func:`python:csv.reader` if ``use_pandas`` is
         ``False``.
 
     Returns
     -------
     data : :class:`pandas:pandas.DataFrame` or list
-        A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
-        `use_pandas` is ``False``, no parsing of types is performed and
+        A list of rows (with header as first row) if ``use_pandas`` is
+        ``False``, otherwise a :class:`pandas:pandas.DataFrame`. Note that if
+        ``use_pandas`` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
     Raises
     ------
     ImportError
-        If `use_pandas` is ``True`` and `pandas` is not installed.
+        If ``use_pandas`` is ``True`` and pandas is not installed.
     EmptyResultError
         If no rows were returned as a result of the query.
 
@@ -339,16 +353,18 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         _kwargs = {'names': headers}
         _kwargs.update(kwargs)
         _kwargs['compression'] = 'gzip'
+        _kwargs["encoding"] = encoding
 
         data = pd.read_csv(url, **_kwargs)
     else:
         response = requests.get(url, stream=True)
         response.raise_for_status()
 
-        with StringIO() as buf:
+        with io.StringIO() as buf:
             if headers:
                 buf.write(','.join(headers) + '\n')
-            _decompress_stream(response, buf, write_bytes=False)
+            _decompress_stream(response, buf, write_bytes=False,
+                               encoding=encoding or "utf-8")
             buf.seek(0)
             data = list(csv.reader(buf, **kwargs))
 
@@ -1156,7 +1172,7 @@ def _get_headers(client, sql, database, credential_id, polling_interval=None):
     return headers
 
 
-def _decompress_stream(response, buf, write_bytes=True):
+def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):
 
     # use response.raw for a more consistent approach
     # if content-encoding is specified in the headers
@@ -1174,7 +1190,7 @@ def _decompress_stream(response, buf, write_bytes=True):
         if write_bytes:
             buf.write(d.decompress(to_decompress))
         else:
-            buf.write(d.decompress(to_decompress).decode('utf-8'))
+            buf.write(d.decompress(to_decompress).decode(encoding))
         chunk = response.raw.read(CHUNK_SIZE)
 
 
@@ -1255,7 +1271,7 @@ def split_schema_tablename(table):
         If the input ``table`` is not separable into a schema and
         table name.
     """
-    reader = csv.reader(StringIO(str(table)),
+    reader = csv.reader(io.StringIO(str(table)),
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')

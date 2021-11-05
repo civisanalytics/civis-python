@@ -4,13 +4,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added the `encoding` parameter to both `civis.io.read_civis` and `civis.io.read_civis_sql`,
+  so that these two functions can retrieve non-UTF-8 data when `use_pandas` is `False`. (#424)
 - `ContainerFuture` propagates error messages from logs (#416)
 - Added EmptyResultError to `civis.io.read_civis` docs (#412)
-- Added default values from swagger in client method's signature (#416)
+- Added default values from swagger in client method's signature (#417)
+
+### Changed
+- Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
+  `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
 
 ### Fixed
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
+- Removed no-longer-used PubNub code (#425)
 
 ## 1.15.1 - 2020-10-28
 ### Fixed
