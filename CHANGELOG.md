@@ -17,6 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   from `ContainerFuture` to `CivisFuture` (#426)
 - Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
   `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
+- Added default values from swagger in client method's signature (#416)
+- Ability to use joblib 1.1.x (#423)
 
 ### Fixed
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
