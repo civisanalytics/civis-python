@@ -92,11 +92,21 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    def test_poller_call_count_poll_on_creation_true(self, mock_api):
+        poller = _create_poller_mock("succeeded")
+        CivisFuture(poller, (1, 2), poll_on_creation=True)
+        assert poller.call_count == 1
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    def test_poller_call_count_poll_on_creation_false(self, mock_api):
+        poller = _create_poller_mock("succeeded")
+        CivisFuture(poller, (1, 2), poll_on_creation=False)
+        assert poller.call_count == 0
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
     def test_set_api_result_succeeded(self, mock_api):
         poller = _create_poller_mock("succeeded")
-
         result = CivisFuture(poller, (1, 2))
-        assert poller.call_count == 1
         assert result._state == 'FINISHED'
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
