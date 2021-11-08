@@ -422,7 +422,8 @@ def test_future_retry_error():
     assert fut.result().state == 'succeeded'
 
 
-def test_container_exception_no_result_logs():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_container_exception_no_result_logs(m_sleep):
     # If the job errored with no output but with logs,
     # we should return error logs with the future exception.
     mem_msg = ('Run used approximately 2 millicores '
@@ -449,7 +450,8 @@ def test_container_exception_no_result_logs():
     assert str(err.value) == expected_msg
 
 
-def test_container_exception_memory_error():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_container_exception_memory_error(m_sleep):
     err_msg = ('Process ran out of its allowed 3000 MiB of '
                'memory and was killed.')
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',

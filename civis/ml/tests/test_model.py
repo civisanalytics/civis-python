@@ -255,7 +255,8 @@ def test_modelfuture_pickle_smoke(mock_client):
     pickle.loads(mf_pickle)
 
 
-def test_set_job_exception_metadata_exception():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_metadata_exception(m_sleep):
     """Tests cases where accessing metadata throws exceptions
     """
     # State "running" prevents termination when the object is created.
@@ -285,7 +286,8 @@ def test_set_job_exception_metadata_exception():
         _model.ModelFuture._set_job_exception(fut)
 
 
-def test_set_job_exception_memory_error():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_memory_error(m_sleep):
     err_msg = ('Process ran out of its allowed 3000 MiB of '
                'memory and was killed.')
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
@@ -309,7 +311,8 @@ def test_set_job_exception_memory_error():
     assert str(err.value) == err_msg
 
 
-def test_set_job_exception_unknown_error():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_unknown_error(m_sleep):
     # If we really don't recognize the error, at least give the
     # user a few lines of logs so they can maybe figure it out themselves.
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
@@ -483,7 +486,8 @@ def test_metadata(mock_spec, mock_f2j):
     mock_f2j.assert_called_once_with(11, client=c)
 
 
-def test_train_data_fname():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_train_data_fname(m_sleep):
     # swap out the poller with a simple function that accepts *args, **kwargs
     # and returns a simple successful Response object
     def poller(*args, **kwargs):
@@ -517,8 +521,9 @@ def test_train_data_(mock_cio):
         'model_info.json', 11, 13, client=mock_client)
 
 
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
 @mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
-def test_train_data_exc_handling(mock_load_table):
+def test_train_data_exc_handling(mock_load_table, m_sleep):
     def poller(*args, **kwargs):
         return Response({'state': 'succeeded'})
     mock_client = mock.MagicMock()
@@ -835,7 +840,8 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 @mock.patch.object(_model, '_get_template_ids_all_versions',
                    mock.Mock(return_value=TEST_TEMPLATE_IDS))
-def test_modelpipeline_classmethod_constructor_nonint_id():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_modelpipeline_classmethod_constructor_nonint_id(m_sleep):
     # Verify that we can still JSON-serialize job and run IDs even
     # if they're entered in a non-JSON-able format.
     # We need to turn them into JSON to set them as script arguments.

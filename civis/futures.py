@@ -118,6 +118,8 @@ class CivisFuture(PollableResult):
 
         - MemoryError
         """
+        # Traceback in platform logs may be delayed for a few seconds.
+        time.sleep(15)
         logs = self.client.jobs.list_runs_logs(
             self.job_id, self.run_id, limit=nlog)
         # Reverse order as logs come back in reverse chronological order.
