@@ -37,21 +37,23 @@ class CivisJobFailure(Exception):
         self.job_id = job_id
         self.run_id = run_id
         self._original_err_msg = err_msg
-        self.error_message = err_msg
-        self._update_error_message(err_msg)
+        self.error_message = _err_msg_with_job_run_ids(
+            self.__class__, err_msg, job_id, run_id)
         self.response = response
 
     def __str__(self):
         return self.error_message
 
-    def _update_error_message(self, err_msg):
-        if self.job_id is None and self.run_id is None:
-            self.error_message = err_msg
-        elif self.run_id is None:
-            self.error_message = f"(Job ID {self.job_id}) {err_msg}"
-        else:
-            self.error_message = (
-                f"(Job ID {self.job_id} / run ID {self.run_id}) {err_msg}")
+
+def _err_msg_with_job_run_ids(exc_cls, err_msg, job_id, run_id) -> str:
+    cls_name = exc_cls.__name__
+    if job_id is None and run_id is None:
+        return err_msg
+    elif run_id is None:
+        return f"({cls_name} from job ID {job_id}) {err_msg}"
+    else:
+        return (
+            f"({cls_name} from job ID {job_id} / run ID {run_id}) {err_msg}")
 
 
 class CivisAPIError(Exception):

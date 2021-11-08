@@ -10,7 +10,8 @@ import threading
 import warnings
 
 from civis import APIClient
-from civis.base import CivisAPIError, CivisJobFailure, DONE
+from civis.base import (
+    CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids)
 from civis.polling import PollableResult
 
 
@@ -129,15 +130,23 @@ class CivisFuture(PollableResult):
         msgs = [x['message'] for x in logs if x['level'] == 'error']
         mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
         if mem_err:
-            exc = MemoryError(mem_err[0])
+            err_msg = _err_msg_with_job_run_ids(
+                MemoryError, mem_err[0], self.job_id, self.run_id)
+            exc = MemoryError(err_msg)
         else:
             # Unknown error; return logs to the user as a sort of traceback
             all_logs = '\n'.join([x['message'] for x in logs])
             if isinstance(exc, CivisJobFailure):
-                exc._update_error_message(all_logs + '\n' + exc.error_message)
+                err_msg = _err_msg_with_job_run_ids(
+                    CivisJobFailure, all_logs + '\n' + exc.error_message,
+                    self.job_id, self.run_id)
+                exc.error_message = err_msg
             else:
+                err_msg = _err_msg_with_job_run_ids(
+                    exc.__class__, all_logs, self.job_id, self.run_id)
                 exc = CivisJobFailure(
-                    all_logs, job_id=self.job_id, run_id=self.run_id)
+                    "", job_id=self.job_id, run_id=self.run_id)
+                exc.error_message = err_msg
         return exc
 
     @property

@@ -308,7 +308,8 @@ def test_set_job_exception_memory_error(m_sleep):
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(MemoryError) as err:
         fut.result()
-    assert str(err.value) == err_msg
+    expected = f"(MemoryError from job ID 1 / run ID 2) {err_msg}"
+    assert str(err.value) == expected
 
 
 @mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
@@ -331,7 +332,7 @@ def test_set_job_exception_unknown_error(m_sleep):
     mock_client = create_client_mock_for_container_tests(
         1, 2, state='failed', log_outputs=logs)
     err_msg = (
-        "(Job ID 1 / run ID 2) "
+        "(CivisJobFailure from job ID 1 / run ID 2) "
         + '\n'.join([x['message'] for x in logs][::-1]))
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
