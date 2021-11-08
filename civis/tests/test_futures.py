@@ -444,7 +444,7 @@ def test_container_exception_no_result_logs():
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
     expected_msg = (
-        "(Job ID 1 / run ID 2) " + '\n'.join([mem_msg, failed_msg, '']))
+        "(Job ID 1 / run ID 2) " + '\n'.join([failed_msg, mem_msg, '']))
     assert expected_msg == str(fut._exception.error_message)
     assert str(err.value) == expected_msg
 

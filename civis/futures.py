@@ -120,6 +120,8 @@ class CivisFuture(PollableResult):
         """
         logs = self.client.jobs.list_runs_logs(
             self.job_id, self.run_id, limit=nlog)
+        # Reverse order as logs come back in reverse chronological order.
+        logs = logs[::-1]
 
         # Check for memory errors
         msgs = [x['message'] for x in logs if x['level'] == 'error']

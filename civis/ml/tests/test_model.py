@@ -313,22 +313,23 @@ def test_set_job_exception_unknown_error():
     # If we really don't recognize the error, at least give the
     # user a few lines of logs so they can maybe figure it out themselves.
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
-             'id': 10005,
+             'id': 10000,
              'level': 'error',
-             'message': 'Failed'},
+             'message': 'Oops'},
             {'created_at': '2017-05-10T12:00:00.000Z',
              'id': 10003,
              'level': 'error',
              'message': 'Error on job: Process ended with an '
                         'error, exiting: 137.'},
             {'created_at': '2017-05-10T12:00:00.000Z',
-             'id': 10000,
+             'id': 10005,
              'level': 'error',
-             'message': 'Oops'}]
+             'message': 'Failed'}]
     mock_client = create_client_mock_for_container_tests(
         1, 2, state='failed', log_outputs=logs)
     err_msg = (
-        "(Job ID 1 / run ID 2) " + '\n'.join([x['message'] for x in logs]))
+        "(Job ID 1 / run ID 2) "
+        + '\n'.join([x['message'] for x in logs][::-1]))
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
