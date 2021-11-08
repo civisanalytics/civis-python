@@ -445,8 +445,7 @@ def test_container_exception_no_result_logs(m_sleep):
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
     expected_msg = (
-        "(CivisJobFailure from job ID 1 / run ID 2) "
-        + '\n'.join([failed_msg, mem_msg, '']))
+        "(From job 1 / run 2) " + '\n'.join([failed_msg, mem_msg, '']))
     assert expected_msg == str(fut._exception.error_message)
     assert str(err.value) == expected_msg
 
@@ -476,5 +475,4 @@ def test_container_exception_memory_error(m_sleep):
 
     with pytest.raises(MemoryError) as err:
         fut.result()
-    expected = f"(MemoryError from job ID 1 / run ID 2) {err_msg}"
-    assert str(err.value) == expected
+    assert str(err.value) == f"(From job 1 / run 2) {err_msg}"
