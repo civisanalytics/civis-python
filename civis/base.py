@@ -33,12 +33,25 @@ def tostr_urljoin(*x):
 
 
 class CivisJobFailure(Exception):
-    def __init__(self, err_msg, response=None):
-        self.error_message = err_msg
+    def __init__(self, err_msg, response=None, job_id=None, run_id=None):
+        self.job_id = job_id
+        self.run_id = run_id
+        self._original_err_msg = err_msg
+        self.error_message = _err_msg_with_job_run_ids(
+            err_msg, job_id, run_id)
         self.response = response
 
     def __str__(self):
         return self.error_message
+
+
+def _err_msg_with_job_run_ids(err_msg, job_id, run_id) -> str:
+    if job_id is None and run_id is None:
+        return err_msg
+    elif run_id is None:
+        return f"(From job {job_id}) {err_msg}"
+    else:
+        return f"(From job {job_id} / run {run_id}) {err_msg}"
 
 
 class CivisAPIError(Exception):

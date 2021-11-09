@@ -33,6 +33,12 @@ def clear_lru_cache():
     generate_classes.cache_clear()
 
 
+def _create_poller_mock(state: str) -> mock.Mock:
+    api_result = mock.Mock(state=state)
+    poller = mock.Mock(return_value=api_result)
+    return poller
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -86,24 +92,28 @@ class CivisFutureTests(CivisVCRTestCase):
         self.assertFalse(result._check_message(message))
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
-    def test_set_api_result_result_succeeded(self, mock_api):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'succeeded'
+    def test_poller_call_count_poll_on_creation_true(self, mock_api):
+        poller = _create_poller_mock("succeeded")
+        CivisFuture(poller, (1, 2), poll_on_creation=True)
+        assert poller.call_count == 1
 
-        result = CivisFuture(poller, (1, 2))
-        result._set_api_result(api_result)
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    def test_poller_call_count_poll_on_creation_false(self, mock_api):
+        poller = _create_poller_mock("succeeded")
+        CivisFuture(poller, (1, 2), poll_on_creation=False)
         assert poller.call_count == 0
+
+    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    def test_set_api_result_succeeded(self, mock_api):
+        poller = _create_poller_mock("succeeded")
+        result = CivisFuture(poller, (1, 2))
         assert result._state == 'FINISHED'
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
     def test_set_api_result_failed(self, mock_api):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'failed'
+        poller = _create_poller_mock("failed")
 
         result = CivisFuture(poller, (1, 2))
-        result._set_api_result(api_result)
         assert result._state == 'FINISHED'
         with pytest.raises(CivisJobFailure):
             result.result()
@@ -111,15 +121,12 @@ class CivisFutureTests(CivisVCRTestCase):
             result.outputs()
 
     def test_outputs_succeeded(self):
-        poller = mock.Mock()
-        api_result = mock.Mock()
-        api_result.state = 'succeeded'
+        poller = _create_poller_mock("succeeded")
         mock_client = create_client_mock()
         expected_return = [{'test': 'test_result'}]
         mock_client.jobs.list_runs_outputs.return_value = expected_return
 
         result = CivisFuture(poller, (1, 2), client=mock_client)
-        result._set_api_result(api_result)
         assert result.outputs() == expected_return
 
     @mock.patch(api_import_str, return_value=civis_api_spec_base)
@@ -182,7 +189,7 @@ def _check_executor(from_template_id=None):
 )
 def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     result = CivisFuture(
-        poller=lambda x: x,
+        poller=_create_poller_mock("succeeded"),
         poller_args=poller_args,
         client=create_client_mock(),
     )
@@ -415,7 +422,8 @@ def test_future_retry_error():
     assert fut.result().state == 'succeeded'
 
 
-def test_container_exception_no_result_logs():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_container_exception_no_result_logs(m_sleep):
     # If the job errored with no output but with logs,
     # we should return error logs with the future exception.
     mem_msg = ('Run used approximately 2 millicores '
@@ -436,12 +444,14 @@ def test_container_exception_no_result_logs():
 
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
-    expected_msg = ('\n'.join([mem_msg, failed_msg, '']))
+    expected_msg = (
+        "(From job 1 / run 2) " + '\n'.join([failed_msg, mem_msg, '']))
     assert expected_msg == str(fut._exception.error_message)
     assert str(err.value) == expected_msg
 
 
-def test_container_exception_memory_error():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_container_exception_memory_error(m_sleep):
     err_msg = ('Process ran out of its allowed 3000 MiB of '
                'memory and was killed.')
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
@@ -465,4 +475,4 @@ def test_container_exception_memory_error():
 
     with pytest.raises(MemoryError) as err:
         fut.result()
-    assert str(err.value) == err_msg
+    assert str(err.value) == f"(From job 1 / run 2) {err_msg}"
