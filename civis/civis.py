@@ -6,6 +6,7 @@ import civis
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
 from civis._deprecation import deprecate_param
+from civis.response import _RETURN_TYPES
 
 
 log = logging.getLogger(__name__)
@@ -383,9 +384,11 @@ class APIClient(MetaMixin):
     def __init__(self, api_key=None, return_type='snake',
                  retry_total=6, api_version="1.0", resources="all",
                  local_api_spec=None):
-        if return_type not in ['snake', 'raw', 'pandas']:
-            raise ValueError("Return type must be one of 'snake', 'raw', "
-                             "'pandas'")
+        if return_type not in _RETURN_TYPES:
+            raise ValueError(
+                f"Return type must be one of {set(_RETURN_TYPES)}: "
+                f"{return_type}"
+            )
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
         self._session_kwargs = {'api_key': session_auth_key}

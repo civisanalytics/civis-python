@@ -1,4 +1,3 @@
-from builtins import super
 import os
 from posixpath import join
 import threading
