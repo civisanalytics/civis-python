@@ -56,6 +56,8 @@ def create_client_mock_for_container_tests(
         The reported state of the container run
     run_outputs: list, optional
         List of Response objects returned as run outputs
+    log_outputs : list, optional
+        List of Response objects returned as log outputs
 
     Returns
     -------
@@ -78,7 +80,7 @@ def create_client_mock_for_container_tests(
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run
     c.scripts.list_containers_runs_outputs.return_value = (run_outputs or [])
-    c.scripts.list_containers_runs_logs.return_value = (log_outputs or [])
+    c.jobs.list_runs_logs.return_value = (log_outputs or [])
 
     def change_state_to_cancelled(script_id):
         mock_container_run.state = "cancelled"
