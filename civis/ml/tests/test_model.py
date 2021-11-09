@@ -30,11 +30,11 @@ try:
 except ImportError:
     HAS_NUMPY = False
 
-from civis import APIClient
 from civis._utils import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.response import Response
-from civis.tests import create_client_mock
+from civis.tests import (
+    create_client_mock, create_client_mock_for_container_tests)
 import pytest
 
 from civis.ml import _model
@@ -65,53 +65,6 @@ TEST_TEMPLATE_IDS = {  # Must match TEST_TEMPLATE_ID_ALIAS_OBJECTS
     'v1.4': {'training': TRAIN_ID_OLD, 'prediction': PREDICT_ID_OLD, 'registration': None},  # noqa
     'dev': {'training': 345, 'prediction': 678, 'registration': 901},
 }
-
-
-def setup_client_mock(script_id=-10, run_id=100, state='succeeded',
-                      run_outputs=None):
-    """Return a Mock set up for use in testing container scripts
-
-    Parameters
-    ----------
-    script_id: int
-        Mock-create containers with this ID when calling `post_containers`
-        or `post_containers_runs`.
-    run_id: int
-        Mock-create runs with this ID when calling `post_containers_runs`.
-    state: str, optional
-        The reported state of the container run
-    run_outputs: list, optional
-        List of Response objects returned as run outputs
-
-    Returns
-    -------
-    `unittest.mock.Mock`
-        With scripts endpoints `post_containers`, `post_containers_runs`,
-        `post_cancel`, and `get_containers_runs` set up.
-    """
-    c = mock.Mock()
-    c.__class__ = APIClient
-
-    mock_container = Response({'id': script_id})
-    c.scripts.post_containers.return_value = mock_container
-    mock_container_run_start = Response({'id': run_id,
-                                         'container_id': script_id,
-                                         'state': 'queued'})
-    mock_container_run = Response({'id': run_id,
-                                   'container_id': script_id,
-                                   'state': state})
-    c.scripts.post_containers_runs.return_value = mock_container_run_start
-    c.scripts.get_containers_runs.return_value = mock_container_run
-    c.scripts.list_containers_runs_outputs.return_value = (run_outputs or [])
-    c.scripts.list_containers_runs_logs.return_value = []
-
-    def change_state_to_cancelled(script_id):
-        mock_container_run.state = "cancelled"
-        return mock_container_run
-
-    c.scripts.post_cancel.side_effect = change_state_to_cancelled
-
-    return c
 
 
 def test_check_is_fit_exception():
@@ -244,7 +197,7 @@ def test_load_estimator(mock_retrieve):
 def test_load_table_from_outputs(mock_fid, mock_f2df):
     # Test that _load_table_from_outputs is calling functions
     # correctly. Let `autospec` catch errors in arguments being passed.
-    mock_client = setup_client_mock()
+    mock_client = create_client_mock_for_container_tests()
     _model._load_table_from_outputs(1, 2, 'fname', client=mock_client)
 
 
@@ -274,7 +227,7 @@ def test_show_civisml_warnings_error():
 @mock.patch.object(_model.ModelFuture, "_set_job_exception", autospec=True)
 @mock.patch.object(_model.ModelFuture, "add_done_callback", autospec=True)
 def test_modelfuture_constructor(mock_adc, mock_spe):
-    c = setup_client_mock(7, 17)
+    c = create_client_mock_for_container_tests(7, 17)
 
     mf = _model.ModelFuture(job_id=7, run_id=17, client=c)
     assert mf.is_training is True
@@ -292,19 +245,22 @@ def test_modelfuture_constructor(mock_adc, mock_spe):
                    mock.Mock(return_value=11, spec_set=True))
 @mock.patch.object(_model.cio, "file_to_json",
                    mock.Mock(return_value={'run': {'status': 'succeeded'}}))
-@mock.patch.object(_model, 'APIClient', return_value=setup_client_mock())
+@mock.patch.object(_model, 'APIClient',
+                   return_value=create_client_mock_for_container_tests())
 def test_modelfuture_pickle_smoke(mock_client):
-    mf = _model.ModelFuture(job_id=7, run_id=13, client=setup_client_mock())
+    mf = _model.ModelFuture(job_id=7, run_id=13,
+                            client=create_client_mock_for_container_tests())
     mf.result()
     mf_pickle = pickle.dumps(mf)
     pickle.loads(mf_pickle)
 
 
-def test_set_job_exception_metadata_exception():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_metadata_exception(m_sleep):
     """Tests cases where accessing metadata throws exceptions
     """
     # State "running" prevents termination when the object is created.
-    mock_client = setup_client_mock(1, 2, state='running')
+    mock_client = create_client_mock_for_container_tests(1, 2, state='running')
 
     class ModelFutureRaiseExc(_model.ModelFuture):
         def __init__(self, exc, *args, **kwargs):
@@ -330,8 +286,8 @@ def test_set_job_exception_metadata_exception():
         _model.ModelFuture._set_job_exception(fut)
 
 
-def test_set_job_exception_memory_error():
-    mock_client = setup_client_mock(1, 2, state='failed')
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_memory_error(m_sleep):
     err_msg = ('Process ran out of its allowed 3000 MiB of '
                'memory and was killed.')
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
@@ -347,17 +303,18 @@ def test_set_job_exception_memory_error():
              'id': 10000,
              'level': 'error',
              'message': err_msg}]
-    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed', log_outputs=logs)
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(MemoryError) as err:
         fut.result()
-    assert str(err.value) == err_msg
+    assert str(err.value) == f"(From job 1 / run 2) {err_msg}"
 
 
-def test_set_job_exception_unknown_error():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_set_job_exception_unknown_error(m_sleep):
     # If we really don't recognize the error, at least give the
     # user a few lines of logs so they can maybe figure it out themselves.
-    mock_client = setup_client_mock(1, 2, state='failed')
     logs = [{'created_at': '2017-05-10T12:00:00.000Z',
              'id': 10005,
              'level': 'error',
@@ -371,8 +328,11 @@ def test_set_job_exception_unknown_error():
              'id': 10000,
              'level': 'error',
              'message': 'Oops'}]
-    err_msg = '\n'.join([x['message'] for x in logs])
-    mock_client.scripts.list_containers_runs_logs.return_value = logs
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='failed', log_outputs=logs)
+    err_msg = (
+        "(From job 1 / run 2) "
+        + '\n'.join([x['message'] for x in logs][::-1]))
     fut = _model.ModelFuture(1, 2, client=mock_client)
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
@@ -387,7 +347,8 @@ def test_set_job_exception_no_exception(mock_f2j):
     ro = [{'name': 'model_info.json', 'object_id': 137, 'object_type': 'File'},
           {'name': 'metrics.json', 'object_id': 139, 'object_type': 'File'}]
     ro = [Response(o) for o in ro]
-    mock_client = setup_client_mock(1, 2, state='succeeded', run_outputs=ro)
+    mock_client = create_client_mock_for_container_tests(
+        1, 2, state='succeeded', run_outputs=ro)
     fut = _model.ModelFuture(1, 2, client=mock_client)
     assert fut.exception() is None
 
@@ -441,7 +402,7 @@ def test_set_job_exception_validation_metadata():
 @mock.patch.object(_model.ModelFuture, "_set_job_exception",
                    lambda *args: None)
 def test_getstate():
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
 
     mf = _model.ModelFuture(3, 7, client=c)
     ret = mf.__getstate__()
@@ -458,7 +419,7 @@ def test_getstate():
                    mock.Mock(spec_set=True,
                              return_value={'run': {'status': 'foo'}}))
 def test_state():
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
 
     mf = _model.ModelFuture(3, 7, client=c)
     ret = mf.state
@@ -478,7 +439,7 @@ def test_state():
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table(mock_res, mock_lt, mock_meta):
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     assert mf.table == 'bar'
     mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
@@ -492,7 +453,7 @@ def test_table(mock_res, mock_lt, mock_meta):
 @mock.patch.object(_model.ModelFuture, "result")
 @mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table_no_pkey(mock_res, mock_lt, mock_meta):
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     assert mf.table == 'bar'
     mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
@@ -507,7 +468,7 @@ def test_table_no_pkey(mock_res, mock_lt, mock_meta):
 @mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_table_None(mock_res, mock_lt, mock_meta):
     mock_lt.side_effect = FileNotFoundError()
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     assert mf.table is None
     mock_lt.assert_called_once_with(3, 7, 'predictions.csv',
@@ -519,13 +480,14 @@ def test_table_None(mock_res, mock_lt, mock_meta):
 @mock.patch.object(_model.cio, "file_to_json", return_value={'foo': 'bar'})
 @mock.patch.object(_model.ModelFuture, "_set_job_exception")
 def test_metadata(mock_spec, mock_f2j):
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     assert mf.metadata == {'foo': 'bar'}
     mock_f2j.assert_called_once_with(11, client=c)
 
 
-def test_train_data_fname():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_train_data_fname(m_sleep):
     # swap out the poller with a simple function that accepts *args, **kwargs
     # and returns a simple successful Response object
     def poller(*args, **kwargs):
@@ -559,8 +521,9 @@ def test_train_data_(mock_cio):
         'model_info.json', 11, 13, client=mock_client)
 
 
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
 @mock.patch.object(_model, "_load_table_from_outputs", autospec=True)
-def test_train_data_exc_handling(mock_load_table):
+def test_train_data_exc_handling(mock_load_table, m_sleep):
     def poller(*args, **kwargs):
         return Response({'state': 'succeeded'})
     mock_client = mock.MagicMock()
@@ -578,7 +541,7 @@ def test_train_data_exc_handling(mock_load_table):
 @mock.patch.object(_model, "_load_estimator", return_value='spam')
 @mock.patch.object(_model.ModelFuture, "_set_job_exception", mock.Mock())
 def test_estimator(mock_le):
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
 
     mf = _model.ModelFuture(3, 7, client=c)
     assert mock_le.call_count == 0, "Estimator retrieval is lazy."
@@ -597,7 +560,7 @@ def test_estimator(mock_le):
 def test_validation_metadata_training(mock_spe, mock_f2f,
                                       mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.validation_metadata == 'foo'
@@ -613,7 +576,7 @@ def test_validation_metadata_missing(mock_spe, mock_f2f,
                                      mock_file_id_from_run_output):
     # Make sure that missing validation metadata doesn't cause an error
     mock_file_id_from_run_output.side_effect = FileNotFoundError
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.validation_metadata is None
@@ -629,7 +592,7 @@ def test_validation_metadata_missing(mock_spe, mock_f2f,
 def test_validation_metadata_prediction(mock_spe, mock_f2f,
                                         mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(1, 2, 3, 7, client=c)
 
     assert mf.validation_metadata == 'foo'
@@ -645,7 +608,7 @@ def test_validation_metadata_prediction(mock_spe, mock_f2f,
                                      'run': {'status': 'succeeded'}}))
 def test_metrics_training(mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
 
     assert mf.metrics == 'foo'
@@ -661,7 +624,7 @@ def test_metrics_training_None(mock_file_to_json,
         return_value={'metrics': 'foo',
                       'run': {'status': 'succeeded'}})
     mock_file_id_from_run_output.return_value = 11
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(3, 7, client=c)
     # override validation metadata to be None, as though we ran
     # a train job without validation
@@ -680,7 +643,7 @@ def test_metrics_training_None(mock_file_to_json,
                                      'run': {'status': 'succeeded'}}))
 def test_metrics_prediction(mock_file_id_from_run_output):
     mock_file_id_from_run_output.return_value = 11
-    c = setup_client_mock(3, 7)
+    c = create_client_mock_for_container_tests(3, 7)
     mf = _model.ModelFuture(1, 2, 3, 7, client=c)
 
     assert mf.metrics == 'foo'
@@ -752,7 +715,7 @@ def test__get_template_ids_invalid_version():
 #####################################
 @pytest.fixture
 def mp_setup():
-    mock_api = setup_client_mock()
+    mock_api = create_client_mock_for_container_tests()
     mock_api.aliases.list.return_value = TEST_TEMPLATE_ID_ALIAS_OBJECTS
     mp = _model.ModelPipeline('wf', 'dv', client=mock_api)
     return mp
@@ -877,11 +840,12 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
 @pytest.mark.skipif(not HAS_NUMPY, reason="numpy not installed")
 @mock.patch.object(_model, '_get_template_ids_all_versions',
                    mock.Mock(return_value=TEST_TEMPLATE_IDS))
-def test_modelpipeline_classmethod_constructor_nonint_id():
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_modelpipeline_classmethod_constructor_nonint_id(m_sleep):
     # Verify that we can still JSON-serialize job and run IDs even
     # if they're entered in a non-JSON-able format.
     # We need to turn them into JSON to set them as script arguments.
-    mock_client = setup_client_mock(1, 2)
+    mock_client = create_client_mock_for_container_tests(1, 2)
     container_response_stub = _container_response_stub(TRAIN_ID_PROD)
     mock_client.scripts.get_containers.return_value = container_response_stub
 
@@ -904,7 +868,7 @@ def test_modelpipeline_classmethod_constructor_old_version(
         mock_future, train_id, predict_id):
     # Test that we select the correct prediction template for different
     # versions of a training job.
-    mock_client = setup_client_mock()
+    mock_client = create_client_mock_for_container_tests()
     mock_client.scripts.get_containers.return_value = \
         _container_response_stub(from_template_id=train_id)
     mp = _model.ModelPipeline.from_existing(1, 1, client=mock_client)
@@ -947,7 +911,7 @@ def test_modelpipeline_train_from_estimator(mock_ccr, mock_f2c):
 @mock.patch.object(_model.ModelPipeline, "_create_custom_run")
 def test_modelpipeline_train_custom_etl(mock_ccr, mock_f2c, mock_template_ids):
     # Provide a custom ETL estimator and make sure we can train.
-    mock_api = setup_client_mock()
+    mock_api = create_client_mock_for_container_tests()
     # training template ID 11111 >= 9968 for the etl arg to work
     mock_template_ids.return_value = 11111, 22222, 33333
     etl = LogisticRegression()
