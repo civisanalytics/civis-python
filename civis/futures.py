@@ -10,7 +10,8 @@ import threading
 import warnings
 
 from civis import APIClient
-from civis.base import CivisAPIError, CivisJobFailure, DONE
+from civis.base import (
+    CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids)
 from civis.polling import PollableResult
 
 
@@ -84,6 +85,70 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
+        self._exception_handled = False
+        self.add_done_callback(self._set_job_exception)
+
+    @staticmethod
+    def _set_job_exception(fut):
+        """Callback: On job completion, check the status.
+        If the job has failed, and has no pre-existing error message,
+        populate the error message with recent logs.
+        """
+        # Prevent infinite recursion: this function calls `set_exception`,
+        # which triggers callbacks (i.e. re-calls this function).
+        if fut._exception_handled:
+            return
+        else:
+            fut._exception_handled = True
+
+        if fut.failed():
+            # Some platform script types do not return the error message,
+            # so we override with an exception we can pull from the
+            # logs
+            if isinstance(fut._exception, CivisJobFailure) and \
+               fut._exception._original_err_msg in ('None', "", None):
+                fut._exception.error_message = ''
+                exc = fut._exception_from_logs(fut._exception)
+                fut.set_exception(exc)
+
+    def _exception_from_logs(self, exc, nlog=15):
+        """Create an exception if the log has a recognizable error
+
+        Search "error" emits in the last ``n_log`` lines.
+        This function presently recognizes the following errors:
+
+        - MemoryError
+        """
+        # Traceback in platform logs may be delayed for a few seconds.
+        time.sleep(15)
+        logs = self.client.jobs.list_runs_logs(
+            self.job_id, self.run_id, limit=nlog)
+        # Reverse order as logs come back in reverse chronological order.
+        logs = logs[::-1]
+
+        # Check for memory errors
+        msgs = [x['message'] for x in logs if x['level'] == 'error']
+        mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
+        if mem_err:
+            err_msg = _err_msg_with_job_run_ids(
+                mem_err[0], self.job_id, self.run_id)
+            exc = MemoryError(err_msg)
+        else:
+            # Unknown error; return logs to the user as a sort of traceback
+            all_logs = '\n'.join([x['message'] for x in logs])
+            if isinstance(exc, CivisJobFailure):
+                err_msg = _err_msg_with_job_run_ids(
+                    all_logs + '\n' + exc.error_message,
+                    self.job_id, self.run_id)
+                exc.error_message = err_msg
+            else:
+                err_msg = _err_msg_with_job_run_ids(
+                    all_logs, self.job_id, self.run_id)
+                exc = CivisJobFailure(
+                    "", job_id=self.job_id, run_id=self.run_id)
+                exc.error_message = err_msg
+        return exc
+
     @property
     def job_id(self):
         return self.poller_args[0]
@@ -109,14 +174,6 @@ class CivisFuture(PollableResult):
         except KeyError:
             return False
         return match
-
-    def _poll_and_set_api_result(self):
-        with self._condition:
-            try:
-                result = self.poller(*self.poller_args)
-                self._set_api_result(result)
-            except Exception as e:
-                self._set_api_exception(exc=e)
 
     def outputs(self):
         """Block on job completion and return a list of run outputs.
@@ -177,63 +234,14 @@ class ContainerFuture(CivisFuture):
                  poll_on_creation=True):
         if client is None:
             client = APIClient()
+
+        self._max_n_retries = max_n_retries
+
         super().__init__(client.scripts.get_containers_runs,
                          [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
-        self._max_n_retries = max_n_retries
-        self._exception_handled = False
-        self.add_done_callback(self._set_job_exception)
-
-    @staticmethod
-    def _set_job_exception(fut):
-        """Callback: On job completion, check the status.
-        If the job has failed, and has no pre-existing error message,
-        populate the error message with recent logs.
-        """
-        # Prevent infinite recursion: this function calls `set_exception`,
-        # which triggers callbacks (i.e. re-calls this function).
-        if fut._exception_handled:
-            return
-        else:
-            fut._exception_handled = True
-
-        if fut.failed():
-            # Container scripts do not return the error message,
-            # so we override with an exception we can pull from the
-            # logs
-            if isinstance(fut._exception, CivisJobFailure) and \
-               fut._exception.error_message == 'None':
-                fut._exception.error_message = ''
-                exc = fut._exception_from_logs(fut._exception)
-                fut.set_exception(exc)
-
-    def _exception_from_logs(self, exc, nlog=15):
-        """Create an exception if the log has a recognizable error
-
-        Search "error" emits in the last ``n_log`` lines.
-        This function presently recognizes the following errors:
-
-        - MemoryError
-        """
-        logs = self.client.scripts.list_containers_runs_logs(self.job_id,
-                                                             self.run_id,
-                                                             limit=nlog)
-
-        # Check for memory errors
-        msgs = [x['message'] for x in logs if x['level'] == 'error']
-        mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
-        if mem_err:
-            exc = MemoryError(mem_err[0])
-        else:
-            # Unknown error; return logs to the user as a sort of traceback
-            all_logs = '\n'.join([x['message'] for x in logs])
-            if isinstance(exc, CivisJobFailure):
-                exc.error_message = all_logs + '\n' + exc.error_message
-            else:
-                exc = CivisJobFailure(all_logs)
-        return exc
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries

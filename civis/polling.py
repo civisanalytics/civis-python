@@ -173,8 +173,12 @@ class PollableResult(CivisAsyncResultBase):
                     err_msg = str(result['error'])
                 except:  # NOQA
                     err_msg = str(result)
-                self._set_api_exception(exc=CivisJobFailure(err_msg, result),
-                                        result=result)
+                job_id = getattr(self, "job_id", None)
+                run_id = getattr(self, "run_id", None)
+                self._set_api_exception(
+                    exc=CivisJobFailure(err_msg, result, job_id, run_id),
+                    result=result,
+                )
             elif result.state in DONE:
                 self.set_result(result)
                 self.cleanup()

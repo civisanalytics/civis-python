@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added job ID and run ID to the exception message of `CivisJobFailure`
+  coming from a `CivisFuture` object (#426)
 - Added the `encoding` parameter to both `civis.io.read_civis` and `civis.io.read_civis_sql`,
   so that these two functions can retrieve non-UTF-8 data when `use_pandas` is `False`. (#424)
 - `ContainerFuture` propagates error messages from logs (#416)
@@ -11,6 +13,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Moved the changes from #416 for propagating error messages
+  from `ContainerFuture` to `CivisFuture` (#426)
 - Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
   `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
 - Added default values from swagger in client method's signature (#416)
