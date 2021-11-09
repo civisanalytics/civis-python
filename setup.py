@@ -4,6 +4,9 @@ import re
 import setuptools
 from setuptools import find_packages, setup
 
+
+_THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+
 CLASSIFIERS = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
@@ -32,8 +35,11 @@ def get_version():
 
 
 def main():
-    with open('README.rst') as README_FILE:
+    with open(os.path.join(_THIS_DIR, 'README.rst')) as README_FILE:
         README = README_FILE.read()
+
+    with open(os.path.join(_THIS_DIR, "requirements.txt")) as f:
+        requirements = f.readlines()
 
     setup(
         classifiers=CLASSIFIERS,
@@ -49,16 +55,7 @@ def main():
                      glob(os.path.join('civis', 'tests', '*.json')))],
         long_description=README,
         long_description_content_type="text/x-rst",
-        install_requires=[
-            'pyyaml>=3.0,<=5.99',
-            'click>=6.0,<=7.99',
-            'jsonref>=0.1.0,<=0.2.99',
-            'requests>=2.12.0,==2.*',
-            'jsonschema>=2.5.1,<=3.99',
-            'joblib>=0.11,<2',
-            'cloudpickle>=0.2.0,<2',
-            'tenacity>=6.2,<7',
-        ],
+        install_requires=requirements,
         entry_points={
             'console_scripts': [
                 'civis = civis.cli.__main__:main',
