@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to use joblib 1.1.x (#423)
 
 ### Fixed
+- Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431) 
 - Handled the index-out-of-bounds error when CSV preprocessing fails in `civis_file_to_table`
   by raising a more informative exception (#428)
 - Removed no-longer-used PubNub code (#425)
