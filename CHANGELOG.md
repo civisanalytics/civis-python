@@ -20,10 +20,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to use joblib 1.1.x (#423)
 
 ### Fixed
+- Converted `assert` statements in non-test code into proper error handling (#430)
 - Handled the index-out-of-bounds error when CSV preprocessing fails in `civis_file_to_table`
   by raising a more informative exception (#428)
 - Removed no-longer-used PubNub code (#425)
-- Converted `assert` statements in non-test code into proper error handling (#430)
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
 - Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
 
