@@ -3,6 +3,9 @@ import requests
 from civis._utils import camel_to_snake
 
 
+_RETURN_TYPES = frozenset({'snake', 'raw', 'pandas'})
+
+
 class CivisClientError(Exception):
     def __init__(self, message, response):
         self.status_code = response.status_code
@@ -62,7 +65,10 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
     `pandas.DataFrame`, or `pandas.Series`
         Depending on the value of `return_type`.
     """
-    assert return_type in ['snake', 'raw', 'pandas'], 'Invalid return type'
+    if return_type not in _RETURN_TYPES:
+        raise ValueError(
+            f"Return type not one of {set(_RETURN_TYPES)}: {return_type}"
+        )
 
     if return_type == 'raw':
         return response

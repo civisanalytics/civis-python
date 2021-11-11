@@ -7,8 +7,6 @@ This is based on https://github.com/zalando/openapi-cli-client,
 which has an Apache 2.0 License:
 https://github.com/zalando/openapi-cli-client/blob/master/LICENSE
 """
-from __future__ import print_function
-
 
 import calendar
 from collections import OrderedDict
@@ -141,7 +139,11 @@ def invoke(method, path, op, *args, **kwargs):
     body = {}
     body_params = [p for p in op['parameters'] if p['in'] == 'body']
     if body_params:
-        assert len(body_params) == 1  # There can be only one body parameter.
+        if len(body_params) != 1:
+            raise ValueError(
+                "There can be only one body parameter, "
+                f"but {len(body_params)} are found: {body_params}"
+            )
         props = body_params[0]['schema']['properties']
         param_map = param_case_map(props.keys())
         body = {param_map[k]: v for k, v in kwargs.items()

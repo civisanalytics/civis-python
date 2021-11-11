@@ -4,10 +4,7 @@ import json
 import os
 import re
 import textwrap
-try:
-    from inspect import Signature, Parameter
-except ImportError:
-    from funcsigs import Signature, Parameter
+from inspect import Signature, Parameter
 
 from jsonref import JsonRef
 import requests
@@ -20,7 +17,8 @@ from civis._utils import (camel_to_snake, to_camelcase,
                           retry_request, MAX_RETRIES)
 
 
-API_VERSIONS = ["1.0"]
+_RESOURCES = frozenset({"base", "all"})
+API_VERSIONS = frozenset({"1.0", })
 BASE_RESOURCES_V1 = [
     'aliases',
     'announcements',
@@ -551,10 +549,15 @@ def generate_classes(api_key, api_version="1.0", resources="all"):
         a given user, including those that may be in development and subject
         to breaking changes at a later date.
     """
-    assert api_version in API_VERSIONS, (
-        "APIClient api_version must be one of {}".format(API_VERSIONS))
-    assert resources in ["base", "all"], (
-        "resources must be one of {}".format(["base", "all"]))
+    if api_version not in API_VERSIONS:
+        raise ValueError(
+            f"APIClient api_version must be one of {set(API_VERSIONS)}: "
+            f"{api_version}"
+        )
+    if resources not in _RESOURCES:
+        raise ValueError(
+            f"resources must be one of {set(_RESOURCES)}: {resources}"
+        )
     raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)
