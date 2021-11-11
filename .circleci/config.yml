@@ -28,9 +28,8 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<< parameters.python-version >>
-        #auth:
-        #  username: $DOCKERHUB_USERNAME
-        #  password: $DOCKERHUB_PASSWORD
+    environment:
+      CIVIS_API_KEY: FOOBAR
     steps:
       - checkout
       - run:
