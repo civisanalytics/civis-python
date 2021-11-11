@@ -5,7 +5,6 @@ orbs:
 
 jobs:
   pre-build:
-    description: Install and run a Python standalone package
     parameters:
       command-name:
         type: string
@@ -82,7 +81,7 @@ workflows:
       - pre-build:
           name: sphinx-build
           command-name: sphinx-build
-          command-run: sphinx-build -b html -n docs/source/ docs/build/
+          command-run: pip install -e . && sphinx-build -b html -n docs/source/ docs/build/
       - build-python:
           requires:
             - flake8
