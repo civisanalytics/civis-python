@@ -5,12 +5,12 @@ orbs:
 
 jobs:
   pre-build:
+    description: A check that doesn't need every supported Python version (e.g., code style checks, sphinx docs can build)
     parameters:
-      command-name:
-        type: string
       command-run:
         type: string
     docker:
+      # Pick the highest Python 3.x version that civis-python is known to support
       - image: cimg/python:3.8
     steps:
       - checkout
@@ -38,24 +38,17 @@ jobs:
           # just yet.
           # Test that we can build a source distribution that can correctly
           # install from clean slate.
-          # "python setup.py sdist" creates dist/civis-x.y.z.tar.gz
+          # "python setup.py bdist_wheel" creates dist/civis-x.y.z-py3-none-any.whl
           name: Build source distribution and install package from it
           working_directory: ~/project/
           command: |
               pip install --progress-bar off --upgrade pip setuptools
-              python setup.py sdist
-              pip install dist/`ls dist/ | grep .tar.gz`
+              python setup.py bdist_wheel
+              pip install dist/`ls dist/ | grep .whl`
       - run:
           name: Install the full development requirements
           working_directory: ~/project/
           command: pip install --progress-bar off -r dev-requirements.txt
-      - run:
-          name: Check for PyPI compliance via twine
-          working_directory: ~/project/
-          command: |
-              pip install twine
-              echo ""
-              twine check dist/`ls dist/ | grep .tar.gz`
       - run:
           name: Show installed Python packages
           command: pip list -v
@@ -75,16 +68,23 @@ workflows:
     jobs:
       - pre-build:
           name: flake8
-          command-name: flake8
           command-run: flake8 civis
       - pre-build:
           name: sphinx-build
-          command-name: sphinx-build
-          command-run: pip install -e . && sphinx-build -b html -n docs/source/ docs/build/
+          command-run: |
+            pip install -e .
+            sphinx-build -b html -n docs/source/ docs/build/
+      - pre-build:
+          name: twine
+          command-run: |
+            python setup.py sdist bdist_wheel
+            twine check dist/`ls dist/ | grep .tar.gz`
+            twine check dist/`ls dist/ | grep .whl`
       - build-python:
           requires:
             - flake8
             - sphinx-build
+            - twine
           matrix:
             parameters:
               python-version: ["3.6", "3.7", "3.8"]
