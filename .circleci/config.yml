@@ -42,8 +42,8 @@ jobs:
           name: Build source distribution and install package from it
           working_directory: ~/project/
           command: |
-              pip install --progress-bar off --upgrade pip setuptools
-              python setup.py bdist_wheel
+              pip install --progress-bar off --upgrade pip setuptools && \
+              python setup.py bdist_wheel && \
               pip install dist/`ls dist/ | grep .whl`
       - run:
           name: Install the full development requirements
@@ -72,13 +72,13 @@ workflows:
       - pre-build:
           name: sphinx-build
           command-run: |
-            pip install -e .
+            pip install -e . && \
             sphinx-build -b html -n docs/source/ docs/build/
       - pre-build:
           name: twine
           command-run: |
-            python setup.py sdist bdist_wheel
-            twine check dist/`ls dist/ | grep .tar.gz`
+            python setup.py sdist bdist_wheel && \
+            twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
       - build-python:
           requires:
