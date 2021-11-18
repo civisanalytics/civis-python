@@ -18,7 +18,9 @@ To file a ticket:
 * [For Civis employees only] Please file an internal ticket.
 
 
-## Getting Started with Local Development
+## Local Development Set-up
+
+These set-up steps need to be done only once per machine / OS.
 
 1. Locally, create an isolated Python environment and activate it
    (e.g., using the built-in [venv](https://docs.python.org/3/tutorial/venv.html)).
@@ -33,7 +35,17 @@ git clone https://github.com/<github-username>/civis-python.git
 git clone git@github.com:civisanalytics/civis-python.git
 ```
 
-4. Install civis-python in the editable mode, and install the development dependencies as well.
+4. Use the name `upstream` to point to the upstream source repo `civisanalytics/civis-python` in `git remote`:
+
+```bash
+# For non-Civis employees:
+git remote add upstream https://github.com/civisanalytics/civis-python.git
+
+# For Civis employees -- git uses `origin` by default, so change it into `upstream`
+git remote rename origin upstream
+```
+
+5. Install civis-python in the editable mode, and install the development dependencies as well.
 
 ```bash
 cd civis-python
@@ -41,15 +53,30 @@ pip install -r dev-requirements.txt
 pip install -e .
 ```
 
-5. Make sure you are able to run the test suite locally (`pytest civis`).
-6. Create a feature branch (`git checkout -b my-new-feature`).
-7. Make your change. Don't forget adding or updating tests.
-8. Make sure the test suite, including your new tests, passes
+## Making Changes
+
+Follow these steps each time you plan to make a pull request to civis-python:
+
+1. At your local civis-python copy, make sure the `master` branch is in sync with the
+   `master` at the upstream repo (`git checkout master && git pull upstream master`).
+2. Make sure you are able to run the test suite locally (`pytest civis`).
+3. Create a feature branch (`git checkout -b my-new-feature`).
+4. Make your change. Don't forget adding or updating tests.
+5. Make sure the test suite, including your new tests, passes
    (`pytest civis && flake8 civis`).
-9. Commit your changes (`git commit -am 'Add some feature'`).
-10. Push to the branch (`git push origin my-new-feature`).
-11. Create a new pull request.
-12. If the build fails, address any issues.
+6. Commit your changes (`git commit -am 'Add some feature'`).
+7. Push to a branch on GitHub:
+
+```bash
+# For non-Civis employees -- your branch will be at your fork
+git push origin my-new-feature
+
+# For Civis employees -- your branch will be at the upstream repo
+git push upstream my-new-feature
+```
+
+8. Create a new pull request on the GitHub interface.
+9. If the build fails, address any issues.
 
 ## Tips
 
