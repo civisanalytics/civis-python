@@ -24,6 +24,8 @@ These set-up steps need to be done only once per machine / OS.
 
 1. Locally, create an isolated Python environment and activate it
    (e.g., using the built-in [venv](https://docs.python.org/3/tutorial/venv.html)).
+   For the Python version, use the latest Python 3.x that civis-python supports,
+   as indicated in `setup.py` at the repo's top level.
 2. [For non-Civis employees only] Fork the civis-python repo ( https://github.com/civisanalytics/civis-python/fork ).
 3. Clone the civis-python repo to your local drive:
 
@@ -61,7 +63,7 @@ Follow these steps each time you plan to make a pull request to civis-python:
    `master` at the upstream repo (`git checkout master && git pull upstream master`).
 2. Make sure you are able to run the test suite locally (`pytest civis`).
 3. Create a feature branch (`git checkout -b my-new-feature`).
-4. Make your change. Don't forget adding or updating tests.
+4. Make your change. Don't forget adding or updating tests (under `civis/tests/`).
 5. Make sure the test suite, including your new tests, passes
    (`pytest civis && flake8 civis`).
 6. Commit your changes (`git commit -am 'Add some feature'`).
@@ -76,6 +78,7 @@ git push upstream my-new-feature
 ```
 
 8. Create a new pull request on the GitHub interface.
+   A civis-python maintainer will be automatically notified and start the code review process.
 9. If the build fails, address any issues.
 
 ## Tips
