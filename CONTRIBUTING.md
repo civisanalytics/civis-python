@@ -6,19 +6,50 @@ contributors are expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
-## Getting Started
+## Filing a Ticket
 
-1. Fork it ( https://github.com/civisanalytics/civis-python/fork ).
-2. Install it, with the development dependencies.  See `README.md`.
-3. Make sure you are able to run the test suite locally (`py.test civis`).
-4. Create a feature branch (`git checkout -b my-new-feature`).
-5. Make your change. Don't forget tests.
-6. Make sure the test suite, including your new tests, passes
-   (`py.test civis && flake8 civis`).
-7. Commit your changes (`git commit -am 'Add some feature'`).
-8. Push to the branch (`git push origin my-new-feature`).
-9. Create a new pull request.
-10. If the build fails, address any issues.
+If you'd like to add or update a feature in civis-python,
+it is recommended that you first file a ticket to discuss your proposed changes
+and check their compatibility with Civis Platform before making a pull request.
+
+To file a ticket:
+
+* [For non-Civis employees only] Please create a [GitHub issue](https://github.com/civisanalytics/civis-python/issues).
+* [For Civis employees only] Please file an internal ticket.
+
+
+## Getting Started with Local Development
+
+1. Locally, create an isolated Python environment and activate it
+   (e.g., using the built-in [venv](https://docs.python.org/3/tutorial/venv.html)).
+2. [For non-Civis employees only] Fork the civis-python repo ( https://github.com/civisanalytics/civis-python/fork ).
+3. Clone the civis-python repo to your local drive:
+
+```bash
+# For non-Civis employees -- replace <github-username> with your own, as you're cloning from your fork
+git clone https://github.com/<github-username>/civis-python.git
+
+# For Civis employees -- you should already have your SSH key set up locally and need git@ to push to this repo directly
+git clone git@github.com:civisanalytics/civis-python.git
+```
+
+4. Install civis-python in the editable mode, and install the development dependencies as well.
+
+```bash
+cd civis-python
+pip install -r dev-requirements.txt
+pip install -e .
+```
+
+5. Make sure you are able to run the test suite locally (`pytest civis`).
+6. Create a feature branch (`git checkout -b my-new-feature`).
+7. Make your change. Don't forget adding or updating tests.
+8. Make sure the test suite, including your new tests, passes
+   (`pytest civis && flake8 civis`).
+9. Commit your changes (`git commit -am 'Add some feature'`).
+10. Push to the branch (`git push origin my-new-feature`).
+11. Create a new pull request.
+12. If the build fails, address any issues.
 
 ## Tips
 
