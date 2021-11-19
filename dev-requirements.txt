@@ -12,7 +12,7 @@ sphinx_rtd_theme==1.0.0
 numpydoc==1.1.0
 
 # CivisML
-feather-format==0.4.1
-numpy==1.21.4
-scikit-learn==1.0.1
-scipy==1.7.2
+feather-format
+numpy
+scikit-learn
+scipy
