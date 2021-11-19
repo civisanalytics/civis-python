@@ -681,13 +681,18 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sql_type". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sql_type" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -827,13 +832,18 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sql_type". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sql_type" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
     headers : bool, optional
@@ -959,13 +969,18 @@ def civis_file_to_table(file_id, database, table, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sql_type". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sql_type" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
         uniquely identify a record. These columns must not contain null values.
