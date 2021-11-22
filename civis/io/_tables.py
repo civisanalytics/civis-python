@@ -600,7 +600,10 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     if client is None:
         client = APIClient(api_key=api_key)
     delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    if not delimiter:
+        raise ValueError(
+            f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
+        )
 
     csv_settings = dict(include_header=include_header,
                         compression=compression,
@@ -1049,9 +1052,10 @@ def civis_file_to_table(file_id, database, table, client=None,
     cred_id = credential_id or client.default_credential
     if delimiter is not None:  # i.e. it was provided as an argument
         delimiter = DELIMITERS.get(delimiter)
-        assert delimiter, "delimiter must be one of {}".format(
-            DELIMITERS.keys()
-        )
+        if not delimiter:
+            raise ValueError(
+                f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
+            )
     if table_columns:
         # If the data cleaning code doesn't find a "sql_type" for each
         # entry, it will silently replace the input table_columns with
