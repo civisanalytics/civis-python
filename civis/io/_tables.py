@@ -599,7 +599,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     """
     if client is None:
         client = APIClient(api_key=api_key)
-    if delimiter not in DELIMITERS:
+    delimiter = DELIMITERS.get(delimiter)
+    if not delimiter:
         raise ValueError(
             f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
         )
