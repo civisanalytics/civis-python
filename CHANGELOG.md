@@ -18,11 +18,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   from `ContainerFuture` to `CivisFuture` (#426)
 - Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
   `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
-- Ability to use joblib 1.1.x (#423)
+- Ability to use joblib 1.1.x (#429)
 
 ### Fixed
+- Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
 - Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431)
-- Converted `assert` statements in non-test code into proper error handling (#430)
+- Converted `assert` statements in non-test code into proper error handling (#430, #435)
 - Handled the index-out-of-bounds error when CSV preprocessing fails in `civis_file_to_table`
   by raising a more informative exception (#428)
 - Removed no-longer-used PubNub code (#425)
