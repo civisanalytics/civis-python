@@ -1,11 +1,11 @@
 Civis Platform API Python Client
 ================================
 
-|Travis| |PyPI| |PyVersions|
+|CircleCI| |PyPI| |PyVersions|
 
-.. |Travis| image:: https://img.shields.io/travis/civisanalytics/civis-python/master.svg
-   :alt: Build status
-   :target: https://travis-ci.org/civisanalytics/civis-python
+.. |CircleCI| image:: https://circleci.com/gh/civisanalytics/civis-python.svg?style=shield
+   :target: https://circleci.com/gh/civisanalytics/civis-python
+   :alt: CircleCI build status
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/civis.svg
    :target: https://pypi.org/project/civis/
