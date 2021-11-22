@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Switched from TravisCI to CircleCI (#432)
 - Moved the changes from #416 for propagating error messages
   from `ContainerFuture` to `CivisFuture` (#426)
 - Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),

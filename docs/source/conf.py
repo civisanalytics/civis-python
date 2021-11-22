@@ -362,7 +362,7 @@ import civis
 _generated_attach_point = civis.resources._resources
 _generated_attach_path = 'civis.resources._resources'
 _rst_basename = 'api_resources.rst'
-_test_build = os.getenv('TRAVIS') == 'true' or _on_rtd
+_test_build = os.getenv('CIRCLECI') == 'true' or _on_rtd
 
 if _test_build:
     import json

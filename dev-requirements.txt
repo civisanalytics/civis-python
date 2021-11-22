@@ -7,6 +7,7 @@ vcrpy>=1.11.0,<=1.11.99
 vcrpy-unittest==0.1.6
 sphinx_rtd_theme>=0.2.4,<1.0.0
 numpydoc>=0.7.0,<1.0.0
+twine==3.6.0
 feather-format
 numpy
 pandas
