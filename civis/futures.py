@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from builtins import super
 from concurrent.futures import Executor
 from concurrent import futures
 import copy
@@ -11,54 +10,16 @@ import threading
 import warnings
 
 from civis import APIClient
-from civis.base import CivisAPIError, DONE
+from civis.base import (
+    CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids)
 from civis.polling import PollableResult
 
-from pubnub.pubnub import PubNub
-from pubnub.pnconfiguration import PNConfiguration, PNReconnectionPolicy
-from pubnub.enums import PNStatusCategory
-from pubnub.callbacks import SubscribeCallback
 
 log = logging.getLogger(__name__)
-
-# Pubnub connections can recover missed messages upon reconnecting for up to 10
-# minutes from the disconnect. Polling on a 9.5 minute interval is used as a
-# fallback in case the job complete message is missed in an outage.
-_LONG_POLLING_INTERVAL = 9.5 * 60
-
-
-class JobCompleteListener(SubscribeCallback):
-    _disconnect_categories = [
-        PNStatusCategory.PNTimeoutCategory,
-        PNStatusCategory.PNNetworkIssuesCategory,
-        PNStatusCategory.PNUnexpectedDisconnectCategory,
-    ]
-
-    def __init__(self, match_function, callback_function,
-                 disconnect_function=None):
-        self.match_function = match_function
-        self.callback_function = callback_function
-        self.disconnect_function = disconnect_function
-
-    def message(self, pubnub, message):
-        if self.match_function(message.message):
-            self.callback_function()
-
-    def status(self, pubnub, status):
-        if status.category in self._disconnect_categories:
-            if self.disconnect_function:
-                self.disconnect_function()
-
-    def presence(self, pubnub, presence):
-        pass
 
 
 class CivisFuture(PollableResult):
     """A class for tracking future results.
-
-    This class will attempt to subscribe to a Pubnub channel to listen for
-    job completion events. If you don't have access to Pubnub channels, then
-    it will fallback to polling.
 
     This is a subclass of :class:`python:concurrent.futures.Future` from the
     Python standard library. See:
@@ -117,9 +78,6 @@ class CivisFuture(PollableResult):
         if client is None:
             client = APIClient(api_key=api_key)
 
-        if polling_interval is None and hasattr(client, 'channels'):
-            polling_interval = _LONG_POLLING_INTERVAL
-
         super().__init__(poller=poller,
                          poller_args=poller_args,
                          polling_interval=polling_interval,
@@ -127,20 +85,69 @@ class CivisFuture(PollableResult):
                          client=client,
                          poll_on_creation=poll_on_creation)
 
-    def _begin_tracking(self, start_thread=False):
-        # Be sure to subscribe to the PubNub channel before polling.
-        # Otherwise the job might complete after polling and before
-        # we subscribe, causing us to miss the notification.
-        with self._condition:
-            if hasattr(self.client, 'channels') and not self.subscribed:
-                config, channels = self._pubnub_config()
-                self._pubnub = self._subscribe(config, channels)
-            super()._begin_tracking(start_thread)  # superclass does polling
+        self._exception_handled = False
+        self.add_done_callback(self._set_job_exception)
 
-    @property
-    def subscribed(self):
-        return (hasattr(self, '_pubnub') and
-                len(self._pubnub.get_subscribed_channels()) > 0)
+    @staticmethod
+    def _set_job_exception(fut):
+        """Callback: On job completion, check the status.
+        If the job has failed, and has no pre-existing error message,
+        populate the error message with recent logs.
+        """
+        # Prevent infinite recursion: this function calls `set_exception`,
+        # which triggers callbacks (i.e. re-calls this function).
+        if fut._exception_handled:
+            return
+        else:
+            fut._exception_handled = True
+
+        if fut.failed():
+            # Some platform script types do not return the error message,
+            # so we override with an exception we can pull from the
+            # logs
+            if isinstance(fut._exception, CivisJobFailure) and \
+               fut._exception._original_err_msg in ('None', "", None):
+                fut._exception.error_message = ''
+                exc = fut._exception_from_logs(fut._exception)
+                fut.set_exception(exc)
+
+    def _exception_from_logs(self, exc, nlog=15):
+        """Create an exception if the log has a recognizable error
+
+        Search "error" emits in the last ``n_log`` lines.
+        This function presently recognizes the following errors:
+
+        - MemoryError
+        """
+        # Traceback in platform logs may be delayed for a few seconds.
+        time.sleep(15)
+        logs = self.client.jobs.list_runs_logs(
+            self.job_id, self.run_id, limit=nlog)
+        # Reverse order as logs come back in reverse chronological order.
+        logs = logs[::-1]
+
+        # Check for memory errors
+        msgs = [x['message'] for x in logs if x['level'] == 'error']
+        mem_err = [m for m in msgs if m.startswith('Process ran out of its')]
+        if mem_err:
+            err_msg = _err_msg_with_job_run_ids(
+                mem_err[0], self.job_id, self.run_id)
+            exc = MemoryError(err_msg)
+        else:
+            # Unknown error; return logs to the user as a sort of traceback
+            all_logs = '\n'.join([x['message'] for x in logs])
+            if isinstance(exc, CivisJobFailure):
+                err_msg = _err_msg_with_job_run_ids(
+                    all_logs + '\n' + exc.error_message,
+                    self.job_id, self.run_id)
+                exc.error_message = err_msg
+            else:
+                err_msg = _err_msg_with_job_run_ids(
+                    all_logs, self.job_id, self.run_id)
+                exc = CivisJobFailure(
+                    "", job_id=self.job_id, run_id=self.run_id)
+                exc.error_message = err_msg
+        return exc
 
     @property
     def job_id(self):
@@ -153,50 +160,6 @@ class CivisFuture(PollableResult):
         except IndexError:
             # when poller function has job_id only but not run_id
             return None
-
-    def cleanup(self):
-        with self._condition:
-            super().cleanup()
-            if hasattr(self, '_pubnub'):
-                self._pubnub.unsubscribe_all()
-
-                # Pubnub doesn't close its open session, so do that ourselves
-                # to free up sockets. We have to access a private attribute,
-                # but this exists at least in (4.0.0 <= versions <= 4.0.11).
-                # After closing the Session, remove it so that PubNub
-                # can't reopen it.
-                self._pubnub._request_handler.session.close()
-                del self._pubnub._request_handler.session
-
-                # The PubNub object is no longer usable.
-                # Note that it can't be garbage collected because of circular
-                # references, so this represents a (small) memory leak.
-                del self._pubnub
-
-    def _subscribe(self, pnconfig, channels):
-        listener = JobCompleteListener(self._check_message,
-                                       self._poll_and_set_api_result,
-                                       self._reset_polling_thread)
-        pubnub = PubNub(pnconfig)
-        pubnub.add_listener(listener)
-
-        # Start our subscription 30 seconds in the past to catch any
-        # missed messages.
-        # https://www.pubnub.com/docs/python/api-reference-misc#time
-        token = int((time.time() - 30) * 10**7)
-        pubnub.subscribe().channels(channels).with_timetoken(token).execute()
-        return pubnub
-
-    def _pubnub_config(self):
-        channel_config = self.client.channels.list()
-        channels = [channel['name'] for channel in channel_config['channels']]
-        pnconfig = PNConfiguration()
-        pnconfig.subscribe_key = channel_config['subscribe_key']
-        pnconfig.cipher_key = channel_config['cipher_key']
-        pnconfig.auth_key = channel_config['auth_key']
-        pnconfig.ssl = True
-        pnconfig.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
-        return pnconfig, channels
 
     def _check_message(self, message):
         try:
@@ -211,14 +174,6 @@ class CivisFuture(PollableResult):
         except KeyError:
             return False
         return match
-
-    def _poll_and_set_api_result(self):
-        with self._condition:
-            try:
-                result = self.poller(*self.poller_args)
-                self._set_api_result(result)
-            except Exception as e:
-                self._set_api_exception(exc=e)
 
     def outputs(self):
         """Block on job completion and return a list of run outputs.
@@ -259,8 +214,7 @@ class ContainerFuture(CivisFuture):
         If the job generates an exception, retry up to this many times
     polling_interval: int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready. You should not set this if you're using ``pubnub``
-        (the default if ``pubnub`` is installed).
+        is ready.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -280,12 +234,14 @@ class ContainerFuture(CivisFuture):
                  poll_on_creation=True):
         if client is None:
             client = APIClient()
+
+        self._max_n_retries = max_n_retries
+
         super().__init__(client.scripts.get_containers_runs,
                          [int(job_id), int(run_id)],
                          polling_interval=polling_interval,
                          client=client,
                          poll_on_creation=poll_on_creation)
-        self._max_n_retries = max_n_retries
 
     def _set_api_exception(self, exc, result=None):
         # Catch attempts to set an exception. If there's retries
@@ -548,8 +504,7 @@ class _ContainerShellExecutor(_CivisExecutor):
     polling_interval: int or float, optional
         The number of seconds between API requests to check whether a result
         is ready.  This will be passed to the
-        :class:`~ContainerFuture` objects that are created. You should
-        only set this if you aren't using ``pubnub`` notifications.
+        :class:`~ContainerFuture` objects that are created.
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
@@ -671,8 +626,7 @@ class CustomScriptExecutor(_CivisExecutor):
     polling_interval: int or float, optional
         The number of seconds between API requests to check whether a result
         is ready.  This will be passed to the
-        :class:`~ContainerFuture` objects that are created. You should
-        only set this if you aren't using ``pubnub`` notifications.
+        :class:`~ContainerFuture` objects that are created.
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.

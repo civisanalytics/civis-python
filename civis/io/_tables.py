@@ -24,10 +24,6 @@ from civis._deprecation import deprecate_param
 import requests
 
 try:
-    from io import StringIO
-except ImportError:
-    from cStringIO import StringIO
-try:
     import pandas as pd
     NO_PANDAS = False
 except ImportError:
@@ -48,7 +44,7 @@ DELIMITERS = {
 
 
 @deprecate_param('v2.0.0', 'api_key')
-def read_civis(table, database, columns=None, use_pandas=False,
+def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
                job_name=None, api_key=None, client=None, credential_id=None,
                polling_interval=None, archive=False, hidden=True, **kwargs):
     """Read data from a Civis table.
@@ -67,6 +63,14 @@ def read_civis(table, database, columns=None, use_pandas=False,
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    encoding : str, optional
+        If ``use_pandas`` is ``True``, this parameter is passed to
+        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
+        If ``use_pandas`` is ``False``, and if this parameter isn't provided,
+        then the UTF-8 encoding is assumed. In case you encounter
+        a ``UnicodeDecodeError``, consider choosing an encoding suitable
+        for your data; see the `list of standard encodings
+        <https://docs.python.org/3/library/codecs.html#standard-encodings>`_.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -87,22 +91,22 @@ def read_civis(table, database, columns=None, use_pandas=False,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
-        passed into :func:`python:csv.reader` if `use_pandas` is
+        :func:`pandas:pandas.read_csv` if ``use_pandas`` is ``True`` or
+        passed into :func:`python:csv.reader` if ``use_pandas`` is
         ``False``.
 
     Returns
     -------
     data : :class:`pandas:pandas.DataFrame` or list
-        A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
-        `use_pandas` is ``False``, no parsing of types is performed and
+        A list of rows (with header as first row) if ``use_pandas`` is
+        ``False``, otherwise a :class:`pandas:pandas.DataFrame`. Note that if
+        ``use_pandas`` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
     Raises
     ------
     ImportError
-        If `use_pandas` is ``True`` and `pandas` is not installed.
+        If ``use_pandas`` is ``True`` and pandas is not installed.
     EmptyResultError
         If the table is empty.
 
@@ -135,7 +139,7 @@ def read_civis(table, database, columns=None, use_pandas=False,
         client = APIClient(api_key=api_key)
     sql = _get_sql_select(table, columns)
     data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          job_name=job_name, client=client,
+                          encoding=encoding, job_name=job_name, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
                           archive=archive, hidden=hidden, **kwargs)
@@ -207,7 +211,8 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
 
 
 @deprecate_param('v2.0.0', 'api_key')
-def read_civis_sql(sql, database, use_pandas=False, job_name=None,
+def read_civis_sql(sql, database, use_pandas=False,
+                   encoding=None, job_name=None,
                    api_key=None, client=None, credential_id=None,
                    polling_interval=None, archive=False,
                    hidden=True, **kwargs):
@@ -229,6 +234,14 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    encoding : str, optional
+        If ``use_pandas`` is ``True``, this parameter is passed to
+        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
+        If ``use_pandas`` is ``False``, and if this parameter isn't provided,
+        then the UTF-8 encoding is assumed. In case you encounter
+        a ``UnicodeDecodeError``, consider choosing an encoding suitable
+        for your data; see the `list of standard encodings
+        <https://docs.python.org/3/library/codecs.html#standard-encodings>`_.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -249,22 +262,22 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if `use_pandas` is ``True`` or
-        passed into :func:`python:csv.reader` if `use_pandas` is
+        :func:`pandas:pandas.read_csv` if ``use_pandas`` is ``True`` or
+        passed into :func:`python:csv.reader` if ``use_pandas`` is
         ``False``.
 
     Returns
     -------
     data : :class:`pandas:pandas.DataFrame` or list
-        A list of rows (with header as first row) if `use_pandas` is
-        ``False``, otherwise a `pandas` `DataFrame`. Note that if
-        `use_pandas` is ``False``, no parsing of types is performed and
+        A list of rows (with header as first row) if ``use_pandas`` is
+        ``False``, otherwise a :class:`pandas:pandas.DataFrame`. Note that if
+        ``use_pandas`` is ``False``, no parsing of types is performed and
         each row will be a list of strings.
 
     Raises
     ------
     ImportError
-        If `use_pandas` is ``True`` and `pandas` is not installed.
+        If ``use_pandas`` is ``True`` and pandas is not installed.
     EmptyResultError
         If no rows were returned as a result of the query.
 
@@ -339,16 +352,18 @@ def read_civis_sql(sql, database, use_pandas=False, job_name=None,
         _kwargs = {'names': headers}
         _kwargs.update(kwargs)
         _kwargs['compression'] = 'gzip'
+        _kwargs["encoding"] = encoding
 
         data = pd.read_csv(url, **_kwargs)
     else:
         response = requests.get(url, stream=True)
         response.raise_for_status()
 
-        with StringIO() as buf:
+        with io.StringIO() as buf:
             if headers:
                 buf.write(','.join(headers) + '\n')
-            _decompress_stream(response, buf, write_bytes=False)
+            _decompress_stream(response, buf, write_bytes=False,
+                               encoding=encoding or "utf-8")
             buf.seek(0)
             data = list(csv.reader(buf, **kwargs))
 
@@ -585,7 +600,10 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     if client is None:
         client = APIClient(api_key=api_key)
     delimiter = DELIMITERS.get(delimiter)
-    assert delimiter, "delimiter must be one of {}".format(DELIMITERS.keys())
+    if not delimiter:
+        raise ValueError(
+            f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
+        )
 
     csv_settings = dict(include_header=include_header,
                         compression=compression,
@@ -666,13 +684,18 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -812,13 +835,18 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
     headers : bool, optional
@@ -944,13 +972,18 @@ def civis_file_to_table(file_id, database, table, client=None,
     sortkey2 : str, optional
         The second column in a compound sortkey for the table.
     table_columns : list[Dict[str, str]], optional
-        An array of hashes corresponding to the columns in the order
-        they appear in the source file. Each hash should have keys for
-        database column "name" and "sqlType". This parameter is
-        required if the table does not exist, the table is being dropped,
-        or the columns in the source file do not appear in the same order
-        as in the destination table. The "sqlType" key is not required
-        when appending to an existing table.
+        A list of dictionaries, ordered so each dictionary corresponds
+        to a column in the order that it appears in the source file. Each dict
+        should have a key "name" that corresponds to the column name in the
+        destination table, and a key "sql_type" corresponding to the intended
+        column data type in the destination table. The "sql_type" key is not
+        required when appending to an existing table. The table_columns
+        parameter is required if the table does not exist, the table is being
+        dropped, or the columns in the source file do not appear in the same
+        order as in the destination table.
+        Example:
+        table_columns=[{"name": "foo", "sql_type": "INT"},
+                       {"name": "bar", "sql_type": "VARCHAR"}]
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
         uniquely identify a record. These columns must not contain null values.
@@ -1019,9 +1052,27 @@ def civis_file_to_table(file_id, database, table, client=None,
     cred_id = credential_id or client.default_credential
     if delimiter is not None:  # i.e. it was provided as an argument
         delimiter = DELIMITERS.get(delimiter)
-        assert delimiter, "delimiter must be one of {}".format(
-            DELIMITERS.keys()
-        )
+        if not delimiter:
+            raise ValueError(
+                f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
+            )
+    if table_columns:
+        # If the data cleaning code doesn't find a "sql_type" for each
+        # entry, it will silently replace the input table_columns with
+        # an inferred table_columns. Make sure there's no typos in the input.
+        keys = set(key for hash in table_columns for key in hash)
+        valid_keys = {'name', 'sql_type'}
+        invalid_keys = keys - valid_keys
+        if invalid_keys:
+            # Sort the sets for display to allow for deterministic testing in
+            # Python versions < 3.7.
+            raise ValueError(
+                "Keys of the dictionaries contained in `table_columns` must "
+                "be one of {}. The input `table_columns` also has "
+                "{}.".format(
+                    tuple(sorted(valid_keys)), tuple(sorted(invalid_keys))
+                )
+            )
 
     try:
         client.get_table_id(table, database)
@@ -1143,7 +1194,7 @@ def _get_headers(client, sql, database, credential_id, polling_interval=None):
     return headers
 
 
-def _decompress_stream(response, buf, write_bytes=True):
+def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):
 
     # use response.raw for a more consistent approach
     # if content-encoding is specified in the headers
@@ -1161,7 +1212,7 @@ def _decompress_stream(response, buf, write_bytes=True):
         if write_bytes:
             buf.write(d.decompress(to_decompress))
         else:
-            buf.write(d.decompress(to_decompress).decode('utf-8'))
+            buf.write(d.decompress(to_decompress).decode(encoding))
         chunk = response.raw.read(CHUNK_SIZE)
 
 
@@ -1242,7 +1293,7 @@ def split_schema_tablename(table):
         If the input ``table`` is not separable into a schema and
         table name.
     """
-    reader = csv.reader(StringIO(str(table)),
+    reader = csv.reader(io.StringIO(str(table)),
                         delimiter=".",
                         doublequote=True,
                         quotechar='"')
@@ -1295,8 +1346,8 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
         )
         fut = run_job(cleaner_job.id, client=client,
                       polling_interval=polling_interval)
-        log.debug('Started run %d for pre process job %d',
-                  fut.run_id, cleaner_job.id)
+        log.debug('Started CSV preprocess job %d run %d for file %d (%s)',
+                  cleaner_job.id, fut.run_id, fid, client.files.get(fid).name)
         cleaning_futures.append(fut)
     return cleaning_futures
 
@@ -1357,10 +1408,16 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     # Set values from first completed file cleaning - other files will be
     # compared to this one. If inconsistencies are detected, raise an error.
     first_completed = done.pop()
-    output_file = client.jobs.list_runs_outputs(
+    try:
+        output_file = client.jobs.list_runs_outputs(
             first_completed.job_id,
             first_completed.run_id
         )[0]
+    except IndexError:
+        raise CivisImportError(
+            "Unable to retrieve output from CSV preprocess "
+            f"job {first_completed.job_id} run {first_completed.run_id}"
+        )
     detected_info = client.files.get(output_file.object_id).detected_info
     table_columns = (detected_info['tableColumns'] if need_table_columns
                      else None)
@@ -1382,10 +1439,16 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     # for these possible completed cleaning runs while waiting on those which
     # are still running.
     for result in concurrent.futures.as_completed(done | still_going):
-        output_file = client.jobs.list_runs_outputs(
-            result.job_id,
-            result.run_id
-        )[0]
+        try:
+            output_file = client.jobs.list_runs_outputs(
+                result.job_id,
+                result.run_id
+            )[0]
+        except IndexError:
+            raise CivisImportError(
+                "Unable to retrieve output from CSV preprocess "
+                f"job {result.job_id} run {result.run_id}"
+            )
         detected_info = client.files.get(output_file.object_id).detected_info
         if need_table_columns:
             file_columns = detected_info['tableColumns']

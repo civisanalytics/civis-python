@@ -1,4 +1,6 @@
 from collections import OrderedDict
+import csv
+import gzip
 import io
 import json
 import os
@@ -531,6 +533,42 @@ class ImportTests(CivisVCRTestCase):
                 client=self.mock_client,
                 table_columns=table_columns
             )
+
+    @pytest.mark.civis_file_to_table
+    @mock.patch('civis.io._tables._process_cleaning_results')
+    @mock.patch('civis.io._tables._run_cleaning')
+    def test_civis_file_to_table_table_columns_keys_misspelled(
+            self,
+            m_run_cleaning,
+            m_process_cleaning_results,
+            _m_get_api_spec
+    ):
+        # Check for an error message if the `table_columns` input
+        # contains keys other than the accepted ones.
+        table = "scratch.api_client_test_fixture"
+        database = 'redshift-general'
+        mock_file_id = 1234
+        mock_import_id = 8675309
+
+        self.mock_client.imports.post_files_csv.return_value\
+            .id = mock_import_id
+        self.mock_client.get_database_id.return_value = 42
+        self.mock_client.default_credential = 713
+        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        table_columns = [{'name': 'a', 'sqlType': 'INT'},
+                         {'name': 'b', 'bad_type': ''}]
+
+        with pytest.raises(ValueError) as err:
+            civis.io.civis_file_to_table(
+                mock_file_id, database, table,
+                existing_table_rows='drop',
+                delimiter=',',
+                headers=True,
+                client=self.mock_client,
+                table_columns=table_columns
+            )
+        assert "must be one of ('name', 'sql_type')" in str(err.value)
+        assert "also has ('bad_type', 'sqlType')" in str(err.value)
 
     @pytest.mark.civis_file_to_table
     @mock.patch('civis.io._tables._process_cleaning_results')
@@ -1390,3 +1428,73 @@ def test_sql_script():
         hidden=False,
         csv_settings={})
     mock_client.scripts.post_sql_runs.assert_called_once_with(export_job_id)
+
+
+@mock.patch.object(civis.io._tables, '_get_headers')
+@mock.patch.object(civis.io._tables, 'requests')
+def test_read_civis_sql_use_pandas_false_sad_path(m_requests, m__get_headers):
+    # Set up a mock client object for what civis.io.read_civis_sql needs.
+    m_client = create_client_mock()
+    m_client.scripts.get_sql_runs.return_value = Response(
+        {
+            "output": [
+                {"path": "blah", "file_id": 123, "output_name": "blah"}
+            ],
+            "state": "success",
+        }
+    )
+    m_response = mock.Mock()
+    m_response.raw.read.return_value = gzip.compress(
+        # Intentionally using non-ASCII chars like è to mess with encoding
+        "foo,bar\n123,très bien\n".encode("latin-1")
+    )
+    m_requests.get.return_value = m_response
+    m__get_headers.return_value = None
+
+    # The data was encoded in latin-1, but we don't specify this at
+    # the `encoding` param in the read_civis_sql call,
+    # which should raise UnicodeDecodeError.
+    with pytest.raises(UnicodeDecodeError):
+        civis.io.read_civis_sql(
+            "select 1", "db", use_pandas=False, client=m_client,
+            polling_interval=1
+        )
+
+
+@mock.patch.object(civis.io._tables, '_get_headers')
+@mock.patch.object(civis.io._tables, 'requests')
+def test_read_civis_sql_use_pandas_false_happy_path(m_requests, m_get_headers):
+    # Set up a mock client object for what civis.io.read_civis_sql needs.
+    m_client = create_client_mock()
+    m_client.scripts.get_sql_runs.return_value = Response(
+        {
+            "output": [
+                {"path": "blah", "file_id": 123, "output_name": "blah"}
+            ],
+            "state": "success",
+        }
+    )
+
+    # Intentionally using non-ASCII chars like è to mess with encoding
+    expected_data = "foo,bar\n123,très bien\n"
+    encoding = "latin-1"
+
+    m_response = mock.Mock()
+
+    # The helper function _decompress_stream() calls
+    # response.raw.read(CHUNK_SIZE) in a while loop.
+    # In the mock `m_response.raw.read` here, we use side_effect so that
+    # we get the data back from the first call and no data in the second call
+    # inside the while loop (because the data has all been consumed in the
+    # first call).
+    m_response.raw.read.side_effect = [
+        gzip.compress(expected_data.encode(encoding)), b""
+    ]
+    m_requests.get.return_value = m_response
+    m_get_headers.return_value = None
+
+    actual_data = civis.io.read_civis_sql(
+        "select 1", "db", use_pandas=False, client=m_client,
+        polling_interval=1, encoding=encoding
+    )
+    assert list(csv.reader(io.StringIO(expected_data))) == actual_data

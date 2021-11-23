@@ -126,7 +126,6 @@ def infer_backend_factory(required_resources=None,
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
         avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
-        You should only set this if you aren't using ``pubnub`` notifications.
     setup_cmd : str, optional
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
@@ -286,7 +285,6 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
         avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
-        You should only set this if you aren't using ``pubnub`` notifications.
     setup_cmd : str, optional
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
@@ -453,7 +451,6 @@ def make_backend_template_factory(from_template_id,
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
         avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
-        You should only set this if you aren't using ``pubnub`` notifications.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help
         avoid a large set of jobs failing because of a single 5xx error. A

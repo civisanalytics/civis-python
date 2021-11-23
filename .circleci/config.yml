@@ -1,0 +1,90 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.4.0
+
+jobs:
+  pre-build:
+    description: A check that doesn't need every supported Python version (e.g., code style checks, sphinx docs can build)
+    parameters:
+      command-run:
+        type: string
+    docker:
+      # Pick the highest Python 3.x version that civis-python is known to support
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependency-file: dev-requirements.txt
+          cache-version: dev-requirements-v1
+      - run:
+          working_directory: ~/project/
+          command: << parameters.command-run >>
+
+  build-python:
+    parameters:
+      python-version:
+        type: string
+    docker:
+      - image: cimg/python:<< parameters.python-version >>
+    environment:
+      CIVIS_API_KEY: FOOBAR
+    steps:
+      - checkout
+      - run:
+          # Intentionally not using CircleCI's "python/install-packages" step,
+          # because we don't want to install packages from any requirements.txt
+          # just yet.
+          # Test that we can build a source distribution that can correctly
+          # install from clean slate.
+          # "python setup.py bdist_wheel" creates dist/civis-x.y.z-py3-none-any.whl
+          name: Build source distribution and install package from it
+          working_directory: ~/project/
+          command: |
+              pip install --progress-bar off --upgrade pip setuptools && \
+              python setup.py bdist_wheel && \
+              pip install dist/`ls dist/ | grep .whl`
+      - run:
+          name: Install the full development requirements
+          working_directory: ~/project/
+          command: pip install --progress-bar off -r dev-requirements.txt
+      - run:
+          name: Show installed Python packages
+          command: pip list -v
+      - run:
+          name: Run python tests
+          working_directory: ~/
+          # Avoid being able to import civis by relative import.
+          # Test code by importing the *installed* civis in site-packages.
+          command: |
+              pytest -vv --cov=project/civis --junitxml=/tmp/testxml/report.xml project/civis
+      - store_test_results:
+          path: /tmp/testxml/
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - pre-build:
+          name: flake8
+          command-run: flake8 civis
+      - pre-build:
+          name: sphinx-build
+          command-run: |
+            pip install -e . && \
+            sphinx-build -b html -n docs/source/ docs/build/
+      - pre-build:
+          name: twine
+          command-run: |
+            python setup.py sdist bdist_wheel && \
+            twine check dist/`ls dist/ | grep .tar.gz` && \
+            twine check dist/`ls dist/ | grep .whl`
+      - build-python:
+          requires:
+            - flake8
+            - sphinx-build
+            - twine
+          matrix:
+            parameters:
+              python-version: ["3.6", "3.7", "3.8"]

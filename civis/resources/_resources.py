@@ -4,10 +4,7 @@ import json
 import os
 import re
 import textwrap
-try:
-    from inspect import Signature, Parameter
-except ImportError:
-    from funcsigs import Signature, Parameter
+from inspect import Signature, Parameter
 
 from jsonref import JsonRef
 import requests
@@ -20,7 +17,8 @@ from civis._utils import (camel_to_snake, to_camelcase,
                           retry_request, MAX_RETRIES)
 
 
-API_VERSIONS = ["1.0"]
+_RESOURCES = frozenset({"base", "all"})
+API_VERSIONS = frozenset({"1.0", })
 BASE_RESOURCES_V1 = [
     'aliases',
     'announcements',
@@ -69,6 +67,7 @@ ITERATOR_PARAM_DESC = (
     "    True, limit and page_num are ignored. Defaults to False.\n")
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
+DEFAULT_STR = 'DEFAULT'
 
 
 @deprecate_param('v2.0.0', 'resources')
@@ -210,8 +209,9 @@ def create_signature(args, optional_args):
     ----------
     args : list
         List of strings that name the required arguments of a function.
-    optional_args : list
-        List of strings that name the optional arguments of a function.
+    optional_args : dict
+        Dict of strings that name the optional arguments of a function,
+        and their default values.
 
     Returns
     -------
@@ -220,14 +220,14 @@ def create_signature(args, optional_args):
         a dynamically created function.
     """
     p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    p += [Parameter(x, Parameter.KEYWORD_ONLY, default='DEFAULT')
-          for x in optional_args]
+    p += [Parameter(x, Parameter.KEYWORD_ONLY, default=default_value)
+          for x, default_value in optional_args.items()]
     return Signature(p)
 
 
 def split_method_params(params):
     args = []
-    optional_args = []
+    optional_args = {}
     body_params = []
     query_params = []
     path_params = []
@@ -236,7 +236,7 @@ def split_method_params(params):
         if param["required"]:
             args.append(name)
         else:
-            optional_args.append(name)
+            optional_args[name] = param.get('default', DEFAULT_STR)
         if param["in"] == "body":
             body_params.append(name)
         elif param["in"] == "query":
@@ -333,6 +333,8 @@ def parse_param(param):
         req = param['required']
         doc = doc_from_param(param)
         a = {"name": snake_name, "in": param_in, "required": req, "doc": doc}
+        if not req:
+            a['default'] = param.get('default', DEFAULT_STR)
         args.append(a)
     return args
 
@@ -377,6 +379,8 @@ def parse_param_body(parameter):
         doc_list = docs_from_property(name, prop, properties, 0, not is_req)
         doc = "\n".join(doc_list) + "\n"
         a = {"name": snake_name, "in": "body", "required": is_req, "doc": doc}
+        if not is_req:
+            a['default'] = prop.get('default', DEFAULT_STR)
         arguments.append(a)
     return arguments
 
@@ -545,10 +549,15 @@ def generate_classes(api_key, api_version="1.0", resources="all"):
         a given user, including those that may be in development and subject
         to breaking changes at a later date.
     """
-    assert api_version in API_VERSIONS, (
-        "APIClient api_version must be one of {}".format(API_VERSIONS))
-    assert resources in ["base", "all"], (
-        "resources must be one of {}".format(["base", "all"]))
+    if api_version not in API_VERSIONS:
+        raise ValueError(
+            f"APIClient api_version must be one of {set(API_VERSIONS)}: "
+            f"{api_version}"
+        )
+    if resources not in _RESOURCES:
+        raise ValueError(
+            f"resources must be one of {set(_RESOURCES)}: {resources}"
+        )
     raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version, resources)

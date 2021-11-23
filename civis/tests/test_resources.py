@@ -155,7 +155,7 @@ def test_split_method_params():
     x = _resources.split_method_params(params)
     args, kwargs, body_params, query_params, path_params = x
     assert sorted(args) == sorted(["a", "b", "c"])
-    assert kwargs == ["d"]
+    assert kwargs == {"d": _resources.DEFAULT_STR}
     assert body_params == ["a"]
     assert sorted(query_params) == sorted(["c", "d"])
     assert path_params == ["b"]
@@ -176,17 +176,24 @@ def test_parse_params():
     param2 = {"name": "B", "in": "path", "required": True,
               "description": "nah!", "type": "integer"}
     x, y = _resources.parse_params([param, param2], "summary!", "get")
-    expect_x, expect_y = ([{'in': 'query', 'doc': 'a : string, optional\n    yeah!\n', 'required': False, 'name': 'a'}, {'in': 'path', 'doc': 'b : integer\n    nah!\n', 'required': True, 'name': 'b'}], 'summary!\n\nParameters\n----------\nb : integer\n    nah!\na : string, optional\n    yeah!\n')  # noqa: E501
+    expect_x, expect_y = ([{'in': 'query', 'doc': 'a : string, optional\n    yeah!\n', 'required': False, 'name': 'a', 'default': _resources.DEFAULT_STR}, {'in': 'path', 'doc': 'b : integer\n    nah!\n', 'required': True, 'name': 'b'}], 'summary!\n\nParameters\n----------\nb : integer\n    nah!\na : string, optional\n    yeah!\n')  # noqa: E501
     assert x == expect_x
     assert y == expect_y
 
 
 def test_parse_param_body():
     expected = [{'required': False, 'name': 'a', 'in': 'body',
-                 'doc': 'a : list, optional\n'}]
+                 'doc': 'a : list, optional\n',
+                 'default': _resources.DEFAULT_STR}]
     param_body = {"schema": {"properties": {"A": {"type": "array"}}}}
     x = _resources.parse_param_body(param_body)
     assert x == expected
+
+    expected_with_default = [{'required': False, 'name': 'a', 'in': 'body',
+                              'doc': 'a : list, optional\n', 'default': 50}]
+    param_body_with_default = {"schema": {"properties": {"A": {"type": "array", "default": 50}}}}  # noqa: E501
+    x_with_default = _resources.parse_param_body(param_body_with_default)
+    assert x_with_default == expected_with_default
 
 
 def test_parse_method_name():
