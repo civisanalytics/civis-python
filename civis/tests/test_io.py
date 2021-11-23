@@ -1430,9 +1430,8 @@ def test_sql_script():
     mock_client.scripts.post_sql_runs.assert_called_once_with(export_job_id)
 
 
-@mock.patch.object(civis.io._tables, '_get_headers')
 @mock.patch.object(civis.io._tables, 'requests')
-def test_read_civis_sql_use_pandas_false_sad_path(m_requests, m__get_headers):
+def test_read_civis_sql_use_pandas_false_sad_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1449,7 +1448,6 @@ def test_read_civis_sql_use_pandas_false_sad_path(m_requests, m__get_headers):
         "foo,bar\n123,très bien\n".encode("latin-1")
     )
     m_requests.get.return_value = m_response
-    m__get_headers.return_value = None
 
     # The data was encoded in latin-1, but we don't specify this at
     # the `encoding` param in the read_civis_sql call,
@@ -1461,9 +1459,8 @@ def test_read_civis_sql_use_pandas_false_sad_path(m_requests, m__get_headers):
         )
 
 
-@mock.patch.object(civis.io._tables, '_get_headers')
 @mock.patch.object(civis.io._tables, 'requests')
-def test_read_civis_sql_use_pandas_false_happy_path(m_requests, m_get_headers):
+def test_read_civis_sql_use_pandas_false_happy_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1491,7 +1488,6 @@ def test_read_civis_sql_use_pandas_false_happy_path(m_requests, m_get_headers):
         gzip.compress(expected_data.encode(encoding)), b""
     ]
     m_requests.get.return_value = m_response
-    m_get_headers.return_value = None
 
     actual_data = civis.io.read_civis_sql(
         "select 1", "db", use_pandas=False, client=m_client,
