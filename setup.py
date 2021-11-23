@@ -7,6 +7,7 @@ from setuptools import find_packages, setup
 
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
+PYTHON_REQUIRES = ">=3.7"
 CLASSIFIERS = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
@@ -62,7 +63,7 @@ def main():
                 'civis_joblib_worker = civis.run_joblib_func:main',
             ]
         },
-        python_requires=">=3.6"
+        python_requires=PYTHON_REQUIRES
     )
 
 
