@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-- Added supported for Python 3.9 (#436)
+- Added support for Python 3.9 (#436)
 - Added job ID and run ID to the exception message of `CivisJobFailure`
   coming from a `CivisFuture` object (#426)
 - Added the `encoding` parameter to both `civis.io.read_civis` and `civis.io.read_civis_sql`,
