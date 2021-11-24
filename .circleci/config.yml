@@ -11,7 +11,7 @@ jobs:
         type: string
     docker:
       # Pick the highest Python 3.x version that civis-python is known to support
-      - image: cimg/python:3.8
+      - image: cimg/python:3.9
     steps:
       - checkout
       - python/install-packages:
@@ -87,4 +87,4 @@ workflows:
             - twine
           matrix:
             parameters:
-              python-version: ["3.6", "3.7", "3.8"]
+              python-version: ["3.7", "3.8", "3.9"]

@@ -19,11 +19,6 @@ Civis API Python Client
   :end-before: end-include-marker-installation-section
 
 
-.. include:: ../../README.rst
-  :start-after: start-include-marker-python-version-support-section
-  :end-before: end-include-marker-python-version-support-section
-
-
 User Guide
 ----------
 

@@ -138,15 +138,6 @@ dependencies with
 
 .. end-include-marker-installation-section
 
-.. start-include-marker-python-version-support-section
-
-Python version support
-----------------------
-
-Python 3.6, 3.7, and 3.8
-
-.. end-include-marker-python-version-support-section
-
 Usage
 -----
 
