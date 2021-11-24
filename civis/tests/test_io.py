@@ -1,3 +1,4 @@
+import tempfile
 from collections import OrderedDict
 import csv
 import gzip
@@ -972,35 +973,6 @@ class ImportTests(CivisVCRTestCase):
 
         civis.io._tables._check_column_types(table_cols, file_cols, 42)
 
-    @pytest.mark.read_civis
-    @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_read_civis_pandas(self, *mocks):
-        expected = pd.DataFrame([[1, 2, 3]], columns=['a', 'b', 'c'])
-        df = civis.io.read_civis('scratch.api_client_test_fixture',
-                                 'redshift-general', use_pandas=True,
-                                 polling_interval=POLL_INTERVAL)
-        assert df.equals(expected)
-
-    @pytest.mark.read_civis
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_read_civis_no_pandas(self, *mocks):
-        expected = [['a', 'b', 'c'], ['1', '2', '3']]
-        data = civis.io.read_civis('scratch.api_client_test_fixture',
-                                   'redshift-general', use_pandas=False,
-                                   polling_interval=POLL_INTERVAL)
-        assert data == expected
-
-    @pytest.mark.read_civis_sql
-    @mock.patch(api_import_str, return_value=civis_api_spec)
-    def test_read_civis_sql(self, *mocks):
-        sql = "SELECT * FROM scratch.api_client_test_fixture"
-        expected = [['a', 'b', 'c'], ['1', '2', '3']]
-        data = civis.io.read_civis_sql(sql, 'redshift-general',
-                                       use_pandas=False,
-                                       polling_interval=POLL_INTERVAL)
-        assert data == expected
-
     @pytest.mark.dataframe_to_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
     @mock.patch('civis.io._tables.file_to_civis')
@@ -1431,7 +1403,7 @@ def test_sql_script():
 
 
 @mock.patch.object(civis.io._tables, 'requests')
-def test_read_civis_sql_use_pandas_false_sad_path(m_requests):
+def test_read_civis_sql_no_pandas_special_encoding_sad_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1460,7 +1432,7 @@ def test_read_civis_sql_use_pandas_false_sad_path(m_requests):
 
 
 @mock.patch.object(civis.io._tables, 'requests')
-def test_read_civis_sql_use_pandas_false_happy_path(m_requests):
+def test_read_civis_sql_no_pandas_special_encoding_happy_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1494,3 +1466,64 @@ def test_read_civis_sql_use_pandas_false_happy_path(m_requests):
         polling_interval=1, encoding=encoding
     )
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
+
+
+@mock.patch.object(civis.io._tables, 'requests')
+def test_read_civis_sql_no_pandas(m_requests):
+    # Set up a mock client object for what civis.io.read_civis_sql needs.
+    m_client = create_client_mock()
+    m_client.scripts.get_sql_runs.return_value = Response(
+        {
+            "output": [
+                {"path": "blah", "file_id": 123, "output_name": "blah"}
+            ],
+            "state": "success",
+        }
+    )
+
+    expected_data = "foo,bar\n123,very good\n"
+
+    m_response = mock.Mock()
+    # The helper function _decompress_stream() calls
+    # response.raw.read(CHUNK_SIZE) in a while loop.
+    # In the mock `m_response.raw.read` here, we use side_effect so that
+    # we get the data back from the first call and no data in the second call
+    # inside the while loop (because the data has all been consumed in the
+    # first call).
+    m_response.raw.read.side_effect = [
+        gzip.compress(expected_data.encode("utf-8")), b""
+    ]
+    m_requests.get.return_value = m_response
+
+    actual_data = civis.io.read_civis_sql(
+        "select 1", "db", use_pandas=False, client=m_client,
+        polling_interval=1,
+    )
+    assert list(csv.reader(io.StringIO(expected_data))) == actual_data
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+def test_read_civis_sql_pandas():
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_csv_path = os.path.join(tmp_dir, "data.csv")
+        expected_data = "foo,bar\n123,very good\n"
+        with open(tmp_csv_path, "wb") as f:
+            f.write(gzip.compress(expected_data.encode("utf-8")))
+
+        # Set up a mock client object for what civis.io.read_civis_sql needs.
+        m_client = create_client_mock()
+        m_client.scripts.get_sql_runs.return_value = Response(
+            {
+                "output": [
+                    {"path": tmp_csv_path,
+                     "file_id": 123,
+                     "output_name": "blah"}
+                ],
+                "state": "success",
+            }
+        )
+        actual_data = civis.io.read_civis_sql(
+            "select 1", "db", use_pandas=True, client=m_client,
+            polling_interval=1,
+        )
+        assert pd.read_csv(io.StringIO(expected_data)).equals(actual_data)
