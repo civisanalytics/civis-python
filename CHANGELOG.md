@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added support for Python 3.9 (#436)
 - Added job ID and run ID to the exception message of `CivisJobFailure`
   coming from a `CivisFuture` object (#426)
 - Added the `encoding` parameter to both `civis.io.read_civis` and `civis.io.read_civis_sql`,
@@ -13,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Bumped version numbers for dependencies to allow their latest major releases (#436)
 - Switched from TravisCI to CircleCI (#432)
 - Moved the changes from #416 for propagating error messages
   from `ContainerFuture` to `CivisFuture` (#426)
@@ -26,9 +28,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Converted `assert` statements in non-test code into proper error handling (#430, #435)
 - Handled the index-out-of-bounds error when CSV preprocessing fails in `civis_file_to_table`
   by raising a more informative exception (#428)
+- Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
+
+### Removed
+- Dropped support for Python 3.6 (#436)
 - Removed no-longer-used PubNub code (#425)
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
-- Corrected camel to snake case for "sql_type" in `io` docstrings, and added an input check to catch misspellings in the `table_columns` input (#419).
 
 ## 1.15.1 - 2020-10-28
 ### Fixed
