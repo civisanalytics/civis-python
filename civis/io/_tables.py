@@ -17,7 +17,7 @@ from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.base import EmptyResultError, CivisImportError
 from civis.futures import CivisFuture
-from civis.io import civis_to_file, file_to_civis, query_civis
+from civis.io import civis_to_file, file_to_civis
 from civis.utils import run_job
 from civis._deprecation import deprecate_param
 
@@ -312,20 +312,9 @@ def read_civis_sql(sql, database, use_pandas=False,
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
-    # Try to get headers separately. In most scenarios this will greatly
-    # reduce the work that Platform does to provide a single output file
-    # with headers prepended to it due to how distributed databases export
-    # data at scale.
-    headers = _get_headers(client, sql, db_id, credential_id, polling_interval)
-    # include_header defaults to True in the API.
-    include_header = True if headers is None else False
-
-    csv_settings = dict(include_header=include_header,
-                        compression='gzip')
-
     script_id, run_id = _sql_script(client, sql, db_id,
                                     job_name, credential_id,
-                                    csv_settings=csv_settings,
+                                    csv_settings={"compression": "gzip"},
                                     hidden=hidden)
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
@@ -348,20 +337,15 @@ def read_civis_sql(sql, database, use_pandas=False,
               outputs[0]["output_name"], file_id)
 
     if use_pandas:
-        # allows users to enter their own names parameter
-        _kwargs = {'names': headers}
-        _kwargs.update(kwargs)
-        _kwargs['compression'] = 'gzip'
-        _kwargs["encoding"] = encoding
+        kwargs['compression'] = 'gzip'
+        kwargs["encoding"] = encoding
 
-        data = pd.read_csv(url, **_kwargs)
+        data = pd.read_csv(url, **kwargs)
     else:
         response = requests.get(url, stream=True)
         response.raise_for_status()
 
         with io.StringIO() as buf:
-            if headers:
-                buf.write(','.join(headers) + '\n')
             _decompress_stream(response, buf, write_bytes=False,
                                encoding=encoding or "utf-8")
             buf.seek(0)
@@ -1172,22 +1156,6 @@ def _get_sql_select(table, columns=None):
     select = ", ".join(columns) if columns is not None else "*"
     sql = "select {} from {}".format(select, table)
     return sql
-
-
-def _get_headers(client, sql, database, credential_id, polling_interval=None):
-    headers = None
-
-    try:
-        # use 'begin read only;' to ensure we can't change state
-        sql = 'begin read only; select * from ({}) limit 1'.format(sql)
-        fut = query_civis(sql, database, client=client,
-                          credential_id=credential_id,
-                          polling_interval=polling_interval)
-        headers = fut.result()['result_columns']
-    except Exception as exc:  # NOQA
-        log.debug("Failed to retrieve headers due to %s", str(exc))
-
-    return headers
 
 
 def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):

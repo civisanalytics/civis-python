@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to use joblib 1.1.x (#429)
 
 ### Fixed
+- Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415) 
 - Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
 - Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431)
 - Converted `assert` statements in non-test code into proper error handling (#430, #435)
