@@ -59,7 +59,9 @@ def open_session(api_key, user_agent="civis-python"):
                                    sys.version_info.micro)
     user_agent = "{}/Python v{} Civis v{} {}".format(
         user_agent, ver_string, civis_version, session_agent)
-    session.headers.update({"User-Agent": user_agent.strip()})
+    session.headers.update({"User-Agent": user_agent.strip(),
+                            "X-Job-ID": str(os.getenv("CIVIS_JOB_ID")),
+                            "X-Run-ID": str(os.getenv("CIVIS_RUN_ID"))})
 
     return session
 
