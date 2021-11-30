@@ -1417,7 +1417,7 @@ def _process_cleaning_results(cleaning_futures, client, headers,
         if need_table_columns:
             file_columns = detected_info['tableColumns']
             _check_column_types(table_columns, file_columns,
-                                output_file.object_id)
+                                output_file.object_id, client)
 
         _check_all_detected_info(detected_info, headers, delimiter,
                                  compression, output_file.object_id)
@@ -1428,7 +1428,7 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     return cleaned_file_ids, headers, compression, delimiter, table_columns
 
 
-def _check_column_types(table_columns, file_columns, output_obj_id):
+def _check_column_types(table_columns, file_columns, output_obj_id, client):
     """Check that base column types match those current defined for the table.
 
     Parameters
@@ -1448,17 +1448,17 @@ def _check_column_types(table_columns, file_columns, output_obj_id):
       If the table columns and the file columns have a type mismatch, or
       differ in count.
     """
+    filename = client.files.get(output_obj_id).name
     if len(table_columns) != len(file_columns):
-        raise CivisImportError('All files should have the same number of '
-                               'columns. Expected {} columns but file {} '
-                               'has {} columns'.format(
-                                   len(table_columns),
-                                   output_obj_id,
-                                   len(file_columns))
-                               )
+        raise CivisImportError(
+            'All files should have the same number of columns. '
+            f'Expected {len(table_columns)} columns '
+            f'but file {output_obj_id} ({filename}) has '
+            f'{len(file_columns)} columns'
+        )
 
     error_msgs = []
-    for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns)):
+    for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns), 1):
         # for the purposes of type checking, we care only that the types
         # share a base type (e.g. INT, VARCHAR, DECIMAl) rather than that
         # they have the same precision and length
@@ -1468,16 +1468,13 @@ def _check_column_types(table_columns, file_columns, output_obj_id):
 
         if tcol_base_type != fcol_base_type:
             error_msgs.append(
-                'Column {}: File base type was {}, but expected {}'.format(
-                    idx,
-                    fcol_base_type,
-                    tcol_base_type
-                )
+                f"Column {idx} ({tcol['name']}): "
+                f"File base type was {fcol_base_type}, "
+                f"but expected {tcol_base_type}"
             )
     if error_msgs:
         raise CivisImportError(
-            'Encountered the following errors for file {}:\n\t{}'.format(
-                output_obj_id,
-                '\n\t'.join(error_msgs)
-            )
+            f"Encountered the following errors "
+            f"for temporary file {output_obj_id} ({filename}):\n\t"
+            + "\n\t".join(error_msgs)
         )

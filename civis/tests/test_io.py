@@ -379,7 +379,7 @@ class ImportTests(CivisVCRTestCase):
             'compression': 'gzip',
             'escaped': False,
             'execution': 'immediate',
-            'loosen_types': False,
+            'loosen_types': True,
             'table_columns': mock_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
@@ -481,7 +481,7 @@ class ImportTests(CivisVCRTestCase):
             'compression': 'gzip',
             'escaped': False,
             'execution': 'immediate',
-            'loosen_types': False,
+            'loosen_types': True,
             'table_columns': detected_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
@@ -865,9 +865,10 @@ class ImportTests(CivisVCRTestCase):
                     'compression': expected_compression,
                     'includeHeader': expected_headers,
                     'columnDelimiter': '|'
-                }
+                },
+            "name": "file.csv.gz",
         })
-        self.mock_client.files.get.side_effect = [resp1, resp2]
+        self.mock_client.files.get.side_effect = [resp1, resp2, resp2]
 
         with pytest.raises(CivisImportError,
                            match='Provided delimiter "|" does not match '
@@ -949,20 +950,24 @@ class ImportTests(CivisVCRTestCase):
         file_cols = [{'name': 'col1', 'sql_type': 'INT'},
                      {'name': 'col2', 'sql_type': 'FLOAT'}]
 
-        with pytest.raises(civis.base.CivisImportError,
-                           match='Expected 1 columns but file 42 has 2 columns'
-                           ):
-            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+        regex = r'Expected 1 columns but file 42 \(.+?\) has 2 columns'
+        with pytest.raises(civis.base.CivisImportError, match=regex):
+            civis.io._tables._check_column_types(
+                table_cols, file_cols, 42, mock.Mock()
+            )
 
     @pytest.mark.check_column_types
     def test_check_column_types_differing_types(self, _m_get_api_spec):
         table_cols = [{'name': 'col1', 'sql_type': 'INT'}]
         file_cols = [{'name': 'col1', 'sql_type': 'FLOAT'}]
 
-        with pytest.raises(civis.base.CivisImportError,
-                           match='Column 0: File base type was FLOAT, but '
-                                 'expected INT'):
-            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+        regex = (
+            r'Column 1 \(col1\): File base type was FLOAT, but expected INT'
+        )
+        with pytest.raises(civis.base.CivisImportError, match=regex):
+            civis.io._tables._check_column_types(
+                table_cols, file_cols, 42, mock.Mock()
+            )
 
     @pytest.mark.check_column_types
     def test_check_column_types_passing(self, _m_get_api_spec):
@@ -971,7 +976,9 @@ class ImportTests(CivisVCRTestCase):
         file_cols = [{'name': 'col1', 'sql_type': 'INT'},
                      {'name': 'col2', 'sql_type': 'VARCHAR(47)'}]
 
-        civis.io._tables._check_column_types(table_cols, file_cols, 42)
+        civis.io._tables._check_column_types(
+            table_cols, file_cols, 42, mock.Mock()
+        )
 
     @pytest.mark.dataframe_to_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
