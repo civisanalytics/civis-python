@@ -146,7 +146,7 @@ def deprecated_notice(deprecation_warning):
     return "Deprecation warning!\n------------------\n" + deprecation_warning
 
 
-def doc_from_responses(responses):
+def doc_from_responses(responses, is_iterable):
     """ Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
     """
@@ -154,7 +154,12 @@ def doc_from_responses(responses):
     schema = response_object.get('schema', {})
     properties = get_properties(schema)
     if properties:
-        result_doc = "\n".join(docs_from_properties(properties))
+        if is_iterable:
+            resp_type = "civis.response.PaginatedResponse\n"
+        else:
+            resp_type = "civis.response.Response\n"
+        result_doc = resp_type + (
+            "\n".join(docs_from_properties(properties)))
     else:
         description = response_object['description']
         result_doc_fmt = "None\n    Response code {}: {}"
@@ -431,7 +436,10 @@ def parse_method(verb, operation, path):
         return None
 
     args, param_doc = parse_params(params, summary, verb)
-    response_doc = doc_from_responses(responses)
+    elements = split_method_params(params)
+    _, _, _, query_params, _ = elements
+    is_iterable = iterable_method(verb, query_params)
+    response_doc = doc_from_responses(responses, is_iterable)
     deprecation_notice = deprecated_notice(deprecation_warning)
     docs = join_doc_elements(deprecation_notice, param_doc, response_doc)
     name = parse_method_name(verb, path)
