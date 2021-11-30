@@ -1101,13 +1101,6 @@ def civis_file_to_table(file_id, database, table, client=None,
     redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
                             diststyle=diststyle)
 
-    # If the user hasn't explicitly
-    # provided table column info, then there might be differences in
-    # their precisions/lengths - setting this option will allow the Civis API
-    # to increase these values for the data types provided, and decreases the
-    # risk of a length-related import failure when types are inferred.
-    loosen_types = need_table_columns
-
     import_name = 'CSV import to {}.{}'.format(schema, table_name)
     import_job = client.imports.post_files_csv(
         source,
@@ -1120,7 +1113,13 @@ def civis_file_to_table(file_id, database, table, client=None,
         compression=compression,
         escaped=escaped,
         execution=execution,
-        loosen_types=loosen_types,
+        # If the user hasn't explicitly provided table column info,
+        # then there might be differences in their precisions/lengths.
+        # Setting this option will allow the Civis API
+        # to increase these values for the data types provided,
+        # and decreases the risk of a length-related import failure
+        # when types are inferred.
+        loosen_types=need_table_columns,
         table_columns=table_columns,
         redshift_destination_options=redshift_options,
         hidden=hidden
@@ -1316,6 +1315,8 @@ def _check_all_detected_info(detected_info, headers, delimiter,
       attributes.
     """
     if headers != detected_info['includeHeader']:
+        print(headers)
+        print(detected_info)
         raise CivisImportError('Mismatch between detected headers - '
                                'please ensure all imported files either '
                                'have a header or do not.')
