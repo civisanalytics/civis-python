@@ -1415,6 +1415,8 @@ def _check_column_types(table_columns, file_columns, output_obj_id, client):
       The columns detected by the Civis API for the file.
     output_obj_id: int
       The file ID under consideration; used for error messaging.
+    client : civis.APIClient
+      API client object
 
     Returns
     -------
