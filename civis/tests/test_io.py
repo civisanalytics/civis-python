@@ -976,9 +976,26 @@ class ImportTests(CivisVCRTestCase):
         file_cols = [{'name': 'col1', 'sql_type': 'INT'},
                      {'name': 'col2', 'sql_type': 'VARCHAR(47)'}]
 
-        civis.io._tables._check_column_types(
+        actual = civis.io._tables._check_column_types(
             table_cols, file_cols, 42, mock.Mock()
         )
+        assert actual == table_cols
+
+    def test_check_column_types_coerce_to_varchar(self, _m_get_api_spec):
+        test_cases = [
+            ("INT", "VARCHAR(42)"),
+            ("VARCHAR(7)", "INT"),
+        ]
+        expected = [{'name': 'col1', 'sql_type': 'VARCHAR'}]
+
+        for tcol, fcol in test_cases:
+            table_cols = [{'name': 'col1', 'sql_type': tcol}]
+            file_cols = [{'name': 'col1', 'sql_type': fcol}]
+
+            actual = civis.io._tables._check_column_types(
+                table_cols, file_cols, 42, mock.Mock()
+            )
+            assert actual == expected
 
     @pytest.mark.dataframe_to_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")

@@ -1271,30 +1271,6 @@ def split_schema_tablename(table):
     return tuple(schema_name_tup)
 
 
-def _replace_null_column_names(column_list):
-    """Replace null names in columns from file cleaning with an appropriately
-    blank column name.
-
-    Parameters
-    ----------
-    column_list: list[dict]
-      the list of columns from file cleaning.
-
-    Returns
-    --------
-    column_list: list[dict]
-    """
-
-    new_cols = []
-    for i, col in enumerate(column_list):
-        # Avoid mutating input arguments
-        new_col = dict(col)
-        if new_col.get('name') is None:
-            new_col['name'] = 'column_{}'.format(i)
-        new_cols.append(new_col)
-    return new_cols
-
-
 def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
                   hidden, polling_interval=None):
     cleaning_futures = []
@@ -1416,15 +1392,14 @@ def _process_cleaning_results(cleaning_futures, client, headers,
         detected_info = client.files.get(output_file.object_id).detected_info
         if need_table_columns:
             file_columns = detected_info['tableColumns']
-            _check_column_types(table_columns, file_columns,
-                                output_file.object_id, client)
+            table_columns = _check_column_types(
+                table_columns, file_columns, output_file.object_id, client
+            )
 
         _check_all_detected_info(detected_info, headers, delimiter,
                                  compression, output_file.object_id)
         cleaned_file_ids.append(output_file.object_id)
 
-    if need_table_columns:
-        table_columns = _replace_null_column_names(table_columns)
     return cleaned_file_ids, headers, compression, delimiter, table_columns
 
 
@@ -1433,7 +1408,6 @@ def _check_column_types(table_columns, file_columns, output_obj_id, client):
 
     Parameters
     ----------
-
     table_columns: List[Dict[str, str]]
       The columns for the table to be created.
     file_columns: List[Dict[str, str]]
@@ -1441,9 +1415,14 @@ def _check_column_types(table_columns, file_columns, output_obj_id, client):
     output_obj_id: int
       The file ID under consideration; used for error messaging.
 
+    Returns
+    -------
+    List[Dict[str, str]]
+        Table columns to be created, where the names and SQL types may
+        be updated.
+
     Raises
     ------
-
     CivisImportError
       If the table columns and the file columns have a type mismatch, or
       differ in count.
@@ -1458,6 +1437,8 @@ def _check_column_types(table_columns, file_columns, output_obj_id, client):
         )
 
     error_msgs = []
+    updated_table_columns = []
+
     for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns), 1):
         # for the purposes of type checking, we care only that the types
         # share a base type (e.g. INT, VARCHAR, DECIMAl) rather than that
@@ -1466,15 +1447,31 @@ def _check_column_types(table_columns, file_columns, output_obj_id, client):
         tcol_base_type = tcol['sql_type'].split('(', 1)[0]
         fcol_base_type = fcol['sql_type'].split('(', 1)[0]
 
+        varchar_found = any(
+            t.upper() == "VARCHAR" for t in (tcol_base_type, fcol_base_type)
+        )
+
+        column_name = tcol.get("name") or f"column_{idx}"
+
         if tcol_base_type != fcol_base_type:
-            error_msgs.append(
-                f"Column {idx} ({tcol['name']}): "
-                f"File base type was {fcol_base_type}, "
-                f"but expected {tcol_base_type}"
-            )
+            if varchar_found:
+                updated_table_columns.append(
+                    {"name": column_name, "sql_type": "VARCHAR"}
+                )
+            else:
+                error_msgs.append(
+                    f"Column {idx} ({column_name}): "
+                    f"File base type was {fcol_base_type}, "
+                    f"but expected {tcol_base_type}"
+                )
+        else:
+            updated_table_columns.append(tcol)
+
     if error_msgs:
         raise CivisImportError(
             f"Encountered the following errors "
-            f"for temporary file {output_obj_id} ({filename}):\n\t"
+            f"for file {output_obj_id} ({filename}):\n\t"
             + "\n\t".join(error_msgs)
         )
+
+    return updated_table_columns
