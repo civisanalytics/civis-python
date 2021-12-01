@@ -1314,6 +1314,7 @@ def _check_all_detected_info(detected_info, headers, delimiter,
       If the values detected on the file do not match their expected
       attributes.
     """
+    # TODO: Change or remove this check?
     if headers != detected_info['includeHeader']:
         print(headers)
         print(detected_info)
