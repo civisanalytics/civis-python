@@ -155,11 +155,11 @@ def doc_from_responses(responses, is_iterable):
     properties = get_properties(schema)
     if properties:
         if is_iterable:
-            resp_type = "civis.response.PaginatedResponse\n"
+            resp_type = ":class:`civis.response.PaginatedResponse`\n"
         else:
-            resp_type = "civis.response.Response\n"
+            resp_type = ":class:`civis.response.Response`\n"
         result_doc = resp_type + (
-            "\n".join(docs_from_properties(properties)))
+            "\n".join(docs_from_properties(properties, level=1)))
     else:
         description = response_object['description']
         result_doc_fmt = "None\n    Response code {}: {}"
