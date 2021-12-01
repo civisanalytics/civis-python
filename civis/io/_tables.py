@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 import warnings
 import zlib
 
-from typing import List
+from typing import Dict, List
 
 import gzip
 import zipfile
@@ -1368,7 +1368,9 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     delimiter = _check_detected_info(files, "columnDelimiter", delimiter)
     compression = _check_detected_info(files, "compression")
 
-
+    table_columns = None
+    if need_table_columns:
+        table_columns = _check_column_types_new(files)
 
     # Set values from first completed file cleaning - other files will be
     # compared to this one. If inconsistencies are detected, raise an error.
@@ -1471,7 +1473,25 @@ def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
 
 
 def _check_column_types_new(files: List[_File]):
+    cols_all_files: List[List[Dict[str, str]]]
+    cols_all_files = [f.detected_info["tableColumns"] for f in files]
 
+    col_counts = [len(cols) for cols in cols_all_files]
+    unique_col_counts = set(col_counts)
+    if len(unique_values_detected) > 1:
+        values_to_indices = collections.defaultdict(list)
+        for i, value in enumerate(values_detected):
+            values_to_indices[value].append(i)
+        msg_for_each_value = [
+            f"\tThe value {v} found in: "
+            + _format_files_for_err_msg(files, indices)
+            for v, indices in values_to_indices.items()
+        ]
+        err_msg = "\n".join(msg_for_each_value)
+        raise CivisImportError(
+            f"All detected values for '{attr}' must be the same, "
+            f"however --\n{err_msg}"
+        )
 
 
 def _check_column_types(table_columns, file_columns, output_obj_id, client):
