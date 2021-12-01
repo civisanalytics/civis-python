@@ -16,26 +16,27 @@ with open(TEST_SPEC) as f:
 RESPONSE_DOC = (
 """Returns
 -------
-id : integer
-    The ID of the credential.
-name : string
-    The name identifying the credential
-type : string
-    The credential's type.
-username : string
-    The username for the credential.
-description : string
-    A long description of the credential.
-owner : string
-    The name of the user who this credential belongs to.
-remote_host_id : integer
-    The ID of the remote host associated with this credential.
-remote_host_name : string
-    The name of the remote host associated with this credential.
-created_at : string/time
-    The creation time for this credential.
-updated_at : string/time
-    The last modification time for this credential.""")  # noqa: E122
+:class:`civis.response.Response`
+    - id : integer
+        The ID of the credential.
+    - name : string
+        The name identifying the credential
+    - type : string
+        The credential's type.
+    - username : string
+        The username for the credential.
+    - description : string
+        A long description of the credential.
+    - owner : string
+        The name of the user who this credential belongs to.
+    - remote_host_id : integer
+        The ID of the remote host associated with this credential.
+    - remote_host_name : string
+        The name of the remote host associated with this credential.
+    - created_at : string/time
+        The creation time for this credential.
+    - updated_at : string/time
+        The last modification time for this credential.""")  # noqa: E122
 
 
 def test_create_method_iterator_kwarg():
@@ -137,7 +138,7 @@ def test_deprecated_notice_handles_none():
 
 def test_doc_from_responses():
     responses = OrderedDict([('200', OrderedDict([('description', 'success'), ('schema', OrderedDict([('type', 'array'), ('items', OrderedDict([('type', 'object'), ('properties', OrderedDict([('id', OrderedDict([('description', 'The ID of the credential.'), ('type', 'integer')])), ('name', OrderedDict([('description', 'The name identifying the credential'), ('type', 'string')])), ('type', OrderedDict([('description', "The credential's type."), ('type', 'string')])), ('username', OrderedDict([('description', 'The username for the credential.'), ('type', 'string')])), ('description', OrderedDict([('description', 'A long description of the credential.'), ('type', 'string')])), ('owner', OrderedDict([('description', 'The name of the user who this credential belongs to.'), ('type', 'string')])), ('remoteHostId', OrderedDict([('description', 'The ID of the remote host associated with this credential.'), ('type', 'integer')])), ('remoteHostName', OrderedDict([('description', 'The name of the remote host associated with this credential.'), ('type', 'string')])), ('createdAt', OrderedDict([('description', 'The creation time for this credential.'), ('type', 'string'), ('format', 'time')])), ('updatedAt', OrderedDict([('description', 'The last modification time for this credential.'), ('type', 'string'), ('format', 'time')]))]))]))]))]))])  # noqa: E501
-    x = _resources.doc_from_responses(responses)
+    x = _resources.doc_from_responses(responses, False)
     assert x == RESPONSE_DOC
 
 
