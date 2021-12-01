@@ -16,27 +16,27 @@ with open(TEST_SPEC) as f:
 RESPONSE_DOC = (
 """Returns
 -------
-civis.response.Response
-id : integer
-    The ID of the credential.
-name : string
-    The name identifying the credential
-type : string
-    The credential's type.
-username : string
-    The username for the credential.
-description : string
-    A long description of the credential.
-owner : string
-    The name of the user who this credential belongs to.
-remote_host_id : integer
-    The ID of the remote host associated with this credential.
-remote_host_name : string
-    The name of the remote host associated with this credential.
-created_at : string/time
-    The creation time for this credential.
-updated_at : string/time
-    The last modification time for this credential.""")  # noqa: E122
+:class:`civis.response.Response`
+    - id : integer
+        The ID of the credential.
+    - name : string
+        The name identifying the credential
+    - type : string
+        The credential's type.
+    - username : string
+        The username for the credential.
+    - description : string
+        A long description of the credential.
+    - owner : string
+        The name of the user who this credential belongs to.
+    - remote_host_id : integer
+        The ID of the remote host associated with this credential.
+    - remote_host_name : string
+        The name of the remote host associated with this credential.
+    - created_at : string/time
+        The creation time for this credential.
+    - updated_at : string/time
+        The last modification time for this credential.""")  # noqa: E122
 
 
 def test_create_method_iterator_kwarg():
