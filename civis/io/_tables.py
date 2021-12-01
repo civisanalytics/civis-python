@@ -1,3 +1,4 @@
+import collections
 import json
 import concurrent.futures
 import csv
@@ -9,6 +10,8 @@ import shutil
 from tempfile import TemporaryDirectory
 import warnings
 import zlib
+
+from typing import List
 
 import gzip
 import zipfile
@@ -41,6 +44,8 @@ DELIMITERS = {
     '\t': 'tab',
     '|': 'pipe',
 }
+
+_File = collections.namedtuple("_File", "id name detected_info")
 
 
 @deprecate_param('v2.0.0', 'api_key')
@@ -1343,9 +1348,27 @@ def _process_cleaning_results(cleaning_futures, client, headers,
                               need_table_columns, delimiter):
     cleaned_file_ids = []
 
-    done, still_going = concurrent.futures.wait(
-        cleaning_futures, return_when=concurrent.futures.FIRST_COMPLETED
-    )
+    futures, _ = concurrent.futures.wait(cleaning_futures)
+    files = []
+
+    for fut in futures:
+        try:
+            obj = client.jobs.list_runs_outputs(fut.job_id, fut.run_id)[0]
+        except IndexError:
+            raise CivisImportError(
+                "Unable to retrieve output from CSV preprocess "
+                f"job {fut.job_id} run {fut.run_id}"
+            )
+        f = client.files.get(obj.object_id)
+        files.append(
+            _File(id=f.id, name=f.name, detected_info=f["detectedInfo"])
+        )
+
+    headers = _check_detected_info(files, "includeHeader", headers)
+    delimiter = _check_detected_info(files, "columnDelimiter", delimiter)
+    compression = _check_detected_info(files, "compression")
+
+
 
     # Set values from first completed file cleaning - other files will be
     # compared to this one. If inconsistencies are detected, raise an error.
@@ -1402,7 +1425,53 @@ def _process_cleaning_results(cleaning_futures, client, headers,
                                  compression, output_file.object_id)
         cleaned_file_ids.append(output_file.object_id)
 
-    return cleaned_file_ids, headers, compression, delimiter, table_columns
+    return [f.id for f in files], headers, compression, delimiter, table_columns
+
+
+def _format_files_for_err_msg(files: List[_File], indices=None):
+    if indices is None:
+        indices = range(len(files))
+    files_in_str = [f"file {files[i].id} ({files[i].name})" for i in indices]
+    return ", ".join(files_in_str)
+
+
+def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
+    values_detected = [f.detected_info[attr] for f in files]
+    unique_values_detected = set(values_detected)
+
+    if len(unique_values_detected) > 1:
+        values_to_indices = collections.defaultdict(list)
+        for i, value in enumerate(values_detected):
+            values_to_indices[value].append(i)
+        msg_for_each_value = [
+            f"\tThe value {v} found in: "
+            + _format_files_for_err_msg(files, indices)
+            for v, indices in values_to_indices.items()
+        ]
+        err_msg = "\n".join(msg_for_each_value)
+        raise CivisImportError(
+            f"All detected values for '{attr}' must be the same, "
+            f"however --\n{err_msg}"
+        )
+
+    value_detected = unique_values_detected.pop()
+
+    # The user cannot specify "compression" from civis_file_to_table.
+    if attr == "compression" or value_from_user is None:
+        return value_detected
+
+    if value_detected != value_from_user:
+        raise CivisImportError(
+            f"All detected values for '{attr}' in your files "
+            f"are {value_detected}, which doesn't match "
+            f"your provided value of {value_from_user}"
+        )
+    else:
+        return value_detected
+
+
+def _check_column_types_new(files: List[_File]):
+
 
 
 def _check_column_types(table_columns, file_columns, output_obj_id, client):
