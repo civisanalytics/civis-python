@@ -1296,58 +1296,8 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
     return cleaning_futures
 
 
-def _check_all_detected_info(detected_info, headers, delimiter,
-                             compression, output_file_id):
-    """Check a single round of cleaning results as compared to provided values.
-
-    Parameters
-    ----------
-    detected_info: Dict[str, Any]
-      The detected info of the file as returned by the Civis API.
-    headers: bool
-      The provided value for whether or not the file contains errors.
-    delimiter: str
-      The provided value for the file delimiter.
-    compression: str
-      The provided value for the file compression.
-    output_file_id: int
-      The cleaned file's Civis ID. Used for debugging.
-
-    Raises
-    ------
-    CivisImportError
-      If the values detected on the file do not match their expected
-      attributes.
-    """
-    # TODO: Change or remove this check?
-    if headers != detected_info['includeHeader']:
-        print(headers)
-        print(detected_info)
-        raise CivisImportError('Mismatch between detected headers - '
-                               'please ensure all imported files either '
-                               'have a header or do not.')
-    if delimiter != detected_info['columnDelimiter']:
-        raise CivisImportError('Provided delimiter "{}" does not match '
-                               'detected delimiter for {}: "{}"'.format(
-                                    delimiter,
-                                    output_file_id,
-                                    detected_info["columnDelimiter"])
-                               )
-    if compression != detected_info['compression']:
-        raise CivisImportError('Mismatch between detected and provided '
-                               'compressions - provided compression was {}'
-                               ' but detected compression {}. Please '
-                               'ensure all imported files have the same '
-                               'compression.'.format(
-                                   compression,
-                                   detected_info['compression'])
-                               )
-
-
 def _process_cleaning_results(cleaning_futures, client, headers,
                               need_table_columns, delimiter):
-    cleaned_file_ids = []
-
     futures, _ = concurrent.futures.wait(cleaning_futures)
     files = []
 
@@ -1370,64 +1320,11 @@ def _process_cleaning_results(cleaning_futures, client, headers,
 
     table_columns = None
     if need_table_columns:
-        table_columns = _check_column_types_new(files)
+        table_columns = _check_column_types(files)
 
-    # Set values from first completed file cleaning - other files will be
-    # compared to this one. If inconsistencies are detected, raise an error.
-    first_completed = done.pop()
-    try:
-        output_file = client.jobs.list_runs_outputs(
-            first_completed.job_id,
-            first_completed.run_id
-        )[0]
-    except IndexError:
-        raise CivisImportError(
-            "Unable to retrieve output from CSV preprocess "
-            f"job {first_completed.job_id} run {first_completed.run_id}"
-        )
-    detected_info = client.files.get(output_file.object_id).detected_info
-    table_columns = (detected_info['tableColumns'] if need_table_columns
-                     else None)
-    if headers is None:
-        headers = detected_info['includeHeader']
-    if delimiter is None:
-        delimiter = detected_info['columnDelimiter']
+    cleaned_file_ids = [f.id for f in files]
 
-    compression = detected_info['compression']
-
-    _check_all_detected_info(detected_info, headers, delimiter, compression,
-                             output_file.object_id)
-
-    cleaned_file_ids.append(output_file.object_id)
-
-    # Ensure that all results from files are correctly accounted for -
-    # Since concurrent.futures.wait returns two sets, it is possible
-    # That done contains more than one Future. Thus it is necessary to account
-    # for these possible completed cleaning runs while waiting on those which
-    # are still running.
-    for result in concurrent.futures.as_completed(done | still_going):
-        try:
-            output_file = client.jobs.list_runs_outputs(
-                result.job_id,
-                result.run_id
-            )[0]
-        except IndexError:
-            raise CivisImportError(
-                "Unable to retrieve output from CSV preprocess "
-                f"job {result.job_id} run {result.run_id}"
-            )
-        detected_info = client.files.get(output_file.object_id).detected_info
-        if need_table_columns:
-            file_columns = detected_info['tableColumns']
-            table_columns = _check_column_types(
-                table_columns, file_columns, output_file.object_id, client
-            )
-
-        _check_all_detected_info(detected_info, headers, delimiter,
-                                 compression, output_file.object_id)
-        cleaned_file_ids.append(output_file.object_id)
-
-    return [f.id for f in files], headers, compression, delimiter, table_columns
+    return cleaned_file_ids, headers, compression, delimiter, table_columns
 
 
 def _format_files_for_err_msg(files: List[_File], indices=None):
@@ -1439,24 +1336,14 @@ def _format_files_for_err_msg(files: List[_File], indices=None):
 
 def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
     values_detected = [f.detected_info[attr] for f in files]
-    unique_values_detected = set(values_detected)
-
-    if len(unique_values_detected) > 1:
-        values_to_indices = collections.defaultdict(list)
-        for i, value in enumerate(values_detected):
-            values_to_indices[value].append(i)
-        msg_for_each_value = [
-            f"\tThe value {v} found in: "
-            + _format_files_for_err_msg(files, indices)
-            for v, indices in values_to_indices.items()
-        ]
-        err_msg = "\n".join(msg_for_each_value)
+    err_msg = _err_msg_if_inconsistent(values_detected, files)
+    if err_msg:
         raise CivisImportError(
             f"All detected values for '{attr}' must be the same, "
             f"however --\n{err_msg}"
         )
 
-    value_detected = unique_values_detected.pop()
+    value_detected = values_detected[0]
 
     # The user cannot specify "compression" from civis_file_to_table.
     if attr == "compression" or value_from_user is None:
@@ -1472,99 +1359,65 @@ def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
         return value_detected
 
 
-def _check_column_types_new(files: List[_File]):
-    cols_all_files: List[List[Dict[str, str]]]
-    cols_all_files = [f.detected_info["tableColumns"] for f in files]
+def _check_column_types(files: List[_File]) -> List[Dict[str, str]]:
+    cols_by_file: List[List[Dict[str, str]]]
+    cols_by_file = [f.detected_info["tableColumns"] for f in files]
 
-    col_counts = [len(cols) for cols in cols_all_files]
-    unique_col_counts = set(col_counts)
-    if len(unique_values_detected) > 1:
+    col_counts = [len(cols) for cols in cols_by_file]
+    err_msg = _err_msg_if_inconsistent(col_counts, files)
+    if err_msg:
+        raise CivisImportError(
+            f"All files must have the same number of columns, "
+            f"however --\n{err_msg}"
+        )
+
+    # Transpose cols_by_file to get cols_by_col
+    # https://stackoverflow.com/q/6473679
+    cols_by_col: List[List[Dict[str, str]]]
+    cols_by_col = list(map(list, zip(*cols_by_file)))
+
+    table_columns = []
+    err_msgs = []
+
+    for i, cols in enumerate(cols_by_col, 1):
+        try:
+            col_name = set(col["name"] for col in cols if "name" in col).pop()
+        except KeyError:
+            col_name = f"column_{i}"
+
+        sql_base_types = [
+            col["sql_type"].split("(", 1)[0].upper() for col in cols
+        ]
+        err_msg = _err_msg_if_inconsistent(sql_base_types, files)
+        if err_msg and "VARCHAR" not in sql_base_types:
+            err_msgs.append(
+                f"All sql_types for column '{col_name}' must be the same, "
+                f"however --\n{err_msg}"
+            )
+            continue
+        if err_msg:
+            sql_type = "VARCHAR"
+        else:
+            sql_type = cols[0]["sql_type"]
+        table_columns.append({"name": col_name, "sql_type": sql_type})
+
+    if err_msgs:
+        raise CivisImportError("\n".join(err_msgs))
+
+    return table_columns
+
+
+def _err_msg_if_inconsistent(items: List, files: List[_File]):
+    unique_items = set(items)
+    err_msg = None
+    if len(unique_items) > 1:
         values_to_indices = collections.defaultdict(list)
-        for i, value in enumerate(values_detected):
+        for i, value in enumerate(items):
             values_to_indices[value].append(i)
         msg_for_each_value = [
-            f"\tThe value {v} found in: "
+            f"\t{v} from: "
             + _format_files_for_err_msg(files, indices)
             for v, indices in values_to_indices.items()
         ]
         err_msg = "\n".join(msg_for_each_value)
-        raise CivisImportError(
-            f"All detected values for '{attr}' must be the same, "
-            f"however --\n{err_msg}"
-        )
-
-
-def _check_column_types(table_columns, file_columns, output_obj_id, client):
-    """Check that base column types match those current defined for the table.
-
-    Parameters
-    ----------
-    table_columns: List[Dict[str, str]]
-      The columns for the table to be created.
-    file_columns: List[Dict[str, str]]
-      The columns detected by the Civis API for the file.
-    output_obj_id: int
-      The file ID under consideration; used for error messaging.
-    client : civis.APIClient
-      API client object
-
-    Returns
-    -------
-    List[Dict[str, str]]
-        Table columns to be created, where the names and SQL types may
-        be updated.
-
-    Raises
-    ------
-    CivisImportError
-      If the table columns and the file columns have a type mismatch, or
-      differ in count.
-    """
-    filename = client.files.get(output_obj_id).name
-    if len(table_columns) != len(file_columns):
-        raise CivisImportError(
-            'All files should have the same number of columns. '
-            f'Expected {len(table_columns)} columns '
-            f'but file {output_obj_id} ({filename}) has '
-            f'{len(file_columns)} columns'
-        )
-
-    error_msgs = []
-    updated_table_columns = []
-
-    for idx, (tcol, fcol) in enumerate(zip(table_columns, file_columns), 1):
-        # for the purposes of type checking, we care only that the types
-        # share a base type (e.g. INT, VARCHAR, DECIMAl) rather than that
-        # they have the same precision and length
-        # (e.g VARCHAR(42), DECIMAL(8, 10))
-        tcol_base_type = tcol['sql_type'].split('(', 1)[0]
-        fcol_base_type = fcol['sql_type'].split('(', 1)[0]
-
-        varchar_found = any(
-            t.upper() == "VARCHAR" for t in (tcol_base_type, fcol_base_type)
-        )
-
-        column_name = tcol.get("name") or f"column_{idx}"
-
-        if tcol_base_type != fcol_base_type:
-            if varchar_found:
-                updated_table_columns.append(
-                    {"name": column_name, "sql_type": "VARCHAR"}
-                )
-            else:
-                error_msgs.append(
-                    f"Column {idx} ({column_name}): "
-                    f"File base type was {fcol_base_type}, "
-                    f"but expected {tcol_base_type}"
-                )
-        else:
-            updated_table_columns.append(tcol)
-
-    if error_msgs:
-        raise CivisImportError(
-            f"Encountered the following errors "
-            f"for file {output_obj_id} ({filename}):\n\t"
-            + "\n\t".join(error_msgs)
-        )
-
-    return updated_table_columns
+    return err_msg
