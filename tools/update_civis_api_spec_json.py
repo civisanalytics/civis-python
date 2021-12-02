@@ -6,7 +6,7 @@ the public Sphinx docs.
 """
 
 import civis
-from civis.tests import TEST_SPEC
+from civis.resources import API_SPEC_PATH
 
 
 if __name__ == "__main__":
@@ -26,6 +26,6 @@ if __name__ == "__main__":
     print(f"custom script {fut.job_id} run {fut.run_id} has succeeded")
     outputs = client.scripts.list_custom_runs_outputs(fut.job_id, fut.run_id)
     file_id = civis.find_one(outputs, name="civis_api_spec.json").object_id
-    with open(TEST_SPEC, "wb") as f:
+    with open(API_SPEC_PATH, "wb") as f:
         civis.io.civis_to_file(file_id, f, client=client)
     print("downloaded civis_api_spec.json")

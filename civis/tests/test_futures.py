@@ -1,6 +1,4 @@
 import os
-import json
-from collections import OrderedDict
 from operator import itemgetter
 from unittest import mock
 
@@ -8,6 +6,7 @@ import pytest
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
+from civis.resources import API_SPEC
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
@@ -15,15 +14,14 @@ from civis.futures import (ContainerFuture,
                            _create_docker_command)
 
 from civis.futures import CivisFuture
-from civis.tests import TEST_SPEC, create_client_mock, \
-    create_client_mock_for_container_tests
+from civis.tests import (
+    create_client_mock, create_client_mock_for_container_tests
+)
 
 from civis.tests.testcase import CivisVCRTestCase
 
 api_import_str = 'civis.resources._resources.get_api_spec'
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(TEST_SPEC) as f:
-    civis_api_spec_base = json.load(f, object_pairs_hook=OrderedDict)
 
 
 def clear_lru_cache():
@@ -49,7 +47,7 @@ class CivisFutureTests(CivisVCRTestCase):
     def tearDownClass(cls):
         clear_lru_cache()
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_check_message(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -63,7 +61,7 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertTrue(result._check_message(message))
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_check_message_with_different_run_id(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -77,7 +75,7 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertFalse(result._check_message(message))
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_check_message_when_job_is_running(self, *mocks):
         result = CivisFuture(lambda x: x, (1, 20))
         message = {
@@ -91,25 +89,25 @@ class CivisFutureTests(CivisVCRTestCase):
         }
         self.assertFalse(result._check_message(message))
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_poller_call_count_poll_on_creation_true(self, mock_api):
         poller = _create_poller_mock("succeeded")
         CivisFuture(poller, (1, 2), poll_on_creation=True)
         assert poller.call_count == 1
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_poller_call_count_poll_on_creation_false(self, mock_api):
         poller = _create_poller_mock("succeeded")
         CivisFuture(poller, (1, 2), poll_on_creation=False)
         assert poller.call_count == 0
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_set_api_result_succeeded(self, mock_api):
         poller = _create_poller_mock("succeeded")
         result = CivisFuture(poller, (1, 2))
         assert result._state == 'FINISHED'
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_set_api_result_failed(self, mock_api):
         poller = _create_poller_mock("failed")
 
@@ -129,7 +127,7 @@ class CivisFutureTests(CivisVCRTestCase):
         result = CivisFuture(poller, (1, 2), client=mock_client)
         assert result.outputs() == expected_return
 
-    @mock.patch(api_import_str, return_value=civis_api_spec_base)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_polling_interval(self, *mocks):
         clear_lru_cache()
 

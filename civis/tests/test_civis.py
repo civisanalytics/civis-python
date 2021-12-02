@@ -1,7 +1,7 @@
 from unittest import mock
 
 import civis
-from civis.tests.mocks import TEST_SPEC
+from civis.resources import API_SPEC
 
 import pytest
 
@@ -11,7 +11,7 @@ import pytest
 ])
 def test_get_table_id(schema_tablename):
     """Check that get_table_id handles quoted schema.tablename correctly."""
-    client = civis.APIClient(local_api_spec=TEST_SPEC, api_key='none')
+    client = civis.APIClient(local_api_spec=API_SPEC, api_key='none')
     client.get_database_id = mock.Mock(return_value=123)
 
     mock_tables = mock.MagicMock()
@@ -29,7 +29,7 @@ def test_get_table_id(schema_tablename):
 
 
 def test_get_storage_host_id():
-    client = civis.APIClient(local_api_spec=TEST_SPEC, api_key='none')
+    client = civis.APIClient(local_api_spec=API_SPEC, api_key='none')
 
     class StorageHost:
         def __init__(self, id, name):

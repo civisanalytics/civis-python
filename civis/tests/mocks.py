@@ -1,18 +1,14 @@
 """Mock client creation and tooling
 """
 from functools import lru_cache
-import os
 from unittest import mock
 
 from civis import APIClient
+from civis.resources import API_SPEC_PATH
 from civis.response import Response
 
 
-TEST_SPEC = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         "civis_api_spec.json")
-
-
-def create_client_mock(cache=TEST_SPEC):
+def create_client_mock(cache=API_SPEC_PATH):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters

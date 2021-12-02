@@ -1,5 +1,4 @@
 import tempfile
-from collections import OrderedDict
 import csv
 import gzip
 import io
@@ -24,16 +23,14 @@ import civis
 from civis.io import _files
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
+from civis.resources import API_SPEC
 from civis.resources._resources import get_api_spec, generate_classes
 from civis.tests.testcase import (CivisVCRTestCase,
                                   cassette_dir,
                                   POLL_INTERVAL)
-from civis.tests import TEST_SPEC
 from civis.tests.mocks import create_client_mock
 
 api_import_str = 'civis.resources._resources.get_api_spec'
-with open(TEST_SPEC) as f:
-    civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
 
 
 class MockAPIError(CivisAPIError):
@@ -42,7 +39,7 @@ class MockAPIError(CivisAPIError):
         self.status_code = sc
 
 
-@mock.patch(api_import_str, return_value=civis_api_spec)
+@mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
     # `polling_interval=POLL_INTERVAL` input. This lets us use
@@ -59,7 +56,7 @@ class ImportTests(CivisVCRTestCase):
         generate_classes.cache_clear()
 
     @classmethod
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def setUpClass(cls, *mocks):
         get_api_spec.cache_clear()
         generate_classes.cache_clear()
@@ -105,7 +102,7 @@ class ImportTests(CivisVCRTestCase):
             cls.export_job_id = result.sql_id
 
     @pytest.mark.file_to_civis
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_zip_member_to_civis(self, *mocks):
         with TemporaryDirectory() as temp_dir:
             fname = os.path.join(temp_dir, 'tempfile')
@@ -118,7 +115,7 @@ class ImportTests(CivisVCRTestCase):
 
         assert isinstance(result, int)
 
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_text_file_to_civis(self, *mocks):
         buf = StringIO()
         buf.write('a,b,c\n1,2,3')
@@ -128,7 +125,7 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result, int)
 
     @pytest.mark.file_to_civis
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_bytes_file_to_civis(self, *mocks):
         buf = BytesIO()
         buf.write(b'a,b,c\n1,2,3')
@@ -138,7 +135,7 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result, int)
 
     @pytest.mark.file_to_civis
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_large_file_to_civis(self, *mocks):
         curr_size = civis.io._files.MIN_MULTIPART_SIZE
         civis.io._files.MIN_MULTIPART_SIZE = 1
@@ -154,7 +151,7 @@ class ImportTests(CivisVCRTestCase):
         assert isinstance(result, int)
 
     @pytest.mark.civis_to_file
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_civis_to_file(self, *mocks):
         buf = BytesIO()
         civis.io.civis_to_file(self.file_id, buf)
@@ -1028,7 +1025,7 @@ class ImportTests(CivisVCRTestCase):
             hidden=True)
 
     @pytest.mark.civis_to_multifile_csv
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_civis_to_multifile_csv(self, *mocks):
         sql = "SELECT * FROM scratch.api_client_test_fixture"
         max_file_size = 32
@@ -1069,7 +1066,7 @@ class ImportTests(CivisVCRTestCase):
         )
 
     @pytest.mark.transfer_table
-    @mock.patch(api_import_str, return_value=civis_api_spec)
+    @mock.patch(api_import_str, return_value=API_SPEC)
     def test_transfer_table(self, *mocks):
         result = civis.io.transfer_table('redshift-general', 'redshift-test',
                                          'scratch.api_client_test_fixture',
