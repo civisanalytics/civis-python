@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated `civis_api_spec.json`, moved it to under `civis/resources/`, and checked in
-  a script to facilitate updating it again (#440)
+  a script to facilitate updating it again (#440, #441)
 - Bumped version numbers for dependencies to allow their latest major releases (#436)
 - Switched from TravisCI to CircleCI (#432)
 - Moved the changes from #416 for propagating error messages
