@@ -1035,6 +1035,9 @@ def civis_file_to_table(file_id, database, table, client=None,
     schema, table_name = split_schema_tablename(table)
     if isinstance(file_id, int):
         file_id = [file_id]
+    if not file_id:
+        # Catch an empty list or integer 0.
+        raise ValueError("Provide one or multiple meaningful input file IDs.")
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
@@ -1390,10 +1393,7 @@ def _check_column_types(files: List[_File]):
     err_msgs: List[str] = []
 
     for i, cols in enumerate(cols_by_col, 1):
-        try:
-            col_name = set(col["name"] for col in cols if "name" in col).pop()
-        except KeyError:
-            col_name = f"column_{i}"
+        col_name = cols[0].get("name") or f"column_{i}"
 
         sql_base_types = [
             col["sql_type"].split("(", 1)[0].upper() for col in cols
