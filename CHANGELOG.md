@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added the type of `civis.response.Response` and `civis.response.PaginatedResponse`
   returned in the API resources documentation (#438)
+- Added job ID and run ID as custom headers in API calls (#437)
+- Added the type of `civis.Response` returned in the API resources documentation (#438)
 - Added support for Python 3.9 (#436)
 - Added job ID and run ID to the exception message of `CivisJobFailure`
   coming from a `CivisFuture` object (#426)
