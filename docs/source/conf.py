@@ -370,8 +370,10 @@ if _test_build:
     from jsonref import JsonRef
 
     this_dir = os.path.dirname(os.path.realpath(__file__))
-    test_dir = os.path.join(this_dir, os.pardir, os.pardir, 'civis', 'tests')
-    api_path = os.path.join(test_dir, 'civis_api_spec.json')
+    resources_dir = os.path.join(
+        this_dir, os.pardir, os.pardir, 'civis', 'resources'
+    )
+    api_path = os.path.join(resources_dir, 'civis_api_spec.json')
     with open(api_path) as _raw:
         api_spec = JsonRef.replace_refs(
             json.load(_raw, object_pairs_hook=OrderedDict))

@@ -1,16 +1,11 @@
 from collections import defaultdict, OrderedDict
-import json
 import pytest
 from unittest import mock
 
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
-from civis.resources import _resources
-from civis.tests import TEST_SPEC
-
-with open(TEST_SPEC) as f:
-    civis_api_spec = json.load(f, object_pairs_hook=OrderedDict)
+from civis.resources import _resources, API_SPEC
 
 
 RESPONSE_DOC = (
@@ -216,7 +211,7 @@ def test_parse_method_name():
 
 
 def test_duplicate_names_generated_from_api_spec():
-    resolved_civis_api_spec = JsonRef.replace_refs(civis_api_spec)
+    resolved_civis_api_spec = JsonRef.replace_refs(API_SPEC)
     paths = resolved_civis_api_spec['paths']
     classes = defaultdict(list)
     for path, ops in paths.items():
