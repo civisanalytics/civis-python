@@ -1299,7 +1299,7 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
 def _process_cleaning_results(cleaning_futures, client, headers,
                               need_table_columns, delimiter):
     futures, _ = concurrent.futures.wait(cleaning_futures)
-    files = []
+    files: List[_File] = []
 
     for fut in futures:
         try:
@@ -1311,16 +1311,25 @@ def _process_cleaning_results(cleaning_futures, client, headers,
             )
         f = client.files.get(obj.object_id)
         files.append(
-            _File(id=f.id, name=f.name, detected_info=f["detectedInfo"])
+            _File(id=f.id, name=f.name, detected_info=f.detected_info)
         )
 
-    headers = _check_detected_info(files, "includeHeader", headers)
+    if need_table_columns:
+        table_columns, allow_inconsistent_headers = _check_column_types(files)
+    else:
+        table_columns = None
+        allow_inconsistent_headers = False
+
+    try:
+        headers = _check_detected_info(files, "includeHeader", headers)
+    except CivisImportError:
+        if allow_inconsistent_headers:
+            headers = True
+        else:
+            raise
+
     delimiter = _check_detected_info(files, "columnDelimiter", delimiter)
     compression = _check_detected_info(files, "compression")
-
-    table_columns = None
-    if need_table_columns:
-        table_columns = _check_column_types(files)
 
     cleaned_file_ids = [f.id for f in files]
 
@@ -1359,7 +1368,7 @@ def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
         return value_detected
 
 
-def _check_column_types(files: List[_File]) -> List[Dict[str, str]]:
+def _check_column_types(files: List[_File]):
     cols_by_file: List[List[Dict[str, str]]]
     cols_by_file = [f.detected_info["tableColumns"] for f in files]
 
@@ -1376,8 +1385,9 @@ def _check_column_types(files: List[_File]) -> List[Dict[str, str]]:
     cols_by_col: List[List[Dict[str, str]]]
     cols_by_col = list(map(list, zip(*cols_by_file)))
 
-    table_columns = []
-    err_msgs = []
+    table_columns: List[Dict[str, str]] = []
+    allow_inconsistent_headers = False
+    err_msgs: List[str] = []
 
     for i, cols in enumerate(cols_by_col, 1):
         try:
@@ -1396,7 +1406,20 @@ def _check_column_types(files: List[_File]) -> List[Dict[str, str]]:
             )
             continue
         if err_msg:
+            # If the sql_types are inconsistent and at least one of them
+            # is a VARCHAR, then simply use VARCHAR
+            # for this column across all files.
             sql_type = "VARCHAR"
+            # The one single file that originally had sql_type as VARCHAR
+            # has the detected "first row is headers" to be false
+            # (i.e., the detection thought the first row was first row of data,
+            # because it can't reliably tell when it comes to VARCHAR),
+            # whereas for all the other files where the sql_type for this
+            # column isn't VARCHAR, the detected "first row is headers" is
+            # true instead. Due to this expected inconsistency,
+            # we need to pass a flag out of this function to signal
+            # that we can allow `headers` to be True.
+            allow_inconsistent_headers = True
         else:
             sql_type = cols[0]["sql_type"]
         table_columns.append({"name": col_name, "sql_type": sql_type})
@@ -1404,7 +1427,7 @@ def _check_column_types(files: List[_File]) -> List[Dict[str, str]]:
     if err_msgs:
         raise CivisImportError("\n".join(err_msgs))
 
-    return table_columns
+    return table_columns, allow_inconsistent_headers
 
 
 def _err_msg_if_inconsistent(items: List, files: List[_File]):
