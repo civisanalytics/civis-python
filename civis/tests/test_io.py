@@ -1008,11 +1008,16 @@ class ImportTests(CivisVCRTestCase):
         ]
         case4 = [
             self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        ]
+        case5 = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
             self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
             self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
             self._test_file([{"name": "col1", "sql_type": "VARCHAR(8)"}]),
         ]
-        for files in (case1, case2, case3, case4):
+        for files in (case1, case2, case3, case4, case5):
             actual, allow_inconsistent_headers = (
                 civis.io._tables._check_column_types(files)
             )
