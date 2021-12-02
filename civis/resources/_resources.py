@@ -20,6 +20,8 @@ from civis._utils import (camel_to_snake, to_camelcase,
 _RESOURCES = frozenset({"base", "all"})
 API_VERSIONS = frozenset({"1.0", })
 
+# civis_api_spec.json can be updated
+# by running the tools/update_civis_api_spec_json.py script.
 API_SPEC_PATH = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "civis_api_spec.json",

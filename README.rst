@@ -221,3 +221,12 @@ License
 BSD-3
 
 See `LICENSE.md <LICENSE.md>`_ for details.
+
+
+For Maintainers
+---------------
+
+The `tools <tools/>`_ directory contains scripts that civis-python maintainers can
+use (and maintain...). Please see their docstrings for usage.
+Non-public information can be found by searching the internal documentation system
+or consulting the current maintainers.
