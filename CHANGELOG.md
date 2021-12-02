@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-- Added the type of `civis.Response` returned in the API resources documentation (#438)
+- Added the type of `civis.response.Response` and `civis.response.PaginatedResponse`
+  returned in the API resources documentation (#438)
 - Added support for Python 3.9 (#436)
 - Added job ID and run ID to the exception message of `CivisJobFailure`
   coming from a `CivisFuture` object (#426)
@@ -24,6 +25,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to use joblib 1.1.x (#429)
 
 ### Fixed
+- Relaxed SQL type checking in `civis.io.civis_file_to_table` by casting to `VARCHAR`
+  when type inconsistency is detected for a given column and at least one input file
+  has `VARCHAR` (#439)
 - Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415) 
 - Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
 - Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431)
