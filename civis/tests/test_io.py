@@ -10,8 +10,6 @@ from unittest import mock
 from tempfile import TemporaryDirectory
 import zipfile
 
-from typing import Dict, List
-
 import pytest
 import requests
 import vcr
@@ -1024,10 +1022,7 @@ class ImportTests(CivisVCRTestCase):
 
     @staticmethod
     def _test_file(
-            cols: List[Dict[str, str]] = None,
-            headers=True,
-            delimiter="comma",
-            compression="gzip",
+            cols=None, headers=True, delimiter="comma", compression="gzip"
     ) -> _File:
         detected_info = {
             "tableColumns": cols,
