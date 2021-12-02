@@ -19,45 +19,19 @@ from civis._utils import (camel_to_snake, to_camelcase,
 
 _RESOURCES = frozenset({"base", "all"})
 API_VERSIONS = frozenset({"1.0", })
-BASE_RESOURCES_V1 = [
-    'aliases',
-    'announcements',
-    'apps',
-    'civis',
-    'clusters',
-    'codes',
-    'credentials',
-    'databases',
-    'endpoints',
-    'enhancements',
-    'exports',
-    'files',
-    'git_repos',
-    'groups',
-    'imports',
-    'jobs',
-    'json_values',
-    'match_targets',
-    'media',
-    'models',
-    'notebooks',
-    'notifications',
-    'ontology',
-    'predictions',
-    'projects',
-    'queries',
-    'remote_hosts',
-    'reports',
-    'results',
-    'scripts',
-    'search',
-    'services',
-    'storage_hosts',
-    'tables',
-    'templates',
-    'users',
-    'workflows'
-]
+
+# civis_api_spec.json can be updated
+# by running the tools/update_civis_api_spec_json.py script.
+API_SPEC_PATH = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    "civis_api_spec.json",
+)
+with open(API_SPEC_PATH) as f:
+    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
+BASE_RESOURCES_V1 = sorted(
+    set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
+)
+
 
 TYPE_MAP = {"array": "list", "object": "dict"}
 ITERATOR_PARAM_DESC = (
@@ -73,7 +47,7 @@ DEFAULT_STR = 'DEFAULT'
 @deprecate_param('v2.0.0', 'resources')
 def exclude_resource(path, api_version, resources):
     if api_version == "1.0" and resources == "base":
-        include = any([path.startswith(x) for x in BASE_RESOURCES_V1])
+        include = any(path.startswith(x) for x in BASE_RESOURCES_V1)
     else:
         include = True
     return not include
