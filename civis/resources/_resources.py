@@ -29,7 +29,7 @@ API_SPEC_PATH = os.path.join(
 with open(API_SPEC_PATH) as f:
     API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 BASE_RESOURCES_V1 = sorted(
-    path.split("/", 2)[1] for path in API_SPEC["paths"].keys()
+    set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
 )
 
 
