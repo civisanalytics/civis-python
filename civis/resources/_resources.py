@@ -12,7 +12,7 @@ from requests import Request
 
 from civis.base import Endpoint, get_base_url
 from civis._deprecation import deprecate_param
-from civis._utils import (camel_to_snake, to_camelcase,
+from civis._utils import (camel_to_snake,
                           open_session, get_api_key,
                           retry_request, MAX_RETRIES)
 
@@ -29,7 +29,9 @@ API_SPEC_PATH = os.path.join(
 with open(API_SPEC_PATH) as f:
     API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 BASE_RESOURCES_V1 = sorted(
-    set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
+    r for r in set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
+    # "feature_flags" has a name collision with an APIClient instance
+    if r != "feature_flags"
 )
 
 
@@ -467,7 +469,7 @@ def parse_api_spec(api_spec, api_version, resources):
     classes = {}
     for path, ops in paths.items():
         base_path, methods = parse_path(path, ops, api_version, resources)
-        class_name = to_camelcase(base_path)
+        class_name = base_path.title()
         if methods and classes.get(base_path) is None:
             classes[base_path] = type(str(class_name), (Endpoint,), {})
         for method_name, method in methods:
@@ -595,7 +597,7 @@ def _add_no_underscore_compatibility(classes):
     as APIClient has a name collision with this resource. This will
     be removed in v2.0.0.
     """
-    new = ["bocce_clusters", "match_targets", "remote_hosts", "feature_flags"]
+    new = ["match_targets", "remote_hosts", "feature_flags"]
     classes_ = {}
     class_names = list(classes.keys())
     for class_name in class_names:
