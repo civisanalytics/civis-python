@@ -1036,7 +1036,6 @@ def civis_file_to_table(file_id, database, table, client=None,
     if isinstance(file_id, int):
         file_id = [file_id]
     if not file_id:
-        # Catch an empty list or integer 0.
         raise ValueError("Provide one or multiple meaningful input file IDs.")
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
