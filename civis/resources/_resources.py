@@ -471,7 +471,15 @@ def parse_api_spec(api_spec, api_version, resources):
         base_path, methods = parse_path(path, ops, api_version, resources)
         class_name = base_path.title()
         if methods and classes.get(base_path) is None:
-            classes[base_path] = type(str(class_name), (Endpoint,), {})
+            cls = type(class_name, (Endpoint,), {})
+            cls.__doc__ = (
+                "Examples\n"
+                "--------\n"
+                ">>> import civis\n"
+                ">>> client = civis.APIClient()\n"
+                f">>> client.{base_path}.{methods[0][0]}(...)"
+            )
+            classes[base_path] = cls
         for method_name, method in methods:
             setattr(classes[base_path], method_name, method)
     return classes
