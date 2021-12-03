@@ -681,10 +681,8 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
         required when appending to an existing table. The table_columns
         parameter is required if the table does not exist, the table is being
         dropped, or the columns in the source file do not appear in the same
-        order as in the destination table.
-        Example:
-        table_columns=[{"name": "foo", "sql_type": "INT"},
-                       {"name": "bar", "sql_type": "VARCHAR"}]
+        order as in the destination table. Example:
+        ``[{"name": "foo", "sql_type": "INT"}, {"name": "bar", "sql_type": "VARCHAR"}]``
     headers : bool, optional [DEPRECATED]
         Whether or not the first row of the file should be treated as
         headers. The default, ``None``, attempts to autodetect whether
@@ -744,7 +742,7 @@ def dataframe_to_civis(df, database, table, api_key=None, client=None,
     See Also
     --------
     :func:`~pandas.DataFrame.to_csv`
-    """
+    """  # noqa: E501
     if client is None:
         client = APIClient(api_key=api_key)
     if archive:
@@ -832,10 +830,8 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
         required when appending to an existing table. The table_columns
         parameter is required if the table does not exist, the table is being
         dropped, or the columns in the source file do not appear in the same
-        order as in the destination table.
-        Example:
-        table_columns=[{"name": "foo", "sql_type": "INT"},
-                       {"name": "bar", "sql_type": "VARCHAR"}]
+        order as in the destination table. Example:
+        ``[{"name": "foo", "sql_type": "INT"}, {"name": "bar", "sql_type": "VARCHAR"}]``
     delimiter : string, optional
         The column delimiter. One of ``','``, ``'\\t'`` or ``'|'``.
     headers : bool, optional
@@ -889,7 +885,7 @@ def csv_to_civis(filename, database, table, api_key=None, client=None,
     ...                             'my-database',
     ...                             'scratch.my_data')
     >>> fut.result()
-    """
+    """  # noqa: E501
     if client is None:
         client = APIClient(api_key=api_key)
     if archive:
@@ -969,10 +965,8 @@ def civis_file_to_table(file_id, database, table, client=None,
         required when appending to an existing table. The table_columns
         parameter is required if the table does not exist, the table is being
         dropped, or the columns in the source file do not appear in the same
-        order as in the destination table.
-        Example:
-        table_columns=[{"name": "foo", "sql_type": "INT"},
-                       {"name": "bar", "sql_type": "VARCHAR"}]
+        order as in the destination table. Example:
+        ``[{"name": "foo", "sql_type": "INT"}, {"name": "bar", "sql_type": "VARCHAR"}]``
     primary_keys: list[str], optional
         A list of the primary key column(s) of the destination table that
         uniquely identify a record. These columns must not contain null values.
@@ -1028,7 +1022,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     ...                                    'my-database',
     ...                                    'scratch.my_data')
     >>> fut.result()
-    """
+    """  # noqa: E501
     if client is None:
         client = APIClient()
 

@@ -132,6 +132,8 @@ your user information:
     'name': 'User Name',
     'username': 'uname'}
 
+For a complete list of the API endpoints and their methods,
+check out :ref:`api_resources`.
 
 Suppose we did not have the ``civis.io`` namespace. This is how we might export
 a CSV file from Civis. As you will see, this can be quite involved and the

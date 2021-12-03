@@ -5,7 +5,9 @@ from unittest import mock
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
+import civis
 from civis.resources import _resources, API_SPEC
+from civis.resources._resources import BASE_RESOURCES_V1
 
 
 RESPONSE_DOC = (
@@ -343,14 +345,20 @@ def test_parse_api_spec_names(mock_method):
     classes = _resources.parse_api_spec(mock_api_spec, "1.0", "all")
     assert sorted(classes.keys()) == ["hyphen_words", "oneword", "two_words"]
     assert classes["oneword"].__name__ == "Oneword"
-    assert classes["two_words"].__name__ == "TwoWords"
-    assert classes["hyphen_words"].__name__ == "HyphenWords"
+    assert classes["two_words"].__name__ == "Two_Words"
+    assert classes["hyphen_words"].__name__ == "Hyphen_Words"
 
 
 def test_add_no_underscore_compatibility():
-    classes = dict(bocce_clusters=1,
+    classes = dict(match_targets=1,
                    feature_flags=2)
     new_classes = _resources._add_no_underscore_compatibility(classes)
-    assert new_classes["bocceclusters"] == 1
-    assert new_classes["bocce_clusters"] == 1
+    assert new_classes["matchtargets"] == 1
+    assert new_classes["match_targets"] == 1
     assert new_classes.get("feature_flags") is None
+
+
+def test_endpoints_from_base_resources_are_available_from_client():
+    client = civis.APIClient(local_api_spec=API_SPEC, api_key="none")
+    for endpoint in BASE_RESOURCES_V1:
+        assert hasattr(client, endpoint), endpoint
