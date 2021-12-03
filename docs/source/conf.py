@@ -34,10 +34,10 @@ extensions = [
 autosummary_generate = True
 
 intersphinx_mapping = {
-    'pandas': ('http://pandas.pydata.org/pandas-docs/stable', None),
+    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'python': ('https://docs.python.org/3', None),
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
-    'sklearn': ('http://scikit-learn.org/stable', None),
+    'sklearn': ('https://scikit-learn.org/stable', None),
     'joblib': ('https://joblib.readthedocs.io/en/latest/', None),
 }
 
@@ -57,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 current_year = datetime.datetime.now().year
-project = 'Civis Client'
+project = 'Civis API Python Client'
 copyright = '2016-%d, Civis Analytics' % current_year
 author = 'Civis Analytics'
 
@@ -349,7 +349,7 @@ _autodoc_fmt = ('.. autoclass:: {}\n'
 
 def _write_resources_rst(class_names, filename, civis_module):
     with open(filename, 'w') as _out:
-        _out.write('API Resources\n=============\n\n')
+        _out.write('.. _api_resources:\n\nAPI Resources\n=============\n\n')
         for class_name in class_names:
             name = class_name.title()
             header = '`{}`\n{}\n'.format(name, '"' * (len(name) + 2))
