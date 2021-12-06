@@ -96,10 +96,13 @@ You can find more about custom joblib backends in the
 
 Note that :class:`joblib.Parallel` takes both a ``n_jobs`` and ``pre_dispatch``
 parameter. The Civis joblib backend doesn't queue submitted jobs itself,
-so it will run ``pre_dispatch`` jobs at once. The default value of
-``pre_dispatch`` is "2*n_jobs", which will run a maximum of ``2 * n_jobs`` jobs
-at once in the Civis Platform. Set ``pre_dispatch="n_jobs"`` in your
-:class:`~joblib.Parallel` call to run at most ``n_jobs`` jobs.
+so it will run ``pre_dispatch`` jobs at once.
+
+.. note::
+    The default value of
+    ``pre_dispatch`` is ``"2*n_jobs"``, which will run a maximum of ``2 * n_jobs`` jobs
+    at once on Civis Platform. Set ``pre_dispatch="n_jobs"`` in your
+    :class:`joblib.Parallel` call to run at most ``n_jobs`` jobs.
 
 The Civis joblib backend uses `cloudpickle <https://github.com/cloudpipe/cloudpickle>`_
 to transport code and data from the parent environment to the Civis Platform.
