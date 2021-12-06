@@ -984,10 +984,13 @@ class ImportTests(CivisVCRTestCase):
             self._test_file([{"name": "col1", "sql_type": "INT"},
                              {"name": "col2", "sql_type": "VARCHAR(47)"}]),
         ]
-        actual, _ = civis.io._tables._check_column_types(files)
+        actual, allow_inconsistent_headers = (
+            civis.io._tables._check_column_types(files)
+        )
         expected = [{'name': 'col1', 'sql_type': 'INT'},
                     {'name': 'col2', 'sql_type': 'VARCHAR(42)'}]
         assert actual == expected
+        assert allow_inconsistent_headers is False
 
     def test_check_column_types_coerce_to_varchar(self, _m_get_api_spec):
         case1 = [
