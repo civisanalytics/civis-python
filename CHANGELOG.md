@@ -16,6 +16,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Called out the fact that `joblib.Parallel`'s `pre_dispatch` defaults to `"2*n_jobs"`
+  in the Sphinx docs (#443)
 - Updated `civis_api_spec.json`, moved it to under `civis/resources/`, and checked in
   a script to facilitate updating it again (#440, #441)
 - Bumped version numbers for dependencies to allow their latest major releases (#436)
