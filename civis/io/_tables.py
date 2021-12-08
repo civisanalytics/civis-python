@@ -918,10 +918,12 @@ def civis_file_to_table(file_id, database, table, client=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
     """Upload the contents of one or more Civis files to a Civis table.
-       All provided files will be loaded as an atomic unit in parallel, and
-       should share the same columns in the same order, and be in the same
-       format. Civis files cannot be in JSON like format and must be separated by 
-       a delimiter.
+    All provided files will be loaded as an atomic unit in parallel, and
+    should share the same columns in the same order, and be in the same
+    format. 
+    
+    .. note::
+        Civis files must be in a CSV-like delimiter separated format.
 
     Parameters
     ----------
