@@ -33,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Relaxed SQL type checking in `civis.io.civis_file_to_table` by casting to `VARCHAR`
   when type inconsistency is detected for a given column and at least one input file
   has `VARCHAR` (#439)
+- Updated info about MacOS shell configuration file to be `~/.zshrc` (#444)
 - Fixed the Sphinx docs to show details of multi-word API endpoints (#442)
 - Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415) 
 - Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
