@@ -47,11 +47,11 @@ follow the steps below for your operating system to set up your environment.
 Linux / MacOS
 ~~~~~~~~~~~~~
 
-1. Add the following to ``.bash_profile`` (or ``.bashrc`` for Linux) for bash::
+1. Add the following to your shell configuration file (``~/.zshrc`` for MacOS or ``~/.bashrc`` for Linux, by default)::
 
     export CIVIS_API_KEY="alphaNumericApiK3y"
 
-2. Source your ``.bash_profile`` (or restart your terminal).
+2. Source your shell configuration file (or restart your terminal).
 
 Windows 10
 ~~~~~~~~~~
