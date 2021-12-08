@@ -27,6 +27,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated the docstrings for `file_to_civis` (for `buf` and `expires_at`),
   `dataframe_to_file` (for `expires_at`), and `json_to_file` (for `expires_at`). (#427)
 - Ability to use joblib 1.1.x (#429)
+- Explicitly stated CSV-like civis file format requirement in 
+  `civis.io.civis_file_to_table`'s docstring (#422)
 
 ### Fixed
 - Updated info about MacOS shell configuration file to be `~/.zshrc` (#444)
