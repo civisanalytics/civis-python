@@ -199,3 +199,55 @@ For endpoints that support pagination when the `iterator` kwarg is specified,
 a :class:`civis.response.PaginatedResponse` object is returned.
 To facilitate working with :class:`civis.response.Response` objects,
 the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
+
+
+Testing Your Code
+================================
+
+Once you've written code that uses the civis.APIClient, you've got to test it. We recommend using python's mocking library. More information on that here (https://docs.python.org/3/library/unittest.mock.html).
+
+Essentially, a `Mock` object looks like an APIClient and which will error if any method calls have non-existent / misspelled parameters. Suppose this function is in your code:
+
+.. code:: python
+
+import civis
+
+def add_timestamps_to_table(client=None, table):
+    table = df
+    client = client if not client else civis.APIClient()
+    
+    df = civis.io.read_civis_sql(sql,
+        client=client,
+        use_pandas=TRUE,
+    )
+
+    timestamps_df = df.append(datetime)
+   
+    return timestamps_df
+ 
+And this code is in your test suite:
+
+.. code:: python
+
+from civis.tests import create_client_mock
+
+from <your-package> import add_timestamps_to_table
+
+def test_add_timestamps_to_table():
+    mock_client = create_client_mock()
+  
+
+    # Be sure to pass in `mock_client` so you don't actually hit the API
+    actual_timestamps = add_timestamps_to_table(
+        df,
+        client=mock_client,
+    )
+
+    expected_timestamps = ["2021-01-01",
+		"2021-01-02",
+		"2021-01-03"
+		]
+
+    # Run assertion tests as necessary
+    assert actual_timestamps == expected_timestamps
+    assert "December" not in actual_timestamps[]
