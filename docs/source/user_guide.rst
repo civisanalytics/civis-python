@@ -237,7 +237,7 @@ def test_add_timestamps_to_table():
     mock_client = create_client_mock()
   
 
-    # Be sure to pass in `mock_client` so you don't actually hit the API
+    # Be sure to pass in `mock_client` so you don't actually have to process an API call
     actual_timestamps = add_timestamps_to_table(
         df,
         client=mock_client,
@@ -250,4 +250,3 @@ def test_add_timestamps_to_table():
 
     # Run assertion tests as necessary
     assert actual_timestamps == expected_timestamps
-    assert "December" not in actual_timestamps[]
