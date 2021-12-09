@@ -1151,7 +1151,7 @@ def _get_sql_select(table, columns=None):
     if columns and not isinstance(columns, (list, tuple)):
         raise TypeError("columns must be a list, tuple or None")
     select = ", ".join(columns) if columns is not None else "*"
-    sql = "select {} from {}".format(select, table)
+    sql = "select {} from {}".format(select, table)  # nosec
     return sql
 
 

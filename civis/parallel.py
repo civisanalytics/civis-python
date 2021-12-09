@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import logging
 import os
-import pickle
+import pickle  # nosec
 from tempfile import TemporaryDirectory
 import time
 import warnings

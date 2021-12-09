@@ -135,8 +135,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
 
     # Platform will give us a URL for each file part
     urls = file_response.upload_urls
-    assert num_parts == len(urls), \
-        "There are {} file parts but only {} urls".format(num_parts, len(urls))
+    if num_parts != len(urls):
+        raise ValueError(
+            f"There are {num_parts} file parts but only {len(urls)} urls"
+        )
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
