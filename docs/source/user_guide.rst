@@ -235,12 +235,11 @@ from <your-package> import add_timestamps_to_table
 
 def test_add_timestamps_to_table():
     mock_client = create_client_mock()
-  
 
     # Be sure to pass in `mock_client` so you don't actually have to process an API call
     actual_timestamps = add_timestamps_to_table(
         client=mock_client,
-	test_timestamp_df
+	df
     )
 
     expected_timestamps = datetime["2021-01-01",
