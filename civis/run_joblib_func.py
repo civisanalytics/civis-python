@@ -11,7 +11,7 @@ will be set as an output on this run.
 from datetime import datetime, timedelta
 from io import BytesIO
 import os
-import pickle
+import pickle  # nosec
 import sys
 import warnings
 

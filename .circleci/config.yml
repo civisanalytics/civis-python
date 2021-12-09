@@ -80,11 +80,26 @@ workflows:
             python setup.py sdist bdist_wheel && \
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
+      - pre-build:
+          name: safety
+          command-run: |
+            pip install -e . && \
+            pip install --upgrade safety && \
+            safety --version && \
+            safety check
+      - pre-build:
+          name: bandit
+          command-run: |
+            pip install --upgrade bandit && \
+            bandit --version && \
+            bandit -r civis -x civis/tests,civis/ml/tests
       - build-python:
           requires:
             - flake8
             - sphinx-build
             - twine
+            - safety
+            - bandit
           matrix:
             parameters:
               python-version: ["3.7", "3.8", "3.9"]
