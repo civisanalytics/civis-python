@@ -92,7 +92,7 @@ workflows:
           command-run: |
             pip install --upgrade bandit && \
             bandit --version && \
-            bandit -r civis -x civis/tests
+            bandit -r civis -x civis/tests,civis/ml/tests
       - build-python:
           requires:
             - flake8
