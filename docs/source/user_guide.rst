@@ -199,3 +199,77 @@ For endpoints that support pagination when the `iterator` kwarg is specified,
 a :class:`civis.response.PaginatedResponse` object is returned.
 To facilitate working with :class:`civis.response.Response` objects,
 the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
+
+
+Testing Your Code
+================================
+
+Once you've written code that uses :class:`~civis.APIClient`,
+you've got to test it. Because you want a testing environment
+not dependent upon an API key or an internet connection, you will
+employ the mocking technique.
+
+To this end, :func:`civis.tests.create_client_mock` will
+create a mock object that looks like an API client object.
+This mock object is configured to error if any method calls
+have non-existent /
+misspelled parameters.
+
+Suppose this function is in your code:
+
+.. code:: python
+
+    def get_timestamps_from_table(..., client=None, ...):
+        ...
+        client = client if not client else civis.APIClient()
+        ...
+        df = civis.io.read_civis_sql(
+            ...,
+            client=client,
+            ...,
+        )
+        ...
+        return ...
+
+Whatever function you define, it needs to have a ``client`` argument.
+If it's not provided, an actual API client object will be created.
+Throughout this function, the ``client`` object
+has to be used to interact with the Civis API.
+It is through this argument that you as a developer can pass in
+a custom API client object.
+
+
+When you're testing your functions in your test suite,
+you might have code like this:
+
+.. code:: python
+
+    from civis.tests import create_client_mock
+
+    from <your-package> import get_timestamps_from_table
+
+    def test_get_timestamps_from_table():
+        mock_client = create_client_mock()
+
+        mock_client.scripts.get_sql_runs.return_value = {
+            "output": [
+                {
+                    "path": ...
+                    "file_id": ...
+                }
+            ]
+        }
+        actual_timestamps = get_timestamps_from_table(
+            ...
+            client=mock_client,
+            ...
+        )
+
+        expected_timestamps = ...
+
+        # Run assertion tests as necessary
+        assert actual_timestamps == expected_timestamps
+
+Once you've created a mock client object, you have to define
+its behavior based on expected API calls from the function you've defined.
+Also, be sure to use ``mock_client`` so you don't actually have to process an actual API call in your test.
