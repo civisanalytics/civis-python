@@ -204,48 +204,56 @@ the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
 Testing Your Code
 ================================
 
-Once you've written code that uses the civis.APIClient, you've got to test it. We recommend using python's mocking library. More information on that here (https://docs.python.org/3/library/unittest.mock.html).
+Once you've written code that uses :class:`~civis.APIClient`,
+you've got to test it. Because you want a testing environment
+not dependent upon an API key or an internet connection, you will employ the mocking technique.
 
-Essentially, a `Mock` object looks like an APIClient and which will error if any method calls have non-existent / misspelled parameters. Suppose this function is in your code:
+To this end, :func:`civis.tests.create_client_mock` will
+create a mock object that looks like an APIClient. This mock object
+is configured to error if any method calls have non-existent /
+misspelled parameters.
 
-.. code:: python
-
-import civis
-
-def add_timestamps_to_table(client=None, table):
-    table = df
-    client = client if not client else civis.APIClient()
-    
-    df = civis.io.read_civis_sql(sql,
-        client=client,
-        use_pandas=TRUE,
-    )
-
-    timestamps_df = df.append(datetime)
-   
-    return timestamps_df
- 
-And this code is in your test suite:
+Suppose this function is in your code:
 
 .. code:: python
 
-from civis.tests import create_client_mock
+    def get_timestamps_from_table(..., client=None, ...):
+        ...
+        client = client if not client else civis.APIClient()
+        ...
+        df = civis.io.read_civis_sql(
+            ...,
+            client=client,
+            ...,
+        )
+        ...
+        return ...
 
-from <your-package> import add_timestamps_to_table
+Whatever function you define, it needs to have a ``client`` argument.
+Throughout this function, the ``client`` object
+has to be used to interact with the Civis API.
 
-def test_add_timestamps_to_table():
-    mock_client = create_client_mock()
+When you're testing your functions in your test suite,
+you might have code like this:
 
-    # Be sure to pass in `mock_client` so you don't actually have to process an API call
-    actual_timestamps = add_timestamps_to_table(
-        client=mock_client,
-	df
-    )
+.. code:: python
 
-    expected_timestamps = datetime["2021-01-01",
-		"2021-01-02",
-		"2021-01-03"
-		]
+    from civis.tests import create_client_mock
 
-    # Run assertion tests as necessary
-    assert actual_timestamps == expected_timestamps
+    from <your-package> import get_timestamps_from_table
+
+    def test_get_timestamps_from_table():
+        mock_client = create_client_mock()
+
+        actual_timestamps = get_timestamps_from_table(
+            ...
+            client=mock_client,
+            ...
+        )
+
+        expected_timestamps = ...
+
+        # Run assertion tests as necessary
+        assert actual_timestamps == expected_timestamps
+
+Be sure to pass in ``mock_client`` so you don't actually have to process an actual API call in your test.
