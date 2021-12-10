@@ -1332,13 +1332,6 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     return cleaned_file_ids, headers, compression, delimiter, table_columns
 
 
-def _format_files_for_err_msg(files: List[_File], indices=None):
-    if indices is None:
-        indices = range(len(files))
-    files_in_str = [f"file {files[i].id} ({files[i].name})" for i in indices]
-    return ", ".join(files_in_str)
-
-
 def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
     values_detected = [f.detected_info[attr] for f in files]
     err_msg = _err_msg_if_inconsistent(values_detected, files)
@@ -1424,16 +1417,19 @@ def _check_column_types(files: List[_File]):
 
 
 def _err_msg_if_inconsistent(items: List, files: List[_File]):
-    unique_items = set(items)
-    err_msg = None
-    if len(unique_items) > 1:
-        values_to_indices = collections.defaultdict(list)
-        for i, value in enumerate(items):
-            values_to_indices[value].append(i)
-        msg_for_each_value = [
-            f"\t{v} from: "
-            + _format_files_for_err_msg(files, indices)
-            for v, indices in values_to_indices.items()
-        ]
-        err_msg = "\n".join(msg_for_each_value)
+    if len(set(items)) <= 1:
+        return
+    values_to_indices = collections.defaultdict(list)
+    for i, value in enumerate(items):
+        values_to_indices[value].append(i)
+    msg_for_each_value = [
+        f"\t{v} from: {_format_files_for_err_msg(files, indices)}"
+        for v, indices in values_to_indices.items()
+    ]
+    err_msg = "\n".join(msg_for_each_value)
     return err_msg
+
+
+def _format_files_for_err_msg(files: List[_File], indices):
+    files_in_str = [f"file {files[i].id} ({files[i].name})" for i in indices]
+    return ", ".join(files_in_str)
