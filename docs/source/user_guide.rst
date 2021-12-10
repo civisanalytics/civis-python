@@ -206,11 +206,13 @@ Testing Your Code
 
 Once you've written code that uses :class:`~civis.APIClient`,
 you've got to test it. Because you want a testing environment
-not dependent upon an API key or an internet connection, you will employ the mocking technique.
+not dependent upon an API key or an internet connection, you will
+employ the mocking technique.
 
 To this end, :func:`civis.tests.create_client_mock` will
-create a mock object that looks like an APIClient. This mock object
-is configured to error if any method calls have non-existent /
+create a mock object that looks like an API client object.
+This mock object is configured to error if any method calls
+have non-existent /
 misspelled parameters.
 
 Suppose this function is in your code:
@@ -230,8 +232,12 @@ Suppose this function is in your code:
         return ...
 
 Whatever function you define, it needs to have a ``client`` argument.
+If it's not provided, an actual API client object will be created.
 Throughout this function, the ``client`` object
 has to be used to interact with the Civis API.
+It is through this argument that you as a developer can pass in
+a custom API client object.
+
 
 When you're testing your functions in your test suite,
 you might have code like this:
@@ -245,6 +251,14 @@ you might have code like this:
     def test_get_timestamps_from_table():
         mock_client = create_client_mock()
 
+        mock_client.scripts.get_sql_runs.return_value = {
+            "output": [
+                {
+                    "path": ...
+                    "file_id": ...
+                }
+            ]
+        }
         actual_timestamps = get_timestamps_from_table(
             ...
             client=mock_client,
@@ -256,4 +270,6 @@ you might have code like this:
         # Run assertion tests as necessary
         assert actual_timestamps == expected_timestamps
 
-Be sure to pass in ``mock_client`` so you don't actually have to process an actual API call in your test.
+Once you've created a mock client object, you have to define
+its behavior based on expected API calls from the function you've defined.
+Also, be sure to use ``mock_client`` so you don't actually have to process an actual API call in your test.
