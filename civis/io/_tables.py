@@ -923,9 +923,12 @@ def civis_file_to_table(file_id, database, table, client=None,
                         credential_id=None, polling_interval=None,
                         hidden=True):
     """Upload the contents of one or more Civis files to a Civis table.
-       All provided files will be loaded as an atomic unit in parallel, and
-       should share the same columns in the same order, and be in the same
-       format.
+    All provided files will be loaded as an atomic unit in parallel, and
+    should share the same columns in the same order, and be in the same
+    format.
+
+    .. note::
+        Civis files must be in a CSV-like delimiter separated format.
 
     Parameters
     ----------
@@ -1154,7 +1157,7 @@ def _get_sql_select(table, columns=None):
     if columns and not isinstance(columns, (list, tuple)):
         raise TypeError("columns must be a list, tuple or None")
     select = ", ".join(columns) if columns is not None else "*"
-    sql = "select {} from {}".format(select, table)
+    sql = "select {} from {}".format(select, table)  # nosec
     return sql
 
 

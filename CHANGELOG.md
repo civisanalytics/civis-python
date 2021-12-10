@@ -17,6 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Explicitly stated CSV-like civis file format requirement in 
+  `civis.io.civis_file_to_table`'s docstring (#445)
 - Called out the fact that `joblib.Parallel`'s `pre_dispatch` defaults to `"2*n_jobs"`
   in the Sphinx docs (#443)
 - Updated `civis_api_spec.json`, moved it to under `civis/resources/`, and checked in
@@ -47,6 +49,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Dropped support for Python 3.6 (#436)
 - Removed no-longer-used PubNub code (#425)
 - Removed no-longer-supported Python 2 option for notebook creation in the CLI (#421)
+
+### Security
+- Turned on `safety` and `bandit` checks at CircleCI builds (#446)
 
 ## 1.15.1 - 2020-10-28
 ### Fixed

@@ -147,7 +147,7 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                         time.sleep(new_delay)
                         new_delay = min(
                             (pow(2, n_failed) / 4) *
-                            (random() + backoff), 50 + 10 * random()
+                            (random() + backoff), 50 + 10 * random()  # nosec
                         )
                     else:
                         raise exc
