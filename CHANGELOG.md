@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+- Added documentation around testing code using mocking (#447)
 - Added the type of `civis.response.Response` and `civis.response.PaginatedResponse`
   returned in the API resources documentation (#438)
 - Added job ID and run ID as custom headers in API calls (#437)
