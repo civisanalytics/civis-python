@@ -1300,17 +1300,24 @@ def _process_cleaning_results(cleaning_futures, client, headers,
     futures, _ = concurrent.futures.wait(cleaning_futures)
     files: List[_File] = []
 
+    job_run_ids_no_output = []
     for fut in futures:
-        try:
-            obj = client.jobs.list_runs_outputs(fut.job_id, fut.run_id)[0]
-        except IndexError:
-            raise CivisImportError(
-                "Unable to retrieve output from CSV preprocess "
-                f"job {fut.job_id} run {fut.run_id}"
-            )
-        f = client.files.get(obj.object_id)
+        objs = client.jobs.list_runs_outputs(fut.job_id, fut.run_id)
+        if not objs:
+            job_run_ids_no_output.append((fut.job_id, fut.run_id))
+            continue
+        # `objs` is guaranteed to have exactly one file output.
+        f = client.files.get(objs[0].object_id)
         files.append(
             _File(id=f.id, name=f.name, detected_info=f.detected_info)
+        )
+    if job_run_ids_no_output:
+        job_run_ids_in_err_msg = "\n".join(
+            f"\tjob {j} run {r}" for j, r in job_run_ids_no_output
+        )
+        raise CivisImportError(
+            "No CSV preprocess output found for "
+            f"these runs:\n{job_run_ids_in_err_msg}"
         )
 
     if need_table_columns:
