@@ -1,8 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 1.16.0 - 2021-12-14
 ### Added
 - Added documentation around testing code using mocking (#447)
 - Added the type of `civis.response.Response` and `civis.response.PaginatedResponse`
