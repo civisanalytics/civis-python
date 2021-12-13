@@ -21,6 +21,7 @@ except ImportError:
 
 import civis
 from civis.io import _files
+from civis.io._tables import _File
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.resources import API_SPEC
@@ -376,7 +377,7 @@ class ImportTests(CivisVCRTestCase):
             'compression': 'gzip',
             'escaped': False,
             'execution': 'immediate',
-            'loosen_types': False,
+            'loosen_types': True,
             'table_columns': mock_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
@@ -478,7 +479,7 @@ class ImportTests(CivisVCRTestCase):
             'compression': 'gzip',
             'escaped': False,
             'execution': 'immediate',
-            'loosen_types': False,
+            'loosen_types': True,
             'table_columns': detected_columns,
             'redshift_destination_options': {
                 'diststyle': None, 'distkey': None,
@@ -806,12 +807,16 @@ class ImportTests(CivisVCRTestCase):
         expected_compression = 'gzip'
         expected_headers = True
         expected_delimiter = ','
-        self.mock_client.files.get.return_value.detected_info = {
-            'tableColumns': expected_columns,
-            'compression': expected_compression,
-            'includeHeader': expected_headers,
-            'columnDelimiter': expected_delimiter
-        }
+        self.mock_client.files.get.return_value = Response({
+            'id': mock_file_id,
+            'detected_info': {
+                'tableColumns': expected_columns,
+                'compression': expected_compression,
+                'includeHeader': expected_headers,
+                'columnDelimiter': ','
+            },
+            "name": "file1.csv.gz",
+        })
 
         assert civis.io._tables._process_cleaning_results(
             [fut], self.mock_client, None, True, None
@@ -846,29 +851,37 @@ class ImportTests(CivisVCRTestCase):
         expected_cols = [{'name': 'a', 'sql_type': 'INT'},
                          {'name': 'column', 'sql_type': 'INT'}]
         resp1 = Response({
+            'id': 123,
             'detected_info':
                 {
                     'tableColumns': expected_cols,
                     'compression': expected_compression,
                     'includeHeader': expected_headers,
                     'columnDelimiter': ','
-                }
+                },
+            "name": "file1.csv.gz",
         })
 
         resp2 = Response({
+            'id': 456,
             'detected_info':
                 {
                     'tableColumns': expected_cols,
                     'compression': expected_compression,
                     'includeHeader': expected_headers,
                     'columnDelimiter': '|'
-                }
+                },
+            "name": "file2.csv.gz",
         })
         self.mock_client.files.get.side_effect = [resp1, resp2]
 
-        with pytest.raises(CivisImportError,
-                           match='Provided delimiter "|" does not match '
-                                 'detected delimiter'):
+        regex = (
+            r"All detected values for 'columnDelimiter' "
+            r"must be the same, however --\n"
+            r"\t, from: file 123 \(file1.csv.gz\)\n"
+            r"\t| from: file 456 \(file2.csv.gz\)"
+        )
+        with pytest.raises(CivisImportError, match=regex):
             civis.io._tables._process_cleaning_results(
                 [fut, fut2], self.mock_client, None, True, None
             )
@@ -909,66 +922,120 @@ class ImportTests(CivisVCRTestCase):
             ) for jid in fids)
         )
 
-    @pytest.mark.check_all_detected_info
-    def test_check_all_detected_info_matching(self, _m_get_api_spec):
-        headers = True
-        compression = 'gzip'
-        delimiter = 'comma'
-        detected_info = {
-            'includeHeader': True,
-            'columnDelimiter': 'comma',
-            'compression': 'gzip'
-        }
+    def test_check_detected_info_matching(self, _m_get_api_spec):
+        files = [
+            self._test_file(
+                headers=True, delimiter="comma", compression="gzip"
+            ),
+            self._test_file(
+                headers=True, delimiter="comma", compression="gzip"
+            ),
+        ]
+        for attr in ("includeHeader", "columnDelimiter", "compression"):
+            civis.io._tables._check_detected_info(files, attr)
 
-        civis.io._tables._check_all_detected_info(
-            detected_info, headers, delimiter, compression, 42
-        )
-
-    @pytest.mark.check_all_detected_info
-    def test_check_all_detected_info_raises(self, _m_get_api_spec):
-        headers = False
-        compression = 'gzip'
-        delimiter = 'comma'
-        detected_info = {
-            'includeHeader': True,
-            'columnDelimiter': 'comma',
-            'compression': 'gzip'
-        }
-
-        with pytest.raises(civis.base.CivisImportError):
-            civis.io._tables._check_all_detected_info(
-                detected_info, headers, delimiter, compression, 42
-            )
+    def test_check_detected_info_raises(self, _m_get_api_spec):
+        files = [
+            self._test_file(
+                headers=True, delimiter="comma", compression="gzip"
+            ),
+            self._test_file(
+                headers=False, delimiter="pipe", compression="none"
+            ),
+        ]
+        for attr in ("includeHeader", "columnDelimiter", "compression"):
+            with pytest.raises(civis.base.CivisImportError):
+                civis.io._tables._check_detected_info(files, attr)
 
     @pytest.mark.check_column_types
     def test_check_column_types_differing_numbers(self, _m_get_api_spec):
-        table_cols = [{'name': 'col1', 'sql_type': 'INT'}]
-        file_cols = [{'name': 'col1', 'sql_type': 'INT'},
-                     {'name': 'col2', 'sql_type': 'FLOAT'}]
-
-        with pytest.raises(civis.base.CivisImportError,
-                           match='Expected 1 columns but file 42 has 2 columns'
-                           ):
-            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+        files = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "INT"},
+                             {"name": "col2", "sql_type": "FLOAT"}]),
+        ]
+        regex = (
+            r"All files must have the same number of columns, however --\n"
+            r"\t1 from: file 1 \(x.csv\)\n"
+            r"\t2 from: file 1 \(x.csv\)"
+        )
+        with pytest.raises(civis.base.CivisImportError, match=regex):
+            civis.io._tables._check_column_types(files)
 
     @pytest.mark.check_column_types
     def test_check_column_types_differing_types(self, _m_get_api_spec):
-        table_cols = [{'name': 'col1', 'sql_type': 'INT'}]
-        file_cols = [{'name': 'col1', 'sql_type': 'FLOAT'}]
-
-        with pytest.raises(civis.base.CivisImportError,
-                           match='Column 0: File base type was FLOAT, but '
-                                 'expected INT'):
-            civis.io._tables._check_column_types(table_cols, file_cols, 42)
+        files = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+        ]
+        regex = (
+            r"All sql_types for column 'col1' must be the same, however --\n"
+            r"\tINT from: file 1 \(x.csv\)\n"
+            r"\tFLOAT from: file 1 \(x.csv\)"
+        )
+        with pytest.raises(civis.base.CivisImportError, match=regex):
+            civis.io._tables._check_column_types(files)
 
     @pytest.mark.check_column_types
     def test_check_column_types_passing(self, _m_get_api_spec):
-        table_cols = [{'name': 'col1', 'sql_type': 'INT'},
-                      {'name': 'col2', 'sql_type': 'VARCHAR(42)'}]
-        file_cols = [{'name': 'col1', 'sql_type': 'INT'},
-                     {'name': 'col2', 'sql_type': 'VARCHAR(47)'}]
+        files = [
+            self._test_file([{"name": "col1", "sql_type": "INT"},
+                             {"name": "col2", "sql_type": "VARCHAR(42)"}]),
+            self._test_file([{"name": "col1", "sql_type": "INT"},
+                             {"name": "col2", "sql_type": "VARCHAR(47)"}]),
+        ]
+        actual, allow_inconsistent_headers = (
+            civis.io._tables._check_column_types(files)
+        )
+        expected = [{'name': 'col1', 'sql_type': 'INT'},
+                    {'name': 'col2', 'sql_type': 'VARCHAR(42)'}]
+        assert actual == expected
+        assert allow_inconsistent_headers is False
 
-        civis.io._tables._check_column_types(table_cols, file_cols, 42)
+    def test_check_column_types_coerce_to_varchar(self, _m_get_api_spec):
+        case1 = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        ]
+        case2 = [
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+        ]
+        case3 = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+        ]
+        case4 = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        ]
+        case5 = [
+            self._test_file([{"name": "col1", "sql_type": "INT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+            self._test_file([{"name": "col1", "sql_type": "VARCHAR(8)"}]),
+        ]
+        for files in (case1, case2, case3, case4, case5):
+            actual, allow_inconsistent_headers = (
+                civis.io._tables._check_column_types(files)
+            )
+            expected = [{'name': 'col1', 'sql_type': 'VARCHAR'}]
+            assert actual == expected, f"failed for {files}"
+            assert allow_inconsistent_headers is True
+
+    @staticmethod
+    def _test_file(
+            cols=None, headers=True, delimiter="comma", compression="gzip"
+    ) -> _File:
+        detected_info = {
+            "tableColumns": cols,
+            'includeHeader': headers,
+            'columnDelimiter': delimiter,
+            'compression': compression,
+        }
+        return _File(id=1, name="x.csv", detected_info=detected_info)
 
     @pytest.mark.dataframe_to_civis
     @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
