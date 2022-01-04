@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
+- Specified that `civis.io.civis_file_to_table` can handle compressed files (#450)
 - Explicitly stated CSV-like civis file format requirement in 
   `civis.io.civis_file_to_table`'s docstring (#445)
 - Called out the fact that `joblib.Parallel`'s `pre_dispatch` defaults to `"2*n_jobs"`

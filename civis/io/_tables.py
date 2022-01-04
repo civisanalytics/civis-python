@@ -928,7 +928,9 @@ def civis_file_to_table(file_id, database, table, client=None,
     format.
 
     .. note::
-        Civis files must be in a CSV-like delimiter separated format.
+        Civis files must be in a CSV-like delimiter separated format and
+        will be accepted in both uncompressed and compressed format
+        (.zip, .gz).
 
     Parameters
     ----------
