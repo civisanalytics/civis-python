@@ -292,7 +292,9 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         client = APIClient(api_key=api_key)
 
     file_size = _buf_len(buf)
-    if not file_size:
+    if file_size == 0:
+        log.warning('Warning: file size is zero bytes.')
+    elif not file_size:
         log.warning('Could not determine file size; defaulting to '
                     'single post. Files over 5GB will fail.')
 
