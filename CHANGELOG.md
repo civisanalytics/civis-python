@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Changed
+- Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
+  circleci config so dev-requirements is only used when needed. (#452)
+
 ### Deprecated
 ### Removed
 ### Fixed
