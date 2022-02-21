@@ -578,7 +578,8 @@ def civis_to_multifile_csv(sql, database, job_name=None, api_key=None,
     >>> manifest = civis_to_multifile_csv(sql, database, delimiter=delimiter)
     >>> ids = [entry['id'] for entry in manifest['entries']]
     >>> buf = BytesIO()
-    >>> civis_to_file(ids[0], buf)
+    >>> for file_id in ids:
+    >>>     civis_to_file(file_id, buf)  # write each file to buffer
     >>> buf.seek(0)
     >>> df = pd.read_csv(buf, delimiter=delimiter)
 
