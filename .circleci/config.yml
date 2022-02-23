@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@1.4.0
-
 jobs:
   pre-build:
     description: A check that doesn't need every supported Python version (e.g., code style checks, sphinx docs can build)
@@ -14,10 +11,6 @@ jobs:
       - image: cimg/python:3.9
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          pip-dependency-file: dev-requirements.txt
-          cache-version: dev-requirements-v1
       - run:
           working_directory: ~/project/
           command: << parameters.command-run >>
@@ -68,15 +61,19 @@ workflows:
     jobs:
       - pre-build:
           name: flake8
-          command-run: flake8 civis
+          command-run: |
+            pip install -r dev-requirements.txt && \
+            flake8 civis
       - pre-build:
           name: sphinx-build
           command-run: |
             pip install -e . && \
+            pip install -r dev-requirements.txt && \
             sphinx-build -b html -n docs/source/ docs/build/
       - pre-build:
           name: twine
           command-run: |
+            pip install -r dev-requirements.txt && \
             python setup.py sdist bdist_wheel && \
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
