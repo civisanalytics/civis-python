@@ -189,7 +189,9 @@ def test_retry_on_retry_eligible_failures(mock_session):
 
 
 @mock.patch('civis._utils.open_session')
-def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session,
+                                                          m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
