@@ -82,7 +82,6 @@ class TestPolling(unittest.TestCase):
                                               (),
                                               polling_interval=0.01)
         polling_thread.run()
-        time.sleep(0.05)
         assert poller.call_count == 3
 
     def test_reset_polling_thread(self):
