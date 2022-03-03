@@ -108,7 +108,8 @@ class CivisFutureTests(CivisVCRTestCase):
         assert result._state == 'FINISHED'
 
     @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_set_api_result_failed(self, mock_api):
+    @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+    def test_set_api_result_failed(self, mock_api, m_sleep):
         poller = _create_poller_mock("failed")
 
         result = CivisFuture(poller, (1, 2))

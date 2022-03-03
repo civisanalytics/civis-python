@@ -51,7 +51,8 @@ def mock_child_job():
     return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
-def test_retries():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retries(m_sleep):
     """Make sure that job submission retry behavior works."""
 
     # Test that submission doesn't fail when there are no mock API errors.
@@ -417,7 +418,8 @@ def test_result_exception(mock_civis):
     assert callback.call_count == 0
 
 
-def test_result_exception_no_result():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_exception_no_result(m_sleep):
     # If the job errored but didn't write an output, we should get
     # a generic TransportableException back.
     callback = mock.MagicMock()
@@ -488,7 +490,6 @@ def test_result_eventual_failure(mock_civis):
         run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
-
     with pytest.raises(requests.ConnectionError):
         res.get()
     assert callback.call_count == 0
