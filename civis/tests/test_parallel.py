@@ -402,7 +402,8 @@ def test_result_callback_no_get(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_exception(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_exception(m_sleep, mock_civis):
     # An error in the job should be raised by the result
     callback = mock.MagicMock()
     exc = ZeroDivisionError()
@@ -478,7 +479,8 @@ def test_result_eventual_success(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_eventual_failure(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_eventual_failure(m_sleep, mock_civis):
     # We will retry a connection error up to 5 times. Make sure
     # that we will get an error if it persists forever.
     callback = mock.MagicMock()

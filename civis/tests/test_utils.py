@@ -298,7 +298,7 @@ def test_no_retry_on_connection_error(mock_session):
 @mock.patch('civis._utils.open_session')
 def test_retry_respect_retry_after_headers(mock_session):
     expected_call_count = 0
-    max_calls = 3
+    max_calls = 2
     retry_after = 1
     api_response = {'key': 'value'}
     session_context = mock_session.return_value.__enter__.return_value
