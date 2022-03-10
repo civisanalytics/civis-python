@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
   circleci config so dev-requirements is only used when needed. (#452)
+- Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
 
 ### Deprecated
 ### Removed

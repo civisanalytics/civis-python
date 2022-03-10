@@ -76,7 +76,8 @@ def test_io_retry_once():
     assert counter['i'] == 2
 
 
-def test_io_retry_limit_reached():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_io_retry_limit_reached(m_sleep):
     @retry(ConnectionError, retries=4, delay=0.1)
     def always_fails():
         counter['i'] += 1
@@ -87,7 +88,8 @@ def test_io_retry_limit_reached():
     assert counter['i'] == 5
 
 
-def test_io_retry_multiple_exceptions():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_io_retry_multiple_exceptions(m_sleep):
     @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
     def raise_multiple_exceptions():
         counter['i'] += 1
@@ -163,7 +165,8 @@ def test_no_retry_on_get_no_retry_failure(mock_session):
 
 
 @mock.patch('civis._utils.open_session')
-def test_retry_on_retry_eligible_failures(mock_session):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retry_on_retry_eligible_failures(mock_session, m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
@@ -189,7 +192,9 @@ def test_retry_on_retry_eligible_failures(mock_session):
 
 
 @mock.patch('civis._utils.open_session')
-def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session,
+                                                          m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
@@ -238,7 +243,8 @@ def test_no_retry_on_post_success(mock_session):
 
 
 @mock.patch('civis._utils.open_session')
-def test_retry_on_retry_eligible_post_failures(mock_session):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retry_on_retry_eligible_post_failures(mock_session, m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
@@ -293,8 +299,8 @@ def test_no_retry_on_connection_error(mock_session):
 @mock.patch('civis._utils.open_session')
 def test_retry_respect_retry_after_headers(mock_session):
     expected_call_count = 0
-    max_calls = 3
-    retry_after = 3
+    max_calls = 2
+    retry_after = 1
     api_response = {'key': 'value'}
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response

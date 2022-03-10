@@ -51,7 +51,7 @@ jobs:
           # Avoid being able to import civis by relative import.
           # Test code by importing the *installed* civis in site-packages.
           command: |
-              pytest -vv --cov=project/civis --junitxml=/tmp/testxml/report.xml project/civis
+              pytest -vv --cov=project/civis --junitxml=/tmp/testxml/report.xml project/civis --durations=0
       - store_test_results:
           path: /tmp/testxml/
 

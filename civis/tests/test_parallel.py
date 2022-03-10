@@ -51,7 +51,8 @@ def mock_child_job():
     return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
-def test_retries():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_retries(m_sleep):
     """Make sure that job submission retry behavior works."""
 
     # Test that submission doesn't fail when there are no mock API errors.
@@ -401,7 +402,8 @@ def test_result_callback_no_get(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_exception(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_exception(m_sleep, mock_civis):
     # An error in the job should be raised by the result
     callback = mock.MagicMock()
     exc = ZeroDivisionError()
@@ -417,7 +419,8 @@ def test_result_exception(mock_civis):
     assert callback.call_count == 0
 
 
-def test_result_exception_no_result():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_exception_no_result(m_sleep):
     # If the job errored but didn't write an output, we should get
     # a generic TransportableException back.
     callback = mock.MagicMock()
@@ -458,7 +461,8 @@ def test_result_callback_exception(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_eventual_success(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_eventual_success(m_sleep, mock_civis):
     # Test that we can get a result back from a succeeded job,
     # even if we need to retry a few times to succeed with the download.
     callback = mock.MagicMock()
@@ -476,7 +480,8 @@ def test_result_eventual_success(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_eventual_failure(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_eventual_failure(m_sleep, mock_civis):
     # We will retry a connection error up to 5 times. Make sure
     # that we will get an error if it persists forever.
     callback = mock.MagicMock()
@@ -488,7 +493,6 @@ def test_result_eventual_failure(mock_civis):
         run_outputs=mock.MagicMock())
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
-
     with pytest.raises(requests.ConnectionError):
         res.get()
     assert callback.call_count == 0
