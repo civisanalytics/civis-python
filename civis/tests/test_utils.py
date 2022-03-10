@@ -88,7 +88,8 @@ def test_io_retry_limit_reached(m_sleep):
     assert counter['i'] == 5
 
 
-def test_io_retry_multiple_exceptions():
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_io_retry_multiple_exceptions(m_sleep):
     @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
     def raise_multiple_exceptions():
         counter['i'] += 1
