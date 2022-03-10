@@ -461,7 +461,8 @@ def test_result_callback_exception(mock_civis):
 
 
 @mock.patch.object(civis.parallel, 'civis')
-def test_result_eventual_success(mock_civis):
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_result_eventual_success(m_sleep, mock_civis):
     # Test that we can get a result back from a succeeded job,
     # even if we need to retry a few times to succeed with the download.
     callback = mock.MagicMock()
