@@ -1021,6 +1021,10 @@ def civis_file_to_table(file_id, database, table, client=None,
         import. This may be the case if their columns have different types,
         their delimiters are different, headers are present in some but not
         others, or compressions do not match.
+    TypeError
+        If the type of the file_id parameter is a string. This situation may
+        arise when the file ID comes from an environment variable and is not
+        cast from string to integer before being passed to civis_file_to_table.
 
     Examples
     --------
@@ -1032,6 +1036,10 @@ def civis_file_to_table(file_id, database, table, client=None,
     """  # noqa: E501
     if client is None:
         client = APIClient()
+
+    if type(file_id) == str:
+        raise TypeError("Invalid type for file_id: str. "
+                        "Must be int or list[int]")
 
     schema, table_name = split_schema_tablename(table)
     if isinstance(file_id, int):

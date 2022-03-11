@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
+
 ### Changed
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
   circleci config so dev-requirements is only used when needed. (#452)
