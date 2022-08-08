@@ -40,6 +40,22 @@ class MockAPIError(CivisAPIError):
         self.status_code = sc
 
 
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_bytes_file_to_civis(mock_requests):
+    mock_civis = create_client_mock()
+    civis_name, expected_id = 'somename', 137
+    mock_civis.files.post.return_value.id = expected_id
+    mock_civis.files.post.return_value.url = 'url'
+
+    buf = BytesIO()
+    buf.write(b'a,b,c\n1,2,3')
+    buf.seek(0)
+
+    result = civis.io.file_to_civis(buf, civis_name, client=mock_civis)
+
+    assert result == expected_id
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -119,15 +135,6 @@ class ImportTests(CivisVCRTestCase):
     def test_text_file_to_civis(self, *mocks):
         buf = StringIO()
         buf.write('a,b,c\n1,2,3')
-        buf.seek(0)
-        result = civis.io.file_to_civis(buf, 'somename')
-
-        assert isinstance(result, int)
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_bytes_file_to_civis(self, *mocks):
-        buf = BytesIO()
-        buf.write(b'a,b,c\n1,2,3')
         buf.seek(0)
         result = civis.io.file_to_civis(buf, 'somename')
 
