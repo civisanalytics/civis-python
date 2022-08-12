@@ -43,8 +43,8 @@ class MockAPIError(CivisAPIError):
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_bytes_file_to_civis(mock_requests):
     mock_civis = create_client_mock()
-    civis_name, expected_id = 'somename', 137
-    mock_civis.files.post.return_value.id = expected_id
+    civis_name = 'somename'
+    mock_civis.files.post.return_value.id = 137
     mock_civis.files.post.return_value.url = 'url'
 
     buf = BytesIO()
@@ -53,7 +53,25 @@ def test_bytes_file_to_civis(mock_requests):
 
     result = civis.io.file_to_civis(buf, civis_name, client=mock_civis)
 
-    assert result == expected_id
+    assert isinstance(result, int)
+
+
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_zip_member_to_civis(*mocks):
+    mock_civis = create_client_mock()
+    mock_civis.files.post.return_value.id = 137
+    mock_civis.files.post.return_value.url = 'url'
+    with TemporaryDirectory() as temp_dir:
+        fname = os.path.join(temp_dir, 'tempfile')
+        with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            archive_name = 'archive_name'
+            zip_file.writestr(archive_name, 'a,b,c\n1,2,3')
+            zip_member = zip_file.namelist()[0]
+            with zip_file.open(zip_member) as zip_member_buf:
+                result = civis.io.file_to_civis(zip_member_buf, zip_member,
+                                                client=mock_civis)
+
+    assert isinstance(result, int)
 
 
 @mock.patch(api_import_str, return_value=API_SPEC)
@@ -117,19 +135,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_zip_member_to_civis(self, *mocks):
-        with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, 'tempfile')
-            with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                archive_name = 'archive_name'
-                zip_file.writestr(archive_name, 'a,b,c\n1,2,3')
-                zip_member = zip_file.namelist()[0]
-                with zip_file.open(zip_member) as zip_member_buf:
-                    result = civis.io.file_to_civis(zip_member_buf, zip_member)
-
-        assert isinstance(result, int)
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_text_file_to_civis(self, *mocks):
