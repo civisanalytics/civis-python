@@ -452,6 +452,36 @@ def test_civis_file_to_table_table_doesnt_exist_all_sql_types_missing(
     )
 
 
+@mock.patch('civis.io._tables._process_cleaning_results')
+@mock.patch('civis.io._tables._run_cleaning')
+def test_civis_file_to_table_table_does_not_exist_some_sql_types_missing(
+        m_run_cleaning,
+        m_process_cleaning_results
+):
+    table = "scratch.api_client_test_fixture"
+    database = 'redshift-general'
+    mock_file_id = 1234
+    mock_import_id = 8675309
+    mock_civis = create_client_mock()
+
+    mock_civis.imports.post_files_csv.return_value.id = mock_import_id
+    mock_civis.get_database_id.return_value = 42
+    mock_civis.default_credential = 713
+    mock_civis.get_table_id.side_effect = ValueError('no table')
+    table_columns = [{'name': 'a', 'sql_type': 'INT'},
+                     {'name': 'b', 'sql_type': ''}]
+
+    with pytest.raises(ValueError):
+        civis.io.civis_file_to_table(
+            mock_file_id, database, table,
+            existing_table_rows='truncate',
+            delimiter=',',
+            headers=True,
+            client=mock_civis,
+            table_columns=table_columns
+        )
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -513,37 +543,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch('civis.io._tables._process_cleaning_results')
-    @mock.patch('civis.io._tables._run_cleaning')
-    def test_civis_file_to_table_table_does_not_exist_some_sql_types_missing(
-            self,
-            m_run_cleaning,
-            m_process_cleaning_results,
-            _m_get_api_spec
-    ):
-        table = "scratch.api_client_test_fixture"
-        database = 'redshift-general'
-        mock_file_id = 1234
-        mock_import_id = 8675309
-
-        self.mock_client.imports.post_files_csv.return_value\
-            .id = mock_import_id
-        self.mock_client.get_database_id.return_value = 42
-        self.mock_client.default_credential = 713
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
-        table_columns = [{'name': 'a', 'sql_type': 'INT'},
-                         {'name': 'b', 'sql_type': ''}]
-
-        with pytest.raises(ValueError):
-            civis.io.civis_file_to_table(
-                mock_file_id, database, table,
-                existing_table_rows='truncate',
-                delimiter=',',
-                headers=True,
-                client=self.mock_client,
-                table_columns=table_columns
-            )
 
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
