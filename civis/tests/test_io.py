@@ -106,6 +106,19 @@ def test_large_file_to_civis(*mocks):
     assert isinstance(result, int)
 
 
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_civis_to_file(mock_requests):
+    mock_civis = create_client_mock()
+    mock_civis.files.get.return_value.id = 137
+    mock_civis.files.get.return_value.upload_url = 'url'
+    mock_requests.get.return_value.iter_content.return_value =\
+        (ch.encode() for ch in 'a,b,c\n1,2,3')
+    buf = BytesIO()
+    civis.io.civis_to_file(137, buf, client=mock_civis)
+    buf.seek(0)
+    assert buf.read() == b'a,b,c\n1,2,3'
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -167,13 +180,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_civis_to_file(self, *mocks):
-        buf = BytesIO()
-        civis.io.civis_to_file(self.file_id, buf)
-        buf.seek(0)
-        assert buf.read() == b'a,b,c\n1,2,3'
 
     @mock.patch('civis.io._tables.file_to_civis')
     @mock.patch('civis.io._tables.civis_file_to_table')
