@@ -87,6 +87,25 @@ def test_text_file_to_civis(*mocks):
     assert isinstance(result, int)
 
 
+@mock.patch.object(_files, 'requests', autospec=True)
+def test_large_file_to_civis(*mocks):
+    mock_civis = create_client_mock()
+    mock_civis.files.post_multipart.return_value.id = 137
+    mock_civis.files.post_multipart.return_value.upload_urls = ['url']
+    curr_size = civis.io._files.MIN_MULTIPART_SIZE
+    civis.io._files.MIN_MULTIPART_SIZE = 1
+    with TemporaryDirectory() as temp_dir:
+        fname = os.path.join(temp_dir, 'tempfile')
+        with open(fname, 'w+b') as tmp:
+            tmp.write(b'a,b,c\n1,2,3')
+        with open(fname, 'r+b') as tmp:
+            result = civis.io.file_to_civis(tmp, fname, client=mock_civis)
+
+        civis.io._files.MIN_MULTIPART_SIZE = curr_size
+
+    assert isinstance(result, int)
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -148,21 +167,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_large_file_to_civis(self, *mocks):
-        curr_size = civis.io._files.MIN_MULTIPART_SIZE
-        civis.io._files.MIN_MULTIPART_SIZE = 1
-        with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, 'tempfile')
-            with open(fname, 'w+b') as tmp:
-                tmp.write(b'a,b,c\n1,2,3')
-            with open(fname, 'r+b') as tmp:
-                result = civis.io.file_to_civis(tmp, fname)
-
-            civis.io._files.MIN_MULTIPART_SIZE = curr_size
-
-        assert isinstance(result, int)
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_civis_to_file(self, *mocks):
