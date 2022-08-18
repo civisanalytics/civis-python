@@ -106,6 +106,51 @@ def test_large_file_to_civis(*mocks):
     assert isinstance(result, int)
 
 
+@mock.patch('civis.io._tables.file_to_civis')
+@mock.patch('civis.io._tables.civis_file_to_table')
+def test_csv_to_civis(m_civis_file_to_table, m_file_to_civis):
+    mock_civis = create_client_mock()
+    mock_file_id = 42
+    m_file_to_civis.return_value = mock_file_id
+    mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                       spec_set=True)
+    m_civis_file_to_table.return_value = mock_future
+    table = "scratch.api_client_test_fixture"
+    database = 'redshift-general'
+
+    fname = 'a/tempfile'
+
+    with mock.patch.object(civis.io._tables, 'open',
+                           mock.mock_open(read_data='some,test,data'),
+                           create=True) as m_open:
+
+        result = civis.io.csv_to_civis(fname, database, table,
+                                       client=mock_civis,
+                                       existing_table_rows='truncate')
+
+        m_file_to_civis.assert_called_once_with(m_open.return_value,
+                                                'tempfile',
+                                                client=mock_civis)
+
+    assert result == mock_future
+
+    m_civis_file_to_table.assert_called_once_with(
+        mock_file_id, database, table,
+        client=mock_civis,
+        max_errors=None,
+        existing_table_rows='truncate',
+        diststyle=None, distkey=None,
+        sortkey1=None, sortkey2=None,
+        table_columns=None,
+        delimiter=",", headers=None,
+        primary_keys=None,
+        last_modified_keys=None,
+        escaped=False, execution='immediate',
+        credential_id=None, polling_interval=None,
+        hidden=True
+    )
+
+
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_civis_to_file(mock_requests):
     mock_civis = create_client_mock()
@@ -180,50 +225,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @mock.patch('civis.io._tables.file_to_civis')
-    @mock.patch('civis.io._tables.civis_file_to_table')
-    def test_csv_to_civis(self, m_civis_file_to_table, m_file_to_civis,
-                          _m_get_api_spec):
-        mock_file_id = 42
-        m_file_to_civis.return_value = mock_file_id
-        mock_future = mock.create_autospec(civis.futures.CivisFuture,
-                                           spec_set=True)
-        m_civis_file_to_table.return_value = mock_future
-        table = "scratch.api_client_test_fixture"
-        database = 'redshift-general'
-
-        fname = 'a/tempfile'
-
-        with mock.patch.object(civis.io._tables, 'open',
-                               mock.mock_open(read_data='some,test,data'),
-                               create=True) as m_open:
-
-            result = civis.io.csv_to_civis(fname, database, table,
-                                           client=self.mock_client,
-                                           existing_table_rows='truncate')
-
-            m_file_to_civis.assert_called_once_with(m_open.return_value,
-                                                    'tempfile',
-                                                    client=self.mock_client)
-
-        assert result == mock_future
-
-        m_civis_file_to_table.assert_called_once_with(
-            mock_file_id, database, table,
-            client=self.mock_client,
-            max_errors=None,
-            existing_table_rows='truncate',
-            diststyle=None, distkey=None,
-            sortkey1=None, sortkey2=None,
-            table_columns=None,
-            delimiter=",", headers=None,
-            primary_keys=None,
-            last_modified_keys=None,
-            escaped=False, execution='immediate',
-            credential_id=None, polling_interval=None,
-            hidden=True
-        )
 
     @mock.patch('civis.io._tables._process_cleaning_results')
     @mock.patch('civis.io._tables._run_cleaning')
