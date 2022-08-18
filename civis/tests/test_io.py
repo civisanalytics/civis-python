@@ -768,6 +768,70 @@ def test_process_cleaning_results():
     )
 
 
+def test_process_cleaning_results_raises_imports():
+    mock_job_id = 42
+    mock_run_id = 1776
+    mock_file_id = 312
+    mock_civis = create_client_mock()
+    fut = civis.futures.CivisFuture(poller=lambda j, r: (j, r),
+                                    poller_args=(mock_job_id, mock_run_id),
+                                    poll_on_creation=False,
+                                    client=mock_civis)
+    fut.set_result(Response({'state': 'success'}))
+
+    fut2 = civis.futures.CivisFuture(
+        poller=lambda j, r: (j, r),
+        poller_args=(mock_job_id, mock_run_id),
+        poll_on_creation=False,
+        client=mock_civis
+    )
+    fut2.set_result(Response({'state': 'success'}))
+
+    mock_civis.jobs.list_runs_outputs.return_value = [Response(
+        {'object_id': mock_file_id}
+    )]
+
+    expected_compression = 'gzip'
+    expected_headers = True
+    expected_cols = [{'name': 'a', 'sql_type': 'INT'},
+                     {'name': 'column', 'sql_type': 'INT'}]
+    resp1 = Response({
+        'id': 123,
+        'detected_info':
+            {
+                'tableColumns': expected_cols,
+                'compression': expected_compression,
+                'includeHeader': expected_headers,
+                'columnDelimiter': ','
+            },
+        "name": "file1.csv.gz",
+    })
+
+    resp2 = Response({
+        'id': 456,
+        'detected_info':
+            {
+                'tableColumns': expected_cols,
+                'compression': expected_compression,
+                'includeHeader': expected_headers,
+                'columnDelimiter': '|'
+            },
+        "name": "file2.csv.gz",
+    })
+    mock_civis.files.get.side_effect = [resp1, resp2]
+
+    regex = (
+        r"All detected values for 'columnDelimiter' "
+        r"must be the same, however --\n"
+        r"\t, from: file 123 \(file1.csv.gz\)\n"
+        r"\t| from: file 456 \(file2.csv.gz\)"
+    )
+    with pytest.raises(CivisImportError, match=regex):
+        civis.io._tables._process_cleaning_results(
+            [fut, fut2], mock_civis, None, True, None
+        )
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -829,66 +893,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    def test_process_cleaning_results_raises_imports(self, _m_get_api_spec):
-        mock_job_id = 42
-        mock_run_id = 1776
-        mock_file_id = 312
-        fut = civis.futures.CivisFuture(poller=lambda j, r: (j, r),
-                                        poller_args=(mock_job_id, mock_run_id),
-                                        poll_on_creation=False)
-        fut.set_result(Response({'state': 'success'}))
-
-        fut2 = civis.futures.CivisFuture(
-            poller=lambda j, r: (j, r),
-            poller_args=(mock_job_id, mock_run_id),
-            poll_on_creation=False
-        )
-        fut2.set_result(Response({'state': 'success'}))
-
-        self.mock_client.jobs.list_runs_outputs.return_value = [Response(
-            {'object_id': mock_file_id}
-        )]
-
-        expected_compression = 'gzip'
-        expected_headers = True
-        expected_cols = [{'name': 'a', 'sql_type': 'INT'},
-                         {'name': 'column', 'sql_type': 'INT'}]
-        resp1 = Response({
-            'id': 123,
-            'detected_info':
-                {
-                    'tableColumns': expected_cols,
-                    'compression': expected_compression,
-                    'includeHeader': expected_headers,
-                    'columnDelimiter': ','
-                },
-            "name": "file1.csv.gz",
-        })
-
-        resp2 = Response({
-            'id': 456,
-            'detected_info':
-                {
-                    'tableColumns': expected_cols,
-                    'compression': expected_compression,
-                    'includeHeader': expected_headers,
-                    'columnDelimiter': '|'
-                },
-            "name": "file2.csv.gz",
-        })
-        self.mock_client.files.get.side_effect = [resp1, resp2]
-
-        regex = (
-            r"All detected values for 'columnDelimiter' "
-            r"must be the same, however --\n"
-            r"\t, from: file 123 \(file1.csv.gz\)\n"
-            r"\t| from: file 456 \(file2.csv.gz\)"
-        )
-        with pytest.raises(CivisImportError, match=regex):
-            civis.io._tables._process_cleaning_results(
-                [fut, fut2], self.mock_client, None, True, None
-            )
 
     @pytest.mark.parametrize('fids', ([42], [42, 43]))
     @mock.patch('civis.io._tables.run_job',
