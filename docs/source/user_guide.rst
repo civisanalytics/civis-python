@@ -221,7 +221,7 @@ Suppose this function is in your code:
 
     def get_timestamps_from_table(..., client=None, ...):
         ...
-        client = client if not client else civis.APIClient()
+        client = client if client else civis.APIClient()
         ...
         df = civis.io.read_civis_sql(
             ...,
