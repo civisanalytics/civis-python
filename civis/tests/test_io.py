@@ -832,6 +832,55 @@ def test_process_cleaning_results_raises_imports():
         )
 
 
+@mock.patch('civis.io._tables.run_job')
+def test_run_cleaning(m_run_job):
+
+    def mock_preprocess(file_id,
+                        in_place,
+                        detect_table_columns=True,
+                        force_character_set_conversion=True,
+                        include_header=True,
+                        column_delimiter='comma',
+                        hidden=True):
+        resp = Response({'id': file_id})
+        return resp
+
+    def run_subtest(fids):
+        mock_civis = create_client_mock()
+
+        mock_civis.files.post_preprocess_csv.side_effect = mock_preprocess
+        mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                           spec_set=True)
+        m_run_job.return_value = mock_future
+        res = civis.io._tables._run_cleaning(fids, mock_civis, True,
+                                             True, 'comma', True)
+
+        # We should have one cleaning job per provided file id
+        fid_count = len(fids)
+        assert len(res) == fid_count
+        mock_civis.files.post_preprocess_csv.assert_has_calls((
+            mock.call(
+                file_id=fid,
+                in_place=False,
+                detect_table_columns=True,
+                force_character_set_conversion=True,
+                include_header=True,
+                column_delimiter='comma',
+                hidden=True)
+            for fid in fids
+        ))
+        m_run_job.assert_has_calls((
+            mock.call(
+                jid, client=mock_civis, polling_interval=None
+            ) for jid in fids)
+        )
+
+    fids = ([42], [42, 43])
+    for mock_fid in fids:
+        m_run_job.reset_mock()
+        run_subtest(mock_fid)
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -893,41 +942,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    @pytest.mark.parametrize('fids', ([42], [42, 43]))
-    @mock.patch('civis.io._tables.run_job',
-                return_value=mock.MagicMock(spec=civis.futures.CivisFuture))
-    def test_run_cleaning(self, m_run_job, fids):
-
-        def mock_preprocess(fid):
-            resp = Response({'id': fid})
-            return resp
-
-        self.mock_client.files.post_preprocess_csv\
-            .side_effect = mock_preprocess
-
-        res = civis.io._tables._run_cleaning(fids, self.mock_client, True,
-                                             True, 'comma', True)
-
-        # We should have one cleaning job per provided file id
-        fid_count = len(fids)
-        assert len(res) == fid_count
-        self.mock_client.files.post_preprocess_csv.assert_has_calls((
-            mock.call(
-                file_id=fid,
-                in_place=False,
-                detect_table_columns=True,
-                force_character_set_conversion=True,
-                include_header=True,
-                column_delimiter='comma',
-                hidden=True)
-            for fid in fids
-        ))
-        m_run_job.assert_has_calls((
-            mock.call(
-                jid, client=self.mock_client, polling_interval=None
-            ) for jid in fids)
-        )
 
     def test_check_detected_info_matching(self, _m_get_api_spec):
         files = [
