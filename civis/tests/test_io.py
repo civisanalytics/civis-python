@@ -40,6 +40,18 @@ class MockAPIError(CivisAPIError):
         self.status_code = sc
 
 
+def _test_file(
+    cols=None, headers=True, delimiter="comma", compression="gzip"
+        ) -> _File:
+    detected_info = {
+        "tableColumns": cols,
+        'includeHeader': headers,
+        'columnDelimiter': delimiter,
+        'compression': compression,
+    }
+    return _File(id=1, name="x.csv", detected_info=detected_info)
+
+
 @mock.patch.object(_files, 'requests', autospec=True)
 def test_bytes_file_to_civis(mock_requests):
     mock_civis = create_client_mock()
@@ -832,8 +844,9 @@ def test_process_cleaning_results_raises_imports():
         )
 
 
+@pytest.mark.parametrize('fids', ([42], [42, 43]))
 @mock.patch('civis.io._tables.run_job')
-def test_run_cleaning(m_run_job):
+def test_run_cleaning(m_run_job, fids):
 
     def mock_preprocess(file_id,
                         in_place,
@@ -845,40 +858,47 @@ def test_run_cleaning(m_run_job):
         resp = Response({'id': file_id})
         return resp
 
-    def run_subtest(fids):
-        mock_civis = create_client_mock()
+    mock_civis = create_client_mock()
 
-        mock_civis.files.post_preprocess_csv.side_effect = mock_preprocess
-        mock_future = mock.create_autospec(civis.futures.CivisFuture,
-                                           spec_set=True)
-        m_run_job.return_value = mock_future
-        res = civis.io._tables._run_cleaning(fids, mock_civis, True,
-                                             True, 'comma', True)
+    mock_civis.files.post_preprocess_csv.side_effect = mock_preprocess
+    mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                       spec_set=True)
+    m_run_job.return_value = mock_future
+    res = civis.io._tables._run_cleaning(fids, mock_civis, True,
+                                         True, 'comma', True)
 
-        # We should have one cleaning job per provided file id
-        fid_count = len(fids)
-        assert len(res) == fid_count
-        mock_civis.files.post_preprocess_csv.assert_has_calls((
-            mock.call(
-                file_id=fid,
-                in_place=False,
-                detect_table_columns=True,
-                force_character_set_conversion=True,
-                include_header=True,
-                column_delimiter='comma',
-                hidden=True)
-            for fid in fids
-        ))
-        m_run_job.assert_has_calls((
-            mock.call(
-                jid, client=mock_civis, polling_interval=None
-            ) for jid in fids)
+    # We should have one cleaning job per provided file id
+    fid_count = len(fids)
+    assert len(res) == fid_count
+    mock_civis.files.post_preprocess_csv.assert_has_calls((
+        mock.call(
+            file_id=fid,
+            in_place=False,
+            detect_table_columns=True,
+            force_character_set_conversion=True,
+            include_header=True,
+            column_delimiter='comma',
+            hidden=True)
+        for fid in fids
+    ))
+    m_run_job.assert_has_calls((
+        mock.call(
+            jid, client=mock_civis, polling_interval=None
+        ) for jid in fids)
+    )
+
+
+def test_check_detected_info_matching():
+    files = [
+        _test_file(
+            headers=True, delimiter="comma", compression="gzip"
+        ),
+        _test_file(
+            headers=True, delimiter="comma", compression="gzip"
         )
-
-    fids = ([42], [42, 43])
-    for mock_fid in fids:
-        m_run_job.reset_mock()
-        run_subtest(mock_fid)
+    ]
+    for attr in ("includeHeader", "columnDelimiter", "compression"):
+        civis.io._tables._check_detected_info(files, attr)
 
 
 @mock.patch(api_import_str, return_value=API_SPEC)
@@ -942,18 +962,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    def test_check_detected_info_matching(self, _m_get_api_spec):
-        files = [
-            self._test_file(
-                headers=True, delimiter="comma", compression="gzip"
-            ),
-            self._test_file(
-                headers=True, delimiter="comma", compression="gzip"
-            ),
-        ]
-        for attr in ("includeHeader", "columnDelimiter", "compression"):
-            civis.io._tables._check_detected_info(files, attr)
 
     def test_check_detected_info_raises(self, _m_get_api_spec):
         files = [
