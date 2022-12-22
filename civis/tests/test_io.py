@@ -1048,6 +1048,49 @@ def test_check_column_types_coerce_to_varchar():
         assert allow_inconsistent_headers is True
 
 
+@mock.patch('civis.io.civis_to_multifile_csv')
+def test_civis_to_multifile_csv(m_civis_to_multifile_csv):
+    mock_civis = create_client_mock()
+    s3_string = 'https://civis-console.s3.amazonaws.com/'
+    sql = "SELECT * FROM scratch.api_client_test_fixture"
+    header = ['a', 'b', 'c']
+    file_name = 'name'
+    url = 'url'
+    id = 22
+    expected_compression = 'gzip'
+    max_file_size = 32
+    response = Response(
+        {'entries': [{
+            'id': id,
+            'name': file_name,
+            'size': max_file_size,
+            'url': url,
+            'url_signed': s3_string
+            }],
+         'query': sql,
+         'header': header,
+         'delimiter': ',',
+         'compression': expected_compression,
+         'unquoted': True}
+    )
+    m_civis_to_multifile_csv.return_value = response
+    result = civis.io.civis_to_multifile_csv(
+        sql, database='redshift-general', polling_interval=POLL_INTERVAL,
+        max_file_size=max_file_size, client=mock_civis)
+    assert set(result.keys()) == {'entries', 'query', 'header',
+                                  'delimiter', 'compression', 'unquoted'}
+    assert result['query'] == sql
+    assert result['header'] == header
+    assert isinstance(result['entries'], list)
+    assert set(result['entries'][0].keys()) == {'id', 'name', 'size',
+                                                'url', 'url_signed'}
+    assert result['entries'][0]['url_signed'].startswith('https://civis-'
+                                                         'console.s3.'
+                                                         'amazonaws.com/')
+    for entry in result['entries']:
+        assert entry['size'] <= max_file_size
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -1121,26 +1164,6 @@ class ImportTests(CivisVCRTestCase):
             'compression': compression,
         }
         return _File(id=1, name="x.csv", detected_info=detected_info)
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_civis_to_multifile_csv(self, *mocks):
-        sql = "SELECT * FROM scratch.api_client_test_fixture"
-        max_file_size = 32
-        result = civis.io.civis_to_multifile_csv(
-            sql, database='redshift-general', polling_interval=POLL_INTERVAL,
-            max_file_size=max_file_size)
-        assert set(result.keys()) == {'entries', 'query', 'header',
-                                      'delimiter', 'compression', 'unquoted'}
-        assert result['query'] == sql
-        assert result['header'] == ['a', 'b', 'c']
-        assert isinstance(result['entries'], list)
-        assert set(result['entries'][0].keys()) == {'id', 'name', 'size',
-                                                    'url', 'url_signed'}
-        assert result['entries'][0]['url_signed'].startswith('https://civis-'
-                                                             'console.s3.'
-                                                             'amazonaws.com/')
-        for entry in result['entries']:
-            assert entry['size'] <= max_file_size
 
     @mock.patch('civis.io._tables.CivisFuture')
     @mock.patch('civis.io._tables.civis_to_file')
