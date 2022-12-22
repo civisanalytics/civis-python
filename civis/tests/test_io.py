@@ -930,6 +930,20 @@ def test_check_column_types_differing_numbers():
         civis.io._tables._check_column_types(files)
 
 
+def test_check_column_types_differing_types():
+    files = [
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+        _test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+    ]
+    regex = (
+        r"All sql_types for column 'col1' must be the same, however --\n"
+        r"\tINT from: file 1 \(x.csv\)\n"
+        r"\tFLOAT from: file 1 \(x.csv\)"
+    )
+    with pytest.raises(civis.base.CivisImportError, match=regex):
+        civis.io._tables._check_column_types(files)
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -991,19 +1005,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    def test_check_column_types_differing_types(self, _m_get_api_spec):
-        files = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
-        ]
-        regex = (
-            r"All sql_types for column 'col1' must be the same, however --\n"
-            r"\tINT from: file 1 \(x.csv\)\n"
-            r"\tFLOAT from: file 1 \(x.csv\)"
-        )
-        with pytest.raises(civis.base.CivisImportError, match=regex):
-            civis.io._tables._check_column_types(files)
 
     def test_check_column_types_passing(self, _m_get_api_spec):
         files = [
