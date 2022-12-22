@@ -1091,6 +1091,26 @@ def test_civis_to_multifile_csv(m_civis_to_multifile_csv):
         assert entry['size'] <= max_file_size
 
 
+@mock.patch('civis.io._tables.CivisFuture')
+@mock.patch('civis.io._tables.civis_to_file')
+@mock.patch('civis.io._tables._sql_script')
+def test_civis_to_multifile_passes_client(
+        m_sql_script, m_civis_to_file, m_CivisFuture, *mocks):
+    """Ensure the client kwarg is passed forward."""
+    m_sql_script.return_value = (mock.MagicMock(), mock.MagicMock())
+    # We need to write some JSON into the buffer to avoid errors.
+    m_civis_to_file.side_effect = (
+        lambda _, buf, *args, **kwargs: buf.write(b'{}')
+    )
+    mock_client = mock.MagicMock()
+
+    civis.io.civis_to_multifile_csv('sql', 'db', client=mock_client)
+
+    m_civis_to_file.assert_called_once_with(
+        mock.ANY, mock.ANY, client=mock_client
+    )
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -1164,25 +1184,6 @@ class ImportTests(CivisVCRTestCase):
             'compression': compression,
         }
         return _File(id=1, name="x.csv", detected_info=detected_info)
-
-    @mock.patch('civis.io._tables.CivisFuture')
-    @mock.patch('civis.io._tables.civis_to_file')
-    @mock.patch('civis.io._tables._sql_script')
-    def test_civis_to_multifile_passes_client(
-            self, m_sql_script, m_civis_to_file, m_CivisFuture, *mocks):
-        """Ensure the client kwarg is passed forward."""
-        m_sql_script.return_value = (mock.MagicMock(), mock.MagicMock())
-        # We need to write some JSON into the buffer to avoid errors.
-        m_civis_to_file.side_effect = (
-            lambda _, buf, *args, **kwargs: buf.write(b'{}')
-        )
-        mock_client = mock.MagicMock()
-
-        civis.io.civis_to_multifile_csv('sql', 'db', client=mock_client)
-
-        m_civis_to_file.assert_called_once_with(
-            mock.ANY, mock.ANY, client=mock_client
-        )
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_transfer_table(self, *mocks):
