@@ -960,6 +960,60 @@ def test_check_column_types_passing():
     assert allow_inconsistent_headers is False
 
 
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@mock.patch('civis.io._tables.file_to_civis')
+@mock.patch('civis.io._tables.civis_file_to_table')
+def test_dataframe_to_civis(m_civis_file_to_table, m_file_to_civis):
+    mock_civis = create_client_mock()
+    df = pd.DataFrame([[1, 2, 3], [2, 3, 4]])
+    m_file_to_civis.return_value = 42
+    mock_future = mock.create_autospec(civis.futures.CivisFuture,
+                                       spec_set=True)
+    m_civis_file_to_table.return_value = mock_future
+
+    # use a mock to spy on the dataframe's to_csv method so we can
+    # check on its calls without impeding its actual usage.
+    with mock.patch.object(df, 'to_csv', wraps=df.to_csv) as m_to_csv:
+        result = civis.io.dataframe_to_civis(
+            df, 'redshift-general',
+            'scratch.api_client_test_fixture',
+            existing_table_rows='truncate',
+            client=mock_civis)
+        assert result == mock_future
+
+        # ANY here represents the path to which the dataframe was written
+        # Since it's a temporary directory we don't know/care exactly what
+        # it is
+        m_to_csv.assert_called_once_with(mock.ANY, encoding='utf-8',
+                                         index=False)
+        out_path = m_to_csv.call_args.args[0]
+
+    m_file_to_civis.assert_called_once_with(
+        mock.ANY, 'api_client_test_fixture',
+        client=mock_civis
+    )
+
+    # Ensure that the file written to above is the same file as that
+    # uploaded to Civis in this call
+    assert m_file_to_civis.call_args.args[0] == out_path
+
+    m_civis_file_to_table.assert_called_once_with(
+        m_file_to_civis.return_value, 'redshift-general',
+        'scratch.api_client_test_fixture',
+        client=mock_civis,
+        max_errors=None, existing_table_rows="truncate",
+        diststyle=None, distkey=None,
+        sortkey1=None, sortkey2=None,
+        table_columns=None,
+        delimiter=',',
+        primary_keys=None,
+        last_modified_keys=None,
+        escaped=False, execution='immediate',
+        headers=True, credential_id=None,
+        polling_interval=None,
+        hidden=True)
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -1066,59 +1120,6 @@ class ImportTests(CivisVCRTestCase):
             'compression': compression,
         }
         return _File(id=1, name="x.csv", detected_info=detected_info)
-
-    @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-    @mock.patch('civis.io._tables.file_to_civis')
-    @mock.patch('civis.io._tables.civis_file_to_table')
-    def test_dataframe_to_civis(self, m_civis_file_to_table, m_file_to_civis,
-                                _m_get_api_spec):
-        df = pd.DataFrame([[1, 2, 3], [2, 3, 4]])
-        m_file_to_civis.return_value = 42
-        mock_future = mock.create_autospec(civis.futures.CivisFuture,
-                                           spec_set=True)
-        m_civis_file_to_table.return_value = mock_future
-
-        # use a mock to spy on the dataframe's to_csv method so we can
-        # check on its calls without impeding its actual usage.
-        with mock.patch.object(df, 'to_csv', wraps=df.to_csv) as m_to_csv:
-            result = civis.io.dataframe_to_civis(
-                df, 'redshift-general',
-                'scratch.api_client_test_fixture',
-                existing_table_rows='truncate',
-                client=self.mock_client)
-            assert result == mock_future
-
-            # ANY here represents the path to which the dataframe was written
-            # Since it's a temporary directory we don't know/care exactly what
-            # it is
-            m_to_csv.assert_called_once_with(mock.ANY, encoding='utf-8',
-                                             index=False)
-            out_path = m_to_csv.call_args.args[0]
-
-        m_file_to_civis.assert_called_once_with(
-            mock.ANY, 'api_client_test_fixture',
-            client=self.mock_client
-        )
-
-        # Ensure that the file written to above is the same file as that
-        # uploaded to Civis in this call
-        assert m_file_to_civis.call_args.args[0] == out_path
-
-        m_civis_file_to_table.assert_called_once_with(
-            m_file_to_civis.return_value, 'redshift-general',
-            'scratch.api_client_test_fixture',
-            client=self.mock_client,
-            max_errors=None, existing_table_rows="truncate",
-            diststyle=None, distkey=None,
-            sortkey1=None, sortkey2=None,
-            table_columns=None,
-            delimiter=',',
-            primary_keys=None,
-            last_modified_keys=None,
-            escaped=False, execution='immediate',
-            headers=True, credential_id=None,
-            polling_interval=None,
-            hidden=True)
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_civis_to_multifile_csv(self, *mocks):
