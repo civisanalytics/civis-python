@@ -1014,6 +1014,40 @@ def test_dataframe_to_civis(m_civis_file_to_table, m_file_to_civis):
         hidden=True)
 
 
+def test_check_column_types_coerce_to_varchar():
+    case1 = [
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+    ]
+    case2 = [
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+    ]
+    case3 = [
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        _test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+    ]
+    case4 = [
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+        _test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+    ]
+    case5 = [
+        _test_file([{"name": "col1", "sql_type": "INT"}]),
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
+        _test_file([{"name": "col1", "sql_type": "FLOAT"}]),
+        _test_file([{"name": "col1", "sql_type": "VARCHAR(8)"}]),
+    ]
+    for files in (case1, case2, case3, case4, case5):
+        actual, allow_inconsistent_headers = (
+            civis.io._tables._check_column_types(files)
+        )
+        expected = [{'name': 'col1', 'sql_type': 'VARCHAR'}]
+        assert actual == expected, f"failed for {files}"
+        assert allow_inconsistent_headers is True
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -1075,39 +1109,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    def test_check_column_types_coerce_to_varchar(self, _m_get_api_spec):
-        case1 = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
-        ]
-        case2 = [
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-        ]
-        case3 = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
-            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
-        ]
-        case4 = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
-        ]
-        case5 = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(42)"}]),
-            self._test_file([{"name": "col1", "sql_type": "FLOAT"}]),
-            self._test_file([{"name": "col1", "sql_type": "VARCHAR(8)"}]),
-        ]
-        for files in (case1, case2, case3, case4, case5):
-            actual, allow_inconsistent_headers = (
-                civis.io._tables._check_column_types(files)
-            )
-            expected = [{'name': 'col1', 'sql_type': 'VARCHAR'}]
-            assert actual == expected, f"failed for {files}"
-            assert allow_inconsistent_headers is True
 
     @staticmethod
     def _test_file(
