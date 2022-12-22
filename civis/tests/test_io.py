@@ -901,6 +901,35 @@ def test_check_detected_info_matching():
         civis.io._tables._check_detected_info(files, attr)
 
 
+def test_check_detected_info_raises():
+    files = [
+            _test_file(
+                headers=True, delimiter="comma", compression="gzip"
+            ),
+            _test_file(
+                headers=False, delimiter="pipe", compression="none"
+            ),
+    ]
+    for attr in ("includeHeader", "columnDelimiter", "compression"):
+        with pytest.raises(civis.base.CivisImportError):
+            civis.io._tables._check_detected_info(files, attr)
+
+
+def test_check_column_types_differing_numbers():
+    files = [
+            _test_file([{"name": "col1", "sql_type": "INT"}]),
+            _test_file([{"name": "col1", "sql_type": "INT"},
+                        {"name": "col2", "sql_type": "FLOAT"}]),
+        ]
+    regex = (
+        r"All files must have the same number of columns, however --\n"
+        r"\t1 from: file 1 \(x.csv\)\n"
+        r"\t2 from: file 1 \(x.csv\)"
+        )
+    with pytest.raises(civis.base.CivisImportError, match=regex):
+        civis.io._tables._check_column_types(files)
+
+
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
     # Note that all functions tested here should use a
@@ -962,33 +991,6 @@ class ImportTests(CivisVCRTestCase):
                 assert result.state == 'succeeded'
 
             cls.export_job_id = result.sql_id
-
-    def test_check_detected_info_raises(self, _m_get_api_spec):
-        files = [
-            self._test_file(
-                headers=True, delimiter="comma", compression="gzip"
-            ),
-            self._test_file(
-                headers=False, delimiter="pipe", compression="none"
-            ),
-        ]
-        for attr in ("includeHeader", "columnDelimiter", "compression"):
-            with pytest.raises(civis.base.CivisImportError):
-                civis.io._tables._check_detected_info(files, attr)
-
-    def test_check_column_types_differing_numbers(self, _m_get_api_spec):
-        files = [
-            self._test_file([{"name": "col1", "sql_type": "INT"}]),
-            self._test_file([{"name": "col1", "sql_type": "INT"},
-                             {"name": "col2", "sql_type": "FLOAT"}]),
-        ]
-        regex = (
-            r"All files must have the same number of columns, however --\n"
-            r"\t1 from: file 1 \(x.csv\)\n"
-            r"\t2 from: file 1 \(x.csv\)"
-        )
-        with pytest.raises(civis.base.CivisImportError, match=regex):
-            civis.io._tables._check_column_types(files)
 
     def test_check_column_types_differing_types(self, _m_get_api_spec):
         files = [
