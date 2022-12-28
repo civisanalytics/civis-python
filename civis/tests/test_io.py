@@ -1110,6 +1110,18 @@ def test_civis_to_multifile_passes_client(
         mock.ANY, mock.ANY, client=mock_client
     )
 
+# placeholder fo test_transfer_table
+
+
+def test_get_sql_select(*mocks):
+    x = "select * from schema.table"
+    y = "select a, b, c from schema.table"
+    table = "schema.table"
+    assert civis.io._tables._get_sql_select(table) == x
+    assert civis.io._tables._get_sql_select(table, ['a', 'b', 'c']) == y
+    with pytest.raises(TypeError):
+        civis.io._tables._get_sql_select(table, "column_a")
+
 
 @mock.patch(api_import_str, return_value=API_SPEC)
 class ImportTests(CivisVCRTestCase):
@@ -1199,15 +1211,6 @@ class ImportTests(CivisVCRTestCase):
         result = civis.io.query_civis(sql, 'redshift-test',
                                       polling_interval=POLL_INTERVAL).result()
         assert result.state == 'succeeded'
-
-    def test_get_sql_select(self, *mocks):
-        x = "select * from schema.table"
-        y = "select a, b, c from schema.table"
-        table = "schema.table"
-        assert civis.io._tables._get_sql_select(table) == x
-        assert civis.io._tables._get_sql_select(table, ['a', 'b', 'c']) == y
-        with pytest.raises(TypeError):
-            civis.io._tables._get_sql_select(table, "column_a")
 
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
