@@ -1,4 +1,3 @@
-import os
 from operator import itemgetter
 from unittest import mock
 
@@ -6,8 +5,6 @@ import pytest
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.resources import API_SPEC
-from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
                            CustomScriptExecutor,
@@ -17,18 +14,6 @@ from civis.futures import CivisFuture
 from civis.tests import (
     create_client_mock, create_client_mock_for_container_tests
 )
-
-from civis.tests.testcase import CivisVCRTestCase
-
-api_import_str = 'civis.resources._resources.get_api_spec'
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-
-
-def clear_lru_cache():
-    # LRU cache persists between tests so these caches need to be cleared
-    # when different api specs are used in different test cases
-    get_api_spec.cache_clear()
-    generate_classes.cache_clear()
 
 
 def _create_poller_mock(state: str) -> mock.Mock:
@@ -133,17 +118,6 @@ def test_polling_interval():
                          polling_interval=polling_interval,
                          client=mock_client)
     assert future.polling_interval == polling_interval
-
-
-class CivisFutureTests(CivisVCRTestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        clear_lru_cache()
-
-    @classmethod
-    def tearDownClass(cls):
-        clear_lru_cache()
 
 
 def _check_executor(from_template_id=None):
