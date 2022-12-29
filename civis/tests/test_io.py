@@ -1110,7 +1110,33 @@ def test_civis_to_multifile_passes_client(
         mock.ANY, mock.ANY, client=mock_client
     )
 
-# placeholder fo test_transfer_table
+
+@mock.patch('civis.io.query_civis')
+@mock.patch('civis.io.transfer_table')
+def test_transfer_table(m_transfer_table, m_query_civis):
+    mock_civis = create_client_mock()
+    mock_future = mock.create_autospec(civis.futures.CivisFuture)
+    resp = Response(
+        {'state': 'succeeded'},
+    )
+    attrs = {'result.return_value': resp, 'state': 'succeeded'}
+    mock_future.configure_mock(**attrs)
+    m_transfer_table.return_value = mock_future
+    result = civis.io.transfer_table('redshift-general', 'redshift-test',
+                                     'scratch.api_client_test_fixture',
+                                     'scratch.api_client_test_fixture',
+                                     polling_interval=POLL_INTERVAL,
+                                     client=mock_civis)
+    result = result.result()
+    assert result.state == 'succeeded'
+
+    # check for side effect
+    m_query_civis.return_value = mock_future
+    sql = 'select * from scratch.api_client_test_fixture'
+    result = civis.io.query_civis(sql, 'redshift-test',
+                                  polling_interval=POLL_INTERVAL,
+                                  client=mock_civis).result()
+    assert result.state == 'succeeded'
 
 
 def test_get_sql_select(*mocks):
@@ -1196,21 +1222,6 @@ class ImportTests(CivisVCRTestCase):
             'compression': compression,
         }
         return _File(id=1, name="x.csv", detected_info=detected_info)
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_transfer_table(self, *mocks):
-        result = civis.io.transfer_table('redshift-general', 'redshift-test',
-                                         'scratch.api_client_test_fixture',
-                                         'scratch.api_client_test_fixture',
-                                         polling_interval=POLL_INTERVAL)
-        result = result.result()
-        assert result.state == 'succeeded'
-
-        # check for side effect
-        sql = 'select * from scratch.api_client_test_fixture'
-        result = civis.io.query_civis(sql, 'redshift-test',
-                                      polling_interval=POLL_INTERVAL).result()
-        assert result.state == 'succeeded'
 
     def test_download_file(self, *mocks):
         expected = '"1","2","3"\n'
