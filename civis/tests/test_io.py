@@ -11,7 +11,6 @@ import zipfile
 
 import pytest
 import requests
-import vcr
 
 try:
     import pandas as pd
@@ -24,11 +23,7 @@ from civis.io import _files
 from civis.io._tables import _File
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
-from civis.resources import API_SPEC
-from civis.resources._resources import get_api_spec, generate_classes
-from civis.tests.testcase import (CivisVCRTestCase,
-                                  cassette_dir,
-                                  POLL_INTERVAL)
+from civis.tests.testcase import POLL_INTERVAL
 from civis.tests.mocks import create_client_mock
 
 api_import_str = 'civis.resources._resources.get_api_spec'
@@ -1162,81 +1157,6 @@ def test_get_sql_select(*mocks):
     assert civis.io._tables._get_sql_select(table, ['a', 'b', 'c']) == y
     with pytest.raises(TypeError):
         civis.io._tables._get_sql_select(table, "column_a")
-
-
-@mock.patch(api_import_str, return_value=API_SPEC)
-class ImportTests(CivisVCRTestCase):
-    # Note that all functions tested here should use a
-    # `polling_interval=POLL_INTERVAL` input. This lets us use
-    # sensible polling intervals when recording, but speed through
-    # the calls in the VCR cassette when testing later.
-
-    @pytest.fixture(autouse=True)
-    def client_mock(self):
-        self.mock_client = create_client_mock()
-
-    @classmethod
-    def tearDownClass(cls):
-        get_api_spec.cache_clear()
-        generate_classes.cache_clear()
-
-    @classmethod
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def setUpClass(cls, *mocks):
-        get_api_spec.cache_clear()
-        generate_classes.cache_clear()
-
-        setup_vcr = vcr.VCR(filter_headers=['Authorization'])
-        setup_cassette = os.path.join(cassette_dir(), 'io_setup.yml')
-        with setup_vcr.use_cassette(setup_cassette):
-            # create a file
-            buf = StringIO()
-            buf.write('a,b,c\n1,2,3')
-            buf.seek(0)
-            file_id = civis.io.file_to_civis(buf, 'somename')
-            cls.file_id = file_id
-
-            # create the table. assumes this function works.
-            sql = """
-                DROP TABLE IF EXISTS scratch.api_client_test_fixture;
-
-                CREATE TABLE scratch.api_client_test_fixture (
-                    a int,
-                    b int,
-                    c int
-                );
-
-                INSERT INTO scratch.api_client_test_fixture
-                VALUES (1,2,3);
-            """
-            res = civis.io.query_civis(sql, 'redshift-general',
-                                       polling_interval=POLL_INTERVAL)
-            res.result()  # block
-
-            # create an export to check get_url. also tests export_csv
-            with TemporaryDirectory() as temp_dir:
-                fname = os.path.join(temp_dir, 'tempfile')
-                sql = "SELECT * FROM scratch.api_client_test_fixture"
-                database = 'redshift-general'
-                result = civis.io.civis_to_csv(fname, sql, database,
-                                               polling_interval=POLL_INTERVAL)
-                result = result.result()
-                cls.export_url = result['output'][0]['path']
-                assert result.state == 'succeeded'
-
-            cls.export_job_id = result.sql_id
-
-    @staticmethod
-    def _test_file(
-            cols=None, headers=True, delimiter="comma", compression="gzip"
-    ) -> _File:
-        detected_info = {
-            "tableColumns": cols,
-            'includeHeader': headers,
-            'columnDelimiter': delimiter,
-            'compression': compression,
-        }
-        return _File(id=1, name="x.csv", detected_info=detected_info)
 
 
 def test_file_id_from_run_output_exact():
