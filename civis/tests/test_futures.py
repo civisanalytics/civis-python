@@ -89,6 +89,13 @@ def test_poller_call_count_poll_on_creation_true():
     assert poller.call_count == 1
 
 
+def test_poller_call_count_poll_on_creation_false():
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("succeeded")
+    CivisFuture(poller, (1, 2), poll_on_creation=False, client=mock_civis)
+    assert poller.call_count == 0
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -98,12 +105,6 @@ class CivisFutureTests(CivisVCRTestCase):
     @classmethod
     def tearDownClass(cls):
         clear_lru_cache()
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_poller_call_count_poll_on_creation_false(self, mock_api):
-        poller = _create_poller_mock("succeeded")
-        CivisFuture(poller, (1, 2), poll_on_creation=False)
-        assert poller.call_count == 0
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_set_api_result_succeeded(self, mock_api):
