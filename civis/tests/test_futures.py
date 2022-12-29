@@ -115,6 +115,16 @@ def test_set_api_result_failed(m_sleep):
         result.outputs()
 
 
+def test_outputs_succeeded():
+    poller = _create_poller_mock("succeeded")
+    mock_client = create_client_mock()
+    expected_return = [{'test': 'test_result'}]
+    mock_client.jobs.list_runs_outputs.return_value = expected_return
+
+    result = CivisFuture(poller, (1, 2), client=mock_client)
+    assert result.outputs() == expected_return
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -124,15 +134,6 @@ class CivisFutureTests(CivisVCRTestCase):
     @classmethod
     def tearDownClass(cls):
         clear_lru_cache()
-
-    def test_outputs_succeeded(self):
-        poller = _create_poller_mock("succeeded")
-        mock_client = create_client_mock()
-        expected_return = [{'test': 'test_result'}]
-        mock_client.jobs.list_runs_outputs.return_value = expected_return
-
-        result = CivisFuture(poller, (1, 2), client=mock_client)
-        assert result.outputs() == expected_return
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_polling_interval(self, *mocks):
