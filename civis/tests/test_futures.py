@@ -125,6 +125,16 @@ def test_outputs_succeeded():
     assert result.outputs() == expected_return
 
 
+def test_polling_interval():
+    mock_client = create_client_mock()
+    polling_interval = 30
+    future = CivisFuture(lambda x: x,
+                         (1, 20),
+                         polling_interval=polling_interval,
+                         client=mock_client)
+    assert future.polling_interval == polling_interval
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -133,18 +143,6 @@ class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        clear_lru_cache()
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_polling_interval(self, *mocks):
-        clear_lru_cache()
-
-        polling_interval = 30
-        future = CivisFuture(lambda x: x,
-                             (1, 20),
-                             polling_interval=polling_interval)
-        assert future.polling_interval == polling_interval
-
         clear_lru_cache()
 
 
