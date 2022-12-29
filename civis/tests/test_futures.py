@@ -67,6 +67,21 @@ def test_check_message_with_different_run_id():
     assert result._check_message(message) is False
 
 
+def test_check_message_when_job_is_running():
+    mock_civis = create_client_mock()
+    result = CivisFuture(lambda x: x, (1, 20), client=mock_civis)
+    message = {
+        'object': {
+            'id': 1
+        },
+        'run': {
+            'id': 20,
+            'state': 'running'
+        }
+    }
+    assert result._check_message(message) is False
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -76,20 +91,6 @@ class CivisFutureTests(CivisVCRTestCase):
     @classmethod
     def tearDownClass(cls):
         clear_lru_cache()
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_check_message_when_job_is_running(self, *mocks):
-        result = CivisFuture(lambda x: x, (1, 20))
-        message = {
-            'object': {
-                'id': 1
-            },
-            'run': {
-                'id': 20,
-                'state': 'running'
-            }
-        }
-        self.assertFalse(result._check_message(message))
 
     @mock.patch(api_import_str, return_value=API_SPEC)
     def test_poller_call_count_poll_on_creation_true(self, mock_api):
