@@ -103,6 +103,18 @@ def test_set_api_result_succeeded():
     assert result._state == 'FINISHED'
 
 
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_set_api_result_failed(m_sleep):
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("failed")
+    result = CivisFuture(poller, (1, 2), client=mock_civis)
+    assert result._state == 'FINISHED'
+    with pytest.raises(CivisJobFailure):
+        result.result()
+    with pytest.raises(CivisJobFailure):
+        result.outputs()
+
+
 class CivisFutureTests(CivisVCRTestCase):
 
     @classmethod
@@ -112,18 +124,6 @@ class CivisFutureTests(CivisVCRTestCase):
     @classmethod
     def tearDownClass(cls):
         clear_lru_cache()
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
-    def test_set_api_result_failed(self, mock_api, m_sleep):
-        poller = _create_poller_mock("failed")
-
-        result = CivisFuture(poller, (1, 2))
-        assert result._state == 'FINISHED'
-        with pytest.raises(CivisJobFailure):
-            result.result()
-        with pytest.raises(CivisJobFailure):
-            result.outputs()
 
     def test_outputs_succeeded(self):
         poller = _create_poller_mock("succeeded")
