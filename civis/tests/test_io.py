@@ -1139,6 +1139,21 @@ def test_transfer_table(m_transfer_table, m_query_civis):
     assert result.state == 'succeeded'
 
 
+@mock.patch('civis.io._tables._download_file')
+def test_download_file(m_download_file):
+    expected = '"1","2","3"\n'
+    m_download_file.return_value = expected
+    with TemporaryDirectory() as temp_dir:
+        fname = os.path.join(temp_dir, 'tempfile')
+        with open(fname, 'w') as tmp:
+            tmp.write(expected)
+        civis.io._tables._download_file('test_url', fname,
+                                        b'', 'none')
+        with open(fname, "r") as f:
+            data = f.read()
+    assert data == expected
+
+
 def test_get_sql_select(*mocks):
     x = "select * from schema.table"
     y = "select a, b, c from schema.table"
@@ -1222,16 +1237,6 @@ class ImportTests(CivisVCRTestCase):
             'compression': compression,
         }
         return _File(id=1, name="x.csv", detected_info=detected_info)
-
-    def test_download_file(self, *mocks):
-        expected = '"1","2","3"\n'
-        with TemporaryDirectory() as temp_dir:
-            fname = os.path.join(temp_dir, 'tempfile')
-            civis.io._tables._download_file(self.export_url, fname,
-                                            b'', 'none')
-            with open(fname, "r") as f:
-                data = f.read()
-        assert data == expected
 
 
 def test_file_id_from_run_output_exact():
