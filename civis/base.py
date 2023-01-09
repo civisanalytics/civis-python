@@ -4,6 +4,7 @@ import threading
 from concurrent import futures
 import warnings
 from requests import Request
+from json.decoder import JSONDecodeError
 
 from civis.response import PaginatedResponse, convert_response_data_type
 from civis._utils import open_session, retry_request, MAX_RETRIES
@@ -56,8 +57,15 @@ def _err_msg_with_job_run_ids(err_msg, job_id, run_id) -> str:
 class CivisAPIError(Exception):
     def __init__(self, response):
         if response.content:  # the API itself gave an error response
-            json = response.json()
-            self.error_message = json["errorDescription"]
+            try:
+                json = response.json()
+                self.error_message = json["errorDescription"]
+            except JSONDecodeError as e:
+                if "Expecting value: line 1 column 1 (char 0)" in e:
+                    self.error_message = "No Response from Civis API"
+                else:
+                    json = response.json()
+                    self.error_message = json["errorDescription"]
         else:  # this was something like a 502
             self.error_message = response.reason
 

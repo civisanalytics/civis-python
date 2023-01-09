@@ -2,7 +2,7 @@ from unittest import mock
 
 import requests
 
-from civis.base import Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url, CivisAPIError
 
 
 def test_base_url_default():
@@ -33,3 +33,7 @@ def test_store_last_response():
     resp = endpoint._call_api('GET')
     assert resp == returned_resp
     assert mock_client.last_response is resp
+
+
+def test_civis_api_error_empty_response():
+    returned_resp = {'errorDescription': 'Expecting value: line 1 column 1 (char 0)', 'content': ' '}
