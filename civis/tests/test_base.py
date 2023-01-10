@@ -46,4 +46,4 @@ def test_civis_api_error_empty_response():
         response.json()
 
     error = CivisAPIError(response)
-    assert error.error_message == "No Response from Civis API"
+    assert error.error_message == "No Response Content from Civis API"
