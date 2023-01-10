@@ -85,7 +85,8 @@ def main():
     for civisml_version in (None, 'v2.2'):  # None = latest production version
         logger.info('CivisML version: %r', civisml_version)
         mp = civis.ml.ModelPipeline(
-            model_name="[civis-python smoke test; do not count this as CivisML usage]",
+            model_name="[civis-python smoke test; do not count this as "
+                       "CivisML usage]",
             model="sparse_logistic",
             dependent_variable="type",
             primary_key="index",

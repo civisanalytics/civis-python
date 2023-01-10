@@ -63,9 +63,11 @@ class CivisAPIError(Exception):
                 if "Expecting value: line 1 column 1 (char 0)" in str(e):
                     self.error_message = "No Response from Civis API"
                 else:
-                    self.error_message = f"Response Content: {(response.content or b'').decode()}"
+                    self.error_message = f"Response Content: " \
+                                    f"{(response.content or b'').decode()}"
             else:
-                self.error_message = json.get("errorDescription") or "No Error Message Available"
+                self.error_message = json.get("errorDescription") or \
+                                     "No Error Message Available"
         else:  # this was something like a 502
             self.error_message = response.reason
 
