@@ -41,7 +41,9 @@ def test_civis_api_error_empty_response():
     # Fake response object, try to trigger error
     # Make sure response.json() gets the JSON decode error
     response = requests.Response()
+    response._content = b'foobar'
     with pytest.raises(JSONDecodeError):
         response.json()
 
     error = CivisAPIError(response)
+    assert error.error_message == "No Response from Civis API"
