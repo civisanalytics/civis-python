@@ -1,5 +1,7 @@
 from unittest import mock
+from json.decoder import JSONDecodeError
 
+import pytest
 import requests
 
 from civis.base import Endpoint, get_base_url, CivisAPIError
@@ -36,4 +38,10 @@ def test_store_last_response():
 
 
 def test_civis_api_error_empty_response():
-    returned_resp = {'errorDescription': 'Expecting value: line 1 column 1 (char 0)', 'content': ' '}
+    # Fake response object, try to trigger error
+    # Make sure response.json() gets the JSON decode error
+    response = requests.Response()
+    with pytest.raises(JSONDecodeError):
+        response.json()
+
+    error = CivisAPIError(response)

@@ -59,13 +59,13 @@ class CivisAPIError(Exception):
         if response.content:  # the API itself gave an error response
             try:
                 json = response.json()
-                self.error_message = json["errorDescription"]
             except JSONDecodeError as e:
                 if "Expecting value: line 1 column 1 (char 0)" in e:
                     self.error_message = "No Response from Civis API"
                 else:
-                    json = response.json()
-                    self.error_message = json["errorDescription"]
+                    self.error_message = f"Response Content: {(response.content or b'').decode()}"
+            else:
+                self.error_message = json.get("errorDescription") or "No Error Message Available"
         else:  # this was something like a 502
             self.error_message = response.reason
 
