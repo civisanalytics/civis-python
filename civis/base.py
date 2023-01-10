@@ -61,7 +61,7 @@ class CivisAPIError(Exception):
                 json = response.json()
             except JSONDecodeError as e:
                 if "Expecting value: line 1 column 1 (char 0)" in str(e):
-                    self.error_message = "No Response from Civis API"
+                    self.error_message = "No Response Content from Civis API"
                 else:
                     self.error_message = f"Response Content: " \
                                     f"{(response.content or b'').decode()}"
