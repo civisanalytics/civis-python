@@ -389,7 +389,9 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     Parameters
     ----------
     name : str
-        The "name" field of the run output you wish to retrieve
+        The "name" field of the run output you wish to retrieve. If
+        `".*?"` is passed in and regex is set to True, this will
+        retrieve the file ID of the first run output
     job_id : int
     run_id : int
     regex : bool, optional
@@ -404,7 +406,9 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     Returns
     -------
     file_id : int
-        The ID of a Civis File with name matching ``name``
+        The ID of a Civis File with name matching ``name`` or, if
+        name = `".*?"` and regex = True, the ID of the first run
+        output
 
     Raises
     ------
@@ -415,7 +419,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
 
     See Also
     --------
-    APIClient.scripts.list_containers.runs_outputs
+    APIClient.jobs.list_runs_outputs
     """
     client = APIClient() if client is None else client
     # Retrieve run outputs
