@@ -420,7 +420,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     client = APIClient() if client is None else client
     # Retrieve run outputs
     try:
-        outputs = client.scripts.list_containers_runs_outputs(job_id, run_id)
+        outputs = client.jobs.list_runs_outputs(job_id, run_id)
     except CivisAPIError as err:
         if err.status_code == 404:
             raise IOError('Could not find job/run ID {}/{}'
