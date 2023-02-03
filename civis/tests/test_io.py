@@ -23,9 +23,9 @@ from civis.io import _files
 from civis.io._tables import _File
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
-from civis.tests.testcase import POLL_INTERVAL
 from civis.tests.mocks import create_client_mock
 
+POLL_INTERVAL = 0.00001
 api_import_str = 'civis.resources._resources.get_api_spec'
 
 
