@@ -20,7 +20,7 @@ import requests
 
 import civis
 from civis.base import CivisAPIError
-
+from civis.response import Response
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
 try:
@@ -204,20 +204,28 @@ def infer_backend_factory(required_resources=None,
 
     # Default to this container's resource requests, but
     # allow users to override it.
-    state.required_resources.update(required_resources or {})
+    new_state = state._to_dict()
+    new_state["required_resources"].update(required_resources or {})
+    state = Response(new_state)
 
     # Update parameters with user input
     params = params or []
     for input_param in params:
-        for param in state.params:
+        for i, param in enumerate(list(state.params)):
             if param['name'] == input_param['name']:
-                param.update(input_param)
+                new_state = state._to_dict()
+                new_state["params"][i].update(input_param)
+                state = Response(new_state)
                 break
         else:
-            state.params.append(input_param)
+            new_state = state._to_dict()
+            new_state["params"].append(input_param)
+            state = Response(new_state)
 
     # Update arguments with input
-    state.arguments.update(arguments or {})
+    new_state = state._to_dict()
+    new_state["arguments"].update(arguments or {})
+    state = Response(new_state)
 
     # Set defaults on other keyword arguments with
     # values from the current script

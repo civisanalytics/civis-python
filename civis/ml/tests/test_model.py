@@ -825,8 +825,11 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
     # checks that it works with a registration template and train template
     for template_id in [TRAIN_ID_PROD, REGISTRATION_ID_PROD]:
         container_response_stub = _container_response_stub(template_id)
-        del container_response_stub.arguments['PARAMS']
-        del container_response_stub.arguments['CVPARAMS']
+        new_container_response_stub = container_response_stub._to_dict()
+        del new_container_response_stub['arguments']['params']
+        del new_container_response_stub['arguments']['cvparams']
+        container_response_stub = Response(new_container_response_stub)
+
         mock_client = mock.Mock()
         mock_client.scripts.get_containers.return_value = container_response_stub  # noqa
         mock_client.credentials.get.return_value = Response({'name': 'Token'})

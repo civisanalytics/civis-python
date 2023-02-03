@@ -94,7 +94,11 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
         return Response(data, headers=headers)
 
 
-class Response(dict):
+def _raise_response_immutable_error():
+    raise NotImplementedError("Response object is not mutable")
+
+
+class Response:
     """Custom Civis response object.
 
     Attributes
@@ -109,42 +113,83 @@ class Response(dict):
         Number of API calls remaining before rate limit is reached.
     rate_limit : int
         Total number of calls per API rate limit period.
-
-    Notes
-    -----
-    The main features of this class are that it maps camelCase to snake_case
-    at the top level of the json object and attaches keys as attributes.
-    Nested object keys are not changed.
     """
-    def __init__(self, json_data, snake_case=True, headers=None):
+    def __init__(self, json_data, *, headers=None):
         self.json_data = json_data
-        if headers is not None:
-            # this circumvents recursive calls
-            self.headers = headers
-            self.calls_remaining = headers.get('X-RateLimit-Remaining')
-            self.rate_limit = headers.get('X-RateLimit-Limit')
 
-        # Keys to update for this response object.
-        self_updates = {}
+        self.headers = headers
+        self.calls_remaining = (headers or {}).get('X-RateLimit-Remaining')
+        self.rate_limit = (headers or {}).get('X-RateLimit-Limit')
+
+        self._data_camel = {}
+        self._data_snake = {}
 
         if json_data is not None:
             for key, v in json_data.items():
-                if snake_case:
-                    key = camel_to_snake(key)
 
                 if isinstance(v, dict):
-                    val = Response(v, False)
+                    val = Response(v)
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o
                            for o in v]
                 else:
                     val = v
 
-                self_updates[key] = val
+                self._data_camel[key] = val
+                self._data_snake[camel_to_snake(key)] = val
 
-        self.update(self_updates)
-        # Update self.__dict__ at the end to avoid replacing the update method.
-        self.__dict__.update(self_updates)
+        # Can't ban __setattr__ until after the attributes above have been defined.
+        self.__setattr__ = _raise_response_immutable_error
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError("Response object is not mutable")
+
+    def __getitem__(self, item):
+        try:
+            return self._data_snake[item]
+        except KeyError:
+            return self._data_camel[item]
+
+    def __getattr__(self, item):
+        try:
+            return self.__getitem__(item)
+        except KeyError as e:
+            raise AttributeError(f"Response object has no attribute {str(e)}")
+
+    def __len__(self):
+        return len(self._data_snake)
+
+    def __repr__(self):
+        return repr(self._data_snake)
+
+    def get(self, key, default=None):
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
+
+    def items(self):
+        return self._data_snake.items()
+
+    def __eq__(self, other):
+        if isinstance(other, dict):
+            return self._to_dict() == other
+        elif isinstance(other, Response):
+            return self._to_dict() == other._to_dict()
+        else:
+            raise NotImplementedError(f"Response and {type(other)} can't be compared")
+
+    def _to_dict(self):
+        result = {}
+        for k, v in self._data_snake.items():
+            if isinstance(v, Response):
+                val = v._to_dict()
+            elif isinstance(v, list):
+                val = [o._to_dict() if isinstance(o, Response) else o for o in v]
+            else:
+                val = v
+            result[k] = val
+        return result
 
 
 class PaginatedResponse:
