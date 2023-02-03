@@ -8,6 +8,18 @@ from civis.tests.testcase import CivisVCRTestCase
 api_import_str = 'civis.resources._resources.get_api_spec'
 
 
+@mock.patch('civis.resources._resources.get_api_spec', return_value=API_SPEC)
+def test_feature_flags(mock_spec):
+    client = APIClient()
+
+    class FakeUsersEndpoint:
+        def list_me(self):
+            return {'feature_flags': {'foo': True, 'bar': True, 'baz': False}}
+    setattr(client, 'users', FakeUsersEndpoint())
+
+    assert client.feature_flags == ('foo', 'bar')
+
+
 class ClientTests(CivisVCRTestCase):
 
     @classmethod
@@ -21,7 +33,7 @@ class ClientTests(CivisVCRTestCase):
         generate_classes.cache_clear()
 
     @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_feature_flags(self, *mocks):
+    def test_feature_flags2(self, *mocks):
         client = APIClient()
         feature_flags = client.feature_flags
         expected = ('python_3_scripts', 'container_scripts', 'pubnub')
