@@ -81,6 +81,7 @@ workflows:
           name: safety
           command-run: |
             pip install -e . && \
+            pip install --upgrade setuptools \
             pip install --upgrade safety && \
             safety --version && \
             safety check
