@@ -59,8 +59,8 @@ pip install -e .
 
 Follow these steps each time you plan to make a pull request to civis-python:
 
-1. At your local civis-python copy, make sure the `master` branch is in sync with the
-   `master` at the upstream repo (`git checkout master && git pull upstream master`).
+1. At your local civis-python copy, make sure the `main` branch is in sync with the
+   `main` at the upstream repo (`git checkout main && git pull upstream main`).
 2. Make sure you are able to run the test suite locally (`pytest civis`).
 3. Create a feature branch (`git checkout -b my-new-feature`).
 4. Make your change. Don't forget adding or updating tests (under `civis/tests/`).
