@@ -1,4 +1,4 @@
-.. Civis Client documentation main file
+.. Civis Client documentation master file
 
 Civis API Python Client
 =======================
