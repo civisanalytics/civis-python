@@ -1,4 +1,3 @@
-import os
 from operator import itemgetter
 from unittest import mock
 
@@ -6,8 +5,6 @@ import pytest
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
-from civis.resources import API_SPEC
-from civis.resources._resources import get_api_spec, generate_classes
 from civis.futures import (ContainerFuture,
                            _ContainerShellExecutor,
                            CustomScriptExecutor,
@@ -18,18 +15,6 @@ from civis.tests import (
     create_client_mock, create_client_mock_for_container_tests
 )
 
-from civis.tests.testcase import CivisVCRTestCase
-
-api_import_str = 'civis.resources._resources.get_api_spec'
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-
-
-def clear_lru_cache():
-    # LRU cache persists between tests so these caches need to be cleared
-    # when different api specs are used in different test cases
-    get_api_spec.cache_clear()
-    generate_classes.cache_clear()
-
 
 def _create_poller_mock(state: str) -> mock.Mock:
     api_result = mock.Mock(state=state)
@@ -37,108 +22,102 @@ def _create_poller_mock(state: str) -> mock.Mock:
     return poller
 
 
-class CivisFutureTests(CivisVCRTestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        clear_lru_cache()
-
-    @classmethod
-    def tearDownClass(cls):
-        clear_lru_cache()
-
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_check_message(self, *mocks):
-        result = CivisFuture(lambda x: x, (1, 20))
-        message = {
-            'object': {
-                'id': 1
-            },
-            'run': {
-                'id': 20,
-                'state': 'succeeded'
-            }
+def test_check_message():
+    mock_civis = create_client_mock()
+    result = CivisFuture(lambda x: x, (1, 20), client=mock_civis)
+    message = {
+        'object': {
+            'id': 1
+        },
+        'run': {
+            'id': 20,
+            'state': 'succeeded'
         }
-        self.assertTrue(result._check_message(message))
+    }
+    assert result._check_message(message) is True
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_check_message_with_different_run_id(self, *mocks):
-        result = CivisFuture(lambda x: x, (1, 20))
-        message = {
-            'object': {
-                'id': 2
-            },
-            'run': {
-                'id': 20,
-                'state': 'succeeded'
-            }
+
+def test_check_message_with_different_run_id():
+    mock_civis = create_client_mock()
+    result = CivisFuture(lambda x: x, (1, 20), client=mock_civis)
+    message = {
+        'object': {
+            'id': 2
+        },
+        'run': {
+            'id': 20,
+            'state': 'succeeded'
         }
-        self.assertFalse(result._check_message(message))
+    }
+    assert result._check_message(message) is False
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_check_message_when_job_is_running(self, *mocks):
-        result = CivisFuture(lambda x: x, (1, 20))
-        message = {
-            'object': {
-                'id': 1
-            },
-            'run': {
-                'id': 20,
-                'state': 'running'
-            }
+
+def test_check_message_when_job_is_running():
+    mock_civis = create_client_mock()
+    result = CivisFuture(lambda x: x, (1, 20), client=mock_civis)
+    message = {
+        'object': {
+            'id': 1
+        },
+        'run': {
+            'id': 20,
+            'state': 'running'
         }
-        self.assertFalse(result._check_message(message))
+    }
+    assert result._check_message(message) is False
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_poller_call_count_poll_on_creation_true(self, mock_api):
-        poller = _create_poller_mock("succeeded")
-        CivisFuture(poller, (1, 2), poll_on_creation=True)
-        assert poller.call_count == 1
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_poller_call_count_poll_on_creation_false(self, mock_api):
-        poller = _create_poller_mock("succeeded")
-        CivisFuture(poller, (1, 2), poll_on_creation=False)
-        assert poller.call_count == 0
+def test_poller_call_count_poll_on_creation_true():
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("succeeded")
+    CivisFuture(poller, (1, 2), poll_on_creation=True, client=mock_civis)
+    assert poller.call_count == 1
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_set_api_result_succeeded(self, mock_api):
-        poller = _create_poller_mock("succeeded")
-        result = CivisFuture(poller, (1, 2))
-        assert result._state == 'FINISHED'
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
-    def test_set_api_result_failed(self, mock_api, m_sleep):
-        poller = _create_poller_mock("failed")
+def test_poller_call_count_poll_on_creation_false():
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("succeeded")
+    CivisFuture(poller, (1, 2), poll_on_creation=False, client=mock_civis)
+    assert poller.call_count == 0
 
-        result = CivisFuture(poller, (1, 2))
-        assert result._state == 'FINISHED'
-        with pytest.raises(CivisJobFailure):
-            result.result()
-        with pytest.raises(CivisJobFailure):
-            result.outputs()
 
-    def test_outputs_succeeded(self):
-        poller = _create_poller_mock("succeeded")
-        mock_client = create_client_mock()
-        expected_return = [{'test': 'test_result'}]
-        mock_client.jobs.list_runs_outputs.return_value = expected_return
+def test_set_api_result_succeeded():
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("succeeded")
+    result = CivisFuture(poller, (1, 2), client=mock_civis)
+    assert result._state == 'FINISHED'
 
-        result = CivisFuture(poller, (1, 2), client=mock_client)
-        assert result.outputs() == expected_return
 
-    @mock.patch(api_import_str, return_value=API_SPEC)
-    def test_polling_interval(self, *mocks):
-        clear_lru_cache()
+@mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
+def test_set_api_result_failed(m_sleep):
+    mock_civis = create_client_mock()
+    poller = _create_poller_mock("failed")
+    result = CivisFuture(poller, (1, 2), client=mock_civis)
+    assert result._state == 'FINISHED'
+    with pytest.raises(CivisJobFailure):
+        result.result()
+    with pytest.raises(CivisJobFailure):
+        result.outputs()
 
-        polling_interval = 30
-        future = CivisFuture(lambda x: x,
-                             (1, 20),
-                             polling_interval=polling_interval)
-        assert future.polling_interval == polling_interval
 
-        clear_lru_cache()
+def test_outputs_succeeded():
+    poller = _create_poller_mock("succeeded")
+    mock_client = create_client_mock()
+    expected_return = [{'test': 'test_result'}]
+    mock_client.jobs.list_runs_outputs.return_value = expected_return
+
+    result = CivisFuture(poller, (1, 2), client=mock_client)
+    assert result.outputs() == expected_return
+
+
+def test_polling_interval():
+    mock_client = create_client_mock()
+    polling_interval = 30
+    future = CivisFuture(lambda x: x,
+                         (1, 20),
+                         polling_interval=polling_interval,
+                         client=mock_client)
+    assert future.polling_interval == polling_interval
 
 
 def _check_executor(from_template_id=None):
