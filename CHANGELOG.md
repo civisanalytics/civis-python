@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
+- Updated references from 'master' to 'main' (#460)
 
 ### Changed
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
