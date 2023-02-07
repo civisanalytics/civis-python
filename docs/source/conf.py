@@ -53,7 +53,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The main toctree document.
-main_doc = 'index'
+master_doc = 'index'
 
 # General information about the project.
 current_year = datetime.datetime.now().year
@@ -241,7 +241,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (main_doc, 'CivisClient.tex', 'Civis Client Documentation',
+  (master_doc, 'CivisClient.tex', 'Civis Client Documentation',
    'Civis Analytics', 'manual'),
 ]
 
@@ -271,7 +271,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (main_doc, 'civisclient', 'Civis Client Documentation',
+    (master_doc, 'civisclient', 'Civis Client Documentation',
      [author], 1)
 ]
 
@@ -285,7 +285,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (main_doc, 'CivisClient', 'Civis Client Documentation',
+  (master_doc, 'CivisClient', 'Civis Client Documentation',
    author, 'CivisClient', 'One line description of project.',
    'Miscellaneous'),
 ]
