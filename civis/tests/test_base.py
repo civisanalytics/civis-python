@@ -1,8 +1,10 @@
 from unittest import mock
+from json.decoder import JSONDecodeError
 
+import pytest
 import requests
 
-from civis.base import Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url, CivisAPIError
 
 
 def test_base_url_default():
@@ -33,3 +35,15 @@ def test_store_last_response():
     resp = endpoint._call_api('GET')
     assert resp == returned_resp
     assert mock_client.last_response is resp
+
+
+def test_civis_api_error_empty_response():
+    # Fake response object, try to trigger error
+    # Make sure response.json() gets the JSON decode error
+    response = requests.Response()
+    response._content = b'foobar'
+    with pytest.raises(JSONDecodeError):
+        response.json()
+
+    error = CivisAPIError(response)
+    assert error.error_message == "No Response Content from Civis API"

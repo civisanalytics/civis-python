@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   circleci config so dev-requirements is only used when needed. (#452)
 - Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
 - Refactored tests to remove dependency on the vcr library. (#456)
+- Fixed typo in "Testing Your Code" example of the User Guide (#458)
+- Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
 
 ### Deprecated
 ### Removed
