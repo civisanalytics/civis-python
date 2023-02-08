@@ -1222,7 +1222,8 @@ def test_file_id_from_run_output_no_filename():
         Response({'name': 'eggs.csv.gz', 'object_id': 2014,
                   'object_type': 'File'})]
 
-    fid = civis.io.file_id_from_run_output('.*?', 17, 13, regex=True, client=m_client)
+    fid = civis.io.file_id_from_run_output('.*?', 17, 13, regex=True,
+                                           client=m_client)
     assert fid == 2013
 
 
