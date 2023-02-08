@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
-- Updated references from 'master' to 'main' (#460)
 
 ### Changed
+- Updated references from 'master' to 'main' (#460)
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
   circleci config so dev-requirements is only used when needed. (#452)
 - Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
