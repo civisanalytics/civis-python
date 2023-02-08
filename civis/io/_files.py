@@ -390,7 +390,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     ----------
     name : str
         The "name" field of the run output you wish to retrieve. If
-        `".*?"` is passed in and regex is set to True, this will
+        `.*?` is passed in and regex is set to True, this will
         retrieve the file ID of the first run output
     job_id : int
     run_id : int

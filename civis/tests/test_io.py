@@ -1214,6 +1214,18 @@ def test_file_id_from_run_output_platform_error():
         civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
 
 
+def test_file_id_from_run_output_no_filename():
+    m_client = mock.Mock()
+    m_client.jobs.list_runs_outputs.return_value = [
+        Response({'name': 'spam.csv.gz', 'object_id': 2013,
+                  'object_type': 'File'}),
+        Response({'name': 'eggs.csv.gz', 'object_id': 2014,
+                  'object_type': 'File'})]
+
+    fid = civis.io.file_id_from_run_output('.*?', 17, 13, regex=True, client=m_client)
+    assert fid == 2013
+
+
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_expired():
     m_client = mock.Mock()
