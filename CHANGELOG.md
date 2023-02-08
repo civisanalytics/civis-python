@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
 - Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
+- civis.io.file_id_from_run_output now works for all job types (#461)
 
 ### Deprecated
 ### Removed
