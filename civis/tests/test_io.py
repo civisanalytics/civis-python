@@ -1118,7 +1118,7 @@ def test_get_sql_select(*mocks):
 
 def test_file_id_from_run_output_exact():
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.return_value = \
+    m_client.jobs.list_runs_outputs.return_value = \
         [Response({'name': 'spam', 'object_id': 2013,
                    'object_type': 'File'})]
 
@@ -1129,7 +1129,7 @@ def test_file_id_from_run_output_exact():
 def test_file_id_from_run_output_approximate():
     # Test fuzzy name matching
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.return_value = \
+    m_client.jobs.list_runs_outputs.return_value = \
         [Response({'name': 'spam.csv.gz', 'object_id': 2013,
                    'object_type': 'File'})]
 
@@ -1141,7 +1141,7 @@ def test_file_id_from_run_output_approximate():
 def test_file_id_from_run_output_approximate_multiple():
     # Fuzzy name matching with muliple matches should return the first
     m_cl = mock.Mock()
-    m_cl.scripts.list_containers_runs_outputs.return_value = [
+    m_cl.jobs.list_runs_outputs.return_value = [
         Response({'name': 'spam.csv.gz', 'object_id': 2013,
                   'object_type': 'File'}),
         Response({'name': 'eggs.csv.gz', 'object_id': 2014,
@@ -1155,7 +1155,7 @@ def test_file_id_from_run_output_approximate_multiple():
 def test_file_id_from_run_output_no_file():
     # Get an IOError if we request a file which doesn't exist
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.return_value = [
+    m_client.jobs.list_runs_outputs.return_value = [
         Response({'name': 'spam', 'object_id': 2013,
                   'object_type': 'File'})]
 
@@ -1167,7 +1167,7 @@ def test_file_id_from_run_output_no_file():
 def test_file_id_from_run_output_no_run():
     # Get an IOError if we request a file from a run which doesn't exist
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.side_effect =\
+    m_client.jobs.list_runs_outputs.side_effect =\
         MockAPIError(404)  # Mock a run which doesn't exist
 
     with pytest.raises(IOError) as err:
@@ -1178,10 +1178,23 @@ def test_file_id_from_run_output_no_run():
 def test_file_id_from_run_output_platform_error():
     # Make sure we don't swallow real Platform errors
     m_client = mock.Mock()
-    m_client.scripts.list_containers_runs_outputs.side_effect =\
+    m_client.jobs.list_runs_outputs.side_effect =\
         MockAPIError(500)  # Mock a platform error
     with pytest.raises(CivisAPIError):
         civis.io.file_id_from_run_output('name', 17, 13, client=m_client)
+
+
+def test_file_id_from_run_output_no_filename():
+    m_client = mock.Mock()
+    m_client.jobs.list_runs_outputs.return_value = [
+        Response({'name': 'spam.csv.gz', 'object_id': 2013,
+                  'object_type': 'File'}),
+        Response({'name': 'eggs.csv.gz', 'object_id': 2014,
+                  'object_type': 'File'})]
+
+    fid = civis.io.file_id_from_run_output('.*?', 17, 13, regex=True,
+                                           client=m_client)
+    assert fid == 2013
 
 
 @pytest.mark.skipif(not has_pandas, reason="pandas not installed")

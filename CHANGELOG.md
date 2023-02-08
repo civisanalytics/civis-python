@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Refactored tests to remove dependency on the vcr library. (#456)
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
 - Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
+- civis.io.file_id_from_run_output now works for all job types (#461)
 
 ### Deprecated
 ### Removed
