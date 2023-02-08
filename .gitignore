@@ -46,3 +46,4 @@ docs/source/api_resources.rst
 .idea
 
 .DS_Store
+.vscode
