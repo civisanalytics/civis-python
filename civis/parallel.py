@@ -710,7 +710,7 @@ class _CivisBackendResult:
 
             try:
                 # Find the output file ID from the run outputs.
-                run_outputs = client.scripts.list_containers_runs_outputs(
+                run_outputs = client.jobs.list_runs_outputs(
                     fut.job_id, fut.run_id)
                 if run_outputs:
                     output_file_id = run_outputs[0]['object_id']
