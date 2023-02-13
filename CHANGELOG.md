@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
+- Added support for Python 3.10 and 3.11 (#462)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)
@@ -21,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 ### Removed
+- Dropped support for Python 3.7 (#462)
+
 ### Fixed
 ### Security
 
