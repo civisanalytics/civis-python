@@ -8,16 +8,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
+- Added support for Python 3.10 and 3.11 (#462)
 
 ### Changed
+- Updated references from 'master' to 'main' (#460)
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
   circleci config so dev-requirements is only used when needed. (#452)
 - Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
+- Refactored tests to remove dependency on the vcr library. (#456)
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
 - Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
+- civis.io.file_id_from_run_output now works for all job types (#461)
 
 ### Deprecated
 ### Removed
+- Dropped support for Python 3.7 (#462)
+
 ### Fixed
 ### Security
 
