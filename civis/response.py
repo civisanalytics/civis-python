@@ -138,7 +138,7 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[camel_to_snake(key)] = val
 
-        # Can't ban __setattr__ until after the attributes above have been defined.
+        # Can't ban __setattr__ until after the attrs above have been defined.
         self.__setattr__ = _raise_response_immutable_error
 
     def __setitem__(self, key, value):
@@ -177,7 +177,7 @@ class Response:
         elif isinstance(other, Response):
             return self._to_dict() == other._to_dict()
         else:
-            raise NotImplementedError(f"Response and {type(other)} can't be compared")
+            raise TypeError(f"Response and {type(other)} can't be compared")
 
     def _to_dict(self):
         result = {}
@@ -185,7 +185,9 @@ class Response:
             if isinstance(v, Response):
                 val = v._to_dict()
             elif isinstance(v, list):
-                val = [o._to_dict() if isinstance(o, Response) else o for o in v]
+                val = [
+                    o._to_dict() if isinstance(o, Response) else o for o in v
+                ]
             else:
                 val = v
             result[k] = val
