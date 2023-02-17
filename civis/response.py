@@ -142,7 +142,7 @@ class Response:
         self.__setattr__ = _raise_response_immutable_error
 
     def __setitem__(self, key, value):
-        raise NotImplementedError("Response object is not mutable")
+        _raise_response_immutable_error()
 
     def __getitem__(self, item):
         try:
@@ -190,6 +190,10 @@ class Response:
                 val = v
             result[k] = val
         return result
+
+    def __setstate__(self, state):
+        """Set the state when unpickling, to avoid RecursionError."""
+        self.__dict__ = state
 
 
 class PaginatedResponse:
