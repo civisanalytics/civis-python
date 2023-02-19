@@ -68,16 +68,12 @@ def create_client_mock_for_container_tests(
     mock_container_run_start = Response({'id': run_id,
                                          'container_id': script_id,
                                          'state': 'queued'})
+    mock_container_run = Response({'id': run_id,
+                                   'container_id': script_id,
+                                   'state': state})
 
     if state == 'failed':
-        mock_container_run = Response({'id': run_id,
-                                       'container_id': script_id,
-                                       'state': state,
-                                       'error': 'None'})
-    else:
-        mock_container_run = Response({'id': run_id,
-                                       'container_id': script_id,
-                                       'state': state})
+        mock_container_run._replace("error", "None")
 
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run

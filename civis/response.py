@@ -194,10 +194,7 @@ class Response:
         self.__dict__ = state
 
     def _replace(self, key, value):
-        """Usage outside the civis-python repo is strongly discouraged.
-
-        `key` is assumed to be already in snake_case.
-        """
+        """Only used within this repo; `key` assumed to be in snake_case."""
         self._data_snake[key] = value
 
 
