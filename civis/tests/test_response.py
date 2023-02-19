@@ -188,6 +188,21 @@ def test_parse_column_names():
     assert resp.columns[0].value_distribution_percent['update'] == 50.0
 
 
+@pytest.mark.parametrize(
+    "headers, expected_calls_remaining, expected_rate_limit",
+    [
+        (None, None, None),
+        ({}, None, None),
+        ({"X-RateLimit-Remaining": "1", "X-RateLimit-Limit": "100"}, 1, 100),
+    ],
+)
+def test_rate_limit(headers, expected_calls_remaining, expected_rate_limit):
+    response = Response({"foo": "bar"}, headers=headers)
+    assert response.headers == headers
+    assert response.calls_remaining == expected_calls_remaining
+    assert response.rate_limit == expected_rate_limit
+
+
 def test_response_is_immutable():
     """Test that the Response object is immutable.
 
@@ -196,6 +211,7 @@ def test_response_is_immutable():
     # JSON data from the Civis API is in camelCase.
     json_data = {"fooBar": {"barBaz": "whatever"}}
     response = Response(json_data)
+    assert response.json_data == json_data
 
     with pytest.raises(CivisImmutableResponseError):
         response["foo_bar"] = "something else"
@@ -216,6 +232,7 @@ def test_response_cross_compatibility():
     # JSON data from the Civis API is in camelCase.
     json_data = {"fooBar": {"barBaz": msg}}
     response = Response(json_data)
+    assert response.json_data == json_data
 
     #   16 combinations altogether
     # = 2 ** 4

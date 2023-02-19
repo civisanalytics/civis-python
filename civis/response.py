@@ -120,10 +120,15 @@ class Response:
     """
     def __init__(self, json_data, *, headers=None):
         self.json_data = json_data
-
         self.headers = headers
-        self.calls_remaining = (headers or {}).get('X-RateLimit-Remaining')
-        self.rate_limit = (headers or {}).get('X-RateLimit-Limit')
+        self.calls_remaining = (
+            int(x)
+            if (x := (headers or {}).get('X-RateLimit-Remaining')) else x
+        )
+        self.rate_limit = (
+            int(x)
+            if (x := (headers or {}).get('X-RateLimit-Limit')) else x
+        )
 
         self._data_camel = {}
         self._data_snake = {}
