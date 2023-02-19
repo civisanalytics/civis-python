@@ -12,7 +12,7 @@ except ImportError:
 
 from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
-    convert_response_data_type, Response
+    convert_response_data_type, Response, CivisImmutableResponseError
 )
 
 
@@ -186,3 +186,59 @@ def test_parse_column_names():
     }
     resp = Response(resp_dict)
     assert resp.columns[0].value_distribution_percent['update'] == 50.0
+
+
+def test_response_is_immutable():
+    """Test that the Response object is immutable.
+
+    Resolves https://github.com/civisanalytics/civis-python/issues/228
+    """
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"fooBar": {"barBaz": "whatever"}}
+    response = Response(json_data)
+
+    with pytest.raises(CivisImmutableResponseError):
+        response["foo_bar"] = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response.foo_bar = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response["foo_bar"]["bar_baz"] = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response.foo_bar.bar_baz = "something else"
+
+
+def test_response_cross_compatibility():
+    """Test cross compatibility: snake vs camel case, getitem vs getattr.
+
+    Resolves https://github.com/civisanalytics/civis-python/issues/317
+    """
+    msg = "Life is a long journey. Enjoy it!"
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"fooBar": {"barBaz": msg}}
+    response = Response(json_data)
+
+    #   16 combinations altogether
+    # = 2 ** 4
+    # = {2 levels deep under the response} ** {snake/camel * getitem/getattr}
+    assert (
+        msg
+        == response.foo_bar.bar_baz
+        == response.foo_bar["bar_baz"]
+        == response.foo_bar.barBaz
+        == response.foo_bar["barBaz"]
+
+        == response["foo_bar"].bar_baz
+        == response["foo_bar"]["bar_baz"]
+        == response["foo_bar"].barBaz
+        == response["foo_bar"]["barBaz"]
+
+        == response.fooBar.bar_baz
+        == response.fooBar["bar_baz"]
+        == response.fooBar.barBaz
+        == response.fooBar["barBaz"]
+
+        == response["fooBar"].bar_baz
+        == response["fooBar"]["bar_baz"]
+        == response["fooBar"].barBaz
+        == response["fooBar"]["barBaz"]
+    )

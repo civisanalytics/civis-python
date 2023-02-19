@@ -2,7 +2,8 @@ from collections import OrderedDict
 import json
 from unittest import mock
 
-from civis import response
+import requests
+
 from civis.base import CivisAPIError
 from civis.service_client import ServiceClient, ServiceEndpoint, \
     _get_service, _parse_service_path, parse_service_api_spec
@@ -255,19 +256,19 @@ def test_get_service(mock_client, classes_mock):
 def test_get_service__not_found(mock_client, classes_mock):
     classes_mock.return_value = {}
     sc = ServiceClient(MOCK_SERVICE_ID)
-    err_resp = response.Response({
+    err_resp = requests.Response()
+    err_resp._content = json.dumps({
         'status_code': 404,
         'error': 'not_found',
         'errorDescription': 'The requested resource could not be found.',
-        'content': True})
-    err_resp.json = lambda: err_resp.json_data
+        'content': True}).encode()
 
     mock_client.return_value.services.get.side_effect = CivisAPIError(err_resp)
 
     with pytest.raises(CivisAPIError) as excinfo:
         _get_service(sc)
 
-    expected_error = ('(404) The requested resource could not be found.')
+    expected_error = 'The requested resource could not be found.'
     assert str(excinfo.value) == expected_error
 
 

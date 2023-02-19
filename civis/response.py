@@ -15,6 +15,10 @@ class CivisClientError(Exception):
         return self.error_message
 
 
+class CivisImmutableResponseError(Exception):
+    pass
+
+
 def _response_to_json(response):
     """Parse a raw response to a dict.
 
@@ -95,7 +99,7 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
 
 
 def _raise_response_immutable_error():
-    raise NotImplementedError("Response object is not mutable")
+    raise CivisImmutableResponseError("Response object is not mutable")
 
 
 class Response:
@@ -138,8 +142,14 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[camel_to_snake(key)] = val
 
-        # Can't ban __setattr__ until after the attrs above have been defined.
-        self.__setattr__ = _raise_response_immutable_error
+    def __setattr__(self, key, value):
+        if key == "__dict__":
+            self.__dict__.update(value)
+        elif key in ("json_data", "headers", "calls_remaining", "rate_limit",
+                     "_data_camel", "_data_snake"):
+            self.__dict__[key] = value
+        else:
+            _raise_response_immutable_error()
 
     def __setitem__(self, key, value):
         _raise_response_immutable_error()
@@ -173,29 +183,22 @@ class Response:
 
     def __eq__(self, other):
         if isinstance(other, dict):
-            return self._to_dict() == other
+            return self._data_snake == other
         elif isinstance(other, Response):
-            return self._to_dict() == other._to_dict()
+            return self._data_snake == other._data_snake
         else:
             raise TypeError(f"Response and {type(other)} can't be compared")
-
-    def _to_dict(self):
-        result = {}
-        for k, v in self._data_snake.items():
-            if isinstance(v, Response):
-                val = v._to_dict()
-            elif isinstance(v, list):
-                val = [
-                    o._to_dict() if isinstance(o, Response) else o for o in v
-                ]
-            else:
-                val = v
-            result[k] = val
-        return result
 
     def __setstate__(self, state):
         """Set the state when unpickling, to avoid RecursionError."""
         self.__dict__ = state
+
+    def _replace(self, key, value):
+        """Usage outside the civis-python repo is strongly discouraged.
+
+        `key` is assumed to be already in snake_case.
+        """
+        self._data_snake[key] = value
 
 
 class PaginatedResponse:

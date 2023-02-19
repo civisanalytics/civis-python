@@ -69,7 +69,6 @@ def create_client_mock_for_container_tests(
                                          'container_id': script_id,
                                          'state': 'queued'})
 
-    mock_container_run = None
     if state == 'failed':
         mock_container_run = Response({'id': run_id,
                                        'container_id': script_id,
@@ -87,10 +86,7 @@ def create_client_mock_for_container_tests(
     c.jobs.list_runs_logs.return_value = (log_outputs or [])
 
     def change_state_to_cancelled(script_id):
-        nonlocal mock_container_run
-        new_mock_container_run = mock_container_run._to_dict()
-        new_mock_container_run["state"] = "cancelled"
-        mock_container_run = Response(new_mock_container_run)
+        mock_container_run._replace("state", "cancelled")
         return mock_container_run
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
