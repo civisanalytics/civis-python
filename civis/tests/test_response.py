@@ -1,3 +1,5 @@
+import io
+import pickle
 from unittest import mock
 
 import pytest
@@ -14,6 +16,7 @@ from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
     convert_response_data_type, Response, CivisImmutableResponseError
 )
+from civis._utils import camel_to_snake
 
 
 def _create_mock_response(data, headers):
@@ -259,3 +262,79 @@ def test_response_cross_compatibility():
         == response["fooBar"].barBaz
         == response["fooBar"]["barBaz"]
     )
+
+
+@pytest.mark.parametrize(
+    "json_data, expected_length",
+    [
+        ({}, 0),
+        ({"foo": 123}, 1),
+        ({"foo": 123, "bar": 456}, 2),
+    ],
+)
+def test_len(json_data, expected_length):
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert len(response) == expected_length
+
+
+@pytest.mark.parametrize(
+    "json_data, expected_repr",
+    [
+        ({}, "{}"),
+        ({"foo": 123}, "{'foo': 123}"),
+        ({"foo": {"barBaz": 456}}, "{'foo': {'bar_baz': 456}}"),
+    ],
+)
+def test_repr(json_data, expected_repr):
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert repr(response) == expected_repr
+
+
+def test_get():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert response.get("foo") == 123
+    assert response.bar.get("baz_qux") == response.bar.get("bazQux") == 456
+    assert response.get("doesn't exist") is None
+    assert response.get("doesn't exist", "fallback value") == "fallback value"
+    assert response.bar.get("doesn't exist") is None
+
+
+def test_items():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+    for k, v in response.items():
+        assert k in ("foo", "bar")
+        try:
+            assert v == 123
+        except TypeError:
+            assert v == Response({"bazQux": 456})
+
+
+def test_eq():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+
+    response2 = Response(json_data)
+    assert response == response2
+    assert response == {"foo": 123, "bar": {camel_to_snake("bazQux"): 456}}
+
+    for uncomparable in (789, "blah", ["a list"], ("a tuple",), {"a set"}):
+        with pytest.raises(TypeError):
+            response == uncomparable
+
+
+def test_response_is_pickleable():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": 456}
+    response = Response(json_data)
+    pickled = pickle.dumps(response)
+    unpickled = pickle.load(io.BytesIO(pickled))
+    assert response == unpickled
