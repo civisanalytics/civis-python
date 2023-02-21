@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   More concretely, both the "setitem" (e.g., `response["foo"] = "bar"`)
   and "setattr" (e.g., `response.foo = "bar"`) operations
   would now raise an `CivisImmutableResponseError` exception. (#463)
+- Instantiating a `civis.response.Response` object no longer
+  accepts the boolean `snake_case` keyword argument;
+  snake-case keys at a `Response` object are now always available (and preferred). (#463)
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
@@ -28,8 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
 - Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
 - civis.io.file_id_from_run_output now works for all job types (#461)
-- A nested `civis.response.Response` object now supports both snake_case and camelCase
-  for key access. Previously, only the non-Pythonic camelCase keys were allowed. (#463)
+- A nested `civis.response.Response` object now supports both snake-case and camel-case
+  for key access. Previously, only the non-Pythonic camel-case keys were available. (#463)
 
 ### Deprecated
 ### Removed
