@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Breaking Changes from v1.x.x to v2.0.0
+
+(Changes documented in this section are not repeated in the following sections.)
+
+- A `civis.response.Response` object is no longer mutable.
+  More concretely, both the "setitem" (e.g., `response["foo"] = "bar"`)
+  and "setattr" (e.g., `response.foo = "bar"`) operations
+  would now raise an `CivisImmutableResponseError` exception. (#463)
+
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
 - Added support for Python 3.10 and 3.11 (#462)
@@ -19,6 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
 - Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
 - civis.io.file_id_from_run_output now works for all job types (#461)
+- A nested `civis.response.Response` object now supports both snake_case and camelCase
+  for key access. Previously, only the non-Pythonic camelCase keys were allowed. (#463)
 
 ### Deprecated
 ### Removed
