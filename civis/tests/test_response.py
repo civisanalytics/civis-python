@@ -1,3 +1,5 @@
+import io
+import pickle
 from unittest import mock
 
 import pytest
@@ -12,8 +14,9 @@ except ImportError:
 
 from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
-    convert_response_data_type, Response
+    convert_response_data_type, Response, CivisImmutableResponseError
 )
+from civis._utils import camel_to_snake
 
 
 def _create_mock_response(data, headers):
@@ -186,3 +189,152 @@ def test_parse_column_names():
     }
     resp = Response(resp_dict)
     assert resp.columns[0].value_distribution_percent['update'] == 50.0
+
+
+@pytest.mark.parametrize(
+    "headers, expected_calls_remaining, expected_rate_limit",
+    [
+        (None, None, None),
+        ({}, None, None),
+        ({"X-RateLimit-Remaining": "1", "X-RateLimit-Limit": "100"}, 1, 100),
+    ],
+)
+def test_rate_limit(headers, expected_calls_remaining, expected_rate_limit):
+    response = Response({"foo": "bar"}, headers=headers)
+    assert response.headers == headers
+    assert response.calls_remaining == expected_calls_remaining
+    assert response.rate_limit == expected_rate_limit
+
+
+def test_response_is_immutable():
+    """Test that the Response object is immutable.
+
+    Resolves https://github.com/civisanalytics/civis-python/issues/228
+    """
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"fooBar": {"barBaz": "whatever"}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+
+    with pytest.raises(CivisImmutableResponseError):
+        response["foo_bar"] = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response.foo_bar = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response["foo_bar"]["bar_baz"] = "something else"
+    with pytest.raises(CivisImmutableResponseError):
+        response.foo_bar.bar_baz = "something else"
+
+
+def test_response_cross_compatibility():
+    """Test cross compatibility: snake vs camel case, getitem vs getattr.
+
+    Resolves https://github.com/civisanalytics/civis-python/issues/317
+    """
+    msg = "Life is a long journey. Enjoy it!"
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"fooBar": {"barBaz": msg}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+
+    #   16 combinations altogether
+    # = 2 ** 4
+    # = {2 levels deep under the response} ** {snake/camel * getitem/getattr}
+    assert (
+        msg
+        == response.foo_bar.bar_baz
+        == response.foo_bar["bar_baz"]
+        == response.foo_bar.barBaz
+        == response.foo_bar["barBaz"]
+
+        == response["foo_bar"].bar_baz
+        == response["foo_bar"]["bar_baz"]
+        == response["foo_bar"].barBaz
+        == response["foo_bar"]["barBaz"]
+
+        == response.fooBar.bar_baz
+        == response.fooBar["bar_baz"]
+        == response.fooBar.barBaz
+        == response.fooBar["barBaz"]
+
+        == response["fooBar"].bar_baz
+        == response["fooBar"]["bar_baz"]
+        == response["fooBar"].barBaz
+        == response["fooBar"]["barBaz"]
+    )
+
+
+@pytest.mark.parametrize(
+    "json_data, expected_length",
+    [
+        ({}, 0),
+        ({"foo": 123}, 1),
+        ({"foo": 123, "bar": 456}, 2),
+    ],
+)
+def test_len(json_data, expected_length):
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert len(response) == expected_length
+
+
+@pytest.mark.parametrize(
+    "json_data, expected_repr",
+    [
+        ({}, "{}"),
+        ({"foo": 123}, "{'foo': 123}"),
+        ({"foo": {"barBaz": 456}}, "{'foo': {'bar_baz': 456}}"),
+    ],
+)
+def test_repr(json_data, expected_repr):
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert repr(response) == expected_repr
+
+
+def test_get():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+    assert response.get("foo") == 123
+    assert response.bar.get("baz_qux") == response.bar.get("bazQux") == 456
+    assert response.get("doesn't exist") is None
+    assert response.get("doesn't exist", "fallback value") == "fallback value"
+    assert response.bar.get("doesn't exist") is None
+
+
+def test_items():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+    assert response.json_data == json_data
+    for k, v in response.items():
+        assert k in ("foo", "bar")
+        try:
+            assert v == 123
+        except TypeError:
+            assert v == Response({"bazQux": 456})
+
+
+def test_eq():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": {"bazQux": 456}}
+    response = Response(json_data)
+
+    response2 = Response(json_data)
+    assert response == response2
+    assert response == {"foo": 123, "bar": {camel_to_snake("bazQux"): 456}}
+
+    for uncomparable in (789, "blah", ["a list"], ("a tuple",), {"a set"}):
+        with pytest.raises(TypeError):
+            response == uncomparable
+
+
+def test_response_is_pickleable():
+    # JSON data from the Civis API is in camelCase.
+    json_data = {"foo": 123, "bar": 456}
+    response = Response(json_data)
+    pickled = pickle.dumps(response)
+    unpickled = pickle.load(io.BytesIO(pickled))
+    assert response == unpickled

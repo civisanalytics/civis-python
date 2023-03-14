@@ -219,7 +219,7 @@ def test_infer(mock_make_factory, mock_job):
                                         'CIVIS_RUN_ID': "test_run"}):
         civis.parallel.infer_backend_factory(client=mock_client)
 
-    expected = dict(mock_job)
+    expected = mock_job._data_snake
     del expected['from_template_id']
     del expected['id']
     mock_make_factory.assert_called_once_with(

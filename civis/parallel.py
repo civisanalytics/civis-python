@@ -20,7 +20,6 @@ import requests
 
 import civis
 from civis.base import CivisAPIError
-
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
 try:
@@ -192,7 +191,7 @@ def infer_backend_factory(required_resources=None,
         try:
             custom_args = state.arguments
             state = client.scripts.get_containers(template.script_id)
-            state.arguments = custom_args
+            state._replace("arguments", custom_args)
         except civis.base.CivisAPIError as err:
             if err.status_code == 404:
                 raise RuntimeError('Unable to introspect environment from '
@@ -204,20 +203,20 @@ def infer_backend_factory(required_resources=None,
 
     # Default to this container's resource requests, but
     # allow users to override it.
-    state.required_resources.update(required_resources or {})
+    state.required_resources._data_snake.update(required_resources or {})
 
     # Update parameters with user input
     params = params or []
     for input_param in params:
-        for param in state.params:
+        for i, param in enumerate(list(state.params)):
             if param['name'] == input_param['name']:
-                param.update(input_param)
+                param._data_snake.update(input_param)
                 break
         else:
-            state.params.append(input_param)
+            state._data_snake["params"].append(input_param)
 
     # Update arguments with input
-    state.arguments.update(arguments or {})
+    state.arguments._data_snake.update(arguments or {})
 
     # Set defaults on other keyword arguments with
     # values from the current script

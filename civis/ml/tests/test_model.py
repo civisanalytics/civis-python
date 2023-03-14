@@ -747,7 +747,7 @@ def test_modelpipeline_classmethod_constructor_errors(mock_future):
         _model.ModelPipeline.from_existing(1, 1, client=mock_client)
 
 
-def _container_response_stub(from_template_id=8387):
+def _container_response_stub(from_template_id=8387, *, drop_arguments=None):
     arguments = {
         'MODEL': 'sparse_logistic',
         'TARGET_COLUMN': 'brushes_teeth_much',
@@ -762,6 +762,8 @@ def _container_response_stub(from_template_id=8387):
         'DEPENDENCIES': 'A B C D',
         'GIT_CRED': 9876
     }
+    for arg in (drop_arguments or []):
+        del arguments[arg]
     notifications = {
         'urls': [],
         'failureEmailAddresses': [],
@@ -824,9 +826,9 @@ def test_modelpipeline_classmethod_constructor_defaults(mock_future):
 
     # checks that it works with a registration template and train template
     for template_id in [TRAIN_ID_PROD, REGISTRATION_ID_PROD]:
-        container_response_stub = _container_response_stub(template_id)
-        del container_response_stub.arguments['PARAMS']
-        del container_response_stub.arguments['CVPARAMS']
+        container_response_stub = _container_response_stub(
+            template_id, drop_arguments=["PARAMS", "CVPARAMS"]
+        )
         mock_client = mock.Mock()
         mock_client.scripts.get_containers.return_value = container_response_stub  # noqa
         mock_client.credentials.get.return_value = Response({'name': 'Token'})

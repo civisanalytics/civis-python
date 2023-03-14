@@ -1,7 +1,9 @@
+import json
 from operator import itemgetter
 from unittest import mock
 
 import pytest
+import requests
 
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
@@ -133,7 +135,7 @@ def _check_executor(from_template_id=None):
         future = bpe.submit("foo")
 
     # Mock and test running, future.job_id, and done()
-    mock_run.state = "running"
+    mock_run._replace("state", "running")
     assert future.running(), "future is incorrectly marked as not running"
     assert future.job_id == job_id, "job_id not stored properly"
     assert not future.done(), "future is incorrectly marked as done"
@@ -145,11 +147,11 @@ def _check_executor(from_template_id=None):
     assert not future.running(), "running() did not return False as expected"
 
     # Mock and test done()
-    mock_run.state = "succeeded"
+    mock_run._replace("state", "succeeded")
     assert future.done(), "done() did not return True as expected"
 
     # Test cancelling all jobs.
-    mock_run.state = "running"
+    mock_run._replace("state", "running")
     bpe.cancel_all()
     assert future.cancelled(), "cancel_all() failed"
 
@@ -316,7 +318,7 @@ def _setup_client_mock(job_id=-10, run_id=100, n_failures=8,
         n_failures, failure_is_error)
 
     def change_state_to_cancelled(job_id):
-        mock_container_run.state = "cancelled"
+        mock_container_run._replace("state", "cancelled")
         return mock_container_run
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
@@ -331,15 +333,14 @@ def test_cancel_finished_job():
     # Set up a mock client which will give an exception when
     # you try to cancel any job.
     c = _setup_client_mock()
-    err_resp = response.Response({
+    err_resp = requests.Response()
+    err_resp._content = json.dumps({
         'status_code': 404,
         'error': 'not_found',
         'errorDescription': 'The requested resource could not be found.',
-        'content': True})
-    err_resp.json = lambda: err_resp.json_data
+        'content': True}).encode()
     c.scripts.post_cancel.side_effect = CivisAPIError(err_resp)
-    c.scripts.post_containers_runs.return_value.state = 'running'
-
+    c.scripts.post_containers_runs.return_value._replace("state", "running")
     fut = ContainerFuture(-10, 100, polling_interval=1, client=c,
                           poll_on_creation=False)
     assert not fut.done()

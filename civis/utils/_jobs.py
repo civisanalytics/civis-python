@@ -101,7 +101,7 @@ def run_template(id, arguments, JSONValue=False, client=None):
             )
         # Note that the cast to a dict is to convert
         # an expected Response object.
-        return dict(json_output[0])
+        return json_output[0]._data_snake
     else:
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids

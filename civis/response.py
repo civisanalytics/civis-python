@@ -15,6 +15,10 @@ class CivisClientError(Exception):
         return self.error_message
 
 
+class CivisImmutableResponseError(Exception):
+    pass
+
+
 def _response_to_json(response):
     """Parse a raw response to a dict.
 
@@ -94,7 +98,11 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
         return Response(data, headers=headers)
 
 
-class Response(dict):
+def _raise_response_immutable_error():
+    raise CivisImmutableResponseError("Response object is not mutable")
+
+
+class Response:
     """Custom Civis response object.
 
     Attributes
@@ -109,42 +117,90 @@ class Response(dict):
         Number of API calls remaining before rate limit is reached.
     rate_limit : int
         Total number of calls per API rate limit period.
-
-    Notes
-    -----
-    The main features of this class are that it maps camelCase to snake_case
-    at the top level of the json object and attaches keys as attributes.
-    Nested object keys are not changed.
     """
-    def __init__(self, json_data, snake_case=True, headers=None):
+    def __init__(self, json_data, *, headers=None):
         self.json_data = json_data
-        if headers is not None:
-            # this circumvents recursive calls
-            self.headers = headers
-            self.calls_remaining = headers.get('X-RateLimit-Remaining')
-            self.rate_limit = headers.get('X-RateLimit-Limit')
+        self.headers = headers
+        self.calls_remaining = (
+            int(x)
+            if (x := (headers or {}).get('X-RateLimit-Remaining')) else x
+        )
+        self.rate_limit = (
+            int(x)
+            if (x := (headers or {}).get('X-RateLimit-Limit')) else x
+        )
 
-        # Keys to update for this response object.
-        self_updates = {}
+        self._data_camel = {}
+        self._data_snake = {}
 
         if json_data is not None:
             for key, v in json_data.items():
-                if snake_case:
-                    key = camel_to_snake(key)
 
                 if isinstance(v, dict):
-                    val = Response(v, False)
+                    val = Response(v)
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o
                            for o in v]
                 else:
                     val = v
 
-                self_updates[key] = val
+                self._data_camel[key] = val
+                self._data_snake[camel_to_snake(key)] = val
 
-        self.update(self_updates)
-        # Update self.__dict__ at the end to avoid replacing the update method.
-        self.__dict__.update(self_updates)
+    def __setattr__(self, key, value):
+        if key == "__dict__":
+            self.__dict__.update(value)
+        elif key in ("json_data", "headers", "calls_remaining", "rate_limit",
+                     "_data_camel", "_data_snake"):
+            self.__dict__[key] = value
+        else:
+            _raise_response_immutable_error()
+
+    def __setitem__(self, key, value):
+        _raise_response_immutable_error()
+
+    def __getitem__(self, item):
+        try:
+            return self._data_snake[item]
+        except KeyError:
+            return self._data_camel[item]
+
+    def __getattr__(self, item):
+        try:
+            return self.__getitem__(item)
+        except KeyError as e:
+            raise AttributeError(f"Response object has no attribute {str(e)}")
+
+    def __len__(self):
+        return len(self._data_snake)
+
+    def __repr__(self):
+        return repr(self._data_snake)
+
+    def get(self, key, default=None):
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
+
+    def items(self):
+        return self._data_snake.items()
+
+    def __eq__(self, other):
+        if isinstance(other, dict):
+            return self._data_snake == other
+        elif isinstance(other, Response):
+            return self._data_snake == other._data_snake
+        else:
+            raise TypeError(f"Response and {type(other)} can't be compared")
+
+    def __setstate__(self, state):
+        """Set the state when unpickling, to avoid RecursionError."""
+        self.__dict__ = state
+
+    def _replace(self, key, value):
+        """Only used within this repo; `key` assumed to be in snake_case."""
+        self._data_snake[key] = value
 
 
 class PaginatedResponse:
