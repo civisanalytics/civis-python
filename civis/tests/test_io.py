@@ -1332,7 +1332,8 @@ def test_file_to_civis(mock_requests, input_filename):
     assert fid == expected_id
     mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
     mock_requests.post.assert_called_once_with(
-        mock_civis.files.post.return_value.upload_url, files=mock.ANY, timeout=60)
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY,
+        timeout=60)
 
 
 @pytest.mark.parametrize("table,expected", [
