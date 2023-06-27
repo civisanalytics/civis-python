@@ -110,7 +110,7 @@ def _single_upload(buf, name, client, **kwargs):
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
         # which can't be streamed with using requests-toolbelt anyway
-        response = requests.post(url, files=form_key)
+        response = requests.post(url, files=form_key, timeout=60)
 
         if not response.ok:
             msg = _get_aws_error_message(response)
@@ -151,7 +151,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         with open(file_path, 'rb') as fin:
             fin.seek(offset)
             partial_buf = BufferedPartialReader(fin, num_bytes)
-            part_response = requests.put(part_url, data=partial_buf)
+            part_response = requests.put(part_url, data=partial_buf, timeout=60)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
@@ -370,7 +370,7 @@ def _civis_to_file(file_id, buf, api_key=None, client=None):
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
 
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=60)
         response.raise_for_status()
         chunked = response.iter_content(CHUNK_SIZE)
         for lines in chunked:
