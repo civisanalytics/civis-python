@@ -186,7 +186,7 @@ def test_civis_file_to_table_table_exists(m_run_cleaning,
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
 
-    mock_civis.get_table_id.return_value = 42
+    mock_civis.databases.get_schemas_tables.return_value = 42
     m_process_cleaning_results.return_value = (
         [mock_cleaned_file_id],
         True,  # headers
@@ -280,7 +280,7 @@ def test_civis_file_to_table_table_doesnt_exist(m_run_cleaning,
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
 
-    mock_civis.get_table_id.side_effect = ValueError('no table')
+    mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
     m_process_cleaning_results.return_value = (
         [mock_cleaned_file_id],
@@ -375,7 +375,7 @@ def test_civis_file_to_table_table_doesnt_exist_all_sql_types_missing(
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
-    mock_civis.get_table_id.side_effect = ValueError('no table')
+    mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{'name': 'a', 'sql_type': ''},
                      {'name': 'b', 'sql_type': ''}]
     detected_columns = [{'name': 'a', 'sql_type': 'INTEGER'},
@@ -474,7 +474,7 @@ def test_civis_file_to_table_table_does_not_exist_some_sql_types_missing(
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
-    mock_civis.get_table_id.side_effect = ValueError('no table')
+    mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{'name': 'a', 'sql_type': 'INT'},
                      {'name': 'b', 'sql_type': ''}]
 
@@ -506,7 +506,7 @@ def test_civis_file_to_table_table_columns_keys_misspelled(
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
-    mock_civis.get_table_id.side_effect = ValueError('no table')
+    mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{'name': 'a', 'sqlType': 'INT'},
                      {'name': 'b', 'bad_type': ''}]
 
@@ -544,7 +544,7 @@ def test_civis_file_to_table_table_doesnt_exist_provide_table_columns(
         mock_civis.imports.post_files_csv.return_value.id = mock_import_id
         mock_civis.get_database_id.return_value = 42
         mock_civis.default_credential = 713
-        mock_civis.get_table_id.side_effect = ValueError('no table')
+        mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
         table_columns = [{'name': 'foo', 'sql_type': 'INTEGER'},
                          {'name': 'bar', 'sql_type': 'VARCHAR(42)'}]
         m_process_cleaning_results.return_value = (
@@ -654,7 +654,7 @@ def test_civis_file_to_table_multi_file(
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
 
-    mock_civis.get_table_id.side_effect = ValueError('no table')
+    mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
     m_process_cleaning_results.return_value = (
         mock_cleaned_file_ids,
@@ -1272,7 +1272,7 @@ def test_civis_to_file_local(mock_requests):
             assert _fin.read() == 'abcdef'
     mock_civis.files.get.assert_called_once_with(137)
     mock_requests.get.assert_called_once_with(
-        mock_civis.files.get.return_value.file_url, stream=True)
+        mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @mock.patch.object(_files, 'requests', autospec=True)
@@ -1312,7 +1312,7 @@ def test_civis_to_file_retries(mock_requests):
     mock_civis.files.get.assert_called_once_with(137)
     assert mock_requests.get.call_count == 2
     mock_requests.get.assert_called_with(
-         mock_civis.files.get.return_value.file_url, stream=True)
+         mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @pytest.mark.parametrize('input_filename', ['newname', None])
@@ -1332,7 +1332,7 @@ def test_file_to_civis(mock_requests, input_filename):
     assert fid == expected_id
     mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
     mock_requests.post.assert_called_once_with(
-        mock_civis.files.post.return_value.upload_url, files=mock.ANY)
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY, timeout=60)
 
 
 @pytest.mark.parametrize("table,expected", [
