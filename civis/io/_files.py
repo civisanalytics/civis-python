@@ -151,7 +151,8 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         with open(file_path, 'rb') as fin:
             fin.seek(offset)
             partial_buf = BufferedPartialReader(fin, num_bytes)
-            part_response = requests.put(part_url, data=partial_buf, timeout=60)
+            part_response = requests.put(part_url, data=partial_buf,
+                                         timeout=60)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
