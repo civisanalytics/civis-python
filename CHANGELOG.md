@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 1.16.1 - 2023-06-29
+### Changed
+- Require joblib <1.3
+
 ## 1.16.0 - 2021-12-14
 ### Added
 - Added documentation around testing code using mocking (#447)
@@ -29,7 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added default values from swagger in client method's signature (#417)
 
 ### Changed
-- Explicitly stated CSV-like civis file format requirement in 
+- Explicitly stated CSV-like civis file format requirement in
   `civis.io.civis_file_to_table`'s docstring (#445)
 - Called out the fact that `joblib.Parallel`'s `pre_dispatch` defaults to `"2*n_jobs"`
   in the Sphinx docs (#443)
@@ -49,7 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   has `VARCHAR` (#439)
 - Updated info about MacOS shell configuration file to be `~/.zshrc` (#444)
 - Fixed the Sphinx docs to show details of multi-word API endpoints (#442)
-- Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415) 
+- Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415)
 - Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
 - Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431)
 - Converted `assert` statements in non-test code into proper error handling (#430, #435)
