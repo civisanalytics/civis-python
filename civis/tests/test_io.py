@@ -186,7 +186,9 @@ def test_civis_file_to_table_table_exists(m_run_cleaning,
     mock_civis.get_database_id.return_value = 42
     mock_civis.default_credential = 713
 
-    mock_civis.databases.get_schemas_tables.return_value = 42
+    mock_civis.databases.get_schemas_tables.return_value = Response({
+        'name': 'table1'
+    })
     m_process_cleaning_results.return_value = (
         [mock_cleaned_file_id],
         True,  # headers
