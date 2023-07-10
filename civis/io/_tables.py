@@ -18,7 +18,7 @@ import zipfile
 
 from civis import APIClient
 from civis._utils import maybe_get_random_name
-from civis.base import EmptyResultError, CivisImportError
+from civis.base import EmptyResultError, CivisImportError, CivisAPIError
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis
 from civis.utils import run_job
@@ -347,7 +347,7 @@ def read_civis_sql(sql, database, use_pandas=False,
 
         data = pd.read_csv(url, **kwargs)
     else:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=60)
         response.raise_for_status()
 
         with io.StringIO() as buf:
@@ -1063,12 +1063,16 @@ def civis_file_to_table(file_id, database, table, client=None,
             )
 
     try:
-        client.get_table_id(table, database)
+        client.databases.get_schemas_tables(db_id, schema, table_name)
         log.debug('Table {table} already exists - skipping column '
                   'detection'.format(table=table))
         table_exists = True
-    except ValueError:
+    except CivisAPIError as e:
         table_exists = False
+        if e.status_code != 404:
+            warnings.warn("Unexpected error when checking if table %s.%s "
+                          "exists on database %d:\n%s"
+                          % (schema, table_name, db_id, str(e)))
 
     sql_types_provided = False
     if table_columns:
@@ -1184,7 +1188,7 @@ def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):
 
 
 def _download_file(url, local_path, headers, compression):
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, timeout=60)
     response.raise_for_status()
 
     # gzipped buffers can be concatenated so write headers as gzip

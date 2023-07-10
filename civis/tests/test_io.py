@@ -222,7 +222,9 @@ class ImportTests(CivisVCRTestCase):
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
 
-        self.mock_client.get_table_id.return_value = 42
+        self.mock_client.databases.get_schemas_tables.return_value = Response({
+            'name': 'table1'
+        })
         m_process_cleaning_results.return_value = (
             [mock_cleaned_file_id],
             True,  # headers
@@ -320,7 +322,8 @@ class ImportTests(CivisVCRTestCase):
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
 
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        self.mock_client.databases.get_schemas_tables.side_effect =\
+            MockAPIError(404)
         mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
         m_process_cleaning_results.return_value = (
             [mock_cleaned_file_id],
@@ -418,7 +421,8 @@ class ImportTests(CivisVCRTestCase):
             .id = mock_import_id
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        self.mock_client.databases.get_schemas_tables.side_effect =\
+            MockAPIError(404)
         table_columns = [{'name': 'a', 'sql_type': ''},
                          {'name': 'b', 'sql_type': ''}]
         detected_columns = [{'name': 'a', 'sql_type': 'INTEGER'},
@@ -519,7 +523,8 @@ class ImportTests(CivisVCRTestCase):
             .id = mock_import_id
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        self.mock_client.databases.get_schemas_tables.side_effect =\
+            MockAPIError(404)
         table_columns = [{'name': 'a', 'sql_type': 'INT'},
                          {'name': 'b', 'sql_type': ''}]
 
@@ -553,7 +558,8 @@ class ImportTests(CivisVCRTestCase):
             .id = mock_import_id
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        self.mock_client.databases.get_schemas_tables.side_effect =\
+            MockAPIError(404)
         table_columns = [{'name': 'a', 'sqlType': 'INT'},
                          {'name': 'b', 'bad_type': ''}]
 
@@ -594,7 +600,8 @@ class ImportTests(CivisVCRTestCase):
             self.mock_client.get_database_id.return_value = 42
             self.mock_client.default_credential = 713
 
-            self.mock_client.get_table_id.side_effect = ValueError('no table')
+            self.mock_client.databases.get_schemas_tables.side_effect =\
+                MockAPIError(404)
             table_columns = [{'name': 'foo', 'sql_type': 'INTEGER'},
                              {'name': 'bar', 'sql_type': 'VARCHAR(42)'}]
             m_process_cleaning_results.return_value = (
@@ -707,7 +714,8 @@ class ImportTests(CivisVCRTestCase):
         self.mock_client.get_database_id.return_value = 42
         self.mock_client.default_credential = 713
 
-        self.mock_client.get_table_id.side_effect = ValueError('no table')
+        self.mock_client.databases.get_schemas_tables.side_effect =\
+            MockAPIError(404)
         mock_columns = [{'name': 'foo', 'sql_type': 'INTEGER'}]
         m_process_cleaning_results.return_value = (
             mock_cleaned_file_ids,
@@ -1325,7 +1333,7 @@ def test_civis_to_file_local(mock_requests):
             assert _fin.read() == 'abcdef'
     mock_civis.files.get.assert_called_once_with(137)
     mock_requests.get.assert_called_once_with(
-        mock_civis.files.get.return_value.file_url, stream=True)
+        mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @pytest.mark.civis_to_file
@@ -1366,7 +1374,7 @@ def test_civis_to_file_retries(mock_requests):
     mock_civis.files.get.assert_called_once_with(137)
     assert mock_requests.get.call_count == 2
     mock_requests.get.assert_called_with(
-         mock_civis.files.get.return_value.file_url, stream=True)
+         mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @pytest.mark.file_to_civis
@@ -1387,7 +1395,8 @@ def test_file_to_civis(mock_requests, input_filename):
     assert fid == expected_id
     mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
     mock_requests.post.assert_called_once_with(
-        mock_civis.files.post.return_value.upload_url, files=mock.ANY)
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY,
+        timeout=60)
 
 
 @pytest.mark.split_schema_tablename
