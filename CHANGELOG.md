@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 1.16.1 - 2023-07-10
+### Changed
+- Changed civis_file_to_table to not rely on table ids for determining a table's existence (#464)
+
 ## 1.16.0 - 2021-12-14
 ### Added
 - Added documentation around testing code using mocking (#447)

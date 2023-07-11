@@ -1,5 +1,5 @@
 # Testing and linting
-pytest==6.2.5
+pytest==7.2.1
 flake8==4.0.1
 pytest-cov==3.0.0
 vcrpy==1.11.1  # higher versions would break tests
@@ -13,7 +13,7 @@ sphinx_rtd_theme==1.0.0
 numpydoc==1.1.0
 
 # CivisML
-numpy==1.21.4
+numpy==1.22.4
 scikit-learn==1.0.1
 scipy==1.7.2
 feather-format==0.4.1
