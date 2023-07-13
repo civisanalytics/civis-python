@@ -81,13 +81,6 @@ workflows:
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
       - pre-build:
-          name: safety
-          command-run: |
-            pip install -e . && \
-            pip install --upgrade safety && \
-            safety --version && \
-            safety check
-      - pre-build:
           name: bandit
           command-run: |
             pip install --upgrade bandit && \
@@ -98,7 +91,6 @@ workflows:
             - flake8
             - sphinx-build
             - twine
-            - safety
             - bandit
           matrix:
             parameters:

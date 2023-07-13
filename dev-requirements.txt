@@ -1,7 +1,8 @@
 # Testing and linting
-pytest==6.2.5
+pytest==7.2.1
 flake8==4.0.1
 pytest-cov==3.0.0
+urllib3==1.26.16 # version 2 is incompatible with our vcr version
 vcrpy==1.11.1  # higher versions would break tests
 vcrpy-unittest==0.1.7
 twine==3.6.0
@@ -13,7 +14,8 @@ sphinx_rtd_theme==1.0.0
 numpydoc==1.1.0
 
 # CivisML
-numpy==1.21.4
+numpy==1.21.4 ; python_version <= '3.7'
+numpy==1.22.4 ; python_version >= '3.8'
 scikit-learn==1.0.1
 scipy==1.7.2
 feather-format==0.4.1
