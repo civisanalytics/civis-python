@@ -79,10 +79,9 @@ def test_create_method_no_iterator_kwarg():
 def test_exclude_resource():
     include = "tables/"
     exclude = "excluded_in_base/"
-    assert _resources.exclude_resource(exclude, "1.0", "base")
-    assert not _resources.exclude_resource(include, "1.0", "base")
-    assert not _resources.exclude_resource(exclude, "9.0", "base")
-    assert not _resources.exclude_resource(exclude, "1.0", "all")
+    assert _resources.exclude_resource(exclude, "1.0")
+    assert not _resources.exclude_resource(include, "1.0")
+    assert not _resources.exclude_resource(exclude, "9.0")
 
 
 def test_property_type():
@@ -217,7 +216,7 @@ def test_duplicate_names_generated_from_api_spec():
     paths = resolved_civis_api_spec['paths']
     classes = defaultdict(list)
     for path, ops in paths.items():
-        class_name, methods = _resources.parse_path(path, ops, "1.0", "all")
+        class_name, methods = _resources.parse_path(path, ops, "1.0")
         method_names = [x[0] for x in methods]
         classes[class_name].extend(method_names)
     for cls, names in classes.items():
@@ -304,33 +303,29 @@ def test_create_method_keyword_only():
 def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
     api_key = "mock"
     api_version = "1.0"
-    resources = "all"
 
     # Calls generate_classes when no cache is passed
-    _resources.generate_classes_maybe_cached(None, api_key, api_version,
-                                             resources)
-    mock_gen.assert_called_once_with(api_key, api_version, resources)
+    _resources.generate_classes_maybe_cached(None, api_key, api_version)
+    mock_gen.assert_called_once_with(api_key, api_version)
     mock_gen.reset_mock()
 
     # Handles OrderedDict
     spec = OrderedDict({"test": True})
-    _resources.generate_classes_maybe_cached(spec, api_key, api_version,
-                                             resources)
-    mock_parse.assert_called_once_with(spec, api_version, resources)
+    _resources.generate_classes_maybe_cached(spec, api_key, api_version)
+    mock_parse.assert_called_once_with(spec, api_version)
     assert not mock_gen.called
 
     # Handles str
     mock_parse.reset_mock()
-    _resources.generate_classes_maybe_cached('mock', api_key, api_version,
-                                             resources)
-    mock_parse.assert_called_once_with(spec, api_version, resources)
+    _resources.generate_classes_maybe_cached('mock', api_key, api_version)
+    mock_parse.assert_called_once_with(spec, api_version)
     assert not mock_gen.called
 
     # Error when a regular dict is passed
     bad_spec = {"test": True}
     with pytest.raises(ValueError):
         _resources.generate_classes_maybe_cached(bad_spec, api_key,
-                                                 api_version, resources)
+                                                 api_version)
 
 
 @mock.patch('civis.resources._resources.parse_method', autospec=True)
@@ -342,7 +337,7 @@ def test_parse_api_spec_names(mock_method):
                   "/oneword/": mock_ops,
                   "/hyphen-words": mock_ops}
     mock_api_spec = {"paths": mock_paths}
-    classes = _resources.parse_api_spec(mock_api_spec, "1.0", "all")
+    classes = _resources.parse_api_spec(mock_api_spec, "test_api_version")
     assert sorted(classes.keys()) == ["hyphen_words", "oneword", "two_words"]
     assert classes["oneword"].__name__ == "Oneword"
     assert classes["two_words"].__name__ == "Two_Words"

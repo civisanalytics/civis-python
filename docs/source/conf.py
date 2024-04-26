@@ -378,7 +378,7 @@ if _test_build:
         api_spec = JsonRef.replace_refs(
             json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
-        api_spec, '1.0', 'base')
+        api_spec, '1.0')
 else:
     api_key = os.environ.get("CIVIS_API_KEY")
     user_agent = "civis-python/SphinxDocs"

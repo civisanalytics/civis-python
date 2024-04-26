@@ -368,12 +368,6 @@ class APIClient(MetaMixin):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions. Currently only "1.0" is supported.
-    resources : string, optional
-        When set to "base", only the default endpoints will be exposed in the
-        client object. Set to "all" to include all endpoints available for
-        a given user, including those that may be in development and subject
-        to breaking changes at a later date. This will be removed in a future
-        version of the API client.
     local_api_spec : collections.OrderedDict or string, optional
         The methods on this class are dynamically built from the Civis API
         specification, which can be retrieved from the /endpoints endpoint.
@@ -382,9 +376,9 @@ class APIClient(MetaMixin):
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
     """
-    @deprecate_param('v2.0.0', 'retry_total', 'resources')
+    @deprecate_param('v2.0.0', 'retry_total')
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0", resources="all",
+                 retry_total=6, api_version="1.0",
                  local_api_spec=None):
         if retry_total != 6:
             warnings.warn(
@@ -402,17 +396,9 @@ class APIClient(MetaMixin):
         self._session_kwargs = {'api_key': session_auth_key}
         self.last_response = None
 
-        # Catch deprecation warnings from generate_classes_maybe_cached and
-        # the functions it calls until the `resources` argument is removed.
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                category=FutureWarning,
-                module='civis')
-            classes = generate_classes_maybe_cached(local_api_spec,
-                                                    session_auth_key,
-                                                    api_version,
-                                                    resources)
+        classes = generate_classes_maybe_cached(local_api_spec,
+                                                session_auth_key,
+                                                api_version)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(self._session_kwargs, client=self,
                                           return_type=return_type))
