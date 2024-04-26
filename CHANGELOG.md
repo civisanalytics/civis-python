@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - civis.io.file_id_from_run_output now works for all job types (#461)
 - A nested `civis.response.Response` object now supports both snake-case and camel-case
   for key access. Previously, only the non-Pythonic camel-case keys were available. (#463)
+- Pinned the dependency `joblib` at `< 1.3.0`, since `joblib >= 1.3.0` is incompatible
+  with the current civis-python codebase. (#469)
 
 ### Deprecated
 ### Removed
