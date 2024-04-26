@@ -347,7 +347,7 @@ def read_civis_sql(sql, database, use_pandas=False,
 
         data = pd.read_csv(url, **kwargs)
     else:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=60)
         response.raise_for_status()
 
         with io.StringIO() as buf:
@@ -1196,7 +1196,7 @@ def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):
 
 
 def _download_file(url, local_path, headers, compression):
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, timeout=60)
     response.raise_for_status()
 
     # gzipped buffers can be concatenated so write headers as gzip

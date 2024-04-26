@@ -1272,7 +1272,7 @@ def test_civis_to_file_local(mock_requests):
             assert _fin.read() == 'abcdef'
     mock_civis.files.get.assert_called_once_with(137)
     mock_requests.get.assert_called_once_with(
-        mock_civis.files.get.return_value.file_url, stream=True)
+        mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @mock.patch.object(_files, 'requests', autospec=True)
@@ -1312,7 +1312,7 @@ def test_civis_to_file_retries(mock_requests):
     mock_civis.files.get.assert_called_once_with(137)
     assert mock_requests.get.call_count == 2
     mock_requests.get.assert_called_with(
-         mock_civis.files.get.return_value.file_url, stream=True)
+         mock_civis.files.get.return_value.file_url, stream=True, timeout=60)
 
 
 @pytest.mark.parametrize('input_filename', ['newname', None])
@@ -1332,7 +1332,8 @@ def test_file_to_civis(mock_requests, input_filename):
     assert fid == expected_id
     mock_civis.files.post.assert_called_once_with(civis_name, expires_at=None)
     mock_requests.post.assert_called_once_with(
-        mock_civis.files.post.return_value.upload_url, files=mock.ANY)
+        mock_civis.files.post.return_value.upload_url, files=mock.ANY,
+        timeout=60)
 
 
 @pytest.mark.parametrize("table,expected", [

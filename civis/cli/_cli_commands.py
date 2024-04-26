@@ -240,7 +240,7 @@ def notebooks_download_cmd(notebook_id, path):
     """Download a notebook to a specified local path."""
     client = civis.APIClient()
     info = client.notebooks.get(notebook_id)
-    response = requests.get(info['notebook_url'], stream=True)
+    response = requests.get(info['notebook_url'], stream=True, timeout=60)
     response.raise_for_status()
     chunk_size = 32 * 1024
     chunked = response.iter_content(chunk_size)
