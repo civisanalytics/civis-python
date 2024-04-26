@@ -1,11 +1,9 @@
 from functools import lru_cache
 import logging
-import warnings
 
 import civis
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
-from civis._deprecation import deprecate_param
 from civis.response import _RETURN_TYPES
 
 
@@ -360,11 +358,6 @@ class APIClient(MetaMixin):
         - ``'pandas'`` Returns a :class:`pandas:pandas.DataFrame` for
           list-like responses and a :class:`pandas:pandas.Series` for single a
           json response.
-    retry_total : DEPRECATED int, optional
-        A number indicating the maximum number of retries for 429, 502, 503, or
-        504 errors. This parameter no longer has any effect since v1.15.0,
-        as retries are automatically handled. This parameter will be removed
-        at version 2.0.0.
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions. Currently only "1.0" is supported.
@@ -376,16 +369,8 @@ class APIClient(MetaMixin):
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
     """
-    @deprecate_param('v2.0.0', 'retry_total')
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0",
-                 local_api_spec=None):
-        if retry_total != 6:
-            warnings.warn(
-                "Setting the retry_total parameter no longer has any effect, "
-                "as retries are now handled automatically.",
-                FutureWarning
-            )
+                 api_version="1.0", local_api_spec=None):
         if return_type not in _RETURN_TYPES:
             raise ValueError(
                 f"Return type must be one of {set(_RETURN_TYPES)}: "
