@@ -50,7 +50,7 @@ _File = collections.namedtuple("_File", "id name detected_info")
 
 def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
                job_name=None, client=None, credential_id=None,
-               polling_interval=None, archive=False, hidden=True, **kwargs):
+               polling_interval=None, hidden=True, **kwargs):
     """Read data from a Civis table.
 
     Parameters
@@ -86,8 +86,6 @@ def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
         will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
@@ -132,9 +130,6 @@ def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
     """
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
     if client is None:
         client = APIClient()
     sql = _get_sql_select(table, columns)
@@ -142,7 +137,7 @@ def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
                           encoding=encoding, job_name=job_name, client=client,
                           credential_id=credential_id,
                           polling_interval=polling_interval,
-                          archive=archive, hidden=hidden, **kwargs)
+                          hidden=hidden, **kwargs)
     return data
 
 
@@ -213,7 +208,7 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
 def read_civis_sql(sql, database, use_pandas=False,
                    encoding=None, job_name=None,
                    client=None, credential_id=None,
-                   polling_interval=None, archive=False,
+                   polling_interval=None,
                    hidden=True, **kwargs):
     """Read data from Civis using a custom SQL string.
 
@@ -252,8 +247,6 @@ def read_civis_sql(sql, database, use_pandas=False,
         will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
@@ -301,9 +294,6 @@ def read_civis_sql(sql, database, use_pandas=False,
         client = APIClient()
     if use_pandas and NO_PANDAS:
         raise ImportError("use_pandas is True but pandas is not installed.")
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
 
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
@@ -315,12 +305,6 @@ def read_civis_sql(sql, database, use_pandas=False,
     fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
                       polling_interval=polling_interval, client=client,
                       poll_on_creation=False)
-    if archive:
-
-        def f(x):
-            return client.scripts.put_sql_archive(script_id, True)
-
-        fut.add_done_callback(f)
     fut.result()
     outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
     if not outputs:
@@ -353,7 +337,7 @@ def read_civis_sql(sql, database, use_pandas=False,
 def civis_to_csv(filename, sql, database, job_name=None,
                  client=None, credential_id=None, include_header=True,
                  compression='none', delimiter=',', unquoted=False,
-                 archive=False, hidden=True, polling_interval=None):
+                 hidden=True, polling_interval=None):
     """Export data from Civis to a local CSV file.
 
     The custom SQL string will be executed twice; once to attempt to
@@ -395,8 +379,6 @@ def civis_to_csv(filename, sql, database, job_name=None,
         Whether or not to quote fields. Default: ``False``.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
 
@@ -417,9 +399,6 @@ def civis_to_csv(filename, sql, database, job_name=None,
     civis.io.read_civis_sql : Read results of a SQL query into memory.
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
     if client is None:
         client = APIClient()
 
@@ -458,12 +437,6 @@ def civis_to_csv(filename, sql, database, job_name=None,
     download = _download_callback(script_id, run_id, filename,
                                   headers, compression)
     fut.add_done_callback(download)
-    if archive:
-
-        def f(x):
-            return client.scripts.put_sql_archive(script_id, True)
-
-        fut.add_done_callback(f)
 
     return fut
 
@@ -618,7 +591,7 @@ def dataframe_to_civis(df, database, table, client=None,
                        primary_keys=None, last_modified_keys=None,
                        execution="immediate",
                        delimiter=None, polling_interval=None,
-                       archive=False, hidden=True, **kwargs):
+                       hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
     The `DataFrame`'s index will not be included. To store the index
@@ -700,8 +673,6 @@ def dataframe_to_civis(df, database, table, client=None,
         same destination table.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
@@ -727,9 +698,6 @@ def dataframe_to_civis(df, database, table, client=None,
     """  # noqa: E501
     if client is None:
         client = APIClient()
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
 
     headers = False if kwargs.get('header') is False else True
     with TemporaryDirectory() as tmp_dir:
@@ -766,7 +734,7 @@ def csv_to_civis(filename, database, table, client=None,
                  delimiter=",", headers=None,
                  primary_keys=None, last_modified_keys=None,
                  escaped=False, execution="immediate",
-                 credential_id=None, polling_interval=None, archive=False,
+                 credential_id=None, polling_interval=None,
                  hidden=True):
 
     """Upload the contents of a local CSV file to Civis.
@@ -841,8 +809,6 @@ def csv_to_civis(filename, database, table, client=None,
         credential will be used.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for job completion.
-    archive : bool, optional (deprecated)
-        If ``True``, archive the import job as soon as it completes.
     hidden : bool, optional
         If ``True`` (the default), this job will not appear in the Civis UI.
 
@@ -866,9 +832,6 @@ def csv_to_civis(filename, database, table, client=None,
     """  # noqa: E501
     if client is None:
         client = APIClient()
-    if archive:
-        warnings.warn("`archive` is deprecated and will be removed in v2.0.0. "
-                      "Use `hidden` instead.", FutureWarning)
 
     name = path.basename(filename)
     with open(filename, "rb") as data:
