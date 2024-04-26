@@ -3,13 +3,11 @@ import logging
 from civis import APIClient
 from civis._utils import maybe_get_random_name
 from civis.futures import CivisFuture
-from civis._deprecation import deprecate_param
 
 log = logging.getLogger(__name__)
 
 
-@deprecate_param('v2.0.0', 'api_key')
-def query_civis(sql, database, api_key=None, client=None, credential_id=None,
+def query_civis(sql, database, client=None, credential_id=None,
                 preview_rows=10, polling_interval=None, hidden=True):
     """Execute a SQL statement as a Civis query.
 
@@ -23,9 +21,6 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
         The SQL statement to execute.
     database : str or int
         The name or ID of the database.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -51,7 +46,7 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
     >>> run.result()  # Wait for query to complete
     """
     if client is None:
-        client = APIClient(api_key=api_key)
+        client = APIClient()
     database_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
     resp = client.queries.post(database_id,
@@ -63,9 +58,8 @@ def query_civis(sql, database, api_key=None, client=None, credential_id=None,
                        client=client, poll_on_creation=False)
 
 
-@deprecate_param('v2.0.0', 'api_key')
 def transfer_table(source_db, dest_db, source_table, dest_table,
-                   job_name=None, api_key=None, client=None,
+                   job_name=None, client=None,
                    source_credential_id=None, dest_credential_id=None,
                    polling_interval=None, **advanced_options):
     """Transfer a table from one location to another.
@@ -86,9 +80,6 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -115,7 +106,7 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     ...                source_table='schma.tbl', dest_table='schma.tbl')
     """
     if client is None:
-        client = APIClient(api_key=api_key)
+        client = APIClient()
     source_cred_id = source_credential_id or client.default_credential
     dest_cred_id = dest_credential_id or client.default_credential
     job_name = maybe_get_random_name(job_name)

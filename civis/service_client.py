@@ -110,7 +110,7 @@ class ServiceEndpoint(Endpoint):
         return response
 
 
-class ServiceClient():
+class ServiceClient:
 
     def __init__(self, service_id, root_path=None,
                  swagger_path="/endpoints", api_key=None,
