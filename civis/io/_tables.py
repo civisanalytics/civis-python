@@ -22,7 +22,6 @@ from civis.base import EmptyResultError, CivisImportError, CivisAPIError
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis
 from civis.utils import run_job
-from civis._deprecation import deprecate_param
 
 import requests
 
@@ -581,16 +580,15 @@ def civis_to_multifile_csv(sql, database, job_name=None,
     return unload_manifest
 
 
-@deprecate_param('v2.0.0', 'headers')
 def dataframe_to_civis(df, database, table, client=None,
                        max_errors=None, existing_table_rows="fail",
                        diststyle=None, distkey=None,
                        sortkey1=None, sortkey2=None,
                        table_columns=None,
-                       headers=None, credential_id=None,
+                       credential_id=None,
                        primary_keys=None, last_modified_keys=None,
                        execution="immediate",
-                       delimiter=None, polling_interval=None,
+                       polling_interval=None,
                        hidden=True, **kwargs):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
@@ -638,16 +636,6 @@ def dataframe_to_civis(df, database, table, client=None,
         dropped, or the columns in the source file do not appear in the same
         order as in the destination table. Example:
         ``[{"name": "foo", "sql_type": "INT"}, {"name": "bar", "sql_type": "VARCHAR"}]``
-    headers : bool, optional [DEPRECATED]
-        Whether or not the first row of the file should be treated as
-        headers. The default, ``None``, attempts to autodetect whether
-        or not the first row contains headers.
-
-        This parameter has no effect in versions >= 1.11 and will be
-        removed in v2.0. Tables will always be written with column
-        names read from the DataFrame. Use the `header` parameter
-        (which will be passed directly to :func:`~pandas.DataFrame.to_csv`)
-        to modify the column names in the Civis Table.
     credential_id : str or int, optional
         The ID of the database credential.  If ``None``, the default
         credential will be used.
@@ -660,9 +648,6 @@ def dataframe_to_civis(df, database, table, client=None,
     last_modified_keys: list[str], optional
         A list of the columns indicating a record has been updated. If
         existing_table_rows is "upsert", this field is required.
-    escaped: bool, optional
-        A boolean value indicating whether or not the source file has quotes
-        escaped with a backslash. Defaults to false.
     execution: string, optional, default "immediate"
         One of "delayed" or "immediate". If "immediate", refresh column
         statistics as part of the run. If "delayed", flag the table for a
