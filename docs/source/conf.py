@@ -348,8 +348,8 @@ _autodoc_fmt = ('.. autoclass:: {}\n'
 
 
 def _write_resources_rst(class_names, filename, civis_module):
-    with open(filename, 'w') as _out:
-        _out.write(
+    with open(filename, 'w') as resources_rst_file:
+        resources_rst_file.write(
             ".. _api_resources:\n\n"
             "API Resources\n"
             "=============\n\n"
@@ -357,18 +357,18 @@ def _write_resources_rst(class_names, filename, civis_module):
             "   :titlesonly:\n\n"
         )
         for class_name in class_names:
-            endpoint_rst = f"api_{class_name.lower()}_endpoint.rst"
-            _out.write(f"   {endpoint_rst.replace('.rst', '')}\n")
-            with open(endpoint_rst, "w") as endpoint_rst_file:
+            endpoint_rst_filename_no_ext = f"api_{class_name.lower()}_endpoint"
+            endpoint_rst_filename = f"{endpoint_rst_filename_no_ext}.rst"
+            resources_rst_file.write(f"   {endpoint_rst_filename_no_ext}\n")
+            with open(endpoint_rst_filename, "w") as endpoint_rst_file:
                 endpoint_rst_file.write(
-                    f".. _{endpoint_rst.replace('.rst', '')}:\n\n"
+                    f".. _{endpoint_rst_filename_no_ext}:\n\n"
                 )
-                name = class_name.title()
-                full_path = '.'.join((civis_module, name))
+                endpoint_name = class_name.title()
+                full_path = '.'.join((civis_module, endpoint_name))
                 endpoint_rst_file.write(
-                    f"{name}\n"
-                    f"{'=' * len(name)}\n\n"
-                    f"The ``{name}`` endpoint.\n\n"
+                    f"{endpoint_name}\n"
+                    f"{'=' * len(endpoint_name)}\n\n"
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
 
