@@ -40,7 +40,7 @@ swagger.json
 
 # Sphinx docs
 docs/source/generated/
-docs/source/api_resources.rst
+docs/source/api_*.rst
 
 # IDEs
 .idea
