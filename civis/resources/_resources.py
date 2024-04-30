@@ -227,7 +227,8 @@ def split_method_params(params):
     return args, optional_args, body_params, query_params, path_params
 
 
-def create_method(params, verb, method_name, path, doc):
+def create_method(params, verb, method_name, path,
+                  deprecation_warning, param_doc, response_doc):
     """ Dynamically create a function to make an API call.
 
     The returned function accepts required parameters as positional arguments
@@ -247,15 +248,21 @@ def create_method(params, verb, method_name, path, doc):
     path : str
         Endpoint path, possibly including replacement fields
         (i.e. scripts/{id})
-    doc : str
-        Documentation string for the returned function f
-
+    deprecation_warning : str or None
+        Deprecation warning, if applicable, for the method
+    param_doc : str
+        Documentation string for the returned function f's parameters
+    response_doc : str
+        Documentation string for the returned function f's response
 
     Returns
     ------
     f : function
         A function which will make an API call
     """
+    doc = join_doc_elements(
+        deprecated_notice(deprecation_warning), param_doc, response_doc
+    )
     elements = split_method_params(params)
     sig_args, sig_opt_args, body_params, query_params, path_params = elements
     sig = create_signature(sig_args, sig_opt_args)
@@ -273,7 +280,9 @@ def create_method(params, verb, method_name, path, doc):
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        return self._call_api(verb, url, query, body, iterator=iterator)
+        return self._call_api(
+            verb, url, query, body, deprecation_warning, iterator=iterator
+        )
 
     # Add signature to function, including 'self' for class method
     sig_self = create_signature(["self"] + sig_args, sig_opt_args)
@@ -416,11 +425,10 @@ def parse_method(verb, operation, path):
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
     response_doc = doc_from_responses(responses, is_iterable)
-    deprecation_notice = deprecated_notice(deprecation_warning)
-    docs = join_doc_elements(deprecation_notice, param_doc, response_doc)
     name = parse_method_name(verb, path)
 
-    method = create_method(args, verb, name, path, docs)
+    method = create_method(args, verb, name, path,
+                           deprecation_warning, param_doc, response_doc)
     return name, method
 
 
