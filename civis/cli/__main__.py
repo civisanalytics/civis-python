@@ -351,7 +351,7 @@ def add_command_params(cmd, op_dict):
 
 
 def main():
-    # Note: this needs to be its own function so that setup.py can make it an
+    # Note: this needs to be its own function so that pyproject.toml can make it an
     # entry point.
     cli = generate_cli()
     cli()
