@@ -21,16 +21,16 @@ class _LogFilter(logging.Filter):
 
 
 def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
-    """Get a logger for Civis Platform jobs.
+    """Return a logger for Civis Platform jobs.
 
     The logs of Civis Platform jobs format stdout in black and stderr in red.
-    This logger logs at the INFO level or below to be in black,
-    and other levels' logging (WARNING, etc.) in red.
+    This logger sends INFO-level (or below) logging to stdout (black),
+    and other levels' logging (WARNING, etc.) to stderr (red).
 
     Parameters
     ----------
     name : str, optional
-        Logger name, to be passed into ``logging.getLogger``.
+        Logger name, to be passed into :func:`logging.getLogger`.
         If ``None`` or not provided, ``__name__`` of the module where
         this logger is instantiated is used.
     level : int or str, optional
@@ -41,12 +41,12 @@ def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
         Logging format. The default is ``"%(message)s"``.
         For the attributes that can be formatted, see:
         https://docs.python.org/3/library/logging.html#logrecord-objects
-        Alternatively, you may pass in a ``logging.Formatter`` instance
+        Alternatively, you may pass in a :class:`logging.Formatter` instance
         for more custom formatting.
 
     Returns
     -------
-    logging.Logger
+    :class:`logging.Logger`
     """
     logger = logging.getLogger(
         name if name is not None else globals()["__name__"]
