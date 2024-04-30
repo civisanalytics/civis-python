@@ -101,7 +101,7 @@ def find_one(object_list, filter_func=None, **kwargs):
     return results[0] if results else None
 
 
-class MetaMixin():
+class MetaMixin:
 
     @lru_cache(maxsize=128)
     def get_database_id(self, database):
@@ -357,9 +357,6 @@ class APIClient(MetaMixin):
         - ``'snake'`` Returns a :class:`civis.response.Response` object for the
           json-encoded content of a response. This maps the top-level json
           keys to snake_case.
-        - ``'pandas'`` Returns a :class:`pandas:pandas.DataFrame` for
-          list-like responses and a :class:`pandas:pandas.Series` for single a
-          json response.
     retry_total : DEPRECATED int, optional
         A number indicating the maximum number of retries for 429, 502, 503, or
         504 errors. This parameter no longer has any effect since v1.15.0,

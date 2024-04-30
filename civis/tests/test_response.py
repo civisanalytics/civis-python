@@ -3,14 +3,7 @@ import pickle
 from unittest import mock
 
 import pytest
-
 import requests
-
-try:
-    import pandas as pd
-    has_pandas = True
-except ImportError:
-    has_pandas = False
 
 from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
@@ -138,24 +131,6 @@ def test_convert_data_type_raw_parsed():
 
     assert isinstance(data, dict)
     assert data == {'foo': 'bar'}
-
-
-@pytest.mark.skipif(not has_pandas, reason='pandas not installed')
-def test_convert_data_type_pandas_series():
-    response = _create_mock_response({'foo': 'bar'}, None)
-    data = convert_response_data_type(response, return_type='pandas')
-
-    assert isinstance(data, pd.Series)
-    assert data.equals(pd.Series({'foo': 'bar'}))
-
-
-@pytest.mark.skipif(not has_pandas, reason='pandas not installed')
-def test_convert_data_type_pandas_df():
-    response = _create_mock_response([{'foo': 'bar'}], None)
-    data = convert_response_data_type(response, return_type='pandas')
-
-    assert isinstance(data, pd.DataFrame)
-    assert data.equals(pd.DataFrame.from_records([{'foo': 'bar'}]))
 
 
 def test_convert_data_type_civis():

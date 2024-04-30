@@ -100,7 +100,7 @@ def get_base_url():
     return base_url
 
 
-class Endpoint(object):
+class Endpoint:
 
     _lock = threading.Lock()
 
