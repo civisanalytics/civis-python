@@ -1,7 +1,6 @@
 import logging
+import os
 import sys
-
-from civis import CIVIS_JOB_ID, CIVIS_RUN_ID
 
 
 class _LogFilter(logging.Filter):
@@ -61,7 +60,7 @@ def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
     # or else all the logging/caplog tests would fail.
     # The user can set the `propagate` attribute of the resulting logger
     # back to True if they so choose.
-    if CIVIS_JOB_ID and CIVIS_RUN_ID:
+    if os.getenv("CIVIS_JOB_ID") and os.getenv("CIVIS_RUN_ID"):
         logger.propagate = False
 
     if isinstance(fmt, logging.Formatter):
