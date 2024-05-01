@@ -348,23 +348,42 @@ _autodoc_fmt = ('.. autoclass:: {}\n'
 
 
 def _write_resources_rst(class_names, filename, civis_module):
-    with open(filename, 'w') as _out:
-        _out.write('.. _api_resources:\n\nAPI Resources\n=============\n\n')
+    with open(filename, 'w') as resources_rst_file:
+        resources_rst_file.write(
+            ".. _api_resources:\n\n"
+            "API Resources\n"
+            "=============\n\n"
+            ".. toctree::\n"
+            "   :titlesonly:\n\n"
+        )
         for class_name in class_names:
-            name = class_name.title()
-            header = '`{}`\n{}\n'.format(name, '"' * (len(name) + 2))
-            full_path = '.'.join((civis_module, name))
-            _out.write(header)
-            _out.write(_autodoc_fmt.format(full_path, full_path))
+            endpoint_rst_filename_no_ext = f"api_{class_name.lower()}_endpoint"
+            endpoint_rst_filename = f"{endpoint_rst_filename_no_ext}.rst"
+            resources_rst_file.write(f"   {endpoint_rst_filename_no_ext}\n")
+            with open(endpoint_rst_filename, "w") as endpoint_rst_file:
+                endpoint_rst_file.write(
+                    f".. _{endpoint_rst_filename_no_ext}:\n\n"
+                )
+                endpoint_name = class_name.title()
+                full_path = '.'.join((civis_module, endpoint_name))
+                endpoint_rst_file.write(
+                    f"{endpoint_name}\n"
+                    f"{'=' * len(endpoint_name)}\n\n"
+                )
+                endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
 
 
 import civis
 _generated_attach_point = civis.resources._resources
 _generated_attach_path = 'civis.resources._resources'
 _rst_basename = 'api_resources.rst'
-_test_build = os.getenv('CIRCLECI') == 'true' or _on_rtd
 
-if _test_build:
+if os.getenv("FETCH_REMOTE_RESOURCES", "false").lower() == "true":
+    api_key = os.environ.get("CIVIS_API_KEY")
+    api_version = "1.0"
+    extra_classes = civis.resources._resources.generate_classes(
+        api_key=api_key, api_version=api_version)
+else:
     import json
     from collections import OrderedDict
     from jsonref import JsonRef
@@ -379,12 +398,7 @@ if _test_build:
             json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
         api_spec, '1.0')
-else:
-    api_key = os.environ.get("CIVIS_API_KEY")
-    user_agent = "civis-python/SphinxDocs"
-    api_version = "1.0"
-    extra_classes = civis.resources._resources.generate_classes(
-        api_key=api_key, api_version=api_version)
+
 sorted_class_names = sorted(extra_classes.keys())
 
 civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names,

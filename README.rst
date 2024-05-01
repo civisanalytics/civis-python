@@ -195,7 +195,7 @@ To install dependencies for building the documentation::
 To build the API documentation locally::
 
     cd docs
-    make html
+    make html  # or run `FETCH_REMOTE_RESOURCES=true make html` for the API resources available to the given CIVIS_API_KEY
 
 Then open ``docs/build/html/index.html``.
 
