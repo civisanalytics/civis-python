@@ -1,12 +1,17 @@
 from math import sqrt
 import io
 import pickle
+import warnings
 from unittest import mock
 
 import pytest
 from joblib import delayed, Parallel
 from joblib import parallel_backend, register_parallel_backend
-from joblib.my_exceptions import TransportableException
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from joblib.my_exceptions import TransportableException
+
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.response import Response
 import requests

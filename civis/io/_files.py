@@ -15,7 +15,6 @@ from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis._deprecation import deprecate_param
 from civis._utils import BufferedPartialReader, retry
 
 try:
@@ -177,8 +176,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     return file_response.id
 
 
-@deprecate_param('v2.0.0', 'api_key')
-def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
+def file_to_civis(buf, name=None, client=None, **kwargs):
     """Upload a file to Civis.
 
     Parameters
@@ -195,9 +193,6 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
         The name you wish to give the file. If not given, it will be inferred
         from the basename of ``buf`` (if ``buf`` is a string for a file path)
         or ``buf.name`` (if ``buf`` is a file-like object).
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -266,7 +261,7 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
     if isinstance(buf, str):
         with open(buf, 'rb') as f:
             return _file_to_civis(
-                f, name, api_key=api_key, client=client, **kwargs)
+                f, name, client=client, **kwargs)
 
     # we should only pass _file_to_civis a file-like object that is
     # on disk, seekable and at position 0
@@ -282,15 +277,15 @@ def file_to_civis(buf, name=None, api_key=None, client=None, **kwargs):
                 shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             with open(tmp_path, 'rb') as fin:
                 return _file_to_civis(
-                    fin, name, api_key=api_key, client=client, **kwargs)
+                    fin, name, client=client, **kwargs)
     else:
         return _file_to_civis(
-            buf, name, api_key=api_key, client=client, **kwargs)
+            buf, name, client=client, **kwargs)
 
 
-def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
+def _file_to_civis(buf, name, client=None, **kwargs):
     if client is None:
-        client = APIClient(api_key=api_key)
+        client = APIClient()
 
     file_size = _buf_len(buf)
     if file_size == 0:
@@ -308,8 +303,7 @@ def _file_to_civis(buf, name, api_key=None, client=None, **kwargs):
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
 
-@deprecate_param('v2.0.0', 'api_key')
-def civis_to_file(file_id, buf, api_key=None, client=None):
+def civis_to_file(file_id, buf, client=None):
     """Download a file from Civis.
 
     Parameters
@@ -319,9 +313,6 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     buf : file-like object or str
         A buffer or path specifying where to write the contents of the Civis
         file. Strings will be treated as paths to local files to open.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -347,15 +338,15 @@ def civis_to_file(file_id, buf, api_key=None, client=None):
     """
     if isinstance(buf, str):
         with open(buf, 'wb') as f:
-            _civis_to_file(file_id, f, api_key=api_key, client=client)
+            _civis_to_file(file_id, f, client=client)
     else:
-        _civis_to_file(file_id, buf, api_key=api_key, client=client)
+        _civis_to_file(file_id, buf, client=client)
         buf.flush()
 
 
-def _civis_to_file(file_id, buf, api_key=None, client=None):
+def _civis_to_file(file_id, buf, client=None):
     if client is None:
-        client = APIClient(api_key=api_key)
+        client = APIClient()
     files_response = client.files.get(file_id)
     url = files_response.file_url
     if not url:

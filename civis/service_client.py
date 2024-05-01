@@ -4,7 +4,6 @@ import json
 from jsonref import JsonRef
 import re
 import requests
-import warnings
 
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
@@ -110,7 +109,7 @@ class ServiceEndpoint(Endpoint):
         return response
 
 
-class ServiceClient():
+class ServiceClient:
 
     def __init__(self, service_id, root_path=None,
                  swagger_path="/endpoints", api_key=None,
@@ -167,22 +166,6 @@ class ServiceClient():
         for class_name, klass in classes.items():
             setattr(self, class_name, klass(client=self,
                                             return_type=return_type))
-
-    def parse_path(self, path, operations):
-        """ Parse an endpoint into a class where each valid http request
-        on that endpoint is converted into a convenience function and
-        attached to the class as a method.
-        """
-        warnings.warn("This method is deprecated and will be removed in "
-                      "v2.0.0. Use the `_parse_service_path` function "
-                      "instead.")
-        return _parse_service_path(path, operations, root_path=self._root_path)
-
-    def parse_api_spec(self, api_spec):
-        warnings.warn("This method is deprecated and will be removed in "
-                      "v2.0.0. Use the `parse_service_api_spec` function "
-                      "instead.")
-        return parse_service_api_spec(api_spec, root_path=self._root_path)
 
     @lru_cache(maxsize=4)
     def get_api_spec(self):
