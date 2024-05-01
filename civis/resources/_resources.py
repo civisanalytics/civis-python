@@ -11,13 +11,11 @@ import requests
 from requests import Request
 
 from civis.base import Endpoint, get_base_url
-from civis._deprecation import deprecate_param
 from civis._utils import (camel_to_snake,
                           open_session, get_api_key,
                           retry_request, MAX_RETRIES)
 
 
-_RESOURCES = frozenset({"base", "all"})
 API_VERSIONS = frozenset({"1.0", })
 
 # civis_api_spec.json can be updated
@@ -46,9 +44,8 @@ CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
 DEFAULT_STR = 'DEFAULT'
 
 
-@deprecate_param('v2.0.0', 'resources')
-def exclude_resource(path, api_version, resources):
-    if api_version == "1.0" and resources == "base":
+def exclude_resource(path, api_version):
+    if api_version == "1.0":
         include = any(path.startswith(x) for x in BASE_RESOURCES_V1)
     else:
         include = True
@@ -424,8 +421,7 @@ def parse_method(verb, operation, path):
     return name, method
 
 
-@deprecate_param('v2.0.0', 'resources')
-def parse_path(path, operations, api_version, resources):
+def parse_path(path, operations, api_version):
     """ Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
     attached to the class as a method.
@@ -433,7 +429,7 @@ def parse_path(path, operations, api_version, resources):
     path = path.strip('/')
     modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
     methods = []
-    if exclude_resource(path, api_version, resources):
+    if exclude_resource(path, api_version):
         return modified_base_path, methods
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
@@ -443,8 +439,7 @@ def parse_path(path, operations, api_version, resources):
     return modified_base_path, methods
 
 
-@deprecate_param('v2.0.0', 'resources')
-def parse_api_spec(api_spec, api_version, resources):
+def parse_api_spec(api_spec, api_version):
     """ Dynamically create classes to interface with the Civis API.
 
     Parse an OpenAPI (Swagger) specification into a dictionary of classes
@@ -459,16 +454,11 @@ def parse_api_spec(api_spec, api_version, resources):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
-    resources : string, optional
-        When set to "base", only the default endpoints will be exposed in the
-        client object.  Set to "all" to include all endpoints available for
-        a given user, including those that may be in development and subject
-        to breaking changes at a later date.
     """
     paths = api_spec['paths']
     classes = {}
     for path, ops in paths.items():
-        base_path, methods = parse_path(path, ops, api_version, resources)
+        base_path, methods = parse_path(path, ops, api_version)
         class_name = base_path.title()
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
@@ -517,8 +507,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
 
 
 @lru_cache(maxsize=4)
-@deprecate_param('v2.0.0', 'resources')
-def generate_classes(api_key, api_version="1.0", resources="all"):
+def generate_classes(api_key, api_version="1.0"):
     """ Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -535,24 +524,15 @@ def generate_classes(api_key, api_version="1.0", resources="all"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
-    resources : string, optional
-        When set to "base", only the default endpoints will be exposed in the
-        client object.  Set to "all" to include all endpoints available for
-        a given user, including those that may be in development and subject
-        to breaking changes at a later date.
     """
     if api_version not in API_VERSIONS:
         raise ValueError(
             f"APIClient api_version must be one of {set(API_VERSIONS)}: "
             f"{api_version}"
         )
-    if resources not in _RESOURCES:
-        raise ValueError(
-            f"resources must be one of {set(_RESOURCES)}: {resources}"
-        )
     raw_spec = get_api_spec(api_key, api_version)
     spec = JsonRef.replace_refs(raw_spec)
-    return parse_api_spec(spec, api_version, resources)
+    return parse_api_spec(spec, api_version)
 
 
 def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
@@ -575,11 +555,10 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
         json.dump(spec, _fout)
 
 
-@deprecate_param('v2.0.0', 'resources')
-def generate_classes_maybe_cached(cache, api_key, api_version, resources):
+def generate_classes_maybe_cached(cache, api_key, api_version):
     """Generate class objects either from /endpoints or a local cache."""
     if cache is None:
-        classes = generate_classes(api_key, api_version, resources)
+        classes = generate_classes(api_key, api_version)
     else:
         if isinstance(cache, OrderedDict):
             raw_spec = cache
@@ -590,7 +569,7 @@ def generate_classes_maybe_cached(cache, api_key, api_version, resources):
             msg = "cache must be an OrderedDict or str, given {}"
             raise ValueError(msg.format(type(cache)))
         spec = JsonRef.replace_refs(raw_spec)
-        classes = parse_api_spec(spec, api_version, resources)
+        classes = parse_api_spec(spec, api_version)
     classes_ = _add_no_underscore_compatibility(classes)
     return classes_
 

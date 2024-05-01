@@ -1,11 +1,9 @@
 from functools import lru_cache
 import logging
-import warnings
 
 import civis
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
-from civis._deprecation import deprecate_param
 from civis.response import _RETURN_TYPES
 
 
@@ -357,20 +355,9 @@ class APIClient(MetaMixin):
         - ``'snake'`` Returns a :class:`civis.response.Response` object for the
           json-encoded content of a response. This maps the top-level json
           keys to snake_case.
-    retry_total : DEPRECATED int, optional
-        A number indicating the maximum number of retries for 429, 502, 503, or
-        504 errors. This parameter no longer has any effect since v1.15.0,
-        as retries are automatically handled. This parameter will be removed
-        at version 2.0.0.
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions. Currently only "1.0" is supported.
-    resources : string, optional
-        When set to "base", only the default endpoints will be exposed in the
-        client object. Set to "all" to include all endpoints available for
-        a given user, including those that may be in development and subject
-        to breaking changes at a later date. This will be removed in a future
-        version of the API client.
     local_api_spec : collections.OrderedDict or string, optional
         The methods on this class are dynamically built from the Civis API
         specification, which can be retrieved from the /endpoints endpoint.
@@ -379,16 +366,8 @@ class APIClient(MetaMixin):
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
     """
-    @deprecate_param('v2.0.0', 'retry_total', 'resources')
     def __init__(self, api_key=None, return_type='snake',
-                 retry_total=6, api_version="1.0", resources="all",
-                 local_api_spec=None):
-        if retry_total != 6:
-            warnings.warn(
-                "Setting the retry_total parameter no longer has any effect, "
-                "as retries are now handled automatically.",
-                FutureWarning
-            )
+                 api_version="1.0", local_api_spec=None):
         if return_type not in _RETURN_TYPES:
             raise ValueError(
                 f"Return type must be one of {set(_RETURN_TYPES)}: "
@@ -399,17 +378,9 @@ class APIClient(MetaMixin):
         self._session_kwargs = {'api_key': session_auth_key}
         self.last_response = None
 
-        # Catch deprecation warnings from generate_classes_maybe_cached and
-        # the functions it calls until the `resources` argument is removed.
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                category=FutureWarning,
-                module='civis')
-            classes = generate_classes_maybe_cached(local_api_spec,
-                                                    session_auth_key,
-                                                    api_version,
-                                                    resources)
+        classes = generate_classes_maybe_cached(local_api_spec,
+                                                session_auth_key,
+                                                api_version)
         for class_name, cls in classes.items():
             setattr(self, class_name, cls(self._session_kwargs, client=self,
                                           return_type=return_type))

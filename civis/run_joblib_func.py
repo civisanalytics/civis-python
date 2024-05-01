@@ -17,7 +17,11 @@ import warnings
 
 import civis
 import cloudpickle
-from joblib.my_exceptions import TransportableException
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from joblib.my_exceptions import TransportableException
+
 from joblib.format_stack import format_exc
 from joblib import parallel_backend as _joblib_para_backend
 
