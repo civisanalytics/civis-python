@@ -3,7 +3,7 @@ import requests
 from civis._utils import camel_to_snake
 
 
-_RETURN_TYPES = frozenset({'snake', 'raw', 'pandas'})
+_RETURN_TYPES = frozenset({'snake', 'raw'})
 
 
 class CivisClientError(Exception):
@@ -59,43 +59,34 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
         If given and the return type supports it, attach these headers to the
         converted response. If `response` is a `requests.Response`, the headers
         will be inferred from it.
-    return_type : string, {'snake', 'raw', 'pandas'}
+    return_type : string, {'snake', 'raw'}
         Convert the response to this type. See documentation on
         `civis.APIClient` for details of the return types.
 
     Returns
     -------
-    list, dict, `civis.response.Response`, `requests.Response`,
-    `pandas.DataFrame`, or `pandas.Series`
+    list, dict, `civis.response.Response`, or `requests.Response`
         Depending on the value of `return_type`.
     """
-    if return_type not in _RETURN_TYPES:
-        raise ValueError(
-            f"Return type not one of {set(_RETURN_TYPES)}: {return_type}"
-        )
-
     if return_type == 'raw':
         return response
 
-    if isinstance(response, requests.Response):
-        headers = response.headers
-        data = _response_to_json(response)
-    else:
-        data = response
-
-    if return_type == 'pandas':
-        import pandas as pd
-        if isinstance(data, list):
-            return pd.DataFrame.from_records(data)
-
-        # there may be nested objects or arrays in this series
-        return pd.Series(data)
-
     elif return_type == 'snake':
+        if isinstance(response, requests.Response):
+            headers = response.headers
+            data = _response_to_json(response)
+        else:
+            data = response
+
         if isinstance(data, list):
             return [Response(d, headers=headers) for d in data]
+        else:
+            return Response(data, headers=headers)
 
-        return Response(data, headers=headers)
+    else:
+        raise ValueError(
+            f"Return type not one of {set(_RETURN_TYPES)}: {return_type}"
+        )
 
 
 def _raise_response_immutable_error():

@@ -142,9 +142,6 @@ class ServiceClient:
             - ``'snake'`` Returns a :class:`civis.response.Response` object
             for the json-encoded content of a response. This maps the
             top-level json keys to snake_case.
-            - ``'pandas'`` Returns a :class:`pandas:pandas.DataFrame` for
-            list-like responses and a :class:`pandas:pandas.Series` for
-            single a json response.
         local_api_spec : collections.OrderedDict or string, optional
             The methods on this class are dynamically built from the Service
             API specification, which can be retrieved from the /endpoints
@@ -154,9 +151,8 @@ class ServiceClient:
             may be passed as either an OrderedDict or a filename which
             points to a json file.
         """
-        if return_type not in ['snake', 'raw', 'pandas']:
-            raise ValueError("Return type must be one of 'snake', 'raw', "
-                             "'pandas'")
+        if return_type not in ['snake', 'raw']:
+            raise ValueError("Return type must be one of 'snake', 'raw'")
         self._api_key = api_key
         self._service_id = service_id
         self._base_url = self.get_base_url()
