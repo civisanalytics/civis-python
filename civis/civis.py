@@ -29,15 +29,16 @@ def find(object_list, filter_func=None, **kwargs):
         if and only if ``bool(filter_func(object))`` is ``True``.
     **kwargs
         Key-value pairs for more fine-grained filtering; they cannot be used
-        in conjunction with `filter_func`. All keys must be strings.
-        For an `object` from the input iterable to be included in the
-        returned list, all the `key`s must be attributes of `object`, plus
-        any one of the following conditions for a given `key`:
+        in conjunction with ``filter_func``. All keys must be strings.
+        For an object ``obj`` from the input iterable to be included in the
+        returned list, all the keys must be attributes of ``obj``, plus
+        any one of the following conditions for a given key:
 
-        - `value` is a one-argument function and
-          ``bool(value(getattr(object, key)))`` is ``True``
-        - `value` is ``True``
-        - ``getattr(object, key)`` is equal to ``value``
+        - ``value`` is a one-argument function and
+          ``bool(value(getattr(obj, key)))`` is equal to ``True``
+        - ``value`` is either ``True`` or ``False``, and
+          ``getattr(obj, key) is value`` is ``True``
+        - ``getattr(obj, key) == value`` is ``True``
 
     Returns
     -------
@@ -67,7 +68,7 @@ def find(object_list, filter_func=None, **kwargs):
                     if not v(getattr(o, k, None)):
                         return False
                 elif isinstance(v, bool):
-                    if hasattr(o, k) != v:
+                    if getattr(o, k) is not v:
                         return False
                 elif v != getattr(o, k, None):
                     return False
