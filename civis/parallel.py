@@ -11,10 +11,13 @@ from tempfile import TemporaryDirectory
 import time
 import warnings
 
-
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
-from joblib.my_exceptions import TransportableException
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from joblib.my_exceptions import TransportableException
+
 from joblib import register_parallel_backend as _joblib_reg_para_backend
 import requests
 

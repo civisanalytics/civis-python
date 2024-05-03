@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Instantiating a `civis.response.Response` object no longer
   accepts the boolean `snake_case` keyword argument;
   snake-case keys at a `Response` object are now always available (and preferred). (#463)
+- Parameters for various classes/functions that have long been deprecated are removed:
+  `api_key`, `resources`, `retry_total`, `archive`, `headers`.
+  Also dropped the deprecated methods in `ServiceClient`. (#471)
+- The `return_type` parameter of a `civis.response.Response` object
+  no longer has the `"pandas"` option. (#472)
+- When `civis.find` uses kwargs as filters, boolean values are now treated in the same
+  way as other data types for value equality comparison, rather than the presence or
+  absence of the key in question. (#473)
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)

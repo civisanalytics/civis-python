@@ -1,9 +1,35 @@
 from unittest import mock
 
 import civis
+from civis import find
 from civis.resources import API_SPEC
+from civis.response import Response
 
 import pytest
+
+
+def test_find_filter_with_kwargs():
+    r1 = Response({"foo": 0, "bar": "a", "baz": True})
+    r2 = Response({"foo": 1, "bar": "b", "baz": True})
+    r3 = Response({"foo": 2, "bar": "b", "baz": False})
+
+    assert find([r1, r2, r3], wrong_attr="whatever") == []
+
+    assert find([r1, r2, r3], foo=0) == [r1]
+    assert find([r1, r2, r3], foo=1) == [r2]
+    assert find([r1, r2, r3], foo=1, bar="b") == [r2]
+
+    assert find([r1, r2, r3], bar="b") == [r2, r3]
+    assert find([r1, r2, r3], bar="b", foo=1) == [r2]
+
+    assert find([r1, r2, r3], foo=True) == []
+    assert find([r1, r2, r3], foo=False) == []
+    assert find([r1, r2, r3], bar=True) == []
+    assert find([r1, r2, r3], bar=False) == []
+    assert find([r1, r2, r3], baz=True) == [r1, r2]
+    assert find([r1, r2, r3], baz=False) == [r3]
+
+    assert find([r1, r2, r3], foo=int) == [r2, r3]
 
 
 @pytest.mark.parametrize('schema_tablename', [

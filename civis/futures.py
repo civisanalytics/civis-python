@@ -34,9 +34,6 @@ class CivisFuture(PollableResult):
     polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
         is ready.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
     poll_on_creation : bool, optional
         If ``True`` (the default), it will poll upon calling ``result()`` the
@@ -73,15 +70,14 @@ class CivisFuture(PollableResult):
     True
     """
     def __init__(self, poller, poller_args,
-                 polling_interval=None, api_key=None, client=None,
+                 polling_interval=None, client=None,
                  poll_on_creation=True):
         if client is None:
-            client = APIClient(api_key=api_key)
+            client = APIClient()
 
         super().__init__(poller=poller,
                          poller_args=poller_args,
                          polling_interval=polling_interval,
-                         api_key=api_key,
                          client=client,
                          poll_on_creation=poll_on_creation)
 

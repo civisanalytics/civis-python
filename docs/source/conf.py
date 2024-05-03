@@ -397,7 +397,7 @@ else:
         api_spec = JsonRef.replace_refs(
             json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
-        api_spec, '1.0', 'base')
+        api_spec, '1.0')
 
 sorted_class_names = sorted(extra_classes.keys())
 
