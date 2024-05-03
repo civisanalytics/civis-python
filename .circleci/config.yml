@@ -8,7 +8,7 @@ jobs:
         type: string
     docker:
       # Pick the highest Python 3.x version that civis-python is known to support
-      - image: cimg/python:3.11
+      - image: cimg/python:3.12
     steps:
       - checkout
       - run:
@@ -51,7 +51,7 @@ jobs:
           # Avoid being able to import civis by relative import.
           # Test code by importing the *installed* civis in site-packages.
           command: |
-              pytest --junitxml=/tmp/testxml/report.xml
+              pytest --junitxml=/tmp/testxml/report.xml --durations=0
       - store_test_results:
           path: /tmp/testxml/
 
@@ -90,4 +90,4 @@ workflows:
             - bandit
           matrix:
             parameters:
-              python-version: ["3.8", "3.9", "3.10", "3.11"]
+              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]

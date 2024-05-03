@@ -26,6 +26,8 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -64,5 +66,5 @@ docs = [
 civis = ["resources/*.json"]
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers --ignore=docs --durations=0 -vv --cov=civis"
+addopts = "--strict-markers --ignore=docs -vv --cov=civis"
 testpaths = ["civis"]
