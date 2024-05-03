@@ -961,7 +961,7 @@ def civis_file_to_table(file_id, database, table, client=None,
     if client is None:
         client = APIClient()
 
-    if type(file_id) == str:
+    if type(file_id) is str:
         raise TypeError("Invalid type for file_id: str. "
                         "Must be int or list[int]")
 
