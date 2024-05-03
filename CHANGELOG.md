@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 ### Removed
-- Dropped support for Python 3.7 (#462)
+- Dropped support for Python 3.7 and 3.8 (#462, #474)
 
 ### Fixed
 ### Security
