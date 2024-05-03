@@ -7,7 +7,7 @@ name = "civis"
 version = "1.16.0"
 description = "Civis Platform API Python Client"
 readme = "README.rst"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 authors = [ { name = "Civis Analytics", email = "opensource@civisanalytics.com" } ]
 license = { text = "BSD-3-Clause" }
 dependencies = [
@@ -26,7 +26,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
