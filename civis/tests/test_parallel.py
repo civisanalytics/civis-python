@@ -200,7 +200,7 @@ def test_default_setup_cmd_with_repo(mock_backend):
     func()
     assert mock_backend.call_count == 1
     assert mock_backend.call_args_list[0][1].get('setup_cmd') == \
-        "cd /app; python setup.py install; cd /"
+        "cd /app; pip install .; cd /"
 
 
 @mock.patch.object(civis.parallel, 'make_backend_factory')

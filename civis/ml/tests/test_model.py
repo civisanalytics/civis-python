@@ -203,8 +203,8 @@ def test_load_table_from_outputs(mock_fid, mock_f2df):
 
 def test_show_civisml_warnings():
     warn_list = ["/path:13: UserWarning: A message\n",
-                 "/module:42: RuntimeWarning: Profundity\n"]
-    with pytest.warns(UserWarning) as warns:
+                 "/module:42: FutureWarning: Profundity\n"]
+    with pytest.warns((UserWarning, FutureWarning)) as warns:
         _model._show_civisml_warnings(warn_list)
     assert len(warns.list) == 2
     assert str(warns.list[0].message) == "A message"
@@ -549,7 +549,7 @@ def test_estimator(mock_le):
     assert mock_le.call_count == 1
 
     assert mf.estimator == 'spam'
-    assert mock_le.call_count == 1,\
+    assert mock_le.call_count == 1, \
         "The Estimator is only downloaded once and cached."
 
 

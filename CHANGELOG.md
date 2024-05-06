@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
-- Added support for Python 3.10 and 3.11 (#462)
+- Added support for Python 3.10, 3.11, and 3.12 (#462, #474)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)
@@ -45,10 +45,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   with the current civis-python codebase. (#469)
 - Changed `civis.io.civis_file_to_table` to not rely on table ids for determining a table's existence (#470)
 - Broke out the "API Resources" documentation page into individual endpoint pages (#471)
+- Switched to `pyproject.toml` for packaging. (#474)
 
 ### Deprecated
 ### Removed
-- Dropped support for Python 3.7 (#462)
+- Dropped support for Python 3.7 and 3.8 (#462, #474)
 
 ### Fixed
 ### Security
