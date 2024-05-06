@@ -59,9 +59,6 @@ class PollableResult(CivisAsyncResultBase):
     polling_interval : int or float
         The number of seconds between API requests to check whether a result
         is ready.
-    api_key : DEPRECATED str, optional
-        This is not used by PollableResult, but is required to match the
-        interface from CivisAsyncResultBase.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -101,14 +98,13 @@ class PollableResult(CivisAsyncResultBase):
     # - We use the `Future` thread lock called `_condition`
     # - We assume that results of the Future are stored in `_result`.
     def __init__(self, poller, poller_args,
-                 polling_interval=None, api_key=None, client=None,
+                 polling_interval=None, client=None,
                  poll_on_creation=True):
         if polling_interval is None:
             polling_interval = _DEFAULT_POLLING_INTERVAL
         super().__init__(poller=poller,
                          poller_args=poller_args,
                          polling_interval=polling_interval,
-                         api_key=api_key,
                          client=client,
                          poll_on_creation=poll_on_creation)
         if self.polling_interval <= 0:

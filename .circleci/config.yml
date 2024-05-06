@@ -8,7 +8,7 @@ jobs:
         type: string
     docker:
       # Pick the highest Python 3.x version that civis-python is known to support
-      - image: cimg/python:3.11
+      - image: cimg/python:3.12
     steps:
       - checkout
       - run:
@@ -27,21 +27,21 @@ jobs:
       - checkout
       - run:
           # Intentionally not using CircleCI's "python/install-packages" step,
-          # because we don't want to install packages from any requirements.txt
+          # because we don't want to install packages from any requirements.txt/pyproject.toml
           # just yet.
           # Test that we can build a source distribution that can correctly
           # install from clean slate.
-          # "python setup.py bdist_wheel" creates dist/civis-x.y.z-py3-none-any.whl
+          # "python -m build" creates dist/civis-x.y.z-py3-none-any.whl
           name: Build source distribution and install package from it
           working_directory: ~/project/
           command: |
-              pip install --progress-bar off --upgrade pip setuptools && \
-              python setup.py bdist_wheel && \
+              pip install --progress-bar off --upgrade pip setuptools build && \
+              python -m build && \
               pip install dist/`ls dist/ | grep .whl`
       - run:
           name: Install the full development requirements
           working_directory: ~/project/
-          command: pip install --progress-bar off -r dev-requirements.txt
+          command: pip install --progress-bar off -e ".[dev-core,dev-civisml]"
       - run:
           name: Show installed Python packages
           command: pip list -v
@@ -51,7 +51,7 @@ jobs:
           # Avoid being able to import civis by relative import.
           # Test code by importing the *installed* civis in site-packages.
           command: |
-              pytest -vv --cov=project/civis --junitxml=/tmp/testxml/report.xml project/civis --durations=0
+              pytest --junitxml=/tmp/testxml/report.xml --durations=0
       - store_test_results:
           path: /tmp/testxml/
 
@@ -62,19 +62,18 @@ workflows:
       - pre-build:
           name: flake8
           command-run: |
-            pip install -r dev-requirements.txt && \
+            pip install --progress-bar off -e ".[dev-core]" && \
             flake8 civis
       - pre-build:
           name: sphinx-build
           command-run: |
-            pip install -e . && \
-            pip install -r dev-requirements.txt && \
+            pip install --progress-bar off -e ".[docs]" && \
             sphinx-build -b html -n docs/source/ docs/build/
       - pre-build:
           name: twine
           command-run: |
-            pip install -r dev-requirements.txt && \
-            python setup.py sdist bdist_wheel && \
+            pip install --progress-bar off -e ".[dev-core]" && \
+            python -m build && \
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
       - pre-build:
@@ -91,4 +90,4 @@ workflows:
             - bandit
           matrix:
             parameters:
-              python-version: ["3.8", "3.9", "3.10", "3.11"]
+              python-version: ["3.9", "3.10", "3.11", "3.12"]

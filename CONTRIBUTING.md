@@ -25,7 +25,7 @@ These set-up steps need to be done only once per machine / OS.
 1. Locally, create an isolated Python environment and activate it
    (e.g., using the built-in [venv](https://docs.python.org/3/tutorial/venv.html)).
    For the Python version, use the latest Python 3.x that civis-python supports,
-   as indicated in `setup.py` at the repo's top level.
+   as indicated in `pyproject.toml` at the repo's top level.
 2. [For non-Civis employees only] Fork the civis-python repo ( https://github.com/civisanalytics/civis-python/fork ).
 3. Clone the civis-python repo to your local drive:
 
@@ -51,8 +51,7 @@ git remote rename origin upstream
 
 ```bash
 cd civis-python
-pip install -r dev-requirements.txt
-pip install -e .
+pip install -e ".[dev-core,dev-civisml,docs]"
 ```
 
 ## Making Changes

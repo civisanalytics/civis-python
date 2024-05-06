@@ -70,7 +70,7 @@ your function. Use the ``docker_image_name`` and ``docker_image_tag``
 to select a custom Docker image for your job.
 You can provide a ``setup_cmd`` to run setup in bash before your
 function executes in Python. The default ``setup_cmd`` will run
-``python setup.py install`` in the base directory of any ``repo_http_uri``
+``pip install .`` in the base directory of any ``repo_http_uri``
 which you include in your backend setup.
 Make sure that the environment you define for your Civis backend
 includes all of the code which your parallel function will call.

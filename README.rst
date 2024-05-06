@@ -79,13 +79,11 @@ variable, install the Python package ``civis`` with the recommended method via `
     pip install civis
 
 Alternatively, if you are interested in the latest functionality not yet released through ``pip``,
-you may clone the code from GitHub and build from source:
+you may clone the code from GitHub and build from source (``git`` assumed to be available):
 
 .. code-block:: bash
 
-   git clone https://github.com/civisanalytics/civis-python.git
-   cd civis-python
-   python setup.py install
+   pip install git+https://github.com/civisanalytics/civis-python.git
 
 You can test your installation by running
 
