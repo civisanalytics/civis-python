@@ -1,9 +1,11 @@
 import os
-from posixpath import join
 import threading
+import warnings
 from concurrent import futures
-from requests import Request
 from json.decoder import JSONDecodeError
+from posixpath import join
+
+from requests import Request
 
 from civis.response import PaginatedResponse, convert_response_data_type
 from civis._utils import open_session, retry_request, MAX_RETRIES
