@@ -82,12 +82,20 @@ workflows:
             pip install --upgrade bandit && \
             bandit --version && \
             bandit -r civis -x civis/tests,civis/ml/tests
+      - pre-build:
+          name: pip-audit
+          command-run: |
+            pip install --upgrade pip setuptools wheel pip-audit && \
+            pip install --progress-bar off -e ".[dev-core,dev-civisml,docs]" && \
+            pip-audit --version && \
+            pip-audit
       - build-python:
           requires:
             - flake8
             - sphinx-build
             - twine
             - bandit
+            - pip-audit
           matrix:
             parameters:
               python-version: ["3.9", "3.10", "3.11", "3.12"]
