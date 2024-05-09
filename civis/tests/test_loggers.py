@@ -1,7 +1,7 @@
 import logging
 from uuid import uuid4
 
-from civis.loggers import civis_logger
+from civis import civis_logger
 
 
 def _get_test_logger(*args, **kwargs):

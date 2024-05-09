@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
 - Added support for Python 3.10, 3.11, and 3.12 (#462, #475)
 - A `FutureWarning` is now raised when a deprecated Civis API endpoint method is called. (#477)
+- Added `civis_logger` for logging in Civis Platform scripts. (#478)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)

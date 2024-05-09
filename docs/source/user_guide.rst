@@ -201,14 +201,14 @@ graphical user interface, whereas logs at stderr show up in red.
 Because it's a common use case to have ``INFO``-level (or below) logging in black
 (for general information and debugging) and ``WARNING``-level (or above) logging
 in red (for highlighting potential issues),
-:func:`civis.loggers.civis_logger` is available as the stand-in replacement
+:func:`civis.civis_logger` is available as the stand-in replacement
 for :func:`logging.getLogger` with this behavior built in.
 
 .. code:: python
 
-    from civis.loggers import civis_logger
+    from civis import civis_logger
 
-    _LOG = civis_logger()  # instead of `_LOG = logging.getLogger(__name__)`
+    _LOG = civis_logger()  # instead of _LOG = logging.getLogger(__name__)
 
     def some_function():
         ...
@@ -216,10 +216,12 @@ for :func:`logging.getLogger` with this behavior built in.
         _LOG.warning("something to look into potentially")  # appears in red
         ...
 
+.. currentmodule:: civis
+
 .. autosummary::
    :toctree: generated
 
-   civis.loggers.civis_logger
+   civis_logger
 
 
 API Response Types and Functions
