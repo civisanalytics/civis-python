@@ -20,7 +20,7 @@ class _LogFilter(logging.Filter):
             return record.levelno > self.level
 
 
-def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
+def civis_logger(name=None, level=None, fmt="%(message)s"):
     """Return a logger for Civis Platform jobs.
 
     The logs of Civis Platform jobs format stdout in black and stderr in red.
@@ -35,8 +35,10 @@ def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
         this logger is instantiated is used.
     level : int or str, optional
         Level from which logging is done,
-        e.g., ``logging.INFO`` (default), ``"INFO"``, etc.
-        See https://docs.python.org/3/library/logging.html#logging-levels.
+        see https://docs.python.org/3/library/logging.html#logging-levels.
+        If ``None`` or not provided, the level specified by the environment
+        variable ``CIVIS_LOG_LEVEL`` is used. If this environment
+        variable is also not given, ``level`` defaults to ``logging.INFO``.
     fmt : str or logging.Formatter, optional
         Logging format. The default is ``"%(message)s"``.
         For the attributes that can be formatted, see:
@@ -51,7 +53,11 @@ def civis_logger(name=None, level=logging.INFO, fmt="%(message)s"):
     logger = logging.getLogger(
         name if name is not None else globals()["__name__"]
     )
-    logger.setLevel(level)
+
+    if level is None:
+        logger.setLevel(os.getenv("CIVIS_LOG_LEVEL") or logging.INFO)
+    else:
+        logger.setLevel(level)
 
     # When running on Civis Platform (as opposed to unit tests in CI),
     # we don't want to propagate log records to the root logger
