@@ -1,4 +1,5 @@
 import json
+import warnings
 from operator import itemgetter
 from unittest import mock
 
@@ -334,8 +335,10 @@ def test_cancel_finished_job():
     # you try to cancel any job.
     c = _setup_client_mock()
     err_resp = requests.Response()
+    status_code = 404
+    err_resp.status_code = status_code
     err_resp._content = json.dumps({
-        'status_code': 404,
+        'status_code': status_code,
         'error': 'not_found',
         'errorDescription': 'The requested resource could not be found.',
         'content': True}).encode()
@@ -344,7 +347,10 @@ def test_cancel_finished_job():
     fut = ContainerFuture(-10, 100, polling_interval=1, client=c,
                           poll_on_creation=False)
     assert not fut.done()
-    assert fut.cancel() is False
+    with warnings.catch_warnings():
+        # Check that no warnings are raised.
+        warnings.simplefilter("error")
+        assert fut.cancel() is False
 
 
 def test_future_no_retry_error():

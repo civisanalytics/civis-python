@@ -2,7 +2,6 @@ import os
 from posixpath import join
 import threading
 from concurrent import futures
-import warnings
 from requests import Request
 from json.decoder import JSONDecodeError
 
@@ -100,7 +99,7 @@ def get_base_url():
     return base_url
 
 
-class Endpoint(object):
+class Endpoint:
 
     _lock = threading.Lock()
 
@@ -169,9 +168,6 @@ class CivisAsyncResultBase(futures.Future):
     polling_interval : int or float
         The number of seconds between API requests to check whether a result
         is ready.
-    api_key : DEPRECATED str, optional
-        Your Civis API key. If not given, the :envvar:`CIVIS_API_KEY`
-        environment variable will be used.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -181,16 +177,12 @@ class CivisAsyncResultBase(futures.Future):
         in `polling_interval` from object creation before polling.
     """
     def __init__(self, poller, poller_args,
-                 polling_interval=None, api_key=None, client=None,
+                 polling_interval=None, client=None,
                  poll_on_creation=True):
         super().__init__()
         self.poller = poller
         self.poller_args = poller_args
         self.polling_interval = polling_interval
-        if api_key is not None:
-            warnings.warn('The "api_key" parameter is deprecated and will be '
-                          'removed in v2. Please use the `client` parameter '
-                          'instead.', FutureWarning)
         self.client = client
         self.poll_on_creation = poll_on_creation
 

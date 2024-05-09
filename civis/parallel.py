@@ -11,10 +11,13 @@ from tempfile import TemporaryDirectory
 import time
 import warnings
 
-
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
-from joblib.my_exceptions import TransportableException
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from joblib.my_exceptions import TransportableException
+
 from joblib import register_parallel_backend as _joblib_reg_para_backend
 import requests
 
@@ -48,7 +51,7 @@ except ImportError:
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 _DEFAULT_SETUP_CMD = ":"  # An sh command that does nothing.
-_DEFAULT_REPO_SETUP_CMD = "cd /app; python setup.py install; cd /"
+_DEFAULT_REPO_SETUP_CMD = "cd /app; pip install .; cd /"
 _ALL_JOBS = 50  # Give the user this many jobs if they request "all of them"
 
 # When creating a remote execution environment from an existing
@@ -129,13 +132,13 @@ def infer_backend_factory(required_resources=None,
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
         This is primarily for installing dependencies that are not available
-        in the dockerhub repo (e.g., "cd /app && python setup.py install"
+        in the dockerhub repo (e.g., "cd /app && pip install ."
         or "pip install gensim").
 
         With no GitHub repo input, the setup command will
         default to a command that does nothing. If a ``repo_http_uri``
         is provided, the default setup command will attempt to run
-        "python setup.py install". If this command fails, execution
+        "pip install .". If this command fails, execution
         will still continue.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help
@@ -288,13 +291,13 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
         This is primarily for installing dependencies that are not available
-        in the dockerhub repo (e.g., "cd /app && python setup.py install"
+        in the dockerhub repo (e.g., "cd /app && pip install ."
         or "pip install gensim").
 
         With no GitHub repo input, the setup command will
         default to a command that does nothing. If a `repo_http_uri`
         is provided, the default setup command will attempt to run
-        "python setup.py install". If this command fails, execution
+        "pip install .". If this command fails, execution
         will still continue.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help

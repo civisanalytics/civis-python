@@ -1,5 +1,0 @@
-include requirements.txt
-include README.rst
-include LICENSE.md
-include civis/_version.py
-include civis/tests/civis_api_spec.json

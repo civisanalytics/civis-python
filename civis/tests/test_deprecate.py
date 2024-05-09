@@ -1,3 +1,5 @@
+import warnings
+
 from civis import _deprecation
 
 import pytest
@@ -90,8 +92,8 @@ def test_deprecate_no_warning():
     # deprecated parameter.
     decorated_func = _deprecation.deprecate_param('v2.0.0', 'param2')(adder)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         output = decorated_func(1, param3=5)
 
     assert output == 6, "The function should still give the expected output."
-    assert len(record) == 0, "No warnings should be raised."
