@@ -1,9 +1,11 @@
 import os
-from posixpath import join
 import threading
+import warnings
 from concurrent import futures
-from requests import Request
 from json.decoder import JSONDecodeError
+from posixpath import join
+
+from requests import Request
 
 from civis.response import PaginatedResponse, convert_response_data_type
 from civis._utils import open_session, retry_request, MAX_RETRIES
@@ -103,7 +105,7 @@ class Endpoint:
 
     _lock = threading.Lock()
 
-    def __init__(self, session_kwargs, client, return_type='civis'):
+    def __init__(self, session_kwargs, client, return_type="raw"):
         self._session_kwargs = session_kwargs
         self._return_type = return_type
         self._base_url = get_base_url()
@@ -135,7 +137,12 @@ class Endpoint:
 
         return response
 
-    def _call_api(self, method, path=None, params=None, data=None, **kwargs):
+    def _call_api(self, method, path=None, params=None, data=None,
+                  deprecation_warning=None, **kwargs):
+        if deprecation_warning:
+            # stacklevel=3 to point to the call just outside civis-python
+            warnings.warn(deprecation_warning, FutureWarning, stacklevel=3)
+
         iterator = kwargs.pop('iterator', False)
 
         if iterator:

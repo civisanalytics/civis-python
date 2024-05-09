@@ -6,8 +6,10 @@ from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
 import civis
+from civis.base import Endpoint
 from civis.resources import _resources, API_SPEC
 from civis.resources._resources import BASE_RESOURCES_V1
+from civis.tests import create_client_mock
 
 
 RESPONSE_DOC = (
@@ -42,12 +44,12 @@ def test_create_method_iterator_kwarg():
             {"name": 'order', "in": 'query', "required": False, "doc": ""},
             {"name": 'order_by', "in": 'query', "required": False, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
-                                      'fake_doc')
+                                      'deprecation', 'param_doc', 'resp_doc')
     mock_endpoint = mock.MagicMock()
 
     method(mock_endpoint, iterator=True)
     mock_endpoint._call_api.assert_called_once_with(
-        'get', '/objects', {}, {}, iterator=True)
+        'get', '/objects', {}, {}, "deprecation", iterator=True)
 
 
 def test_create_method_no_iterator_kwarg():
@@ -56,7 +58,7 @@ def test_create_method_no_iterator_kwarg():
     # unexpected "iterator" parameter is passed in
     args = [{"name": 'id', "in": 'query', "required": True, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
-                                      'fake_doc')
+                                      'deprecation', 'param_doc', 'resp_doc')
     mock_endpoint = mock.MagicMock()
 
     with pytest.raises(TypeError) as excinfo:
@@ -68,7 +70,7 @@ def test_create_method_no_iterator_kwarg():
     # code path; verify that this also rejects unexpected arguments.
     args2 = [{"name": 'foo', "in": 'query', "required": False, "doc": ""}]
     method2 = _resources.create_method(args2, 'get', 'mock_name', '/objects',
-                                       'fake_doc')
+                                       'deprecation', 'param_doc', 'resp_doc')
     mock_endpoint2 = mock.MagicMock()
     with pytest.raises(TypeError) as excinfo:
         method2(mock_endpoint2, iterator=True)
@@ -247,7 +249,7 @@ def _create_mock_endpoint():
     args = [{"name": 'foo', "in": 'query', "required": True, "doc": ""},
             {"name": 'bar', "in": 'query', "required": False, "doc": ""}]
     method = _resources.create_method(args, 'get', 'mock_name', '/objects',
-                                      'fake_doc')
+                                      'deprecation', 'param_doc', 'resp_doc')
     mock_endpoint = mock.MagicMock()
     return mock_endpoint, method
 
@@ -258,7 +260,8 @@ def test_create_method_unexpected_kwargs():
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
     mock_endpoint._call_api.assert_called_once_with(
-        'get', '/objects', {"foo": 0, "bar": 0}, {}, iterator=False)
+        'get', '/objects', {"foo": 0, "bar": 0}, {},
+        "deprecation", iterator=False)
 
     # Method raises TypeError with unexpected kwarg
     expected_msg = ("mock_name() got an unexpected keyword argument(s) "
@@ -294,6 +297,17 @@ def test_create_method_keyword_only():
     with pytest.raises(TypeError) as excinfo:
         method(mock_endpoint, 0, 0)
     assert str(excinfo.value) == "too many positional arguments"
+
+
+def test_create_method_deprecation_warning():
+    args = [{"name": 'foo', "in": 'query', "required": True, "doc": ""}]
+    method = _resources.create_method(args, 'get', 'mock_name', '/objects',
+                                      'deprecation', 'param_doc', 'resp_doc')
+    mock_endpoint = Endpoint({"api_key": "abc"}, client=create_client_mock())
+    mock_endpoint._make_request = mock.Mock()
+
+    with pytest.warns(FutureWarning, match="deprecation"):
+        method(mock_endpoint, foo=0)
 
 
 @mock.patch('builtins.open', new_callable=mock.mock_open,
