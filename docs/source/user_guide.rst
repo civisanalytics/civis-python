@@ -201,7 +201,7 @@ graphical user interface, whereas logs at stderr show up in red.
 Because it's a common use case to have ``INFO``-level (or below) logging in black
 (for general information and debugging) and ``WARNING``-level (or above) logging
 in red (for highlighting potential issues),
-:func:`civis.civis_logger` is available as the stand-in replacement
+:func:`civis.civis_logger` is available as a drop-in replacement
 for :func:`logging.getLogger` with this behavior built in.
 
 .. code:: python
