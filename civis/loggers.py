@@ -37,8 +37,10 @@ def civis_logger(name=None, level=None, fmt="%(message)s"):
         Level from which logging is done,
         see https://docs.python.org/3/library/logging.html#logging-levels.
         If ``None`` or not provided, the level specified by the environment
-        variable ``CIVIS_LOG_LEVEL`` is used. If this environment
-        variable is also not given, ``level`` defaults to ``logging.INFO``.
+        variable ``CIVIS_LOG_LEVEL`` is used
+        (e.g., ``export CIVIS_LOG_LEVEL=DEBUG``).
+        If this environment variable is also not given,
+        the logging level defaults to ``logging.INFO``.
     fmt : str or logging.Formatter, optional
         Logging format. The default is ``"%(message)s"``.
         For the attributes that can be formatted, see:

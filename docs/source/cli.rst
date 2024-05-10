@@ -30,6 +30,9 @@ get output in JSON.
 You can find out more information about a command by adding a ``--help`` option,
 like ``civis scripts list --help``.
 
+The logging level of the CLI can be configured by setting the ``CIVIS_LOG_LEVEL``
+environment variable, e.g., ``CIVIS_LOG_LEVEL=DEBUG civis users list-me``.
+
 Job Logs
 --------
 
