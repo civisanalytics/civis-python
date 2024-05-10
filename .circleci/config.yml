@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@5.0
+
 jobs:
   pre-build:
     description: A check that doesn't need every supported Python version (e.g., code style checks, sphinx docs can build)
@@ -55,6 +58,22 @@ jobs:
       - store_test_results:
           path: /tmp/testxml/
 
+  build-python-win:
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run: systeminfo
+      - run:
+          name: Run tests on Windows
+          shell: bash.exe
+          command: |
+            python --version && \
+            pip install ".[dev-core,dev-civisml]" && \
+            pip list && \
+            pytest
+
 workflows:
   version: 2
   build-and-test:
@@ -99,3 +118,9 @@ workflows:
           matrix:
             parameters:
               python-version: ["3.9", "3.10", "3.11", "3.12"]
+      - build-python-win:
+          requires:
+            - flake8
+            - twine
+            - bandit
+            - pip-audit
