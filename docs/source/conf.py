@@ -76,7 +76,7 @@ release = civis.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -387,13 +387,9 @@ else:
     import json
     from collections import OrderedDict
     from jsonref import JsonRef
+    from civis.resources import API_SPEC_PATH
 
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    resources_dir = os.path.join(
-        this_dir, os.pardir, os.pardir, 'civis', 'resources'
-    )
-    api_path = os.path.join(resources_dir, 'civis_api_spec.json')
-    with open(api_path) as _raw:
+    with open(API_SPEC_PATH) as _raw:
         api_spec = JsonRef.replace_refs(
             json.load(_raw, object_pairs_hook=OrderedDict))
     extra_classes = civis.resources._resources.parse_api_spec(
@@ -403,6 +399,14 @@ sorted_class_names = sorted(extra_classes.keys())
 
 civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names,
                                            _generated_attach_path)
+
+# TODO: The API endpoint doc details are in the stub file civis/client.pyi,
+#   but Sphinx still doesn't really support stub files
+#   (see https://github.com/sphinx-doc/sphinx/pull/4824 and
+#   https://github.com/sphinx-doc/sphinx/issues/7630).
+#   If Sphinx supports stub files in the future,
+#   we can consider using civis/client.pyi to document the API endpoints
+#   instead of having to fake-attach the endpoint classes to a module.
 _attach_classes_to_module(_generated_attach_point, extra_classes)
 _write_resources_rst(sorted_class_names, _rst_basename, _generated_attach_path)
 

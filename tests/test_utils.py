@@ -8,8 +8,7 @@ from math import floor
 from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
 from civis._utils import retry
 from civis._utils import retry_request
-
-from civis.civis import RETRY_VERBS, RETRY_CODES, POST_RETRY_CODES
+from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 import pytest
 
@@ -115,14 +114,14 @@ def test_io_retry_unexpected_exception():
     pytest.raises(ValueError, raise_unexpected_error)
 
 
-@mock.patch('civis._utils.open_session')
-def test_no_retry_on_success(mock_session):
+def test_no_retry_on_success():
     expected_call_count = 0
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 
-    for verb in RETRY_VERBS:
+    for verb in _RETRY_VERBS:
         expected_call_count += 1
         session_context.send.return_value.status_code = 200
 
@@ -139,15 +138,15 @@ def test_no_retry_on_success(mock_session):
         assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
-def test_no_retry_on_get_no_retry_failure(mock_session):
+def test_no_retry_on_get_no_retry_failure():
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 
-    for verb in RETRY_VERBS:
+    for verb in _RETRY_VERBS:
         expected_call_count += 1
         session_context.send.return_value.status_code = 403
 
@@ -164,16 +163,16 @@ def test_no_retry_on_get_no_retry_failure(mock_session):
         assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
 @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
-def test_retry_on_retry_eligible_failures(mock_session, m_sleep):
+def test_retry_on_retry_eligible_failures(m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
-    for verb in RETRY_VERBS:
-        for code in RETRY_CODES:
+    for verb in _RETRY_VERBS:
+        for code in _RETRY_CODES:
             expected_call_count += max_calls
             session_context.send.return_value.status_code = code
 
@@ -191,17 +190,16 @@ def test_retry_on_retry_eligible_failures(mock_session, m_sleep):
             assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
 @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
-def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session,
-                                                          m_sleep):
+def test_retry_on_retry_eligible_failures_lowercase_verbs(m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
-    for verb in RETRY_VERBS:
-        for code in RETRY_CODES:
+    for verb in _RETRY_VERBS:
+        for code in _RETRY_CODES:
             expected_call_count += max_calls
             session_context.send.return_value.status_code = code
 
@@ -219,11 +217,11 @@ def test_retry_on_retry_eligible_failures_lowercase_verbs(mock_session,
             assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
-def test_no_retry_on_post_success(mock_session):
+def test_no_retry_on_post_success():
     expected_call_count = 1
     max_calls = 3
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 
@@ -242,16 +240,16 @@ def test_no_retry_on_post_success(mock_session):
     assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
 @mock.patch('civis.futures.time.sleep', side_effect=lambda x: None)
-def test_retry_on_retry_eligible_post_failures(mock_session, m_sleep):
+def test_retry_on_retry_eligible_post_failures(m_sleep):
     expected_call_count = 0
     max_calls = 3
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 
-    for code in POST_RETRY_CODES:
+    for code in _POST_RETRY_CODES:
         expected_call_count += max_calls
         session_context.send.return_value.status_code = code
 
@@ -268,14 +266,14 @@ def test_retry_on_retry_eligible_post_failures(mock_session, m_sleep):
         assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
-def test_no_retry_on_connection_error(mock_session):
+def test_no_retry_on_connection_error():
     expected_call_count = 0
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 
-    for verb in RETRY_VERBS:
+    for verb in _RETRY_VERBS:
         expected_call_count += 1
 
         request_info = dict(
@@ -296,12 +294,12 @@ def test_no_retry_on_connection_error(mock_session):
         assert session_context.send.call_count == expected_call_count
 
 
-@mock.patch('civis._utils.open_session')
-def test_retry_respect_retry_after_headers(mock_session):
+def test_retry_respect_retry_after_headers():
     expected_call_count = 0
     max_calls = 2
     retry_after = 1
     api_response = {'key': 'value'}
+    mock_session = mock.MagicMock()
     session_context = mock_session.return_value.__enter__.return_value
     session_context.send.return_value.json.return_value = api_response
 

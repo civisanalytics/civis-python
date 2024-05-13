@@ -258,3 +258,89 @@ class PaginatedResponse:
         if self._iter is None:
             self._iter = self._get_iter()
         return next(self._iter)
+
+
+def find(object_list, filter_func=None, **kwargs):
+    """Filter :class:`civis.response.Response` objects.
+
+    Parameters
+    ----------
+    object_list : iterable
+        An iterable of arbitrary objects, particularly those with attributes
+        that can be targeted by the filters in `kwargs`. A major use case is
+        an iterable of :class:`civis.response.Response` objects.
+    filter_func : callable, optional
+        A one-argument function. If specified, `kwargs` are ignored.
+        An `object` from the input iterable is kept in the returned list
+        if and only if ``bool(filter_func(object))`` is ``True``.
+    **kwargs
+        Key-value pairs for more fine-grained filtering; they cannot be used
+        in conjunction with ``filter_func``. All keys must be strings.
+        For an object ``obj`` from the input iterable to be included in the
+        returned list, all the keys must be attributes of ``obj``, plus
+        any one of the following conditions for a given key:
+
+        - ``value`` is a one-argument function and
+          ``bool(value(getattr(obj, key)))`` is equal to ``True``
+        - ``value`` is either ``True`` or ``False``, and
+          ``getattr(obj, key) is value`` is ``True``
+        - ``getattr(obj, key) == value`` is ``True``
+
+    Returns
+    -------
+    list
+
+    Examples
+    --------
+    >>> import civis
+    >>> client = civis.APIClient()
+    >>> # creds is a list of civis.response.Response objects
+    >>> creds = client.credentials.list()
+    >>> # target_creds contains civis.response.Response objects
+    >>> # with the attribute 'name' == 'username'
+    >>> target_creds = find(creds, name='username')
+
+    See Also
+    --------
+    civis.find_one
+    """
+    _func = filter_func
+    if not filter_func:
+        def default_filter(o):
+            for k, v in kwargs.items():
+                if not hasattr(o, k):
+                    return False
+                elif callable(v):
+                    if not v(getattr(o, k, None)):
+                        return False
+                elif isinstance(v, bool):
+                    if getattr(o, k) is not v:
+                        return False
+                elif v != getattr(o, k, None):
+                    return False
+            return True
+
+        _func = default_filter
+
+    return [o for o in object_list if _func(o)]
+
+
+def find_one(object_list, filter_func=None, **kwargs):
+    """Return one satisfying :class:`civis.response.Response` object.
+
+    The arguments are the same as those for :func:`civis.find`.
+    If more than one object satisfies the filtering criteria,
+    the first one is returned.
+    If no satisfying objects are found, ``None`` is returned.
+
+    Returns
+    -------
+    object or None
+
+    See Also
+    --------
+    civis.find
+    """
+    results = find(object_list, filter_func, **kwargs)
+
+    return results[0] if results else None

@@ -4,103 +4,69 @@ import logging
 import civis
 from civis.resources import generate_classes_maybe_cached
 from civis._utils import get_api_key
-from civis.response import _RETURN_TYPES
+from civis.response import _RETURN_TYPES, find, find_one
 
 
-log = logging.getLogger(__name__)
-
-RETRY_CODES = [429, 502, 503, 504]
-RETRY_VERBS = ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
-POST_RETRY_CODES = [429, 503]
+_log = logging.getLogger(__name__)
 
 
-def find(object_list, filter_func=None, **kwargs):
-    """Filter :class:`civis.response.Response` objects.
+class APIClient:
+    """The Civis API client.
 
     Parameters
     ----------
-    object_list : iterable
-        An iterable of arbitrary objects, particularly those with attributes
-        that can be targeted by the filters in `kwargs`. A major use case is
-        an iterable of :class:`civis.response.Response` objects.
-    filter_func : callable, optional
-        A one-argument function. If specified, `kwargs` are ignored.
-        An `object` from the input iterable is kept in the returned list
-        if and only if ``bool(filter_func(object))`` is ``True``.
-    **kwargs
-        Key-value pairs for more fine-grained filtering; they cannot be used
-        in conjunction with ``filter_func``. All keys must be strings.
-        For an object ``obj`` from the input iterable to be included in the
-        returned list, all the keys must be attributes of ``obj``, plus
-        any one of the following conditions for a given key:
+    api_key : str, optional
+        Your API key obtained from the Civis Platform. If not given, the
+        client will use the :envvar:`CIVIS_API_KEY` environment variable.
+    return_type : str, optional
+        The following types are implemented:
 
-        - ``value`` is a one-argument function and
-          ``bool(value(getattr(obj, key)))`` is equal to ``True``
-        - ``value`` is either ``True`` or ``False``, and
-          ``getattr(obj, key) is value`` is ``True``
-        - ``getattr(obj, key) == value`` is ``True``
-
-    Returns
-    -------
-    list
-
-    Examples
-    --------
-    >>> import civis
-    >>> client = civis.APIClient()
-    >>> # creds is a list of civis.response.Response objects
-    >>> creds = client.credentials.list()
-    >>> # target_creds contains civis.response.Response objects
-    >>> # with the attribute 'name' == 'username'
-    >>> target_creds = find(creds, name='username')
-
-    See Also
-    --------
-    civis.find_one
+        - ``'raw'`` Returns the raw :class:`requests:requests.Response` object.
+        - ``'snake'`` Returns a :class:`civis.response.Response` object for the
+          json-encoded content of a response. This maps the top-level json
+          keys to snake_case.
+    api_version : string, optional
+        The version of endpoints to call. May instantiate multiple client
+        objects with different versions. Currently only "1.0" is supported.
+    local_api_spec : collections.OrderedDict or string, optional
+        The methods on this class are dynamically built from the Civis API
+        specification, which can be retrieved from the /endpoints endpoint.
+        When local_api_spec is None, the default, this specification is
+        downloaded the first time APIClient is instantiated. Alternatively,
+        a local cache of the specification may be passed as either an
+        OrderedDict or a filename which points to a json file.
     """
-    _func = filter_func
-    if not filter_func:
-        def default_filter(o):
-            for k, v in kwargs.items():
-                if not hasattr(o, k):
-                    return False
-                elif callable(v):
-                    if not v(getattr(o, k, None)):
-                        return False
-                elif isinstance(v, bool):
-                    if getattr(o, k) is not v:
-                        return False
-                elif v != getattr(o, k, None):
-                    return False
-            return True
 
-        _func = default_filter
+    def __init__(self, api_key=None, return_type='snake',
+                 api_version="1.0", local_api_spec=None):
+        if return_type not in _RETURN_TYPES:
+            raise ValueError(
+                f"Return type must be one of {set(_RETURN_TYPES)}: "
+                f"{return_type}"
+            )
+        self._feature_flags = ()
+        session_auth_key = get_api_key(api_key)
+        self._session_kwargs = {'api_key': session_auth_key}
+        self.last_response = None
 
-    return [o for o in object_list if _func(o)]
+        classes = generate_classes_maybe_cached(local_api_spec,
+                                                session_auth_key,
+                                                api_version)
+        for class_name, cls in classes.items():
+            setattr(self, class_name, cls(self._session_kwargs, client=self,
+                                          return_type=return_type))
 
+    @property
+    def feature_flags(self):
+        if self._feature_flags:
+            return self._feature_flags
+        me = self.users.list_me()
+        self._feature_flags = tuple(flag for flag, value
+                                    in me['feature_flags'].items() if value)
+        return self._feature_flags
 
-def find_one(object_list, filter_func=None, **kwargs):
-    """Return one satisfying :class:`civis.response.Response` object.
-
-    The arguments are the same as those for :func:`civis.find`.
-    If more than one object satisfies the filtering criteria,
-    the first one is returned.
-    If no satisfying objects are found, ``None`` is returned.
-
-    Returns
-    -------
-    object or None
-
-    See Also
-    --------
-    civis.find
-    """
-    results = find(object_list, filter_func, **kwargs)
-
-    return results[0] if results else None
-
-
-class MetaMixin:
+    def __getstate__(self):
+        raise RuntimeError("The APIClient object can't be pickled.")
 
     @lru_cache(maxsize=128)
     def get_database_id(self, database):
@@ -239,9 +205,9 @@ class MetaMixin:
                     owner = self.username
                     my_creds = find(my_creds, owner=owner)
                 if len(my_creds) > 1:
-                    log.warning("Found %d AWS credentials with name %s and "
-                                "owner %s. Returning the first.",
-                                len(my_creds), cred_name, owner)
+                    _log.warning("Found %d AWS credentials with name %s and "
+                                 "owner %s. Returning the first.",
+                                 len(my_creds), cred_name, owner)
             my_creds = my_creds[0]
 
         return my_creds["id"]
@@ -339,61 +305,3 @@ class MetaMixin:
     def username(self):
         """The current user's username."""
         return self.users.list_me().username
-
-
-class APIClient(MetaMixin):
-    """The Civis API client.
-
-    Parameters
-    ----------
-    api_key : str, optional
-        Your API key obtained from the Civis Platform. If not given, the
-        client will use the :envvar:`CIVIS_API_KEY` environment variable.
-    return_type : str, optional
-        The following types are implemented:
-
-        - ``'raw'`` Returns the raw :class:`requests:requests.Response` object.
-        - ``'snake'`` Returns a :class:`civis.response.Response` object for the
-          json-encoded content of a response. This maps the top-level json
-          keys to snake_case.
-    api_version : string, optional
-        The version of endpoints to call. May instantiate multiple client
-        objects with different versions. Currently only "1.0" is supported.
-    local_api_spec : collections.OrderedDict or string, optional
-        The methods on this class are dynamically built from the Civis API
-        specification, which can be retrieved from the /endpoints endpoint.
-        When local_api_spec is None, the default, this specification is
-        downloaded the first time APIClient is instantiated. Alternatively,
-        a local cache of the specification may be passed as either an
-        OrderedDict or a filename which points to a json file.
-    """
-    def __init__(self, api_key=None, return_type='snake',
-                 api_version="1.0", local_api_spec=None):
-        if return_type not in _RETURN_TYPES:
-            raise ValueError(
-                f"Return type must be one of {set(_RETURN_TYPES)}: "
-                f"{return_type}"
-            )
-        self._feature_flags = ()
-        session_auth_key = get_api_key(api_key)
-        self._session_kwargs = {'api_key': session_auth_key}
-        self.last_response = None
-
-        classes = generate_classes_maybe_cached(local_api_spec,
-                                                session_auth_key,
-                                                api_version)
-        for class_name, cls in classes.items():
-            setattr(self, class_name, cls(self._session_kwargs, client=self,
-                                          return_type=return_type))
-
-    @property
-    def feature_flags(self):
-        if self._feature_flags:
-            return self._feature_flags
-        me = self.users.list_me()
-        self._feature_flags = tuple(flag for flag, value
-                                    in me['feature_flags'].items() if value)
-        return self._feature_flags
-
-    def __getstate__(self):
-        raise RuntimeError("The APIClient object can't be pickled.")
