@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Changed `civis.io.civis_file_to_table` to not rely on table ids for determining a table's existence (#470)
 - Broke out the "API Resources" documentation page into individual endpoint pages (#471)
 - Switched to `pyproject.toml` for packaging. (#475)
+- CI builds for Windows switched from AppVeyor to CircleCI. (#480)
 
 ### Deprecated
 ### Removed
