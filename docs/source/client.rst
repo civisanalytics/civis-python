@@ -68,8 +68,10 @@ specification has been saved.
 .. currentmodule:: civis
 
 .. autoclass:: civis.APIClient
-   :inherited-members:
+   :members:
 
 .. toctree::
+   :maxdepth: 1
+
    responses
    api_resources

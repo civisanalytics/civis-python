@@ -1,35 +1,35 @@
 from unittest import mock
 
-import civis
-from civis import find
-from civis.resources import API_SPEC
-from civis.response import Response
-
 import pytest
 
+from civis import APIClient
+from civis.resources import API_SPEC
 
-def test_find_filter_with_kwargs():
-    r1 = Response({"foo": 0, "bar": "a", "baz": True})
-    r2 = Response({"foo": 1, "bar": "b", "baz": True})
-    r3 = Response({"foo": 2, "bar": "b", "baz": False})
+api_import_str = 'civis.resources._resources.get_api_spec'
 
-    assert find([r1, r2, r3], wrong_attr="whatever") == []
 
-    assert find([r1, r2, r3], foo=0) == [r1]
-    assert find([r1, r2, r3], foo=1) == [r2]
-    assert find([r1, r2, r3], foo=1, bar="b") == [r2]
+class FakeUsersEndpoint:
+    def list_me(self):
+        return {'feature_flags': {'foo': True, 'bar': True, 'baz': False}}
 
-    assert find([r1, r2, r3], bar="b") == [r2, r3]
-    assert find([r1, r2, r3], bar="b", foo=1) == [r2]
 
-    assert find([r1, r2, r3], foo=True) == []
-    assert find([r1, r2, r3], foo=False) == []
-    assert find([r1, r2, r3], bar=True) == []
-    assert find([r1, r2, r3], bar=False) == []
-    assert find([r1, r2, r3], baz=True) == [r1, r2]
-    assert find([r1, r2, r3], baz=False) == [r3]
+@mock.patch('civis.resources._resources.get_api_spec', return_value=API_SPEC)
+def test_feature_flags(mock_spec):
+    client = APIClient()
+    setattr(client, 'users', FakeUsersEndpoint())
 
-    assert find([r1, r2, r3], foo=int) == [r2, r3]
+    assert client.feature_flags == ('foo', 'bar')
+
+
+@mock.patch('civis.resources._resources.get_api_spec', return_value=API_SPEC)
+def test_feature_flags_memoized(mock_spec):
+    client = APIClient()
+    setattr(client, 'users', FakeUsersEndpoint())
+    with mock.patch.object(client.users, 'list_me',
+                           wraps=client.users.list_me):
+        client.feature_flags
+        client.feature_flags
+        assert client.users.list_me.call_count == 1
 
 
 @pytest.mark.parametrize('schema_tablename', [
@@ -37,7 +37,7 @@ def test_find_filter_with_kwargs():
 ])
 def test_get_table_id(schema_tablename):
     """Check that get_table_id handles quoted schema.tablename correctly."""
-    client = civis.APIClient(local_api_spec=API_SPEC, api_key='none')
+    client = APIClient(local_api_spec=API_SPEC, api_key='none')
     client.get_database_id = mock.Mock(return_value=123)
 
     mock_tables = mock.MagicMock()
@@ -55,7 +55,7 @@ def test_get_table_id(schema_tablename):
 
 
 def test_get_storage_host_id():
-    client = civis.APIClient(local_api_spec=API_SPEC, api_key='none')
+    client = APIClient(local_api_spec=API_SPEC, api_key='none')
 
     class StorageHost:
         def __init__(self, id, name):

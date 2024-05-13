@@ -27,9 +27,10 @@ from civis.cli._cli_commands import (
     civis_ascii_art, files_download_cmd, files_upload_cmd,
     jobs_follow_log, jobs_follow_run_log, notebooks_download_cmd,
     notebooks_new_cmd, notebooks_up, notebooks_down, notebooks_open, sql_cmd)
+from civis.base import open_session
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
-from civis._utils import open_session, retry_request, MAX_RETRIES
+from civis._utils import retry_request, MAX_RETRIES
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r'[^A-Za-z0-9]+')
