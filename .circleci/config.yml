@@ -15,7 +15,6 @@ jobs:
     steps:
       - checkout
       - run:
-          working_directory: ~/project/
           command: << parameters.command-run >>
 
   build-python:
@@ -36,25 +35,19 @@ jobs:
           # install from clean slate.
           # "python -m build" creates dist/civis-x.y.z-py3-none-any.whl
           name: Build source distribution and install package from it
-          working_directory: ~/project/
           command: |
               pip install --progress-bar off --upgrade pip setuptools build && \
               python -m build && \
               pip install dist/`ls dist/ | grep .whl`
       - run:
           name: Install the full development requirements
-          working_directory: ~/project/
           command: pip install --progress-bar off -e ".[dev-core,dev-civisml]"
       - run:
           name: Show installed Python packages
           command: pip list -v
       - run:
           name: Run python tests
-          working_directory: ~/
-          # Avoid being able to import civis by relative import.
-          # Test code by importing the *installed* civis in site-packages.
-          command: |
-              pytest --junitxml=/tmp/testxml/report.xml --durations=0
+          command: pytest --junitxml=/tmp/testxml/report.xml --durations=0
       - store_test_results:
           path: /tmp/testxml/
 
@@ -82,7 +75,7 @@ workflows:
           name: flake8
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            flake8 civis
+            flake8 src tests
       - pre-build:
           name: sphinx-build
           command-run: |
@@ -100,7 +93,7 @@ workflows:
           command-run: |
             pip install --upgrade bandit && \
             bandit --version && \
-            bandit -r civis -x civis/tests,civis/ml/tests
+            bandit -r src -x tests
       - pre-build:
           name: pip-audit
           command-run: |

@@ -1,14 +1,17 @@
+import os
+import tempfile
 from collections import defaultdict, OrderedDict
-import pytest
 from unittest import mock
 
+import pytest
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
 import civis
 from civis.base import Endpoint
-from civis.resources import _resources, API_SPEC
+from civis.resources import _resources, API_SPEC, API_SPEC_PATH
 from civis.resources._resources import BASE_RESOURCES_V1
+from civis.resources._client_pypi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
 
 
@@ -16,25 +19,25 @@ RESPONSE_DOC = (
 """Returns
 -------
 :class:`civis.response.Response`
-    - id : integer
+    - id : int
         The ID of the credential.
-    - name : string
+    - name : str
         The name identifying the credential
-    - type : string
+    - type : str
         The credential's type.
-    - username : string
+    - username : str
         The username for the credential.
-    - description : string
+    - description : str
         A long description of the credential.
-    - owner : string
+    - owner : str
         The name of the user who this credential belongs to.
-    - remote_host_id : integer
+    - remote_host_id : int
         The ID of the remote host associated with this credential.
-    - remote_host_name : string
+    - remote_host_name : str
         The name of the remote host associated with this credential.
-    - created_at : string/time
+    - created_at : str (time)
         The creation time for this credential.
-    - updated_at : string/time
+    - updated_at : str (time)
         The last modification time for this credential.""")  # noqa: E122
 
 
@@ -92,17 +95,17 @@ def test_property_type():
     prop3 = {"type": "string", "format": "date"}
     assert _resources.property_type(prop) == "list"
     assert _resources.property_type(prop2) == "dict"
-    assert _resources.property_type(prop3) == "string/date"
+    assert _resources.property_type(prop3) == "str (date)"
 
 
 def test_name_and_type_doc():
     prop = {"type": "string"}
-    x = _resources.name_and_type_doc("A", prop, False, 0, True)
-    y = _resources.name_and_type_doc("A", prop, False, 1, True)
-    z = _resources.name_and_type_doc("A", prop, True, 0, False)
-    assert x == "a : string, optional"
-    assert y == "    - a : string, optional"
-    assert z == "a : string::"
+    x = _resources.name_and_type_doc("A", prop, 0, True)
+    y = _resources.name_and_type_doc("A", prop, 1, True)
+    z = _resources.name_and_type_doc("A", prop, 0, False)
+    assert x == "a : str, optional"
+    assert y == "    - a : str, optional"
+    assert z == "a : str"
 
 
 def test_docs_from_property():
@@ -111,22 +114,22 @@ def test_docs_from_property():
     x = _resources.docs_from_property("A", prop, {}, 0, True)
     y = _resources.docs_from_property("B", prop2, {}, 0, False)
     assert sorted(x) == sorted(["a : list, optional"])
-    assert sorted(y) == sorted(["b : dict::", "    - a : list"])
+    assert sorted(y) == sorted(["b : dict", "    - a : list"])
 
 
 def test_docs_from_properties():
     props = {"A": {"type": "string"}, "B": {"type": "integer"}}
     x = _resources.docs_from_properties(props, 0)
     y = _resources.docs_from_properties(props, 1)
-    assert sorted(x) == sorted(['a : string', 'b : integer'])
-    assert sorted(y) == sorted(['    - a : string', '    - b : integer'])
+    assert sorted(x) == sorted(['a : str', 'b : int'])
+    assert sorted(y) == sorted(['    - a : str', '    - b : int'])
 
 
 def test_deprecated_notice():
     deprecation_warning = "This endpoint is no longer supported"
     notice = _resources.deprecated_notice(deprecation_warning)
 
-    assert "Deprecation warning!" in notice
+    assert ".. warning::" in notice
     assert deprecation_warning in notice
 
 
@@ -140,6 +143,21 @@ def test_doc_from_responses():
     assert x == RESPONSE_DOC
 
 
+def test_type_from_param():
+    params = [
+        {"type": "string"},
+        {"type": "integer"},
+        {"type": "array"},
+        {"type": "array", "items": {"type": "integer"}},
+        {"type": "array", "items": {"$ref": "#/definitions/Object0"}},
+    ]
+    assert _resources.type_from_param(params[0]) == "str"
+    assert _resources.type_from_param(params[1]) == "int"
+    assert _resources.type_from_param(params[2]) == "list"
+    assert _resources.type_from_param(params[3]) == "list[int]"
+    assert _resources.type_from_param(params[4]) == "list[dict]"
+
+
 def test_iterable_method():
     assert _resources.iterable_method("get", ["limit", "page_num"])
     assert not _resources.iterable_method("get", ["page_num"])
@@ -147,14 +165,19 @@ def test_iterable_method():
 
 
 def test_split_method_params():
-    params = [{"name": "a", "required": True, "in": "body"},
-              {"name": "b", "required": True, "in": "path"},
-              {"name": "c", "required": True, "in": "query"},
-              {"name": "d", "required": False, "in": "query"}]
+    params = [
+        {"name": "a", "required": True, "in": "body", "type": "integer"},
+        {"name": "b", "required": True, "in": "path", "type": "integer"},
+        {"name": "c", "required": True, "in": "query", "type": "string"},
+        {"name": "d", "required": False, "in": "query", "type": "string"},
+    ]
     x = _resources.split_method_params(params)
     args, kwargs, body_params, query_params, path_params = x
-    assert sorted(args) == sorted(["a", "b", "c"])
-    assert kwargs == {"d": _resources.DEFAULT_STR}
+    assert sorted(args.keys()) == sorted(["a", "b", "c"])
+    assert args["a"] == {"type": "integer"}
+    assert kwargs == {
+        "d": {"default": _resources.DEFAULT_ARG_VALUE, "type": "string"}
+    }
     assert body_params == ["a"]
     assert sorted(query_params) == sorted(["c", "d"])
     assert path_params == ["b"]
@@ -165,7 +188,7 @@ def test_parse_param():
              "description": "yeah!", "type": "string"}
     x = _resources.parse_param(param)
     expected = [{'in': 'query', 'name': 'a', 'required': True,
-                 'doc': 'a : string\n    yeah!\n'}]
+                 'doc': 'a : str\n    yeah!\n', "type": "str"}]
     assert x == expected
 
 
@@ -175,7 +198,32 @@ def test_parse_params():
     param2 = {"name": "B", "in": "path", "required": True,
               "description": "nah!", "type": "integer"}
     x, y = _resources.parse_params([param, param2], "summary!", "get")
-    expect_x, expect_y = ([{'in': 'query', 'doc': 'a : string, optional\n    yeah!\n', 'required': False, 'name': 'a', 'default': _resources.DEFAULT_STR}, {'in': 'path', 'doc': 'b : integer\n    nah!\n', 'required': True, 'name': 'b'}], 'summary!\n\nParameters\n----------\nb : integer\n    nah!\na : string, optional\n    yeah!\n')  # noqa: E501
+    expect_x = [
+        {
+            'in': 'query',
+            'doc': 'a : str, optional\n    yeah!\n',
+            'required': False,
+            'name': 'a',
+            'default': _resources.DEFAULT_ARG_VALUE,
+            "type": "str",
+        },
+        {
+            'in': 'path',
+            'doc': 'b : int\n    nah!\n',
+            'required': True,
+            'name': 'b',
+            "type": "int",
+        }
+    ]
+    expect_y = (
+        'summary!\n\n'
+        'Parameters\n'
+        '----------\n'
+        'b : int\n'
+        '    nah!\n'
+        'a : str, optional\n'
+        '    yeah!\n'
+    )
     assert x == expect_x
     assert y == expect_y
 
@@ -183,13 +231,15 @@ def test_parse_params():
 def test_parse_param_body():
     expected = [{'required': False, 'name': 'a', 'in': 'body',
                  'doc': 'a : list, optional\n',
-                 'default': _resources.DEFAULT_STR}]
+                 'default': _resources.DEFAULT_ARG_VALUE,
+                 "type": "list"}]
     param_body = {"schema": {"properties": {"A": {"type": "array"}}}}
     x = _resources.parse_param_body(param_body)
     assert x == expected
 
     expected_with_default = [{'required': False, 'name': 'a', 'in': 'body',
-                              'doc': 'a : list, optional\n', 'default': 50}]
+                              'doc': 'a : list, optional\n', 'default': 50,
+                              "type": "list"}]
     param_body_with_default = {"schema": {"properties": {"A": {"type": "array", "default": 50}}}}  # noqa: E501
     x_with_default = _resources.parse_param_body(param_body_with_default)
     assert x_with_default == expected_with_default
@@ -358,16 +408,22 @@ def test_parse_api_spec_names(mock_method):
     assert classes["hyphen_words"].__name__ == "Hyphen_Words"
 
 
-def test_add_no_underscore_compatibility():
-    classes = dict(match_targets=1,
-                   feature_flags=2)
-    new_classes = _resources._add_no_underscore_compatibility(classes)
-    assert new_classes["matchtargets"] == 1
-    assert new_classes["match_targets"] == 1
-    assert new_classes.get("feature_flags") is None
-
-
 def test_endpoints_from_base_resources_are_available_from_client():
     client = civis.APIClient(local_api_spec=API_SPEC, api_key="none")
     for endpoint in BASE_RESOURCES_V1:
         assert hasattr(client, endpoint), endpoint
+
+
+def test_client_pyi_matches_api_spec():
+    with tempfile.TemporaryDirectory() as temp_dir:
+        test_client_pyi_path = os.path.join(temp_dir, "test_client.pyi")
+        generate_client_pyi(test_client_pyi_path, API_SPEC_PATH)
+        actual = open(CLIENT_PYI_PATH).read()
+        expected = open(test_client_pyi_path).read()
+        match = expected == actual
+        # Avoid the more direct `assert expected == actual`,
+        # or else pytest would print the unwieldy, long diffs for a mismatch.
+        assert match, (
+            "client.pyi doesn't match the API spec in the codebase. "
+            "Run tools/update_client_pyi.py."
+        )

@@ -1,22 +1,23 @@
 import logging
 import os
 import re
-import sys
 import time
 import uuid
 from random import random
 
-import requests
 from tenacity import (Retrying, retry_if_result, stop_after_attempt,
                       stop_after_delay, wait_random_exponential)
 from tenacity.wait import wait_base
 
-import civis
 
 log = logging.getLogger(__name__)
 UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
 UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
 MAX_RETRIES = 10
+
+_RETRY_CODES = [429, 502, 503, 504]
+_RETRY_VERBS = ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
+_POST_RETRY_CODES = [429, 503]
 
 
 def maybe_get_random_name(name):
@@ -48,26 +49,6 @@ def get_api_key(api_key):
     return api_key
 
 
-def open_session(api_key, user_agent="civis-python"):
-    """Create a new Session which can connect with the Civis API"""
-    civis_version = civis.__version__
-    session = requests.Session()
-    session.auth = (api_key, '')
-    session_agent = session.headers.get('User-Agent', '')
-    ver_string = "{}.{}.{}".format(sys.version_info.major,
-                                   sys.version_info.minor,
-                                   sys.version_info.micro)
-    user_agent = "{}/Python v{} Civis v{} {}".format(
-        user_agent, ver_string, civis_version, session_agent)
-    headers = {"User-Agent": user_agent.strip()}
-    job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
-    if job_id:
-        headers.update({"X-Civis-Job-ID": job_id, "X-Civis-Run-ID": run_id})
-    session.headers.update(headers)
-
-    return session
-
-
 def retry_request(method, prepared_req, session, max_retries=10):
     retry_conditions = None
 
@@ -83,13 +64,11 @@ def retry_request(method, prepared_req, session, max_retries=10):
 
     if method.upper() == 'POST':
         retry_conditions = (
-            retry_if_result(
-                lambda res: res.status_code in civis.civis.POST_RETRY_CODES)
+            retry_if_result(lambda res: res.status_code in _POST_RETRY_CODES)
         )
-    elif method.upper() in civis.civis.RETRY_VERBS:
+    elif method.upper() in _RETRY_VERBS:
         retry_conditions = (
-            retry_if_result(
-                lambda res: res.status_code in civis.civis.RETRY_CODES)
+            retry_if_result(lambda res: res.status_code in _RETRY_CODES)
         )
 
     if retry_conditions:

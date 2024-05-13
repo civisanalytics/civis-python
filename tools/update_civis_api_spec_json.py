@@ -7,6 +7,7 @@ the public Sphinx docs.
 
 import civis
 from civis.resources import API_SPEC_PATH
+from civis.resources._client_pypi import generate_client_pyi, CLIENT_PYI_PATH
 
 
 if __name__ == "__main__":
@@ -29,3 +30,8 @@ if __name__ == "__main__":
     with open(API_SPEC_PATH, "wb") as f:
         civis.io.civis_to_file(file_id, f, client=client)
     print("downloaded civis_api_spec.json")
+
+    # If we update civis_api_spec.json,
+    # then client.pyi must also be updated to match it.
+    generate_client_pyi(CLIENT_PYI_PATH, API_SPEC_PATH)
+    print("updated client.pyi")

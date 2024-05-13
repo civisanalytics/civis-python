@@ -190,6 +190,40 @@ example, with pandas.
    >>> url = export_result.output[0].path
 
 
+Logging
+=======
+
+Civis Platform job runs come with logs.
+The logs are formatted differently depending on whether
+they are streamed to standard output (stdout) or standard error (stderr).
+Logs at stdout show up in black on the Civis Platform
+graphical user interface, whereas logs at stderr show up in red.
+Because it's a common use case to have ``INFO``-level (or below) logging in black
+(for general information and debugging) and ``WARNING``-level (or above) logging
+in red (for highlighting potential issues),
+:func:`civis.civis_logger` is available as a drop-in replacement
+for :func:`logging.getLogger` with this behavior built in.
+
+.. code:: python
+
+    from civis import civis_logger
+
+    _LOG = civis_logger()  # instead of _LOG = logging.getLogger(__name__)
+
+    def some_function():
+        ...
+        _LOG.info("info level logging")  # appears in black on Civis Platform
+        _LOG.warning("something to look into potentially")  # appears in red
+        ...
+
+.. currentmodule:: civis
+
+.. autosummary::
+   :toctree: generated
+
+   civis_logger
+
+
 API Response Types and Functions
 ================================
 

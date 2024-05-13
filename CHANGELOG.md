@@ -25,11 +25,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - When `civis.find` uses kwargs as filters, boolean values are now treated in the same
   way as other data types for value equality comparison, rather than the presence or
   absence of the key in question. (#474)
+- To access the API endpoints "MatchTargets" and "RemoteHosts" via `client = civis.APIClient()`,
+  `client.matchtargets` and `client.remotehosts` are no longer available.
+  Only the names with underscores, i.e., `client.match_targets` and `client.remote_hosts`,
+  can be used instead. (#479)
 
 ### Added
 - Added error handling of file_id with type string passed to `civis.io.civis_file_to_table`. (#454)
 - Added support for Python 3.10, 3.11, and 3.12 (#462, #475)
 - A `FutureWarning` is now raised when a deprecated Civis API endpoint method is called. (#477)
+- Added `civis_logger` for logging in Civis Platform scripts. (#478)
+- Added the stub file `client.pyi` to surface the API endpoints and their type annotations
+  at a `civis.APIClient` instance to IDEs. (#479)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)

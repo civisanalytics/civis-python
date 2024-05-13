@@ -7,8 +7,9 @@ from civis.ml import (list_models, put_models_shares_groups,
                       put_models_shares_users, delete_models_shares_groups,
                       delete_models_shares_users)
 from civis.ml import _helper as helper
-from civis.ml.tests import test_model
 from civis.tests.mocks import create_client_mock
+
+from . import test_model
 
 
 def test_list_models_bad_job_type():

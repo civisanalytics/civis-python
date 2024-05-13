@@ -7,7 +7,7 @@ import requests
 
 from civis.response import (
     CivisClientError, PaginatedResponse, _response_to_json,
-    convert_response_data_type, Response, CivisImmutableResponseError
+    convert_response_data_type, Response, CivisImmutableResponseError, find
 )
 from civis._utils import camel_to_snake
 
@@ -313,3 +313,27 @@ def test_response_is_pickleable():
     pickled = pickle.dumps(response)
     unpickled = pickle.load(io.BytesIO(pickled))
     assert response == unpickled
+
+
+def test_find_filter_with_kwargs():
+    r1 = Response({"foo": 0, "bar": "a", "baz": True})
+    r2 = Response({"foo": 1, "bar": "b", "baz": True})
+    r3 = Response({"foo": 2, "bar": "b", "baz": False})
+
+    assert find([r1, r2, r3], wrong_attr="whatever") == []
+
+    assert find([r1, r2, r3], foo=0) == [r1]
+    assert find([r1, r2, r3], foo=1) == [r2]
+    assert find([r1, r2, r3], foo=1, bar="b") == [r2]
+
+    assert find([r1, r2, r3], bar="b") == [r2, r3]
+    assert find([r1, r2, r3], bar="b", foo=1) == [r2]
+
+    assert find([r1, r2, r3], foo=True) == []
+    assert find([r1, r2, r3], foo=False) == []
+    assert find([r1, r2, r3], bar=True) == []
+    assert find([r1, r2, r3], bar=False) == []
+    assert find([r1, r2, r3], baz=True) == [r1, r2]
+    assert find([r1, r2, r3], baz=False) == [r3]
+
+    assert find([r1, r2, r3], foo=int) == [r2, r3]

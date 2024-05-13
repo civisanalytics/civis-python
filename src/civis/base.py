@@ -1,14 +1,16 @@
 import os
+import sys
 import threading
 import warnings
 from concurrent import futures
 from json.decoder import JSONDecodeError
 from posixpath import join
 
-from requests import Request
+import requests
 
+import civis
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import open_session, retry_request, MAX_RETRIES
+from civis._utils import retry_request, MAX_RETRIES
 
 FINISHED = ['success', 'succeeded']
 FAILED = ['failed']
@@ -122,8 +124,8 @@ class Endpoint:
 
         with self._lock:
             with open_session(**self._session_kwargs) as sess:
-                request = Request(method, url, json=data,
-                                  params=params, **kwargs)
+                request = requests.Request(method, url, json=data,
+                                           params=params, **kwargs)
                 pre_request = sess.prepare_request(request)
                 response = retry_request(method, pre_request,
                                          sess, MAX_RETRIES)
@@ -284,3 +286,23 @@ class CivisAsyncResultBase(futures.Future):
                 waiter.add_exception(self)
             self._condition.notify_all()
         self._invoke_callbacks()
+
+
+def open_session(api_key, user_agent="civis-python"):
+    """Create a new Session which can connect with the Civis API"""
+    civis_version = civis.__version__
+    session = requests.Session()
+    session.auth = (api_key, '')
+    session_agent = session.headers.get('User-Agent', '')
+    ver_string = "{}.{}.{}".format(sys.version_info.major,
+                                   sys.version_info.minor,
+                                   sys.version_info.micro)
+    user_agent = "{}/Python v{} Civis v{} {}".format(
+        user_agent, ver_string, civis_version, session_agent)
+    headers = {"User-Agent": user_agent.strip()}
+    job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
+    if job_id:
+        headers.update({"X-Civis-Job-ID": job_id, "X-Civis-Run-ID": run_id})
+    session.headers.update(headers)
+
+    return session

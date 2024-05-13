@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 65.3.0", "wheel"]
+requires = ["setuptools >= 69.5.1", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -61,9 +61,12 @@ docs = [
     "numpydoc == 1.7.0",
 ]
 
+[tool.setuptools.packages.find]
+where = [ "src" ]
+
 [tool.setuptools.package-data]
-civis = ["resources/*.json"]
+civis = ["resources/*.json", "py.typed", "**/*.pyi"]
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers --ignore=docs -vv --cov=civis"
-testpaths = ["civis"]
+addopts = "--strict-markers --ignore=src/docs -vv --cov=src/civis"
+testpaths = ["tests"]

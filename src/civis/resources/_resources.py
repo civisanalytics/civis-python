@@ -10,9 +10,9 @@ from jsonref import JsonRef
 import requests
 from requests import Request
 
-from civis.base import Endpoint, get_base_url
+from civis.base import Endpoint, get_base_url, open_session
 from civis._utils import (camel_to_snake,
-                          open_session, get_api_key,
+                          get_api_key,
                           retry_request, MAX_RETRIES)
 
 
@@ -33,7 +33,14 @@ BASE_RESOURCES_V1 = sorted(
 )
 
 
-TYPE_MAP = {"array": "list", "object": "dict"}
+TYPE_MAP = {
+    "array": "list",
+    "object": "dict",
+    "integer": "int",
+    "number": "float",
+    "string": "str",
+    "boolean": "bool",
+}
 ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
     "    If True, return a generator to iterate over all responses. Use when\n"
@@ -41,7 +48,7 @@ ITERATOR_PARAM_DESC = (
     "    True, limit and page_num are ignored. Defaults to False.\n")
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
                                 ".civis_api_spec.json")
-DEFAULT_STR = 'DEFAULT'
+DEFAULT_ARG_VALUE = None
 
 
 def exclude_resource(path, api_version):
@@ -57,24 +64,23 @@ def get_properties(x):
 
 
 def property_type(props):
-    t = TYPE_MAP.get(props['type'], props['type'])
+    t = type_from_param(props)
     fmt = props.get("format")
-    return "{}/{}".format(t, fmt) if fmt else t
+    return "{} ({})".format(t, fmt) if fmt else t
 
 
-def name_and_type_doc(name, prop, child, level, optional=False):
+def name_and_type_doc(name, prop, level, optional=False):
     """ Create a doc string element that includes a parameter's name
-    and its type. This is intented to be combined with another
+    and its type. This is intended to be combined with another
     doc string element that gives a description of the parameter.
     """
     prop_type = property_type(prop)
     snake_name = camel_to_snake(name)
     indent = " " * level * 4
     dash = "- " if level > 0 else ""
-    colons = "::" if child else ""
     opt_str = ", optional" if optional else ""
-    doc = "{}{}{} : {}{}{}"
-    return doc.format(indent, dash, snake_name, prop_type, opt_str, colons)
+    doc = "{}{}{} : {}{}"
+    return doc.format(indent, dash, snake_name, prop_type, opt_str)
 
 
 def docs_from_property(name, prop, properties, level, optional=False):
@@ -85,7 +91,7 @@ def docs_from_property(name, prop, properties, level, optional=False):
     docs = []
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
-    docs.append(name_and_type_doc(name, prop, child, level, optional))
+    docs.append(name_and_type_doc(name, prop, level, optional))
     doc_str = prop.get("description")
     if doc_str:
         indent = 4 * (level + 1) * " "
@@ -93,7 +99,7 @@ def docs_from_property(name, prop, properties, level, optional=False):
                                  initial_indent=indent,
                                  subsequent_indent=indent,
                                  width=79)
-        docs.append(doc_wrap)
+        docs.append(f"{doc_wrap}\n") if child else docs.append(doc_wrap)
     if child:
         child_docs = docs_from_properties(child, level + 1)
         docs.append("\n".join(child_docs))
@@ -116,7 +122,7 @@ def deprecated_notice(deprecation_warning):
     if deprecation_warning is None:
         return ""
 
-    return "Deprecation warning!\n------------------\n" + deprecation_warning
+    return f"\n.. warning::\n\n    {deprecation_warning}\n"
 
 
 def doc_from_responses(responses, is_iterable):
@@ -144,6 +150,18 @@ def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
 
+def type_from_param(param):
+    main_type = TYPE_MAP[param["type"]]
+    item_type = None
+    if main_type == "list":
+        items = param.get("items", {})
+        if "type" in items:
+            item_type = TYPE_MAP[items["type"]]
+        elif "$ref" in items:
+            item_type = "dict"
+    return f"{main_type}[{item_type}]" if item_type else main_type
+
+
 def doc_from_param(param):
     """ Return a doc string element for a single parameter.
     Intended to be joined with other doc string elements to
@@ -151,7 +169,7 @@ def doc_from_param(param):
     a function.
     """
     snake_name = camel_to_snake(param['name'])
-    param_type = param['type']
+    param_type = type_from_param(param)
     desc = param.get('description')
     optional = "" if param["required"] else ", optional"
     doc_body = ""
@@ -176,7 +194,7 @@ def iterable_method(method, params):
     return (method.lower() == 'get' and params_present)
 
 
-def create_signature(args, optional_args):
+def create_signature(args, optional_args, prepend_self=False):
     """ Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -185,11 +203,13 @@ def create_signature(args, optional_args):
 
     Parameters
     ----------
-    args : list
-        List of strings that name the required arguments of a function.
+    args : dict
+        Dict of strings that name the required arguments of a function.
     optional_args : dict
         Dict of strings that name the optional arguments of a function,
         and their default values.
+    prepend_self : bool, optional
+        If True, add the "self" arg as the first arg for a class method.
 
     Returns
     -------
@@ -197,14 +217,29 @@ def create_signature(args, optional_args):
         A Signature object that can be used to validate arguments in
         a dynamically created function.
     """
-    p = [Parameter(x, Parameter.POSITIONAL_OR_KEYWORD) for x in args]
-    p += [Parameter(x, Parameter.KEYWORD_ONLY, default=default_value)
-          for x, default_value in optional_args.items()]
+    p = []
+    if prepend_self:
+        p += [Parameter("self", Parameter.POSITIONAL_OR_KEYWORD)]
+    p += [
+        Parameter(
+            name, Parameter.POSITIONAL_OR_KEYWORD, annotation=arg["type"]
+        )
+        for name, arg in args.items()
+    ]
+    p += [
+        Parameter(
+            name,
+            Parameter.KEYWORD_ONLY,
+            default=arg["default"],
+            annotation=arg["type"],
+        )
+        for name, arg in optional_args.items()
+    ]
     return Signature(p)
 
 
 def split_method_params(params):
-    args = []
+    args = {}
     optional_args = {}
     body_params = []
     query_params = []
@@ -212,9 +247,12 @@ def split_method_params(params):
     for param in params:
         name = param["name"]
         if param["required"]:
-            args.append(name)
+            args[name] = {"type": param.get("type")}
         else:
-            optional_args[name] = param.get('default', DEFAULT_STR)
+            optional_args[name] = {
+                "default": param.get('default', DEFAULT_ARG_VALUE),
+                "type": param.get("type"),
+            }
         if param["in"] == "body":
             body_params.append(name)
         elif param["in"] == "query":
@@ -282,7 +320,7 @@ def create_method(params, verb, method_name, path,
         )
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(["self"] + sig_args, sig_opt_args)
+    sig_self = create_signature(sig_args, sig_opt_args, prepend_self=True)
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
@@ -292,7 +330,7 @@ def create_method(params, verb, method_name, path,
 def raise_for_unexpected_kwargs(method_name, arguments, sig_args, sig_kwargs,
                                 is_iterable):
     """Raise TypeError if arguments are not in sig_args or sig_kwargs."""
-    expected = set(sig_args) | set(sig_kwargs)
+    expected = set(sig_args.keys()) | set(sig_kwargs.keys())
     if is_iterable:
         expected |= {'iterator'}
     unexpected = set(arguments.keys()) - expected
@@ -309,7 +347,6 @@ def parse_param(param):
     """ Parse a parameter into a list of dictionaries which can
     be used to add the parameter to a dynamically generated function.
     """
-    doc = ""
     args = []
     param_in = param['in']
     if param_in == 'body':
@@ -319,9 +356,10 @@ def parse_param(param):
         snake_name = camel_to_snake(param['name'])
         req = param['required']
         doc = doc_from_param(param)
-        a = {"name": snake_name, "in": param_in, "required": req, "doc": doc}
+        a = {"name": snake_name, "in": param_in, "required": req, "doc": doc,
+             "type": type_from_param(param)}
         if not req:
-            a['default'] = param.get('default', DEFAULT_STR)
+            a['default'] = param.get('default', DEFAULT_ARG_VALUE)
         args.append(a)
     return args
 
@@ -335,7 +373,8 @@ def parse_params(parameters, summary, verb):
         args.extend(parse_param(param))
     if iterable_method(verb, (x["name"] for x in args)):
         iter_arg = {"name": "iterator", "in": None,
-                    "required": False, "doc": ITERATOR_PARAM_DESC}
+                    "required": False, "doc": ITERATOR_PARAM_DESC,
+                    "type": "bool"}
         args.append(iter_arg)
     req_docs = [x["doc"] for x in args if x["required"]]
     opt_docs = [x["doc"] for x in args if not x["required"]]
@@ -357,7 +396,11 @@ def parse_param_body(parameter):
     function.
     """
     schema = parameter['schema']
-    properties = schema['properties']
+    try:
+        properties = schema['properties']
+    except KeyError:
+        print(schema)
+        raise
     req = schema.get('required', [])
     arguments = []
     for name, prop in properties.items():
@@ -365,9 +408,10 @@ def parse_param_body(parameter):
         is_req = name in req
         doc_list = docs_from_property(name, prop, properties, 0, not is_req)
         doc = "\n".join(doc_list) + "\n"
-        a = {"name": snake_name, "in": "body", "required": is_req, "doc": doc}
+        a = {"name": snake_name, "in": "body", "required": is_req, "doc": doc,
+             "type": type_from_param(prop)}
         if not is_req:
-            a['default'] = prop.get('default', DEFAULT_STR)
+            a['default'] = prop.get('default', DEFAULT_ARG_VALUE)
         arguments.append(a)
     return arguments
 
@@ -578,27 +622,4 @@ def generate_classes_maybe_cached(cache, api_key, api_version):
             raise ValueError(msg.format(type(cache)))
         spec = JsonRef.replace_refs(raw_spec)
         classes = parse_api_spec(spec, api_version)
-    classes_ = _add_no_underscore_compatibility(classes)
-    return classes_
-
-
-def _add_no_underscore_compatibility(classes):
-    """ Add class names without underscores for compatibility.
-
-    Previously, no resources had underscores in APIClient.  Parsing of
-    resources has been fixed so now these resources will have underscores.
-    This adds an extra class for those resources without an underscore
-    for compatibility. Additionally, this removes the resource "feature_flags"
-    as APIClient has a name collision with this resource. This will
-    be removed in v2.0.0.
-    """
-    new = ["match_targets", "remote_hosts", "feature_flags"]
-    classes_ = {}
-    class_names = list(classes.keys())
-    for class_name in class_names:
-        if class_name != "feature_flags":
-            classes_[class_name] = classes[class_name]
-        if class_name in new:
-            class_name_no_us = "".join(class_name.split("_"))
-            classes_[class_name_no_us] = classes[class_name]
-    return classes_
+    return classes
