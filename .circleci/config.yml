@@ -63,6 +63,7 @@ jobs:
           shell: bash.exe
           command: |
             python --version && \
+            pip install --upgrade pip setuptools wheel && \
             pip install ".[dev-core,dev-civisml]" && \
             pip list && \
             pytest
