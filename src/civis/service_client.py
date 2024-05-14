@@ -22,20 +22,20 @@ def _get_service(client):
 
 def auth_service_session(session, client):
     service = _get_service(client)
-    auth_url = service['current_deployment']['displayUrl']
+    auth_url = service["current_deployment"]["displayUrl"]
     # Make request for adding Authentication Cookie to session
     session.get(auth_url)
 
 
 def _parse_service_path(path, operations, root_path=None):
-    """ Parse an endpoint into a class where each valid http request
+    """Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
     attached to the class as a method.
     """
     if root_path is not None:
-        path = path.replace(root_path, '')
-    path = path.strip('/')
-    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
+        path = path.replace(root_path, "")
+    path = path.strip("/")
+    modified_base_path = re.sub("-", "_", path.split("/")[0].lower())
     methods = []
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
@@ -62,16 +62,13 @@ def parse_service_api_spec(api_spec, root_path=None):
         root level. An example root_path would be '/api' for an app with
         resource endpoints that all begin with '/api'.
     """
-    paths = api_spec['paths']
+    paths = api_spec["paths"]
     classes = {}
     for path, ops in paths.items():
-        base_path, methods = _parse_service_path(
-            path, ops, root_path=root_path)
+        base_path, methods = _parse_service_path(path, ops, root_path=root_path)
         class_name = to_camelcase(base_path)
         if methods and classes.get(base_path) is None:
-            classes[base_path] = type(str(class_name),
-                                      (ServiceEndpoint,),
-                                      {})
+            classes[base_path] = type(str(class_name), (ServiceEndpoint,), {})
         for method_name, method in methods:
             setattr(classes[base_path], method_name, method)
     return classes
@@ -79,8 +76,7 @@ def parse_service_api_spec(api_spec, root_path=None):
 
 class ServiceEndpoint(Endpoint):
 
-    def __init__(self, client,
-                 return_type='civis'):
+    def __init__(self, client, return_type="civis"):
         self._return_type = return_type
         self._client = client
 
@@ -89,19 +85,17 @@ class ServiceEndpoint(Endpoint):
             return self._client._base_url
         if not self._client._root_path:
             return tostr_urljoin(self._client._base_url, path.strip("/"))
-        return tostr_urljoin(self._client._base_url,
-                             self._client._root_path.strip("/"),
-                             path.strip("/"))
+        return tostr_urljoin(
+            self._client._base_url, self._client._root_path.strip("/"), path.strip("/")
+        )
 
-    def _make_request(self, method, path=None, params=None, data=None,
-                      **kwargs):
+    def _make_request(self, method, path=None, params=None, data=None, **kwargs):
         url = self._build_path(path)
 
         with requests.Session() as sess:
             auth_service_session(sess, self._client)
             with self._lock:
-                response = sess.request(method, url, json=data,
-                                        params=params, **kwargs)
+                response = sess.request(method, url, json=data, params=params, **kwargs)
 
         if not response.ok:
             raise CivisAPIError(response)
@@ -111,9 +105,15 @@ class ServiceEndpoint(Endpoint):
 
 class ServiceClient:
 
-    def __init__(self, service_id, root_path=None,
-                 swagger_path="/endpoints", api_key=None,
-                 return_type='snake', local_api_spec=None):
+    def __init__(
+        self,
+        service_id,
+        root_path=None,
+        swagger_path="/endpoints",
+        api_key=None,
+        return_type="snake",
+        local_api_spec=None,
+    ):
         """Create an API Client from a Civis service.
 
         Parameters
@@ -151,7 +151,7 @@ class ServiceClient:
             may be passed as either an OrderedDict or a filename which
             points to a json file.
         """
-        if return_type not in ['snake', 'raw']:
+        if return_type not in ["snake", "raw"]:
             raise ValueError("Return type must be one of 'snake', 'raw'")
         self._api_key = api_key
         self._service_id = service_id
@@ -160,8 +160,7 @@ class ServiceClient:
         self._swagger_path = swagger_path
         classes = self.generate_classes_maybe_cached(local_api_spec)
         for class_name, klass in classes.items():
-            setattr(self, class_name, klass(client=self,
-                                            return_type=return_type))
+            setattr(self, class_name, klass(client=self, return_type=return_type))
 
     @lru_cache(maxsize=4)
     def get_api_spec(self):
@@ -182,7 +181,7 @@ class ServiceClient:
 
     def get_base_url(self):
         service = _get_service(self)
-        return service['current_url']
+        return service["current_url"]
 
     def generate_classes_maybe_cached(self, cache):
         """Generate class objects either from /endpoints or a local cache."""

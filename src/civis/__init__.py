@@ -8,5 +8,15 @@ from civis import io, ml, parallel, utils
 
 
 __version__ = version("civis")
-__all__ = ["__version__", "APIClient", "find", "find_one", "io",
-           "civis_logger", "ml", "parallel", "ServiceClient", "utils"]
+__all__ = [
+    "__version__",
+    "APIClient",
+    "find",
+    "find_one",
+    "io",
+    "civis_logger",
+    "ml",
+    "parallel",
+    "ServiceClient",
+    "utils",
+]

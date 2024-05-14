@@ -12,10 +12,10 @@ import civis
 from civis.response import PaginatedResponse, convert_response_data_type
 from civis._utils import retry_request, MAX_RETRIES
 
-FINISHED = ['success', 'succeeded']
-FAILED = ['failed']
-NOT_FINISHED = ['queued', 'running']
-CANCELLED = ['cancelled']
+FINISHED = ["success", "succeeded"]
+FAILED = ["failed"]
+NOT_FINISHED = ["queued", "running"]
+CANCELLED = ["cancelled"]
 DONE = FINISHED + FAILED + CANCELLED
 
 # Translate Civis state strings into `future` state strings
@@ -28,7 +28,7 @@ for name in CANCELLED:
     STATE_TRANS[name] = futures._base.CANCELLED_AND_NOTIFIED
 
 
-DEFAULT_API_ENDPOINT = 'https://api.civisanalytics.com/'
+DEFAULT_API_ENDPOINT = "https://api.civisanalytics.com/"
 
 
 def tostr_urljoin(*x):
@@ -40,8 +40,7 @@ class CivisJobFailure(Exception):
         self.job_id = job_id
         self.run_id = run_id
         self._original_err_msg = err_msg
-        self.error_message = _err_msg_with_job_run_ids(
-            err_msg, job_id, run_id)
+        self.error_message = _err_msg_with_job_run_ids(err_msg, job_id, run_id)
         self.response = response
 
     def __str__(self):
@@ -66,11 +65,13 @@ class CivisAPIError(Exception):
                 if "Expecting value: line 1 column 1 (char 0)" in str(e):
                     self.error_message = "No Response Content from Civis API"
                 else:
-                    self.error_message = f"Response Content: " \
-                                    f"{(response.content or b'').decode()}"
+                    self.error_message = (
+                        f"Response Content: " f"{(response.content or b'').decode()}"
+                    )
             else:
-                self.error_message = json.get("errorDescription") or \
-                                     "No Error Message Available"
+                self.error_message = (
+                    json.get("errorDescription") or "No Error Message Available"
+                )
         else:  # this was something like a 502
             self.error_message = response.reason
 
@@ -97,9 +98,9 @@ class CivisImportError(Exception):
 
 
 def get_base_url():
-    base_url = os.environ.get('CIVIS_API_ENDPOINT', DEFAULT_API_ENDPOINT)
-    if not base_url.endswith('/'):
-        base_url += '/'
+    base_url = os.environ.get("CIVIS_API_ENDPOINT", DEFAULT_API_ENDPOINT)
+    if not base_url.endswith("/"):
+        base_url += "/"
     return base_url
 
 
@@ -118,17 +119,16 @@ class Endpoint:
             return self._base_url
         return tostr_urljoin(self._base_url, path.strip("/"))
 
-    def _make_request(self, method, path=None, params=None, data=None,
-                      **kwargs):
+    def _make_request(self, method, path=None, params=None, data=None, **kwargs):
         url = self._build_path(path)
 
         with self._lock:
             with open_session(**self._session_kwargs) as sess:
-                request = requests.Request(method, url, json=data,
-                                           params=params, **kwargs)
+                request = requests.Request(
+                    method, url, json=data, params=params, **kwargs
+                )
                 pre_request = sess.prepare_request(request)
-                response = retry_request(method, pre_request,
-                                         sess, MAX_RETRIES)
+                response = retry_request(method, pre_request, sess, MAX_RETRIES)
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]
@@ -139,20 +139,26 @@ class Endpoint:
 
         return response
 
-    def _call_api(self, method, path=None, params=None, data=None,
-                  deprecation_warning=None, **kwargs):
+    def _call_api(
+        self,
+        method,
+        path=None,
+        params=None,
+        data=None,
+        deprecation_warning=None,
+        **kwargs,
+    ):
         if deprecation_warning:
             # stacklevel=3 to point to the call just outside civis-python
             warnings.warn(deprecation_warning, FutureWarning, stacklevel=3)
 
-        iterator = kwargs.pop('iterator', False)
+        iterator = kwargs.pop("iterator", False)
 
         if iterator:
             resp = PaginatedResponse(path, params, self)
         else:
             resp = self._make_request(method, path, params, data, **kwargs)
-            resp = convert_response_data_type(resp,
-                                              return_type=self._return_type)
+            resp = convert_response_data_type(resp, return_type=self._return_type)
         self._client.last_response = resp
         return resp
 
@@ -185,9 +191,15 @@ class CivisAsyncResultBase(futures.Future):
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
     """
-    def __init__(self, poller, poller_args,
-                 polling_interval=None, client=None,
-                 poll_on_creation=True):
+
+    def __init__(
+        self,
+        poller,
+        poller_args,
+        polling_interval=None,
+        client=None,
+        poll_on_creation=True,
+    ):
         super().__init__()
         self.poller = poller
         self.poller_args = poller_args
@@ -201,20 +213,24 @@ class CivisAsyncResultBase(futures.Future):
         with self._condition:
             if self._civis_state in FINISHED + FAILED:
                 if self.exception():
-                    return '<%s at %#x state=%s raised %s>' % (
+                    return "<%s at %#x state=%s raised %s>" % (
                         self.__class__.__name__,
                         id(self),
                         self._civis_state,
-                        self._exception.__class__.__name__)
+                        self._exception.__class__.__name__,
+                    )
                 else:
-                    return '<%s at %#x state=%s returned %s>' % (
+                    return "<%s at %#x state=%s returned %s>" % (
                         self.__class__.__name__,
                         id(self),
                         self._civis_state,
-                        self.result().__class__.__name__)
-            out = '<%s at %#x state=%s>' % (self.__class__.__name__,
-                                            id(self),
-                                            self._civis_state)
+                        self.result().__class__.__name__,
+                    )
+            out = "<%s at %#x state=%s>" % (
+                self.__class__.__name__,
+                id(self),
+                self._civis_state,
+            )
             return out
 
     def cancel(self):
@@ -242,7 +258,7 @@ class CivisAsyncResultBase(futures.Future):
         with self._condition:
             if self._check_result():
                 return self._check_result().state
-            return 'running'
+            return "running"
 
     @property
     def _state(self):
@@ -292,13 +308,14 @@ def open_session(api_key, user_agent="civis-python"):
     """Create a new Session which can connect with the Civis API"""
     civis_version = civis.__version__
     session = requests.Session()
-    session.auth = (api_key, '')
-    session_agent = session.headers.get('User-Agent', '')
-    ver_string = "{}.{}.{}".format(sys.version_info.major,
-                                   sys.version_info.minor,
-                                   sys.version_info.micro)
+    session.auth = (api_key, "")
+    session_agent = session.headers.get("User-Agent", "")
+    ver_string = "{}.{}.{}".format(
+        sys.version_info.major, sys.version_info.minor, sys.version_info.micro
+    )
     user_agent = "{}/Python v{} Civis v{} {}".format(
-        user_agent, ver_string, civis_version, session_agent)
+        user_agent, ver_string, civis_version, session_agent
+    )
     headers = {"User-Agent": user_agent.strip()}
     job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
     if job_id:

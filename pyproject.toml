@@ -42,6 +42,7 @@ civis_joblib_worker = "civis.run_joblib_func:main"
 
 [project.optional-dependencies]
 dev-core = [
+    "black == 24.4.2",
     "flake8 == 7.0.0",
     "pytest == 8.2.0",
     "pytest-cov == 5.0.0",

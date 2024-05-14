@@ -19,26 +19,35 @@ from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
+
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
 
-MIN_MULTIPART_SIZE = 50 * 2 ** 20  # 50MB
-MIN_PART_SIZE = 5 * 2 ** 20  # 5MB
-MAX_PART_SIZE = 5 * 2 ** 30  # 5GB
-MAX_FILE_SIZE = 5 * 2 ** 40  # 5TB
+MIN_MULTIPART_SIZE = 50 * 2**20  # 50MB
+MIN_PART_SIZE = 5 * 2**20  # 5MB
+MAX_PART_SIZE = 5 * 2**30  # 5GB
+MAX_FILE_SIZE = 5 * 2**40  # 5TB
 MAX_THREADS = 4
 
-RETRY_EXCEPTIONS = (requests.HTTPError,
-                    requests.ConnectionError,
-                    requests.ConnectTimeout)
+RETRY_EXCEPTIONS = (
+    requests.HTTPError,
+    requests.ConnectionError,
+    requests.ConnectTimeout,
+)
 
 log = logging.getLogger(__name__)
 # standard chunk size; provides good performance across various buffer sizes
 CHUNK_SIZE = 32 * 1024
-__all__ = ['file_to_civis', 'civis_to_file', 'file_id_from_run_output',
-           'file_to_dataframe', 'dataframe_to_file',
-           'file_to_json', 'json_to_file']
+__all__ = [
+    "file_to_civis",
+    "civis_to_file",
+    "file_id_from_run_output",
+    "file_to_dataframe",
+    "dataframe_to_file",
+    "file_to_json",
+    "json_to_file",
+]
 
 
 def _get_aws_error_message(response):
@@ -46,31 +55,35 @@ def _get_aws_error_message(response):
     # http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
     # NOTE: This is cribbed from response.raise_for_status with AWS
     # message appended
-    msg = ''
+    msg = ""
 
     if 400 <= response.status_code < 500:
-        msg = '%s Client Error: %s for url: %s' % (response.status_code,
-                                                   response.reason,
-                                                   response.url)
+        msg = "%s Client Error: %s for url: %s" % (
+            response.status_code,
+            response.reason,
+            response.url,
+        )
 
     elif 500 <= response.status_code < 600:
-        msg = '%s Server Error: %s for url: %s' % (response.status_code,
-                                                   response.reason,
-                                                   response.url)
+        msg = "%s Server Error: %s for url: %s" % (
+            response.status_code,
+            response.reason,
+            response.url,
+        )
 
-    msg += '\nAWS Content: %s' % response.content
+    msg += "\nAWS Content: %s" % response.content
 
     return msg
 
 
 def _buf_len(buf):
-    if hasattr(buf, '__len__'):
+    if hasattr(buf, "__len__"):
         return len(buf)
 
-    if hasattr(buf, 'len'):
+    if hasattr(buf, "len"):
         return buf.len
 
-    if hasattr(buf, 'fileno'):
+    if hasattr(buf, "fileno"):
         try:
             fileno = buf.fileno()
         except io.UnsupportedOperation:
@@ -78,7 +91,7 @@ def _buf_len(buf):
         else:
             return os.fstat(fileno).st_size
 
-    if hasattr(buf, 'getvalue'):
+    if hasattr(buf, "getvalue"):
         # e.g. BytesIO, cStringIO.StringIO
         return len(buf.getvalue())
 
@@ -94,7 +107,7 @@ def _single_upload(buf, name, client, **kwargs):
     # Note that the payload must have "key" first and "file" last.
     url = file_response.upload_url
     form = file_response.upload_fields._data_snake
-    form_key = OrderedDict(key=form.pop('key'))
+    form_key = OrderedDict(key=form.pop("key"))
     form_key.update(form)
 
     # Store the current buffer position in case we need to retry below.
@@ -105,7 +118,7 @@ def _single_upload(buf, name, client, **kwargs):
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
 
-        form_key['file'] = buf
+        form_key["file"] = buf
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
         # which can't be streamed with using requests-toolbelt anyway
@@ -117,27 +130,30 @@ def _single_upload(buf, name, client, **kwargs):
 
     _post()
 
-    log.debug('Uploaded File %d', file_response.id)
+    log.debug("Uploaded File %d", file_response.id)
     return file_response.id
 
 
 def _multipart_upload(buf, name, file_size, client, **kwargs):
     # scale the part size based on file size
-    part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)),
-                    MIN_PART_SIZE)
+    part_size = max(int(math.sqrt(MIN_PART_SIZE) * math.sqrt(file_size)), MIN_PART_SIZE)
     num_parts = int(math.ceil((file_size) / float(part_size)))
 
-    log.debug('Uploading file with %s bytes using %s file parts with a part '
-              'size of %s bytes', file_size, num_parts, part_size)
-    file_response = client.files.post_multipart(name=name, num_parts=num_parts,
-                                                **kwargs)
+    log.debug(
+        "Uploading file with %s bytes using %s file parts with a part "
+        "size of %s bytes",
+        file_size,
+        num_parts,
+        part_size,
+    )
+    file_response = client.files.post_multipart(
+        name=name, num_parts=num_parts, **kwargs
+    )
 
     # Platform will give us a URL for each file part
     urls = file_response.upload_urls
     if num_parts != len(urls):
-        raise ValueError(
-            f"There are {num_parts} file parts but only {len(urls)} urls"
-        )
+        raise ValueError(f"There are {num_parts} file parts but only {len(urls)} urls")
 
     # upload function wrapped with a retry decorator
     @retry(RETRY_EXCEPTIONS)
@@ -146,24 +162,27 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         offset = part_size * part_num
         num_bytes = min(part_size, file_size - offset)
 
-        log.debug('Uploading file part %s', part_num)
-        with open(file_path, 'rb') as fin:
+        log.debug("Uploading file part %s", part_num)
+        with open(file_path, "rb") as fin:
             fin.seek(offset)
             partial_buf = BufferedPartialReader(fin, num_bytes)
-            part_response = requests.put(part_url, data=partial_buf,
-                                         timeout=60)
+            part_response = requests.put(part_url, data=partial_buf, timeout=60)
 
         if not part_response.ok:
             msg = _get_aws_error_message(part_response)
             raise HTTPError(msg, response=part_response)
 
-        log.debug('Completed upload of file part %s', part_num)
+        log.debug("Completed upload of file part %s", part_num)
 
     # upload each part
     try:
         pool = Pool(MAX_THREADS)
-        _upload_part = partial(_upload_part_base, file_path=buf.name,
-                               part_size=part_size, file_size=file_size)
+        _upload_part = partial(
+            _upload_part_base,
+            file_path=buf.name,
+            part_size=part_size,
+            file_size=file_size,
+        )
         pool.map(_upload_part, enumerate(urls))
 
     # complete the multipart upload; an abort will be triggered
@@ -172,7 +191,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         pool.terminate()
         client.files.post_multipart_complete(file_response.id)
 
-    log.debug('Uploaded File %d', file_response.id)
+    log.debug("Uploaded File %d", file_response.id)
     return file_response.id
 
 
@@ -249,7 +268,7 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
     if name is None:
         if isinstance(buf, str):
             name = os.path.basename(buf)
-        elif hasattr(buf, 'name'):
+        elif hasattr(buf, "name"):
             name = buf.name
         else:
             msg = (
@@ -259,28 +278,24 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
             raise TypeError(msg)
 
     if isinstance(buf, str):
-        with open(buf, 'rb') as f:
-            return _file_to_civis(
-                f, name, client=client, **kwargs)
+        with open(buf, "rb") as f:
+            return _file_to_civis(f, name, client=client, **kwargs)
 
     # we should only pass _file_to_civis a file-like object that is
     # on disk, seekable and at position 0
-    if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or \
-            buf.tell() != 0:
+    if not isinstance(buf, (io.BufferedReader, io.TextIOWrapper)) or buf.tell() != 0:
         # determine mode for writing
-        mode = 'w'
+        mode = "w"
         if isinstance(buf.read(0), bytes):
-            mode += 'b'
+            mode += "b"
         with TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, 'file_to_civis.csv')
+            tmp_path = os.path.join(tmp_dir, "file_to_civis.csv")
             with open(tmp_path, mode) as fout:
                 shutil.copyfileobj(buf, fout, CHUNK_SIZE)
-            with open(tmp_path, 'rb') as fin:
-                return _file_to_civis(
-                    fin, name, client=client, **kwargs)
+            with open(tmp_path, "rb") as fin:
+                return _file_to_civis(fin, name, client=client, **kwargs)
     else:
-        return _file_to_civis(
-            buf, name, client=client, **kwargs)
+        return _file_to_civis(buf, name, client=client, **kwargs)
 
 
 def _file_to_civis(buf, name, client=None, **kwargs):
@@ -289,10 +304,12 @@ def _file_to_civis(buf, name, client=None, **kwargs):
 
     file_size = _buf_len(buf)
     if file_size == 0:
-        log.warning('Warning: file size is zero bytes.')
+        log.warning("Warning: file size is zero bytes.")
     elif not file_size:
-        log.warning('Could not determine file size; defaulting to '
-                    'single post. Files over 5GB will fail.')
+        log.warning(
+            "Could not determine file size; defaulting to "
+            "single post. Files over 5GB will fail."
+        )
 
     if not file_size or file_size <= MIN_MULTIPART_SIZE:
         return _single_upload(buf, name, client, **kwargs)
@@ -337,7 +354,7 @@ def civis_to_file(file_id, buf, client=None):
     >>> s = buf.read()
     """
     if isinstance(buf, str):
-        with open(buf, 'wb') as f:
+        with open(buf, "wb") as f:
             _civis_to_file(file_id, f, client=client)
     else:
         _civis_to_file(file_id, buf, client=client)
@@ -350,9 +367,11 @@ def _civis_to_file(file_id, buf, client=None):
     files_response = client.files.get(file_id)
     url = files_response.file_url
     if not url:
-        raise EmptyResultError('Unable to locate file {}. If it previously '
-                               'existed, it may have '
-                               'expired.'.format(file_id))
+        raise EmptyResultError(
+            "Unable to locate file {}. If it previously "
+            "existed, it may have "
+            "expired.".format(file_id)
+        )
 
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
@@ -419,32 +438,36 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
         outputs = client.jobs.list_runs_outputs(job_id, run_id)
     except CivisAPIError as err:
         if err.status_code == 404:
-            raise IOError('Could not find job/run ID {}/{}'
-                          .format(job_id, run_id)) from err
+            raise IOError(
+                "Could not find job/run ID {}/{}".format(job_id, run_id)
+            ) from err
         else:
             raise
 
     # Find file in the run outputs.
     if not regex:
         # Require an exact match on the "name" string.
-        obj = find_one(outputs, name=name, object_type='File')
+        obj = find_one(outputs, name=name, object_type="File")
     else:
         # Search for a filename which contains the "name" string
-        obj_matches = [o for o in outputs
-                       if re.search(name, o.name) and o.object_type == 'File']
+        obj_matches = [
+            o for o in outputs if re.search(name, o.name) and o.object_type == "File"
+        ]
         if len(obj_matches) > 1:
-            log.warning('Found %s matches to "%s". Returning the first.',
-                        len(obj_matches), name)
+            log.warning(
+                'Found %s matches to "%s". Returning the first.', len(obj_matches), name
+            )
         obj = None if not obj_matches else obj_matches[0]
     if obj is None:
         prefix = "A file containing the pattern" if regex else "File"
-        raise FileNotFoundError('{} "{}" is not an output of job/run ID '
-                                '{}/{}.'.format(prefix, name, job_id, run_id))
-    return obj['object_id']
+        raise FileNotFoundError(
+            '{} "{}" is not an output of job/run ID '
+            "{}/{}.".format(prefix, name, job_id, run_id)
+        )
+    return obj["object_id"]
 
 
-def file_to_dataframe(file_id, compression='infer', client=None,
-                      **read_kwargs):
+def file_to_dataframe(file_id, compression="infer", client=None, **read_kwargs):
     """Load a :class:`~pandas.DataFrame` from a CSV stored in a Civis File
 
     The :class:`~pandas.DataFrame` will be read directly from Civis
@@ -479,17 +502,19 @@ def file_to_dataframe(file_id, compression='infer', client=None,
     pandas.read_csv
     """
     if not HAS_PANDAS:
-        raise ImportError('file_to_dataframe requires pandas to be installed.')
+        raise ImportError("file_to_dataframe requires pandas to be installed.")
     client = APIClient() if client is None else client
     file_info = client.files.get(file_id)
     file_url = file_info.file_url
     if not file_url:
-        raise EmptyResultError('Unable to locate file {}. If it previously '
-                               'existed, it may have '
-                               'expired.'.format(file_id))
+        raise EmptyResultError(
+            "Unable to locate file {}. If it previously "
+            "existed, it may have "
+            "expired.".format(file_id)
+        )
     file_name = file_info.name
-    if compression == 'infer':
-        comp_exts = {'.gz': 'gzip', '.xz': 'xz', '.bz2': 'bz2', '.zip': 'zip'}
+    if compression == "infer":
+        comp_exts = {".gz": "gzip", ".xz": "xz", ".bz2": "bz2", ".zip": "zip"}
         ext = os.path.splitext(file_name)[-1]
         if ext in comp_exts:
             compression = comp_exts[ext]
@@ -497,8 +522,9 @@ def file_to_dataframe(file_id, compression='infer', client=None,
     return pd.read_csv(file_url, compression=compression, **read_kwargs)
 
 
-def dataframe_to_file(df, name='data.csv', expires_at='DEFAULT',
-                      client=None, **to_csv_kws):
+def dataframe_to_file(
+    df, name="data.csv", expires_at="DEFAULT", client=None, **to_csv_kws
+):
     """Store a :class:`~pandas.DataFrame` as a CSV in Civis Platform
 
     Parameters
@@ -535,10 +561,10 @@ def dataframe_to_file(df, name='data.csv', expires_at='DEFAULT',
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
         df.to_csv(path, **to_csv_kws)
-        file_kwargs = {'name': name}
-        if expires_at != 'DEFAULT':
+        file_kwargs = {"name": name}
+        if expires_at != "DEFAULT":
             # A missing parameter signifies the default value here.
-            file_kwargs['expires_at'] = expires_at
+            file_kwargs["expires_at"] = expires_at
         fid = file_to_civis(path, client=client, **file_kwargs)
     return fid
 
@@ -568,13 +594,14 @@ def file_to_json(file_id, client=None, **json_kwargs):
     """
     buf = io.BytesIO()
     civis_to_file(file_id, buf, client=client)
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    txt = io.TextIOWrapper(buf, encoding="utf-8")
     txt.seek(0)
     return json.load(txt, **json_kwargs)
 
 
-def json_to_file(obj, name='file.json', expires_at='DEFAULT',
-                 client=None, **json_kwargs):
+def json_to_file(
+    obj, name="file.json", expires_at="DEFAULT", client=None, **json_kwargs
+):
     """Store a JSON-serializable object in a Civis File
 
     Parameters
@@ -609,13 +636,13 @@ def json_to_file(obj, name='file.json', expires_at='DEFAULT',
     :func:`json.dump`
     """
     buf = io.BytesIO()
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    txt = io.TextIOWrapper(buf, encoding="utf-8")
     json.dump(obj, txt, **json_kwargs)
     txt.seek(0)
 
-    file_kwargs = {'name': name}
-    if expires_at != 'DEFAULT':
+    file_kwargs = {"name": name}
+    if expires_at != "DEFAULT":
         # A missing parameter signifies the default value here.
-        file_kwargs['expires_at'] = expires_at
+        file_kwargs["expires_at"] = expires_at
     fid = file_to_civis(txt.buffer, client=client, **file_kwargs)
     return fid

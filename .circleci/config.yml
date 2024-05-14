@@ -73,6 +73,11 @@ workflows:
   build-and-test:
     jobs:
       - pre-build:
+          name: black
+          command-run: |
+            pip install --progress-bar off -e ".[dev-core]" && \
+            black --check src tools
+      - pre-build:
           name: flake8
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
@@ -104,6 +109,7 @@ workflows:
             pip-audit
       - build-python:
           requires:
+            - black
             - flake8
             - sphinx-build
             - twine
@@ -114,6 +120,7 @@ workflows:
               python-version: ["3.9", "3.10", "3.11", "3.12"]
       - build-python-win:
           requires:
+            - black
             - flake8
             - twine
             - bandit

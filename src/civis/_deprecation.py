@@ -60,8 +60,10 @@ def deprecate_param(version_removed, parameter_name, *additional_names):
         i_args = []
         for name in all_names:
             if name not in sig.parameters:
-                raise ValueError('"{}" is not a parameter of '
-                                 '{}.'.format(parameter_name, str(func)))
+                raise ValueError(
+                    '"{}" is not a parameter of '
+                    "{}.".format(parameter_name, str(func))
+                )
             i_args.append(list(sig.parameters.keys()).index(parameter_name))
 
         @wraps(func)
@@ -71,14 +73,16 @@ def deprecate_param(version_removed, parameter_name, *additional_names):
                 # The len(args) check looks to see if the user has tried
                 # to call the deprecated parameter as a positional argument.
                 if len(args) > i_arg or name in kwargs:
-                    f_name = '{}.{}'.format(func.__module__, func.__name__)
-                    msg = ('The "{}" parameter of "{}" is deprecated and '
-                           'will be removed in {}.'.format(name,
-                                                           f_name,
-                                                           version_removed))
+                    f_name = "{}.{}".format(func.__module__, func.__name__)
+                    msg = (
+                        'The "{}" parameter of "{}" is deprecated and '
+                        "will be removed in {}.".format(name, f_name, version_removed)
+                    )
                     warn_list.append(msg)
             if warn_list:
-                warnings.warn('\n'.join(warn_list), FutureWarning)
+                warnings.warn("\n".join(warn_list), FutureWarning)
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator

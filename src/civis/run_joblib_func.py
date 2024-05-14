@@ -33,11 +33,10 @@ try:
         # pip install joblib. If this warning is raised when loading pickled
         # models, you may need to re-serialize those models with
         # scikit-learn 0.21+."
-        warnings.simplefilter('ignore', DeprecationWarning)
+        warnings.simplefilter("ignore", DeprecationWarning)
         # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
-        warnings.simplefilter('ignore', FutureWarning)
-        from sklearn.externals.joblib import (
-            parallel_backend as _sklearn_para_backend)
+        warnings.simplefilter("ignore", FutureWarning)
+        from sklearn.externals.joblib import parallel_backend as _sklearn_para_backend
 
         # NO_SKLEARN_BACKEND would be a better name here since it'll be true
         # for future scikit-learn versions that won't include the joblib
@@ -48,7 +47,10 @@ except ImportError:
     NO_SKLEARN = True
 
 from civis.parallel import (
-    _robust_pickle_download, _robust_file_to_civis, _setup_remote_backend)
+    _robust_pickle_download,
+    _robust_file_to_civis,
+    _setup_remote_backend,
+)
 
 
 def worker_func(func_file_id):
@@ -56,17 +58,17 @@ def worker_func(func_file_id):
     expires_at = (datetime.now() + timedelta(days=7)).isoformat()
 
     client = civis.APIClient()
-    job_id = os.environ.get('CIVIS_JOB_ID')
-    run_id = os.environ.get('CIVIS_RUN_ID')
+    job_id = os.environ.get("CIVIS_JOB_ID")
+    run_id = os.environ.get("CIVIS_RUN_ID")
     if not job_id or not run_id:
-        raise RuntimeError("This function must be run inside a "
-                           "Civis container job.")
+        raise RuntimeError("This function must be run inside a " "Civis container job.")
 
     # Run the function.
     result = None
     try:
         func, remote_backend = _robust_pickle_download(
-            func_file_id, client=client, n_retries=5, delay=0.5)
+            func_file_id, client=client, n_retries=5, delay=0.5
+        )
 
         _backend = _setup_remote_backend(remote_backend)
 
@@ -101,14 +103,18 @@ def worker_func(func_file_id):
             result_buffer = BytesIO()
             cloudpickle.dump(result, result_buffer, pickle.HIGHEST_PROTOCOL)
             result_buffer.seek(0)
-            output_name = "Results from Joblib job {} / run {}".format(job_id,
-                                                                       run_id)
-            output_file_id = _robust_file_to_civis(result_buffer, output_name,
-                                                   n_retries=5, delay=0.5,
-                                                   expires_at=expires_at,
-                                                   client=client)
-            client.scripts.post_containers_runs_outputs(job_id, run_id,
-                                                        'File', output_file_id)
+            output_name = "Results from Joblib job {} / run {}".format(job_id, run_id)
+            output_file_id = _robust_file_to_civis(
+                result_buffer,
+                output_name,
+                n_retries=5,
+                delay=0.5,
+                expires_at=expires_at,
+                client=client,
+            )
+            client.scripts.post_containers_runs_outputs(
+                job_id, run_id, "File", output_file_id
+            )
             print("Results output to file ID: {}".format(output_file_id))
 
 
@@ -118,9 +124,9 @@ def main():
     else:
         # If the file ID to download isn't given as a command-line
         # argument, assume that it's in an environment variable.
-        func_file_id = os.environ['JOBLIB_FUNC_FILE_ID']
+        func_file_id = os.environ["JOBLIB_FUNC_FILE_ID"]
     worker_func(func_file_id=func_file_id)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

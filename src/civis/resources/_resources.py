@@ -11,12 +11,10 @@ import requests
 from requests import Request
 
 from civis.base import Endpoint, get_base_url, open_session
-from civis._utils import (camel_to_snake,
-                          get_api_key,
-                          retry_request, MAX_RETRIES)
+from civis._utils import camel_to_snake, get_api_key, retry_request, MAX_RETRIES
 
 
-API_VERSIONS = frozenset({"1.0", })
+API_VERSIONS = frozenset({"1.0"})
 
 # civis_api_spec.json can be updated
 # by running the tools/update_civis_api_spec_json.py script.
@@ -27,7 +25,8 @@ API_SPEC_PATH = os.path.join(
 with open(API_SPEC_PATH) as f:
     API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 BASE_RESOURCES_V1 = sorted(
-    r for r in set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
+    r
+    for r in set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
     # "feature_flags" has a name collision with an APIClient instance
     if r != "feature_flags"
 )
@@ -45,9 +44,9 @@ ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
     "    If True, return a generator to iterate over all responses. Use when\n"
     "    more results than the maximum allowed by limit are needed. When\n"
-    "    True, limit and page_num are ignored. Defaults to False.\n")
-CACHED_SPEC_PATH = os.path.join(os.path.expanduser('~'),
-                                ".civis_api_spec.json")
+    "    True, limit and page_num are ignored. Defaults to False.\n"
+)
+CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
 
 
@@ -70,7 +69,7 @@ def property_type(props):
 
 
 def name_and_type_doc(name, prop, level, optional=False):
-    """ Create a doc string element that includes a parameter's name
+    """Create a doc string element that includes a parameter's name
     and its type. This is intended to be combined with another
     doc string element that gives a description of the parameter.
     """
@@ -84,7 +83,7 @@ def name_and_type_doc(name, prop, level, optional=False):
 
 
 def docs_from_property(name, prop, properties, level, optional=False):
-    """ Create a list of doc string elements from a single property
+    """Create a list of doc string elements from a single property
     object. Avoids infinite recursion when a property contains a
     circular reference to its parent.
     """
@@ -95,10 +94,9 @@ def docs_from_property(name, prop, properties, level, optional=False):
     doc_str = prop.get("description")
     if doc_str:
         indent = 4 * (level + 1) * " "
-        doc_wrap = textwrap.fill(doc_str,
-                                 initial_indent=indent,
-                                 subsequent_indent=indent,
-                                 width=79)
+        doc_wrap = textwrap.fill(
+            doc_str, initial_indent=indent, subsequent_indent=indent, width=79
+        )
         docs.append(f"{doc_wrap}\n") if child else docs.append(doc_wrap)
     if child:
         child_docs = docs_from_properties(child, level + 1)
@@ -107,7 +105,7 @@ def docs_from_property(name, prop, properties, level, optional=False):
 
 
 def docs_from_properties(properties, level=0):
-    """ Return doc string elements from a dictionary of properties."""
+    """Return doc string elements from a dictionary of properties."""
     docs = []
     for name, prop in properties.items():
         doc_list = docs_from_property(name, prop, properties, level)
@@ -116,7 +114,7 @@ def docs_from_properties(properties, level=0):
 
 
 def deprecated_notice(deprecation_warning):
-    """ Return a doc string element for the deprecation notice. The
+    """Return a doc string element for the deprecation notice. The
     doc string can be an empty string if the warning is None
     """
     if deprecation_warning is None:
@@ -126,21 +124,20 @@ def deprecated_notice(deprecation_warning):
 
 
 def doc_from_responses(responses, is_iterable):
-    """ Return a doc string element from a responses object. The
+    """Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
     """
     response_code, response_object = next(iter(responses.items()))
-    schema = response_object.get('schema', {})
+    schema = response_object.get("schema", {})
     properties = get_properties(schema)
     if properties:
         if is_iterable:
             resp_type = ":class:`civis.response.PaginatedResponse`\n"
         else:
             resp_type = ":class:`civis.response.Response`\n"
-        result_doc = resp_type + (
-            "\n".join(docs_from_properties(properties, level=1)))
+        result_doc = resp_type + ("\n".join(docs_from_properties(properties, level=1)))
     else:
-        description = response_object['description']
+        description = response_object["description"]
         result_doc_fmt = "None\n    Response code {}: {}"
         result_doc = result_doc_fmt.format(response_code, description)
     return "Returns\n-------\n" + result_doc
@@ -163,22 +160,21 @@ def type_from_param(param):
 
 
 def doc_from_param(param):
-    """ Return a doc string element for a single parameter.
+    """Return a doc string element for a single parameter.
     Intended to be joined with other doc string elements to
     form a complete docstring of the accepted parameters of
     a function.
     """
-    snake_name = camel_to_snake(param['name'])
+    snake_name = camel_to_snake(param["name"])
     param_type = type_from_param(param)
-    desc = param.get('description')
+    desc = param.get("description")
     optional = "" if param["required"] else ", optional"
     doc_body = ""
     if desc:
         indent = " " * 4
-        doc_wrap = textwrap.fill(desc,
-                                 initial_indent=indent,
-                                 subsequent_indent=indent,
-                                 width=79)
+        doc_wrap = textwrap.fill(
+            desc, initial_indent=indent, subsequent_indent=indent, width=79
+        )
         doc_body += doc_wrap
         doc_body += "\n"
     doc_head = "{} : {}{}\n".format(snake_name, param_type, optional)
@@ -189,13 +185,13 @@ def iterable_method(method, params):
     """Determine whether it is possible for this endpoint to return an iterated
     response.
     """
-    required_params = ('limit', 'page_num')
+    required_params = ("limit", "page_num")
     params_present = all(param in params for param in required_params)
-    return (method.lower() == 'get' and params_present)
+    return method.lower() == "get" and params_present
 
 
 def create_signature(args, optional_args, prepend_self=False):
-    """ Dynamically create a signature for a function from strings.
+    """Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
     generated function without generating a string representation of
@@ -221,9 +217,7 @@ def create_signature(args, optional_args, prepend_self=False):
     if prepend_self:
         p += [Parameter("self", Parameter.POSITIONAL_OR_KEYWORD)]
     p += [
-        Parameter(
-            name, Parameter.POSITIONAL_OR_KEYWORD, annotation=arg["type"]
-        )
+        Parameter(name, Parameter.POSITIONAL_OR_KEYWORD, annotation=arg["type"])
         for name, arg in args.items()
     ]
     p += [
@@ -250,7 +244,7 @@ def split_method_params(params):
             args[name] = {"type": param.get("type")}
         else:
             optional_args[name] = {
-                "default": param.get('default', DEFAULT_ARG_VALUE),
+                "default": param.get("default", DEFAULT_ARG_VALUE),
                 "type": param.get("type"),
             }
         if param["in"] == "body":
@@ -262,9 +256,10 @@ def split_method_params(params):
     return args, optional_args, body_params, query_params, path_params
 
 
-def create_method(params, verb, method_name, path,
-                  deprecation_warning, param_doc, response_doc):
-    """ Dynamically create a function to make an API call.
+def create_method(
+    params, verb, method_name, path, deprecation_warning, param_doc, response_doc
+):
+    """Dynamically create a function to make an API call.
 
     The returned function accepts required parameters as positional arguments
     and optional parameters as kwargs.  The function passes these parameters
@@ -304,10 +299,11 @@ def create_method(params, verb, method_name, path,
     is_iterable = iterable_method(verb, query_params)
 
     def f(self, *args, **kwargs):
-        raise_for_unexpected_kwargs(method_name, kwargs, sig_args,
-                                    sig_opt_args, is_iterable)
+        raise_for_unexpected_kwargs(
+            method_name, kwargs, sig_args, sig_opt_args, is_iterable
+        )
 
-        iterator = kwargs.pop('iterator', False)
+        iterator = kwargs.pop("iterator", False)
         arguments = sig.bind(*args, **kwargs).arguments
         if arguments.get("kwargs"):
             arguments.update(arguments.pop("kwargs"))
@@ -327,12 +323,13 @@ def create_method(params, verb, method_name, path,
     return f
 
 
-def raise_for_unexpected_kwargs(method_name, arguments, sig_args, sig_kwargs,
-                                is_iterable):
+def raise_for_unexpected_kwargs(
+    method_name, arguments, sig_args, sig_kwargs, is_iterable
+):
     """Raise TypeError if arguments are not in sig_args or sig_kwargs."""
     expected = set(sig_args.keys()) | set(sig_kwargs.keys())
     if is_iterable:
-        expected |= {'iterator'}
+        expected |= {"iterator"}
     unexpected = set(arguments.keys()) - expected
     if unexpected:
         msg_fmt = "{}() got an unexpected keyword argument(s) {}"
@@ -344,37 +341,46 @@ def bracketed(x):
 
 
 def parse_param(param):
-    """ Parse a parameter into a list of dictionaries which can
+    """Parse a parameter into a list of dictionaries which can
     be used to add the parameter to a dynamically generated function.
     """
     args = []
-    param_in = param['in']
-    if param_in == 'body':
+    param_in = param["in"]
+    if param_in == "body":
         body_args = parse_param_body(param)
         args.extend(body_args)
     else:
-        snake_name = camel_to_snake(param['name'])
-        req = param['required']
+        snake_name = camel_to_snake(param["name"])
+        req = param["required"]
         doc = doc_from_param(param)
-        a = {"name": snake_name, "in": param_in, "required": req, "doc": doc,
-             "type": type_from_param(param)}
+        a = {
+            "name": snake_name,
+            "in": param_in,
+            "required": req,
+            "doc": doc,
+            "type": type_from_param(param),
+        }
         if not req:
-            a['default'] = param.get('default', DEFAULT_ARG_VALUE)
+            a["default"] = param.get("default", DEFAULT_ARG_VALUE)
         args.append(a)
     return args
 
 
 def parse_params(parameters, summary, verb):
-    """ Parse the parameters of a function specification into a list
+    """Parse the parameters of a function specification into a list
     of dictionaries which are used to generate the function at runtime.
     """
     args = []
     for param in parameters:
         args.extend(parse_param(param))
     if iterable_method(verb, (x["name"] for x in args)):
-        iter_arg = {"name": "iterator", "in": None,
-                    "required": False, "doc": ITERATOR_PARAM_DESC,
-                    "type": "bool"}
+        iter_arg = {
+            "name": "iterator",
+            "in": None,
+            "required": False,
+            "doc": ITERATOR_PARAM_DESC,
+            "type": "bool",
+        }
         args.append(iter_arg)
     req_docs = [x["doc"] for x in args if x["required"]]
     opt_docs = [x["doc"] for x in args if not x["required"]]
@@ -391,33 +397,38 @@ def parse_params(parameters, summary, verb):
 
 
 def parse_param_body(parameter):
-    """ Parse the nested element of a parameter into a list of dictionaries
+    """Parse the nested element of a parameter into a list of dictionaries
     which can be used to add the parameter to a dynamically generated
     function.
     """
-    schema = parameter['schema']
+    schema = parameter["schema"]
     try:
-        properties = schema['properties']
+        properties = schema["properties"]
     except KeyError:
         print(schema)
         raise
-    req = schema.get('required', [])
+    req = schema.get("required", [])
     arguments = []
     for name, prop in properties.items():
         snake_name = camel_to_snake(name)
         is_req = name in req
         doc_list = docs_from_property(name, prop, properties, 0, not is_req)
         doc = "\n".join(doc_list) + "\n"
-        a = {"name": snake_name, "in": "body", "required": is_req, "doc": doc,
-             "type": type_from_param(prop)}
+        a = {
+            "name": snake_name,
+            "in": "body",
+            "required": is_req,
+            "doc": doc,
+            "type": type_from_param(prop),
+        }
         if not is_req:
-            a['default'] = prop.get('default', DEFAULT_ARG_VALUE)
+            a["default"] = prop.get("default", DEFAULT_ARG_VALUE)
         arguments.append(a)
     return arguments
 
 
 def parse_method_name(verb, path):
-    """ Create method name from endpoint path
+    """Create method name from endpoint path
 
     Create method name as the http verb (method) followed by
     any static path parameters. As there is ambiguity where
@@ -444,7 +455,7 @@ def parse_method_name(verb, path):
         if not bracketed(elem):
             name_elems.append(elem)
         elif prev_elem and bracketed(prev_elem):
-            name_elems.append(prev_elem.strip('{|}'))
+            name_elems.append(prev_elem.strip("{|}"))
     final_elem = path_elems[-1] if path_elems else ""
     verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
     path_name = "_".join(name_elems)
@@ -453,12 +464,12 @@ def parse_method_name(verb, path):
 
 
 def parse_method(verb, operation, path):
-    """ Generate a python function from a specification of that function."""
+    """Generate a python function from a specification of that function."""
     summary = operation["summary"]
     params = operation.get("parameters", [])
     responses = operation["responses"]
     deprecation_warning = operation.get("x-deprecation-warning", None)
-    if 'deprecated' in summary.lower():
+    if "deprecated" in summary.lower():
         return None
 
     args, param_doc = parse_params(params, summary, verb)
@@ -468,18 +479,19 @@ def parse_method(verb, operation, path):
     response_doc = doc_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
 
-    method = create_method(args, verb, name, path,
-                           deprecation_warning, param_doc, response_doc)
+    method = create_method(
+        args, verb, name, path, deprecation_warning, param_doc, response_doc
+    )
     return name, method
 
 
 def parse_path(path, operations, api_version):
-    """ Parse an endpoint into a class where each valid http request
+    """Parse an endpoint into a class where each valid http request
     on that endpoint is converted into a convenience function and
     attached to the class as a method.
     """
-    path = path.strip('/')
-    modified_base_path = re.sub("-", "_", path.split('/')[0].lower())
+    path = path.strip("/")
+    modified_base_path = re.sub("-", "_", path.split("/")[0].lower())
     methods = []
     if exclude_resource(path, api_version):
         return modified_base_path, methods
@@ -492,7 +504,7 @@ def parse_path(path, operations, api_version):
 
 
 def parse_api_spec(api_spec, api_version):
-    """ Dynamically create classes to interface with the Civis API.
+    """Dynamically create classes to interface with the Civis API.
 
     Parse an OpenAPI (Swagger) specification into a dictionary of classes
     where each class represents an endpoint resource and contains
@@ -507,7 +519,7 @@ def parse_api_spec(api_spec, api_version):
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
     """
-    paths = api_spec['paths']
+    paths = api_spec["paths"]
     classes = {}
     for path, ops in paths.items():
         base_path, methods = parse_path(path, ops, api_version)
@@ -544,9 +556,9 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """
     if api_version == "1.0":
         with open_session(api_key, user_agent=user_agent) as sess:
-            request = Request('GET', "{}endpoints".format(get_base_url()))
+            request = Request("GET", "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
-            response = retry_request('get', pre_request, sess, MAX_RETRIES)
+            response = retry_request("get", pre_request, sess, MAX_RETRIES)
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))
@@ -560,7 +572,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
 
 @lru_cache(maxsize=4)
 def generate_classes(api_key, api_version="1.0"):
-    """ Dynamically create classes to interface with the Civis API.
+    """Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
     This function parses the specification and returns a dictionary of
