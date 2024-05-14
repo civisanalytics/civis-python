@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Broke out the "API Resources" documentation page into individual endpoint pages (#471)
 - Switched to `pyproject.toml` for packaging. (#475)
 - CI builds for Windows switched from AppVeyor to CircleCI. (#480)
+- Applied the `black` code formatter to the codebase. (#481)
 
 ### Deprecated
 ### Removed

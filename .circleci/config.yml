@@ -73,15 +73,28 @@ workflows:
   build-and-test:
     jobs:
       - pre-build:
+          name: bandit
+          command-run: |
+            pip install --upgrade bandit && \
+            bandit --version && \
+            bandit -r src -x tests
+      - pre-build:
           name: black
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            black --check src tools
+            black --check src tools tests
       - pre-build:
           name: flake8
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            flake8 src tests
+            flake8 src tools tests
+      - pre-build:
+          name: pip-audit
+          command-run: |
+            pip install --upgrade pip setuptools wheel pip-audit && \
+            pip install --progress-bar off -e ".[dev-core,dev-civisml,docs]" && \
+            pip-audit --version && \
+            pip-audit
       - pre-build:
           name: sphinx-build
           command-run: |
@@ -94,34 +107,22 @@ workflows:
             python -m build && \
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
-      - pre-build:
-          name: bandit
-          command-run: |
-            pip install --upgrade bandit && \
-            bandit --version && \
-            bandit -r src -x tests
-      - pre-build:
-          name: pip-audit
-          command-run: |
-            pip install --upgrade pip setuptools wheel pip-audit && \
-            pip install --progress-bar off -e ".[dev-core,dev-civisml,docs]" && \
-            pip-audit --version && \
-            pip-audit
       - build-python:
           requires:
+            - bandit
             - black
             - flake8
+            - pip-audit
             - sphinx-build
             - twine
-            - bandit
-            - pip-audit
           matrix:
             parameters:
               python-version: ["3.9", "3.10", "3.11", "3.12"]
       - build-python-win:
           requires:
+            - bandit
             - black
             - flake8
-            - twine
-            - bandit
             - pip-audit
+            - sphinx-build
+            - twine

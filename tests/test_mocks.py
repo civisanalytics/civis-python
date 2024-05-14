@@ -1,5 +1,5 @@
-"""Tests for the test tooling
-"""
+"""Tests for the test tooling"""
+
 import pytest
 
 from civis.tests import mocks
