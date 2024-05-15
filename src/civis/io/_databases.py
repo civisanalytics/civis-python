@@ -7,8 +7,15 @@ from civis.futures import CivisFuture
 log = logging.getLogger(__name__)
 
 
-def query_civis(sql, database, client=None, credential_id=None,
-                preview_rows=10, polling_interval=None, hidden=True):
+def query_civis(
+    sql,
+    database,
+    client=None,
+    credential_id=None,
+    preview_rows=10,
+    polling_interval=None,
+    hidden=True,
+):
     """Execute a SQL statement as a Civis query.
 
     Run a query that may return no results or where only a small
@@ -49,19 +56,30 @@ def query_civis(sql, database, client=None, credential_id=None,
         client = APIClient()
     database_id = client.get_database_id(database)
     cred_id = credential_id or client.default_credential
-    resp = client.queries.post(database_id,
-                               sql,
-                               preview_rows,
-                               credential=cred_id,
-                               hidden=hidden)
-    return CivisFuture(client.queries.get, (resp.id, ), polling_interval,
-                       client=client, poll_on_creation=False)
+    resp = client.queries.post(
+        database_id, sql, preview_rows, credential=cred_id, hidden=hidden
+    )
+    return CivisFuture(
+        client.queries.get,
+        (resp.id,),
+        polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
 
 
-def transfer_table(source_db, dest_db, source_table, dest_table,
-                   job_name=None, client=None,
-                   source_credential_id=None, dest_credential_id=None,
-                   polling_interval=None, **advanced_options):
+def transfer_table(
+    source_db,
+    dest_db,
+    source_table,
+    dest_table,
+    job_name=None,
+    client=None,
+    source_credential_id=None,
+    dest_credential_id=None,
+    polling_interval=None,
+    **advanced_options,
+):
     """Transfer a table from one location to another.
 
     Parameters
@@ -111,23 +129,30 @@ def transfer_table(source_db, dest_db, source_table, dest_table,
     dest_cred_id = dest_credential_id or client.default_credential
     job_name = maybe_get_random_name(job_name)
     source = {
-        'remote_host_id': client.get_database_id(source_db),
-        'credential_id': source_cred_id
+        "remote_host_id": client.get_database_id(source_db),
+        "credential_id": source_cred_id,
     }
     destination = {
-        'remote_host_id': client.get_database_id(dest_db),
-        'credential_id': dest_cred_id
+        "remote_host_id": client.get_database_id(dest_db),
+        "credential_id": dest_cred_id,
     }
-    job_id = client.imports.post(job_name, "Dbsync", True, source=source,
-                                 destination=destination).id
+    job_id = client.imports.post(
+        job_name, "Dbsync", True, source=source, destination=destination
+    ).id
 
-    client.imports.post_syncs(id=job_id,
-                              source={'path': source_table},
-                              destination={'path': dest_table},
-                              advanced_options=advanced_options)
+    client.imports.post_syncs(
+        id=job_id,
+        source={"path": source_table},
+        destination={"path": dest_table},
+        advanced_options=advanced_options,
+    )
     run_id = client.imports.post_runs(id=job_id).run_id
-    log.debug('Started run %d of sync for import %d', run_id, job_id)
-    fut = CivisFuture(client.imports.get_files_runs, (job_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+    log.debug("Started run %d of sync for import %d", run_id, job_id)
+    fut = CivisFuture(
+        client.imports.get_files_runs,
+        (job_id, run_id),
+        polling_interval=polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
     return fut

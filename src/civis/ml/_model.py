@@ -1,5 +1,5 @@
-"""Run CivisML jobs and retrieve the results
-"""
+"""Run CivisML jobs and retrieve the results"""
+
 import builtins
 from builtins import super
 import collections
@@ -17,8 +17,10 @@ from concurrent import futures
 from functools import wraps
 
 import joblib
+
 try:
     from sklearn.base import BaseEstimator
+
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
@@ -31,11 +33,11 @@ from civis.futures import ContainerFuture
 from civis.response import Response
 
 
-__all__ = ['ModelFuture', 'ModelError', 'ModelPipeline']
+__all__ = ["ModelFuture", "ModelError", "ModelPipeline"]
 log = logging.getLogger(__name__)
 
 # sentinel value for default primary key value
-SENTINEL = collections.namedtuple('Sentinel', [])()
+SENTINEL = collections.namedtuple("Sentinel", [])()
 
 
 class ModelError(RuntimeError):
@@ -47,12 +49,14 @@ class ModelError(RuntimeError):
 
 def _check_fit_initiated(method):
     """Makes sure that the ModelPipeline's been trained"""
+
     @wraps(method)
     def wrapper(*args, **kwargs):
         self = args[0]
         if not self.train_result_:
             raise ValueError("This model hasn't been trained yet.")
         return method(*args, **kwargs)
+
     return wrapper
 
 
@@ -61,6 +65,7 @@ def _block_and_handle_missing(method):
     Block until completion and attempt to retrieve result.
     Raise exception only if the result isn't found.
     """
+
     @wraps(method)
     def wrapper(self):
         futures.wait((self,))  # Block until done
@@ -73,6 +78,7 @@ def _block_and_handle_missing(method):
                 raise self.exception() from None
             else:
                 raise
+
     return wrapper
 
 
@@ -82,27 +88,30 @@ def _stash_local_dataframe(df, template_id, client=None):
     # but multiindexes do. Checking for this attribute means we don't
     # need to import pandas to do error handling here.
     if getattr(getattr(df, "index", None), "levels", None) is not None:
-        raise TypeError("CivisML does not support multi-indexed data frames. "
-                        "Try calling `.reset_index` on your data to convert "
-                        "it into a CivisML-friendly format.")
+        raise TypeError(
+            "CivisML does not support multi-indexed data frames. "
+            "Try calling `.reset_index` on your data to convert "
+            "it into a CivisML-friendly format."
+        )
     try:
         if template_id > 9969:
             return _stash_dataframe_as_feather(df, client)
         else:
             return _stash_dataframe_as_csv(df, client)
     except (ImportError, AttributeError) as exc:
-        if (df.dtypes == 'category').any():
+        if (df.dtypes == "category").any():
             # The original exception should tell users if they need
             # to upgrade pandas (an AttributeError)
             # # or if they need to install "feather-format" (ImportError).
             raise ValueError(
-                'Categorical columns can only be handled with pandas '
-                'version >= 0.20 and `feather-format` installed.') from exc
+                "Categorical columns can only be handled with pandas "
+                "version >= 0.20 and `feather-format` installed."
+            ) from exc
         return _stash_dataframe_as_csv(df, client)
 
 
 def _stash_dataframe_as_feather(df, client):
-    civis_fname = 'modelpipeline_data.feather'
+    civis_fname = "modelpipeline_data.feather"
     with tempfile.TemporaryDirectory() as tdir:
         path = os.path.join(tdir, civis_fname)
         df.to_feather(path)
@@ -111,9 +120,9 @@ def _stash_dataframe_as_feather(df, client):
 
 
 def _stash_dataframe_as_csv(df, client):
-    civis_fname = 'modelpipeline_data.csv'
+    civis_fname = "modelpipeline_data.csv"
     txt = io.StringIO()
-    df.to_csv(txt, encoding='utf-8', index=False)
+    df.to_csv(txt, encoding="utf-8", index=False)
     txt.flush()
     txt.seek(0)
     file_id = cio.file_to_civis(txt, name=civis_fname, client=client)
@@ -123,7 +132,7 @@ def _stash_dataframe_as_csv(df, client):
 
 def _stash_local_file(csv_path, client=None):
     """Store data in a temporary Civis File and return the file ID"""
-    civis_fname = 'modelpipeline_data.csv'
+    civis_fname = "modelpipeline_data.csv"
     with open(csv_path) as _fin:
         file_id = cio.file_to_civis(_fin, name=civis_fname, client=client)
 
@@ -136,19 +145,22 @@ def _decode_train_run(train_job_id, train_run_id, client):
         return int(train_run_id)
     except ValueError:
         container = client.scripts.get_containers(int(train_job_id))
-        if train_run_id == 'active':
-            train_run_id = container.arguments.get('ACTIVE_BUILD', find_one(
-                container.params, name='ACTIVE_BUILD'))['default']
+        if train_run_id == "active":
+            train_run_id = container.arguments.get(
+                "ACTIVE_BUILD", find_one(container.params, name="ACTIVE_BUILD")
+            )["default"]
 
-        if train_run_id == 'latest':
+        if train_run_id == "latest":
             return container.last_run.id
 
         try:
             return int(train_run_id)
         except Exception as exc:
-            msg = ('Please provide valid train_run_id! Needs to be '
-                   'integer corresponding to a training run ID '
-                   'or one of "active" or "latest".')
+            msg = (
+                "Please provide valid train_run_id! Needs to be "
+                "integer corresponding to a training run ID "
+                'or one of "active" or "latest".'
+            )
             raise ValueError(msg) from exc
 
 
@@ -160,21 +172,21 @@ def _retrieve_file(fname, job_id, run_id, local_dir, client=None):
     output_dir = os.path.dirname(fpath)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    with open(fpath, 'wb') as down_file:
+    with open(fpath, "wb") as down_file:
         cio.civis_to_file(file_id, down_file, client=client)
     return fpath
 
 
-def _load_table_from_outputs(job_id, run_id, filename, client=None,
-                             **table_kwargs):
+def _load_table_from_outputs(job_id, run_id, filename, client=None, **table_kwargs):
     """Load a table from a run output directly into a ``DataFrame``"""
     client = APIClient() if client is None else client
-    file_id = cio.file_id_from_run_output(filename, job_id, run_id,
-                                          client=client, regex=True)
+    file_id = cio.file_id_from_run_output(
+        filename, job_id, run_id, client=client, regex=True
+    )
     return cio.file_to_dataframe(file_id, client=client, **table_kwargs)
 
 
-def _load_estimator(job_id, run_id, filename='estimator.pkl', client=None):
+def _load_estimator(job_id, run_id, filename="estimator.pkl", client=None):
     """Load a joblib-serialized Estimator from run outputs"""
     try:
         tempdir = tempfile.mkdtemp()
@@ -197,11 +209,11 @@ def _parse_warning(warn_str):
     (str, Warning, str, int)
         message, category, filename, lineno
     """
-    tokens = warn_str.rstrip('\n').split(" ")
+    tokens = warn_str.rstrip("\n").split(" ")
 
     # The first token is
     # "[filename]:[lineno]:"
-    filename, lineno, _ = tokens[0].split(':')
+    filename, lineno, _ = tokens[0].split(":")
 
     # The second token is
     # "[category name]:"
@@ -244,24 +256,23 @@ def _get_job_type_version(alias):
         CivisML version, e.g., "v2.2".
     """
     # A version-less alias for production, e.g., "civis-civisml-training"
-    match_production = re.search(r'\Acivis-civisml-(\w+)\Z', alias)
+    match_production = re.search(r"\Acivis-civisml-(\w+)\Z", alias)
     # A versioned alias, e.g., "civis-civisml-training-v2-3"
-    match_v = re.search(r'\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z', alias)
+    match_v = re.search(r"\Acivis-civisml-(\w+)-v(\d+)-(\d+)\Z", alias)
     # A special-version alias, e.g., "civis-civisml-training-dev"
-    match_special = re.search(r'\Acivis-civisml-(\w+)-(\S+[^-])\Z', alias)
+    match_special = re.search(r"\Acivis-civisml-(\w+)-(\S+[^-])\Z", alias)
 
     if match_production:
         job_type = match_production.group(1)
         version = None
     elif match_v:
         job_type = match_v.group(1)
-        version = 'v%s.%s' % match_v.group(2, 3)
+        version = "v%s.%s" % match_v.group(2, 3)
     elif match_special:
         job_type = match_special.group(1)
         version = match_special.group(2)
     else:
-        msg = ('Unable to parse the job type and version '
-               'from the CivisML alias "%r"')
+        msg = 'Unable to parse the job type and version from the CivisML alias "%r"'
         raise ValueError(msg % alias)
 
     return job_type, version
@@ -283,14 +294,13 @@ def _get_template_ids_all_versions(client):
         version (e.g., {'training': 1, 'prediction': 2, 'registration': 3}).
     """
     template_alias_objects = client.aliases.list(
-        object_type='template_script', iterator=True
+        object_type="template_script", iterator=True
     )
     civisml_template_alias_objects = find(
-        template_alias_objects,
-        alias=lambda alias: alias.startswith('civis-civisml-')
+        template_alias_objects, alias=lambda alias: alias.startswith("civis-civisml-")
     )
     ids = collections.defaultdict(
-        lambda: {'training': None, 'prediction': None, 'registration': None}
+        lambda: {"training": None, "prediction": None, "registration": None}
     )
     for alias_obj in civisml_template_alias_objects:
         try:
@@ -298,15 +308,19 @@ def _get_template_ids_all_versions(client):
         except ValueError:
             msg = (
                 '%r looks like a CivisML alias for the prefix "civis-civisml-"'
-                ', but it is impossible to parse its job type and version'
+                ", but it is impossible to parse its job type and version"
             )
             log.debug(msg % alias_obj)
             continue
         ids[version][job_type] = alias_obj.object_id
     if not ids:
-        r = Response({'status_code': 404,
-                      'reason': 'No CivisML template IDs are accessible.',
-                      'content': None})
+        r = Response(
+            {
+                "status_code": 404,
+                "reason": "No CivisML template IDs are accessible.",
+                "content": None,
+            }
+        )
         raise CivisAPIError(r)
     # Disallow a defaultdict in the output, so that a non-existent CivisML
     # version as key should trigger a KeyError.
@@ -339,22 +353,20 @@ def _get_template_ids(civisml_version, client):
     except KeyError:
         msg = (
             '"{civisml_version}" is an invalid CivisML version. '
-            'Either this version does not exist, or you do not have access '
-            'to this version. '
-            'Versions accessible to you are {{{accessible_versions}}}, '
-            'as well as `None` for the latest production version.'
+            "Either this version does not exist, or you do not have access "
+            "to this version. "
+            "Versions accessible to you are {{{accessible_versions}}}, "
+            "as well as `None` for the latest production version."
         ).format(
             civisml_version=civisml_version,
-            accessible_versions=', '.join(
+            accessible_versions=", ".join(
                 '"%s"' % v
                 # Don't include None, or else it would crash sorted()
-                for v in sorted(
-                    v for v in template_ids_all_versions.keys() if v
-                )
-            )
+                for v in sorted(v for v in template_ids_all_versions.keys() if v)
+            ),
         )
         raise ValueError(msg)
-    return ids['training'], ids['prediction'], ids['registration']
+    return ids["training"], ids["prediction"], ids["registration"]
 
 
 class ModelFuture(ContainerFuture):
@@ -447,8 +459,16 @@ class ModelFuture(ContainerFuture):
     concurrent.futures.Future
     """
 
-    def __init__(self, job_id, run_id, train_job_id=None, train_run_id=None,
-                 polling_interval=None, client=None, poll_on_creation=True):
+    def __init__(
+        self,
+        job_id,
+        run_id,
+        train_job_id=None,
+        train_run_id=None,
+        polling_interval=None,
+        client=None,
+        poll_on_creation=True,
+    ):
         if train_job_id and train_run_id:
             self.is_training = False
             self.train_job_id = train_job_id
@@ -461,10 +481,13 @@ class ModelFuture(ContainerFuture):
         self._train_data, self._train_data_fname = None, None
         self._train_metadata = None
         self._table, self._estimator = None, None
-        super().__init__(job_id, run_id,
-                         polling_interval=polling_interval,
-                         client=client,
-                         poll_on_creation=poll_on_creation)
+        super().__init__(
+            job_id,
+            run_id,
+            polling_interval=polling_interval,
+            client=client,
+            poll_on_creation=poll_on_creation,
+        )
 
     @staticmethod
     def _set_job_exception(fut):
@@ -481,19 +504,23 @@ class ModelFuture(ContainerFuture):
 
         try:
             meta = fut.metadata
-            if fut.is_training and meta['run']['status'] == 'succeeded':
+            if fut.is_training and meta["run"]["status"] == "succeeded":
                 # if training job and job succeeded, check validation job
                 meta = fut.validation_metadata
-            if meta is not None and meta['run']['status'] == 'exception':
+            if meta is not None and meta["run"]["status"] == "exception":
                 try:
                     # This will fail if the user doesn't have joblib installed
                     est = fut.estimator
                 except Exception:  # NOQA
                     est = None
                 fut.set_exception(
-                    ModelError('Model run failed with stack trace:\n'
-                               '{}'.format(meta['run']['stack_trace']),
-                               est, meta))
+                    ModelError(
+                        "Model run failed with stack trace:\n"
+                        "{}".format(meta["run"]["stack_trace"]),
+                        est,
+                        meta,
+                    )
+                )
         except (FileNotFoundError, CivisJobFailure) as exc:
             # If there's no metadata file
             # (we get FileNotFound or CivisJobFailure),
@@ -507,17 +534,19 @@ class ModelFuture(ContainerFuture):
             # KeyErrors always represent a bug in the modeling code,
             # but showing the resulting KeyError can be confusing and
             # mask the real error.
-            warnings.warn("Received malformed metadata from Civis Platform. "
-                          "Something went wrong with job execution.")
+            warnings.warn(
+                "Received malformed metadata from Civis Platform. "
+                "Something went wrong with job execution."
+            )
 
     def __getstate__(self):
         state = self.__dict__.copy()
-        del state['_polling_thread']
-        del state['client']
-        del state['poller']
-        del state['_condition']
-        state['_done_callbacks'] = []
-        state['_self_polling_executor'] = None
+        del state["_polling_thread"]
+        del state["client"]
+        del state["poller"]
+        del state["_condition"]
+        state["_done_callbacks"] = []
+        state["_self_polling_executor"] = None
 
         return state
 
@@ -532,26 +561,27 @@ class ModelFuture(ContainerFuture):
     @property
     def state(self):
         state = self._civis_state
-        if state == 'succeeded':
-            state = self.metadata['run']['status']
+        if state == "succeeded":
+            state = self.metadata["run"]["status"]
         return state
 
     @property
     def table_fname(self):
-        return 'predictions.csv'
+        return "predictions.csv"
 
     @property
     def metadata_fname(self):
-        return 'model_info.json'
+        return "model_info.json"
 
     @property
     def train_data_fname(self):
         if self._train_data_fname is None:
-            self._train_data_fname = os.path.basename(self.training_metadata
-                                                      .get('run')
-                                                      .get('configuration')
-                                                      .get('data')
-                                                      .get('location'))
+            self._train_data_fname = os.path.basename(
+                self.training_metadata.get("run")
+                .get("configuration")
+                .get("data")
+                .get("location")
+            )
         return self._train_data_fname
 
     @property
@@ -562,10 +592,11 @@ class ModelFuture(ContainerFuture):
                     self.train_job_id,
                     self.train_run_id,
                     self.train_data_fname,
-                    client=self.client)
+                    client=self.client,
+                )
             except CivisAPIError as err:
                 if err.status_code == 404:
-                    msg = 'There is no training data stored for this job!'
+                    msg = "There is no training data stored for this job!"
                     raise ValueError(msg) from err
                 else:
                     raise
@@ -576,11 +607,11 @@ class ModelFuture(ContainerFuture):
         # metadata path to input parameters is different
         # for training and prediction
         if self.is_training:
-            pkey = self.metadata[
-                'run']['configuration']['data']['primary_key']
+            pkey = self.metadata["run"]["configuration"]["data"]["primary_key"]
         else:
-            pkey = self.metadata[
-                'jobs'][0]['run']['configuration']['data']['primary_key']
+            pkey = self.metadata["jobs"][0]["run"]["configuration"]["data"][
+                "primary_key"
+            ]
         return pkey
 
     @property
@@ -596,44 +627,49 @@ class ModelFuture(ContainerFuture):
             if self.is_training:
                 try:
                     # Training jobs only have one output table, the OOS scores
-                    self._table = _load_table_from_outputs(self.job_id,
-                                                           self.run_id,
-                                                           self.table_fname,
-                                                           index_col=index_col,
-                                                           client=self.client)
+                    self._table = _load_table_from_outputs(
+                        self.job_id,
+                        self.run_id,
+                        self.table_fname,
+                        index_col=index_col,
+                        client=self.client,
+                    )
                 except FileNotFoundError:
                     # Just pass here, because we want the table to stay None
                     # if it does not exist
                     pass
             else:
                 # Prediction jobs may have many output tables.
-                output_ids = self.metadata['output_file_ids']
+                output_ids = self.metadata["output_file_ids"]
                 if len(output_ids) > 1:
-                    print('This job output {} files. Retrieving only the '
-                          'first. Find the full list at `metadata'
-                          '["output_file_ids"]`.'.format(len(output_ids)))
-                self._table = cio.file_to_dataframe(output_ids[0],
-                                                    client=self.client,
-                                                    index_col=index_col)
+                    print(
+                        "This job output {} files. Retrieving only the "
+                        "first. Find the full list at `metadata"
+                        '["output_file_ids"]`.'.format(len(output_ids))
+                    )
+                self._table = cio.file_to_dataframe(
+                    output_ids[0], client=self.client, index_col=index_col
+                )
         return self._table
 
     @property
     @_block_and_handle_missing
     def metadata(self):
         if self._metadata is None:
-            fid = cio.file_id_from_run_output('model_info.json', self.job_id,
-                                              self.run_id, client=self.client)
+            fid = cio.file_id_from_run_output(
+                "model_info.json", self.job_id, self.run_id, client=self.client
+            )
             self._metadata = cio.file_to_json(fid, client=self.client)
-            _show_civisml_warnings(self._metadata.get('warnings', []))
+            _show_civisml_warnings(self._metadata.get("warnings", []))
         return self._metadata
 
     @property
     @_block_and_handle_missing
     def estimator(self):
         if self._estimator is None:
-            self._estimator = _load_estimator(self.train_job_id,
-                                              self.train_run_id,
-                                              client=self.client)
+            self._estimator = _load_estimator(
+                self.train_job_id, self.train_run_id, client=self.client
+            )
         return self._estimator
 
     @property
@@ -641,10 +677,12 @@ class ModelFuture(ContainerFuture):
     def validation_metadata(self):
         if self._val_metadata is None:
             try:
-                fid = cio.file_id_from_run_output('metrics.json',
-                                                  self.train_job_id,
-                                                  self.train_run_id,
-                                                  client=self.client)
+                fid = cio.file_id_from_run_output(
+                    "metrics.json",
+                    self.train_job_id,
+                    self.train_run_id,
+                    client=self.client,
+                )
             except FileNotFoundError:
                 # Use an empty dictionary to indicate that
                 # we've already checked for metadata.
@@ -660,7 +698,7 @@ class ModelFuture(ContainerFuture):
     @property
     def metrics(self):
         if self.validation_metadata:
-            return self.validation_metadata['metrics']
+            return self.validation_metadata["metrics"]
         else:
             return None
 
@@ -668,10 +706,12 @@ class ModelFuture(ContainerFuture):
     @_block_and_handle_missing
     def training_metadata(self):
         if self._train_metadata is None:
-            fid = cio.file_id_from_run_output('model_info.json',
-                                              self.train_job_id,
-                                              self.train_run_id,
-                                              client=self.client)
+            fid = cio.file_id_from_run_output(
+                "model_info.json",
+                self.train_job_id,
+                self.train_run_id,
+                client=self.client,
+            )
             self._train_metadata = cio.file_to_json(fid, client=self.client)
         return self._train_metadata
 
@@ -809,14 +849,28 @@ class ModelPipeline:
     --------
     civis.ml.ModelFuture
     """
-    def __init__(self, model, dependent_variable,
-                 primary_key=None, parameters=None,
-                 cross_validation_parameters=None, model_name=None,
-                 calibration=None, excluded_columns=None, client=None,
-                 cpu_requested=None, memory_requested=None,
-                 disk_requested=None, notifications=None,
-                 dependencies=None, git_token_name=None, verbose=False,
-                 etl=None, civisml_version=None):
+
+    def __init__(
+        self,
+        model,
+        dependent_variable,
+        primary_key=None,
+        parameters=None,
+        cross_validation_parameters=None,
+        model_name=None,
+        calibration=None,
+        excluded_columns=None,
+        client=None,
+        cpu_requested=None,
+        memory_requested=None,
+        disk_requested=None,
+        notifications=None,
+        dependencies=None,
+        git_token_name=None,
+        verbose=False,
+        etl=None,
+        civisml_version=None,
+    ):
         self.model = model
         self._input_model = model  # In case we need to modify the input
         if isinstance(dependent_variable, str):
@@ -831,9 +885,11 @@ class ModelPipeline:
         self.model_name = model_name  # None lets Platform use template name
         self.excluded_columns = excluded_columns
         self.calibration = calibration
-        self.job_resources = {'REQUIRED_CPU': cpu_requested,
-                              'REQUIRED_MEMORY': memory_requested,
-                              'REQUIRED_DISK_SPACE': disk_requested}
+        self.job_resources = {
+            "REQUIRED_CPU": cpu_requested,
+            "REQUIRED_MEMORY": memory_requested,
+            "REQUIRED_DISK_SPACE": disk_requested,
+        }
         self.notifications = notifications or {}
         self.dependencies = dependencies
         self.git_token_name = git_token_name
@@ -850,12 +906,13 @@ class ModelPipeline:
         self.etl = etl
         if self.train_template_id < 9968 and self.etl is not None:
             # This is a pre-v2.0 CivisML template
-            raise NotImplementedError("The etl argument is not implemented"
-                                      " in this version of CivisML.")
+            raise NotImplementedError(
+                "The etl argument is not implemented" " in this version of CivisML."
+            )
 
     def __getstate__(self):
         state = self.__dict__.copy()
-        del state['_client']
+        del state["_client"]
         return state
 
     def __setstate__(self, state):
@@ -863,12 +920,20 @@ class ModelPipeline:
         self._client = APIClient()
 
     @classmethod
-    def register_pretrained_model(cls, model, dependent_variable=None,
-                                  features=None, primary_key=None,
-                                  model_name=None, dependencies=None,
-                                  git_token_name=None,
-                                  skip_model_check=False, verbose=False,
-                                  client=None, civisml_version=None):
+    def register_pretrained_model(
+        cls,
+        model,
+        dependent_variable=None,
+        features=None,
+        primary_key=None,
+        model_name=None,
+        dependencies=None,
+        git_token_name=None,
+        skip_model_check=False,
+        verbose=False,
+        client=None,
+        civisml_version=None,
+    ):
         """Use a fitted scikit-learn model with CivisML scoring
 
         Use this function to set up your own fitted scikit-learn-compatible
@@ -951,8 +1016,9 @@ class ModelPipeline:
         if isinstance(dependencies, str):
             dependencies = [dependencies]
         if not model_name:
-            model_name = ("Pretrained {} model for "
-                          "CivisML".format(model.__class__.__name__))
+            model_name = "Pretrained {} model for " "CivisML".format(
+                model.__class__.__name__
+            )
             model_name = model_name[:255]  # Max size is 255 characters
 
         if isinstance(model, (int, float, str)):
@@ -960,65 +1026,65 @@ class ModelPipeline:
         else:
             try:
                 tempdir = tempfile.mkdtemp()
-                fout = os.path.join(tempdir, 'model_for_civisml.pkl')
+                fout = os.path.join(tempdir, "model_for_civisml.pkl")
                 joblib.dump(model, fout, compress=3)
-                with open(fout, 'rb') as _fout:
+                with open(fout, "rb") as _fout:
                     # NB: Using the name "estimator.pkl" means that
                     # CivisML doesn't need to copy this input to a file
                     # with a different name.
                     model_file_id = cio.file_to_civis(
-                        _fout, 'estimator.pkl', expires_at=None, client=client)
+                        _fout, "estimator.pkl", expires_at=None, client=client
+                    )
             finally:
                 shutil.rmtree(tempdir)
 
-        args = {'MODEL_FILE_ID': str(model_file_id),
-                'SKIP_MODEL_CHECK': skip_model_check,
-                'DEBUG': verbose}
+        args = {
+            "MODEL_FILE_ID": str(model_file_id),
+            "SKIP_MODEL_CHECK": skip_model_check,
+            "DEBUG": verbose,
+        }
         if dependent_variable is not None:
-            args['TARGET_COLUMN'] = ' '.join(dependent_variable)
+            args["TARGET_COLUMN"] = " ".join(dependent_variable)
         if features is not None:
-            args['FEATURE_COLUMNS'] = ' '.join(features)
+            args["FEATURE_COLUMNS"] = " ".join(features)
         if dependencies is not None:
-            args['DEPENDENCIES'] = ' '.join(dependencies)
+            args["DEPENDENCIES"] = " ".join(dependencies)
         if git_token_name:
-            creds = find(client.credentials.list(),
-                         name=git_token_name,
-                         type='Custom')
+            creds = find(client.credentials.list(), name=git_token_name, type="Custom")
             if len(creds) > 1:
-                raise ValueError("Unique credential with name '{}' for "
-                                 "remote git hosting service not found!"
-                                 .format(git_token_name))
-            args['GIT_CRED'] = creds[0].id
+                raise ValueError(
+                    "Unique credential with name '{}' for "
+                    "remote git hosting service not found!".format(git_token_name)
+                )
+            args["GIT_CRED"] = creds[0].id
 
         _, _, template_id = _get_template_ids(civisml_version, client)
         if template_id is None:
             msg = (
-                'No registration template ID is available. '
-                'Pre-trained model registration is available for CivisML '
+                "No registration template ID is available. "
+                "Pre-trained model registration is available for CivisML "
                 'v2.2 (for which `civisml_version` would be "v2.2") or above, '
                 'but you have specified CivisML version "%r"'
             )
             raise ValueError(msg % civisml_version)
         container = client.scripts.post_custom(
-            from_template_id=template_id,
-            name=model_name,
-            arguments=args)
-        log.info('Created custom script %s.', container.id)
+            from_template_id=template_id, name=model_name, arguments=args
+        )
+        log.info("Created custom script %s.", container.id)
 
         run = client.scripts.post_custom_runs(container.id)
-        log.debug('Started job %s, run %s.', container.id, run.id)
+        log.debug("Started job %s, run %s.", container.id, run.id)
 
-        fut = ModelFuture(container.id, run.id, client=client,
-                          poll_on_creation=False)
+        fut = ModelFuture(container.id, run.id, client=client, poll_on_creation=False)
         fut.result()
-        log.info('Model registration complete.')
+        log.info("Model registration complete.")
 
         mp = ModelPipeline.from_existing(fut.job_id, fut.run_id, client)
         mp.primary_key = primary_key
         return mp
 
     @classmethod
-    def from_existing(cls, train_job_id, train_run_id='latest', client=None):
+    def from_existing(cls, train_job_id, train_run_id="latest", client=None):
         """Create a :class:`ModelPipeline` object from existing model IDs
 
         Parameters
@@ -1058,75 +1124,92 @@ class ModelPipeline:
             container = client.scripts.get_containers(train_job_id)
         except CivisAPIError as api_err:
             if api_err.status_code == 404:
-                msg = ('There is no Civis Platform job with '
-                       'script ID {} and run ID {}!'.format(train_job_id,
-                                                            train_run_id))
+                msg = (
+                    "There is no Civis Platform job with "
+                    "script ID {} and run ID {}!".format(train_job_id, train_run_id)
+                )
                 raise ValueError(msg) from api_err
             raise
 
         args = container.arguments
 
         # Older templates used "WORKFLOW" instead of "MODEL"
-        model = args.get('MODEL', args.get('WORKFLOW'))
-        dependent_variable = args['TARGET_COLUMN'].split()
-        primary_key = args.get('PRIMARY_KEY')
-        parameters = json.loads(args.get('PARAMS', "{}"))
-        cross_validation_parameters = json.loads(args.get('CVPARAMS', "{}"))
-        calibration = args.get('CALIBRATION')
-        excluded_columns = args.get('EXCLUDE_COLS', None)
+        model = args.get("MODEL", args.get("WORKFLOW"))
+        dependent_variable = args["TARGET_COLUMN"].split()
+        primary_key = args.get("PRIMARY_KEY")
+        parameters = json.loads(args.get("PARAMS", "{}"))
+        cross_validation_parameters = json.loads(args.get("CVPARAMS", "{}"))
+        calibration = args.get("CALIBRATION")
+        excluded_columns = args.get("EXCLUDE_COLS", None)
         if excluded_columns:
             excluded_columns = excluded_columns.split()
-        cpu_requested = args.get('REQUIRED_CPU')
-        memory_requested = args.get('REQUIRED_MEMORY')
-        disk_requested = args.get('REQUIRED_DISK_SPACE')
+        cpu_requested = args.get("REQUIRED_CPU")
+        memory_requested = args.get("REQUIRED_MEMORY")
+        disk_requested = args.get("REQUIRED_DISK_SPACE")
         name = container.name
-        if name.endswith(' Train'):
+        if name.endswith(" Train"):
             # Strip object-applied suffix
-            name = name[:-len(' Train')]
-        notifications = {camel_to_snake(key): val for key, val
-                         in container.notifications.items()}
-        dependencies = args.get('DEPENDENCIES', None)
+            name = name[: -len(" Train")]
+        notifications = {
+            camel_to_snake(key): val for key, val in container.notifications.items()
+        }
+        dependencies = args.get("DEPENDENCIES", None)
         if dependencies:
             dependencies = dependencies.split()
-        git_token_name = args.get('GIT_CRED', None)
+        git_token_name = args.get("GIT_CRED", None)
         if git_token_name:
             git_token_name = client.credentials.get(git_token_name).name
 
-        klass = cls(model=model,
-                    dependent_variable=dependent_variable,
-                    primary_key=primary_key,
-                    model_name=name,
-                    parameters=parameters,
-                    cross_validation_parameters=cross_validation_parameters,
-                    calibration=calibration,
-                    excluded_columns=excluded_columns,
-                    client=client,
-                    cpu_requested=cpu_requested,
-                    disk_requested=disk_requested,
-                    memory_requested=memory_requested,
-                    notifications=notifications,
-                    dependencies=dependencies,
-                    git_token_name=git_token_name,
-                    verbose=args.get('DEBUG', False))
+        klass = cls(
+            model=model,
+            dependent_variable=dependent_variable,
+            primary_key=primary_key,
+            model_name=name,
+            parameters=parameters,
+            cross_validation_parameters=cross_validation_parameters,
+            calibration=calibration,
+            excluded_columns=excluded_columns,
+            client=client,
+            cpu_requested=cpu_requested,
+            disk_requested=disk_requested,
+            memory_requested=memory_requested,
+            notifications=notifications,
+            dependencies=dependencies,
+            git_token_name=git_token_name,
+            verbose=args.get("DEBUG", False),
+        )
         klass.train_result_ = fut
 
         # Set prediction template corresponding to training
         # or registration template
-        template_id = int(container['from_template_id'])
+        template_id = int(container["from_template_id"])
         ids = find_one(
             _get_template_ids_all_versions(client).values(),
-            lambda ids: ids['training'] == template_id or ids['registration'] == template_id  # noqa
+            lambda ids: ids["training"] == template_id
+            or ids["registration"] == template_id,  # noqa
         )
-        p_id = ids['prediction']
+        p_id = ids["prediction"]
         klass.predict_template_id = p_id
 
         return klass
 
-    def train(self, df=None, csv_path=None, table_name=None,
-              database_name=None, file_id=None,
-              sql_where=None, sql_limit=None, oos_scores=None,
-              oos_scores_db=None, if_exists='fail', fit_params=None,
-              polling_interval=None, validation_data='train', n_jobs=None):
+    def train(
+        self,
+        df=None,
+        csv_path=None,
+        table_name=None,
+        database_name=None,
+        file_id=None,
+        sql_where=None,
+        sql_limit=None,
+        oos_scores=None,
+        oos_scores_db=None,
+        if_exists="fail",
+        fit_params=None,
+        polling_interval=None,
+        validation_data="train",
+        n_jobs=None,
+    ):
         """Start a Civis Platform job to train your model
 
         Provide input through one of
@@ -1204,75 +1287,93 @@ class ModelPipeline:
         -------
         :class:`~civis.ml.ModelFuture`
         """
-        if ((table_name is None or database_name is None) and
-                file_id is None and df is None and csv_path is None):
-            raise ValueError('Provide a source of data.')
-        if sum((bool(table_name and database_name),
-                bool(file_id), df is not None, csv_path is not None)) > 1:
-            raise ValueError('Provide a single source of data.')
+        if (
+            (table_name is None or database_name is None)
+            and file_id is None
+            and df is None
+            and csv_path is None
+        ):
+            raise ValueError("Provide a source of data.")
+        if (
+            sum(
+                (
+                    bool(table_name and database_name),
+                    bool(file_id),
+                    df is not None,
+                    csv_path is not None,
+                )
+            )
+            > 1
+        ):
+            raise ValueError("Provide a single source of data.")
 
         if df is not None:
-            file_id = _stash_local_dataframe(df, self.train_template_id,
-                                             client=self._client)
+            file_id = _stash_local_dataframe(
+                df, self.train_template_id, client=self._client
+            )
         elif csv_path:
             file_id = _stash_local_file(csv_path, client=self._client)
 
-        train_args = {'TARGET_COLUMN': ' '.join(self.dependent_variable),
-                      'PRIMARY_KEY': self.primary_key,
-                      'PARAMS': json.dumps(self.parameters),
-                      'CVPARAMS': json.dumps(self.cv_params),
-                      'CALIBRATION': self.calibration,
-                      'IF_EXISTS': if_exists}
+        train_args = {
+            "TARGET_COLUMN": " ".join(self.dependent_variable),
+            "PRIMARY_KEY": self.primary_key,
+            "PARAMS": json.dumps(self.parameters),
+            "CVPARAMS": json.dumps(self.cv_params),
+            "CALIBRATION": self.calibration,
+            "IF_EXISTS": if_exists,
+        }
         if oos_scores:
-            train_args['OOSTABLE'] = oos_scores
+            train_args["OOSTABLE"] = oos_scores
         if oos_scores_db:
             oos_db_id = self._client.get_database_id(oos_scores_db)
-            train_args['OOSDB'] = {'database': oos_db_id}
+            train_args["OOSDB"] = {"database": oos_db_id}
         if sql_where:
-            train_args['WHERESQL'] = sql_where
+            train_args["WHERESQL"] = sql_where
         if sql_limit:
-            train_args['LIMITSQL'] = sql_limit
+            train_args["LIMITSQL"] = sql_limit
         if self.excluded_columns:
-            train_args['EXCLUDE_COLS'] = ' '.join(self.excluded_columns)
+            train_args["EXCLUDE_COLS"] = " ".join(self.excluded_columns)
         if fit_params:
-            train_args['FIT_PARAMS'] = json.dumps(fit_params)
+            train_args["FIT_PARAMS"] = json.dumps(fit_params)
         if self.dependencies:
-            train_args['DEPENDENCIES'] = ' '.join(self.dependencies)
+            train_args["DEPENDENCIES"] = " ".join(self.dependencies)
         if self.train_template_id >= 9968:
             if validation_data:
-                train_args['VALIDATION_DATA'] = validation_data
+                train_args["VALIDATION_DATA"] = validation_data
             if n_jobs:
-                train_args['N_JOBS'] = n_jobs
+                train_args["N_JOBS"] = n_jobs
 
         if HAS_SKLEARN and isinstance(self.model, BaseEstimator):
             try:
                 tempdir = tempfile.mkdtemp()
-                fout = os.path.join(tempdir, 'estimator.pkl')
+                fout = os.path.join(tempdir, "estimator.pkl")
                 joblib.dump(self.model, fout, compress=3)
-                with open(fout, 'rb') as _fout:
+                with open(fout, "rb") as _fout:
                     n = self.model_name if self.model_name else "CivisML"
                     estimator_file_id = cio.file_to_civis(
-                        _fout, 'Estimator for ' + n, client=self._client)
+                        _fout, "Estimator for " + n, client=self._client
+                    )
                 self._input_model = self.model  # Keep the estimator
                 self.model = str(estimator_file_id)
             finally:
                 shutil.rmtree(tempdir)
-        train_args['MODEL'] = self.model
+        train_args["MODEL"] = self.model
 
         if HAS_SKLEARN and self.train_template_id >= 9968:
             if isinstance(self.etl, BaseEstimator):
                 try:
                     tempdir = tempfile.mkdtemp()
-                    fout = os.path.join(tempdir, 'ETL.pkl')
+                    fout = os.path.join(tempdir, "ETL.pkl")
                     joblib.dump(self.etl, fout, compress=3)
-                    with open(fout, 'rb') as _fout:
+                    with open(fout, "rb") as _fout:
                         etl_file_id = cio.file_to_civis(
-                            _fout, 'ETL Estimator', client=self._client)
-                    train_args['ETL'] = str(etl_file_id)
+                            _fout, "ETL Estimator", client=self._client
+                        )
+                    train_args["ETL"] = str(etl_file_id)
                 finally:
                     shutil.rmtree(tempdir)
 
-        name = self.model_name + ' Train' if self.model_name else None
+        name = self.model_name + " Train" if self.model_name else None
         # Clear the existing training result so we can make a new one.
         self.train_result_ = None
 
@@ -1284,27 +1385,38 @@ class ModelPipeline:
             file_id=file_id,
             args=train_args,
             resources=self.job_resources,
-            polling_interval=polling_interval)
+            polling_interval=polling_interval,
+        )
 
         self.train_result_ = result
 
         return result
 
-    def _create_custom_run(self, template_id, job_name=None, table_name=None,
-                           database_name=None, file_id=None, args=None,
-                           resources=None, polling_interval=None):
+    def _create_custom_run(
+        self,
+        template_id,
+        job_name=None,
+        table_name=None,
+        database_name=None,
+        file_id=None,
+        args=None,
+        resources=None,
+        polling_interval=None,
+    ):
         # Handle int-like but non-Python-integer types such as np.int64
         file_id = int(file_id) if file_id is not None else file_id
-        script_arguments = {'TABLE_NAME': table_name,
-                            'CIVIS_FILE_ID': file_id,
-                            'DEBUG': self.verbose}
+        script_arguments = {
+            "TABLE_NAME": table_name,
+            "CIVIS_FILE_ID": file_id,
+            "DEBUG": self.verbose,
+        }
         if database_name:
             if template_id < 8000:
                 # v0 jobs used a different database parameter
-                script_arguments['DB_NAME'] = database_name
+                script_arguments["DB_NAME"] = database_name
             else:
                 db_id = self._client.get_database_id(database_name)
-                script_arguments['DB'] = {'database': db_id}
+                script_arguments["DB"] = {"database": db_id}
         resources = resources or {}
         for key, value in resources.items():
             if value:
@@ -1312,14 +1424,15 @@ class ModelPipeline:
                 # modify via arguments if users give a non-default value.
                 script_arguments[key] = value
         if self.git_token_name:
-            creds = find(self._client.credentials.list(),
-                         name=self.git_token_name,
-                         type='Custom')
+            creds = find(
+                self._client.credentials.list(), name=self.git_token_name, type="Custom"
+            )
             if len(creds) > 1:
-                raise ValueError("Unique credential with name '{}' for "
-                                 "remote git hosting service not found!"
-                                 .format(self.git_token_name))
-            script_arguments['GIT_CRED'] = creds[0].id
+                raise ValueError(
+                    "Unique credential with name '{}' for "
+                    "remote git hosting service not found!".format(self.git_token_name)
+                )
+            script_arguments["GIT_CRED"] = creds[0].id
 
         script_arguments.update(args or {})
 
@@ -1327,23 +1440,27 @@ class ModelPipeline:
             from_template_id=template_id,
             name=job_name,
             arguments=script_arguments,
-            notifications=self.notifications)
-        log.info('Created custom script %s.', container.id)
+            notifications=self.notifications,
+        )
+        log.info("Created custom script %s.", container.id)
 
         run = self._client.scripts.post_custom_runs(container.id)
-        log.debug('Started job %s, run %s.', container.id, run.id)
+        log.debug("Started job %s, run %s.", container.id, run.id)
 
         train_kwargs = {}
         if self.train_result_ is not None:
-            train_kwargs = {'train_job_id': self.train_result_.job_id,
-                            'train_run_id': self.train_result_.run_id}
+            train_kwargs = {
+                "train_job_id": self.train_result_.job_id,
+                "train_run_id": self.train_result_.run_id,
+            }
         fut = ModelFuture(
             container.id,
             run.id,
             client=self._client,
             polling_interval=polling_interval,
             poll_on_creation=False,
-            **train_kwargs)
+            **train_kwargs,
+        )
 
         return fut, container, run
 
@@ -1358,13 +1475,27 @@ class ModelPipeline:
         return self.train_result_.estimator
 
     @_check_fit_initiated
-    def predict(self, df=None, csv_path=None,
-                table_name=None, database_name=None,
-                manifest=None, file_id=None, sql_where=None, sql_limit=None,
-                primary_key=SENTINEL, output_table=None, output_db=None,
-                if_exists='fail', n_jobs=None, polling_interval=None,
-                cpu=None, memory=None, disk_space=None,
-                dvs_to_predict=None):
+    def predict(
+        self,
+        df=None,
+        csv_path=None,
+        table_name=None,
+        database_name=None,
+        manifest=None,
+        file_id=None,
+        sql_where=None,
+        sql_limit=None,
+        primary_key=SENTINEL,
+        output_table=None,
+        output_db=None,
+        if_exists="fail",
+        n_jobs=None,
+        polling_interval=None,
+        cpu=None,
+        memory=None,
+        disk_space=None,
+        dvs_to_predict=None,
+    ):
         """Make predictions on a trained model
 
         Provide input through one of
@@ -1466,60 +1597,76 @@ class ModelPipeline:
         """
         self.train_result_.result()  # Blocks and raises training errors
 
-        if ((table_name is None or database_name is None) and
-                file_id is None and df is None and csv_path is None and
-                manifest is None):
-            raise ValueError('Provide a source of data.')
-        if sum((bool(table_name and database_name) or (manifest is not None),
-                bool(file_id), df is not None, csv_path is not None)) > 1:
-            raise ValueError('Provide a single source of data.')
+        if (
+            (table_name is None or database_name is None)
+            and file_id is None
+            and df is None
+            and csv_path is None
+            and manifest is None
+        ):
+            raise ValueError("Provide a source of data.")
+        if (
+            sum(
+                (
+                    bool(table_name and database_name) or (manifest is not None),
+                    bool(file_id),
+                    df is not None,
+                    csv_path is not None,
+                )
+            )
+            > 1
+        ):
+            raise ValueError("Provide a single source of data.")
 
         if df is not None:
-            file_id = _stash_local_dataframe(df, self.predict_template_id,
-                                             client=self._client)
+            file_id = _stash_local_dataframe(
+                df, self.predict_template_id, client=self._client
+            )
         elif csv_path:
             file_id = _stash_local_file(csv_path, client=self._client)
 
         if primary_key is SENTINEL:
             primary_key = self.primary_key
 
-        predict_args = {'TRAIN_JOB': self.train_result_.job_id,
-                        'TRAIN_RUN': self.train_result_.run_id,
-                        'PRIMARY_KEY': primary_key,
-                        'IF_EXISTS': if_exists}
+        predict_args = {
+            "TRAIN_JOB": self.train_result_.job_id,
+            "TRAIN_RUN": self.train_result_.run_id,
+            "PRIMARY_KEY": primary_key,
+            "IF_EXISTS": if_exists,
+        }
         if output_table:
-            predict_args['OUTPUT_TABLE'] = output_table
+            predict_args["OUTPUT_TABLE"] = output_table
         if output_db:
             if self.predict_template_id == 7021:
                 # v0 jobs used a different database parameter
-                predict_args['OUTPUT_DB'] = output_db
+                predict_args["OUTPUT_DB"] = output_db
             else:
                 output_db_id = self._client.get_database_id(output_db)
-                predict_args['OUTPUT_DB'] = {'database': output_db_id}
+                predict_args["OUTPUT_DB"] = {"database": output_db_id}
 
         if manifest:
-            predict_args['MANIFEST'] = manifest
+            predict_args["MANIFEST"] = manifest
         if sql_where:
-            predict_args['WHERESQL'] = sql_where
+            predict_args["WHERESQL"] = sql_where
         if sql_limit:
-            predict_args['LIMITSQL'] = sql_limit
+            predict_args["LIMITSQL"] = sql_limit
         if n_jobs:
-            predict_args['N_JOBS'] = n_jobs
+            predict_args["N_JOBS"] = n_jobs
         if dvs_to_predict:
             if isinstance(dvs_to_predict, str):
                 dvs_to_predict = [dvs_to_predict]
             if self.predict_template_id > 10583:
                 # This feature was added in v2.2; 10583 is the v2.1 template
-                predict_args['TARGET_COLUMN'] = ' '.join(dvs_to_predict)
+                predict_args["TARGET_COLUMN"] = " ".join(dvs_to_predict)
         if self.predict_template_id >= 9969:
             if cpu:
-                predict_args['CPU'] = cpu
+                predict_args["CPU"] = cpu
             if memory:
-                predict_args['MEMORY'] = memory
+                predict_args["MEMORY"] = memory
             if disk_space:
-                predict_args['DISK_SPACE'] = disk_space
+                predict_args["DISK_SPACE"] = disk_space
 
-        name = self.model_name + ' Predict' if self.model_name else None
+        name = self.model_name + " Predict" if self.model_name else None
         result, container, run = self._create_custom_run(
             self.predict_template_id,
             job_name=name,
@@ -1527,6 +1674,7 @@ class ModelPipeline:
             database_name=database_name,
             file_id=file_id,
             args=predict_args,
-            polling_interval=polling_interval)
+            polling_interval=polling_interval,
+        )
 
         return result

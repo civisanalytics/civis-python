@@ -1,5 +1,6 @@
 """Mock client creation and tooling
 """
+
 from functools import lru_cache
 from unittest import mock
 
@@ -26,15 +27,15 @@ def create_client_mock(cache=API_SPEC_PATH):
     real_client = _real_client(cache)
 
     # Prevent the client from trying to talk to the real API when autospeccing
-    with mock.patch('requests.Session', mock.MagicMock):
+    with mock.patch("requests.Session", mock.MagicMock):
         mock_client = mock.create_autospec(real_client, spec_set=True)
 
     return mock_client
 
 
 def create_client_mock_for_container_tests(
-        script_id=-10, run_id=100, state='succeeded',
-        run_outputs=None, log_outputs=None):
+    script_id=-10, run_id=100, state="succeeded", run_outputs=None, log_outputs=None
+):
     """Returns a CivisAPIClient Mock set up for testing methods that use
     container scripts. Contains endpoint method mocks and return values
     for posting container jobs, retrieving outputs, and reading logs.
@@ -63,21 +64,21 @@ def create_client_mock_for_container_tests(
     """
     c = create_client_mock()
 
-    mock_container = Response({'id': script_id})
+    mock_container = Response({"id": script_id})
     c.scripts.post_containers.return_value = mock_container
-    mock_container_run_start = Response({'id': run_id,
-                                         'container_id': script_id,
-                                         'state': 'queued'})
-    mock_container_run = Response({'id': run_id,
-                                   'container_id': script_id,
-                                   'state': state})
-    if state == 'failed':
+    mock_container_run_start = Response(
+        {"id": run_id, "container_id": script_id, "state": "queued"}
+    )
+    mock_container_run = Response(
+        {"id": run_id, "container_id": script_id, "state": state}
+    )
+    if state == "failed":
         mock_container_run._replace("error", "None")
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run
-    c.scripts.list_containers_runs_outputs.return_value = (run_outputs or [])
-    c.jobs.list_runs_outputs.return_value = (run_outputs or [])
-    c.jobs.list_runs_logs.return_value = (log_outputs or [])
+    c.scripts.list_containers_runs_outputs.return_value = run_outputs or []
+    c.jobs.list_runs_outputs.return_value = run_outputs or []
+    c.jobs.list_runs_logs.return_value = log_outputs or []
 
     def change_state_to_cancelled(script_id):
         mock_container_run._replace("state", "cancelled")
@@ -90,6 +91,6 @@ def create_client_mock_for_container_tests(
 
 @lru_cache(maxsize=1)
 def _real_client(local_api_spec):
-    real_client = APIClient(local_api_spec=local_api_spec, api_key='none')
-    real_client._feature_flags = {'noflag': None}
+    real_client = APIClient(local_api_spec=local_api_spec, api_key="none")
+    real_client._feature_flags = {"noflag": None}
     return real_client

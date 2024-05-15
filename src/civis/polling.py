@@ -9,8 +9,8 @@ _DEFAULT_POLLING_INTERVAL = 15
 
 
 class _ResultPollingThread(threading.Thread):
-    """Poll a function until it returns a Response with a DONE state
-    """
+    """Poll a function until it returns a Response with a DONE state"""
+
     # Inspired by `threading.Timer`
 
     def __init__(self, poller, poller_args, polling_interval):
@@ -21,19 +21,16 @@ class _ResultPollingThread(threading.Thread):
         self.finished = threading.Event()
 
     def cancel(self):
-        """Stop the poller if it hasn't finished yet.
-        """
+        """Stop the poller if it hasn't finished yet."""
         self.finished.set()
 
     def join(self, timeout=None):
-        """Shut down the polling when the thread is terminated.
-        """
+        """Shut down the polling when the thread is terminated."""
         self.cancel()
         super().join(timeout=timeout)
 
     def run(self):
-        """Poll until done.
-        """
+        """Poll until done."""
         while not self.finished.wait(self.polling_interval):
             # Spotty internet connectivity can result in polling functions
             # returning None. This treats None responses like responses which
@@ -83,6 +80,7 @@ class PollableResult(CivisAsyncResultBase):
     >>> polling_interval = 10
     >>> poll = PollableResult(poller, poller_args, polling_interval)
     """
+
     # this may not be friendly to a rate-limited api
     # Implementation notes: The `PollableResult` depends on some private
     # features of the `concurrent.futures.Future` class, so it's possible
@@ -97,16 +95,23 @@ class PollableResult(CivisAsyncResultBase):
     #   `set_exception`, which we call from `_check_result`.
     # - We use the `Future` thread lock called `_condition`
     # - We assume that results of the Future are stored in `_result`.
-    def __init__(self, poller, poller_args,
-                 polling_interval=None, client=None,
-                 poll_on_creation=True):
+    def __init__(
+        self,
+        poller,
+        poller_args,
+        polling_interval=None,
+        client=None,
+        poll_on_creation=True,
+    ):
         if polling_interval is None:
             polling_interval = _DEFAULT_POLLING_INTERVAL
-        super().__init__(poller=poller,
-                         poller_args=poller_args,
-                         polling_interval=polling_interval,
-                         client=client,
-                         poll_on_creation=poll_on_creation)
+        super().__init__(
+            poller=poller,
+            poller_args=poller_args,
+            polling_interval=polling_interval,
+            client=client,
+            poll_on_creation=poll_on_creation,
+        )
         if self.polling_interval <= 0:
             raise ValueError("The polling interval must be positive.")
 
@@ -122,9 +127,11 @@ class PollableResult(CivisAsyncResultBase):
     def _begin_tracking(self, start_thread=False):
         """Start monitoring the Civis Platform job"""
         with self._condition:
-            if getattr(self, 'poller', None) is None:
-                raise RuntimeError('Internal error: Must set polling '
-                                   'function before initializing thread.')
+            if getattr(self, "poller", None) is None:
+                raise RuntimeError(
+                    "Internal error: Must set polling "
+                    "function before initializing thread."
+                )
             self._reset_polling_thread(self.polling_interval, start_thread)
 
     def _check_result(self):
@@ -144,8 +151,10 @@ class PollableResult(CivisAsyncResultBase):
             # Check to see if the job has finished, but don't poll more
             # frequently than the requested polling frequency.
             now = time.time()
-            if (not self._last_polled or
-                    (now - self._last_polled) >= self.polling_interval):
+            if (
+                not self._last_polled
+                or (now - self._last_polled) >= self.polling_interval
+            ):
                 # Poll for a new result
                 self._last_polled = now
                 try:
@@ -166,7 +175,7 @@ class PollableResult(CivisAsyncResultBase):
         with self._condition:
             if result.state in FAILED:
                 try:
-                    err_msg = str(result['error'])
+                    err_msg = str(result["error"])
                 except:  # NOQA
                     err_msg = str(result)
                 job_id = getattr(self, "job_id", None)
@@ -195,15 +204,18 @@ class PollableResult(CivisAsyncResultBase):
             if self._polling_thread.is_alive():
                 self._polling_thread.cancel()
 
-    def _reset_polling_thread(self,
-                              polling_interval=_DEFAULT_POLLING_INTERVAL,
-                              start_thread=False):
+    def _reset_polling_thread(
+        self, polling_interval=_DEFAULT_POLLING_INTERVAL, start_thread=False
+    ):
         with self._condition:
-            if (getattr(self, '_polling_thread', None) is not None and
-                    self._polling_thread.is_alive()):
+            if (
+                getattr(self, "_polling_thread", None) is not None
+                and self._polling_thread.is_alive()
+            ):
                 self._polling_thread.cancel()
             self.polling_interval = polling_interval
-            self._polling_thread = _ResultPollingThread(self._check_result, (),
-                                                        polling_interval)
+            self._polling_thread = _ResultPollingThread(
+                self._check_result, (), polling_interval
+            )
             if start_thread:
                 self._polling_thread.start()

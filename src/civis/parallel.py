@@ -1,5 +1,4 @@
-"""Parallel computations using the Civis Platform infrastructure
-"""
+"""Parallel computations using the Civis Platform infrastructure"""
 
 from concurrent.futures import wait
 from datetime import datetime, timedelta
@@ -33,11 +32,12 @@ try:
         # pip install joblib. If this warning is raised when loading pickled
         # models, you may need to re-serialize those models with
         # scikit-learn 0.21+."
-        warnings.simplefilter('ignore', DeprecationWarning)
+        warnings.simplefilter("ignore", DeprecationWarning)
         # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
-        warnings.simplefilter('ignore', FutureWarning)
+        warnings.simplefilter("ignore", FutureWarning)
         from sklearn.externals.joblib import (
-            register_parallel_backend as _sklearn_reg_para_backend)
+            register_parallel_backend as _sklearn_reg_para_backend,
+        )
 
         # NO_SKLEARN_BACKEND would be a better name here since it'll be true
         # for future scikit-learn versions that won't include the joblib
@@ -56,22 +56,31 @@ _ALL_JOBS = 50  # Give the user this many jobs if they request "all of them"
 
 # When creating a remote execution environment from an existing
 # Container Script, read these keys.
-KEYS_TO_INFER = ['docker_image_name', 'docker_image_tag', 'repo_http_uri',
-                 'repo_ref', 'remote_host_credential_id', 'git_credential_id',
-                 'cancel_timeout', 'time_zone']
+KEYS_TO_INFER = [
+    "docker_image_name",
+    "docker_image_tag",
+    "repo_http_uri",
+    "repo_ref",
+    "remote_host_credential_id",
+    "git_credential_id",
+    "cancel_timeout",
+    "time_zone",
+]
 
 
-def infer_backend_factory(required_resources=None,
-                          params=None,
-                          arguments=None,
-                          client=None,
-                          polling_interval=None,
-                          setup_cmd=None,
-                          max_submit_retries=0,
-                          max_job_retries=0,
-                          hidden=True,
-                          remote_backend='sequential',
-                          **kwargs):
+def infer_backend_factory(
+    required_resources=None,
+    params=None,
+    arguments=None,
+    client=None,
+    polling_interval=None,
+    setup_cmd=None,
+    max_submit_retries=0,
+    max_job_retries=0,
+    hidden=True,
+    remote_backend="sequential",
+    **kwargs,
+):
     """Infer the container environment and return a backend factory.
 
     This function helps you run additional jobs from code which executes
@@ -182,10 +191,9 @@ def infer_backend_factory(required_resources=None,
     if client is None:
         client = civis.APIClient()
 
-    if not os.environ.get('CIVIS_JOB_ID'):
-        raise RuntimeError('This function must be run '
-                           'inside a container job.')
-    state = client.scripts.get_containers(os.environ['CIVIS_JOB_ID'])
+    if not os.environ.get("CIVIS_JOB_ID"):
+        raise RuntimeError("This function must be run " "inside a container job.")
+    state = client.scripts.get_containers(os.environ["CIVIS_JOB_ID"])
     if state.from_template_id:
         # If this is a Custom Script from a template, we need the
         # backing script. Make sure to save the arguments from
@@ -197,10 +205,12 @@ def infer_backend_factory(required_resources=None,
             state._replace("arguments", custom_args)
         except civis.base.CivisAPIError as err:
             if err.status_code == 404:
-                raise RuntimeError('Unable to introspect environment from '
-                                   'your template\'s backing script. '
-                                   'You may not have permission to view '
-                                   'script ID {}.'.format(template.script_id))
+                raise RuntimeError(
+                    "Unable to introspect environment from "
+                    "your template's backing script. "
+                    "You may not have permission to view "
+                    "script ID {}.".format(template.script_id)
+                )
             else:
                 raise
 
@@ -212,7 +222,7 @@ def infer_backend_factory(required_resources=None,
     params = params or []
     for input_param in params:
         for i, param in enumerate(list(state.params)):
-            if param['name'] == input_param['name']:
+            if param["name"] == input_param["name"]:
                 param._data_snake.update(input_param)
                 break
         else:
@@ -228,34 +238,41 @@ def infer_backend_factory(required_resources=None,
 
     # Don't include parent job params since they're added automatically
     # in _ContainerShellExecutor.__init__.
-    filtered_params = [p for p in state.params if p['name'].upper()
-                       not in ('CIVIS_PARENT_JOB_ID', 'CIVIS_PARENT_RUN_ID')]
+    filtered_params = [
+        p
+        for p in state.params
+        if p["name"].upper() not in ("CIVIS_PARENT_JOB_ID", "CIVIS_PARENT_RUN_ID")
+    ]
 
-    return make_backend_factory(required_resources=state.required_resources,
-                                params=filtered_params,
-                                arguments=state.arguments,
-                                client=client,
-                                polling_interval=polling_interval,
-                                setup_cmd=setup_cmd,
-                                max_submit_retries=max_submit_retries,
-                                max_job_retries=max_job_retries,
-                                hidden=hidden,
-                                remote_backend=remote_backend,
-                                **kwargs)
+    return make_backend_factory(
+        required_resources=state.required_resources,
+        params=filtered_params,
+        arguments=state.arguments,
+        client=client,
+        polling_interval=polling_interval,
+        setup_cmd=setup_cmd,
+        max_submit_retries=max_submit_retries,
+        max_job_retries=max_job_retries,
+        hidden=hidden,
+        remote_backend=remote_backend,
+        **kwargs,
+    )
 
 
 infer_backend_factory.__doc__ = infer_backend_factory.__doc__ % KEYS_TO_INFER
 
 
-def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
-                         client=None,
-                         polling_interval=None,
-                         setup_cmd=None,
-                         max_submit_retries=0,
-                         max_job_retries=0,
-                         hidden=True,
-                         remote_backend='sequential',
-                         **kwargs):
+def make_backend_factory(
+    docker_image_name="civisanalytics/datascience-python",
+    client=None,
+    polling_interval=None,
+    setup_cmd=None,
+    max_submit_retries=0,
+    max_job_retries=0,
+    hidden=True,
+    remote_backend="sequential",
+    **kwargs,
+):
     """Create a joblib backend factory that uses Civis Container Scripts
 
     Jobs created through this backend will have environment variables
@@ -399,32 +416,36 @@ def make_backend_factory(docker_image_name="civisanalytics/datascience-python",
     civis.APIClient.scripts.post_containers
     """
     if setup_cmd is None:
-        if kwargs.get('repo_http_uri'):
+        if kwargs.get("repo_http_uri"):
             setup_cmd = _DEFAULT_REPO_SETUP_CMD
         else:
             setup_cmd = _DEFAULT_SETUP_CMD
 
     def backend_factory():
-        return _CivisBackend(docker_image_name=docker_image_name,
-                             client=client,
-                             polling_interval=polling_interval,
-                             setup_cmd=setup_cmd,
-                             max_submit_retries=max_submit_retries,
-                             max_n_retries=max_job_retries,
-                             hidden=hidden,
-                             remote_backend=remote_backend,
-                             **kwargs)
+        return _CivisBackend(
+            docker_image_name=docker_image_name,
+            client=client,
+            polling_interval=polling_interval,
+            setup_cmd=setup_cmd,
+            max_submit_retries=max_submit_retries,
+            max_n_retries=max_job_retries,
+            hidden=hidden,
+            remote_backend=remote_backend,
+            **kwargs,
+        )
 
     return backend_factory
 
 
-def make_backend_template_factory(from_template_id,
-                                  arguments=None,
-                                  client=None,
-                                  polling_interval=None,
-                                  max_submit_retries=0,
-                                  max_job_retries=0,
-                                  hidden=True):
+def make_backend_template_factory(
+    from_template_id,
+    arguments=None,
+    client=None,
+    polling_interval=None,
+    max_submit_retries=0,
+    max_job_retries=0,
+    hidden=True,
+):
     """Create a joblib backend factory that uses Civis Custom Scripts.
 
     If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
@@ -471,14 +492,17 @@ def make_backend_template_factory(from_template_id,
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
     """
+
     def backend_factory():
-        return _CivisBackend(from_template_id=from_template_id,
-                             arguments=arguments,
-                             client=client,
-                             polling_interval=polling_interval,
-                             max_submit_retries=max_submit_retries,
-                             max_n_retries=max_job_retries,
-                             hidden=hidden)
+        return _CivisBackend(
+            from_template_id=from_template_id,
+            arguments=arguments,
+            client=client,
+            polling_interval=polling_interval,
+            max_submit_retries=max_submit_retries,
+            max_n_retries=max_job_retries,
+            hidden=hidden,
+        )
 
     return backend_factory
 
@@ -487,8 +511,7 @@ class JobSubmissionError(Exception):
     pass
 
 
-def _robust_pickle_download(output_file_id, client=None,
-                            n_retries=5, delay=0.0):
+def _robust_pickle_download(output_file_id, client=None, n_retries=5, delay=0.0):
     """Download and deserialize the result from output_file_id
 
     Retry network errors `n_retries` times with `delay` seconds between calls
@@ -514,9 +537,7 @@ def _robust_pickle_download(output_file_id, client=None,
     cloudpickle.load
     """
     client = client or civis.APIClient()
-    retry_exc = (requests.HTTPError,
-                 requests.ConnectionError,
-                 requests.ConnectTimeout)
+    retry_exc = (requests.HTTPError, requests.ConnectionError, requests.ConnectTimeout)
     n_failed = 0
     while True:
         buffer = BytesIO()
@@ -526,8 +547,9 @@ def _robust_pickle_download(output_file_id, client=None,
             buffer.close()
             if n_failed < n_retries:
                 n_failed += 1
-                log.debug("Download failure %s due to %s; retrying.",
-                          n_failed, str(exc))
+                log.debug(
+                    "Download failure %s due to %s; retrying.", n_failed, str(exc)
+                )
                 time.sleep(delay)
             else:
                 raise
@@ -536,8 +558,7 @@ def _robust_pickle_download(output_file_id, client=None,
             return cloudpickle.load(buffer)
 
 
-def _robust_file_to_civis(buf, name, client=None, n_retries=5,
-                          delay=0.0, **kwargs):
+def _robust_file_to_civis(buf, name, client=None, n_retries=5, delay=0.0, **kwargs):
     """Upload the contents of an input file-like buffer
 
     Call :func:`~civis.io.file_to_civis`, and retry a specified
@@ -573,20 +594,16 @@ def _robust_file_to_civis(buf, name, client=None, n_retries=5,
     civis.io.file_to_civis
     """
     client = client or civis.APIClient()
-    retry_exc = (requests.HTTPError,
-                 requests.ConnectionError,
-                 requests.ConnectTimeout)
+    retry_exc = (requests.HTTPError, requests.ConnectionError, requests.ConnectTimeout)
     n_failed = 0
     while True:
         buf.seek(0)
         try:
-            file_id = civis.io.file_to_civis(buf, name=name,
-                                             client=client, **kwargs)
+            file_id = civis.io.file_to_civis(buf, name=name, client=client, **kwargs)
         except retry_exc as exc:
             if n_failed < n_retries:
                 n_failed += 1
-                log.debug("Upload failure %s due to %s; retrying.",
-                          n_failed, str(exc))
+                log.debug("Upload failure %s due to %s; retrying.", n_failed, str(exc))
                 time.sleep(delay)
             else:
                 raise
@@ -609,8 +626,10 @@ def _setup_remote_backend(remote_backend):
         The name of the backend to use.
     """
     if isinstance(remote_backend, _CivisBackend):
+
         def backend_factory():
             return _CivisBackend.from_existing(remote_backend)
+
         # joblib and global state: fun!
         #
         # joblib internally maintains a global list of backends and
@@ -623,10 +642,10 @@ def _setup_remote_backend(remote_backend):
         # Therefore, we have to register our backend with both copies in order
         # to allow our containers to run `Parallel` objects from both copies
         # of joblib. Yay!
-        _joblib_reg_para_backend('civis', backend_factory)
+        _joblib_reg_para_backend("civis", backend_factory)
         if not NO_SKLEARN:
-            _sklearn_reg_para_backend('civis', backend_factory)
-        return 'civis'
+            _sklearn_reg_para_backend("civis", backend_factory)
+        return "civis"
     else:
         return remote_backend
 
@@ -659,11 +678,12 @@ class _CivisBackendResult:
     * Exceptions should only be raised inside ``get`` so that joblib can
         handle them properly.
     """
+
     def __init__(self, future, callback):
         self._future = future
         self._callback = callback
         self.result = None
-        if hasattr(future, 'client'):
+        if hasattr(future, "client"):
             self._client = future.client
         else:
             self._client = civis.APIClient()
@@ -676,11 +696,13 @@ class _CivisBackendResult:
         self._future.remote_func_output = None  # `get` reads results from here
         self._future.result_fetched = False  # Did we get the result?
         self._future.add_done_callback(
-            self._make_fetch_callback(self._callback, self._client))
+            self._make_fetch_callback(self._callback, self._client)
+        )
 
     @staticmethod
     def _make_fetch_callback(joblib_callback, client):
         """Create a closure for use as a callback on the ContainerFuture"""
+
         def _fetch_result(fut):
             """Retrieve outputs from the remote function.
             Run the joblib callback only if there were no errors.
@@ -699,25 +721,33 @@ class _CivisBackendResult:
             """
             if fut.succeeded():
                 log.debug(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;"
-                    " job succeeded!", fut.job_id, fut.run_id)
+                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job succeeded!",
+                    fut.job_id,
+                    fut.run_id,
+                )
             elif fut.cancelled():
                 log.debug(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;"
-                    " job cancelled!", fut.job_id, fut.run_id)
+                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job cancelled!",
+                    fut.job_id,
+                    fut.run_id,
+                )
             else:
                 log.error(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;"
-                    " job failure!", fut.job_id, fut.run_id)
+                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job failure!",
+                    fut.job_id,
+                    fut.run_id,
+                )
 
             try:
                 # Find the output file ID from the run outputs.
                 run_outputs = client.scripts.list_containers_runs_outputs(
-                    fut.job_id, fut.run_id)
+                    fut.job_id, fut.run_id
+                )
                 if run_outputs:
-                    output_file_id = run_outputs[0]['object_id']
-                    res = _robust_pickle_download(output_file_id, client,
-                                                  n_retries=5, delay=1.0)
+                    output_file_id = run_outputs[0]["object_id"]
+                    res = _robust_pickle_download(
+                        output_file_id, client, n_retries=5, delay=1.0
+                    )
                     fut.remote_func_output = res
                     log.debug("Downloaded and deserialized the result.")
             except BaseException as exc:
@@ -725,7 +755,7 @@ class _CivisBackendResult:
                 # exception so we can re-raise it in the parent process.
                 # Catch BaseException so we can also re-raise a
                 # KeyboardInterrupt where it can be properly handled.
-                log.debug('Exception during result download: %s', str(exc))
+                log.debug("Exception during result download: %s", str(exc))
                 fut.remote_func_output = exc
             else:
                 fut.result_fetched = True
@@ -795,17 +825,21 @@ class _CivisBackend(ParallelBackendBase):
 
     Users should interact with this through ``make_backend_factory``.
     """
+
     uses_threads = False
     supports_sharedmem = False
     supports_timeout = True
 
-    def __init__(self, setup_cmd=_DEFAULT_SETUP_CMD,
-                 from_template_id=None,
-                 max_submit_retries=0,
-                 client=None,
-                 remote_backend='sequential',
-                 nesting_level=0,
-                 **executor_kwargs):
+    def __init__(
+        self,
+        setup_cmd=_DEFAULT_SETUP_CMD,
+        from_template_id=None,
+        max_submit_retries=0,
+        client=None,
+        remote_backend="sequential",
+        nesting_level=0,
+        **executor_kwargs,
+    ):
         self.setup_cmd = setup_cmd
         self.from_template_id = from_template_id
         self.max_submit_retries = max_submit_retries
@@ -824,25 +858,28 @@ class _CivisBackend(ParallelBackendBase):
             max_submit_retries=klass.max_submit_retries,
             client=klass.client,
             remote_backend=klass.remote_backend,
-            **klass.executor_kwargs)
+            **klass.executor_kwargs,
+        )
 
     def _init_civis_backend(self):
         """init the Civis API client and the executors"""
-        self.using_template = (self.from_template_id is not None)
+        self.using_template = self.from_template_id is not None
 
         if self.max_submit_retries < 0:
             raise ValueError(
-                "max_submit_retries cannot be negative (value = %d)" %
-                self.max_submit_retries)
+                "max_submit_retries cannot be negative (value = %d)"
+                % self.max_submit_retries
+            )
 
         self.client = self.client or civis.APIClient()
         if self.from_template_id:
-            self.executor = CustomScriptExecutor(self.from_template_id,
-                                                 client=self.client,
-                                                 **self.executor_kwargs)
+            self.executor = CustomScriptExecutor(
+                self.from_template_id, client=self.client, **self.executor_kwargs
+            )
         else:
-            self.executor = _ContainerShellExecutor(client=self.client,
-                                                    **self.executor_kwargs)
+            self.executor = _ContainerShellExecutor(
+                client=self.client, **self.executor_kwargs
+            )
 
     def effective_n_jobs(self, n_jobs):
         if n_jobs is None:
@@ -850,9 +887,11 @@ class _CivisBackend(ParallelBackendBase):
         if n_jobs == -1:
             n_jobs = _ALL_JOBS
         if n_jobs <= 0:
-            raise ValueError("Please request a positive number of jobs, "
-                             "or use \"-1\" to request a default "
-                             "of {} jobs.".format(_ALL_JOBS))
+            raise ValueError(
+                "Please request a positive number of jobs, "
+                'or use "-1" to request a default '
+                "of {} jobs.".format(_ALL_JOBS)
+            )
         return n_jobs
 
     def abort_everything(self, ensure_ready=True):
@@ -868,8 +907,7 @@ class _CivisBackend(ParallelBackendBase):
         return self.abort_everything(ensure_ready=True)
 
     def apply_async(self, func, callback=None):
-        """Schedule func to be run
-        """
+        """Schedule func to be run"""
         # Serialize func to a temporary file and upload it to a Civis File.
         # Make the temporary files expire in a week.
         expires_at = (datetime.now() + timedelta(days=7)).isoformat()
@@ -877,51 +915,58 @@ class _CivisBackend(ParallelBackendBase):
             temppath = os.path.join(tempdir, "civis_joblib_backend_func")
             with open(temppath, "wb") as tmpfile:
                 cloudpickle.dump(
-                    (func,
-                     self if self.remote_backend == 'civis'
-                     else self.remote_backend),
+                    (
+                        func,
+                        self if self.remote_backend == "civis" else self.remote_backend,
+                    ),
                     tmpfile,
-                    pickle.HIGHEST_PROTOCOL)
+                    pickle.HIGHEST_PROTOCOL,
+                )
             with open(temppath, "rb") as tmpfile:
-                func_file_id = \
-                    _robust_file_to_civis(tmpfile,
-                                          "civis_joblib_backend_func",
-                                          n_retries=5,
-                                          delay=0.5,
-                                          expires_at=expires_at,
-                                          client=self.client)
-                log.debug("uploaded serialized function to File: %d",
-                          func_file_id)
+                func_file_id = _robust_file_to_civis(
+                    tmpfile,
+                    "civis_joblib_backend_func",
+                    n_retries=5,
+                    delay=0.5,
+                    expires_at=expires_at,
+                    client=self.client,
+                )
+                log.debug("uploaded serialized function to File: %d", func_file_id)
 
             # Use the Civis CLI client to download the job runner script into
             # the container, and then run it on the uploaded job.
             # Only download the runner script if it doesn't already
             # exist in the destination environment.
             runner_remote_path = "civis_joblib_worker"
-            cmd = ("{setup_cmd} && "
-                   "if command -v {runner_remote_path} >/dev/null; "
-                   "then exec {runner_remote_path} {func_file_id}; "
-                   "else pip install civis=={civis_version} && "
-                   "exec {runner_remote_path} {func_file_id}; fi "
-                   .format(civis_version=civis.__version__,
-                           runner_remote_path=runner_remote_path,
-                           func_file_id=func_file_id,
-                           setup_cmd=self.setup_cmd))
+            cmd = (
+                "{setup_cmd} && "
+                "if command -v {runner_remote_path} >/dev/null; "
+                "then exec {runner_remote_path} {func_file_id}; "
+                "else pip install civis=={civis_version} && "
+                "exec {runner_remote_path} {func_file_id}; fi ".format(
+                    civis_version=civis.__version__,
+                    runner_remote_path=runner_remote_path,
+                    func_file_id=func_file_id,
+                    setup_cmd=self.setup_cmd,
+                )
+            )
 
             # Try to submit the command, with optional retrying for certain
             # error types.
             for n_retries in range(1 + self.max_submit_retries):
                 try:
                     if self.using_template:
-                        args = {'JOBLIB_FUNC_FILE_ID': func_file_id}
+                        args = {"JOBLIB_FUNC_FILE_ID": func_file_id}
                         future = self.executor.submit(**args)
-                        log.debug("Started custom script from template "
-                                  "%s with arguments %s",
-                                  self.executor.from_template_id, args)
+                        log.debug(
+                            "Started custom script from template "
+                            "%s with arguments %s",
+                            self.executor.from_template_id,
+                            args,
+                        )
                     else:
                         future = self.executor.submit(fn=cmd)
-                        log.debug("started container script with "
-                                  "command: %s", cmd)
+                        log.debug("started container script with " "command: %s", cmd)
                     # Stop retrying if submission was successful.
                     break
                 except CivisAPIError as e:
@@ -931,12 +976,11 @@ class _CivisBackend(ParallelBackendBase):
                     if retries_left < 1:
                         raise JobSubmissionError(e)
 
-                    log.debug("Retrying submission. %d retries left",
-                              retries_left)
+                    log.debug("Retrying submission. %d retries left", retries_left)
 
                     # Sleep with exponentially increasing intervals in case
                     # the issue persists for a while.
-                    time.sleep(2 ** n_retries)
+                    time.sleep(2**n_retries)
 
             if self.executor.max_n_retries:
                 # Start the ContainerFuture polling.
@@ -954,14 +998,14 @@ class _CivisBackend(ParallelBackendBase):
     def __getstate__(self):
         """override pickle to remove threading and civis APIClient objects"""
         state = self.__dict__.copy()
-        if 'client' in state:
-            state['client'] = None
-        if 'executor' in state:
-            del state['executor']
+        if "client" in state:
+            state["client"] = None
+        if "executor" in state:
+            del state["executor"]
         # the parallel attribute gets added by the parent class when the
         # backend is in use.
-        if 'parallel' in state:
-            state['parallel'] = None
+        if "parallel" in state:
+            state["parallel"] = None
         return state
 
     def __setstate__(self, state):

@@ -3,7 +3,7 @@ import requests
 from civis._utils import camel_to_snake
 
 
-_RETURN_TYPES = frozenset({'snake', 'raw'})
+_RETURN_TYPES = frozenset({"snake", "raw"})
 
 
 class CivisClientError(Exception):
@@ -38,17 +38,16 @@ def _response_to_json(response):
     CivisClientError
         If the data in the raw response cannot be parsed.
     """
-    if response.content == b'':
+    if response.content == b"":
         return None
     else:
         try:
             return response.json()
         except ValueError:
-            raise CivisClientError("Unable to parse JSON from response",
-                                   response)
+            raise CivisClientError("Unable to parse JSON from response", response)
 
 
-def convert_response_data_type(response, headers=None, return_type='snake'):
+def convert_response_data_type(response, headers=None, return_type="snake"):
     """Convert a raw response into a given type.
 
     Parameters
@@ -68,10 +67,10 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
     list, dict, `civis.response.Response`, or `requests.Response`
         Depending on the value of `return_type`.
     """
-    if return_type == 'raw':
+    if return_type == "raw":
         return response
 
-    elif return_type == 'snake':
+    elif return_type == "snake":
         if isinstance(response, requests.Response):
             headers = response.headers
             data = _response_to_json(response)
@@ -84,9 +83,7 @@ def convert_response_data_type(response, headers=None, return_type='snake'):
             return Response(data, headers=headers)
 
     else:
-        raise ValueError(
-            f"Return type not one of {set(_RETURN_TYPES)}: {return_type}"
-        )
+        raise ValueError(f"Return type not one of {set(_RETURN_TYPES)}: {return_type}")
 
 
 def _raise_response_immutable_error():
@@ -109,16 +106,15 @@ class Response:
     rate_limit : int
         Total number of calls per API rate limit period.
     """
+
     def __init__(self, json_data, *, headers=None):
         self.json_data = json_data
         self.headers = headers
         self.calls_remaining = (
-            int(x)
-            if (x := (headers or {}).get('X-RateLimit-Remaining')) else x
+            int(x) if (x := (headers or {}).get("X-RateLimit-Remaining")) else x
         )
         self.rate_limit = (
-            int(x)
-            if (x := (headers or {}).get('X-RateLimit-Limit')) else x
+            int(x) if (x := (headers or {}).get("X-RateLimit-Limit")) else x
         )
 
         self._data_camel = {}
@@ -130,8 +126,7 @@ class Response:
                 if isinstance(v, dict):
                     val = Response(v)
                 elif isinstance(v, list):
-                    val = [Response(o) if isinstance(o, dict) else o
-                           for o in v]
+                    val = [Response(o) if isinstance(o, dict) else o for o in v]
                 else:
                     val = v
 
@@ -141,8 +136,14 @@ class Response:
     def __setattr__(self, key, value):
         if key == "__dict__":
             self.__dict__.update(value)
-        elif key in ("json_data", "headers", "calls_remaining", "rate_limit",
-                     "_data_camel", "_data_snake"):
+        elif key in (
+            "json_data",
+            "headers",
+            "calls_remaining",
+            "rate_limit",
+            "_data_camel",
+            "_data_snake",
+        ):
             self.__dict__[key] = value
         else:
             _raise_response_immutable_error()
@@ -220,6 +221,7 @@ class PaginatedResponse:
     >>> for query in queries:
     ...    print(query['id'])
     """
+
     def __init__(self, path, initial_params, endpoint):
         self._path = path
         self._params = initial_params.copy()
@@ -227,8 +229,8 @@ class PaginatedResponse:
 
         # We are paginating through all items, so start at the beginning and
         # let the API determine the limit.
-        self._params['page_num'] = 1
-        self._params.pop('limit', None)
+        self._params["page_num"] = 1
+        self._params.pop("limit", None)
 
         self._iter = None
 
@@ -237,9 +239,7 @@ class PaginatedResponse:
 
     def _get_iter(self):
         while True:
-            response = self._endpoint._make_request('GET',
-                                                    self._path,
-                                                    self._params)
+            response = self._endpoint._make_request("GET", self._path, self._params)
             page_data = _response_to_json(response)
             if len(page_data) == 0:
                 return
@@ -248,11 +248,11 @@ class PaginatedResponse:
                 converted_data = convert_response_data_type(
                     data,
                     headers=response.headers,
-                    return_type=self._endpoint._return_type
+                    return_type=self._endpoint._return_type,
                 )
                 yield converted_data
 
-            self._params['page_num'] += 1
+            self._params["page_num"] += 1
 
     def __next__(self):
         if self._iter is None:
@@ -306,6 +306,7 @@ def find(object_list, filter_func=None, **kwargs):
     """
     _func = filter_func
     if not filter_func:
+
         def default_filter(o):
             for k, v in kwargs.items():
                 if not hasattr(o, k):

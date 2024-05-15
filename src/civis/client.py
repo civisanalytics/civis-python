@@ -37,32 +37,36 @@ class APIClient:
         OrderedDict or a filename which points to a json file.
     """
 
-    def __init__(self, api_key=None, return_type='snake',
-                 api_version="1.0", local_api_spec=None):
+    def __init__(
+        self, api_key=None, return_type="snake", api_version="1.0", local_api_spec=None
+    ):
         if return_type not in _RETURN_TYPES:
             raise ValueError(
-                f"Return type must be one of {set(_RETURN_TYPES)}: "
-                f"{return_type}"
+                f"Return type must be one of {set(_RETURN_TYPES)}: " f"{return_type}"
             )
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
-        self._session_kwargs = {'api_key': session_auth_key}
+        self._session_kwargs = {"api_key": session_auth_key}
         self.last_response = None
 
-        classes = generate_classes_maybe_cached(local_api_spec,
-                                                session_auth_key,
-                                                api_version)
+        classes = generate_classes_maybe_cached(
+            local_api_spec, session_auth_key, api_version
+        )
         for class_name, cls in classes.items():
-            setattr(self, class_name, cls(self._session_kwargs, client=self,
-                                          return_type=return_type))
+            setattr(
+                self,
+                class_name,
+                cls(self._session_kwargs, client=self, return_type=return_type),
+            )
 
     @property
     def feature_flags(self):
         if self._feature_flags:
             return self._feature_flags
         me = self.users.list_me()
-        self._feature_flags = tuple(flag for flag, value
-                                    in me['feature_flags'].items() if value)
+        self._feature_flags = tuple(
+            flag for flag, value in me["feature_flags"].items() if value
+        )
         return self._feature_flags
 
     def __getstate__(self):
@@ -134,15 +138,17 @@ class APIClient:
             return username
         else:
             creds = self.credentials.list(type="Database")
-            filter_kwargs = {'username': username}
+            filter_kwargs = {"username": username}
             if isinstance(database_name, int):
-                filter_kwargs['remote_host_id'] = database_name
+                filter_kwargs["remote_host_id"] = database_name
             else:
-                filter_kwargs['remote_host_name'] = database_name
+                filter_kwargs["remote_host_name"] = database_name
             my_creds = find_one(creds, **filter_kwargs)
             if my_creds is None:
-                raise ValueError("Credential ID for {} on {} not "
-                                 "found.".format(username, database_name))
+                raise ValueError(
+                    "Credential ID for {} on {} not "
+                    "found.".format(username, database_name)
+                )
 
         return my_creds["id"]
 
@@ -205,9 +211,13 @@ class APIClient:
                     owner = self.username
                     my_creds = find(my_creds, owner=owner)
                 if len(my_creds) > 1:
-                    _log.warning("Found %d AWS credentials with name %s and "
-                                 "owner %s. Returning the first.",
-                                 len(my_creds), cred_name, owner)
+                    _log.warning(
+                        "Found %d AWS credentials with name %s and "
+                        "owner %s. Returning the first.",
+                        len(my_creds),
+                        cred_name,
+                        owner,
+                    )
             my_creds = my_creds[0]
 
         return my_creds["id"]
@@ -246,8 +256,7 @@ class APIClient:
         """
         database_id = self.get_database_id(database)
         schema, name = civis.io.split_schema_tablename(table)
-        tables = self.tables.list(database_id=database_id, schema=schema,
-                                  name=name)
+        tables = self.tables.list(database_id=database_id, schema=schema, name=name)
         if not tables:
             msg = "No tables found for {} in database {}"
             raise ValueError(msg.format(table, database))
@@ -298,7 +307,7 @@ class APIClient:
         """The current user's default credential."""
         # NOTE: this should be optional to endpoints...so this could go away
         creds = self.credentials.list(default=True)
-        return creds[0]['id'] if len(creds) > 0 else None
+        return creds[0]["id"] if len(creds) > 0 else None
 
     @property
     @lru_cache(maxsize=128)

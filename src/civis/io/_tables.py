@@ -27,29 +27,47 @@ import requests
 
 try:
     import pandas as pd
+
     NO_PANDAS = False
 except ImportError:
     NO_PANDAS = True
 
 CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
-__all__ = ['read_civis', 'read_civis_sql', 'civis_to_csv',
-           'civis_to_multifile_csv', 'dataframe_to_civis', 'csv_to_civis',
-           'civis_file_to_table', 'split_schema_tablename',
-           'export_to_civis_file']
+__all__ = [
+    "read_civis",
+    "read_civis_sql",
+    "civis_to_csv",
+    "civis_to_multifile_csv",
+    "dataframe_to_civis",
+    "csv_to_civis",
+    "civis_file_to_table",
+    "split_schema_tablename",
+    "export_to_civis_file",
+]
 
 DELIMITERS = {
-    ',': 'comma',
-    '\t': 'tab',
-    '|': 'pipe',
+    ",": "comma",
+    "\t": "tab",
+    "|": "pipe",
 }
 
 _File = collections.namedtuple("_File", "id name detected_info")
 
 
-def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
-               job_name=None, client=None, credential_id=None,
-               polling_interval=None, hidden=True, **kwargs):
+def read_civis(
+    table,
+    database,
+    columns=None,
+    use_pandas=False,
+    encoding=None,
+    job_name=None,
+    client=None,
+    credential_id=None,
+    polling_interval=None,
+    hidden=True,
+    **kwargs,
+):
     """Read data from a Civis table.
 
     Parameters
@@ -132,17 +150,31 @@ def read_civis(table, database, columns=None, use_pandas=False, encoding=None,
     if client is None:
         client = APIClient()
     sql = _get_sql_select(table, columns)
-    data = read_civis_sql(sql=sql, database=database, use_pandas=use_pandas,
-                          encoding=encoding, job_name=job_name, client=client,
-                          credential_id=credential_id,
-                          polling_interval=polling_interval,
-                          hidden=hidden, **kwargs)
+    data = read_civis_sql(
+        sql=sql,
+        database=database,
+        use_pandas=use_pandas,
+        encoding=encoding,
+        job_name=job_name,
+        client=client,
+        credential_id=credential_id,
+        polling_interval=polling_interval,
+        hidden=hidden,
+        **kwargs,
+    )
     return data
 
 
-def export_to_civis_file(sql, database, job_name=None, client=None,
-                         credential_id=None, polling_interval=None,
-                         hidden=True, csv_settings=None):
+def export_to_civis_file(
+    sql,
+    database,
+    job_name=None,
+    client=None,
+    credential_id=None,
+    polling_interval=None,
+    hidden=True,
+    csv_settings=None,
+):
     """Store results of a query to a Civis file
 
     Parameters
@@ -191,24 +223,37 @@ def export_to_civis_file(sql, database, job_name=None, client=None,
     civis.io.civis_file_to_table : Upload a Civis file to a Civis table
     """
     client = client or APIClient()
-    script_id, run_id = _sql_script(client=client,
-                                    sql=sql,
-                                    database=database,
-                                    job_name=job_name,
-                                    credential_id=credential_id,
-                                    csv_settings=csv_settings,
-                                    hidden=hidden)
-    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+    script_id, run_id = _sql_script(
+        client=client,
+        sql=sql,
+        database=database,
+        job_name=job_name,
+        credential_id=credential_id,
+        csv_settings=csv_settings,
+        hidden=hidden,
+    )
+    fut = CivisFuture(
+        client.scripts.get_sql_runs,
+        (script_id, run_id),
+        polling_interval=polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
     return fut
 
 
-def read_civis_sql(sql, database, use_pandas=False,
-                   encoding=None, job_name=None,
-                   client=None, credential_id=None,
-                   polling_interval=None,
-                   hidden=True, **kwargs):
+def read_civis_sql(
+    sql,
+    database,
+    use_pandas=False,
+    encoding=None,
+    job_name=None,
+    client=None,
+    credential_id=None,
+    polling_interval=None,
+    hidden=True,
+    **kwargs,
+):
     """Read data from Civis using a custom SQL string.
 
     The custom SQL string will be executed twice; once to attempt to
@@ -297,26 +342,35 @@ def read_civis_sql(sql, database, use_pandas=False,
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
 
-    script_id, run_id = _sql_script(client, sql, db_id,
-                                    job_name, credential_id,
-                                    csv_settings={"compression": "gzip"},
-                                    hidden=hidden)
-    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+    script_id, run_id = _sql_script(
+        client,
+        sql,
+        db_id,
+        job_name,
+        credential_id,
+        csv_settings={"compression": "gzip"},
+        hidden=hidden,
+    )
+    fut = CivisFuture(
+        client.scripts.get_sql_runs,
+        (script_id, run_id),
+        polling_interval=polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
     fut.result()
     outputs = client.scripts.get_sql_runs(script_id, run_id)["output"]
     if not outputs:
-        raise EmptyResultError("Query {} returned no output."
-                               .format(script_id))
+        raise EmptyResultError("Query {} returned no output.".format(script_id))
 
     url = outputs[0]["path"]
     file_id = outputs[0]["file_id"]
-    log.debug('Exported results to Civis file %s (%s)',
-              outputs[0]["output_name"], file_id)
+    log.debug(
+        "Exported results to Civis file %s (%s)", outputs[0]["output_name"], file_id
+    )
 
     if use_pandas:
-        kwargs['compression'] = 'gzip'
+        kwargs["compression"] = "gzip"
         kwargs["encoding"] = encoding
 
         data = pd.read_csv(url, **kwargs)
@@ -325,18 +379,29 @@ def read_civis_sql(sql, database, use_pandas=False,
         response.raise_for_status()
 
         with io.StringIO() as buf:
-            _decompress_stream(response, buf, write_bytes=False,
-                               encoding=encoding or "utf-8")
+            _decompress_stream(
+                response, buf, write_bytes=False, encoding=encoding or "utf-8"
+            )
             buf.seek(0)
             data = list(csv.reader(buf, **kwargs))
 
     return data
 
 
-def civis_to_csv(filename, sql, database, job_name=None,
-                 client=None, credential_id=None, include_header=True,
-                 compression='none', delimiter=',', unquoted=False,
-                 hidden=True, polling_interval=None):
+def civis_to_csv(
+    filename,
+    sql,
+    database,
+    job_name=None,
+    client=None,
+    credential_id=None,
+    include_header=True,
+    compression="none",
+    delimiter=",",
+    unquoted=False,
+    hidden=True,
+    polling_interval=None,
+):
     """Export data from Civis to a local CSV file.
 
     The custom SQL string will be executed twice; once to attempt to
@@ -407,46 +472,64 @@ def civis_to_csv(filename, sql, database, job_name=None,
     # don't fix bug that would cause breaking change for now
     # when gzip compression is requested, a gzip file is not actually returned
     # instead the gzip file is decompressed during download
-    if compression == 'gzip' and include_header:
-        compression = 'none'
+    if compression == "gzip" and include_header:
+        compression = "none"
 
     # don't support parallel unload; the output format
     # is different which would introduce a breaking change
-    headers = b''
+    headers = b""
 
     delimiter = DELIMITERS.get(delimiter)
     if not delimiter:
-        raise ValueError("delimiter must be one of {}"
-                         .format(DELIMITERS.keys()))
+        raise ValueError("delimiter must be one of {}".format(DELIMITERS.keys()))
 
     # always set compression to gzip to reduce I/O
-    csv_settings = dict(include_header=include_header,
-                        compression='gzip',
-                        column_delimiter=delimiter,
-                        unquoted=unquoted,
-                        filename_prefix=None,
-                        force_multifile=False)
+    csv_settings = dict(
+        include_header=include_header,
+        compression="gzip",
+        column_delimiter=delimiter,
+        unquoted=unquoted,
+        filename_prefix=None,
+        force_multifile=False,
+    )
 
-    script_id, run_id = _sql_script(client, sql, db_id, job_name,
-                                    credential_id, hidden=hidden,
-                                    csv_settings=csv_settings)
-    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
-    download = _download_callback(script_id, run_id, filename,
-                                  headers, compression)
+    script_id, run_id = _sql_script(
+        client,
+        sql,
+        db_id,
+        job_name,
+        credential_id,
+        hidden=hidden,
+        csv_settings=csv_settings,
+    )
+    fut = CivisFuture(
+        client.scripts.get_sql_runs,
+        (script_id, run_id),
+        polling_interval=polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
+    download = _download_callback(script_id, run_id, filename, headers, compression)
     fut.add_done_callback(download)
 
     return fut
 
 
-def civis_to_multifile_csv(sql, database, job_name=None,
-                           client=None, credential_id=None,
-                           include_header=True,
-                           compression='none', delimiter='|',
-                           max_file_size=None,
-                           unquoted=False, prefix=None,
-                           polling_interval=None, hidden=True):
+def civis_to_multifile_csv(
+    sql,
+    database,
+    job_name=None,
+    client=None,
+    credential_id=None,
+    include_header=True,
+    compression="none",
+    delimiter="|",
+    max_file_size=None,
+    unquoted=False,
+    prefix=None,
+    polling_interval=None,
+    hidden=True,
+):
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
@@ -547,49 +630,70 @@ def civis_to_multifile_csv(sql, database, job_name=None,
         client = APIClient()
     delimiter = DELIMITERS.get(delimiter)
     if not delimiter:
-        raise ValueError(
-            f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}"
-        )
+        raise ValueError(f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}")
 
-    csv_settings = dict(include_header=include_header,
-                        compression=compression,
-                        column_delimiter=delimiter,
-                        unquoted=unquoted,
-                        filename_prefix=prefix,
-                        force_multifile=True,
-                        max_file_size=max_file_size)
-    script_id, run_id = _sql_script(client, sql, database, job_name,
-                                    credential_id, hidden,
-                                    csv_settings=csv_settings)
+    csv_settings = dict(
+        include_header=include_header,
+        compression=compression,
+        column_delimiter=delimiter,
+        unquoted=unquoted,
+        filename_prefix=prefix,
+        force_multifile=True,
+        max_file_size=max_file_size,
+    )
+    script_id, run_id = _sql_script(
+        client,
+        sql,
+        database,
+        job_name,
+        credential_id,
+        hidden,
+        csv_settings=csv_settings,
+    )
 
-    fut = CivisFuture(client.scripts.get_sql_runs, (script_id, run_id),
-                      polling_interval=polling_interval, client=client,
-                      poll_on_creation=False)
+    fut = CivisFuture(
+        client.scripts.get_sql_runs,
+        (script_id, run_id),
+        polling_interval=polling_interval,
+        client=client,
+        poll_on_creation=False,
+    )
 
     outputs = fut.result()["output"]
     if not outputs:
-        raise EmptyResultError("Unload query {} returned no manifest."
-                               .format(script_id))
+        raise EmptyResultError(
+            "Unload query {} returned no manifest.".format(script_id)
+        )
 
     buf = io.BytesIO()
-    civis_to_file(outputs[0]['file_id'], buf, client=client)
-    txt = io.TextIOWrapper(buf, encoding='utf-8')
+    civis_to_file(outputs[0]["file_id"], buf, client=client)
+    txt = io.TextIOWrapper(buf, encoding="utf-8")
     txt.seek(0)
     unload_manifest = json.load(txt)
 
     return unload_manifest
 
 
-def dataframe_to_civis(df, database, table, client=None,
-                       max_errors=None, existing_table_rows="fail",
-                       diststyle=None, distkey=None,
-                       sortkey1=None, sortkey2=None,
-                       table_columns=None,
-                       credential_id=None,
-                       primary_keys=None, last_modified_keys=None,
-                       execution="immediate",
-                       polling_interval=None,
-                       hidden=True, **kwargs):
+def dataframe_to_civis(
+    df,
+    database,
+    table,
+    client=None,
+    max_errors=None,
+    existing_table_rows="fail",
+    diststyle=None,
+    distkey=None,
+    sortkey1=None,
+    sortkey2=None,
+    table_columns=None,
+    credential_id=None,
+    primary_keys=None,
+    last_modified_keys=None,
+    execution="immediate",
+    polling_interval=None,
+    hidden=True,
+    **kwargs,
+):
     """Upload a `pandas` `DataFrame` into a Civis table.
 
     The `DataFrame`'s index will not be included. To store the index
@@ -684,44 +788,64 @@ def dataframe_to_civis(df, database, table, client=None,
     if client is None:
         client = APIClient()
 
-    headers = False if kwargs.get('header') is False else True
+    headers = False if kwargs.get("header") is False else True
     with TemporaryDirectory() as tmp_dir:
-        tmp_path = os.path.join(tmp_dir, 'dataframe_to_civis.csv')
-        to_csv_kwargs = {'encoding': 'utf-8', 'index': False}
+        tmp_path = os.path.join(tmp_dir, "dataframe_to_civis.csv")
+        to_csv_kwargs = {"encoding": "utf-8", "index": False}
         to_csv_kwargs.update(kwargs)
         df.to_csv(tmp_path, **to_csv_kwargs)
         _, name = split_schema_tablename(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
-    delimiter = ','
-    fut = civis_file_to_table(file_id, database, table,
-                              client=client, max_errors=max_errors,
-                              existing_table_rows=existing_table_rows,
-                              diststyle=diststyle, distkey=distkey,
-                              sortkey1=sortkey1, sortkey2=sortkey2,
-                              table_columns=table_columns,
-                              delimiter=delimiter, headers=headers,
-                              credential_id=credential_id,
-                              primary_keys=primary_keys,
-                              last_modified_keys=last_modified_keys,
-                              escaped=False, execution=execution,
-                              polling_interval=polling_interval,
-                              hidden=hidden)
+    delimiter = ","
+    fut = civis_file_to_table(
+        file_id,
+        database,
+        table,
+        client=client,
+        max_errors=max_errors,
+        existing_table_rows=existing_table_rows,
+        diststyle=diststyle,
+        distkey=distkey,
+        sortkey1=sortkey1,
+        sortkey2=sortkey2,
+        table_columns=table_columns,
+        delimiter=delimiter,
+        headers=headers,
+        credential_id=credential_id,
+        primary_keys=primary_keys,
+        last_modified_keys=last_modified_keys,
+        escaped=False,
+        execution=execution,
+        polling_interval=polling_interval,
+        hidden=hidden,
+    )
 
     return fut
 
 
-def csv_to_civis(filename, database, table, client=None,
-                 max_errors=None, existing_table_rows="fail",
-                 diststyle=None, distkey=None,
-                 sortkey1=None, sortkey2=None,
-                 table_columns=None,
-                 delimiter=",", headers=None,
-                 primary_keys=None, last_modified_keys=None,
-                 escaped=False, execution="immediate",
-                 credential_id=None, polling_interval=None,
-                 hidden=True):
-
+def csv_to_civis(
+    filename,
+    database,
+    table,
+    client=None,
+    max_errors=None,
+    existing_table_rows="fail",
+    diststyle=None,
+    distkey=None,
+    sortkey1=None,
+    sortkey2=None,
+    table_columns=None,
+    delimiter=",",
+    headers=None,
+    primary_keys=None,
+    last_modified_keys=None,
+    escaped=False,
+    execution="immediate",
+    credential_id=None,
+    polling_interval=None,
+    hidden=True,
+):
     """Upload the contents of a local CSV file to Civis.
 
     Parameters
@@ -821,33 +945,54 @@ def csv_to_civis(filename, database, table, client=None,
     name = path.basename(filename)
     with open(filename, "rb") as data:
         file_id = file_to_civis(data, name, client=client)
-        log.debug('Uploaded file %s to Civis file %s', filename, file_id)
-        fut = civis_file_to_table(file_id, database, table,
-                                  client=client, max_errors=max_errors,
-                                  existing_table_rows=existing_table_rows,
-                                  diststyle=diststyle, distkey=distkey,
-                                  sortkey1=sortkey1, sortkey2=sortkey2,
-                                  table_columns=table_columns,
-                                  delimiter=delimiter, headers=headers,
-                                  credential_id=credential_id,
-                                  primary_keys=primary_keys,
-                                  last_modified_keys=last_modified_keys,
-                                  escaped=escaped, execution=execution,
-                                  polling_interval=polling_interval,
-                                  hidden=hidden)
+        log.debug("Uploaded file %s to Civis file %s", filename, file_id)
+        fut = civis_file_to_table(
+            file_id,
+            database,
+            table,
+            client=client,
+            max_errors=max_errors,
+            existing_table_rows=existing_table_rows,
+            diststyle=diststyle,
+            distkey=distkey,
+            sortkey1=sortkey1,
+            sortkey2=sortkey2,
+            table_columns=table_columns,
+            delimiter=delimiter,
+            headers=headers,
+            credential_id=credential_id,
+            primary_keys=primary_keys,
+            last_modified_keys=last_modified_keys,
+            escaped=escaped,
+            execution=execution,
+            polling_interval=polling_interval,
+            hidden=hidden,
+        )
     return fut
 
 
-def civis_file_to_table(file_id, database, table, client=None,
-                        max_errors=None, existing_table_rows="fail",
-                        diststyle=None, distkey=None,
-                        sortkey1=None, sortkey2=None,
-                        table_columns=None,
-                        primary_keys=None, last_modified_keys=None,
-                        escaped=False, execution="immediate",
-                        delimiter=None, headers=None,
-                        credential_id=None, polling_interval=None,
-                        hidden=True):
+def civis_file_to_table(
+    file_id,
+    database,
+    table,
+    client=None,
+    max_errors=None,
+    existing_table_rows="fail",
+    diststyle=None,
+    distkey=None,
+    sortkey1=None,
+    sortkey2=None,
+    table_columns=None,
+    primary_keys=None,
+    last_modified_keys=None,
+    escaped=False,
+    execution="immediate",
+    delimiter=None,
+    headers=None,
+    credential_id=None,
+    polling_interval=None,
+    hidden=True,
+):
     """Upload the contents of one or more Civis files to a Civis table.
     All provided files will be loaded as an atomic unit in parallel, and
     should share the same columns in the same order, and be in the same
@@ -962,8 +1107,7 @@ def civis_file_to_table(file_id, database, table, client=None,
         client = APIClient()
 
     if type(file_id) is str:
-        raise TypeError("Invalid type for file_id: str. "
-                        "Must be int or list[int]")
+        raise TypeError("Invalid type for file_id: str. " "Must be int or list[int]")
 
     schema, table_name = split_schema_tablename(table)
     if isinstance(file_id, int):
@@ -985,7 +1129,7 @@ def civis_file_to_table(file_id, database, table, client=None,
         # entry, it will silently replace the input table_columns with
         # an inferred table_columns. Make sure there's no typos in the input.
         keys = set(key for hash in table_columns for key in hash)
-        valid_keys = {'name', 'sql_type'}
+        valid_keys = {"name", "sql_type"}
         invalid_keys = keys - valid_keys
         if invalid_keys:
             # Sort the sets for display to allow for deterministic testing in
@@ -993,59 +1137,68 @@ def civis_file_to_table(file_id, database, table, client=None,
             raise ValueError(
                 "Keys of the dictionaries contained in `table_columns` must "
                 "be one of {}. The input `table_columns` also has "
-                "{}.".format(
-                    tuple(sorted(valid_keys)), tuple(sorted(invalid_keys))
-                )
+                "{}.".format(tuple(sorted(valid_keys)), tuple(sorted(invalid_keys)))
             )
 
     try:
         client.databases.get_schemas_tables(db_id, schema, table_name)
-        log.debug('Table {table} already exists - skipping column '
-                  'detection'.format(table=table))
+        log.debug(
+            "Table {table} already exists - skipping column "
+            "detection".format(table=table)
+        )
         table_exists = True
     except CivisAPIError as e:
         table_exists = False
         if e.status_code != 404:
-            warnings.warn("Unexpected error when checking if table %s.%s "
-                          "exists on database %d:\n%s"
-                          % (schema, table_name, db_id, str(e)))
+            warnings.warn(
+                "Unexpected error when checking if table %s.%s "
+                "exists on database %d:\n%s" % (schema, table_name, db_id, str(e))
+            )
 
     sql_types_provided = False
     if table_columns:
-        sql_type_cnt = sum(1 for col in table_columns if col.get('sql_type'))
+        sql_type_cnt = sum(1 for col in table_columns if col.get("sql_type"))
         if sql_type_cnt == len(table_columns):
             sql_types_provided = True
         elif sql_type_cnt != 0:
-            error_message = 'Some table columns ' \
-                           'have a sql type provided, ' \
-                           'but others do not.'
+            error_message = (
+                "Some table columns " "have a sql type provided, " "but others do not."
+            )
             raise ValueError(error_message)
 
     # Use Preprocess endpoint to get the table columns as needed
     # and perform necessary file cleaning
-    need_table_columns = ((not table_exists or existing_table_rows == 'drop')
-                          and (not sql_types_provided))
-
-    cleaning_futures = _run_cleaning(file_id, client, need_table_columns,
-                                     headers, delimiter, hidden)
-
-    (cleaned_file_ids, headers, compression, delimiter,
-     cleaned_table_columns) = _process_cleaning_results(
-        cleaning_futures, client, headers, need_table_columns, delimiter
+    need_table_columns = (not table_exists or existing_table_rows == "drop") and (
+        not sql_types_provided
     )
 
-    table_columns = (cleaned_table_columns if need_table_columns
-                     else table_columns)
+    cleaning_futures = _run_cleaning(
+        file_id, client, need_table_columns, headers, delimiter, hidden
+    )
+
+    (cleaned_file_ids, headers, compression, delimiter, cleaned_table_columns) = (
+        _process_cleaning_results(
+            cleaning_futures, client, headers, need_table_columns, delimiter
+        )
+    )
+
+    table_columns = cleaned_table_columns if need_table_columns else table_columns
 
     source = dict(file_ids=cleaned_file_ids)
-    destination = dict(schema=schema, table=table_name, remote_host_id=db_id,
-                       credential_id=cred_id, primary_keys=primary_keys,
-                       last_modified_keys=last_modified_keys)
+    destination = dict(
+        schema=schema,
+        table=table_name,
+        remote_host_id=db_id,
+        credential_id=cred_id,
+        primary_keys=primary_keys,
+        last_modified_keys=last_modified_keys,
+    )
 
-    redshift_options = dict(distkey=distkey, sortkeys=[sortkey1, sortkey2],
-                            diststyle=diststyle)
+    redshift_options = dict(
+        distkey=distkey, sortkeys=[sortkey1, sortkey2], diststyle=diststyle
+    )
 
-    import_name = 'CSV import to {}.{}'.format(schema, table_name)
+    import_name = "CSV import to {}.{}".format(schema, table_name)
     import_job = client.imports.post_files_csv(
         source,
         destination,
@@ -1066,30 +1219,32 @@ def civis_file_to_table(file_id, database, table, client=None,
         loosen_types=need_table_columns,
         table_columns=table_columns,
         redshift_destination_options=redshift_options,
-        hidden=hidden
+        hidden=hidden,
     )
-    fut = run_job(import_job.id, client=client,
-                  polling_interval=polling_interval)
-    log.debug('Started run %d for import %d', fut.run_id, import_job.id)
+    fut = run_job(import_job.id, client=client, polling_interval=polling_interval)
+    log.debug("Started run %d for import %d", fut.run_id, import_job.id)
     return fut
 
 
-def _sql_script(client, sql, database, job_name, credential_id, hidden=False,
-                csv_settings=None):
+def _sql_script(
+    client, sql, database, job_name, credential_id, hidden=False, csv_settings=None
+):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
 
-    export_job = client.scripts.post_sql(job_name,
-                                         remote_host_id=db_id,
-                                         credential_id=credential_id,
-                                         sql=sql,
-                                         hidden=hidden,
-                                         csv_settings=csv_settings)
+    export_job = client.scripts.post_sql(
+        job_name,
+        remote_host_id=db_id,
+        credential_id=credential_id,
+        sql=sql,
+        hidden=hidden,
+        csv_settings=csv_settings,
+    )
 
     run_job = client.scripts.post_sql_runs(export_job.id)
-    log.debug('Started run %d of SQL script %d', run_job.id, export_job.id)
+    log.debug("Started run %d of SQL script %d", run_job.id, export_job.id)
     return export_job.id, run_job.id
 
 
@@ -1128,30 +1283,30 @@ def _download_file(url, local_path, headers, compression):
     response.raise_for_status()
 
     # gzipped buffers can be concatenated so write headers as gzip
-    if compression == 'gzip':
-        with gzip.open(local_path, 'wb') as fout:
+    if compression == "gzip":
+        with gzip.open(local_path, "wb") as fout:
             fout.write(headers)
-        with open(local_path, 'ab') as fout:
+        with open(local_path, "ab") as fout:
             shutil.copyfileobj(response.raw, fout, CHUNK_SIZE)
 
     # write headers and decompress the stream
-    elif compression == 'none':
-        with open(local_path, 'wb') as fout:
+    elif compression == "none":
+        with open(local_path, "wb") as fout:
             fout.write(headers)
             _decompress_stream(response, fout)
 
     # decompress the stream, write headers, and zip the file
-    elif compression == 'zip':
+    elif compression == "zip":
         with TemporaryDirectory() as tmp_dir:
-            tmp_path = path.join(tmp_dir, 'civis_to_csv.csv')
-            with open(tmp_path, 'wb') as tmp_file:
+            tmp_path = path.join(tmp_dir, "civis_to_csv.csv")
+            with open(tmp_path, "wb") as tmp_file:
                 tmp_file.write(headers)
                 _decompress_stream(response, tmp_file)
 
-            with zipfile.ZipFile(local_path, 'w') as fout:
+            with zipfile.ZipFile(local_path, "w") as fout:
                 arcname = path.basename(local_path)
-                if arcname.split('.')[-1] == 'zip':
-                    arcname = arcname.split('.')[0] + '.csv'
+                if arcname.split(".")[-1] == "zip":
+                    arcname = arcname.split(".")[0] + ".csv"
                 fout.write(tmp_path, arcname, zipfile.ZIP_DEFLATED)
 
 
@@ -1162,15 +1317,16 @@ def _download_callback(job_id, run_id, filename, headers, compression):
             return
         outputs = future.result().get("output")
         if not outputs:
-            warnings.warn("Job %s, run %s does not have any output to "
-                          "download. Not creating file %s."
-                          % (job_id, run_id, filename),
-                          RuntimeWarning)
+            warnings.warn(
+                "Job %s, run %s does not have any output to "
+                "download. Not creating file %s." % (job_id, run_id, filename),
+                RuntimeWarning,
+            )
             return
         else:
             url = outputs[0]["path"]
             file_id = outputs[0]["file_id"]
-            log.debug('Exported results to Civis file %s', file_id)
+            log.debug("Exported results to Civis file %s", file_id)
             return _download_file(url, filename, headers, compression)
 
     return callback
@@ -1200,22 +1356,29 @@ def split_schema_tablename(table):
         If the input ``table`` is not separable into a schema and
         table name.
     """
-    reader = csv.reader(io.StringIO(str(table)),
-                        delimiter=".",
-                        doublequote=True,
-                        quotechar='"')
+    reader = csv.reader(
+        io.StringIO(str(table)), delimiter=".", doublequote=True, quotechar='"'
+    )
     schema_name_tup = next(reader)
     if len(schema_name_tup) == 1:
         schema_name_tup = (None, schema_name_tup[0])
     if len(schema_name_tup) != 2:
-        raise ValueError("Cannot parse schema and table. "
-                         "Does '{}' follow the pattern 'schema.table'?"
-                         .format(table))
+        raise ValueError(
+            "Cannot parse schema and table. "
+            "Does '{}' follow the pattern 'schema.table'?".format(table)
+        )
     return tuple(schema_name_tup)
 
 
-def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
-                  hidden, polling_interval=None):
+def _run_cleaning(
+    file_ids,
+    client,
+    need_table_columns,
+    headers,
+    delimiter,
+    hidden,
+    polling_interval=None,
+):
     cleaning_futures = []
     for fid in file_ids:
         cleaner_job = client.files.post_preprocess_csv(
@@ -1225,18 +1388,23 @@ def _run_cleaning(file_ids, client, need_table_columns, headers, delimiter,
             force_character_set_conversion=True,
             include_header=headers,
             column_delimiter=delimiter,
-            hidden=hidden
+            hidden=hidden,
         )
-        fut = run_job(cleaner_job.id, client=client,
-                      polling_interval=polling_interval)
-        log.debug('Started CSV preprocess job %d run %d for file %d (%s)',
-                  cleaner_job.id, fut.run_id, fid, client.files.get(fid).name)
+        fut = run_job(cleaner_job.id, client=client, polling_interval=polling_interval)
+        log.debug(
+            "Started CSV preprocess job %d run %d for file %d (%s)",
+            cleaner_job.id,
+            fut.run_id,
+            fid,
+            client.files.get(fid).name,
+        )
         cleaning_futures.append(fut)
     return cleaning_futures
 
 
-def _process_cleaning_results(cleaning_futures, client, headers,
-                              need_table_columns, delimiter):
+def _process_cleaning_results(
+    cleaning_futures, client, headers, need_table_columns, delimiter
+):
     futures, _ = concurrent.futures.wait(cleaning_futures)
     files: List[_File] = []
 
@@ -1248,9 +1416,7 @@ def _process_cleaning_results(cleaning_futures, client, headers,
             continue
         # `objs` is guaranteed to have exactly one file output.
         f = client.files.get(objs[0].object_id)
-        files.append(
-            _File(id=f.id, name=f.name, detected_info=f.detected_info)
-        )
+        files.append(_File(id=f.id, name=f.name, detected_info=f.detected_info))
     if job_run_ids_no_output:
         job_run_ids_in_err_msg = "\n".join(
             f"\tjob {j} run {r}" for j, r in job_run_ids_no_output
@@ -1315,8 +1481,7 @@ def _check_column_types(files: List[_File]):
     err_msg = _err_msg_if_inconsistent(col_counts, files)
     if err_msg:
         raise CivisImportError(
-            f"All files must have the same number of columns, "
-            f"however --\n{err_msg}"
+            f"All files must have the same number of columns, " f"however --\n{err_msg}"
         )
 
     # Transpose cols_by_file to get cols_by_col
@@ -1329,13 +1494,9 @@ def _check_column_types(files: List[_File]):
     err_msgs: List[str] = []
 
     for i, cols in enumerate(cols_by_col, 1):
-        col_name = next(
-            (c.get("name") for c in cols if c.get("name")), f"column_{i}"
-        )
+        col_name = next((c.get("name") for c in cols if c.get("name")), f"column_{i}")
 
-        sql_base_types = [
-            col["sql_type"].split("(", 1)[0].upper() for col in cols
-        ]
+        sql_base_types = [col["sql_type"].split("(", 1)[0].upper() for col in cols]
         err_msg = _err_msg_if_inconsistent(sql_base_types, files)
         if err_msg and "VARCHAR" not in sql_base_types:
             err_msgs.append(

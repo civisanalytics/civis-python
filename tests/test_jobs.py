@@ -85,9 +85,7 @@ def mock_client_no_json_output():
     return mock_client
 
 
-def test_run_template_json_output_fileids_returned(
-    mock_client_single_json_output
-):
+def test_run_template_json_output_fileids_returned(mock_client_single_json_output):
     template_id = 1
     args = {"arg": 1}
     result = civis.utils.run_template(
@@ -96,9 +94,7 @@ def test_run_template_json_output_fileids_returned(
     assert result == {"output": 10}
 
 
-def test_run_template_no_json_output_fileids_returned(
-    mock_client_no_json_output
-):
+def test_run_template_no_json_output_fileids_returned(mock_client_no_json_output):
     template_id = 1
     args = {"arg": 1}
     result = civis.utils.run_template(
@@ -108,7 +104,7 @@ def test_run_template_no_json_output_fileids_returned(
 
 
 def test_run_template_multiple_json_output_fileids_returned(
-    mock_client_multiple_json_output
+    mock_client_multiple_json_output,
 ):
     template_id = 1
     args = {"arg": 1}
@@ -130,9 +126,7 @@ def test_run_template_json_returned(mock_client_single_json_output):
     assert result == {"a": 1}
 
 
-def test_run_template_many_json_outputs(
-    caplog, mock_client_multiple_json_output
-):
+def test_run_template_many_json_outputs(caplog, mock_client_multiple_json_output):
     template_id = 1
     args = {"arg": 1}
     result = civis.utils.run_template(

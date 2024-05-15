@@ -5,18 +5,23 @@ import time
 import uuid
 from random import random
 
-from tenacity import (Retrying, retry_if_result, stop_after_attempt,
-                      stop_after_delay, wait_random_exponential)
+from tenacity import (
+    Retrying,
+    retry_if_result,
+    stop_after_attempt,
+    stop_after_delay,
+    wait_random_exponential,
+)
 from tenacity.wait import wait_base
 
 
 log = logging.getLogger(__name__)
-UNDERSCORER1 = re.compile(r'(.)([A-Z][a-z]+)')
-UNDERSCORER2 = re.compile('([a-z0-9])([A-Z])')
+UNDERSCORER1 = re.compile(r"(.)([A-Z][a-z]+)")
+UNDERSCORER2 = re.compile("([a-z0-9])([A-Z])")
 MAX_RETRIES = 10
 
 _RETRY_CODES = [429, 502, 503, 504]
-_RETRY_VERBS = ['HEAD', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'DELETE']
+_RETRY_VERBS = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE"]
 _POST_RETRY_CODES = [429, 503]
 
 
@@ -28,12 +33,12 @@ def maybe_get_random_name(name):
 
 def camel_to_snake(word):
     # https://gist.github.com/jaytaylor/3660565
-    word = UNDERSCORER1.sub(r'\1_\2', word)
-    return UNDERSCORER2.sub(r'\1_\2', word).lower()
+    word = UNDERSCORER1.sub(r"\1_\2", word)
+    return UNDERSCORER2.sub(r"\1_\2", word).lower()
 
 
 def to_camelcase(s):
-    return re.sub(r'(^|_)([a-zA-Z])', lambda m: m.group(2).upper(), s)
+    return re.sub(r"(^|_)([a-zA-Z])", lambda m: m.group(2).upper(), s)
 
 
 def get_api_key(api_key):
@@ -44,8 +49,10 @@ def get_api_key(api_key):
         return api_key
     api_key = os.environ.get("CIVIS_API_KEY", None)
     if api_key is None:
-        raise EnvironmentError("No Civis API key found. Please store in "
-                               "CIVIS_API_KEY environment variable")
+        raise EnvironmentError(
+            "No Civis API key found. Please store in "
+            "CIVIS_API_KEY environment variable"
+        )
     return api_key
 
 
@@ -62,20 +69,19 @@ def retry_request(method, prepared_req, session, max_retries=10):
         and let code pick up the error"""
         return retry_state.outcome.result()
 
-    if method.upper() == 'POST':
-        retry_conditions = (
-            retry_if_result(lambda res: res.status_code in _POST_RETRY_CODES)
+    if method.upper() == "POST":
+        retry_conditions = retry_if_result(
+            lambda res: res.status_code in _POST_RETRY_CODES
         )
     elif method.upper() in _RETRY_VERBS:
-        retry_conditions = (
-            retry_if_result(lambda res: res.status_code in _RETRY_CODES)
-        )
+        retry_conditions = retry_if_result(lambda res: res.status_code in _RETRY_CODES)
 
     if retry_conditions:
         retry_config = Retrying(
             retry=retry_conditions,
             wait=wait_for_retry_after_header(
-                fallback=wait_random_exponential(multiplier=2, max=60)),
+                fallback=wait_random_exponential(multiplier=2, max=60)
+            ),
             stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
             retry_error_callback=_return_last_value,
         )
@@ -110,6 +116,7 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
     ------
     exception raised by decorator function
     """
+
     def deco_retry(f):
         def f_retry(*args, **kwargs):
             n_failed = 0
@@ -120,13 +127,12 @@ def retry(exceptions, retries=5, delay=0.5, backoff=2):
                 except exceptions as exc:
                     if n_failed < retries:
                         n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % \
-                              (str(exc), new_delay)
+                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
                         log.debug(msg)
                         time.sleep(new_delay)
                         new_delay = min(
-                            (pow(2, n_failed) / 4) *
-                            (random() + backoff), 50 + 10 * random()  # nosec
+                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
+                            50 + 10 * random(),  # nosec
                         )
                     else:
                         raise exc
@@ -145,7 +151,7 @@ class BufferedPartialReader(object):
 
     def read(self, size=-1):
         if self.bytes_read >= self.max_bytes:
-            return b''
+            return b""
         bytes_left = self.max_bytes - self.bytes_read
         if size < 0:
             bytes_to_read = bytes_left
@@ -158,7 +164,8 @@ class BufferedPartialReader(object):
 
 class wait_for_retry_after_header(wait_base):
     """Wait strategy that first looks for Retry-After header. If not
-        present it uses the fallback strategy as the wait param"""
+    present it uses the fallback strategy as the wait param"""
+
     def __init__(self, fallback):
         self.fallback = fallback
 
@@ -167,11 +174,12 @@ class wait_for_retry_after_header(wait_base):
         # The .outcome property contains the result/exception
         # that came from the underlying function.
         result_headers = retry_state.outcome._result.headers
-        retry_after = result_headers.get("Retry-After") or \
-            result_headers.get("retry-after")
+        retry_after = result_headers.get("Retry-After") or result_headers.get(
+            "retry-after"
+        )
 
         try:
-            log.info('Retrying after {} seconds'.format(retry_after))
+            log.info("Retrying after {} seconds".format(retry_after))
             return int(retry_after)
         except (TypeError, ValueError):
             pass

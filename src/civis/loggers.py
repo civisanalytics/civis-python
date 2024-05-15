@@ -7,9 +7,7 @@ class _LogFilter(logging.Filter):
     def __init__(self, mode, level):
         super().__init__()
         if mode not in ("at_or_below", "above"):
-            raise ValueError(
-                f"mode must be one of {{at_or_below, above}}): {mode}"
-            )
+            raise ValueError(f"mode must be one of {{at_or_below, above}}): {mode}")
         self.mode = mode
         self.level = level
 
@@ -52,9 +50,7 @@ def civis_logger(name=None, level=None, fmt="%(message)s"):
     -------
     :class:`logging.Logger`
     """
-    logger = logging.getLogger(
-        name if name is not None else globals()["__name__"]
-    )
+    logger = logging.getLogger(name if name is not None else globals()["__name__"])
 
     if level is None:
         logger.setLevel(os.getenv("CIVIS_LOG_LEVEL") or logging.INFO)

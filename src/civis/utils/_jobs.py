@@ -77,15 +77,11 @@ def run_template(id, arguments, JSONValue=False, client=None):
         client = APIClient()
     job = client.scripts.post_custom(id, arguments=arguments)
     run = client.scripts.post_custom_runs(job.id)
-    fut = CivisFuture(
-        client.scripts.get_custom_runs, (job.id, run.id), client=client
-    )
+    fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
     fut.result()
     outputs = client.scripts.list_custom_runs_outputs(job.id, run.id)
     if JSONValue:
-        json_output = [
-            o.value for o in outputs if o.object_type == "JSONValue"
-        ]
+        json_output = [o.value for o in outputs if o.object_type == "JSONValue"]
         if len(json_output) == 0:
             log.warning("No JSON output for template {}".format(id))
             return
