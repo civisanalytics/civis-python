@@ -57,6 +57,7 @@ dev-civisml = [
     "feather-format == 0.4.1",
 ]
 docs = [
+    # docs/requirements.txt pins all transitive dependencies for a reproducible doc build.
     "Sphinx == 7.3.7",
     "sphinx-rtd-theme == 2.0.0",
     "numpydoc == 1.7.0",

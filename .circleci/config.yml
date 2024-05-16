@@ -92,13 +92,15 @@ workflows:
           name: pip-audit
           command-run: |
             pip install --upgrade pip setuptools wheel pip-audit && \
-            pip install --progress-bar off -e ".[dev-core,dev-civisml,docs]" && \
+            pip install --progress-bar off -r docs/requirements.txt && \
+            pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
             pip-audit
       - pre-build:
           name: sphinx-build
           command-run: |
-            pip install --progress-bar off -e ".[docs]" && \
+            pip install --progress-bar off -r docs/requirements.txt && \
+            pip install --progress-bar off --no-deps -e . && \
             sphinx-build -b html -n docs/source/ docs/build/
       - pre-build:
           name: twine
