@@ -151,6 +151,9 @@ def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     )
     assert result.job_id == expected_job_id
     assert result.run_id == expected_run_id
+    assert result.job_url == (
+        f"https://platform.civisanalytics.com/spa/#/jobs/{expected_job_id}"
+    )
 
 
 def test_container_future_job_id_run_id():
@@ -162,6 +165,7 @@ def test_container_future_job_id_run_id():
     )
     assert result.job_id == job_id
     assert result.run_id == run_id
+    assert result.job_url == f"https://platform.civisanalytics.com/spa/#/jobs/{job_id}"
 
 
 def test_container_scripts():
