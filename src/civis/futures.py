@@ -39,14 +39,6 @@ class CivisFuture(PollableResult):
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
 
-    Attributes
-    ----------
-    job_id : int
-        First element of the tuple given to `poller_args`
-    run_id : int or None
-        Second element of the tuple given to `poller_args`
-        (`None` if the poller function does not require a run ID)
-
     Examples
     --------
     This example is provided as a function at :func:`~civis.io.query_civis`.
@@ -151,15 +143,37 @@ class CivisFuture(PollableResult):
 
     @property
     def job_id(self):
+        """The job ID for the Civis Platform job that this future is tracking.
+
+        Returns
+        -------
+        int
+        """
         return self.poller_args[0]
 
     @property
     def run_id(self):
+        """The run ID for the Civis Platform job that this future is tracking.
+
+        Returns
+        -------
+        int | None
+        """
         try:
             return self.poller_args[1]
         except IndexError:
             # when poller function has job_id only but not run_id
             return None
+
+    @property
+    def job_url(self):
+        """The URL for the Civis Platform job that this future is tracking.
+
+        Returns
+        -------
+        str
+        """
+        return f"https://platform.civisanalytics.com/spa/#/jobs/{self.job_id}"
 
     def _check_message(self, message):
         try:
