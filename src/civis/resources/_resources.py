@@ -1,10 +1,16 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 from functools import lru_cache
+import hashlib
 import json
 import os
 import re
+import time
 import textwrap
+import threading
 from inspect import Signature, Parameter
+from typing import NamedTuple
 
 from jsonref import JsonRef
 import requests
@@ -48,6 +54,14 @@ ITERATOR_PARAM_DESC = (
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
+
+
+class _CachedAPISpec(NamedTuple):
+    api_spec: OrderedDict
+    timestamp: float
+
+
+_CACHED_API_SPECS: dict[str, _CachedAPISpec] = {}
 
 
 def exclude_resource(path, api_version):
@@ -539,7 +553,6 @@ def parse_api_spec(api_spec, api_version):
     return classes
 
 
-@lru_cache(maxsize=4)
 def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     """Download the Civis API specification.
 
@@ -551,7 +564,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
     user_agent : string, optional
-        Provide this user agent to the the Civis API, along with an
+        Provide this user agent to the Civis API, along with an
         API client version tag and ``requests`` version tag.
     """
     if api_version == "1.0":
@@ -570,8 +583,61 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
     return spec
 
 
-@lru_cache(maxsize=4)
-def generate_classes(api_key, api_version="1.0"):
+@lru_cache
+def _hash_key(api_key: str, thread_id: int) -> str:
+    """Hash the API key, salted by thread id, to use as a cache key."""
+    return hashlib.pbkdf2_hmac(
+        hash_name="sha256",
+        password=api_key.encode(),
+        salt=thread_id.to_bytes(length=16, byteorder="big"),
+        iterations=100_000,
+    ).hex()
+
+
+def _running_in_jupyter_notebook() -> bool:
+    # https://stackoverflow.com/a/39662359
+    try:
+        # get_ipython() is available on the global namespace by default
+        # when IPython is started.
+        shell = get_ipython().__class__.__name__
+        if shell == "ZMQInteractiveShell":
+            return True  # Jupyter notebook or qtconsole
+        elif shell == "TerminalInteractiveShell":
+            return False  # Terminal running IPython
+        else:
+            return False  # Other type (?)
+    except NameError:
+        return False  # Standard Python interpreter
+
+
+@lru_cache
+def _spec_stale_time() -> int:
+    """Return the duration after which a cached API spec is considered stale."""
+    if _running_in_jupyter_notebook():
+        return 60 * 15  # 15 minutes
+    else:
+        return 60 * 60 * 24  # 24 hours
+
+
+def _should_refresh_api_spec(api_key: str, force_refresh_api_spec: bool) -> bool:
+    """Determine whether to refresh the API spec."""
+    if force_refresh_api_spec:
+        return True
+    elif (
+        hashed_key := _hash_key(api_key, threading.get_ident())
+    ) not in _CACHED_API_SPECS:
+        return True
+    else:
+        current = time.time()
+        if (current - _CACHED_API_SPECS[hashed_key].timestamp) > _spec_stale_time():
+            return True
+        else:
+            return False
+
+
+def generate_classes(
+    api_key: str, api_version: str = "1.0", force_refresh_api_spec: bool = False
+):
     """Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -588,13 +654,22 @@ def generate_classes(api_key, api_version="1.0"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
+    force_refresh_api_spec : bool, optional
+        Whether to force re-downloading the API spec,
+        even if the cached version is not stale.
     """
+    global _CACHED_API_SPECS
     if api_version not in API_VERSIONS:
         raise ValueError(
             f"APIClient api_version must be one of {set(API_VERSIONS)}: "
             f"{api_version}"
         )
-    raw_spec = get_api_spec(api_key, api_version)
+    hashed_key = _hash_key(api_key, threading.get_ident())
+    if _should_refresh_api_spec(api_key, force_refresh_api_spec):
+        raw_spec = get_api_spec(api_key, api_version)
+        _CACHED_API_SPECS[hashed_key] = _CachedAPISpec(raw_spec, time.time())
+    else:
+        raw_spec = _CACHED_API_SPECS[hashed_key].api_spec
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version)
 
@@ -619,10 +694,17 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
         json.dump(spec, _fout)
 
 
-def generate_classes_maybe_cached(cache, api_key, api_version):
+def generate_classes_maybe_cached(
+    cache: OrderedDict | str | None,
+    api_key: str,
+    api_version: str,
+    force_refresh_api_spec: bool = False,
+):
     """Generate class objects either from /endpoints or a local cache."""
+    if cache and force_refresh_api_spec:
+        raise TypeError("a API spec cache conflicts with wanting to refresh the spec")
     if cache is None:
-        classes = generate_classes(api_key, api_version)
+        classes = generate_classes(api_key, api_version, force_refresh_api_spec)
     else:
         if isinstance(cache, OrderedDict):
             raw_spec = cache
