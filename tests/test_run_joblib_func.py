@@ -2,6 +2,5 @@ import shutil
 
 
 def test_civis_joblib_worker_command_available():
-    assert shutil.which("civis_joblib_worker"), (
-        "The `civis_joblib_worker` command is not available."
-    )
+    command = "civis_joblib_worker"
+    assert shutil.which(command), f"The `{command}` command is not available."

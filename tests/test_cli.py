@@ -15,7 +15,8 @@ THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def test_civis_command_available():
-    assert shutil.which("civis"), "The `civis` command is not available."
+    command = "civis"
+    assert shutil.which(command), f"The `{command}` command is not available."
 
 
 @mock.patch("civis.cli.__main__.add_extra_commands")

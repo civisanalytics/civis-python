@@ -41,7 +41,7 @@ you will need a Civis Platform API key that is unique to you.
 Instructions for creating a new key are found
 `here <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
 API keys have a set expiration date and new keys will need to be created at
-least every 30 days. The API client will look for a :envvar:`CIVIS_API_KEY`
+least every 30 days. The API client will look for a ``CIVIS_API_KEY``
 environmental variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
 
@@ -60,7 +60,7 @@ Windows
 1. Navigate to "Settings" -> type "environment" in search bar ->
    "Edit environment variables for your account". This can also be found
    in "System Properties" -> "Advanced" -> "Environment Variables...".
-2. In the user variables section, if :envvar:`CIVIS_API_KEY` already exists in
+2. In the user variables section, if ``CIVIS_API_KEY`` already exists in
    the list of environment variables, click on it and press "Edit...".
    Otherwise, click "New..".
 3. Enter CIVIS_API_KEY as the "Variable name".
@@ -74,7 +74,7 @@ Windows
 Installation
 ------------
 
-After creating an API key and setting the :envvar:`CIVIS_API_KEY` environmental
+After creating an API key and setting the ``CIVIS_API_KEY`` environmental
 variable, install the Python package ``civis`` with the recommended method via ``pip``::
 
     pip install civis
