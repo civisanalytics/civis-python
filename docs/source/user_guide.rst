@@ -236,7 +236,7 @@ the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
 
 
 Testing Your Code
-================================
+=================
 
 Once you've written code that uses :class:`~civis.APIClient`,
 you've got to test it. Because you want a testing environment
@@ -307,3 +307,9 @@ you might have code like this:
 Once you've created a mock client object, you have to define
 its behavior based on expected API calls from the function you've defined.
 Also, be sure to use ``mock_client`` so you don't actually have to process an actual API call in your test.
+
+.. currentmodule:: civis.tests
+
+.. autosummary::
+   :toctree: generated
+   create_client_mock

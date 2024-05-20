@@ -118,16 +118,7 @@ todo_include_todos = False
 
 # -- Options for HTML output ----------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-# If building on RTD, the theme is already included. The build will fail if we
-# also include it here. Only add theme if building locally. See
-# https://github.com/snide/sphinx_rtd_theme
-_on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not _on_rtd:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -353,6 +344,13 @@ def _write_resources_rst(class_names, filename, civis_module):
             ".. _api_resources:\n\n"
             "API Resources\n"
             "=============\n\n"
+            ".. note::\n\n"
+            "   As the Civis API is updated from time to time, "
+            "   the API resources available on a :class:`civis.APIClient` "
+            "   instance may differ from what's documented below. "
+            "   While we strive to keep this documentation up-to-date, the Civis API "
+            "   is officially documented at https://api.civisanalytics.com "
+            "   (Civis Platform login required).\n\n"
             ".. toctree::\n"
             "   :titlesonly:\n\n"
         )

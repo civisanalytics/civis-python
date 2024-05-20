@@ -1,5 +1,4 @@
-"""Mock client creation and tooling
-"""
+"""Mock client creation and tooling"""
 
 from functools import lru_cache
 from unittest import mock
@@ -9,13 +8,14 @@ from civis.resources import API_SPEC_PATH
 from civis.response import Response
 
 
-def create_client_mock(cache=API_SPEC_PATH):
+def create_client_mock(cache=None):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters
     ----------
     cache : str, optional
-        Location of the API spec on the local filesystem
+        Location of the API spec on the local filesystem.
+        If ``None`` or not given, the default API spec will be used.
 
     Returns
     -------
@@ -23,6 +23,9 @@ def create_client_mock(cache=API_SPEC_PATH):
         A `Mock` object which looks like an APIClient and which will
         error if any method calls have non-existent / misspelled parameters
     """
+    if cache is None:
+        cache = API_SPEC_PATH
+
     # Create a client from the cache. We'll use this for auto-speccing.
     real_client = _real_client(cache)
 

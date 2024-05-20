@@ -51,7 +51,7 @@ git remote rename origin upstream
 
 ```bash
 cd civis-python
-pip install -e ".[dev-core,dev-civisml,docs]"
+pip install -e ".[dev-core,dev-civisml]"
 ```
 
 ## Making Changes
@@ -62,9 +62,9 @@ Follow these steps each time you plan to make a pull request to civis-python:
    `main` at the upstream repo (`git checkout main && git pull upstream main`).
 2. Make sure you are able to run the test suite locally (`pytest civis`).
 3. Create a feature branch (`git checkout -b my-new-feature`).
-4. Make your change. Don't forget adding or updating tests (under `civis/tests/`).
+4. Make your change. Don't forget adding or updating tests (under `tests/`).
 5. Make sure the test suite, including your new tests, passes
-   (`pytest civis && flake8 civis`).
+   (`pytest && flake8 src tools tests && black --check src tools tests`).
 6. Commit your changes (`git commit -am 'Add some feature'`).
 7. Push to a branch on GitHub:
 

@@ -239,16 +239,17 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
 
     Examples
     --------
+    >>> import civis
     >>> # Upload file at a given path on the local filesystem.
-    >>> file_id = file_to_civis("my_data.csv", 'my_data')
+    >>> file_id = civis.io.file_to_civis("my_data.csv", 'my_data')
     >>> # If not given, ``name`` will be the basename of the given file path.
-    >>> file_id = file_to_civis("foo/bar/data.csv")  # ``name`` is 'data.csv'
+    >>> file_id = civis.io.file_to_civis("foo/bar/data.csv")  # ``name`` is 'data.csv'
     >>> # Upload file which expires in 30 days
     >>> with open("my_data.csv", "r") as f:
-    ...     file_id = file_to_civis(f, 'my_data')
+    ...     file_id = civis.io.file_to_civis(f, 'my_data')
     >>> # Upload file which never expires
     >>> with open("my_data.csv", "r") as f:
-    ...     file_id = file_to_civis(f, 'my_data', expires_at=None)
+    ...     file_id = civis.io.file_to_civis(f, 'my_data', expires_at=None)
 
     Notes
     -----
@@ -340,16 +341,17 @@ def civis_to_file(file_id, buf, client=None):
 
     Examples
     --------
+    >>> import civis
     >>> file_id = 100
     >>> # Download a file to a path on the local filesystem.
-    >>> civis_to_file(file_id, "my_file.txt")
+    >>> civis.io.civis_to_file(file_id, "my_file.txt")
     >>> # Download a file to a file object.
     >>> with open("my_file.txt", "wb") as f:
-    ...    civis_to_file(file_id, f)
+    ...    civis.io.civis_to_file(file_id, f)
     >>> # Download a file as a bytes object.
     >>> import io
     >>> buf = io.BytesIO()
-    >>> civis_to_file(file_id, buf)
+    >>> civis.io.civis_to_file(file_id, buf)
     >>> # Note that s could be converted to a string with s.decode('utf-8').
     >>> s = buf.read()
     """
@@ -430,7 +432,7 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
 
     See Also
     --------
-    APIClient.jobs.list_runs_outputs
+    :func:`civis.APIClient.jobs.list_runs_outputs`
     """
     client = APIClient() if client is None else client
     # Retrieve run outputs

@@ -49,7 +49,8 @@ def query_civis(
 
     Examples
     --------
-    >>> run = query_civis(sql="DELETE schema.table", database='database')
+    >>> import civis
+    >>> run = civis.io.query_civis(sql="DELETE schema.table", database='database')
     >>> run.result()  # Wait for query to complete
     """
     if client is None:
@@ -120,8 +121,9 @@ def transfer_table(
 
     Examples
     --------
-    >>> transfer_table(source_db='Cluster A', dest_db='Cluster B',
-    ...                source_table='schma.tbl', dest_table='schma.tbl')
+    >>> import civis
+    >>> civis.io.transfer_table(source_db='Cluster A', dest_db='Cluster B',
+    ...                         source_table='schma.tbl', dest_table='schma.tbl')
     """
     if client is None:
         client = APIClient()
