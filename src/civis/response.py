@@ -216,6 +216,7 @@ class PaginatedResponse:
 
     Examples
     --------
+    >>> import civis
     >>> client = civis.APIClient()
     >>> queries = client.queries.list(iterator=True)
     >>> for query in queries:

@@ -344,6 +344,13 @@ def _write_resources_rst(class_names, filename, civis_module):
             ".. _api_resources:\n\n"
             "API Resources\n"
             "=============\n\n"
+            ".. note::\n\n"
+            "   As the Civis API is updated from time to time, "
+            "   the API resources available on a :class:`civis.APIClient` "
+            "   instance may differ from what's documented below. "
+            "   While we strive to keep this documentation up-to-date, the Civis API "
+            "   is officially documented at https://api.civisanalytics.com "
+            "   (Civis Platform login required).\n\n"
             ".. toctree::\n"
             "   :titlesonly:\n\n"
         )

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "civis"
-version = "1.16.0"
-description = "Civis Platform API Python Client"
+version = "2.0.0"
+description = "Civis API Python Client"
 readme = "README.rst"
 requires-python = ">= 3.9"
 authors = [ { name = "Civis Analytics", email = "opensource@civisanalytics.com" } ]

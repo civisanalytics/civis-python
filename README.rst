@@ -1,7 +1,9 @@
-Civis Platform API Python Client
-================================
+Civis API Python Client
+=======================
 
-|CircleCI| |PyPI| |PyVersions|
+.. start-include-marker-introductory-paragraph
+
+|PyPI| |PyVersions| |CircleCI| |Documentation|
 
 .. |CircleCI| image:: https://circleci.com/gh/civisanalytics/civis-python.svg?style=shield
    :target: https://circleci.com/gh/civisanalytics/civis-python
@@ -15,13 +17,12 @@ Civis Platform API Python Client
    :target: https://pypi.org/project/civis/
    :alt: Supported python versions for civis-python
 
-Introduction
-------------
+.. |Documentation| image:: https://readthedocs.org/projects/civis-python/badge/?version=latest
+    :target: https://civis-python.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
-.. start-include-marker-introductory-paragraph
-
-The Civis Platform API Python client is a Python package that helps analysts
-and developers interact with the Civis Platform. The package includes a set of
+The Civis API Python client is a Python package that helps analysts
+and developers interact with Civis Platform programmatically. The package includes a set of
 tools around common workflows as well as a convenient interface to make
 requests directly to the Civis API.
 
@@ -40,7 +41,7 @@ you will need a Civis Platform API key that is unique to you.
 Instructions for creating a new key are found
 `here <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
 API keys have a set expiration date and new keys will need to be created at
-least every 30 days. The API client will look for a ``CIVIS_API_KEY``
+least every 30 days. The API client will look for a :envvar:`CIVIS_API_KEY`
 environmental variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
 
@@ -53,13 +54,13 @@ Linux / MacOS
 
 2. Source your shell configuration file (or restart your terminal).
 
-Windows 10
-~~~~~~~~~~
+Windows
+~~~~~~~
 
 1. Navigate to "Settings" -> type "environment" in search bar ->
    "Edit environment variables for your account". This can also be found
    in "System Properties" -> "Advanced" -> "Environment Variables...".
-2. In the user variables section, if ``CIVIS_API_KEY`` already exists in
+2. In the user variables section, if :envvar:`CIVIS_API_KEY` already exists in
    the list of environment variables, click on it and press "Edit...".
    Otherwise, click "New..".
 3. Enter CIVIS_API_KEY as the "Variable name".
@@ -73,7 +74,7 @@ Windows 10
 Installation
 ------------
 
-After creating an API key and setting the ``CIVIS_API_KEY`` environmental
+After creating an API key and setting the :envvar:`CIVIS_API_KEY` environmental
 variable, install the Python package ``civis`` with the recommended method via ``pip``::
 
     pip install civis
@@ -186,19 +187,13 @@ Build Documentation Locally
 
 To install dependencies for building the documentation::
 
-    pip install Sphinx
-    pip install sphinx_rtd_theme
-    pip install numpydoc
+    pip install -r docs/requirements.txt
 
 To build the API documentation locally::
 
-    cd docs
-    make html  # or run `FETCH_REMOTE_RESOURCES=true make html` for the API resources available to the given CIVIS_API_KEY
+    sphinx-build -b html docs/source docs/build/html  # or prepend this command with `FETCH_REMOTE_RESOURCES=true ` for the API resources available to the given CIVIS_API_KEY
 
 Then open ``docs/build/html/index.html``.
-
-Note that this will use your API key in the ``CIVIS_API_KEY`` environment
-variable so it will generate documentation for all the endpoints that you have access to.
 
 Command-line Interface (CLI)
 ----------------------------
