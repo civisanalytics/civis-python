@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added the stub file `client.pyi` to surface the API endpoints and their type annotations
   at a `civis.APIClient` instance to IDEs. (#479)
 - Added the `job_url` property to `CivisFuture` objects. (#482)
+- Added `.readthedocs.yaml` to configure the ReadTheDocs build. (#483)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)
