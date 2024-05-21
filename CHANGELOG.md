@@ -73,7 +73,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 - Added the `pip-audit` check to CI
-  for potential security vulnerabilities of Python dependencies. (#476)
+  for potential security vulnerabilities of Python dependencies. (#476, #485)
 
 ## 1.16.1 - 2023-07-10
 ### Changed
