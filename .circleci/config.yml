@@ -95,7 +95,7 @@ workflows:
             pip install --progress-bar off -r docs/requirements.txt && \
             pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
-            pip-audit
+            pip-audit --skip-editable
       - pre-build:
           name: sphinx-build
           command-run: |
