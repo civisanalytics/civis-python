@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
-## 2.0.1 - 2024-05-23
+## 2.1.0 - 2024-05-23
 
 ### Added
 - Added `.json()` at `civis.response.Response` to return the original JSON data from Civis API. (#486)
