@@ -246,6 +246,57 @@ def test_response_cross_compatibility():
     )
 
 
+def test_response_arguments_preserve_case():
+    json_data = {
+        "arguments": {"FOO": 123, "FOO_BAR": 456},
+    }
+    response = Response(json_data)
+    assert response.arguments.FOO == 123
+    assert response.arguments.FOO_BAR == 456
+    with pytest.raises(AttributeError):
+        response.arguments.foo
+    with pytest.raises(KeyError):
+        response.arguments["foo"]
+    with pytest.raises(AttributeError):
+        response.arguments.foo_bar
+    with pytest.raises(KeyError):
+        response.arguments["foo_bar"]
+
+
+@pytest.mark.parametrize(
+    "source, as_snake_case",
+    [
+        ({"foo": {"barBar": 1}}, {"foo": {"bar_bar": 1}}),
+        (
+            {"fooBar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
+            {"foo_bar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
+        ),
+    ],
+)
+def test_json(source, as_snake_case):
+    response = Response(source)
+    assert response.json() == as_snake_case
+    assert response.json(snake_case=False) == source
+
+
+def test_json_no_data():
+    response = Response(None)
+    assert response.json() == {}
+    assert response.json(snake_case=False) == {}
+
+
+@pytest.mark.parametrize("snake_case", [True, False])
+def test_json_preserve_original_dict(snake_case):
+    # User may want to modify the dict from response.json().
+    # Make sure the dict from response.json() is not the same object as
+    # the original dict passed to Response.
+    json_data = {"foo": 123, "bar": 456}
+    id_original = id(json_data)
+    response = Response(json_data)
+    id_in_response = id(response.json(snake_case=snake_case))
+    assert id_original != id_in_response
+
+
 @pytest.mark.parametrize(
     "json_data, expected_length",
     [

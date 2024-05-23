@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.1.0 - 2024-05-23
+
+### Added
+- Added `.json()` at `civis.response.Response` to return the original JSON data from Civis API. (#486)
+
+### Changed
+- Updated the Civis API spec. (#486)
+
+### Fixed
+- Fixed `civis.response.Response` so that keys that shouldn't be mutated for casing,
+  specifically those under `"arguments"`, are now kept unchanged. (#486)
+
 ## 2.0.0 - 2024-05-21
 
 ### Breaking Changes from v1.x.x to v2.0.0

@@ -312,4 +312,5 @@ Also, be sure to use ``mock_client`` so you don't actually have to process an ac
 
 .. autosummary::
    :toctree: generated
+
    create_client_mock
