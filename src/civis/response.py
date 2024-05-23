@@ -87,7 +87,10 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
 
 
 def _raise_response_immutable_error():
-    raise CivisImmutableResponseError("Response object is not mutable")
+    raise CivisImmutableResponseError(
+        "Response object is read-only. "
+        "Did you want to call .json() for a dictionary that you can modify?"
+    )
 
 
 class Response:
@@ -107,7 +110,7 @@ class Response:
         Total number of calls per API rate limit period.
     """
 
-    def __init__(self, json_data, *, headers=None):
+    def __init__(self, json_data, *, headers=None, snake_case=True):
         self.json_data = json_data
         self.headers = headers
         self.calls_remaining = (
@@ -124,14 +127,26 @@ class Response:
             for key, v in json_data.items():
 
                 if isinstance(v, dict):
-                    val = Response(v)
+                    # Script arguments are often environment variables in
+                    # ALL_CAPS that we don't want to convert to snake_case.
+                    if key == "arguments":
+                        val = Response(v, snake_case=False)
+                    else:
+                        val = Response(v)
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o for o in v]
                 else:
                     val = v
 
+                key_snake = camel_to_snake(key) if snake_case else key
+
                 self._data_camel[key] = val
-                self._data_snake[camel_to_snake(key)] = val
+                self._data_snake[key_snake] = val
+
+    def json(self):
+        """Return the original JSON data as a dictionary."""
+        if self.json_data is not None:
+            return self.json_data.copy()
 
     def __setattr__(self, key, value):
         if key == "__dict__":
@@ -170,12 +185,14 @@ class Response:
         return repr(self._data_snake)
 
     def get(self, key, default=None):
+        """Get the value for the given key."""
         try:
             return self.__getitem__(key)
         except KeyError:
             return default
 
     def items(self):
+        """Return an iterator of the key-value pairs in the response."""
         return self._data_snake.items()
 
     def __eq__(self, other):

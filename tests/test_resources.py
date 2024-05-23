@@ -11,7 +11,7 @@ import civis
 from civis.base import Endpoint
 from civis.resources import _resources, API_SPEC, API_SPEC_PATH
 from civis.resources._resources import BASE_RESOURCES_V1
-from civis.resources._client_pypi import generate_client_pyi, CLIENT_PYI_PATH
+from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
 
 
