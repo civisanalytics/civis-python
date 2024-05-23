@@ -263,27 +263,38 @@ def test_response_arguments_preserve_case():
         response.arguments["foo_bar"]
 
 
-def test_json():
-    # JSON data from the Civis API is in camelCase.
-    json_data = {"foo": 123, "bar": {"bazQux": 456}}
-    response = Response(json_data)
-    assert response.json() == json_data
+@pytest.mark.parametrize(
+    "source, as_snake_case",
+    [
+        ({"foo": {"barBar": 1}}, {"foo": {"bar_bar": 1}}),
+        (
+            {"fooBar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
+            {"foo_bar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
+        ),
+    ],
+)
+def test_json(source, as_snake_case):
+    response = Response(source)
+    assert response.json() == as_snake_case
+    assert response.json(snake_case=False) == source
 
 
-def test_json_preserve_original_dict():
+def test_json_no_data():
+    response = Response(None)
+    assert response.json() == {}
+    assert response.json(snake_case=False) == {}
+
+
+@pytest.mark.parametrize("snake_case", [True, False])
+def test_json_preserve_original_dict(snake_case):
     # User may want to modify the dict from response.json().
     # Make sure the dict from response.json() is not the same object as
     # the original dict passed to Response.
     json_data = {"foo": 123, "bar": 456}
     id_original = id(json_data)
     response = Response(json_data)
-    id_in_response = id(response.json())
+    id_in_response = id(response.json(snake_case=snake_case))
     assert id_original != id_in_response
-
-
-def test_json_no_data():
-    response = Response(None)
-    assert response.json() is None
 
 
 @pytest.mark.parametrize(

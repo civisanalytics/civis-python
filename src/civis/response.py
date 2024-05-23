@@ -143,10 +143,34 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[key_snake] = val
 
-    def json(self):
-        """Return the original JSON data as a dictionary."""
-        if self.json_data is not None:
+    def json(self, snake_case=True):
+        """Return the JSON data.
+
+        Parameters
+        ----------
+        snake_case : bool, optional
+            If True (the default), return the keys in snake case.
+            If False, return the keys in camel case.
+
+        Returns
+        -------
+        dict
+        """
+        if self.json_data is None:
+            return {}
+        elif snake_case:
+            return self._to_dict_with_snake_case_keys()
+        else:
             return self.json_data.copy()
+
+    def _to_dict_with_snake_case_keys(self):
+        result = {}
+        for k, v in self._data_snake.items():
+            if isinstance(v, Response):
+                result[k] = v._to_dict_with_snake_case_keys()
+            else:
+                result[k] = v
+        return result
 
     def __setattr__(self, key, value):
         if key == "__dict__":
