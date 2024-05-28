@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.2.0 - 2024-05-28
+
+## Added
+- `civis.response.Response` has its own "repr" and pretty-print format,
+  instead of the previous dict-like representation that would incorrectly suggest immutability. (#487)
+- Added the `--version` flag to the command line interface. (#487)
+
+## Fixed
+- Fixed API response objects' `.json()` for lists. (#487)
+- Fixed `civis_logger` for always having the attribute `propagate` attribute set to `False`
+  so that it can also be used for notebooks and services/apps on Civis Platform. (#487)
+
 ## 2.1.0 - 2024-05-23
 
 ### Added
