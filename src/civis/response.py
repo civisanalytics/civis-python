@@ -1,3 +1,8 @@
+import dataclasses
+import functools
+import json
+import pprint
+
 import requests
 
 from civis._utils import camel_to_snake
@@ -123,6 +128,8 @@ class Response:
         self._data_camel = {}
         self._data_snake = {}
 
+        self._inner_response = False
+
         if json_data is not None:
             for key, v in json_data.items():
 
@@ -133,8 +140,11 @@ class Response:
                         val = Response(v, snake_case=False)
                     else:
                         val = Response(v)
+                    val._inner_response = True
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o for o in v]
+                    for r in val:
+                        r._inner_response = True
                 else:
                     val = v
 
@@ -143,6 +153,7 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[key_snake] = val
 
+    @functools.lru_cache
     def json(self, snake_case=True):
         """Return the JSON data.
 
@@ -182,6 +193,7 @@ class Response:
             "rate_limit",
             "_data_camel",
             "_data_snake",
+            "_inner_response",
         ):
             self.__dict__[key] = value
         else:
@@ -206,7 +218,27 @@ class Response:
         return len(self._data_snake)
 
     def __repr__(self):
-        return repr(self._data_snake)
+        return repr(self._to_dataclass_repr_pprint())
+
+    def __hash__(self):
+        return hash(json.dumps(self.json_data))
+
+    def _to_dataclass_repr_pprint(self):
+        """Convert the response to a dataclass for repr and pprint purposes."""
+        # Only show the "Response" class name at the outermost level.
+        class_name = "" if self._inner_response else "Response"
+        klass = dataclasses.make_dataclass(class_name, self._data_snake.keys())
+        return klass(**self._data_snake)
+
+    def _repr_pretty_(self, p, cycle):
+        """Pretty-print the response object in IPython and Jupyter.
+
+        https://ipython.readthedocs.io/en/stable/api/generated/IPython.lib.pretty.html#extending
+        """
+        if cycle:
+            p.text("Response(...)")
+        else:
+            p.text(pprint.pformat(self._to_dataclass_repr_pprint()))
 
     def get(self, key, default=None):
         """Get the value for the given key."""
@@ -234,6 +266,21 @@ class Response:
     def _replace(self, key, value):
         """Only used within this repo; `key` assumed to be in snake_case."""
         self._data_snake[key] = value
+
+
+class _ResponsePrettyPrinter(pprint.PrettyPrinter):
+    """Override pprint.PrettyPrinter so that pprint.pprint(response) works nicely.
+
+    https://stackoverflow.com/a/15417704
+    """
+
+    def _format(self, obj, stream, indent, allowance, context, level):
+        if isinstance(obj, Response):
+            obj = obj._to_dataclass_repr_pprint()
+        super()._format(obj, stream, indent, allowance, context, level)
+
+
+pprint.PrettyPrinter = _ResponsePrettyPrinter
 
 
 class PaginatedResponse:
