@@ -104,7 +104,7 @@ class Response:
     ----------
     json_data : dict | None
         This is `json_data` as it is originally returned to the user without
-        the key names being changed. See Notes. None is used if the original
+        the key names being changed. None is used if the original
         response returned a 204 No Content response.
     headers : dict
         This is the header for the API call without changing the key names.
@@ -144,7 +144,8 @@ class Response:
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o for o in v]
                     for r in val:
-                        r._inner_response = True
+                        if isinstance(r, Response):
+                            r._inner_response = True
                 else:
                     val = v
 
