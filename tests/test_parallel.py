@@ -234,7 +234,7 @@ def test_infer(mock_make_factory, mock_job):
     ):
         civis.parallel.infer_backend_factory(client=mock_client)
 
-    expected = mock_job._data_snake
+    expected = mock_job.json()
     del expected["from_template_id"]
     del expected["id"]
     mock_make_factory.assert_called_once_with(
@@ -460,7 +460,7 @@ def test_result_exception_no_result(m_sleep):
     with pytest.raises(TransportableException) as exc:
         res.get()
 
-    assert "{'state': 'failed'}" in str(exc.value)
+    assert "Response(state='failed')" in str(exc.value)
     assert callback.call_count == 0
 
 

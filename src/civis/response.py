@@ -1,5 +1,4 @@
 import dataclasses
-import functools
 import json
 import pprint
 
@@ -125,6 +124,7 @@ class Response:
             int(x) if (x := (headers or {}).get("X-RateLimit-Limit")) else x
         )
 
+        # Note that these two dicts can have Response objects as values.
         self._data_camel = {}
         self._data_snake = {}
 
@@ -153,7 +153,6 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[key_snake] = val
 
-    @functools.lru_cache
     def json(self, snake_case=True):
         """Return the JSON data.
 
@@ -177,7 +176,12 @@ class Response:
     def _to_dict_with_snake_case_keys(self):
         result = {}
         for k, v in self._data_snake.items():
-            if isinstance(v, Response):
+            if isinstance(v, list):
+                result[k] = [
+                    o._to_dict_with_snake_case_keys() if isinstance(o, Response) else o
+                    for o in v
+                ]
+            elif isinstance(v, Response):
                 result[k] = v._to_dict_with_snake_case_keys()
             else:
                 result[k] = v
@@ -262,10 +266,6 @@ class Response:
     def __setstate__(self, state):
         """Set the state when unpickling, to avoid RecursionError."""
         self.__dict__ = state
-
-    def _replace(self, key, value):
-        """Only used within this repo; `key` assumed to be in snake_case."""
-        self._data_snake[key] = value
 
 
 class _ResponsePrettyPrinter(pprint.PrettyPrinter):
