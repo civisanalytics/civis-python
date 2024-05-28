@@ -60,12 +60,7 @@ def civis_logger(name=None, level=None, fmt="%(message)s"):
     # When running on Civis Platform (as opposed to unit tests in CI),
     # we don't want to propagate log records to the root logger
     # in order to avoid duplicate logs.
-    # But in running unit tests we do want to leave `propagate` as `True`,
-    # or else all the logging/caplog tests would fail.
-    # The user can set the `propagate` attribute of the resulting logger
-    # back to True if they so choose.
-    if os.getenv("CIVIS_JOB_ID") and os.getenv("CIVIS_RUN_ID"):
-        logger.propagate = False
+    logger.propagate = False
 
     if isinstance(fmt, logging.Formatter):
         platform_fmt = fmt
