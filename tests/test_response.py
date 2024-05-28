@@ -1,6 +1,7 @@
 import io
 import pickle
 import pprint
+import sys
 from string import ascii_lowercase
 from unittest import mock
 
@@ -273,6 +274,11 @@ def test_response_arguments_preserve_case():
             {"fooBar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
             {"foo_bar": 1, "arguments": {"FOO": 2, "FOO_BAR": 3}},
         ),
+        (
+            {"fooBar": [{"name": "a", "type": "b"}, {"name": "c", "type": "d"}]},
+            {"foo_bar": [{"name": "a", "type": "b"}, {"name": "c", "type": "d"}]},
+        ),
+        ({"fooBar": ["a", "b", "c"]}, {"foo_bar": ["a", "b", "c"]}),
     ],
 )
 def test_json(source, as_snake_case):
@@ -336,6 +342,13 @@ def test_repr(json_data, expected_repr):
     assert repr(response) == expected_repr
 
 
+@pytest.mark.skipif(
+    sys.version_info < (3, 10),
+    reason=(
+        "pprint for dataclasses is only available since 3.10+, "
+        "https://bugs.python.org/issue43080"
+    ),
+)
 @pytest.mark.parametrize(
     "json_data, expected",
     [
