@@ -194,15 +194,17 @@ def infer_backend_factory(
     if not os.environ.get("CIVIS_JOB_ID"):
         raise RuntimeError("This function must be run " "inside a container job.")
     state = client.scripts.get_containers(os.environ["CIVIS_JOB_ID"])
+    state_json = state.json()
     if state.from_template_id:
         # If this is a Custom Script from a template, we need the
         # backing script. Make sure to save the arguments from
         # the Custom Script: those are the only user-settable parts.
         template = client.templates.get_scripts(state.from_template_id)
         try:
-            custom_args = state.arguments
+            custom_args = state_json["arguments"]
             state = client.scripts.get_containers(template.script_id)
-            state._replace("arguments", custom_args)
+            state_json = state.json()
+            state_json["arguments"] = custom_args
         except civis.base.CivisAPIError as err:
             if err.status_code == 404:
                 raise RuntimeError(
@@ -216,38 +218,38 @@ def infer_backend_factory(
 
     # Default to this container's resource requests, but
     # allow users to override it.
-    state.required_resources._data_snake.update(required_resources or {})
+    state_json["required_resources"].update(required_resources or {})
 
     # Update parameters with user input
     params = params or []
     for input_param in params:
-        for i, param in enumerate(list(state.params)):
+        for param in state_json["params"]:
             if param["name"] == input_param["name"]:
-                param._data_snake.update(input_param)
+                param.update(input_param)
                 break
         else:
-            state._data_snake["params"].append(input_param)
+            state_json["params"].append(input_param)
 
     # Update arguments with input
-    state.arguments._data_snake.update(arguments or {})
+    state_json["arguments"].update(arguments or {})
 
     # Set defaults on other keyword arguments with
     # values from the current script
     for key in KEYS_TO_INFER:
-        kwargs.setdefault(key, state[key])
+        kwargs.setdefault(key, state_json[key])
 
     # Don't include parent job params since they're added automatically
     # in _ContainerShellExecutor.__init__.
     filtered_params = [
         p
-        for p in state.params
+        for p in state_json["params"]
         if p["name"].upper() not in ("CIVIS_PARENT_JOB_ID", "CIVIS_PARENT_RUN_ID")
     ]
 
     return make_backend_factory(
-        required_resources=state.required_resources,
+        required_resources=state_json["required_resources"],
         params=filtered_params,
-        arguments=state.arguments,
+        arguments=state_json["arguments"],
         client=client,
         polling_interval=polling_interval,
         setup_cmd=setup_cmd,

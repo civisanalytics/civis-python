@@ -106,7 +106,7 @@ def _single_upload(buf, name, client, **kwargs):
     # http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html
     # Note that the payload must have "key" first and "file" last.
     url = file_response.upload_url
-    form = file_response.upload_fields._data_snake
+    form = file_response.upload_fields.json()
     form_key = OrderedDict(key=form.pop("key"))
     form_key.update(form)
 

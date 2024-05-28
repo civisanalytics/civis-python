@@ -8,7 +8,11 @@ def _get_test_logger(*args, **kwargs):
     # Need to use a logger of a different name in each test function,
     # or else we'd hit this issue:
     # https://github.com/pytest-dev/pytest/issues/5577
-    return civis_logger(name=str(uuid4()), *args, **kwargs)
+    logger = civis_logger(name=str(uuid4()), *args, **kwargs)
+    # Set `propagate` back to `True`,
+    # or else all the logging/caplog tests would fail.
+    logger.propagate = True
+    return logger
 
 
 def test_civis_logger_base_case(caplog, capsys):

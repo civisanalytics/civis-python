@@ -112,7 +112,9 @@ def _check_executor(from_template_id=None):
         future = bpe.submit("foo")
 
     # Mock and test running, future.job_id, and done()
-    mock_run._replace("state", "running")
+    mock_run_json = mock_run.json()
+    mock_run_json["state"] = "running"
+    mock_run = response.Response(mock_run_json)
     assert future.running(), "future is incorrectly marked as not running"
     assert future.job_id == job_id, "job_id not stored properly"
     assert not future.done(), "future is incorrectly marked as done"
@@ -124,11 +126,15 @@ def _check_executor(from_template_id=None):
     assert not future.running(), "running() did not return False as expected"
 
     # Mock and test done()
-    mock_run._replace("state", "succeeded")
+    mock_run_json = mock_run.json()
+    mock_run_json["state"] = "succeeded"
+    mock_run = response.Response(mock_run_json)
     assert future.done(), "done() did not return True as expected"
 
     # Test cancelling all jobs.
-    mock_run._replace("state", "running")
+    mock_run_json = mock_run.json()
+    mock_run_json["state"] = "running"
+    mock_run = response.Response(mock_run_json)
     bpe.cancel_all()
     assert future.cancelled(), "cancel_all() failed"
 
@@ -298,8 +304,9 @@ def _setup_client_mock(job_id=-10, run_id=100, n_failures=8, failure_is_error=Fa
     )
 
     def change_state_to_cancelled(job_id):
-        mock_container_run._replace("state", "cancelled")
-        return mock_container_run
+        mock_container_run_json = mock_container_run.json()
+        mock_container_run_json["state"] = "cancelled"
+        return response.Response(mock_container_run_json)
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
 
@@ -325,7 +332,9 @@ def test_cancel_finished_job():
         }
     ).encode()
     c.scripts.post_cancel.side_effect = CivisAPIError(err_resp)
-    c.scripts.post_containers_runs.return_value._replace("state", "running")
+    resp_json = c.scripts.post_containers_runs.return_value.json()
+    resp_json["state"] = "running"
+    c.scripts.post_containers_runs.return_value = response.Response(resp_json)
     fut = ContainerFuture(
         -10, 100, polling_interval=1, client=c, poll_on_creation=False
     )
