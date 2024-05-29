@@ -8,40 +8,16 @@ import os
 import pickle  # nosec
 from tempfile import TemporaryDirectory
 import time
-import warnings
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
-from joblib import register_parallel_backend as _joblib_reg_para_backend
+from joblib import register_parallel_backend
 import requests
 
 import civis
 from civis.base import CivisAPIError
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
-try:
-    with warnings.catch_warnings():
-        # Ignore the warning: "DeprecationWarning: sklearn.externals.joblib is
-        # deprecated in 0.21 and will be removed in 0.23. Please import this
-        # functionality directly from joblib, which can be installed with:
-        # pip install joblib. If this warning is raised when loading pickled
-        # models, you may need to re-serialize those models with
-        # scikit-learn 0.21+."
-        warnings.simplefilter("ignore", DeprecationWarning)
-        # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
-        warnings.simplefilter("ignore", FutureWarning)
-        from sklearn.externals.joblib import (
-            register_parallel_backend as _sklearn_reg_para_backend,
-        )
-
-        # NO_SKLEARN_BACKEND would be a better name here since it'll be true
-        # for future scikit-learn versions that won't include the joblib
-        # module as well as when scikit-learn isn't installed, but changing
-        # the name would technically be a breaking change.
-        NO_SKLEARN = False
-except ImportError:
-    NO_SKLEARN = True
-    _sklearn_reg_para_backend = None
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -627,21 +603,7 @@ def _setup_remote_backend(remote_backend):
         def backend_factory():
             return _CivisBackend.from_existing(remote_backend)
 
-        # joblib and global state: fun!
-        #
-        # joblib internally maintains a global list of backends and
-        # specifically tracks which backend is currently in use. Further,
-        # sklearn ships its own COPY of the entire joblib package at
-        # `sklearn.externals.joblib`. Thus there are TWO copies of joblib
-        # in use (the joblib package and the one in sklearn) and thus different
-        # global states that need to be handeled. Whew.
-        #
-        # Therefore, we have to register our backend with both copies in order
-        # to allow our containers to run `Parallel` objects from both copies
-        # of joblib. Yay!
-        _joblib_reg_para_backend("civis", backend_factory)
-        if not NO_SKLEARN:
-            _sklearn_reg_para_backend("civis", backend_factory)
+        register_parallel_backend("civis", backend_factory)
         return "civis"
     else:
         return remote_backend

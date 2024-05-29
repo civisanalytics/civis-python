@@ -538,22 +538,12 @@ def test_result_running_and_cancel_requested(mock_civis):
 
 
 @mock.patch.object(civis.parallel, "civis")
-@mock.patch.object(civis.parallel, "_sklearn_reg_para_backend")
-@mock.patch.object(civis.parallel, "_joblib_reg_para_backend")
-def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
-    # Test that the civis backend is properly registered w/ joblib and sklearn.
-    for no_sk in [True, False]:
-        with mock.patch.object(civis.parallel, "NO_SKLEARN", no_sk):
-            backend = civis.parallel._CivisBackend()
-            backend_name = civis.parallel._setup_remote_backend(backend)
-            assert backend_name == "civis"
-            assert mock_jl.call_count == 1
-            if no_sk:
-                assert mock_sk.call_count == 0
-            else:
-                assert mock_sk.call_count == 1
-            mock_jl.reset_mock()
-            mock_sk.reset_mock()
+@mock.patch.object(civis.parallel, "register_parallel_backend")
+def test_setup_remote_backend(mock_register, mock_civis):
+    backend = civis.parallel._CivisBackend()
+    backend_name = civis.parallel._setup_remote_backend(backend)
+    assert backend_name == "civis"
+    assert mock_register.call_count == 1
 
 
 def test_civis_backend_from_existing():
