@@ -17,12 +17,6 @@ import warnings
 
 import civis
 import cloudpickle
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from joblib.my_exceptions import TransportableException
-
-from joblib.format_stack import format_exc
 from joblib import parallel_backend as _joblib_para_backend
 
 try:
@@ -88,13 +82,9 @@ def worker_func(func_file_id):
             with _sklearn_para_backend(_backend):
                 with _joblib_para_backend(_backend):
                     result = func()
-    except Exception:
+    except Exception as exc:
         print("Error! Attempting to record exception.")
-        # Wrap the exception in joblib's TransportableException
-        # so that joblib can properly display the results.
-        e_type, e_value, e_tb = sys.exc_info()
-        text = format_exc(e_type, e_value, e_tb, context=10, tb_offset=1)
-        result = TransportableException(text, e_type)
+        result = exc  # TODO check how this exc result is going to be used downstream
         raise
     finally:
         # Serialize the result and upload it to the Files API.

@@ -12,11 +12,6 @@ import warnings
 
 import cloudpickle
 from joblib._parallel_backends import ParallelBackendBase
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from joblib.my_exceptions import TransportableException
-
 from joblib import register_parallel_backend as _joblib_reg_para_backend
 import requests
 
@@ -794,9 +789,9 @@ class _CivisBackendResult:
 
         Raises
         ------
-        TransportableException
+        CivisJobFailure
             Any error in the remote job will result in a
-            ``TransportableException``, to be handled by ``Parallel.retrieve``.
+            ``CivisJobFailure``, to be handled by ``Parallel.retrieve``.
         futures.CancelledError
             If the remote job was cancelled before completion
         """
@@ -814,10 +809,7 @@ class _CivisBackendResult:
             if self.result is not None:
                 raise self.result
             else:
-                # Use repr for the message because the API exception
-                # typically has str(exc)==None.
-                exc = self._future.exception()
-                raise TransportableException(repr(exc), type(exc))
+                raise self._future.exception()
 
         return self.result
 

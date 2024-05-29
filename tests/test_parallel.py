@@ -1,16 +1,11 @@
 from math import sqrt
 import io
 import pickle
-import warnings
 from unittest import mock
 
 import pytest
 from joblib import delayed, Parallel
 from joblib import parallel_backend, register_parallel_backend
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from joblib.my_exceptions import TransportableException
 
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.response import Response
@@ -447,7 +442,7 @@ def test_result_exception(m_sleep, mock_civis):
 @mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
 def test_result_exception_no_result(m_sleep):
     # If the job errored but didn't write an output, we should get
-    # a generic TransportableException back.
+    # a CivisJobFailure back.
     callback = mock.MagicMock()
 
     mock_client = create_client_mock_for_container_tests(
@@ -457,7 +452,7 @@ def test_result_exception_no_result(m_sleep):
     res = civis.parallel._CivisBackendResult(fut, callback)
     fut._set_api_exception(CivisJobFailure(Response({"state": "failed"})))
 
-    with pytest.raises(TransportableException) as exc:
+    with pytest.raises(CivisJobFailure) as exc:
         res.get()
 
     assert "Response(state='failed')" in str(exc.value)
