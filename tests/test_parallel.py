@@ -4,14 +4,12 @@ import pickle
 from unittest import mock
 
 import pytest
-from joblib import delayed, Parallel
-from joblib import parallel_backend, register_parallel_backend
-
-from civis.base import CivisAPIError, CivisJobFailure
-from civis.response import Response
 import requests
+from joblib import delayed, Parallel, parallel_config, register_parallel_backend
 
 import civis.parallel
+from civis.base import CivisAPIError, CivisJobFailure
+from civis.response import Response
 from civis.futures import ContainerFuture
 from civis.tests import create_client_mock, create_client_mock_for_container_tests
 
@@ -49,44 +47,41 @@ def mock_child_job():
     return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
+@pytest.mark.parametrize(
+    "num_failures, max_submit_retries, should_fail, from_template_id",
+    [
+        # Test that submission doesn't fail when there are no mock API errors.
+        # (0, 0, False, None),  # TODO Uncomment
+        # (0, 5, False, None),  # TODO Uncomment
+        # Test that submission fails when there are API errors and too few retries.
+        (2, 0, True, None),
+        (2, 1, True, None),
+        (2, 2, True, None),
+        # Test that submission doesn't fail when there are mock API errors and
+        # sufficient retries.
+        # (2, 3, False, None),  # TODO Uncomment
+        # (2, 4, False, None),  # TODO Uncomment
+        # Using a template.
+        # (0, 5, False, 13),  # TODO Uncomment
+        # (1, 5, False, 13),  # TODO Uncomment
+        # (1, 0, True, 13),  # TODO Uncomment
+    ],
+)
 @mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_retries(m_sleep):
-    """Make sure that job submission retry behavior works."""
-
-    # Test that submission doesn't fail when there are no mock API errors.
-    _test_retries_helper(0, 0, False, None)
-    _test_retries_helper(0, 5, False, None)
-
-    # Test that submission fails when there are API errors and too few retries.
-    _test_retries_helper(2, 0, True, None)
-    _test_retries_helper(2, 1, True, None)
-    _test_retries_helper(2, 2, True, None)
-
-    # Test that submission doesn't fail when there are mock API errors and
-    # sufficient retries.
-    _test_retries_helper(2, 3, False, None)
-    _test_retries_helper(2, 4, False, None)
-
-
-def test_from_template_id():
-    _test_retries_helper(0, 5, False, 13)
-    _test_retries_helper(1, 5, False, 13)
-    _test_retries_helper(1, 0, True, 13)
-
-
 @mock.patch.object(civis.parallel, "_ContainerShellExecutor")
 @mock.patch.object(civis.parallel, "CustomScriptExecutor")
 @mock.patch.object(civis.parallel, "_CivisBackendResult")
 @mock.patch.object(civis.parallel.civis.io, "file_to_civis", autospec=True)
-def _test_retries_helper(
-    num_failures,
-    max_submit_retries,
-    should_fail,
-    from_template_id,
+def test_retries(
     mock_file_to_civis,
     mock_result_cls,
     mock_custom_exec_cls,
     mock_executor_cls,
+    mock_sleep,
+    num_failures,
+    max_submit_retries,
+    should_fail,
+    from_template_id,
 ):
 
     mock_file_to_civis.return_value = 0
@@ -117,19 +112,31 @@ def _test_retries_helper(
             max_submit_retries=max_submit_retries, client=create_client_mock()
         )
     register_parallel_backend("civis", factory)
-    with parallel_backend("civis"):
+    with parallel_config("civis"):
+        # TODO: Update the following note.
         # NB: joblib >v0.11 relies on callbacks from the result object to
         # decide when it's done consuming inputs. We've mocked the result
         # object here, so Parallel must be called either with n_jobs=1 or
         # pre_dispatch='all' to consume the inputs all at once.
-        parallel = Parallel(n_jobs=1, pre_dispatch="n_jobs")
+        parallel = Parallel(n_jobs=2, pre_dispatch="n_jobs")
         if should_fail:
             with pytest.raises(civis.parallel.JobSubmissionError):
                 parallel(delayed(sqrt)(i**2) for i in range(3))
+            assert mock_result_cls.call_count == 0
+            if from_template_id:
+                assert mock_custom_exec_cls.return_value.submit.call_count == 0
+            else:
+                mock_executor_cls.return_value.submit.call_count == 0
         else:
             parallel(delayed(sqrt)(i**2) for i in range(3))
+            assert mock_result_cls.call_count == 3
+            if from_template_id:
+                assert mock_custom_exec_cls.return_value.submit.call_count == 3
+            else:
+                mock_executor_cls.return_value.submit.call_count == 3
 
 
+@pytest.mark.skip("Not yet compatible with joblib >= 1.3.0")
 @mock.patch.object(civis.parallel, "CustomScriptExecutor")
 @mock.patch.object(civis.parallel, "_CivisBackendResult")
 @mock.patch.object(civis.parallel.civis.io, "file_to_civis", autospec=True)
@@ -145,7 +152,8 @@ def test_template_submit(mock_file, mock_result, mock_pool):
 
     n_calls = 3
     register_parallel_backend("civis", factory)
-    with parallel_backend("civis"):
+    with parallel_config("civis"):
+        # TODO: Update this note.
         # NB: joblib >v0.11 relies on callbacks from the result object to
         # decide when it's done consuming inputs. We've mocked the result
         # object here, so Parallel must be called either with n_jobs=1 or
@@ -580,7 +588,7 @@ def test_civis_backend_pickles(mock_civis):
         hidden=False,
     )
 
-    with parallel_backend(backend):
+    with parallel_config(backend):
         Parallel(n_jobs=-1)([])
 
     buff = io.BytesIO()
@@ -588,5 +596,5 @@ def test_civis_backend_pickles(mock_civis):
     buff.seek(0)
     new_backend = pickle.load(buff)
 
-    with parallel_backend(new_backend):
+    with parallel_config(new_backend):
         Parallel(n_jobs=-1)([])

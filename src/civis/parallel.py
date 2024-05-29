@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 import time
 
 import cloudpickle
-from joblib._parallel_backends import ParallelBackendBase
+from joblib.parallel import ParallelBackendBase
 from joblib import register_parallel_backend
 import requests
 
@@ -163,7 +163,7 @@ def infer_backend_factory(
         client = civis.APIClient()
 
     if not os.environ.get("CIVIS_JOB_ID"):
-        raise RuntimeError("This function must be run " "inside a container job.")
+        raise RuntimeError("This function must be run inside a container job.")
     state = client.scripts.get_containers(os.environ["CIVIS_JOB_ID"])
     state_json = state.json()
     if state.from_template_id:
@@ -332,20 +332,16 @@ def make_backend_factory(
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
 
     >>> # Using the Civis backend:
-    >>> from joblib import parallel_backend, register_parallel_backend
+    >>> from joblib import parallel_config, register_parallel_backend
     >>> from civis.parallel import make_backend_factory
     >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
-    >>> with parallel_backend('civis'):
+    >>> with parallel_config('civis'):
     ...    parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
     ...    print(parallel(delayed(sqrt)(i ** 2) for i in range(10)))
     [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
 
     >>> # Using scikit-learn with the Civis backend:
-    >>> from sklearn.externals.joblib import \
-    ...     register_parallel_backend as sklearn_register_parallel_backend
-    >>> from sklearn.externals.joblib import \
-    ...     parallel_backend as sklearn_parallel_backend
     >>> from sklearn.model_selection import GridSearchCV
     >>> from sklearn.ensemble import GradientBoostingClassifier
     >>> from sklearn.datasets import load_digits
@@ -361,9 +357,9 @@ def make_backend_factory(
     ...                                              random_state=42),
     ...                   param_grid=param_grid,
     ...                   n_jobs=5, pre_dispatch="n_jobs")
-    >>> sklearn_register_parallel_backend('civis', make_backend_factory(
+    >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
-    >>> with sklearn_parallel_backend('civis'):
+    >>> with parallel_config('civis'):
     ...     gs.fit(digits.data, digits.target)
 
     Notes
@@ -922,7 +918,7 @@ class _CivisBackend(ParallelBackendBase):
                         )
                     else:
                         future = self.executor.submit(fn=cmd)
-                        log.debug("started container script with " "command: %s", cmd)
+                        log.debug("started container script with command: %s", cmd)
                     # Stop retrying if submission was successful.
                     break
                 except CivisAPIError as e:
