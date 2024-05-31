@@ -365,7 +365,7 @@ def _write_resources_rst(class_names, filename, civis_module):
                 endpoint_name = class_name.title()
                 full_path = '.'.join((civis_module, endpoint_name))
                 endpoint_rst_file.write(
-                    f"{endpoint_name}\n"
+                    f"{endpoint_name.replace('_', ' ')}\n"
                     f"{'=' * len(endpoint_name)}\n\n"
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))

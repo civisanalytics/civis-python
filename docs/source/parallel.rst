@@ -2,7 +2,7 @@
 Parallel Computation
 ********************
 
-The Civis Platform manages a pool of cloud computing resources.
+Civis Platform manages a pool of cloud computing resources.
 You can access these resources with the tools in the :mod:`civis.parallel`
 and :mod:`civis.futures` modules.
 
@@ -37,9 +37,9 @@ Joblib
 ------
 `joblib <https://joblib.readthedocs.io/en/latest/>`_ is an open source
 Python library which facilitates parallel processing in Python.
-Joblib uses Python's ``multiprocessing`` library to run functions
-in parallel, but it also allows users to define their own
-"back end" for parallel computation. The Civis Python API client takes
+While Joblib comes with its own parallel computation tools,
+it also allows users to define their own
+"back end". The Civis Python API client takes
 advantage of this to let you easily run your own code in parallel
 through Civis Platform.
 
@@ -47,7 +47,7 @@ The :func:`~civis.parallel.make_backend_factory`,
 :func:`~civis.parallel.infer_backend_factory`, and
 :func:`~civis.parallel.make_backend_template_factory` functions allow you
 to define a "civis" parallel computation backend which will transparently
-distribute computation in cloud resources managed by the Civis Platform.
+distribute computation in cloud resources managed by Civis Platform.
 
 See the `joblib user guide <https://joblib.readthedocs.io/en/latest/parallel.html>`_
 for examples of using joblib to do parallel computation.
@@ -84,19 +84,25 @@ function. For example::
     >>> be_factory = make_backend_factory()
     >>> register_parallel_backend('civis', be_factory)
 
-Direct ``joblib`` to use a custom backend by entering a :func:`joblib.parallel_backend`
+Direct ``joblib`` to use a custom backend by entering a :func:`joblib.parallel_config`
 context::
 
-    >>> from joblib import parallel_backend
-    >>> with parallel_backend('civis'):
+    >>> from joblib import parallel_config
+    >>> with parallel_config('civis'):
     ...     # Do joblib parallel computation here.
 
 You can find more about custom joblib backends in the
-`joblib documentation <https://joblib.readthedocs.io/en/latest/parallel.html#custom-backend-api-experimental>`_.
+`joblib documentation <https://joblib.readthedocs.io/en/latest/parallel.html#custom-backend-api>`_.
 
 Note that :class:`joblib.Parallel` takes both a ``n_jobs`` and ``pre_dispatch``
 parameter. The Civis joblib backend doesn't queue submitted jobs itself,
 so it will run ``pre_dispatch`` jobs at once.
+
+.. note::
+    Since joblib v1.3.0, ``n_jobs=1`` will disable the use of the
+    specified parallel backend, and will simply run the given function
+    with a regular ``for`` loop. ``n_jobs=1`` would be useful for testing
+    your code locally before running it in Civis Platform.
 
 .. note::
     The default value of
@@ -105,12 +111,12 @@ so it will run ``pre_dispatch`` jobs at once.
     :class:`joblib.Parallel` call to run at most ``n_jobs`` jobs.
 
 The Civis joblib backend uses `cloudpickle <https://github.com/cloudpipe/cloudpickle>`_
-to transport code and data from the parent environment to the Civis Platform.
+to transport code and data from the parent environment to Civis Platform.
 This means that you may parallelize dynamically-defined functions and classes,
 including lambda functions.
 
 The joblib backend will automatically add environment variables called
-"CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID", holding the values
+``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID``, holding the values
 of the job and run IDs of the Civis Platform job in which you're
 running the joblib backend (if any). Your functions could use these
 to communicate with the parent job or to recognize that they're in
@@ -127,8 +133,8 @@ your container script at run time. Use :func:`~civis.parallel.infer_backend_fact
 anywhere you would use :func:`~civis.parallel.make_backend_factory`,
 and you don't need to specify a Docker image or GitHub repository.
 
-Templated Scripts
------------------
+Script Templates
+----------------
 The :func:`~civis.parallel.make_backend_template_factory` is intended for
 developers who are writing code which may be run by users who don't have
 permissions to create new container scripts with the necessary environment.
@@ -136,10 +142,10 @@ permissions to create new container scripts with the necessary environment.
 Instead of defining and creating new container scripts with
 :func:`~civis.parallel.make_backend_factory`, you can use
 :func:`~civis.parallel.make_backend_template_factory` to launch custom scripts from
-a templated script. To use the template factory, your backing container script must
+a script template. To use the template factory, your backing container script must
 have the Civis Python client installed, and its run command must finish
 by calling ``civis_joblib_worker`` with no arguments. The template must accept the
-parameter "JOBLIB_FUNC_FILE_ID". The Civis joblib backend will use this parameter
+parameter ``JOBLIB_FUNC_FILE_ID``. The Civis joblib backend will use this parameter
 to transport your remote work.
 
 Examples
@@ -155,9 +161,9 @@ Parallel computation using the default joblib backend
     >>> print(parallel(delayed(expensive_calculation)(*a) for a in args))
     [1, 3, 5, 7, 9, 11, 13]
 
-You can do the the same parallel computation using the Civis backend
+You can do the same parallel computation using the Civis backend
 by creating and registering a backend factory and entering a
-``with parallel_backend('civis')`` context. The code below will start
+``with parallel_config('civis')`` context. The code below will start
 seven different jobs in Civis Platform (with up to five running at once).
 Each job will call the function ``expensive_calculation`` with a
 different set of arguments from the list ``args``.::
@@ -165,12 +171,12 @@ different set of arguments from the list ``args``.::
     >>> def expensive_calculation(num1, num2):
     ...     return 2 * num1 + num2
     >>> from joblib import delayed, Parallel
-    >>> from joblib import parallel_backend, register_parallel_backend
+    >>> from joblib import parallel_config, register_parallel_backend
     >>> from civis.parallel import make_backend_factory
     >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
     >>> args = [(0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
-    >>> with parallel_backend('civis'):
+    >>> with parallel_config('civis'):
     ...    parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
     ...    print(parallel(delayed(expensive_calculation)(*a) for a in args))
     [1, 3, 5, 7, 9, 11, 13]
@@ -178,7 +184,7 @@ different set of arguments from the list ``args``.::
 You can use the Civis joblib backend to parallelize any code which
 uses joblib internally, such as scikit-learn::
 
-    >>> from joblib import parallel_backend, register_parallel_backend
+    >>> from joblib import parallel_config, register_parallel_backend
     >>> from sklearn.model_selection import GridSearchCV
     >>> from sklearn.ensemble import GradientBoostingClassifier
     >>> from sklearn.datasets import load_digits
@@ -196,7 +202,7 @@ uses joblib internally, such as scikit-learn::
     ...                   n_jobs=5, pre_dispatch="n_jobs")
     >>> register_parallel_backend('civis', make_backend_factory(
     ...     required_resources={"cpu": 512, "memory": 256}))
-    >>> with parallel_backend('civis'):
+    >>> with parallel_config('civis'):
     ...     gs.fit(digits.data, digits.target)
 
 Debugging
@@ -205,7 +211,7 @@ Any (non-retried) errors in child jobs will cause the entire parallel call to
 fail. ``joblib`` will transport the first exception from a remote job and
 raise it in the parent process so that you can debug.
 
-If your remote jobs are failing because of network problems (e.g. occasional
+If your remote jobs are failing because of network problems (e.g., occasional
 500 errors), you can make your parallel call more likely to succeed by using
 a ``max_job_retries`` value above 0 when creating your backend factory.
 This will automatically retry a job (potentially more than once) before giving
@@ -219,7 +225,7 @@ prints information to either stdout or stderr.
 
 Mismatches between your local environment and the environment in the
 Civis container script jobs are a common source of errors.
-To run a function in the Civis platform, any modules called by
+To run a function in Civis platform, any modules called by
 that function must be importable from a Python interpreter running
 in the container script. For example, if you use :class:`joblib.Parallel`
 with :func:`numpy.sqrt`, the joblib backend must be set to run
@@ -228,7 +234,7 @@ If you see an error such as::
 
     ModuleNotFoundError: No module named 'numpy'
 
-this signifies that the function you're trying to run doesn't exist
+this signifies that the module you're trying to use doesn't exist
 in the remote environment. Select a Docker container with the module installed,
 or install it in your remote environment by using the ``repo_http_uri``
 parameter of :func:`~civis.parallel.make_backend_factory` to install it from GitHub.

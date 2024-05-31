@@ -56,20 +56,20 @@ def infer_backend_factory(
 
     This function helps you run additional jobs from code which executes
     inside a Civis container job. The function reads settings for
-    relevant parameters (e.g. the Docker image) of the container
+    relevant parameters (e.g., the Docker image) of the container
     it's running inside of.
 
     Jobs created through this backend will have environment variables
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
-    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
-    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` with the contents
+    of the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` of the environment which
+    created them. If the code doesn't have ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
     environment variables available, the child will not have
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` environment variables.
 
     .. note:: This function will read the state of the parent
               container job at the time this function executes. If the
               user has modified the container job since the run started
-              (e.g. by changing the GitHub branch in the container's GUI),
+              (e.g., by changing the GitHub branch in the container's GUI),
               this function may infer incorrect settings for the child jobs.
 
     Keyword arguments inferred from the existing script's state are
@@ -79,14 +79,13 @@ def infer_backend_factory(
     ----------
     required_resources : dict or None, optional
         The resources needed by the container. See the
-        `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
+        :ref:`container scripts API documentation<api_scripts_endpoint>`
         for details. Resource requirements not specified will
         default to the requirements of the current job.
     params : list or None, optional
         A definition of the parameters this script accepts in the
-        arguments field. See the `container scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
+        arguments field. See the
+        :ref:`container scripts API documentation<api_scripts_endpoint>`
         for details.
 
         Parameters of the child jobs will default to the parameters
@@ -94,31 +93,30 @@ def infer_backend_factory(
         parameters of the same name from the current job.
     arguments : dict or None, optional
         Dictionary of name/value pairs to use to run this script.
-        Only settable if this script has defined params. See the `container
-        scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
+        Only settable if this script has defined params. See the
+        :ref:`container scripts API documentation<api_scripts_endpoint>`
         for details.
 
         Arguments will default to the arguments of the current job.
         Anything provided here will override portions of the current job's
         arguments.
-    client : `civis.APIClient` instance or None, optional
+    client : ``civis.APIClient`` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
-        avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
+        avoid `rate-limiting <https://platform.civisanalytics.com/spa/#/api>`_.
     setup_cmd : str, optional
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
         This is primarily for installing dependencies that are not available
-        in the dockerhub repo (e.g., "cd /app && pip install ."
-        or "pip install gensim").
+        in the Docker image (e.g., ``cd /app && pip install .``
+        or ``pip install gensim``).
 
         With no GitHub repo input, the setup command will
         default to a command that does nothing. If a ``repo_http_uri``
         is provided, the default setup command will attempt to run
-        "pip install .". If this command fails, execution
+        ``pip install .``. If this command fails, execution
         will still continue.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help
@@ -134,16 +132,16 @@ def infer_backend_factory(
         These retries assist with jobs which may have failed because
         of network or worker failures.
     hidden: bool, optional
-        The hidden status of the object. Setting this to true
+        The hidden status of the object. Setting this to True
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'sequential' uses the joblib sequential
+        container. The default of ``'sequential'`` uses the joblib sequential
         backend in the container. The value 'civis' uses an exact copy of the
         Civis joblib backend that launched the container. Note that with the
-        value 'civis', one can potentially use more jobs than specified by
+        value ``'civis'``, one can potentially use more jobs than specified by
         ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed directly to
@@ -246,22 +244,22 @@ def make_backend_factory(
     remote_backend="sequential",
     **kwargs,
 ):
-    """Create a joblib backend factory that uses Civis Container Scripts
+    """Create a joblib backend factory that uses Civis Container Scripts.
 
     Jobs created through this backend will have environment variables
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
-    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
-    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` with the contents
+    of the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` of the environment which
+    created them. If the code doesn't have ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
     environment variables available, the child will not have
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` environment variables.
 
-    .. note:: The total size of function parameters in `Parallel()`
+    .. note:: The total size of function parameters in ``Parallel()``
               calls on this backend must be less than 5 GB due to
               AWS file size limits.
 
-    .. note:: The maximum number of concurrent jobs in the Civis Platform
+    .. note:: The maximum number of concurrent jobs in Civis Platform
               is controlled by both the ``n_jobs`` and ``pre_dispatch``
-              parameters of ``joblib.Parallel``.
+              parameters of :class:`joblib.Parallel`.
               Set ``pre_dispatch="n_jobs"`` to have a maximum of
               ``n_jobs`` processes running at once.
               (The default is ``pre_dispatch="2*n_jobs"``.)
@@ -271,23 +269,23 @@ def make_backend_factory(
     docker_image_name : str, optional
         The image for the container script. You may also wish to specify
         a ``docker_image_tag`` in the keyword arguments.
-    client : `civis.APIClient` instance or None, optional
+    client : ``civis.APIClient`` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
-        avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
+        avoid `rate-limiting <https://platform.civisanalytics.com/spa/#/api>`_.
     setup_cmd : str, optional
         A shell command or sequence of commands for setting up the environment.
         These will precede the commands used to run functions in joblib.
         This is primarily for installing dependencies that are not available
-        in the dockerhub repo (e.g., "cd /app && pip install ."
-        or "pip install gensim").
+        in the dockerhub repo (e.g., ``cd /app && pip install .``
+        or ``pip install gensim``).
 
         With no GitHub repo input, the setup command will
-        default to a command that does nothing. If a `repo_http_uri`
+        default to a command that does nothing. If a ``repo_http_uri``
         is provided, the default setup command will attempt to run
-        "pip install .". If this command fails, execution
+        ``pip install .``. If this command fails, execution
         will still continue.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help
@@ -297,7 +295,7 @@ def make_backend_factory(
         whether they are run once or many times).
     max_job_retries : int, optional
         Retry failed jobs this number of times before giving up.
-        Even more than with `max_submit_retries`, this should only
+        Even more than with ``max_submit_retries``, this should only
         be used for jobs which are idempotent, as the job may have
         caused side effects (if any) before failing.
         These retries assist with jobs which may have failed because
@@ -309,10 +307,10 @@ def make_backend_factory(
     remote_backend : str or object, optional
         The name of a joblib backend or a joblib backend itself. This parameter
         is the joblib backend to use when executing code within joblib in the
-        container. The default of 'sequential' uses the joblib sequential
-        backend in the container. The value 'civis' uses an exact copy of the
+        container. The default of ``'sequential'`` uses the joblib sequential
+        backend in the container. The value ``'civis'`` uses an exact copy of the
         Civis joblib backend that launched the container. Note that with the
-        value 'civis', one can potentially use more jobs than specified by
+        value ``'civis'``, one can potentially use more jobs than specified by
         ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed
@@ -376,8 +374,8 @@ def make_backend_factory(
     deserialize the jobs they are given, including the data and all the
     necessary Python objects (e.g., if you pass a Pandas data frame, the image
     must have Pandas installed). You may use functions and classes
-    dynamically defined in the code (e.g. lambda functions), but
-    if your joblib-parallized function calls code imported from another
+    dynamically defined in the code (e.g., lambda functions), but
+    if your joblib-parallelized function calls code imported from another
     module, that module must be installed in the remote environment.
 
     See Also
@@ -417,12 +415,12 @@ def make_backend_template_factory(
 ):
     """Create a joblib backend factory that uses Civis Custom Scripts.
 
-    If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
-    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
-    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
-    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    If your template has settable parameters ``CIVIS_PARENT_JOB_ID`` and
+    ``CIVIS_PARENT_RUN_ID``, then this executor will fill them with the contents
+    of the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` of the environment which
+    created them. If the code doesn't have ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
     environment variables available, the child will not have
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` environment variables.
 
     Parameters
     ----------
@@ -433,16 +431,15 @@ def make_backend_template_factory(
         to the documentation for details.
     arguments : dict or None, optional
         Dictionary of name/value pairs to use to run this script.
-        Only settable if this script has defined params. See the `container
-        scripts API documentation
-        <https://platform.civisanalytics.com/api#resources-scripts>`
+        Only settable if this script has defined params. See the
+        :ref:`container scripts API documentation<api_scripts_endpoint>`
         for details.
-    client : `civis.APIClient` instance or None, optional
+    client : ``civis.APIClient`` instance or None, optional
         An API Client object to use.
     polling_interval : int, optional
         The polling interval, in seconds, for checking container script status.
         If you have many jobs, you may want to set this higher (e.g., 300) to
-        avoid `rate-limiting <https://platform.civisanalytics.com/api#basics>`.
+        avoid `rate-limiting <https://platform.civisanalytics.com/spa/#/api>`_.
     max_submit_retries : int, optional
         The maximum number of retries for submitting each job. This is to help
         avoid a large set of jobs failing because of a single 5xx error. A
@@ -451,13 +448,13 @@ def make_backend_template_factory(
         whether they are run once or many times).
     max_job_retries : int, optional
         Retry failed jobs this number of times before giving up.
-        Even more than with `max_submit_retries`, this should only
+        Even more than with ``max_submit_retries``, this should only
         be used for jobs which are idempotent, as the job may have
         caused side effects (if any) before failing.
         These retries assist with jobs which may have failed because
         of network or worker failures.
     hidden: bool, optional
-        The hidden status of the object. Setting this to true
+        The hidden status of the object. Setting this to True
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
     """
@@ -477,6 +474,8 @@ def make_backend_template_factory(
 
 
 class JobSubmissionError(Exception):
+    """An error occurred while submitting a job to Civis Platform."""
+
     pass
 
 
