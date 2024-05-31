@@ -75,6 +75,7 @@ workflows:
       - pre-build:
           name: bandit
           command-run: |
+            pip install --progress-bar off -e ".[dev-core]" && \
             bandit --version && \
             bandit -r src -x tests
       - pre-build:
