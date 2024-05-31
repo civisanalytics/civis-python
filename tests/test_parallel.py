@@ -457,7 +457,7 @@ def test_result_exception_no_result(m_sleep):
     )
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
-    fut._set_api_exception(CivisJobFailure(Response({"state": "failed"})))
+    fut._set_api_exception(CivisJobFailure(str(Response({"state": "failed"}))))
 
     with pytest.raises(CivisJobFailure) as exc:
         res.get()
