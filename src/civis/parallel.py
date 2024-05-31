@@ -781,6 +781,8 @@ class _CivisBackend(ParallelBackendBase):
     uses_threads = False
     supports_sharedmem = False
     supports_timeout = True
+    supports_retrieve_callback = False
+    supports_return_generator = True
 
     def __init__(
         self,
@@ -792,6 +794,7 @@ class _CivisBackend(ParallelBackendBase):
         nesting_level=0,
         **executor_kwargs,
     ):
+        super().__init__()
         self.setup_cmd = setup_cmd
         self.from_template_id = from_template_id
         self.max_submit_retries = max_submit_retries

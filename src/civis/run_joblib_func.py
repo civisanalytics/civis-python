@@ -16,7 +16,13 @@ import sys
 
 import civis
 import cloudpickle
-from joblib import parallel_backend
+
+try:
+    from joblib import parallel_config
+except ImportError:
+    # Since joblib v1.3.0, parallel_config has become available
+    # and is the recommended option over the deprecated parallel_backend.
+    from joblib import parallel_backend as parallel_config
 
 from civis.parallel import (
     _robust_pickle_download,
@@ -44,7 +50,7 @@ def worker_func(func_file_id):
 
         _backend = _setup_remote_backend(remote_backend)
 
-        with parallel_backend(_backend):
+        with parallel_config(_backend):
             result = func()
     except Exception as exc:
         print("Error! Attempting to record exception.")

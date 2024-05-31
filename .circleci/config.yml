@@ -75,7 +75,6 @@ workflows:
       - pre-build:
           name: bandit
           command-run: |
-            pip install --upgrade bandit && \
             bandit --version && \
             bandit -r src -x tests
       - pre-build:
@@ -91,7 +90,6 @@ workflows:
       - pre-build:
           name: pip-audit
           command-run: |
-            pip install --upgrade pip setuptools wheel pip-audit && \
             pip install --progress-bar off -r docs/requirements.txt && \
             pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
