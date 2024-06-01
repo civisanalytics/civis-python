@@ -63,6 +63,7 @@ docs = [
     "numpydoc == 1.7.0",
     "Sphinx == 7.3.7",
     "sphinx-rtd-theme == 2.0.0",
+    "sphinx-toggleprompt == 0.5.2",
 ]
 
 [tool.setuptools.packages.find]
