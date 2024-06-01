@@ -5,14 +5,7 @@ from unittest import mock
 
 import pytest
 import requests
-from joblib import delayed, Parallel, register_parallel_backend
-
-try:
-    from joblib import parallel_config
-except ImportError:
-    # Since joblib v1.3.0, parallel_config has become available
-    # and is the recommended option over the deprecated parallel_backend.
-    from joblib import parallel_backend as parallel_config
+from joblib import delayed, Parallel, parallel_config, register_parallel_backend
 
 import civis.parallel
 from civis.base import CivisAPIError, CivisJobFailure
@@ -457,7 +450,7 @@ def test_result_exception_no_result(m_sleep):
     )
     fut = ContainerFuture(1, 2, client=mock_client)
     res = civis.parallel._CivisBackendResult(fut, callback)
-    fut._set_api_exception(CivisJobFailure(str(Response({"state": "failed"}))))
+    fut._set_api_exception(CivisJobFailure(Response({"state": "failed"})))
 
     with pytest.raises(CivisJobFailure) as exc:
         res.get()

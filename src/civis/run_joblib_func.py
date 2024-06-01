@@ -16,13 +16,7 @@ import sys
 
 import civis
 import cloudpickle
-
-try:
-    from joblib import parallel_config
-except ImportError:
-    # Since joblib v1.3.0, parallel_config has become available
-    # and is the recommended option over the deprecated parallel_backend.
-    from joblib import parallel_backend as parallel_config
+from joblib import parallel_config
 
 from civis.parallel import (
     _robust_pickle_download,
