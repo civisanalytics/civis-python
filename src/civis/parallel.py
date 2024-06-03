@@ -676,19 +676,19 @@ class _CivisBackendResult:
             """
             if fut.succeeded():
                 log.debug(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job succeeded!",
+                    "Ran job through Civis. Job ID: %d, run ID: %d; job succeeded!",
                     fut.job_id,
                     fut.run_id,
                 )
             elif fut.cancelled():
                 log.debug(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job cancelled!",
+                    "Ran job through Civis. Job ID: %d, run ID: %d; job cancelled!",
                     fut.job_id,
                     fut.run_id,
                 )
             else:
                 log.error(
-                    "Ran job through Civis. Job ID: %d, run ID: %d;" " job failure!",
+                    "Ran job through Civis. Job ID: %d, run ID: %d; job failure!",
                     fut.job_id,
                     fut.run_id,
                 )
@@ -780,7 +780,7 @@ class _CivisBackend(ParallelBackendBase):
     uses_threads = False
     supports_sharedmem = False
     supports_timeout = True
-    supports_retrieve_callback = False
+    supports_retrieve_callback = True
     supports_return_generator = True
 
     def __init__(
@@ -859,6 +859,17 @@ class _CivisBackend(ParallelBackendBase):
     def terminate(self):
         """Shutdown the workers and free the shared memory."""
         return self.abort_everything(ensure_ready=True)
+
+    def retrieve_result_callback(self, out):
+        """Called within the callback function passed in apply_async.
+
+        The argument of this function is the argument given to a callback in
+        the considered backend. It is supposed to return the outcome of a task
+        if it succeeded or raise the exception if it failed.
+        """
+        if isinstance(out, BaseException):
+            raise out
+        return out
 
     def apply_async(self, func, callback=None):
         """Schedule func to be run"""
