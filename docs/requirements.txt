@@ -12,7 +12,7 @@ attrs==23.2.0
     #   referencing
 babel==2.15.0
     # via sphinx
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -30,7 +30,7 @@ imagesize==1.4.1
     # via sphinx
 jinja2==3.1.4
     # via sphinx
-joblib==1.2.0
+joblib==1.4.2
     # via civis (pyproject.toml)
 jsonref==1.1.0
     # via civis (pyproject.toml)
@@ -52,7 +52,7 @@ referencing==0.35.1
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.1
+requests==2.32.3
     # via
     #   civis (pyproject.toml)
     #   sphinx

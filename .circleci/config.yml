@@ -75,23 +75,22 @@ workflows:
       - pre-build:
           name: bandit
           command-run: |
-            pip install --upgrade bandit && \
+            pip install --progress-bar off -e ".[dev-core]" && \
             bandit --version && \
             bandit -r src -x tests
       - pre-build:
           name: black
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            black --check src tools tests
+            black --check src tools tests docs/source/conf.py
       - pre-build:
           name: flake8
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            flake8 src tools tests
+            flake8 src tools tests docs/source/conf.py
       - pre-build:
           name: pip-audit
           command-run: |
-            pip install --upgrade pip setuptools wheel pip-audit && \
             pip install --progress-bar off -r docs/requirements.txt && \
             pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
