@@ -177,11 +177,49 @@ different set of arguments from the list ``args``::
     ...     required_resources={"cpu": 512, "memory": 256}))
     >>> args = [(0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
     >>> with parallel_config('civis'):
-    ...    parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
-    ...    print(parallel(delayed(expensive_calculation)(*a) for a in args))
+    ...     parallel = Parallel(n_jobs=5, pre_dispatch='n_jobs')
+    ...     print(parallel(delayed(expensive_calculation)(*a) for a in args))
     [1, 3, 5, 7, 9, 11, 13]
 
-You can use the Civis joblib backend to parallelize any code which
+Since joblib v1.4.2, :class:`joblib.Parallel` has a ``return_as`` parameter
+that can accept ``'generator'`` or ``'generator_unordered'``
+(default is ``'list'``, whose behavior is shown in the examples above).
+Returning a generator, especially the "unordered" version, instead of a list
+is useful for getting (partial) results back from Civis Platform faster
+as soon as any child job finishes (as opposed to having to waiting for _all_ child jobs
+to finish before you get a resulting list). With ``return_as='generator_unordered'``,
+you might want to keep track of the ordering of the child jobs' results
+using :func:`enumerate`:
+
+.. code-block:: python
+
+    >>> import inspect
+    >>> import time
+    >>> # In your function, you might want an "order" index arg and return it at the end
+    >>> def expensive_calculation(order, num):
+    ...     # lower order for a longer sleep to simulate a longer job
+    ...     time.sleep(10 ** (2 - order))
+    ...     return order, num
+    >>> from joblib import delayed, Parallel
+    >>> from joblib import parallel_config, register_parallel_backend
+    >>> from civis.parallel import make_backend_factory
+    >>> register_parallel_backend('civis', make_backend_factory(
+    ...     required_resources={"cpu": 512, "memory": 256}))
+    >>> args = enumerate(['foo', 'bar', 'baz'])  # `enumerate` to get an order index
+    >>> with parallel_config('civis'):
+    ...     parallel = Parallel(
+    ...         n_jobs=5, pre_dispatch='n_jobs',
+    ...         return_as='generator_unordered',  # yields a result from a child job as soon as it's ready
+    ...     )
+    ...     results = parallel(delayed(expensive_calculation)(*a) for a in args)
+    ...     assert inspect.isgenerator(results)
+    ...     for order, num in results:
+    ...         print(order, num)
+    2 baz
+    1 bar
+    0 foo
+
+Lastly, you can use the Civis joblib backend to parallelize any code which
 uses joblib internally, such as scikit-learn::
 
     >>> from joblib import parallel_config, register_parallel_backend
