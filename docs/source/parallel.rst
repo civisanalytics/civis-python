@@ -166,7 +166,7 @@ by creating and registering a backend factory and entering a
 ``with parallel_config('civis')`` context. The code below will start
 seven different jobs in Civis Platform (with up to five running at once).
 Each job will call the function ``expensive_calculation`` with a
-different set of arguments from the list ``args``.::
+different set of arguments from the list ``args``::
 
     >>> def expensive_calculation(num1, num2):
     ...     return 2 * num1 + num2

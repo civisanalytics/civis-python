@@ -33,7 +33,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
-    "sphinx_toggleprompt",
+    "sphinx_copybutton",
 ]
 
 autosummary_generate = True

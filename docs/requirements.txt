@@ -12,7 +12,7 @@ attrs==23.2.0
     #   referencing
 babel==2.15.0
     # via sphinx
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -66,8 +66,11 @@ sphinx==7.3.7
     # via
     #   civis (pyproject.toml)
     #   numpydoc
+    #   sphinx-copybutton
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
+sphinx-copybutton==0.5.2
+    # via civis (pyproject.toml)
 sphinx-rtd-theme==2.0.0
     # via civis (pyproject.toml)
 sphinxcontrib-applehelp==1.0.8
