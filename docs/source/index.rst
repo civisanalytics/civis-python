@@ -5,7 +5,7 @@ Civis API Python Client
 
 .. meta::
    :description:
-      The Civis API Python Client allows users to interact with Civis Platform programmatically using Python.
+      The Civis API Python Client provides an interface in Python to interact with Civis Platform programmatically.
    :keywords:
       civis, civis platform, civis analytics, civis api, civis python,
       data science, data engineering, data analysis, data analytics, machine learning

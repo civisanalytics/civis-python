@@ -186,7 +186,7 @@ that can accept ``'generator'`` or ``'generator_unordered'``
 (default is ``'list'``, whose behavior is shown in the examples above).
 Returning a generator, especially the "unordered" version, instead of a list
 is useful for getting (partial) results back from Civis Platform faster
-as soon as any child job finishes (as opposed to having to waiting for _all_ child jobs
+as soon as any child job finishes (as opposed to having to waiting for `all` child jobs
 to finish before you get a resulting list). With ``return_as='generator_unordered'``,
 you might want to keep track of the ordering of the child jobs' results
 using :func:`enumerate`:
@@ -195,7 +195,6 @@ using :func:`enumerate`:
 
     >>> import inspect
     >>> import time
-    >>> # In your function, you might want an "order" index arg and return it at the end
     >>> def expensive_calculation(order, num):
     ...     # lower order for a longer sleep to simulate a longer job
     ...     time.sleep(10 ** (2 - order))

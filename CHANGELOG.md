@@ -23,9 +23,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
 
 ### Security
-- Bumped the minimum required version of `joblib` to v1.3.0,
-  partly due to a security vulnerability for < v1.2.0
-  ([CVE-2022-21797](https://nvd.nist.gov/vuln/detail/CVE-2022-21797)). (#488)
 - Bumped the minimum required version of `requests` to the latest v2.32.3, 
   due to a security vulnerability for < v2.32.0
   ([CVE-2024-35195](https://nvd.nist.gov/vuln/detail/CVE-2024-35195)). (#488)
