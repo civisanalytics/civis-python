@@ -62,7 +62,6 @@ docs = [
     # docs/requirements.txt pins all transitive dependencies for a reproducible doc build.
     "numpydoc == 1.7.0",
     "Sphinx == 7.3.7",
-    "sphinx-copybutton == 0.5.2",
     "sphinx-rtd-theme == 2.0.0",
 ]
 

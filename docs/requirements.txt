@@ -66,11 +66,8 @@ sphinx==7.3.7
     # via
     #   civis (pyproject.toml)
     #   numpydoc
-    #   sphinx-copybutton
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
-sphinx-copybutton==0.5.2
-    # via civis (pyproject.toml)
 sphinx-rtd-theme==2.0.0
     # via civis (pyproject.toml)
 sphinxcontrib-applehelp==1.0.8
