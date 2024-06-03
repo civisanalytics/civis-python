@@ -314,7 +314,7 @@ def make_backend_factory(
         ``n_jobs``.
     **kwargs:
         Additional keyword arguments will be passed
-        directly to :func:`~civis.APIClient.scripts.post_containers`.
+        directly to :func:`civis.APIClient.scripts.post_containers<civis.resources._resources.Scripts.post_containers>`.
 
     Examples
     --------
@@ -377,11 +377,7 @@ def make_backend_factory(
     dynamically defined in the code (e.g., lambda functions), but
     if your joblib-parallelized function calls code imported from another
     module, that module must be installed in the remote environment.
-
-    See Also
-    --------
-    civis.APIClient.scripts.post_containers
-    """
+    """  # noqa: E501
     if setup_cmd is None:
         if kwargs.get("repo_http_uri"):
             setup_cmd = _DEFAULT_REPO_SETUP_CMD
@@ -412,6 +408,7 @@ def make_backend_template_factory(
     max_submit_retries=0,
     max_job_retries=0,
     hidden=True,
+    **kwargs,
 ):
     """Create a joblib backend factory that uses Civis Custom Scripts.
 
@@ -457,7 +454,10 @@ def make_backend_template_factory(
         The hidden status of the object. Setting this to True
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
-    """
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
+    """  # noqa: E501
 
     def backend_factory():
         return _CivisBackend(
@@ -468,6 +468,7 @@ def make_backend_template_factory(
             max_submit_retries=max_submit_retries,
             max_n_retries=max_job_retries,
             hidden=hidden,
+            **kwargs,
         )
 
     return backend_factory

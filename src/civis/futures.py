@@ -685,11 +685,14 @@ class CustomScriptExecutor(_CivisExecutor):
     inc_script_names: bool, optional
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
+    **kwargs:
+        Additional keyword arguments will be passed
+        directly to :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
 
     See Also
     --------
     civis.APIClient.scripts.post_custom
-    """
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -701,9 +704,11 @@ class CustomScriptExecutor(_CivisExecutor):
         client=None,
         polling_interval=None,
         inc_script_names=False,
+        **kwargs,
     ):
         self.from_template_id = from_template_id
         self.arguments = arguments
+        self.kwargs = kwargs
 
         if name is None:
             date_str = datetime.datetime.today().strftime("%Y-%m-%d")
@@ -747,5 +752,6 @@ class CustomScriptExecutor(_CivisExecutor):
             name=name,
             arguments=combined_args,
             hidden=self.hidden,
+            **self.kwargs,
         )
         return job
