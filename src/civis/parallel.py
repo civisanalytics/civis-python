@@ -313,8 +313,8 @@ def make_backend_factory(
         value ``'civis'``, one can potentially use more jobs than specified by
         ``n_jobs``.
     **kwargs:
-        Additional keyword arguments will be passed
-        directly to :func:`civis.APIClient.scripts.post_containers<civis.resources._resources.Scripts.post_containers>`.
+        Additional keyword arguments will be passed directly to
+        :func:`civis.APIClient.scripts.post_containers<civis.resources._resources.Scripts.post_containers>`.
 
     Examples
     --------
@@ -455,8 +455,8 @@ def make_backend_template_factory(
         hides it from most API endpoints. The object can still
         be queried directly by ID. Defaults to True.
     **kwargs:
-        Additional keyword arguments will be passed
-        directly to :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
+        Additional keyword arguments will be passed directly to
+        :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
     """  # noqa: E501
 
     def backend_factory():
@@ -748,8 +748,7 @@ class _CivisBackendResult:
         Raises
         ------
         CivisJobFailure
-            Any error in the remote job will result in a
-            ``CivisJobFailure``, to be handled by ``Parallel.retrieve``.
+            Any error in the remote job will result in a ``CivisJobFailure``.
         futures.CancelledError
             If the remote job was cancelled before completion
         """

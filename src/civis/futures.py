@@ -503,15 +503,15 @@ class _ContainerShellExecutor(_CivisExecutor):
     Script inputs rather than over functions.
 
     Jobs created through this executor will have environment variables
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" with the contents
-    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
-    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` with the contents
+    of the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` of the environment which
+    created them. If the code doesn't have ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
     environment variables available, the child will not have
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` environment variables.
 
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs
-              (via `max_n_retries`) to protect against network and
+              (via ``max_n_retries``) to protect against network and
               infrastructure failures. Be careful with this if your
               jobs cause side effects other than returning a result;
               retries may cause any operations executed by your jobs
@@ -550,13 +550,9 @@ class _ContainerShellExecutor(_CivisExecutor):
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
     **kwargs:
-        Additional keyword arguments will be passed
-        directly to :func:`~civis.APIClient.scripts.post_containers`.
-
-    See Also
-    --------
-    civis.APIClient.scripts.post_containers
-    """
+        Additional keyword arguments will be passed directly to
+        :func:`civis.APIClient.scripts.post_containers<civis.resources._resources.Scripts.post_containers>`.
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -643,15 +639,15 @@ class CustomScriptExecutor(_CivisExecutor):
     :ref:`concurrent.futures`.
 
     If your template has settable parameters "CIVIS_PARENT_JOB_ID" and
-    "CIVIS_PARENT_RUN_ID", then this executor will fill them with the contents
-    of the "CIVIS_JOB_ID" and "CIVIS_RUN_ID" of the environment which
-    created them. If the code doesn't have "CIVIS_JOB_ID" and "CIVIS_RUN_ID"
+    ``CIVIS_PARENT_RUN_ID``, then this executor will fill them with the contents
+    of the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` of the environment which
+    created them. If the code doesn't have ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
     environment variables available, the child will not have
-    "CIVIS_PARENT_JOB_ID" and "CIVIS_PARENT_RUN_ID" environment variables.
+    ``CIVIS_PARENT_JOB_ID`` and ``CIVIS_PARENT_RUN_ID`` environment variables.
 
     .. note:: If you expect to run a large number of jobs, you may
               wish to set automatic retries of failed jobs
-              (via `max_n_retries`) to protect against network and
+              (via ``max_n_retries``) to protect against network and
               infrastructure failures. Be careful with this if your
               jobs cause side effects other than returning a result;
               retries may cause any operations executed by your jobs
@@ -661,7 +657,7 @@ class CustomScriptExecutor(_CivisExecutor):
     ----------
     from_template_id: int
         Create jobs as Custom Scripts from the given template ID.
-    name: str
+    name: str, optional
         The name for containers in Civis.
     hidden: bool, optional
         The hidden status of the object. Setting this to ``True`` hides it
@@ -686,12 +682,8 @@ class CustomScriptExecutor(_CivisExecutor):
         If ``True``, a counter will be added to the ``name`` to create
         the script names for each submission.
     **kwargs:
-        Additional keyword arguments will be passed
-        directly to :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
-
-    See Also
-    --------
-    civis.APIClient.scripts.post_custom
+        Additional keyword arguments will be passed directly to
+        :func:`civis.APIClient.scripts.post_custom<civis.resources._resources.Scripts.post_custom>`.
     """  # noqa: E501
 
     def __init__(

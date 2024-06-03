@@ -8,10 +8,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Changed
+- Refactored the `civis.parallel` module and related unit tests due to major changes
+  of joblib from v1.2.0 to v1.3.0 (API-breaking changes for dropping
+  `joblib.my_exceptions.TransportableException` and `joblib.format_stack.format_exc`,
+  as well as the substantial changes to the internals of `joblib.Parallel`). (#488)
+- Bumped the minimum required version of `joblib` to v1.3.0,
+  which is the version where `joblib.parallel_config` was introduced and
+  `joblib.parallel_backend` was deprecated. (#488)
+
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed `civis.parallel.make_backend_template_factory` so that
+  keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
+
 ### Security
+- Bumped the minimum required version of `joblib` to v1.3.0,
+  partly due to a security vulnerability for < v1.2.0
+  ([CVE-2022-21797](https://nvd.nist.gov/vuln/detail/CVE-2022-21797)). (#488)
+- Bumped the minimum required version of `requests` to the latest v2.32.3, 
+  due to a security vulnerability for < v2.32.0
+  ([CVE-2024-35195](https://nvd.nist.gov/vuln/detail/CVE-2024-35195)). (#488)
 
 ## 2.2.0 - 2024-05-28
 

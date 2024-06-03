@@ -48,7 +48,7 @@ def worker_func(func_file_id):
             result = func()
     except Exception as exc:
         print("Error! Attempting to record exception.")
-        result = exc  # TODO check how this exc result is going to be used downstream
+        result = exc
         raise
     finally:
         # Serialize the result and upload it to the Files API.
