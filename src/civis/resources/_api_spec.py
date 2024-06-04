@@ -1,3 +1,4 @@
+from collections import defaultdict
 from inspect import signature, isfunction
 
 import civis
@@ -33,25 +34,32 @@ def _get_methods(cls) -> dict:
     }
 
 
-def _compare(reference: dict, compared: dict) -> dict[str, set[str]]:
-    diffs = {}
+def _compare(reference: dict, compared: dict) -> dict[str, set | dict[str, set[str]]]:
+    diffs = {
+        "the whole endpoint": set(),
+        "the whole method": defaultdict(set),
+        "method signature changed": defaultdict(set),
+        "method docstring changed": defaultdict(set),
+    }
     for endpoint_name in set(compared.keys()) - set(reference.keys()):
-        diffs[endpoint_name] = {"(the whole endpoint)"}
+        diffs["the whole endpoint"].add(endpoint_name)
     for endpoint_name in set(compared.keys()) & set(reference.keys()):
         methods_compared = _get_methods(compared[endpoint_name])
         methods_reference = _get_methods(reference[endpoint_name])
-        print(endpoint_name)
-        print(methods_compared.keys())
-        print(methods_reference.keys())
-        if names := (set(methods_compared.keys()) - set(methods_reference.keys())):
-            diffs[endpoint_name] = {f"{name} (the whole method)" for name in names}
-        for name in set(methods_compared.keys()) & set(methods_reference.keys()):
-            method_compared = methods_compared[name]
-            method_reference = methods_reference[name]
+        if meth_names := (set(methods_compared.keys()) - set(methods_reference.keys())):
+            for meth_name in meth_names:
+                diffs["the whole method"][endpoint_name].add(meth_name)
+        for meth_name in set(methods_compared.keys()) & set(methods_reference.keys()):
+            method_compared = methods_compared[meth_name]
+            method_reference = methods_reference[meth_name]
             if signature(method_compared) != signature(method_reference):
-                if endpoint_name not in diffs:
-                    diffs[endpoint_name] = set()
-                diffs[endpoint_name].add(f"{name} (method signature changed)")
+                diffs["method signature changed"][endpoint_name].add(meth_name)
+            if method_compared.__doc__ != method_reference.__doc__:
+                diffs["method docstring changed"][endpoint_name].add(meth_name)
+    # Convert defaultdicts to regular dicts for nicer pprinting.
+    diffs["the whole method"] = dict(diffs["the whole method"])
+    diffs["method signature changed"] = dict(diffs["method signature changed"])
+    diffs["method docstring changed"] = dict(diffs["method docstring changed"])
     return diffs
 
 

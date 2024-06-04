@@ -23,12 +23,12 @@ def main():
         latest_api_spec_path = os.path.join(tempdir, "civis_api_spec.json")
         download_latest_api_spec(latest_api_spec_path)
         added, removed = compare_api_specs(api_spec_path_current, latest_api_spec_path)
-    if added or removed:
+    if any(added.values()) or any(removed.values()):
         raise RuntimeError(
             "The Civis API spec has changed. "
-            "Please run tools/update_civis_api_spec.py.\n"
-            f"Added: {pprint.pformat(added)}\n"
-            f"Removed: {pprint.pformat(removed)}"
+            "Please run tools/update_civis_api_spec.py.\n----------------\n"
+            f"Added:\n{pprint.pformat(added)}\n----------------\n"
+            f"Removed:\n{pprint.pformat(removed)}"
         )
     else:
         print("The Civis API spec has not changed.")

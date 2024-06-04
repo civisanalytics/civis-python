@@ -7,10 +7,8 @@ import pytest
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
-import civis
 from civis.base import Endpoint
 from civis.resources import _resources, API_SPEC, API_SPEC_PATH
-from civis.resources._resources import BASE_RESOURCES_V1
 from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
 
@@ -88,10 +86,9 @@ def test_create_method_no_iterator_kwarg():
 
 def test_exclude_resource():
     include = "tables/"
-    exclude = "excluded_in_base/"
+    exclude = "feature_flags/"
     assert _resources.exclude_resource(exclude, "1.0")
     assert not _resources.exclude_resource(include, "1.0")
-    assert not _resources.exclude_resource(exclude, "9.0")
 
 
 def test_property_type():
@@ -638,12 +635,6 @@ def test_parse_api_spec_names(mock_method):
     assert classes["oneword"].__name__ == "Oneword"
     assert classes["two_words"].__name__ == "Two_Words"
     assert classes["hyphen_words"].__name__ == "Hyphen_Words"
-
-
-def test_endpoints_from_base_resources_are_available_from_client():
-    client = civis.APIClient(local_api_spec=API_SPEC, api_key="none")
-    for endpoint in BASE_RESOURCES_V1:
-        assert hasattr(client, endpoint), endpoint
 
 
 def test_client_pyi_matches_api_spec():
