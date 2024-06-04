@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added a script for checking if the Civis API spec is up-to-date. (#489)
+
 ### Changed
 - Refactored the `civis.parallel` module and related unit tests due to major changes
   of joblib from v1.2.0 to v1.3.0 (API-breaking changes for dropping
