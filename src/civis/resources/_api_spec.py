@@ -34,36 +34,38 @@ def _get_methods(cls) -> dict:
     }
 
 
-def _compare(reference: dict, compared: dict) -> dict[str, set | dict[str, set[str]]]:
-    diffs = {
-        "the whole endpoint": set(),
-        "the whole method": defaultdict(set),
-        "method signature changed": defaultdict(set),
-        "method docstring changed": defaultdict(set),
+def _compare(reference: dict, compared: dict) -> tuple[dict, dict]:
+    new = {
+        "endpoints": set(),
+        "methods": defaultdict(set),
+    }
+    changed = {
+        "method signatures": defaultdict(set),
+        "method docstrings": defaultdict(set),
     }
     for endpoint_name in set(compared.keys()) - set(reference.keys()):
-        diffs["the whole endpoint"].add(endpoint_name)
+        new["endpoints"].add(endpoint_name)
     for endpoint_name in set(compared.keys()) & set(reference.keys()):
         methods_compared = _get_methods(compared[endpoint_name])
         methods_reference = _get_methods(reference[endpoint_name])
         if meth_names := (set(methods_compared.keys()) - set(methods_reference.keys())):
             for meth_name in meth_names:
-                diffs["the whole method"][endpoint_name].add(meth_name)
+                new["methods"][endpoint_name].add(meth_name)
         for meth_name in set(methods_compared.keys()) & set(methods_reference.keys()):
             method_compared = methods_compared[meth_name]
             method_reference = methods_reference[meth_name]
             if signature(method_compared) != signature(method_reference):
-                diffs["method signature changed"][endpoint_name].add(meth_name)
+                changed["method signatures"][endpoint_name].add(meth_name)
             if method_compared.__doc__ != method_reference.__doc__:
-                diffs["method docstring changed"][endpoint_name].add(meth_name)
+                changed["method docstrings"][endpoint_name].add(meth_name)
     # Convert defaultdicts to regular dicts for nicer pprinting.
-    diffs["the whole method"] = dict(diffs["the whole method"])
-    diffs["method signature changed"] = dict(diffs["method signature changed"])
-    diffs["method docstring changed"] = dict(diffs["method docstring changed"])
-    return diffs
+    new["methods"] = dict(new["methods"])
+    changed["method signatures"] = dict(changed["method signatures"])
+    changed["method docstrings"] = dict(changed["method docstrings"])
+    return new, changed
 
 
-def compare_api_specs(path_current: str, path_upstream: str) -> tuple[dict, dict]:
+def compare_api_specs(path_current: str, path_upstream: str) -> tuple[dict, dict, dict]:
     """Compare two Civis API specs for whether there's a difference.
 
     Parameters
@@ -75,9 +77,8 @@ def compare_api_specs(path_current: str, path_upstream: str) -> tuple[dict, dict
 
     Returns
     -------
-    tuple[dict, dict]
-        A tuple of two dicts, one for endpoints with added endpoints or methods,
-        and one for what's removed.
+    tuple[dict, dict, dict]
+        Dicts of added, removed, and changed endpoints and methods.
     """
     endpoints_current = generate_classes_maybe_cached(
         path_current, api_key="no_key_needed", api_version="1.0"
@@ -85,6 +86,6 @@ def compare_api_specs(path_current: str, path_upstream: str) -> tuple[dict, dict
     endpoints_upstream = generate_classes_maybe_cached(
         path_upstream, api_key="no_key_needed", api_version="1.0"
     )
-    added = _compare(endpoints_current, endpoints_upstream)
-    removed = _compare(endpoints_upstream, endpoints_current)
-    return added, removed
+    added, changed = _compare(endpoints_current, endpoints_upstream)
+    removed, _ = _compare(endpoints_upstream, endpoints_current)
+    return added, removed, changed

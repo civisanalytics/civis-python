@@ -22,16 +22,19 @@ def main():
     with tempfile.TemporaryDirectory() as tempdir:
         latest_api_spec_path = os.path.join(tempdir, "civis_api_spec.json")
         download_latest_api_spec(latest_api_spec_path)
-        added, removed = compare_api_specs(api_spec_path_current, latest_api_spec_path)
-    if any(added.values()) or any(removed.values()):
+        added, removed, changed = compare_api_specs(
+            api_spec_path_current, latest_api_spec_path
+        )
+    if any(any(diffs.values()) for diffs in (added, removed, changed)):
         raise RuntimeError(
-            "The Civis API spec has changed. "
+            "The Civis API spec has been updated. "
             "Please run tools/update_civis_api_spec.py.\n----------------\n"
             f"Added:\n{pprint.pformat(added)}\n----------------\n"
-            f"Removed:\n{pprint.pformat(removed)}"
+            f"Removed:\n{pprint.pformat(removed)}\n----------------\n"
+            f"Changed:\n{pprint.pformat(changed)}"
         )
     else:
-        print("The Civis API spec has not changed.")
+        print("The Civis API spec hasn't been updated.")
 
 
 if __name__ == "__main__":
