@@ -17,20 +17,16 @@ from civis._utils import camel_to_snake, get_api_key, retry_request, MAX_RETRIES
 API_VERSIONS = frozenset({"1.0"})
 
 # civis_api_spec.json can be updated
-# by running the tools/update_civis_api_spec_json.py script.
+# by running the tools/update_civis_api_spec.py script.
 API_SPEC_PATH = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "civis_api_spec.json",
 )
 with open(API_SPEC_PATH) as f:
     API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
-BASE_RESOURCES_V1 = sorted(
-    r
-    for r in set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
-    # "feature_flags" has a name collision with an APIClient instance
-    if r != "feature_flags"
-)
 
+# "feature_flags" has a name collision with an APIClient instance.
+RESOURCES_TO_EXCLUDE = frozenset({"feature_flags"})
 
 TYPE_MAP = {
     "array": "list",
@@ -51,11 +47,12 @@ DEFAULT_ARG_VALUE = None
 
 
 def exclude_resource(path, api_version):
-    if api_version == "1.0":
-        include = any(path.startswith(x) for x in BASE_RESOURCES_V1)
-    else:
-        include = True
-    return not include
+    # TODO: api_version is not used here.
+    #   Dropping it would affect upstream code, including civis.APIClient.
+    #   We may need to deprecate api_version in the future.
+    if any(path.startswith(x) for x in RESOURCES_TO_EXCLUDE):
+        return True
+    return False
 
 
 def get_properties(x):
