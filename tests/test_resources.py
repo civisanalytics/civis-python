@@ -657,5 +657,5 @@ def test_client_pyi_matches_api_spec():
         # or else pytest would print the unwieldy, long diffs for a mismatch.
         assert match, (
             "client.pyi doesn't match the API spec in the codebase. "
-            "Run tools/update_client_pyi.py."
+            "Run tools/update_civis_api_spec.py."
         )

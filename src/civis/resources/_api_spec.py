@@ -1,0 +1,82 @@
+from inspect import signature, isfunction
+
+import civis
+from civis.resources import generate_classes_maybe_cached
+
+
+def download_latest_api_spec(path):
+    client = civis.APIClient()
+    try:
+        job = client.scripts.post_custom(from_template_id=13448)
+    except civis.base.CivisAPIError as e:
+        if e.status_error == 404:
+            raise EnvironmentError(
+                "This script can only be run by a Civis employee with their "
+                "regular Civis Platform account's API key."
+            )
+        else:
+            raise
+    fut = civis.utils.run_job(job.id, client=client, polling_interval=5)
+    fut.result()
+    print(f"custom script {fut.job_id} run {fut.run_id} has succeeded")
+    outputs = client.scripts.list_custom_runs_outputs(fut.job_id, fut.run_id)
+    file_id = civis.find_one(outputs, name="civis_api_spec.json").object_id
+    with open(path, "wb") as f:
+        civis.io.civis_to_file(file_id, f, client=client)
+
+
+def _get_methods(cls) -> dict:
+    return {
+        method_name: method
+        for method_name, method in vars(cls).items()
+        if not method_name.startswith("_") and isfunction(method)
+    }
+
+
+def _compare(reference: dict, compared: dict) -> dict[str, set[str]]:
+    diffs = {}
+    for endpoint_name in set(compared.keys()) - set(reference.keys()):
+        diffs[endpoint_name] = {"(the whole endpoint)"}
+    for endpoint_name in set(compared.keys()) & set(reference.keys()):
+        methods_compared = _get_methods(compared[endpoint_name])
+        methods_reference = _get_methods(reference[endpoint_name])
+        print(endpoint_name)
+        print(methods_compared.keys())
+        print(methods_reference.keys())
+        if names := (set(methods_compared.keys()) - set(methods_reference.keys())):
+            diffs[endpoint_name] = {f"{name} (the whole method)" for name in names}
+        for name in set(methods_compared.keys()) & set(methods_reference.keys()):
+            method_compared = methods_compared[name]
+            method_reference = methods_reference[name]
+            if signature(method_compared) != signature(method_reference):
+                if endpoint_name not in diffs:
+                    diffs[endpoint_name] = set()
+                diffs[endpoint_name].add(f"{name} (method signature changed)")
+    return diffs
+
+
+def compare_api_specs(path_current: str, path_upstream: str) -> tuple[dict, dict]:
+    """Compare two Civis API specs for whether there's a difference.
+
+    Parameters
+    ----------
+    path_current : str
+        Path of the current Civis API spec versioned in the civis-python codebase.
+    path_upstream : str
+        Path of the latest Civis API spec fetched from upstream.
+
+    Returns
+    -------
+    tuple[dict, dict]
+        A tuple of two dicts, one for endpoints with added endpoints or methods,
+        and one for what's removed.
+    """
+    endpoints_current = generate_classes_maybe_cached(
+        path_current, api_key="no_key_needed", api_version="1.0"
+    )
+    endpoints_upstream = generate_classes_maybe_cached(
+        path_upstream, api_key="no_key_needed", api_version="1.0"
+    )
+    added = _compare(endpoints_current, endpoints_upstream)
+    removed = _compare(endpoints_upstream, endpoints_current)
+    return added, removed
