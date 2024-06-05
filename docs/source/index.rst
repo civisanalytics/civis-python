@@ -36,8 +36,8 @@ For a more detailed walkthrough, see the :ref:`user_guide`.
   :end-before: end-include-marker-retires-section
 
 
-Client API Reference
---------------------
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 1
@@ -55,5 +55,4 @@ Indices and tables
 ------------------
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

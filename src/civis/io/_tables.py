@@ -191,8 +191,8 @@ def export_to_civis_file(
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
-        The only allowed keys are `"params"` (whose value is a list[dict]) and
-        `"arguments"` (whose value is a dict). Please refer to the linked API
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
         documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
@@ -285,8 +285,8 @@ def read_civis_sql(
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
-        The only allowed keys are `"params"` (whose value is a list[dict]) and
-        `"arguments"` (whose value is a dict). Please refer to the linked API
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
         documentation for how to format these two keys' values.
     encoding : str, optional
         If ``use_pandas`` is ``True``, this parameter is passed to
@@ -434,8 +434,8 @@ def civis_to_csv(
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
-        The only allowed keys are `"params"` (whose value is a list[dict]) and
-        `"arguments"` (whose value is a dict). Please refer to the linked API
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
         documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
@@ -578,8 +578,8 @@ def civis_to_multifile_csv(
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
-        The only allowed keys are `"params"` (whose value is a list[dict]) and
-        `"arguments"` (whose value is a dict). Please refer to the linked API
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
         documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be

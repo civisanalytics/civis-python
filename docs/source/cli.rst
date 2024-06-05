@@ -20,10 +20,6 @@ data types (e.g., arrays, objects/dictionaries) as input. However,
 functionality is available for getting information about scripts, logs, etc.,
 as well as executing already created scripts.
 
-There are a few extra, CLI-only commands that wrap the Files API
-endpoints to make uploading and downloading files easier:
-``civis files upload $PATH`` and ``civis files download $FILEID $PATH``.
-
 The default output format is YAML, but the ``--json-output`` allows you to
 get output in JSON.
 
@@ -32,6 +28,16 @@ like ``civis scripts list --help``.
 
 The logging level of the CLI can be configured by setting the ``CIVIS_LOG_LEVEL``
 environment variable, e.g., ``CIVIS_LOG_LEVEL=DEBUG civis users list-me``.
+
+Files
+-----
+
+There are a few extra, CLI-only commands that wrap the Files API
+endpoints to make uploading and downloading files easier:
+
+- ``civis files upload $PATH``
+
+- ``civis files download $FILEID $PATH``
 
 Job Logs
 --------

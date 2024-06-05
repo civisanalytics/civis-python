@@ -122,15 +122,15 @@ your user information:
 .. code:: python
 
    >>> client.users.list_me()
-   {'email': 'user@email.com',
-    'feature_flags': {'left_nav_basic': True,
-                      'results': True,
-                      'scripts_notify': True,
-                      'table_person_matching': True},
-    'id': 1,
-    'initials': 'UN',
-    'name': 'User Name',
-    'username': 'uname'}
+   Response(email='user@email.com',
+            feature_flags=(left_nav_basic=True,
+                           results=True,
+                           scripts_notify=True,
+                           table_person_matching=True),
+            id=1,
+            initials='UN',
+            name='User Name',
+            username='uname')
 
 For a complete list of the API endpoints and their methods,
 check out :ref:`api_resources`.
