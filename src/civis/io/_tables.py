@@ -169,6 +169,8 @@ def read_civis(
 def export_to_civis_file(
     sql,
     database,
+    sql_params=None,
+    sql_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -185,6 +187,10 @@ def export_to_civis_file(
     database : str or int
         Execute the query against this database. Can be the database name
         or ID.
+    sql_params : list[dict], optional
+        TODO
+    sql_arguments : dict, optional
+        TODO
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -233,6 +239,8 @@ def export_to_civis_file(
         credential_id=credential_id,
         csv_settings=csv_settings,
         hidden=hidden,
+        params=sql_params,
+        arguments=sql_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -248,6 +256,8 @@ def read_civis_sql(
     sql,
     database,
     use_pandas=False,
+    sql_params=None,
+    sql_arguments=None,
     encoding=None,
     job_name=None,
     client=None,
@@ -271,6 +281,10 @@ def read_civis_sql(
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    sql_params : list[dict], optional
+        TODO
+    sql_arguments : dict, optional
+        TODO
     encoding : str, optional
         If ``use_pandas`` is ``True``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
@@ -350,6 +364,8 @@ def read_civis_sql(
         credential_id,
         csv_settings={"compression": "gzip"},
         hidden=hidden,
+        params=sql_params,
+        arguments=sql_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -392,6 +408,8 @@ def civis_to_csv(
     filename,
     sql,
     database,
+    sql_params=None,
+    sql_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -412,6 +430,10 @@ def civis_to_csv(
         The SQL select string to be executed.
     database : str or int
         Export data from this database. Can be the database name or ID.
+    sql_params : list[dict], optional
+        TODO
+    sql_arguments : dict, optional
+        TODO
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -505,6 +527,8 @@ def civis_to_csv(
         credential_id,
         hidden=hidden,
         csv_settings=csv_settings,
+        params=sql_params,
+        arguments=sql_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -522,6 +546,8 @@ def civis_to_csv(
 def civis_to_multifile_csv(
     sql,
     database,
+    sql_params=None,
+    sql_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -548,6 +574,10 @@ def civis_to_multifile_csv(
     database : str or int
         Execute the query against this database. Can be the database name
         or ID.
+    sql_params : list[dict], optional
+        TODO
+    sql_arguments : dict, optional
+        TODO
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -656,6 +686,8 @@ def civis_to_multifile_csv(
         credential_id,
         hidden,
         csv_settings=csv_settings,
+        params=sql_params,
+        arguments=sql_arguments,
     )
 
     fut = CivisFuture(
@@ -1236,13 +1268,44 @@ def civis_file_to_table(
     return fut
 
 
+# TODO Write tests for this function.
+def _check_sql_params_arguments(params, arguments):
+    if params and not arguments:
+        return {"params": params}
+    elif arguments and not params:
+        raise TypeError(
+            "Only sql_arguments is provided but not sql_params. "
+            "sql_arguments is only settable if sql_params is defined"
+        )
+    elif params and arguments:
+        if not (arg_names := set(arguments.keys())) <= (
+            param_names := set(p["name"] for p in params)
+        ):
+            raise ValueError(
+                "sql_arguments contains names not in sql_params: "
+                f"{arg_names - param_names}"
+            )
+        return {"params": params, "arguments": arguments}
+    else:
+        return {}
+
+
 def _sql_script(
-    client, sql, database, job_name, credential_id, hidden=False, csv_settings=None
+    client,
+    sql,
+    database,
+    job_name,
+    credential_id,
+    hidden=False,
+    csv_settings=None,
+    params=None,
+    arguments=None,
 ):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
+    params_arguments = _check_sql_params_arguments(params, arguments)
 
     export_job = client.scripts.post_sql(
         job_name,
@@ -1251,6 +1314,7 @@ def _sql_script(
         sql=sql,
         hidden=hidden,
         csv_settings=csv_settings,
+        **params_arguments,
     )
 
     run_job = client.scripts.post_sql_runs(export_job.id)
