@@ -23,8 +23,6 @@ API_SPEC_PATH = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "civis_api_spec.json",
 )
-with open(API_SPEC_PATH) as f:
-    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 
 # "feature_flags" has a name collision with an APIClient instance.
 RESOURCES_TO_EXCLUDE = frozenset({"feature_flags"})

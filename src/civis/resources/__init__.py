@@ -5,7 +5,6 @@ from ._resources import (
     CACHED_SPEC_PATH,
     cache_api_spec,
     API_SPEC_PATH,
-    API_SPEC,
 )
 
 __all__ = [
@@ -15,5 +14,4 @@ __all__ = [
     "CACHED_SPEC_PATH",
     "cache_api_spec",
     "API_SPEC_PATH",
-    "API_SPEC",
 ]
