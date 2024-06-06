@@ -11,7 +11,8 @@ import requests
 from requests import Request
 
 from civis.base import Endpoint, get_base_url, open_session
-from civis._utils import camel_to_snake, get_api_key, retry_request, MAX_RETRIES
+from civis._camel_to_snake import camel_to_snake
+from civis._utils import get_api_key, retry_request, MAX_RETRIES
 
 
 API_VERSIONS = frozenset({"1.0"})

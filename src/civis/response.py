@@ -4,7 +4,7 @@ import pprint
 
 import requests
 
-from civis._utils import camel_to_snake
+from civis._camel_to_snake import camel_to_snake
 
 
 _RETURN_TYPES = frozenset({"snake", "raw"})

@@ -17,7 +17,7 @@ from civis.response import (
     CivisImmutableResponseError,
     find,
 )
-from civis._utils import camel_to_snake
+from civis._camel_to_snake import camel_to_snake
 
 
 def _create_mock_response(data, headers):

@@ -35,7 +35,7 @@ try:
 except ImportError:
     HAS_NUMPY = False
 
-from civis._utils import camel_to_snake
+from civis._camel_to_snake import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.response import Response
 from civis.tests import create_client_mock, create_client_mock_for_container_tests

@@ -5,23 +5,12 @@ from requests import ConnectionError, ConnectTimeout
 from datetime import datetime
 from math import floor
 
-from civis._utils import camel_to_snake, to_camelcase, maybe_get_random_name
+from civis._utils import to_camelcase, maybe_get_random_name
 from civis._utils import retry
 from civis._utils import retry_request
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 import pytest
-
-
-def test_camel_to_snake():
-    test_cases = [
-        ("CAMELCase", "camel_case"),
-        ("camelCase", "camel_case"),
-        ("CamelCase", "camel_case"),
-        ("c__amel", "c__amel"),
-    ]
-    for in_word, out_word in test_cases:
-        assert camel_to_snake(in_word) == out_word
 
 
 def test_tocamlecase():
