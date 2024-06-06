@@ -8,7 +8,6 @@ import requests
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
 from civis.resources._resources import parse_method
-from civis._utils import to_camelcase
 
 
 def _get_service(client):
@@ -199,3 +198,7 @@ class ServiceClient:
             spec = JsonRef.replace_refs(raw_spec)
             classes = parse_service_api_spec(spec, root_path=self._root_path)
         return classes
+
+
+def to_camelcase(s):
+    return re.sub(r"(^|_)([a-zA-Z])", lambda m: m.group(2).upper(), s)

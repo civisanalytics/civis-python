@@ -11,6 +11,7 @@ from civis.service_client import (
     _get_service,
     _parse_service_path,
     parse_service_api_spec,
+    to_camelcase,
 )
 import pytest
 
@@ -317,3 +318,13 @@ def test_make_request(auth_mock, request_mock):
     response = se._make_request("get", "resources/resources")
 
     assert response.json == expected_value
+
+
+def test_tocamlecase():
+    test_cases = [
+        ("snake_case", "SnakeCase"),
+        ("Snake_Case", "SnakeCase"),
+        ("snakecase", "Snakecase"),
+    ]
+    for in_word, out_word in test_cases:
+        assert to_camelcase(in_word) == out_word

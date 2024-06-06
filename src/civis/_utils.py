@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 import time
 import uuid
 from random import random
@@ -28,10 +27,6 @@ def maybe_get_random_name(name):
     if not name:
         name = uuid.uuid4().hex
     return name
-
-
-def to_camelcase(s):
-    return re.sub(r"(^|_)([a-zA-Z])", lambda m: m.group(2).upper(), s)
 
 
 def get_api_key(api_key):

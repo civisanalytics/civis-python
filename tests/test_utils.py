@@ -5,22 +5,12 @@ from requests import ConnectionError, ConnectTimeout
 from datetime import datetime
 from math import floor
 
-from civis._utils import to_camelcase, maybe_get_random_name
+from civis._utils import maybe_get_random_name
 from civis._utils import retry
 from civis._utils import retry_request
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 import pytest
-
-
-def test_tocamlecase():
-    test_cases = [
-        ("snake_case", "SnakeCase"),
-        ("Snake_Case", "SnakeCase"),
-        ("snakecase", "Snakecase"),
-    ]
-    for in_word, out_word in test_cases:
-        assert to_camelcase(in_word) == out_word
 
 
 @mock.patch("civis._utils.uuid")
