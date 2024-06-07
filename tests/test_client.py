@@ -1,11 +1,15 @@
+import json
+from collections import OrderedDict
 from unittest import mock
 
 import pytest
 
 from civis import APIClient
-from civis.resources import API_SPEC
+from civis.resources import API_SPEC_PATH
 
-api_import_str = "civis.resources._resources.get_api_spec"
+
+with open(API_SPEC_PATH) as f:
+    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 
 
 class FakeUsersEndpoint:

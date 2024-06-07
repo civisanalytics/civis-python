@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 from collections import defaultdict, OrderedDict
@@ -8,9 +9,13 @@ from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
 from civis.base import Endpoint
-from civis.resources import _resources, API_SPEC, API_SPEC_PATH
+from civis.resources import _resources, API_SPEC_PATH
 from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
+
+
+with open(API_SPEC_PATH) as f:
+    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 
 
 RESPONSE_DOC = """Returns

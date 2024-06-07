@@ -8,7 +8,9 @@ import requests
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
 from civis.resources._resources import parse_method
-from civis._utils import to_camelcase
+
+
+_TO_CAMELCASE_REGEX = re.compile(r"(^|_)([a-zA-Z])")
 
 
 def _get_service(client):
@@ -35,7 +37,7 @@ def _parse_service_path(path, operations, root_path=None):
     if root_path is not None:
         path = path.replace(root_path, "")
     path = path.strip("/")
-    modified_base_path = re.sub("-", "_", path.split("/")[0].lower())
+    modified_base_path = path.split("/")[0].lower().replace("-", "_")
     methods = []
     for verb, op in operations.items():
         method = parse_method(verb, op, path)
@@ -199,3 +201,7 @@ class ServiceClient:
             spec = JsonRef.replace_refs(raw_spec)
             classes = parse_service_api_spec(spec, root_path=self._root_path)
         return classes
+
+
+def to_camelcase(s):
+    return _TO_CAMELCASE_REGEX.sub(lambda m: m.group(2).upper(), s)
