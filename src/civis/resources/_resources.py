@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 import time
 import textwrap
 import threading
@@ -592,26 +593,15 @@ def _hash_key(api_key: str, thread_id: int) -> str:
     ).hex()
 
 
-def _running_in_jupyter_notebook() -> bool:
-    # https://stackoverflow.com/a/39662359
-    try:
-        # get_ipython() is available on the global namespace by default
-        # when IPython is started.
-        shell = get_ipython().__class__.__name__
-        if shell == "ZMQInteractiveShell":
-            return True  # Jupyter notebook or qtconsole
-        elif shell == "TerminalInteractiveShell":
-            return False  # Terminal running IPython
-        else:
-            return False  # Other type (?)
-    except NameError:
-        return False  # Standard Python interpreter
+def _running_interactively() -> bool:
+    # https://stackoverflow.com/a/64523765
+    return hasattr(sys, "ps1")
 
 
 @lru_cache
 def _spec_stale_time() -> int:
     """Return the duration after which a cached API spec is considered stale."""
-    if _running_in_jupyter_notebook():
+    if _running_interactively():
         return 60 * 15  # 15 minutes
     else:
         return 60 * 60 * 24  # 24 hours
