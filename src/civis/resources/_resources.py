@@ -44,6 +44,8 @@ ITERATOR_PARAM_DESC = (
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
 
+_BRACKETED_REGEX = re.compile(r"^{.*}$")
+
 
 def exclude_resource(path, api_version):
     # TODO: api_version is not used here.
@@ -333,7 +335,7 @@ def raise_for_unexpected_kwargs(
 
 
 def bracketed(x):
-    return re.search("^{.*}$", x)
+    return _BRACKETED_REGEX.search(x)
 
 
 def parse_param(param):
@@ -456,7 +458,7 @@ def parse_method_name(verb, path):
     verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
     path_name = "_".join(name_elems)
     method_name = "_".join((verb, path_name)) if path_name else verb
-    return re.sub("-", "_", method_name)
+    return method_name.replace("-", "_")
 
 
 def parse_method(verb, operation, path):
@@ -487,7 +489,7 @@ def parse_path(path, operations, api_version):
     attached to the class as a method.
     """
     path = path.strip("/")
-    modified_base_path = re.sub("-", "_", path.split("/")[0].lower())
+    modified_base_path = path.split("/")[0].lower().replace("-", "_")
     methods = []
     if exclude_resource(path, api_version):
         return modified_base_path, methods
