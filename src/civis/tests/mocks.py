@@ -1,5 +1,4 @@
-"""Mock client creation and tooling
-"""
+"""Mock client creation and tooling"""
 
 from functools import lru_cache
 from unittest import mock
@@ -9,13 +8,14 @@ from civis.resources import API_SPEC_PATH
 from civis.response import Response
 
 
-def create_client_mock(cache=API_SPEC_PATH):
+def create_client_mock(cache=None):
     """Create an APIClient mock from a cache of the API spec
 
     Parameters
     ----------
     cache : str, optional
-        Location of the API spec on the local filesystem
+        Location of the API spec on the local filesystem.
+        If ``None`` or not given, the default API spec will be used.
 
     Returns
     -------
@@ -23,6 +23,9 @@ def create_client_mock(cache=API_SPEC_PATH):
         A `Mock` object which looks like an APIClient and which will
         error if any method calls have non-existent / misspelled parameters
     """
+    if cache is None:
+        cache = API_SPEC_PATH
+
     # Create a client from the cache. We'll use this for auto-speccing.
     real_client = _real_client(cache)
 
@@ -69,11 +72,10 @@ def create_client_mock_for_container_tests(
     mock_container_run_start = Response(
         {"id": run_id, "container_id": script_id, "state": "queued"}
     )
-    mock_container_run = Response(
-        {"id": run_id, "container_id": script_id, "state": state}
-    )
+    mock_container_run_json = {"id": run_id, "container_id": script_id, "state": state}
     if state == "failed":
-        mock_container_run._replace("error", "None")
+        mock_container_run_json["error"] = "None"
+    mock_container_run = Response(mock_container_run_json)
     c.scripts.post_containers_runs.return_value = mock_container_run_start
     c.scripts.get_containers_runs.return_value = mock_container_run
     c.scripts.list_containers_runs_outputs.return_value = run_outputs or []
@@ -81,8 +83,9 @@ def create_client_mock_for_container_tests(
     c.jobs.list_runs_logs.return_value = log_outputs or []
 
     def change_state_to_cancelled(script_id):
-        mock_container_run._replace("state", "cancelled")
-        return mock_container_run
+        mock_container_run_json = mock_container_run.json()
+        mock_container_run_json["state"] = "cancelled"
+        return Response(mock_container_run_json)
 
     c.scripts.post_cancel.side_effect = change_state_to_cancelled
 

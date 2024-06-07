@@ -1,22 +1,15 @@
 from math import sqrt
 import io
 import pickle
-import warnings
 from unittest import mock
 
 import pytest
-from joblib import delayed, Parallel
-from joblib import parallel_backend, register_parallel_backend
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from joblib.my_exceptions import TransportableException
-
-from civis.base import CivisAPIError, CivisJobFailure
-from civis.response import Response
 import requests
+from joblib import delayed, Parallel, parallel_config, register_parallel_backend
 
 import civis.parallel
+from civis.base import CivisAPIError, CivisJobFailure
+from civis.response import Response
 from civis.futures import ContainerFuture
 from civis.tests import create_client_mock, create_client_mock_for_container_tests
 
@@ -54,48 +47,53 @@ def mock_child_job():
     return Response(dict(params=params, arguments=args, **_MOCK_JOB_KWARGS))
 
 
+@pytest.mark.parametrize(
+    "num_failures,max_submit_retries,submit_call_count,should_fail,from_template_id",
+    [
+        # Test that submission doesn't fail when there are no mock API errors.
+        (0, 0, 3, False, None),
+        (0, 5, 3, False, None),
+        # Test that submission fails when there are API errors and too few retries.
+        (2, 0, 1, True, None),
+        (2, 1, 1, True, None),
+        (2, 2, 2, True, None),
+        # Test that submission doesn't fail when there are mock API errors and
+        # sufficient retries.
+        (2, 3, 5, False, None),
+        (2, 4, 5, False, None),
+        # Using a template.
+        (0, 5, 3, False, 13),
+        (1, 5, 4, False, 13),
+        (1, 0, 1, True, 13),
+    ],
+)
+@mock.patch("civis.parallel._robust_pickle_download")
+@mock.patch("civis.io._files.requests")
 @mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_retries(m_sleep):
-    """Make sure that job submission retry behavior works."""
-
-    # Test that submission doesn't fail when there are no mock API errors.
-    _test_retries_helper(0, 0, False, None)
-    _test_retries_helper(0, 5, False, None)
-
-    # Test that submission fails when there are API errors and too few retries.
-    _test_retries_helper(2, 0, True, None)
-    _test_retries_helper(2, 1, True, None)
-    _test_retries_helper(2, 2, True, None)
-
-    # Test that submission doesn't fail when there are mock API errors and
-    # sufficient retries.
-    _test_retries_helper(2, 3, False, None)
-    _test_retries_helper(2, 4, False, None)
-
-
-def test_from_template_id():
-    _test_retries_helper(0, 5, False, 13)
-    _test_retries_helper(1, 5, False, 13)
-    _test_retries_helper(1, 0, True, 13)
-
-
 @mock.patch.object(civis.parallel, "_ContainerShellExecutor")
 @mock.patch.object(civis.parallel, "CustomScriptExecutor")
-@mock.patch.object(civis.parallel, "_CivisBackendResult")
-@mock.patch.object(civis.parallel.civis.io, "file_to_civis", autospec=True)
-def _test_retries_helper(
-    num_failures,
-    max_submit_retries,
-    should_fail,
-    from_template_id,
-    mock_file_to_civis,
-    mock_result_cls,
+def test_retries(
     mock_custom_exec_cls,
     mock_executor_cls,
+    mock_sleep,
+    mock_requests,
+    mock_download,
+    num_failures,
+    max_submit_retries,
+    submit_call_count,
+    should_fail,
+    from_template_id,
 ):
 
-    mock_file_to_civis.return_value = 0
-    mock_result_cls.return_value.get.return_value = [123]
+    mock_client = create_client_mock()
+    mock_client.scripts.get_containers_runs.return_value.state = "succeeded"
+    mock_client.files.post.return_value.id = 12345
+
+    mock_requests_response = mock.Mock()
+    mock_requests_response.ok = True
+    mock_requests.post.return_value = mock_requests_response
+
+    mock_download.side_effect = [[0.0], [1.0], [2.0]]
 
     # A function to raise fake API errors the first num_failures times it is
     # called.
@@ -106,7 +104,9 @@ def _test_retries_helper(
             counter["n_failed"] += 1
             raise CivisAPIError(mock.MagicMock())
         else:
-            return mock.MagicMock(spec=ContainerFuture)
+            future = ContainerFuture(1, 2, client=mock_client)
+            future._result = Response({"state": "succeeded"})
+            return future
 
     mock_custom_exec_cls.return_value.submit.side_effect = mock_submit
     mock_executor_cls.return_value.submit.side_effect = mock_submit
@@ -115,54 +115,49 @@ def _test_retries_helper(
         factory = civis.parallel.make_backend_template_factory(
             from_template_id=from_template_id,
             max_submit_retries=max_submit_retries,
-            client=create_client_mock(),
+            client=mock_client,
         )
     else:
         factory = civis.parallel.make_backend_factory(
-            max_submit_retries=max_submit_retries, client=create_client_mock()
+            max_submit_retries=max_submit_retries, client=mock_client
         )
     register_parallel_backend("civis", factory)
-    with parallel_backend("civis"):
-        # NB: joblib >v0.11 relies on callbacks from the result object to
-        # decide when it's done consuming inputs. We've mocked the result
-        # object here, so Parallel must be called either with n_jobs=1 or
-        # pre_dispatch='all' to consume the inputs all at once.
-        parallel = Parallel(n_jobs=1, pre_dispatch="n_jobs")
+    with parallel_config("civis"):
+        # NB: Since joblib v1.3.0,
+        # n_jobs=1 would just run a for loop and wouldn't use any parallel backend.
+        parallel = Parallel(n_jobs=2, pre_dispatch="n_jobs")
         if should_fail:
             with pytest.raises(civis.parallel.JobSubmissionError):
                 parallel(delayed(sqrt)(i**2) for i in range(3))
+            if from_template_id:
+                assert (
+                    mock_custom_exec_cls.return_value.submit.call_count
+                    == submit_call_count
+                )
+                mock_custom_exec_cls.return_value.submit.assert_called_with(
+                    JOBLIB_FUNC_FILE_ID=12345
+                )
+            else:
+                assert (
+                    mock_executor_cls.return_value.submit.call_count
+                    == submit_call_count
+                )
         else:
-            parallel(delayed(sqrt)(i**2) for i in range(3))
-
-
-@mock.patch.object(civis.parallel, "CustomScriptExecutor")
-@mock.patch.object(civis.parallel, "_CivisBackendResult")
-@mock.patch.object(civis.parallel.civis.io, "file_to_civis", autospec=True)
-def test_template_submit(mock_file, mock_result, mock_pool):
-    # Verify that creating child jobs from a template looks like we expect
-    file_id = 17
-    mock_client = create_client_mock()
-    mock_file.return_value = file_id
-
-    factory = civis.parallel.make_backend_template_factory(
-        from_template_id=1234, client=mock_client
-    )
-
-    n_calls = 3
-    register_parallel_backend("civis", factory)
-    with parallel_backend("civis"):
-        # NB: joblib >v0.11 relies on callbacks from the result object to
-        # decide when it's done consuming inputs. We've mocked the result
-        # object here, so Parallel must be called either with n_jobs=1 or
-        # pre_dispatch='all' to consume the inputs all at once.
-        parallel = Parallel(n_jobs=1, pre_dispatch="n_jobs")
-        parallel(delayed(sqrt)(i**2) for i in range(n_calls))
-
-    assert mock_file.call_count == 3, "Upload 3 functions to run"
-    assert mock_pool().submit.call_count == n_calls, "Run 3 functions"
-    for this_call in mock_pool().submit.call_args_list:
-        assert this_call == mock.call(JOBLIB_FUNC_FILE_ID=file_id)
-    assert mock_result.call_count == 3, "Create 3 results"
+            result = parallel(delayed(sqrt)(i**2) for i in range(3))
+            assert result == [0.0, 1.0, 2.0]
+            if from_template_id:
+                assert (
+                    mock_custom_exec_cls.return_value.submit.call_count
+                    == submit_call_count
+                )
+                mock_custom_exec_cls.return_value.submit.assert_called_with(
+                    JOBLIB_FUNC_FILE_ID=12345
+                )
+            else:
+                assert (
+                    mock_executor_cls.return_value.submit.call_count
+                    == submit_call_count
+                )
 
 
 @mock.patch.object(civis.parallel, "_CivisBackend")
@@ -234,7 +229,7 @@ def test_infer(mock_make_factory, mock_job):
     ):
         civis.parallel.infer_backend_factory(client=mock_client)
 
-    expected = mock_job._data_snake
+    expected = mock_job.json()
     del expected["from_template_id"]
     del expected["id"]
     mock_make_factory.assert_called_once_with(
@@ -447,7 +442,7 @@ def test_result_exception(m_sleep, mock_civis):
 @mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
 def test_result_exception_no_result(m_sleep):
     # If the job errored but didn't write an output, we should get
-    # a generic TransportableException back.
+    # a CivisJobFailure back.
     callback = mock.MagicMock()
 
     mock_client = create_client_mock_for_container_tests(
@@ -457,10 +452,10 @@ def test_result_exception_no_result(m_sleep):
     res = civis.parallel._CivisBackendResult(fut, callback)
     fut._set_api_exception(CivisJobFailure(Response({"state": "failed"})))
 
-    with pytest.raises(TransportableException) as exc:
+    with pytest.raises(CivisJobFailure) as exc:
         res.get()
 
-    assert "{'state': 'failed'}" in str(exc.value)
+    assert "Response(state='failed')" in str(exc.value)
     assert callback.call_count == 0
 
 
@@ -543,22 +538,12 @@ def test_result_running_and_cancel_requested(mock_civis):
 
 
 @mock.patch.object(civis.parallel, "civis")
-@mock.patch.object(civis.parallel, "_sklearn_reg_para_backend")
-@mock.patch.object(civis.parallel, "_joblib_reg_para_backend")
-def test_setup_remote_backend(mock_jl, mock_sk, mock_civis):
-    # Test that the civis backend is properly registered w/ joblib and sklearn.
-    for no_sk in [True, False]:
-        with mock.patch.object(civis.parallel, "NO_SKLEARN", no_sk):
-            backend = civis.parallel._CivisBackend()
-            backend_name = civis.parallel._setup_remote_backend(backend)
-            assert backend_name == "civis"
-            assert mock_jl.call_count == 1
-            if no_sk:
-                assert mock_sk.call_count == 0
-            else:
-                assert mock_sk.call_count == 1
-            mock_jl.reset_mock()
-            mock_sk.reset_mock()
+@mock.patch.object(civis.parallel, "register_parallel_backend")
+def test_setup_remote_backend(mock_register, mock_civis):
+    backend = civis.parallel._CivisBackend()
+    backend_name = civis.parallel._setup_remote_backend(backend)
+    assert backend_name == "civis"
+    assert mock_register.call_count == 1
 
 
 def test_civis_backend_from_existing():
@@ -595,7 +580,7 @@ def test_civis_backend_pickles(mock_civis):
         hidden=False,
     )
 
-    with parallel_backend(backend):
+    with parallel_config(backend):
         Parallel(n_jobs=-1)([])
 
     buff = io.BytesIO()
@@ -603,5 +588,5 @@ def test_civis_backend_pickles(mock_civis):
     buff.seek(0)
     new_backend = pickle.load(buff)
 
-    with parallel_backend(new_backend):
+    with parallel_config(new_backend):
         Parallel(n_jobs=-1)([])

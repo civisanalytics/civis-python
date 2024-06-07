@@ -49,7 +49,7 @@ class CivisJobFailure(Exception):
 
 def _err_msg_with_job_run_ids(err_msg, job_id, run_id) -> str:
     if job_id is None and run_id is None:
-        return err_msg
+        return str(err_msg)
     elif run_id is None:
         return f"(From job {job_id}) {err_msg}"
     else:

@@ -1,3 +1,12 @@
+/* Background color behind the Civis logo at the top-left corner. */
 .wy-side-nav-search {
     background: #22556F;
+}
+
+/* In the API resource pages, use less vertical space for readability, especially for long methods. */
+dl.py.method dl.simple dd {
+    margin-bottom: 2px;
+}
+dl.py.method dl.simple dt {
+    margin-bottom: 2px;
 }

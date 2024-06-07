@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import json
 import os
+import shutil
 import warnings
 from unittest import mock
 
@@ -11,6 +12,11 @@ from civis.cli._cli_commands import _str_table_result
 from civis.resources import API_SPEC_PATH
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+
+
+def test_civis_command_available():
+    command = "civis"
+    assert shutil.which(command), f"The `{command}` command is not available."
 
 
 @mock.patch("civis.cli.__main__.add_extra_commands")

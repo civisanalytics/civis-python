@@ -6,6 +6,55 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+- Added a script for checking if the Civis API spec is up-to-date. (#489)
+
+### Changed
+- Refactored the `civis.parallel` module and related unit tests due to major changes
+  of joblib from v1.2.0 to v1.3.0 (API-breaking changes for dropping
+  `joblib.my_exceptions.TransportableException` and `joblib.format_stack.format_exc`,
+  as well as the substantial changes to the internals of `joblib.Parallel`). (#488)
+- Bumped the minimum required version of `joblib` to v1.3.0,
+  which is the version where `joblib.parallel_config` was introduced and
+  `joblib.parallel_backend` was deprecated. (#488)
+
+### Deprecated
+### Removed
+### Fixed
+- Fixed `civis.parallel.make_backend_template_factory` so that
+  keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
+
+### Security
+- Bumped the minimum required version of `requests` to the latest v2.32.3, 
+  due to a security vulnerability for < v2.32.0
+  ([CVE-2024-35195](https://nvd.nist.gov/vuln/detail/CVE-2024-35195)). (#488)
+
+## 2.2.0 - 2024-05-28
+
+## Added
+- `civis.response.Response` has its own "repr" and pretty-print format,
+  instead of the previous dict-like representation that would incorrectly suggest immutability. (#487)
+- Added the `--version` flag to the command line interface. (#487)
+
+## Fixed
+- Fixed API response objects' `.json()` for lists. (#487)
+- Fixed `civis_logger` for always having the attribute `propagate` attribute set to `False`
+  so that it can also be used for notebooks and services/apps on Civis Platform. (#487)
+
+## 2.1.0 - 2024-05-23
+
+### Added
+- Added `.json()` at `civis.response.Response` to return the original JSON data from Civis API. (#486)
+
+### Changed
+- Updated the Civis API spec. (#486)
+
+### Fixed
+- Fixed `civis.response.Response` so that keys that shouldn't be mutated for casing,
+  specifically those under `"arguments"`, are now kept unchanged. (#486)
+
+## 2.0.0 - 2024-05-21
+
 ### Breaking Changes from v1.x.x to v2.0.0
 
 (Changes documented in this section are not repeated in the following sections.)
@@ -38,34 +87,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added the stub file `client.pyi` to surface the API endpoints and their type annotations
   at a `civis.APIClient` instance to IDEs. (#479)
 - Added the `job_url` property to `CivisFuture` objects. (#482)
+- Added `.readthedocs.yaml` to configure the ReadTheDocs build. (#483)
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)
 - Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
-  circleci config so dev-requirements is only used when needed. (#452)
-- Removed unneeded time.sleep calls and pytest.mark calls and mocked time.sleep calls to optimize tests. (#453)
+  CircleCI config so dev-requirements is only used when needed. (#452)
+- Removed unneeded `time.sleep` calls and `pytest.mark` calls and mocked `time.sleep` calls to optimize tests. (#453)
 - Refactored tests to remove dependency on the vcr library. (#456)
 - Fixed typo in "Testing Your Code" example of the User Guide (#458)
-- Adding try-except to catch JSONDecodeErrors in CivisAPIError (#459)
-- civis.io.file_id_from_run_output now works for all job types (#461)
+- Adding `try`-`except` to catch `JSONDecodeErrors` in `CivisAPIError` (#459)
+- `civis.io.file_id_from_run_output` now works for all job types (#461)
 - A nested `civis.response.Response` object now supports both snake-case and camel-case
   for key access. Previously, only the non-Pythonic camel-case keys were available. (#463)
 - Pinned the dependency `joblib` at `< 1.3.0`, since `joblib >= 1.3.0` is incompatible
   with the current civis-python codebase. (#469)
-- Changed `civis.io.civis_file_to_table` to not rely on table ids for determining a table's existence (#470)
+- Changed `civis.io.civis_file_to_table` to not rely on table IDs for determining a table's existence (#470)
 - Broke out the "API Resources" documentation page into individual endpoint pages (#471)
 - Switched to `pyproject.toml` for packaging. (#475)
 - CI builds for Windows switched from AppVeyor to CircleCI. (#480)
 - Applied the `black` code formatter to the codebase. (#481)
 
-### Deprecated
 ### Removed
 - Dropped support for Python 3.7 and 3.8 (#462, #475)
 
-### Fixed
 ### Security
 - Added the `pip-audit` check to CI
-  for potential security vulnerabilities of Python dependencies. (#476)
+  for potential security vulnerabilities of Python dependencies. (#476, #485)
+
+## 1.16.1 - 2023-07-10
+### Changed
+- Changed `civis.io.civis_file_to_table` to not rely on table IDs for determining a table's existence (#464)
 
 ## 1.16.0 - 2021-12-14
 ### Added

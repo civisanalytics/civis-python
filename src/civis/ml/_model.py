@@ -26,7 +26,7 @@ except ImportError:
     HAS_SKLEARN = False
 
 from civis import APIClient, find, find_one
-from civis._utils import camel_to_snake
+from civis._camel_to_snake import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 import civis.io as cio
 from civis.futures import ContainerFuture

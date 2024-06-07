@@ -23,6 +23,8 @@ import click
 from jsonref import JsonRef
 import yaml
 from requests import Request
+
+import civis
 from civis.cli._cli_commands import (
     civis_ascii_art,
     files_download_cmd,
@@ -260,6 +262,7 @@ def generate_cli():
     spec = JsonRef.replace_refs(spec)
 
     cli = click.Group()
+    cli = click.version_option(version=civis.__version__, package_name="civis")(cli)
 
     # Iterate through top-level resources (e.g., Scripts, Files, Models).
     groups = {}

@@ -128,15 +128,16 @@ def read_civis(
 
     Examples
     --------
+    >>> import civis
     >>> table = "schema.table"
     >>> database = "my_data"
     >>> columns = ["column_a", "ROW_NUMBER() OVER(ORDER BY date) AS order"]
-    >>> data = read_civis(table, database, columns=columns)
+    >>> data = civis.io.read_civis(table, database, columns=columns)
     >>> columns = data.pop(0)
     >>> col_a_index = columns.index("column_a")
     >>> col_a = [row[col_a_index] for row in data]
 
-    >>> df = read_civis("schema.table", "my_data", use_pandas=True)
+    >>> df = civis.io.read_civis("schema.table", "my_data", use_pandas=True)
     >>> col_a = df["column_a"]
 
     See Also
@@ -210,8 +211,9 @@ def export_to_civis_file(
 
     Examples
     --------
+    >>> import civis
     >>> sql = "SELECT * FROM schema.table"
-    >>> fut = export_to_civis_file(sql, "my_database")
+    >>> fut = civis.io.export_to_civis_file(sql, "my_database")
     >>> file_id = fut.result()['output'][0]["file_id"]
 
 
@@ -256,11 +258,8 @@ def read_civis_sql(
 ):
     """Read data from Civis using a custom SQL string.
 
-    The custom SQL string will be executed twice; once to attempt to
-    retrieve headers and once to retrieve the data. This is done to
-    use a more performant method for retrieving the data. The first
-    execution of the custom SQL is controlled such that changes in
-    state cannot occur (e.g., INSERT, UPDATE, DELETE, etc.).
+    If no data is expected to return from the query,
+    consider :func:`~civis.io.query_civis` instead.
 
     Parameters
     ----------
@@ -316,11 +315,12 @@ def read_civis_sql(
 
     Examples
     --------
+    >>> import civis
     >>> sql = "SELECT * FROM schema.table"
-    >>> df = read_civis_sql(sql, "my_database", use_pandas=True)
+    >>> df = civis.io.read_civis_sql(sql, "my_database", use_pandas=True)
     >>> col_a = df["column_a"]
 
-    >>> data = read_civis_sql(sql, "my_database")
+    >>> data = civis.io.read_civis_sql(sql, "my_database")
     >>> columns = data.pop(0)
     >>> col_a_index = columns.index("column_a")
     >>> col_a = [row[col_a_index] for row in data]
@@ -404,12 +404,6 @@ def civis_to_csv(
 ):
     """Export data from Civis to a local CSV file.
 
-    The custom SQL string will be executed twice; once to attempt to
-    retrieve headers and once to retrieve the data. This is done to
-    use a more performant method for retrieving the data. The first
-    execution of the custom SQL is controlled such that changes in
-    state cannot occur (e.g., INSERT, UPDATE, DELETE, etc.).
-
     Parameters
     ----------
     filename : str
@@ -449,13 +443,23 @@ def civis_to_csv(
     Returns
     -------
     results : :class:`~civis.futures.CivisFuture`
-        A `CivisFuture` object.
+        A ``CivisFuture`` object that represents the SQL query that unloads data
+        from Civis Platform. Note that this unloading process has an arbitrary
+        filename assigned and made available through the ``CivisFuture`` object,
+        which is not the same as the `filename` parameter. It is recommended
+        that a separate variable is used to store the desired filename beforehand
+        so that it's accessible after this function finishes,
+        see the code example below.
 
     Examples
     --------
+    >>> import civis
     >>> sql = "SELECT * FROM schema.table"
-    >>> fut = civis_to_csv("file.csv", sql, "my_database")
+    >>> file_path = "file.csv"
+    >>> fut = civis.io.civis_to_csv(file_path, sql, "my_database")
     >>> fut.result()  # Wait for job to complete
+    >>> import pandas as pd  # Let's say we want to read the data into a DataFrame
+    >>> df = pd.read_csv(file_path)
 
     See Also
     --------
@@ -610,14 +614,17 @@ def civis_to_multifile_csv(
 
     Examples
     --------
+    >>> import io
+    >>> import civis
+    >>> import pandas as pd
     >>> sql = "SELECT * FROM schema.my_big_table"
     >>> database = "my_database"
     >>> delimiter = "|"
-    >>> manifest = civis_to_multifile_csv(sql, database, delimiter=delimiter)
+    >>> manifest = civis.io.civis_to_multifile_csv(sql, database, delimiter=delimiter)
     >>> ids = [entry['id'] for entry in manifest['entries']]
     >>> for file_id in ids:
-    >>>     buf = BytesIO()
-    >>>     civis_to_file(file_id, buf)
+    >>>     buf = io.BytesIO()
+    >>>     civis.io.civis_to_file(file_id, buf)
     >>>     buf.seek(0)
     >>>     # Process the data in `buf` for your own application, e.g.:
     >>>     df = pd.read_csv(buf, delimiter=delimiter)
@@ -694,11 +701,11 @@ def dataframe_to_civis(
     hidden=True,
     **kwargs,
 ):
-    """Upload a `pandas` `DataFrame` into a Civis table.
+    """Upload a pandas dataframe into a Civis table.
 
-    The `DataFrame`'s index will not be included. To store the index
-    along with the other values, use `df.reset_index()` instead
-    of `df` as the first argument to this function.
+    The dataframe's index will not be included. To store the index
+    along with the other values, use ``df.reset_index()`` instead
+    of ``df`` as the first argument to this function.
 
     Parameters
     ----------
@@ -771,10 +778,11 @@ def dataframe_to_civis(
     Returns
     -------
     fut : :class:`~civis.futures.CivisFuture`
-        A `CivisFuture` object.
+        A ``CivisFuture`` object.
 
     Examples
     --------
+    >>> import civis
     >>> import pandas as pd
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
     >>> fut = civis.io.dataframe_to_civis(df, 'my-database',
@@ -932,6 +940,7 @@ def csv_to_civis(
 
     Examples
     --------
+    >>> import civis
     >>> with open('input_file.csv', 'w') as _input:
     ...     _input.write('a,b,c\\n1,2,3')
     >>> fut = civis.io.csv_to_civis('input_file.csv',
@@ -999,7 +1008,7 @@ def civis_file_to_table(
     format.
 
     .. note::
-        Civis files must be in a CSV-like delimiter separated format and
+        The input Civis files must be in a CSV-like delimiter separated format and
         will be accepted in both uncompressed and compressed format
         (.zip, .gz).
 
@@ -1097,6 +1106,7 @@ def civis_file_to_table(
 
     Examples
     --------
+    >>> import civis
     >>> file_id = 100
     >>> fut = civis.io.civis_file_to_table(file_id,
     ...                                    'my-database',

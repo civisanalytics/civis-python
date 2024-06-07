@@ -17,26 +17,21 @@ import requests
 from requests import Request
 
 from civis.base import Endpoint, get_base_url, open_session
-from civis._utils import camel_to_snake, get_api_key, retry_request, MAX_RETRIES
+from civis._camel_to_snake import camel_to_snake
+from civis._utils import get_api_key, retry_request, MAX_RETRIES
 
 
 API_VERSIONS = frozenset({"1.0"})
 
 # civis_api_spec.json can be updated
-# by running the tools/update_civis_api_spec_json.py script.
+# by running the tools/update_civis_api_spec.py script.
 API_SPEC_PATH = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "civis_api_spec.json",
 )
-with open(API_SPEC_PATH) as f:
-    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
-BASE_RESOURCES_V1 = sorted(
-    r
-    for r in set(path.split("/", 2)[1] for path in API_SPEC["paths"].keys())
-    # "feature_flags" has a name collision with an APIClient instance
-    if r != "feature_flags"
-)
 
+# "feature_flags" has a name collision with an APIClient instance.
+RESOURCES_TO_EXCLUDE = frozenset({"feature_flags"})
 
 TYPE_MAP = {
     "array": "list",
@@ -55,6 +50,8 @@ ITERATOR_PARAM_DESC = (
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
 
+_BRACKETED_REGEX = re.compile(r"^{.*}$")
+
 
 class _CachedAPISpec(NamedTuple):
     api_spec: OrderedDict
@@ -65,11 +62,12 @@ _CACHED_API_SPECS: dict[str, _CachedAPISpec] = {}
 
 
 def exclude_resource(path, api_version):
-    if api_version == "1.0":
-        include = any(path.startswith(x) for x in BASE_RESOURCES_V1)
-    else:
-        include = True
-    return not include
+    # TODO: api_version is not used here.
+    #   Dropping it would affect upstream code, including civis.APIClient.
+    #   We may need to deprecate api_version in the future.
+    if any(path.startswith(x) for x in RESOURCES_TO_EXCLUDE):
+        return True
+    return False
 
 
 def get_properties(x):
@@ -351,7 +349,7 @@ def raise_for_unexpected_kwargs(
 
 
 def bracketed(x):
-    return re.search("^{.*}$", x)
+    return _BRACKETED_REGEX.search(x)
 
 
 def parse_param(param):
@@ -474,7 +472,7 @@ def parse_method_name(verb, path):
     verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
     path_name = "_".join(name_elems)
     method_name = "_".join((verb, path_name)) if path_name else verb
-    return re.sub("-", "_", method_name)
+    return method_name.replace("-", "_")
 
 
 def parse_method(verb, operation, path):
@@ -505,7 +503,7 @@ def parse_path(path, operations, api_version):
     attached to the class as a method.
     """
     path = path.strip("/")
-    modified_base_path = re.sub("-", "_", path.split("/")[0].lower())
+    modified_base_path = path.split("/")[0].lower().replace("-", "_")
     methods = []
     if exclude_resource(path, api_version):
         return modified_base_path, methods

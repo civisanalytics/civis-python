@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 import threading
@@ -8,12 +9,15 @@ import pytest
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
-import civis
 from civis.base import Endpoint
-from civis.resources import _resources, API_SPEC, API_SPEC_PATH
-from civis.resources._resources import BASE_RESOURCES_V1, _hash_key
-from civis.resources._client_pypi import generate_client_pyi, CLIENT_PYI_PATH
+from civis.resources import _resources, API_SPEC_PATH
+from civis.resources._resources import _hash_key
+from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
+
+
+with open(API_SPEC_PATH) as f:
+    API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 
 
 RESPONSE_DOC = """Returns
@@ -89,10 +93,9 @@ def test_create_method_no_iterator_kwarg():
 
 def test_exclude_resource():
     include = "tables/"
-    exclude = "excluded_in_base/"
+    exclude = "feature_flags/"
     assert _resources.exclude_resource(exclude, "1.0")
     assert not _resources.exclude_resource(include, "1.0")
-    assert not _resources.exclude_resource(exclude, "9.0")
 
 
 def test_property_type():
@@ -641,12 +644,6 @@ def test_parse_api_spec_names(mock_method):
     assert classes["hyphen_words"].__name__ == "Hyphen_Words"
 
 
-def test_endpoints_from_base_resources_are_available_from_client():
-    client = civis.APIClient(local_api_spec=API_SPEC, api_key="none")
-    for endpoint in BASE_RESOURCES_V1:
-        assert hasattr(client, endpoint), endpoint
-
-
 def test_client_pyi_matches_api_spec():
     with tempfile.TemporaryDirectory() as temp_dir:
         test_client_pyi_path = os.path.join(temp_dir, "test_client.pyi")
@@ -658,7 +655,7 @@ def test_client_pyi_matches_api_spec():
         # or else pytest would print the unwieldy, long diffs for a mismatch.
         assert match, (
             "client.pyi doesn't match the API spec in the codebase. "
-            "Run tools/update_client_pyi.py."
+            "Run tools/update_civis_api_spec.py."
         )
 
 

@@ -13,38 +13,10 @@ from io import BytesIO
 import os
 import pickle  # nosec
 import sys
-import warnings
 
 import civis
 import cloudpickle
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", DeprecationWarning)
-    from joblib.my_exceptions import TransportableException
-
-from joblib.format_stack import format_exc
-from joblib import parallel_backend as _joblib_para_backend
-
-try:
-    with warnings.catch_warnings():
-        # Ignore the warning: "DeprecationWarning: sklearn.externals.joblib is
-        # deprecated in 0.21 and will be removed in 0.23. Please import this
-        # functionality directly from joblib, which can be installed with:
-        # pip install joblib. If this warning is raised when loading pickled
-        # models, you may need to re-serialize those models with
-        # scikit-learn 0.21+."
-        warnings.simplefilter("ignore", DeprecationWarning)
-        # sklearn 0.22 has switched from DeprecationWarning to FutureWarning
-        warnings.simplefilter("ignore", FutureWarning)
-        from sklearn.externals.joblib import parallel_backend as _sklearn_para_backend
-
-        # NO_SKLEARN_BACKEND would be a better name here since it'll be true
-        # for future scikit-learn versions that won't include the joblib
-        # module as well as when scikit-learn isn't installed, but changing
-        # the name would technically be a breaking change.
-        NO_SKLEARN = False
-except ImportError:
-    NO_SKLEARN = True
+from joblib import parallel_config
 
 from civis.parallel import (
     _robust_pickle_download,
@@ -72,29 +44,11 @@ def worker_func(func_file_id):
 
         _backend = _setup_remote_backend(remote_backend)
 
-        # graceful nested context managers are ~hard across python versions,
-        # this just works...
-        if NO_SKLEARN:
-            with _joblib_para_backend(_backend):
-                result = func()
-        else:
-            # we are using the nested context managers to set the joblib
-            # backend to the requested one in both copes of joblib, the
-            # package and the copy shipped by sklearn at
-            # `sklearn.externals.joblib`. joblib maintains the current
-            # backend as global state in the package and thus there are
-            # two backends to set when you have two copies of the package
-            # in play.
-            with _sklearn_para_backend(_backend):
-                with _joblib_para_backend(_backend):
-                    result = func()
-    except Exception:
+        with parallel_config(_backend):
+            result = func()
+    except Exception as exc:
         print("Error! Attempting to record exception.")
-        # Wrap the exception in joblib's TransportableException
-        # so that joblib can properly display the results.
-        e_type, e_value, e_tb = sys.exc_info()
-        text = format_exc(e_type, e_value, e_tb, context=10, tb_offset=1)
-        result = TransportableException(text, e_type)
+        result = exc
         raise
     finally:
         # Serialize the result and upload it to the Files API.

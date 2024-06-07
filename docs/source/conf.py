@@ -21,53 +21,57 @@ import civis
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+# needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary', 'sphinx.ext.doctest', 'numpydoc.numpydoc'
+    "numpydoc.numpydoc",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.viewcode",
 ]
 
 autosummary_generate = True
 
 intersphinx_mapping = {
-    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
-    'python': ('https://docs.python.org/3', None),
-    'requests': ('https://docs.python-requests.org/en/latest/', None),
-    'sklearn': ('https://scikit-learn.org/stable', None),
-    'joblib': ('https://joblib.readthedocs.io/en/latest/', None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    "python": ("https://docs.python.org/3", None),
+    "requests": ("https://docs.python-requests.org/en/latest/", None),
+    "sklearn": ("https://scikit-learn.org/stable", None),
+    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+# source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
 current_year = datetime.datetime.now().year
-project = 'Civis API Python Client'
-copyright = '2016-%d, Civis Analytics' % current_year
-author = 'Civis Analytics'
+project = "Civis API Python Client"
+copyright = "2016-%d, Civis Analytics" % current_year
+author = "Civis Analytics"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-major_version, minor_version, _ = civis.__version__.split('.')
+major_version, minor_version, _ = civis.__version__.split(".")
 # The short X.Y version.
-version = '%s.%s' % (major_version, minor_version)
+version = "%s.%s" % (major_version, minor_version)
 # The full version, including alpha/beta/rc tags.
 release = civis.__version__
 
@@ -80,9 +84,9 @@ language = "en"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
-#today = ''
+# today = ''
 # Else, today_fmt is used as the format for a strftime call.
-#today_fmt = '%B %d, %Y'
+# today_fmt = '%B %d, %Y'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -90,27 +94,27 @@ exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-#default_role = None
+# default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+# add_function_parentheses = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+# add_module_names = True
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
-#show_authors = False
+# show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+# modindex_common_prefix = []
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
-#keep_warnings = False
+# keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
@@ -118,165 +122,155 @@ todo_include_todos = False
 
 # -- Options for HTML output ----------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-# If building on RTD, the theme is already included. The build will fail if we
-# also include it here. Only add theme if building locally. See
-# https://github.com/snide/sphinx_rtd_theme
-_on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not _on_rtd:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+# html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-#html_theme_path = []
+# html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+# html_title = None
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-#html_short_title = None
+# html_short_title = None
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = '_static/civis.svg'
+html_logo = "_static/civis.svg"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = '_static/civis.ico'
+html_favicon = "_static/civis.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
 # directly to the root of the documentation.
-#html_extra_path = []
+# html_extra_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+# html_last_updated_fmt = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-#html_use_smartypants = True
+# html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+# html_sidebars = {}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
-#html_additional_pages = {}
+# html_additional_pages = {}
 
 # If false, no module index is generated.
-#html_domain_indices = True
+# html_domain_indices = True
 
 # If false, no index is generated.
-#html_use_index = True
+# html_use_index = True
 
 # If true, the index is split into individual pages for each letter.
-#html_split_index = False
+# html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+# html_show_sourcelink = True
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
+# html_show_sphinx = True
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-#html_show_copyright = True
+# html_show_copyright = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
-#html_use_opensearch = ''
+# html_use_opensearch = ''
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
-#html_file_suffix = None
+# html_file_suffix = None
 
 # Language to be used for generating the HTML full-text search index.
 # Sphinx supports the following languages:
 #   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
 #   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr'
-#html_search_language = 'en'
+# html_search_language = 'en'
 
 # A dictionary with options for the search language support, empty by default.
 # Now only 'ja' uses this config value
-#html_search_options = {'type': 'default'}
+# html_search_options = {'type': 'default'}
 
 # The name of a javascript file (relative to the configuration directory) that
 # implements a search results scorer. If empty, the default will be used.
-#html_search_scorer = 'scorer.js'
+# html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CivisClientdoc'
+htmlhelp_basename = "CivisClientdoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # The paper size ('letterpaper' or 'a4paper').
+    # 'papersize': 'letterpaper',
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
+    # Latex figure (float) alignment
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'CivisClient.tex', 'Civis Client Documentation',
-   'Civis Analytics', 'manual'),
+    (
+        master_doc,
+        "CivisClient.tex",
+        "Civis Client Documentation",
+        "Civis Analytics",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+# latex_logo = None
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
-#latex_use_parts = False
+# latex_use_parts = False
 
 # If true, show page references after internal links.
-#latex_show_pagerefs = False
+# latex_show_pagerefs = False
 
 # If true, show URL addresses after external links.
-#latex_show_urls = False
+# latex_show_urls = False
 
 # Documents to append as an appendix to all manuals.
-#latex_appendices = []
+# latex_appendices = []
 
 # If false, no module index is generated.
-#latex_domain_indices = True
+# latex_domain_indices = True
 
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'civisclient', 'Civis Client Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, "civisclient", "Civis Client Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
-#man_show_urls = False
+# man_show_urls = False
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -285,53 +279,64 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'CivisClient', 'Civis Client Documentation',
-   author, 'CivisClient', 'One line description of project.',
-   'Miscellaneous'),
+    (
+        master_doc,
+        "CivisClient",
+        "Civis Client Documentation",
+        author,
+        "CivisClient",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.
-#texinfo_appendices = []
+# texinfo_appendices = []
 
 # If false, no module index is generated.
-#texinfo_domain_indices = True
+# texinfo_domain_indices = True
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
-#texinfo_show_urls = 'footnote'
+# texinfo_show_urls = 'footnote'
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
-#texinfo_no_detailmenu = False
+# texinfo_no_detailmenu = False
 
 nitpick_ignore = [
-    ('envvar', 'CIVIS_API_KEY'),
-    ('py:class', 'concurrent.futures._base.Future'),
-    ('py:class', 'civis.base.CivisAsyncResultBase')
+    ("envvar", "CIVIS_API_KEY"),
+    ("py:class", "concurrent.futures._base.Future"),
+    ("py:class", "civis.base.CivisAsyncResultBase"),
 ]
 # Show tables of functions for each Resource class.
 numpydoc_show_class_members = True
 
 # Preserve signatures of a few methods wrapped with lru_cache. Need to set
 # this before we import civis. See https://stackoverflow.com/a/28371786.
-import functools
-import inspect
+import functools  # noqa: E402
+import inspect  # noqa: E402
+
 
 def noop_lru_cache(*args, **kwargs):
     def wrapper(func):
         def f(*args, **kwargs):
             return func(*args, **kwargs)
+
         f.__doc__ = func.__doc__
         f.__signature__ = inspect.signature(func)
         return f
+
     return wrapper
+
+
 functools.lru_cache = noop_lru_cache
 
 
 # Special functionality to accommodate autogenerated client.
 def _make_attr_docs(class_names, module_path):
-    doc = '\n    Attributes\n    ----------\n'
-    doc_fmt = '    {}\n        An instance of the {} endpoint\n'
+    doc = "\n    Attributes\n    ----------\n"
+    doc_fmt = "    {}\n        An instance of the {} endpoint\n"
     for name in class_names:
-        ref_link = ':class:`~{}.{}`'.format(module_path, name.title())
+        ref_link = ":class:`~{}.{}`".format(module_path, name.title())
         doc += doc_fmt.format(name, ref_link)
     return doc
 
@@ -341,18 +346,27 @@ def _attach_classes_to_module(module, class_data):
         setattr(module, class_name.title(), cls)
 
 
-_autodoc_fmt = ('.. autoclass:: {}\n'
-                '   :members:\n'
-                '   :exclude-members: __init__\n\n'
-                '   .. generatedautosummary:: {}\n\n')
+_autodoc_fmt = (
+    ".. autoclass:: {}\n"
+    "   :members:\n"
+    "   :exclude-members: __init__\n\n"
+    "   .. generatedautosummary:: {}\n\n"
+)
 
 
 def _write_resources_rst(class_names, filename, civis_module):
-    with open(filename, 'w') as resources_rst_file:
+    with open(filename, "w") as resources_rst_file:
         resources_rst_file.write(
             ".. _api_resources:\n\n"
             "API Resources\n"
             "=============\n\n"
+            ".. note::\n\n"
+            "   As the Civis API is updated from time to time, "
+            "   the API resources available on a :class:`civis.APIClient` "
+            "   instance may differ from what's documented below. "
+            "   While we strive to keep this documentation up-to-date, the Civis API "
+            "   is officially documented at https://api.civisanalytics.com "
+            "   (Civis Platform login required).\n\n"
             ".. toctree::\n"
             "   :titlesonly:\n\n"
         )
@@ -361,28 +375,28 @@ def _write_resources_rst(class_names, filename, civis_module):
             endpoint_rst_filename = f"{endpoint_rst_filename_no_ext}.rst"
             resources_rst_file.write(f"   {endpoint_rst_filename_no_ext}\n")
             with open(endpoint_rst_filename, "w") as endpoint_rst_file:
-                endpoint_rst_file.write(
-                    f".. _{endpoint_rst_filename_no_ext}:\n\n"
-                )
+                endpoint_rst_file.write(f".. _{endpoint_rst_filename_no_ext}:\n\n")
                 endpoint_name = class_name.title()
-                full_path = '.'.join((civis_module, endpoint_name))
+                full_path = ".".join((civis_module, endpoint_name))
                 endpoint_rst_file.write(
-                    f"{endpoint_name}\n"
+                    f"{endpoint_name.replace('_', ' ')}\n"
                     f"{'=' * len(endpoint_name)}\n\n"
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
 
 
-import civis
+import civis  # noqa: E402
+
 _generated_attach_point = civis.resources._resources
-_generated_attach_path = 'civis.resources._resources'
-_rst_basename = 'api_resources.rst'
+_generated_attach_path = "civis.resources._resources"
+_rst_basename = "api_resources.rst"
 
 if os.getenv("FETCH_REMOTE_RESOURCES", "false").lower() == "true":
     api_key = os.environ.get("CIVIS_API_KEY")
     api_version = "1.0"
     extra_classes = civis.resources._resources.generate_classes(
-        api_key=api_key, api_version=api_version)
+        api_key=api_key, api_version=api_version
+    )
 else:
     import json
     from collections import OrderedDict
@@ -390,15 +404,12 @@ else:
     from civis.resources import API_SPEC_PATH
 
     with open(API_SPEC_PATH) as _raw:
-        api_spec = JsonRef.replace_refs(
-            json.load(_raw, object_pairs_hook=OrderedDict))
-    extra_classes = civis.resources._resources.parse_api_spec(
-        api_spec, '1.0')
+        api_spec = JsonRef.replace_refs(json.load(_raw, object_pairs_hook=OrderedDict))
+    extra_classes = civis.resources._resources.parse_api_spec(api_spec, "1.0")
 
 sorted_class_names = sorted(extra_classes.keys())
 
-civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names,
-                                           _generated_attach_path)
+civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names, _generated_attach_path)
 
 # TODO: The API endpoint doc details are in the stub file civis/client.pyi,
 #   but Sphinx still doesn't really support stub files
@@ -413,8 +424,9 @@ _write_resources_rst(sorted_class_names, _rst_basename, _generated_attach_path)
 
 # The following directive makes all (public) methods of an Endpoint
 # auto-discoverable. See https://stackoverflow.com/a/30783465
-from sphinx.ext.autosummary import Autosummary, get_documenter
-from sphinx.util.inspect import safe_getattr
+from sphinx.ext.autosummary import Autosummary, get_documenter  # noqa: E402
+from sphinx.util.inspect import safe_getattr  # noqa: E402
+
 
 class GeneratedAutosummary(Autosummary):
     """Helper for documenting all methods of an auto-generated endpoint."""
@@ -425,7 +437,7 @@ class GeneratedAutosummary(Autosummary):
     def get_members(obj, typ, public_only=True):
         items = []
         for name in dir(obj):
-            if public_only and name.startswith('_'):
+            if public_only and name.startswith("_"):
                 continue
             try:
                 documenter = get_documenter(None, safe_getattr(obj, name), obj)
@@ -437,12 +449,11 @@ class GeneratedAutosummary(Autosummary):
 
     def run(self):
         input_name = self.arguments[0]
-        module_name, class_name = input_name.rsplit('.', 1)
+        module_name, class_name = input_name.rsplit(".", 1)
         module = __import__(module_name, globals(), locals(), [class_name])
         klass = getattr(module, class_name)
-        methods = self.get_members(klass, 'method')
-        self.content = ['~{}.{}'.format(input_name, method)
-                        for method in methods]
+        methods = self.get_members(klass, "method")
+        self.content = ["~{}.{}".format(input_name, method) for method in methods]
         return super().run()
 
 
@@ -452,26 +463,31 @@ class GeneratedAutosummary(Autosummary):
 # There is a global `add_module_name` parameter that we want to set to False
 # for the autogenerated classes only. This needs to be done at the `Domain`
 # level since that is where the rst is actually parsed into nodes.
-from sphinx.domains.python import PythonDomain, PyClasslike
+from sphinx.domains.python import PythonDomain, PyClasslike  # noqa: E402
 
 _extra_class_titles = [klass.title() for klass in extra_classes.keys()]
+
 
 class MaybeHiddenModulePyClasslike(PyClasslike):
 
     def handle_signature(self, sig, signode):
         add_module_orig = self.env.config.add_module_names
         # Is this an autogenerated class?
-        toggle = (any(sig.startswith(title) for title in _extra_class_titles)
-                  and 'session' in sig and 'return_type' in sig)
+        toggle = (
+            any(sig.startswith(title) for title in _extra_class_titles)
+            and "session" in sig
+            and "return_type" in sig
+        )
         if toggle:
             self.env.config.add_module_names = False
         result = super().handle_signature(sig, signode)
         self.env.config.add_module_names = add_module_orig
         return result
 
-PythonDomain.directives['class'] = MaybeHiddenModulePyClasslike
+
+PythonDomain.directives["class"] = MaybeHiddenModulePyClasslike
 
 
 def setup(app):
-    app.add_directive('generatedautosummary', GeneratedAutosummary)
-    app.add_css_file('custom.css')
+    app.add_directive("generatedautosummary", GeneratedAutosummary)
+    app.add_css_file("custom.css")
