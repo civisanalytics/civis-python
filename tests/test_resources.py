@@ -1,7 +1,6 @@
 import json
 import os
 import tempfile
-import threading
 from collections import defaultdict, OrderedDict
 from unittest import mock
 
@@ -11,7 +10,6 @@ from requests.exceptions import HTTPError
 
 from civis.base import Endpoint
 from civis.resources import _resources, API_SPEC_PATH
-from civis.resources._resources import _hash_key
 from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
 
@@ -605,7 +603,7 @@ def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
 
     # Calls generate_classes when no cache is passed
     _resources.generate_classes_maybe_cached(None, api_key, api_version)
-    mock_gen.assert_called_once_with(api_key, api_version, False)
+    mock_gen.assert_called_once_with(api_key, api_version)
     mock_gen.reset_mock()
 
     # Handles OrderedDict
@@ -657,8 +655,3 @@ def test_client_pyi_matches_api_spec():
             "client.pyi doesn't match the API spec in the codebase. "
             "Run tools/update_civis_api_spec.py."
         )
-
-
-def test_hash_key():
-    """Smoke test to check _hash_key() doesn't error on all support Python versions."""
-    assert isinstance(_hash_key("fake_api_key", threading.get_ident()), str)
