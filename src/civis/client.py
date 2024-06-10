@@ -35,10 +35,18 @@ class APIClient:
         downloaded the first time APIClient is instantiated. Alternatively,
         a local cache of the specification may be passed as either an
         OrderedDict or a filename which points to a json file.
+    force_refresh_api_spec : bool, optional
+        Whether to force re-downloading the API spec,
+        even if the cached version for the given API key hasn't expired.
     """
 
     def __init__(
-        self, api_key=None, return_type="snake", api_version="1.0", local_api_spec=None
+        self,
+        api_key=None,
+        return_type="snake",
+        api_version="1.0",
+        local_api_spec=None,
+        force_refresh_api_spec=False,
     ):
         if return_type not in _RETURN_TYPES:
             raise ValueError(
@@ -50,7 +58,7 @@ class APIClient:
         self.last_response = None
 
         classes = generate_classes_maybe_cached(
-            local_api_spec, session_auth_key, api_version
+            local_api_spec, session_auth_key, api_version, force_refresh_api_spec
         )
         for class_name, cls in classes.items():
             setattr(
