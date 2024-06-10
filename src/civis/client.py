@@ -37,7 +37,7 @@ class APIClient:
         OrderedDict or a filename which points to a json file.
     force_refresh_api_spec : bool, optional
         Whether to force re-downloading the API spec,
-        even if the cached version is not stale.
+        even if the cached version for the given API key hasn't expired.
     """
 
     def __init__(

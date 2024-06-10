@@ -37,15 +37,34 @@ Below are examples of endpoints and how they map to API Client methods:
 | ``GET /workflows/1/executions/2`` | ``client.workflows.get_executions(1, 2)`` |
 +-----------------------------------+-------------------------------------------+
 
-Note that Python's built-in ``help`` function can be used to see lists of
+If your code editor has auto-completion functionality (as many heavy IDEs do),
+typing ``client.`` or ``client.workflows.`` should trigger the display of
+the available resources or methods, respectively.
+If you're running Python interactively
+(e.g., the regular Python interactive shell, IPython, or a Jupyter notebook),
+Python's built-in ``help`` function can be used to see lists of
 available endpoints for a resource (e.g., ``help(client.workflows)``) or to get
 documentation for a specific endpoint function (e.g.,
 ``help(client.workflows.list)``). The ``?`` operator in IPython (e.g., ``?client.workflows``) and the ``shift-tab``
 hotkey in a Jupyter notebook also cause documentation to be displayed.
 
-By default, the Civis API specification specification is downloaded from
-the ``/endpoints`` endpoint the first time :class:`~civis.APIClient` is
-instantiated (and cached in memory for the remainder of the program's run).
+By default, the Civis API specification is downloaded from
+the ``/endpoints`` endpoint the first time an :class:`~civis.APIClient` object is
+instantiated.
+To reduce overhead due to re-downloading the same API spec multiple times when multiple
+``client`` instances are created, this API spec is cached in memory for a set amount of time.
+If you're running Python interactively
+(e.g., the regular Python interactive shell, IPython, or a Jupyter notebook),
+the cached spec expires in 15 minutes,
+and if you're running a script, the spec expires in 24 hours.
+When a cached spec expires and a new ``client`` instance is created,
+a new spec is downloaded from the Civis API
+(so that updates to the Civis API, if any, are available to the new ``client``).
+If you want to force a new spec to be downloaded, you can pass
+``force_refresh_api_spec=True`` to the :class:`~civis.APIClient` constructor.
+Note that for a given :class:`~civis.APIClient` object, the auto-generated resources and methods
+attached to it are never refreshed, even if the Civis API is updated during the lifetime of this object.
+
 In some circumstances, it may be useful to use a local cache of the API
 specification rather than downloading the spec.  This can be done by passing
 the specification to the client through the parameter ``local_api_spec`` as

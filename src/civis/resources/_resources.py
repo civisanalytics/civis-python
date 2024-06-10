@@ -575,8 +575,8 @@ def _running_interactively():
 
 
 @lru_cache
-def _spec_stale_time():
-    """Return the duration (seconds) after which a cached spec is considered stale."""
+def _spec_expire_time():
+    """Return the duration (seconds) after which a cached API spec expires."""
     if _running_interactively():
         return 60 * 15  # 15 minutes
     else:
@@ -585,12 +585,12 @@ def _spec_stale_time():
 
 def _get_ttl_hash():
     """Return the same value within `seconds` time period."""
-    seconds = _spec_stale_time()
+    seconds = _spec_expire_time()
     return round(time.time() / seconds)
 
 
 @lru_cache(maxsize=4)
-def generate_classes_with_ttl_cache(api_key, api_version, ttl_hash):
+def generate_classes_ttl_cache(api_key, api_version, ttl_hash):
     """Wraps generate_classes with a time-to-live cache.
 
     https://stackoverflow.com/a/55900800
@@ -659,9 +659,9 @@ def generate_classes_maybe_cached(
             "clear the in-memory cached specs at the same time"
         )
     if force_refresh_api_spec:
-        generate_classes_with_ttl_cache.cache_clear()
+        generate_classes_ttl_cache.cache_clear()
     if cache is None:
-        classes = generate_classes_with_ttl_cache(api_key, api_version, _get_ttl_hash())
+        classes = generate_classes_ttl_cache(api_key, api_version, _get_ttl_hash())
     else:
         if isinstance(cache, OrderedDict):
             raw_spec = cache
