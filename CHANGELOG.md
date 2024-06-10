@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added a script for checking if the Civis API spec is up-to-date. (#489)
-- Added a new argument `sql_params_arguments` to the `civis.io.*` functions that
-  accept a SQL query, so that the user can run a parameterized SQL script. (#491)
+- Added a new keyword argument `sql_params_arguments` to the `civis.io.*` functions that
+  accept a SQL query, so that the user can run a parameterized SQL script. (#492)
 
 ### Changed
 - Refactored the `civis.parallel` module and related unit tests due to major changes
@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Bumped the minimum required version of `joblib` to v1.3.0,
   which is the version where `joblib.parallel_config` was introduced and
   `joblib.parallel_backend` was deprecated. (#488)
-- Improved `import civis` startup time with a 5x speed boost. (#490)
 - Improved the startup time of `import civis` with a 5x speed boost. (#490)
 - The downloaded API spec due to the `civis.APIClient` instantiation is now
   a time-to-live cache in memory (15 minutes for interactive Python, or 24 hours in scripts). (#491)
