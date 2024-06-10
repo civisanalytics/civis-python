@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+import time
 from collections import defaultdict, OrderedDict
 from unittest import mock
 
@@ -655,3 +656,35 @@ def test_client_pyi_matches_api_spec():
             "client.pyi doesn't match the API spec in the codebase. "
             "Run tools/update_civis_api_spec.py."
         )
+
+
+@mock.patch("civis.resources._resources.generate_classes")
+def test_generate_classes_with_ttl_cache__base_case(mock_gen):
+    # Calling generate_classes_maybe_cached multiple times should only call
+    # generate_classes once.
+    for _ in range(5):
+        _resources.generate_classes_maybe_cached(None, "api-key", "1.0")
+    assert mock_gen.call_count == 1
+
+
+@mock.patch("civis.resources._resources.generate_classes")
+def test_generate_classes_with_ttl_cache__force_clear_cache(mock_gen):
+    # Check that we can force clear the cache.
+    for _ in range(5):
+        _resources.generate_classes_maybe_cached(
+            None, "api-key", "1.0", force_refresh_api_spec=True
+        )
+    assert mock_gen.call_count == 5
+
+
+@mock.patch("civis.resources._resources._spec_expire_time")
+@mock.patch("civis.resources._resources.generate_classes")
+def test_generate_classes_with_ttl_cache__expire_cache(mock_gen, mock_expire_time):
+    # Check that we can expire the cache.
+    mock_expire_time.return_value = 0.001
+    for _ in range(5):
+        _resources.generate_classes_maybe_cached(None, "api-key", "1.0")
+        # Sleep the same amount of time as the mock_expire_time,
+        # so that we should trigger the cache clearing at every iteration.
+        time.sleep(0.001)
+    assert mock_gen.call_count == 5
