@@ -13,11 +13,10 @@ class _ResultPollingThread(threading.Thread):
 
     # Inspired by `threading.Timer`
 
-    def __init__(self, poller, poller_args, polling_interval):
+    def __init__(self, check_result, polling_interval):
         super().__init__(daemon=True)
         self.polling_interval = polling_interval
-        self.poller = poller
-        self.poller_args = poller_args
+        self.check_result = check_result
         self.finished = threading.Event()
 
     def cancel(self):
@@ -35,7 +34,7 @@ class _ResultPollingThread(threading.Thread):
             # Spotty internet connectivity can result in polling functions
             # returning None. This treats None responses like responses which
             # have a non-DONE state.
-            poller_result = self.poller(*self.poller_args)
+            poller_result = self.check_result()
             if poller_result is not None and poller_result.state in DONE:
                 self.finished.set()
 
@@ -215,7 +214,7 @@ class PollableResult(CivisAsyncResultBase):
                 self._polling_thread.cancel()
             self.polling_interval = polling_interval
             self._polling_thread = _ResultPollingThread(
-                self._check_result, (), polling_interval
+                self._check_result, polling_interval
             )
             if start_thread:
                 self._polling_thread.start()

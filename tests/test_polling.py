@@ -77,7 +77,7 @@ class TestPolling(unittest.TestCase):
 
     def test_poller_returns_none(self):
         poller = mock.Mock(side_effect=[None, None, Response({"state": "success"})])
-        polling_thread = _ResultPollingThread(poller, (), polling_interval=0.01)
+        polling_thread = _ResultPollingThread(poller, polling_interval=0.01)
         polling_thread.run()
         assert poller.call_count == 3
 
