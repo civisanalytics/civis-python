@@ -161,7 +161,7 @@ data to export. Then we create the export job and run it.
    >>> export_future = civis.utils.run_job(export_job.id)
 
 ``export_future`` is a :class:`CivisFuture <civis.futures.CivisFuture>` object
-(see :ref:`civis_futures`_  above). Calling ``.result()`` on ``export_future``
+(see :ref:`civis_futures`  above). Calling ``.result()`` on ``export_future``
 blocks the program until the SQL run has completed.
 
 .. code:: python
