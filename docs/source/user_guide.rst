@@ -34,6 +34,7 @@ uploads the data back into Civis:
    ...                                   table="my_schema.my_correlations")
    >>> fut.result()
 
+.. _civis_futures:
 
 Civis Futures
 =============
@@ -157,28 +158,17 @@ data to export. Then we create the export job and run it.
                                             remote_host_id=db_id,
                                             credential_id=cred_id,
                                             sql=generate_table)
-   >>> export_run = client.scripts.post_sql_runs(export_job.id)
+   >>> export_future = civis.utils.run_job(export_job.id)
 
-We can then poll and wait for the export to be completed.
-
-.. code:: python
-
-   >>> import time
-   >>> export_state = client.scripts.get_sql_runs(export_job.id,
-   ...                                            export_run.id)
-   >>> while export_state.state in ['queued', 'running']:
-   ...    time.sleep(60)
-   ...    export_state = client.scripts.get_sql_runs(export_job.id,
-   ...                                               export_run.id)
-
-Now, we can get the URL of the exported csv. First, we grab the result of our
-export job.
+``export_future`` is a :class:`CivisFuture <civis.futures.CivisFuture>` object
+(see :ref:`civis_futures`  above). Calling ``.result()`` on ``export_future``
+blocks the program until the SQL run has completed.
 
 .. code:: python
 
-   >>> export_result = client.scripts.get_sql_runs(export_job.id,
-   ...                                             export_run.id)
+   >>> export_result = export_future.result()
 
+Now, we can get the URL of the exported csv.
 In the future, a script may export multiple jobs, so the output of this is a
 list.
 

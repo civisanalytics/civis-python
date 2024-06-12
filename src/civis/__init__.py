@@ -19,6 +19,7 @@ def _lazy_import(name):
     return module
 
 
+futures = _lazy_import("civis.futures")
 io = _lazy_import("civis.io")
 ml = _lazy_import("civis.ml")
 parallel = _lazy_import("civis.parallel")

@@ -76,10 +76,15 @@ class TestPolling(unittest.TestCase):
         assert poller.call_count > 0
 
     def test_poller_returns_none(self):
-        poller = mock.Mock(side_effect=[None, None, Response({"state": "success"})])
-        polling_thread = _ResultPollingThread(poller, (), polling_interval=0.01)
+        check_result = mock.Mock(
+            side_effect=[None, None, Response({"state": "success"})]
+        )
+        pollable_result = mock.Mock()
+        pollable_result._check_result = check_result
+        pollable_result._next_polling_interval = 0.01
+        polling_thread = _ResultPollingThread(pollable_result)
         polling_thread.run()
-        assert poller.call_count == 3
+        assert check_result.call_count == 3
 
     def test_reset_polling_thread(self):
         pollable = PollableResult(
@@ -89,15 +94,44 @@ class TestPolling(unittest.TestCase):
         )
         initial_polling_thread = pollable._polling_thread
         assert pollable.polling_interval == 0.1
-        assert pollable._polling_thread.polling_interval == 0.1
+        assert pollable._next_polling_interval == 0.1
         pollable._reset_polling_thread(0.2)
         # Check that the polling interval was updated
         assert pollable.polling_interval == 0.2
-        assert pollable._polling_thread.polling_interval == 0.2
+        assert pollable._next_polling_interval == 0.2
         # Check that the _polling_thread is a new thread
         assert pollable._polling_thread != initial_polling_thread
         # Check that the old thread was stopped
         assert not initial_polling_thread.is_alive()
+
+    def test_geometric_polling(self):
+        # To test polling, we make the poller function spit out a timestamp every time
+        # it is called. Then we check if these timestamps are what we'd expect.
+        poller_timestamps = []
+
+        def append_new_timestamp(*args, **kwargs):
+            nonlocal poller_timestamps
+            poller_timestamps.append(time.time())
+            if len(poller_timestamps) < 5:
+                return Response({"state": "running"})
+            else:
+                return Response({"state": "succeeded"})
+
+        poller = mock.Mock()
+        poller.side_effect = append_new_timestamp
+
+        pollable = PollableResult(poller, (), poll_on_creation=False)
+        start_time = time.time()
+        pollable.result()
+
+        assert len(poller_timestamps) == 5
+        expected_intervals = [1, 1.2, 1.44, 1.728, 2.0736]
+        actual_intervals = []
+        for i, timestamp in enumerate(poller_timestamps):
+            actual_intervals.append(
+                timestamp - (poller_timestamps[i - 1] if i else start_time)
+            )
+        assert actual_intervals == pytest.approx(expected_intervals, abs=0.02)
 
 
 if __name__ == "__main__":
