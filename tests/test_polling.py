@@ -104,6 +104,35 @@ class TestPolling(unittest.TestCase):
         # Check that the old thread was stopped
         assert not initial_polling_thread.is_alive()
 
+    def test_geometric_polling(self):
+        # To test polling, we make the poller function spit out a timestamp every time
+        # it is called. Then we check if these timestamps are what we'd expect.
+        poller_timestamps = []
+
+        def append_new_timestamp(*args, **kwargs):
+            nonlocal poller_timestamps
+            poller_timestamps.append(time.time())
+            if len(poller_timestamps) < 5:
+                return Response({"state": "running"})
+            else:
+                return Response({"state": "succeeded"})
+
+        poller = mock.Mock()
+        poller.side_effect = append_new_timestamp
+
+        pollable = PollableResult(poller, (), poll_on_creation=False)
+        start_time = time.time()
+        pollable.result()
+
+        assert len(poller_timestamps) == 5
+        expected_intervals = [1, 1.2, 1.44, 1.728, 2.0736]
+        actual_intervals = []
+        for i, timestamp in enumerate(poller_timestamps):
+            actual_intervals.append(
+                timestamp - (poller_timestamps[i - 1] if i else start_time)
+            )
+        assert actual_intervals == pytest.approx(expected_intervals, rel=0.01)
+
 
 if __name__ == "__main__":
     unittest.main()

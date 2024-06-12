@@ -158,9 +158,10 @@ class PollableResult(CivisAsyncResultBase):
                     # Choosing a common ratio of 1.2 for these polling intervals:
                     #   1, 1.2, 1.44, 1.73, 2.07, 2.49, 2.99, ..., and capped at 15.
                     # Within the first 15 secs by wall time, we call the poller 7 times,
-                    # which gives a short-running job a chance to finish quickly.
-                    # The polling interval will be 15 secs when by wall time 87 secs
-                    # have passed.
+                    # which gives a short-running job's future.result()
+                    # a higher chance to return faster.
+                    # For longer running jobs, the polling interval will be capped
+                    # at 15 secs when by wall time 87 secs have passed.
                     self._next_polling_interval *= 1.2
                     if self._next_polling_interval > _MAX_POLLING_INTERVAL:
                         self._next_polling_interval = _MAX_POLLING_INTERVAL

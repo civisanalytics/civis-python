@@ -555,7 +555,7 @@ class ModelFuture(ContainerFuture):
         self.client = APIClient()
         self.poller = self.client.scripts.get_containers_runs
         self._next_polling_interval = 1
-        self._use_exponential_polling = True
+        self._use_geometric_polling = True
         self._begin_tracking()
         self.add_done_callback(self._set_job_exception)
 
