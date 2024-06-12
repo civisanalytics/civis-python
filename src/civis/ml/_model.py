@@ -1,7 +1,6 @@
 """Run CivisML jobs and retrieve the results"""
 
 import builtins
-from builtins import super
 import collections
 from functools import lru_cache
 import io
@@ -394,7 +393,12 @@ class ModelFuture(ContainerFuture):
         run, and ``train_run_id`` will equal ``run_id``.
     polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready.
+        is ready. If an integer or float is provided, this number will be used
+        as the polling interval. If ``None`` (the default), the polling interval will
+        start at 1 second and increase geometrically up to 15 seconds. The ratio of
+        the increase is 1.2, resulting in polling intervals in seconds of
+        1, 1.2, 1.44, 1.728, etc. This default behavior allows for a faster return for
+        a short-running job and a capped polling interval for longer-running jobs.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -555,6 +559,8 @@ class ModelFuture(ContainerFuture):
         self._condition = threading.Condition()
         self.client = APIClient()
         self.poller = self.client.scripts.get_containers_runs
+        self._next_polling_interval = 1
+        self._use_geometric_polling = True
         self._begin_tracking()
         self.add_done_callback(self._set_job_exception)
 
