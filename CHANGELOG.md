@@ -22,8 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   a time-to-live cache in memory (15 minutes for interactive Python, or 24 hours in scripts). (#491)
 - Polling at `PollableResult` (and consequently its subclasses as well: `CivisFuture`,
   `ContainerFuture`, and `ModelFuture`) now defaults to geometrically increased polling
-  intervals and is capped at 15 seconds. Short-running jobs' `future.result()` can now
-  return faster and longer-running jobs have a capped polling interval of 15 seconds. (#492)
+  intervals. Short-running jobs' `future.result()` can now return faster, while
+  longer-running jobs have a capped polling interval of 15 seconds. (#492)
 
 ### Deprecated
 ### Removed
