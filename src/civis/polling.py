@@ -51,9 +51,14 @@ class PollableResult(CivisAsyncResultBase):
         A function which returns an object that has a ``state`` attribute.
     poller_args : tuple
         The arguments with which to call the poller function.
-    polling_interval : int or float
+    polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready.
+        is ready. If an integer or float is provided, this number will be used
+        as the polling interval. If ``None`` (the default), the polling interval will
+        start at 1 second and increase geometrically up to 15 seconds. The ratio of
+        the increase is 1.2, resulting in polling intervals in seconds of
+        1, 1.2, 1.44, 1.728, etc. This default behavior allows for a faster return for
+        a short-running job and a capped polling interval for longer-running jobs.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -101,13 +106,14 @@ class PollableResult(CivisAsyncResultBase):
         client=None,
         poll_on_creation=True,
     ):
-        super().__init__(
-            poller=poller,
-            poller_args=poller_args,
-            polling_interval=polling_interval,
-            client=client,
-            poll_on_creation=poll_on_creation,
-        )
+        super().__init__()
+
+        self.poller = poller
+        self.poller_args = poller_args
+        self.polling_interval = polling_interval
+        self.client = client
+        self.poll_on_creation = poll_on_creation
+
         if self.polling_interval is not None and self.polling_interval <= 0:
             raise ValueError("The polling interval must be positive.")
 

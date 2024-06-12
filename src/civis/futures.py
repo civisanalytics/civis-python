@@ -32,7 +32,12 @@ class CivisFuture(PollableResult):
         The arguments with which to call the poller function.
     polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready.
+        is ready. If an integer or float is provided, this number will be used
+        as the polling interval. If ``None`` (the default), the polling interval will
+        start at 1 second and increase geometrically up to 15 seconds. The ratio of
+        the increase is 1.2, resulting in polling intervals in seconds of
+        1, 1.2, 1.44, 1.728, etc. This default behavior allows for a faster return for
+        a short-running job and a capped polling interval for longer-running jobs.
     client : :class:`civis.APIClient`, optional
     poll_on_creation : bool, optional
         If ``True`` (the default), it will poll upon calling ``result()`` the
@@ -231,9 +236,14 @@ class ContainerFuture(CivisFuture):
         The ID for the run to monitor
     max_n_retries : int, optional
         If the job generates an exception, retry up to this many times
-    polling_interval: int or float, optional
+    polling_interval : int or float, optional
         The number of seconds between API requests to check whether a result
-        is ready.
+        is ready. If an integer or float is provided, this number will be used
+        as the polling interval. If ``None`` (the default), the polling interval will
+        start at 1 second and increase geometrically up to 15 seconds. The ratio of
+        the increase is 1.2, resulting in polling intervals in seconds of
+        1, 1.2, 1.44, 1.728, etc. This default behavior allows for a faster return for
+        a short-running job and a capped polling interval for longer-running jobs.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.

@@ -173,39 +173,7 @@ class CivisAsyncResultBase(futures.Future):
     the result. The `_result_` object needs to be set to an object with a
     ``state`` attribute. Alternatively the `_check_result` method can be
     overwritten to change how the state of the object is returned.
-
-    Parameters
-    ----------
-    poller : func
-        A function which returns an object that has a ``state`` attribute.
-    poller_args : tuple
-        The arguments with which to call the poller function.
-    polling_interval : int or float
-        The number of seconds between API requests to check whether a result
-        is ready.
-    client : :class:`civis.APIClient`, optional
-        If not provided, an :class:`civis.APIClient` object will be
-        created from the :envvar:`CIVIS_API_KEY`.
-    poll_on_creation : bool, optional
-        If ``True`` (the default), it will poll upon calling ``result()`` the
-        first time. If ``False``, it will wait the number of seconds specified
-        in `polling_interval` from object creation before polling.
     """
-
-    def __init__(
-        self,
-        poller,
-        poller_args,
-        polling_interval=None,
-        client=None,
-        poll_on_creation=True,
-    ):
-        super().__init__()
-        self.poller = poller
-        self.poller_args = poller_args
-        self.polling_interval = polling_interval
-        self.client = client
-        self.poll_on_creation = poll_on_creation
 
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use
