@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added a script for checking if the Civis API spec is up-to-date. (#489)
 - Added a new keyword argument `sql_params_arguments` to the `civis.io.*` functions that
-  accept a SQL query, so that the user can run a parameterized SQL script. (#492)
+  accept a SQL query, so that the user can run a parameterized SQL script. (#493)
 
 ### Changed
 - Refactored the `civis.parallel` module and related unit tests due to major changes
