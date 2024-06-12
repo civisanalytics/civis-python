@@ -112,7 +112,7 @@ class PollableResult(CivisAsyncResultBase):
             raise ValueError("The polling interval must be positive.")
 
         self._next_polling_interval = 1
-        self._use_exponential_polling = True
+        self._use_geometric_polling = True
 
         # Polling arguments. Never poll more often than the requested interval.
         if poll_on_creation:
@@ -154,12 +154,17 @@ class PollableResult(CivisAsyncResultBase):
                 not self._last_polled
                 or (now - self._last_polled) >= self._next_polling_interval
             ):
-                if self._use_exponential_polling:
-                    # polling intervals: 1, 1.5, 2.25, 3.375, 5.0625, 7.59375, 11.39, ..
-                    self._next_polling_interval *= 1.5
+                if self._use_geometric_polling:
+                    # Choosing a common ratio of 1.2 for these polling intervals:
+                    #   1, 1.2, 1.44, 1.73, 2.07, 2.49, 2.99, ..., and capped at 15.
+                    # Within the first 15 secs by wall time, we call the poller 7 times,
+                    # which gives a short-running job a chance to finish quickly.
+                    # The polling interval will be 15 secs when by wall time 87 secs
+                    # have passed.
+                    self._next_polling_interval *= 1.2
                     if self._next_polling_interval > _MAX_POLLING_INTERVAL:
                         self._next_polling_interval = _MAX_POLLING_INTERVAL
-                        self._use_exponential_polling = False
+                        self._use_geometric_polling = False
                 # Poll for a new result
                 self._last_polled = now
                 try:
@@ -218,7 +223,7 @@ class PollableResult(CivisAsyncResultBase):
                 self._polling_thread.cancel()
             self.polling_interval = polling_interval
             self._next_polling_interval = 1 if (pi := polling_interval) is None else pi
-            self._use_exponential_polling = polling_interval is None
+            self._use_geometric_polling = polling_interval is None
             self._polling_thread = _ResultPollingThread(self)
             if start_thread:
                 self._polling_thread.start()
