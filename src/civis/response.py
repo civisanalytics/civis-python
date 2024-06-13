@@ -128,8 +128,6 @@ class Response:
         self._data_camel = {}
         self._data_snake = {}
 
-        self._inner_response = False
-
         if json_data is not None:
             for key, v in json_data.items():
 
@@ -140,12 +138,8 @@ class Response:
                         val = Response(v, snake_case=False)
                     else:
                         val = Response(v)
-                    val._inner_response = True
                 elif isinstance(v, list):
                     val = [Response(o) if isinstance(o, dict) else o for o in v]
-                    for r in val:
-                        if isinstance(r, Response):
-                            r._inner_response = True
                 else:
                     val = v
 
@@ -198,7 +192,6 @@ class Response:
             "rate_limit",
             "_data_camel",
             "_data_snake",
-            "_inner_response",
         ):
             self.__dict__[key] = value
         else:
@@ -230,9 +223,7 @@ class Response:
 
     def _to_dataclass_repr_pprint(self):
         """Convert the response to a dataclass for repr and pprint purposes."""
-        # Only show the "Response" class name at the outermost level.
-        class_name = "" if self._inner_response else "Response"
-        klass = dataclasses.make_dataclass(class_name, self._data_snake.keys())
+        klass = dataclasses.make_dataclass("Response", self._data_snake.keys())
         return klass(**self._data_snake)
 
     def _repr_pretty_(self, p, cycle):
@@ -262,7 +253,7 @@ class Response:
         elif isinstance(other, Response):
             return self._data_snake == other._data_snake
         else:
-            raise TypeError(f"Response and {type(other)} can't be compared")
+            return False
 
     def __setstate__(self, state):
         """Set the state when unpickling, to avoid RecursionError."""

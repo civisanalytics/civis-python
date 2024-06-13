@@ -30,7 +30,10 @@ API_SPEC_PATH = os.path.join(
 RESOURCES_TO_EXCLUDE = frozenset({"feature_flags"})
 
 TYPE_MAP = {
-    "array": "list",
+    # We have to use "List" not "list" here. There are numerous `def list(...):` methods
+    # generated from the Civis API and listed in client.pyi, which static type
+    # checking considers as overriding the built-in `list` data type.
+    "array": "List",
     "object": "dict",
     "integer": "int",
     "number": "float",
@@ -150,7 +153,7 @@ def join_doc_elements(*args):
 def type_from_param(param):
     main_type = TYPE_MAP[param["type"]]
     item_type = None
-    if main_type == "list":
+    if main_type == "List":
         items = param.get("items", {})
         if "type" in items:
             item_type = TYPE_MAP[items["type"]]

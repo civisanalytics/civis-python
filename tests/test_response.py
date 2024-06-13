@@ -325,14 +325,14 @@ def test_len(json_data, expected_length):
         (None, "Response()"),
         ({}, "Response()"),
         ({"foo": 123}, "Response(foo=123)"),
-        ({"foo": {"barBaz": 456}}, "Response(foo=(bar_baz=456))"),
+        ({"foo": {"barBaz": 456}}, "Response(foo=Response(bar_baz=456))"),
         # repr() call doesn't wrap long lines.
         (
             {
                 "foo": {ascii_lowercase[i]: i for i in range(3)},
                 "fooBar": {ascii_lowercase[i]: i for i in range(15)},
             },
-            "Response(foo=(a=0, b=1, c=2), foo_bar=(a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, j=9, k=10, l=11, m=12, n=13, o=14))",  # noqa: E501
+            "Response(foo=Response(a=0, b=1, c=2), foo_bar=Response(a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, j=9, k=10, l=11, m=12, n=13, o=14))",  # noqa: E501
         ),
     ],
 )
@@ -353,7 +353,7 @@ def test_repr(json_data, expected_repr):
     "json_data, expected",
     [
         # A "short" response's pprint looks the same as its repr.
-        ({"foo": {"barBaz": 456}}, "Response(foo=(bar_baz=456))"),
+        ({"foo": {"barBaz": 456}}, "Response(foo=Response(bar_baz=456))"),
         # A "long" response's pprint triggers line wrapping in pretty-printing.
         (
             {ascii_lowercase[i]: i for i in range(15)},
@@ -378,22 +378,22 @@ def test_repr(json_data, expected_repr):
                 "foo": {ascii_lowercase[i]: i for i in range(3)},
                 "fooBar": {ascii_lowercase[i]: i for i in range(15)},
             },
-            "Response(foo=(a=0, b=1, c=2),\n"
-            "         foo_bar=(a=0,\n"
-            "                  b=1,\n"
-            "                  c=2,\n"
-            "                  d=3,\n"
-            "                  e=4,\n"
-            "                  f=5,\n"
-            "                  g=6,\n"
-            "                  h=7,\n"
-            "                  i=8,\n"
-            "                  j=9,\n"
-            "                  k=10,\n"
-            "                  l=11,\n"
-            "                  m=12,\n"
-            "                  n=13,\n"
-            "                  o=14))",
+            "Response(foo=Response(a=0, b=1, c=2),\n"
+            "         foo_bar=Response(a=0,\n"
+            "                          b=1,\n"
+            "                          c=2,\n"
+            "                          d=3,\n"
+            "                          e=4,\n"
+            "                          f=5,\n"
+            "                          g=6,\n"
+            "                          h=7,\n"
+            "                          i=8,\n"
+            "                          j=9,\n"
+            "                          k=10,\n"
+            "                          l=11,\n"
+            "                          m=12,\n"
+            "                          n=13,\n"
+            "                          o=14))",
         ),
     ],
 )
@@ -420,11 +420,7 @@ def test_items():
     response = Response(json_data)
     assert response.json_data == json_data
     for k, v in response.items():
-        assert k in ("foo", "bar")
-        try:
-            assert v == 123
-        except TypeError:
-            assert v == Response({"bazQux": 456})
+        assert (k, v) in (("foo", 123), ("bar", Response({"bazQux": 456})))
 
 
 def test_eq():
@@ -437,8 +433,7 @@ def test_eq():
     assert response == {"foo": 123, "bar": {camel_to_snake("bazQux"): 456}}
 
     for uncomparable in (789, "blah", ["a list"], ("a tuple",), {"a set"}):
-        with pytest.raises(TypeError):
-            response == uncomparable
+        assert response != uncomparable
 
 
 def test_response_is_pickleable():
