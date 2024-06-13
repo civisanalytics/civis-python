@@ -124,10 +124,10 @@ your user information:
 
    >>> client.users.list_me()
    Response(email='user@email.com',
-            feature_flags=(left_nav_basic=True,
-                           results=True,
-                           scripts_notify=True,
-                           table_person_matching=True),
+            feature_flags=Response(left_nav_basic=True,
+                                   results=True,
+                                   scripts_notify=True,
+                                   table_person_matching=True),
             id=1,
             initials='UN',
             name='User Name',

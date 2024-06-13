@@ -432,8 +432,8 @@ def test_eq():
     assert response == response2
     assert response == {"foo": 123, "bar": {camel_to_snake("bazQux"): 456}}
 
-    for uncomparable in (789, "blah", ["a list"], ("a tuple",), {"a set"}):
-        assert response != uncomparable
+    for not_response_or_dict in (789, "str", ["list"], ("tuple",), {"set"}, None):
+        assert response != not_response_or_dict
 
 
 def test_response_is_pickleable():

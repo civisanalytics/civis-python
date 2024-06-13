@@ -31,6 +31,7 @@ __all__ = [
     "APIClient",
     "find",
     "find_one",
+    "futures",
     "io",
     "civis_logger",
     "ml",

@@ -14,11 +14,11 @@ A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.res
             name='some script name',
             created_at='2018-06-11T20:43:07.000Z',
             updated_at='2018-06-11T20:43:19.000Z',
-            author=(id=67890,
-                    name='Platform User Name',
-                    username='platformusername',
-                    initials='PUN',
-                    online=False),
+            author=Response(id=67890,
+                            name='Platform User Name',
+                            username='platformusername',
+                            initials='PUN',
+                            online=False),
             ...
 
 To retrieve information from a :class:`civis.response.Response` object,

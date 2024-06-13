@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.3.0 - 2024-06-14
+
+### Added
 - Added a script for checking if the Civis API spec is up-to-date. (#489)
 - Added a new keyword argument `sql_params_arguments` to the `civis.io.*` functions that
   accept a SQL query, so that the user can run a parameterized SQL script. (#493)
@@ -27,8 +36,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   intervals. Short-running jobs' `future.result()` can now return faster, while
   longer-running jobs have a capped polling interval of 15 seconds. (#492)
 
-### Deprecated
-### Removed
 ### Fixed
 - Fixed `civis.parallel.make_backend_template_factory` so that
   keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
