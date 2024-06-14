@@ -101,7 +101,7 @@ def test_property_type():
     prop = {"type": "array"}
     prop2 = {"type": "object"}
     prop3 = {"type": "string", "format": "date"}
-    assert _resources.property_type(prop) == "list"
+    assert _resources.property_type(prop) == "List"
     assert _resources.property_type(prop2) == "dict"
     assert _resources.property_type(prop3) == "str (date)"
 
@@ -121,8 +121,8 @@ def test_docs_from_property():
     prop2 = {"type": "object", "properties": {"A": prop}}
     x = _resources.docs_from_property("A", prop, {}, 0, True)
     y = _resources.docs_from_property("B", prop2, {}, 0, False)
-    assert sorted(x) == sorted(["a : list, optional"])
-    assert sorted(y) == sorted(["b : dict", "    - a : list"])
+    assert sorted(x) == sorted(["a : List, optional"])
+    assert sorted(y) == sorted(["b : dict", "    - a : List"])
 
 
 def test_docs_from_properties():
@@ -353,9 +353,9 @@ def test_type_from_param():
     ]
     assert _resources.type_from_param(params[0]) == "str"
     assert _resources.type_from_param(params[1]) == "int"
-    assert _resources.type_from_param(params[2]) == "list"
-    assert _resources.type_from_param(params[3]) == "list[int]"
-    assert _resources.type_from_param(params[4]) == "list[dict]"
+    assert _resources.type_from_param(params[2]) == "List"
+    assert _resources.type_from_param(params[3]) == "List[int]"
+    assert _resources.type_from_param(params[4]) == "List[dict]"
 
 
 def test_iterable_method():
@@ -454,9 +454,9 @@ def test_parse_param_body():
             "required": False,
             "name": "a",
             "in": "body",
-            "doc": "a : list, optional\n",
+            "doc": "a : List, optional\n",
             "default": _resources.DEFAULT_ARG_VALUE,
-            "type": "list",
+            "type": "List",
         }
     ]
     param_body = {"schema": {"properties": {"A": {"type": "array"}}}}
@@ -468,9 +468,9 @@ def test_parse_param_body():
             "required": False,
             "name": "a",
             "in": "body",
-            "doc": "a : list, optional\n",
+            "doc": "a : List, optional\n",
             "default": 50,
-            "type": "list",
+            "type": "List",
         }
     ]
     param_body_with_default = {

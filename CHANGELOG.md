@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.3.0 - 2024-06-14
+
+### Added
 - Added a script for checking if the Civis API spec is up-to-date. (#489)
+- Added a new keyword argument `sql_params_arguments` to the `civis.io.*` functions that
+  accept a SQL query, so that the user can run a parameterized SQL script. (#493)
 
 ### Changed
 - Refactored the `civis.parallel` module and related unit tests due to major changes
@@ -17,19 +28,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Bumped the minimum required version of `joblib` to v1.3.0,
   which is the version where `joblib.parallel_config` was introduced and
   `joblib.parallel_backend` was deprecated. (#488)
-- Improved the startup time of `import civis` with a 5x speed boost. (#490)
+- Improved the startup time of `import civis` with a 5x speed boost. (#490, #493)
 - The downloaded API spec due to the `civis.APIClient` instantiation is now
   a time-to-live cache in memory (15 minutes for interactive Python, or 24 hours in scripts). (#491)
 - Polling at `PollableResult` (and consequently its subclasses as well: `CivisFuture`,
   `ContainerFuture`, and `ModelFuture`) now defaults to geometrically increased polling
   intervals. Short-running jobs' `future.result()` can now return faster, while
   longer-running jobs have a capped polling interval of 15 seconds. (#492)
+- Comparing a `Response` object with a non-`Response` object returns `False` now
+  (this previously raised a `TypeError`). (#493)
 
-### Deprecated
-### Removed
 ### Fixed
 - Fixed `civis.parallel.make_backend_template_factory` so that
   keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
+- For `Response` objects, their "repr" form shows the class name "Response" for both
+  top-level and nested response objects. (#493)
 
 ### Security
 - Bumped the minimum required version of `requests` to the latest v2.32.3, 

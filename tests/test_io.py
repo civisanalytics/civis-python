@@ -1393,6 +1393,7 @@ def test_export_to_civis_file(mock_sql_script):
         credential_id=None,
         csv_settings=None,
         hidden=True,
+        sql_params_arguments=None,
     )
 
 

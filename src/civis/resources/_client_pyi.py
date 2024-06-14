@@ -36,6 +36,8 @@ def generate_client_pyi(client_pyi_path, api_spec_path):
 # Do not edit it by hand.
 
 from collections import OrderedDict
+from typing import Any, List
+
 from civis.response import Response, PaginatedResponse
 
 """
@@ -76,7 +78,7 @@ class APIClient:
     default_credential: int | None
     username: str
     feature_flags: tuple[str]
-    last_response: APIClient | None
+    last_response: Any
     def __init__(
         self,
         api_key: str | None = ...,

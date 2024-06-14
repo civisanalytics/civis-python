@@ -2,21 +2,23 @@
 # Do not edit it by hand.
 
 from collections import OrderedDict
+from typing import Any, List
+
 from civis.response import Response, PaginatedResponse
 
 class _Admin:
     def list_organizations(
         self,
-        status: list[str] | None = ...,
-        org_type: list[str] | None = ...,
+        status: List[str] | None = ...,
+        org_type: List[str] | None = ...,
     ) -> Response:
         """List organizations
 
         Parameters
         ----------
-        status : list[str], optional
+        status : List[str], optional
             The status of the organization (active/trial/inactive).
-        org_type : list[str], optional
+        org_type : List[str], optional
             The organization type (platform/ads/survey_vendor/other).
 
         Returns
@@ -64,7 +66,7 @@ class _Admin:
                 - dedicated_dj_pool_enabled : bool
                     If true, the Organization has a dedicated delayed jobs pool.
                     Defaults to false.
-            - tableau_refresh_history : list[dict]
+            - tableau_refresh_history : List[dict]
                 The number of tableau refreshes used this month.
         """
         ...
@@ -85,24 +87,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -117,7 +119,7 @@ class _Aliases:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -128,7 +130,7 @@ class _Aliases:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -141,24 +143,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -194,7 +196,7 @@ class _Aliases:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -205,7 +207,7 @@ class _Aliases:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -218,24 +220,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -331,7 +333,7 @@ class _Aliases:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -756,16 +758,16 @@ class _Clusters:
                 The slug of this cluster's raw configuration.
             - custom_partitions : bool
                 Whether this cluster has a custom partition configuration.
-            - cluster_partitions : list[dict]
+            - cluster_partitions : List[dict]
                 List of cluster partitions associated with this cluster.
 
                 - cluster_partition_id : int
                     The ID of this cluster partition.
                 - name : str
                     The name of the cluster partition.
-                - labels : list[str]
+                - labels : List[str]
                     Labels associated with this partition.
-                - instance_configs : list[dict]
+                - instance_configs : List[dict]
                     The instances configured for this cluster partition.
 
                     - instance_config_id : int
@@ -841,16 +843,16 @@ class _Clusters:
                 The slug of this cluster's raw configuration.
             - custom_partitions : bool
                 Whether this cluster has a custom partition configuration.
-            - cluster_partitions : list[dict]
+            - cluster_partitions : List[dict]
                 List of cluster partitions associated with this cluster.
 
                 - cluster_partition_id : int
                     The ID of this cluster partition.
                 - name : str
                     The name of the cluster partition.
-                - labels : list[str]
+                - labels : List[str]
                     Labels associated with this partition.
-                - instance_configs : list[dict]
+                - instance_configs : List[dict]
                     The instances configured for this cluster partition.
 
                     - instance_config_id : int
@@ -1057,9 +1059,9 @@ class _Clusters:
                 The ID of this cluster partition.
             - name : str
                 The name of the cluster partition.
-            - labels : list[str]
+            - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : list[dict]
+            - instance_configs : List[dict]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1105,9 +1107,9 @@ class _Clusters:
     def post_kubernetes_partitions(
         self,
         id: int,
-        instance_configs: list[dict],
+        instance_configs: List[dict],
         name: str,
-        labels: list[str],
+        labels: List[str],
     ) -> Response:
         """Create a Cluster Partition for given cluster
 
@@ -1115,7 +1117,7 @@ class _Clusters:
         ----------
         id : int
             The ID of the cluster which this partition belongs to.
-        instance_configs : list[dict]
+        instance_configs : List[dict]
             The instances configured for this cluster partition.
 
             - instance_type : str
@@ -1127,7 +1129,7 @@ class _Clusters:
                 The maximum number of instances of that type in this cluster.
         name : str
             The name of the cluster partition.
-        labels : list[str]
+        labels : List[str]
             Labels associated with this partition.
 
         Returns
@@ -1137,9 +1139,9 @@ class _Clusters:
                 The ID of this cluster partition.
             - name : str
                 The name of the cluster partition.
-            - labels : list[str]
+            - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : list[dict]
+            - instance_configs : List[dict]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1186,9 +1188,9 @@ class _Clusters:
         self,
         id: int,
         cluster_partition_id: int,
-        instance_configs: list[dict] | None = ...,
+        instance_configs: List[dict] | None = ...,
         name: str | None = ...,
-        labels: list[str] | None = ...,
+        labels: List[str] | None = ...,
     ) -> Response:
         """Update a Cluster Partition
 
@@ -1198,7 +1200,7 @@ class _Clusters:
             The ID of the cluster which this partition belongs to.
         cluster_partition_id : int
             The ID of this cluster partition.
-        instance_configs : list[dict], optional
+        instance_configs : List[dict], optional
             The instances configured for this cluster partition.
 
             - instance_type : str
@@ -1210,7 +1212,7 @@ class _Clusters:
                 The maximum number of instances of that type in this cluster.
         name : str, optional
             The name of the cluster partition.
-        labels : list[str], optional
+        labels : List[str], optional
             Labels associated with this partition.
 
         Returns
@@ -1220,9 +1222,9 @@ class _Clusters:
                 The ID of this cluster partition.
             - name : str
                 The name of the cluster partition.
-            - labels : list[str]
+            - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : list[dict]
+            - instance_configs : List[dict]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1311,9 +1313,9 @@ class _Clusters:
                 The ID of this cluster partition.
             - name : str
                 The name of the cluster partition.
-            - labels : list[str]
+            - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : list[dict]
+            - instance_configs : List[dict]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1561,7 +1563,7 @@ class _Credentials:
         Returns
         -------
         :class:`civis.response.Response`
-            - types : list[str]
+            - types : List[str]
                 list of acceptable credential types
         """
         ...
@@ -2132,24 +2134,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2164,7 +2166,7 @@ class _Credentials:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -2175,7 +2177,7 @@ class _Credentials:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -2188,24 +2190,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2241,7 +2243,7 @@ class _Credentials:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -2252,7 +2254,7 @@ class _Credentials:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -2265,24 +2267,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2378,7 +2380,7 @@ class _Credentials:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -2584,11 +2586,11 @@ class _Databases:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 The primary keys for this table.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -2598,7 +2600,7 @@ class _Databases:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : list[dict]
+            - columns : List[dict]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -2606,7 +2608,7 @@ class _Databases:
                     database-agnostic, it may be helpful when loading data to R/Python.
                 - sql_type : str
                     The database-specific SQL type of the column (ex. "varchar(30)").
-                - sample_values : list[str]
+                - sample_values : List[str]
                     A sample of values from the column.
                 - encoding : str
                     The compression encoding for this columnSee: http://docs.aws.amazon
@@ -2632,7 +2634,7 @@ class _Databases:
                     Number of non-null values in the column.
                 - null_count : int
                     Number of null values in the column.
-                - possible_dependent_variable_types : list[str]
+                - possible_dependent_variable_types : List[str]
                     Possible dependent variable types the column may be used to model.
                     Null if it may not be used as a dependent variable.
                 - useable_as_independent_variable : bool
@@ -2647,7 +2649,7 @@ class _Databases:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : list[dict]
+            - joins : List[dict]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -2657,15 +2659,15 @@ class _Databases:
                 - left_join : bool
                 - created_at : str (time)
                 - updated_at : str (time)
-            - multipart_key : list[str]
-            - enhancements : list[dict]
+            - multipart_key : List[str]
+            - enhancements : List[dict]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : list[dict]
+            - outgoing_table_matches : List[dict]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -2683,7 +2685,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : list[dict]
+                    - runs : List[dict]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -2793,11 +2795,11 @@ class _Databases:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 The primary keys for this table.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -2807,7 +2809,7 @@ class _Databases:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : list[dict]
+            - columns : List[dict]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -2815,7 +2817,7 @@ class _Databases:
                     database-agnostic, it may be helpful when loading data to R/Python.
                 - sql_type : str
                     The database-specific SQL type of the column (ex. "varchar(30)").
-                - sample_values : list[str]
+                - sample_values : List[str]
                     A sample of values from the column.
                 - encoding : str
                     The compression encoding for this columnSee: http://docs.aws.amazon
@@ -2841,7 +2843,7 @@ class _Databases:
                     Number of non-null values in the column.
                 - null_count : int
                     Number of null values in the column.
-                - possible_dependent_variable_types : list[str]
+                - possible_dependent_variable_types : List[str]
                     Possible dependent variable types the column may be used to model.
                     Null if it may not be used as a dependent variable.
                 - useable_as_independent_variable : bool
@@ -2856,7 +2858,7 @@ class _Databases:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : list[dict]
+            - joins : List[dict]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -2866,15 +2868,15 @@ class _Databases:
                 - left_join : bool
                 - created_at : str (time)
                 - updated_at : str (time)
-            - multipart_key : list[str]
-            - enhancements : list[dict]
+            - multipart_key : List[str]
+            - enhancements : List[dict]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : list[dict]
+            - outgoing_table_matches : List[dict]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -2892,7 +2894,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : list[dict]
+                    - runs : List[dict]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -2983,9 +2985,9 @@ class _Databases:
                 Name of the granted user or group
             - grantee_type : str
                 User or group
-            - privileges : list[str]
+            - privileges : List[str]
                 Privileges that the grantee has on this resource
-            - grantable_privileges : list[str]
+            - grantable_privileges : List[str]
                 Privileges that the grantee can grant to others for this resource
         """
         ...
@@ -3014,9 +3016,9 @@ class _Databases:
                 Name of the granted user or group
             - grantee_type : str
                 User or group
-            - privileges : list[str]
+            - privileges : List[str]
                 Privileges that the grantee has on this resource
-            - grantable_privileges : list[str]
+            - grantable_privileges : List[str]
                 Privileges that the grantee can grant to others for this resource
         """
         ...
@@ -3062,7 +3064,7 @@ class _Databases:
         :class:`civis.response.Response`
             - group_name : str
                 The name of the group.
-            - members : list[str]
+            - members : List[str]
                 The members of the group.
         """
         ...
@@ -3293,33 +3295,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -3367,33 +3369,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -3504,33 +3506,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -3651,33 +3653,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -3725,33 +3727,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -3849,33 +3851,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -3946,33 +3948,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -4093,33 +4095,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -4459,24 +4461,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4491,7 +4493,7 @@ class _Enhancements:
     def put_civis_data_match_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -4502,7 +4504,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -4515,24 +4517,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4568,7 +4570,7 @@ class _Enhancements:
     def put_civis_data_match_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -4579,7 +4581,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -4592,24 +4594,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4705,7 +4707,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -4771,33 +4773,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -4904,7 +4906,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -5030,7 +5032,7 @@ class _Enhancements:
                 The status of the enhancement's last run
             - archived : str
                 The archival status of the requested item(s).
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5074,12 +5076,12 @@ class _Enhancements:
     def post_identity_resolution(
         self,
         name: str,
-        sources: list[dict],
+        sources: List[dict],
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         threshold: float | None = ...,
         match_target_id: int | None = ...,
-        enforced_links: list[dict] | None = ...,
+        enforced_links: List[dict] | None = ...,
         customer_graph: dict | None = ...,
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
@@ -5091,7 +5093,7 @@ class _Enhancements:
         ----------
         name : str
             The name of the enhancement job.
-        sources : list[dict]
+        sources : List[dict]
             The source(s) to resolve via a run of this job.
 
             - name : str
@@ -5113,33 +5115,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -5156,7 +5158,7 @@ class _Enhancements:
             resolved IDs.
         match_target_id : int, optional
             The ID of the Civis Data (Custom) match target. See /match_targets for IDs.
-        enforced_links : list[dict], optional
+        enforced_links : List[dict], optional
             A specification of related columns in different sources. The IDR tool will
             ensure that records with the same values in the specified columns receive
             the same Resolved ID.
@@ -5183,7 +5185,7 @@ class _Enhancements:
                 The name of the destination schema.
             - table_name : str
                 The name of the destination table.
-            - fields : list[dict]
+            - fields : List[dict]
                 - field_name : str
                     The name of the field. Must be one of: first_name, middle_name,
                     last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5194,7 +5196,7 @@ class _Enhancements:
                     will choose the value for a record. "automatic" will use the most
                     frequent well-formatted value. "preferred_source" allows the user
                     to prioritize values from particular sources over others.
-                - source_preferences : list[dict]
+                - source_preferences : List[dict]
                     Rank order for sources, when rule_type is "preferred_source".
 
                     - source_name : str
@@ -5242,33 +5244,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -5301,7 +5303,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5323,7 +5325,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -5350,7 +5352,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5362,7 +5364,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -5426,12 +5428,12 @@ class _Enhancements:
         self,
         id: int,
         name: str,
-        sources: list[dict],
+        sources: List[dict],
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         threshold: float | None = ...,
         match_target_id: int | None = ...,
-        enforced_links: list[dict] | None = ...,
+        enforced_links: List[dict] | None = ...,
         customer_graph: dict | None = ...,
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
@@ -5444,7 +5446,7 @@ class _Enhancements:
             The ID for the enhancement.
         name : str
             The name of the enhancement job.
-        sources : list[dict]
+        sources : List[dict]
             The source(s) to resolve via a run of this job.
 
             - name : str
@@ -5466,33 +5468,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -5509,7 +5511,7 @@ class _Enhancements:
             resolved IDs.
         match_target_id : int, optional
             The ID of the Civis Data (Custom) match target. See /match_targets for IDs.
-        enforced_links : list[dict], optional
+        enforced_links : List[dict], optional
             A specification of related columns in different sources. The IDR tool will
             ensure that records with the same values in the specified columns receive
             the same Resolved ID.
@@ -5536,7 +5538,7 @@ class _Enhancements:
                 The name of the destination schema.
             - table_name : str
                 The name of the destination table.
-            - fields : list[dict]
+            - fields : List[dict]
                 - field_name : str
                     The name of the field. Must be one of: first_name, middle_name,
                     last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5547,7 +5549,7 @@ class _Enhancements:
                     will choose the value for a record. "automatic" will use the most
                     frequent well-formatted value. "preferred_source" allows the user
                     to prioritize values from particular sources over others.
-                - source_preferences : list[dict]
+                - source_preferences : List[dict]
                     Rank order for sources, when rule_type is "preferred_source".
 
                     - source_name : str
@@ -5593,33 +5595,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -5652,7 +5654,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5674,7 +5676,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -5701,7 +5703,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5713,7 +5715,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -5780,9 +5782,9 @@ class _Enhancements:
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         threshold: float | None = ...,
-        sources: list[dict] | None = ...,
+        sources: List[dict] | None = ...,
         match_target_id: int | None = ...,
-        enforced_links: list[dict] | None = ...,
+        enforced_links: List[dict] | None = ...,
         customer_graph: dict | None = ...,
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
@@ -5798,33 +5800,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -5839,7 +5841,7 @@ class _Enhancements:
             different individuals erroneously receive the same resolved ID, but also
             more more cases where records about the same individual receive different
             resolved IDs.
-        sources : list[dict], optional
+        sources : List[dict], optional
             The source(s) to resolve via a run of this job.
 
             - name : str
@@ -5860,7 +5862,7 @@ class _Enhancements:
                 name_suffix
         match_target_id : int, optional
             The ID of the Civis Data (Custom) match target. See /match_targets for IDs.
-        enforced_links : list[dict], optional
+        enforced_links : List[dict], optional
             A specification of related columns in different sources. The IDR tool will
             ensure that records with the same values in the specified columns receive
             the same Resolved ID.
@@ -5887,7 +5889,7 @@ class _Enhancements:
                 The name of the destination schema.
             - table_name : str
                 The name of the destination table.
-            - fields : list[dict]
+            - fields : List[dict]
                 - field_name : str
                     The name of the field. Must be one of: first_name, middle_name,
                     last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5898,7 +5900,7 @@ class _Enhancements:
                     will choose the value for a record. "automatic" will use the most
                     frequent well-formatted value. "preferred_source" allows the user
                     to prioritize values from particular sources over others.
-                - source_preferences : list[dict]
+                - source_preferences : List[dict]
                     Rank order for sources, when rule_type is "preferred_source".
 
                     - source_name : str
@@ -5944,33 +5946,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -6003,7 +6005,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6025,7 +6027,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6052,7 +6054,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6064,7 +6066,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6168,33 +6170,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -6227,7 +6229,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6249,7 +6251,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6276,7 +6278,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6288,7 +6290,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6397,33 +6399,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -6456,7 +6458,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6478,7 +6480,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6505,7 +6507,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6517,7 +6519,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6994,38 +6996,38 @@ class _Enhancements:
                 - credential_id : int
                     The id of the credentials to be used when performing the
                     enhancement.
-                - multipart_key : list[str]
+                - multipart_key : List[str]
                     The source table primary key.
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -7106,33 +7108,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -7167,7 +7169,7 @@ class _Enhancements:
                     - credential_id : int
                         The id of the credentials to be used when performing the
                         enhancement.
-                    - multipart_key : list[str]
+                    - multipart_key : List[str]
                         The source table primary key.
             - destination : dict
                 - database_table : dict
@@ -7257,33 +7259,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -7318,7 +7320,7 @@ class _Enhancements:
                     - credential_id : int
                         The id of the credentials to be used when performing the
                         enhancement.
-                    - multipart_key : list[str]
+                    - multipart_key : List[str]
                         The source table primary key.
             - destination : dict
                 - database_table : dict
@@ -7405,38 +7407,38 @@ class _Enhancements:
                 - credential_id : int
                     The id of the credentials to be used when performing the
                     enhancement.
-                - multipart_key : list[str]
+                - multipart_key : List[str]
                     The source table primary key.
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -7517,33 +7519,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -7578,7 +7580,7 @@ class _Enhancements:
                     - credential_id : int
                         The id of the credentials to be used when performing the
                         enhancement.
-                    - multipart_key : list[str]
+                    - multipart_key : List[str]
                         The source table primary key.
             - destination : dict
                 - database_table : dict
@@ -7657,33 +7659,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -7702,7 +7704,7 @@ class _Enhancements:
                 - credential_id : int
                     The id of the credentials to be used when performing the
                     enhancement.
-                - multipart_key : list[str]
+                - multipart_key : List[str]
                     The source table primary key.
         destination : dict, optional
             - database_table : dict
@@ -7777,33 +7779,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -7838,7 +7840,7 @@ class _Enhancements:
                     - credential_id : int
                         The id of the credentials to be used when performing the
                         enhancement.
-                    - multipart_key : list[str]
+                    - multipart_key : List[str]
                         The source table primary key.
             - destination : dict
                 - database_table : dict
@@ -8150,7 +8152,7 @@ class _Enhancements:
         source_schema_and_table: str,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
-        multipart_key: list[str] | None = ...,
+        multipart_key: List[str] | None = ...,
         limiting_sql: str | None = ...,
         target_schema: str | None = ...,
         target_table: str | None = ...,
@@ -8174,33 +8176,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -8208,7 +8210,7 @@ class _Enhancements:
                 If success email notifications are on. Defaults to user's preferences.
             - failure_on : bool
                 If failure email notifications are on. Defaults to user's preferences.
-        multipart_key : list[str], optional
+        multipart_key : List[str], optional
             The source table primary key.
         limiting_sql : str, optional
             The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8256,33 +8258,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -8312,7 +8314,7 @@ class _Enhancements:
                 The ID of the remote host credential.
             - source_schema_and_table : str
                 The source database schema and table.
-            - multipart_key : list[str]
+            - multipart_key : List[str]
                 The source table primary key.
             - limiting_sql : str
                 The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8374,33 +8376,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -8430,7 +8432,7 @@ class _Enhancements:
                 The ID of the remote host credential.
             - source_schema_and_table : str
                 The source database schema and table.
-            - multipart_key : list[str]
+            - multipart_key : List[str]
                 The source table primary key.
             - limiting_sql : str
                 The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8462,7 +8464,7 @@ class _Enhancements:
         source_schema_and_table: str,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
-        multipart_key: list[str] | None = ...,
+        multipart_key: List[str] | None = ...,
         limiting_sql: str | None = ...,
         target_schema: str | None = ...,
         target_table: str | None = ...,
@@ -8488,33 +8490,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -8522,7 +8524,7 @@ class _Enhancements:
                 If success email notifications are on. Defaults to user's preferences.
             - failure_on : bool
                 If failure email notifications are on. Defaults to user's preferences.
-        multipart_key : list[str], optional
+        multipart_key : List[str], optional
             The source table primary key.
         limiting_sql : str, optional
             The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8570,33 +8572,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -8626,7 +8628,7 @@ class _Enhancements:
                 The ID of the remote host credential.
             - source_schema_and_table : str
                 The source database schema and table.
-            - multipart_key : list[str]
+            - multipart_key : List[str]
                 The source table primary key.
             - limiting_sql : str
                 The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8658,7 +8660,7 @@ class _Enhancements:
         remote_host_id: int | None = ...,
         credential_id: int | None = ...,
         source_schema_and_table: str | None = ...,
-        multipart_key: list[str] | None = ...,
+        multipart_key: List[str] | None = ...,
         limiting_sql: str | None = ...,
         target_schema: str | None = ...,
         target_table: str | None = ...,
@@ -8678,33 +8680,33 @@ class _Enhancements:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -8718,7 +8720,7 @@ class _Enhancements:
             The ID of the remote host credential.
         source_schema_and_table : str, optional
             The source database schema and table.
-        multipart_key : list[str], optional
+        multipart_key : List[str], optional
             The source table primary key.
         limiting_sql : str, optional
             The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -8766,33 +8768,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -8822,7 +8824,7 @@ class _Enhancements:
                 The ID of the remote host credential.
             - source_schema_and_table : str
                 The source database schema and table.
-            - multipart_key : list[str]
+            - multipart_key : List[str]
                 The source table primary key.
             - limiting_sql : str
                 The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -9113,24 +9115,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9145,7 +9147,7 @@ class _Enhancements:
     def put_cass_ncoa_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -9156,7 +9158,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -9169,24 +9171,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9222,7 +9224,7 @@ class _Enhancements:
     def put_cass_ncoa_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -9233,7 +9235,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -9246,24 +9248,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9359,7 +9361,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -9417,7 +9419,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -9523,33 +9525,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -9584,7 +9586,7 @@ class _Enhancements:
                     - credential_id : int
                         The id of the credentials to be used when performing the
                         enhancement.
-                    - multipart_key : list[str]
+                    - multipart_key : List[str]
                         The source table primary key.
             - destination : dict
                 - database_table : dict
@@ -9650,24 +9652,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9682,7 +9684,7 @@ class _Enhancements:
     def put_geocode_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -9693,7 +9695,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -9706,24 +9708,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9759,7 +9761,7 @@ class _Enhancements:
     def put_geocode_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -9770,7 +9772,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -9783,24 +9785,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9896,7 +9898,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -9954,7 +9956,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -10060,33 +10062,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -10116,7 +10118,7 @@ class _Enhancements:
                 The ID of the remote host credential.
             - source_schema_and_table : str
                 The source database schema and table.
-            - multipart_key : list[str]
+            - multipart_key : List[str]
                 The source table primary key.
             - limiting_sql : str
                 The limiting SQL for the source table. "WHERE" should be omitted (e.g.
@@ -10154,24 +10156,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10186,7 +10188,7 @@ class _Enhancements:
     def put_identity_resolution_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -10197,7 +10199,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -10210,24 +10212,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10263,7 +10265,7 @@ class _Enhancements:
     def put_identity_resolution_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -10274,7 +10276,7 @@ class _Enhancements:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -10287,24 +10289,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10400,7 +10402,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -10458,7 +10460,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -10564,33 +10566,33 @@ class _Enhancements:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -10623,7 +10625,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : list[dict]
+            - sources : List[dict]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -10645,7 +10647,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : list[dict]
+            - enforced_links : List[dict]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -10672,7 +10674,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : list[dict]
+                - fields : List[dict]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -10684,7 +10686,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : list[dict]
+                    - source_preferences : List[dict]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -11599,7 +11601,7 @@ class _Files:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -11677,24 +11679,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11709,7 +11711,7 @@ class _Files:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -11720,7 +11722,7 @@ class _Files:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -11733,24 +11735,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11786,7 +11788,7 @@ class _Files:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -11797,7 +11799,7 @@ class _Files:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -11810,24 +11812,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11923,7 +11925,7 @@ class _Files:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -12020,7 +12022,7 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
-            - upload_urls : list[str]
+            - upload_urls : List[str]
                 An array of URLs that may be used to upload file parts. Use separate
                 PUT requests to complete the part uploads. Links expire after 12 hours.
         """
@@ -12100,7 +12102,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : list[dict]
+                - table_columns : List[dict]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12169,7 +12171,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : list[dict]
+                - table_columns : List[dict]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12238,7 +12240,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : list[dict]
+                - table_columns : List[dict]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12655,9 +12657,9 @@ class _Git_Repos:
         Returns
         -------
         :class:`civis.response.Response`
-            - branches : list[str]
+            - branches : List[str]
                 List of branch names of this git repository.
-            - tags : list[str]
+            - tags : List[str]
                 List of tag names of this git repository.
         """
         ...
@@ -12669,7 +12671,7 @@ class _Groups:
         permission: str | None = ...,
         include_members: bool | None = ...,
         organization_id: int | None = ...,
-        user_ids: list[int] | None = ...,
+        user_ids: List[int] | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -12689,7 +12691,7 @@ class _Groups:
             Show members of the group.
         organization_id : int, optional
             The organization by which to filter groups.
-        user_ids : list[int], optional
+        user_ids : List[int], optional
             A list of user IDs to filter groups by.Groups will be returned if any of
             the users is a member
         limit : int, optional
@@ -12734,7 +12736,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -12757,7 +12759,7 @@ class _Groups:
         slug: str | None = ...,
         organization_id: int | None = ...,
         default_otp_required_for_login: bool | None = ...,
-        role_ids: list[int] | None = ...,
+        role_ids: List[int] | None = ...,
         default_time_zone: str | None = ...,
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
@@ -12777,7 +12779,7 @@ class _Groups:
             The ID of the organization this group belongs to.
         default_otp_required_for_login : bool, optional
             The two factor authentication requirement for this group.
-        role_ids : list[int], optional
+        role_ids : List[int], optional
             An array of ids of all the roles this group has.
         default_time_zone : str, optional
             The default time zone of this group.
@@ -12813,7 +12815,7 @@ class _Groups:
                 The total number of members in this group.
             - default_otp_required_for_login : bool
                 The two factor authentication requirement for this group.
-            - role_ids : list[int]
+            - role_ids : List[int]
                 An array of ids of all the roles this group has.
             - default_time_zone : str
                 The default time zone of this group.
@@ -12827,7 +12829,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -12884,7 +12886,7 @@ class _Groups:
                 The total number of members in this group.
             - default_otp_required_for_login : bool
                 The two factor authentication requirement for this group.
-            - role_ids : list[int]
+            - role_ids : List[int]
                 An array of ids of all the roles this group has.
             - default_time_zone : str
                 The default time zone of this group.
@@ -12898,7 +12900,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -12928,7 +12930,7 @@ class _Groups:
         slug: str | None = ...,
         organization_id: int | None = ...,
         default_otp_required_for_login: bool | None = ...,
-        role_ids: list[int] | None = ...,
+        role_ids: List[int] | None = ...,
         default_time_zone: str | None = ...,
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
@@ -12950,7 +12952,7 @@ class _Groups:
             The ID of the organization this group belongs to.
         default_otp_required_for_login : bool, optional
             The two factor authentication requirement for this group.
-        role_ids : list[int], optional
+        role_ids : List[int], optional
             An array of ids of all the roles this group has.
         default_time_zone : str, optional
             The default time zone of this group.
@@ -12986,7 +12988,7 @@ class _Groups:
                 The total number of members in this group.
             - default_otp_required_for_login : bool
                 The two factor authentication requirement for this group.
-            - role_ids : list[int]
+            - role_ids : List[int]
                 An array of ids of all the roles this group has.
             - default_time_zone : str
                 The default time zone of this group.
@@ -13000,7 +13002,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -13030,7 +13032,7 @@ class _Groups:
         slug: str | None = ...,
         organization_id: int | None = ...,
         default_otp_required_for_login: bool | None = ...,
-        role_ids: list[int] | None = ...,
+        role_ids: List[int] | None = ...,
         default_time_zone: str | None = ...,
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
@@ -13052,7 +13054,7 @@ class _Groups:
             The ID of the organization this group belongs to.
         default_otp_required_for_login : bool, optional
             The two factor authentication requirement for this group.
-        role_ids : list[int], optional
+        role_ids : List[int], optional
             An array of ids of all the roles this group has.
         default_time_zone : str, optional
             The default time zone of this group.
@@ -13088,7 +13090,7 @@ class _Groups:
                 The total number of members in this group.
             - default_otp_required_for_login : bool
                 The two factor authentication requirement for this group.
-            - role_ids : list[int]
+            - role_ids : List[int]
                 An array of ids of all the roles this group has.
             - default_time_zone : str
                 The default time zone of this group.
@@ -13102,7 +13104,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -13139,24 +13141,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13171,7 +13173,7 @@ class _Groups:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -13182,7 +13184,7 @@ class _Groups:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -13195,24 +13197,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13248,7 +13250,7 @@ class _Groups:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -13259,7 +13261,7 @@ class _Groups:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -13272,24 +13274,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13361,7 +13363,7 @@ class _Groups:
                 The total number of members in this group.
             - default_otp_required_for_login : bool
                 The two factor authentication requirement for this group.
-            - role_ids : list[int]
+            - role_ids : List[int]
                 An array of ids of all the roles this group has.
             - default_time_zone : str
                 The default time zone of this group.
@@ -13375,7 +13377,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : list[dict]
+            - members : List[dict]
                 The members of this group.
 
                 - id : int
@@ -13432,13 +13434,13 @@ class _Groups:
         Returns
         -------
         :class:`civis.response.Response`
-            - manageable : list[dict]
+            - manageable : List[dict]
                 - id : int
                 - name : str
-            - writeable : list[dict]
+            - writeable : List[dict]
                 - id : int
                 - name : str
-            - readable : list[dict]
+            - readable : List[dict]
                 - id : int
                 - name : str
         """
@@ -13460,24 +13462,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13492,7 +13494,7 @@ class _Imports:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -13503,7 +13505,7 @@ class _Imports:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -13516,24 +13518,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13569,7 +13571,7 @@ class _Imports:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -13580,7 +13582,7 @@ class _Imports:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -13593,24 +13595,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13706,7 +13708,7 @@ class _Imports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -13764,7 +13766,7 @@ class _Imports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -13852,7 +13854,7 @@ class _Imports:
             - source : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -13861,7 +13863,7 @@ class _Imports:
             - destination : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -13870,33 +13872,33 @@ class _Imports:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -13913,7 +13915,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : list[dict]
+            - syncs : List[dict]
                 List of syncs.
 
                 - id : int
@@ -14143,7 +14145,7 @@ class _Imports:
             - source : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -14152,7 +14154,7 @@ class _Imports:
             - destination : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -14161,16 +14163,16 @@ class _Imports:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - id : int
@@ -14237,47 +14239,47 @@ class _Imports:
         source : dict, optional
             - remote_host_id : int
             - credential_id : int
-            - additional_credentials : list[int]
+            - additional_credentials : List[int]
                 Array that holds additional credentials used for specific imports. For
                 DB Syncs, the first element is an SSL private key credential id, and
                 the second element is the corresponding public key credential id.
         destination : dict, optional
             - remote_host_id : int
             - credential_id : int
-            - additional_credentials : list[int]
+            - additional_credentials : List[int]
                 Array that holds additional credentials used for specific imports. For
                 DB Syncs, the first element is an SSL private key credential id, and
                 the second element is the corresponding public key credential id.
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -14305,7 +14307,7 @@ class _Imports:
             - source : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -14314,7 +14316,7 @@ class _Imports:
             - destination : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -14323,33 +14325,33 @@ class _Imports:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -14366,7 +14368,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : list[dict]
+            - syncs : List[dict]
                 List of syncs.
 
                 - id : int
@@ -14836,7 +14838,7 @@ class _Imports:
         compression: str | None = ...,
         existing_table_rows: str | None = ...,
         max_errors: int | None = ...,
-        table_columns: list[dict] | None = ...,
+        table_columns: List[dict] | None = ...,
         loosen_types: bool | None = ...,
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
@@ -14847,14 +14849,14 @@ class _Imports:
         Parameters
         ----------
         source : dict
-            - file_ids : list[int]
+            - file_ids : List[int]
                 The file ID(s) to import, if importing Civis file(s).
             - storage_path : dict
                 - storage_host_id : int
                     The ID of the source storage host.
                 - credential_id : int
                     The ID of the credentials for the source storage host.
-                - file_paths : list[str]
+                - file_paths : List[str]
                     The file or directory path(s) within the bucket from which to
                     import.  E.g. the file_path for "s3://mybucket/files/all/" would be
                     "/files/all/"If specifying a directory path, the job will import
@@ -14870,13 +14872,13 @@ class _Imports:
                 The ID of the destination database host.
             - credential_id : int
                 The ID of the credentials for the destination database.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 A list of column(s) which together uniquely identify a row in the
                 destination table.These columns must not contain NULL values. If the
                 import mode is "upsert", this field is required;see the Civis Helpdesk
                 article on "Advanced CSV Imports via the Civis API" for more
                 information.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 A list of the columns indicating a record has been updated.If the
                 destination table does not exist, and the import mode is "upsert", this
                 field is required.
@@ -14901,7 +14903,7 @@ class _Imports:
         max_errors : int, optional
             The maximum number of rows with errors to ignore before failing. This
             option is not supported for Postgres databases.
-        table_columns : list[dict], optional
+        table_columns : List[dict], optional
             An array of hashes corresponding to the columns in the order they appear in
             the source file. Each hash should have keys for database column "name" and
             "sqlType".This parameter is required if the table does not exist, the table
@@ -14929,7 +14931,7 @@ class _Imports:
                 The diststyle to use for the table. One of "even", "all", or "key".
             - distkey : str
                 Distkey for this table in Redshift
-            - sortkeys : list[str]
+            - sortkeys : List[str]
                 Sortkeys for this table in Redshift. Please provide a maximum of two.
         hidden : bool, optional
             The hidden status of the item.
@@ -14942,14 +14944,14 @@ class _Imports:
             - name : str
                 The name of the import.
             - source : dict
-                - file_ids : list[int]
+                - file_ids : List[int]
                     The file ID(s) to import, if importing Civis file(s).
                 - storage_path : dict
                     - storage_host_id : int
                         The ID of the source storage host.
                     - credential_id : int
                         The ID of the credentials for the source storage host.
-                    - file_paths : list[str]
+                    - file_paths : List[str]
                         The file or directory path(s) within the bucket from which to
                         import.  E.g. the file_path for "s3://mybucket/files/all/"
                         would be "/files/all/"If specifying a directory path, the job
@@ -14965,13 +14967,13 @@ class _Imports:
                     The ID of the destination database host.
                 - credential_id : int
                     The ID of the credentials for the destination database.
-                - primary_keys : list[str]
+                - primary_keys : List[str]
                     A list of column(s) which together uniquely identify a row in the
                     destination table.These columns must not contain NULL values. If
                     the import mode is "upsert", this field is required;see the Civis
                     Helpdesk article on "Advanced CSV Imports via the Civis API" for
                     more information.
-                - last_modified_keys : list[str]
+                - last_modified_keys : List[str]
                     A list of the columns indicating a record has been updated.If the
                     destination table does not exist, and the import mode is "upsert",
                     this field is required.
@@ -14994,7 +14996,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : list[dict]
+            - table_columns : List[dict]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15023,7 +15025,7 @@ class _Imports:
                     The diststyle to use for the table. One of "even", "all", or "key".
                 - distkey : str
                     Distkey for this table in Redshift
-                - sortkeys : list[str]
+                - sortkeys : List[str]
                     Sortkeys for this table in Redshift. Please provide a maximum of
                     two.
             - hidden : bool
@@ -15052,14 +15054,14 @@ class _Imports:
             - name : str
                 The name of the import.
             - source : dict
-                - file_ids : list[int]
+                - file_ids : List[int]
                     The file ID(s) to import, if importing Civis file(s).
                 - storage_path : dict
                     - storage_host_id : int
                         The ID of the source storage host.
                     - credential_id : int
                         The ID of the credentials for the source storage host.
-                    - file_paths : list[str]
+                    - file_paths : List[str]
                         The file or directory path(s) within the bucket from which to
                         import.  E.g. the file_path for "s3://mybucket/files/all/"
                         would be "/files/all/"If specifying a directory path, the job
@@ -15075,13 +15077,13 @@ class _Imports:
                     The ID of the destination database host.
                 - credential_id : int
                     The ID of the credentials for the destination database.
-                - primary_keys : list[str]
+                - primary_keys : List[str]
                     A list of column(s) which together uniquely identify a row in the
                     destination table.These columns must not contain NULL values. If
                     the import mode is "upsert", this field is required;see the Civis
                     Helpdesk article on "Advanced CSV Imports via the Civis API" for
                     more information.
-                - last_modified_keys : list[str]
+                - last_modified_keys : List[str]
                     A list of the columns indicating a record has been updated.If the
                     destination table does not exist, and the import mode is "upsert",
                     this field is required.
@@ -15104,7 +15106,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : list[dict]
+            - table_columns : List[dict]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15133,7 +15135,7 @@ class _Imports:
                     The diststyle to use for the table. One of "even", "all", or "key".
                 - distkey : str
                     Distkey for this table in Redshift
-                - sortkeys : list[str]
+                - sortkeys : List[str]
                     Sortkeys for this table in Redshift. Please provide a maximum of
                     two.
             - hidden : bool
@@ -15156,7 +15158,7 @@ class _Imports:
         compression: str | None = ...,
         existing_table_rows: str | None = ...,
         max_errors: int | None = ...,
-        table_columns: list[dict] | None = ...,
+        table_columns: List[dict] | None = ...,
         loosen_types: bool | None = ...,
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
@@ -15168,14 +15170,14 @@ class _Imports:
         id : int
             The ID for the import.
         source : dict
-            - file_ids : list[int]
+            - file_ids : List[int]
                 The file ID(s) to import, if importing Civis file(s).
             - storage_path : dict
                 - storage_host_id : int
                     The ID of the source storage host.
                 - credential_id : int
                     The ID of the credentials for the source storage host.
-                - file_paths : list[str]
+                - file_paths : List[str]
                     The file or directory path(s) within the bucket from which to
                     import.  E.g. the file_path for "s3://mybucket/files/all/" would be
                     "/files/all/"If specifying a directory path, the job will import
@@ -15191,13 +15193,13 @@ class _Imports:
                 The ID of the destination database host.
             - credential_id : int
                 The ID of the credentials for the destination database.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 A list of column(s) which together uniquely identify a row in the
                 destination table.These columns must not contain NULL values. If the
                 import mode is "upsert", this field is required;see the Civis Helpdesk
                 article on "Advanced CSV Imports via the Civis API" for more
                 information.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 A list of the columns indicating a record has been updated.If the
                 destination table does not exist, and the import mode is "upsert", this
                 field is required.
@@ -15222,7 +15224,7 @@ class _Imports:
         max_errors : int, optional
             The maximum number of rows with errors to ignore before failing. This
             option is not supported for Postgres databases.
-        table_columns : list[dict], optional
+        table_columns : List[dict], optional
             An array of hashes corresponding to the columns in the order they appear in
             the source file. Each hash should have keys for database column "name" and
             "sqlType".This parameter is required if the table does not exist, the table
@@ -15250,7 +15252,7 @@ class _Imports:
                 The diststyle to use for the table. One of "even", "all", or "key".
             - distkey : str
                 Distkey for this table in Redshift
-            - sortkeys : list[str]
+            - sortkeys : List[str]
                 Sortkeys for this table in Redshift. Please provide a maximum of two.
 
         Returns
@@ -15261,14 +15263,14 @@ class _Imports:
             - name : str
                 The name of the import.
             - source : dict
-                - file_ids : list[int]
+                - file_ids : List[int]
                     The file ID(s) to import, if importing Civis file(s).
                 - storage_path : dict
                     - storage_host_id : int
                         The ID of the source storage host.
                     - credential_id : int
                         The ID of the credentials for the source storage host.
-                    - file_paths : list[str]
+                    - file_paths : List[str]
                         The file or directory path(s) within the bucket from which to
                         import.  E.g. the file_path for "s3://mybucket/files/all/"
                         would be "/files/all/"If specifying a directory path, the job
@@ -15284,13 +15286,13 @@ class _Imports:
                     The ID of the destination database host.
                 - credential_id : int
                     The ID of the credentials for the destination database.
-                - primary_keys : list[str]
+                - primary_keys : List[str]
                     A list of column(s) which together uniquely identify a row in the
                     destination table.These columns must not contain NULL values. If
                     the import mode is "upsert", this field is required;see the Civis
                     Helpdesk article on "Advanced CSV Imports via the Civis API" for
                     more information.
-                - last_modified_keys : list[str]
+                - last_modified_keys : List[str]
                     A list of the columns indicating a record has been updated.If the
                     destination table does not exist, and the import mode is "upsert",
                     this field is required.
@@ -15313,7 +15315,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : list[dict]
+            - table_columns : List[dict]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15342,7 +15344,7 @@ class _Imports:
                     The diststyle to use for the table. One of "even", "all", or "key".
                 - distkey : str
                     Distkey for this table in Redshift
-                - sortkeys : list[str]
+                - sortkeys : List[str]
                     Sortkeys for this table in Redshift. Please provide a maximum of
                     two.
             - hidden : bool
@@ -15365,7 +15367,7 @@ class _Imports:
         compression: str | None = ...,
         existing_table_rows: str | None = ...,
         max_errors: int | None = ...,
-        table_columns: list[dict] | None = ...,
+        table_columns: List[dict] | None = ...,
         loosen_types: bool | None = ...,
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
@@ -15379,14 +15381,14 @@ class _Imports:
         name : str, optional
             The name of the import.
         source : dict, optional
-            - file_ids : list[int]
+            - file_ids : List[int]
                 The file ID(s) to import, if importing Civis file(s).
             - storage_path : dict
                 - storage_host_id : int
                     The ID of the source storage host.
                 - credential_id : int
                     The ID of the credentials for the source storage host.
-                - file_paths : list[str]
+                - file_paths : List[str]
                     The file or directory path(s) within the bucket from which to
                     import.  E.g. the file_path for "s3://mybucket/files/all/" would be
                     "/files/all/"If specifying a directory path, the job will import
@@ -15402,13 +15404,13 @@ class _Imports:
                 The ID of the destination database host.
             - credential_id : int
                 The ID of the credentials for the destination database.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 A list of column(s) which together uniquely identify a row in the
                 destination table.These columns must not contain NULL values. If the
                 import mode is "upsert", this field is required;see the Civis Helpdesk
                 article on "Advanced CSV Imports via the Civis API" for more
                 information.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 A list of the columns indicating a record has been updated.If the
                 destination table does not exist, and the import mode is "upsert", this
                 field is required.
@@ -15431,7 +15433,7 @@ class _Imports:
         max_errors : int, optional
             The maximum number of rows with errors to ignore before failing. This
             option is not supported for Postgres databases.
-        table_columns : list[dict], optional
+        table_columns : List[dict], optional
             An array of hashes corresponding to the columns in the order they appear in
             the source file. Each hash should have keys for database column "name" and
             "sqlType".This parameter is required if the table does not exist, the table
@@ -15459,7 +15461,7 @@ class _Imports:
                 The diststyle to use for the table. One of "even", "all", or "key".
             - distkey : str
                 Distkey for this table in Redshift
-            - sortkeys : list[str]
+            - sortkeys : List[str]
                 Sortkeys for this table in Redshift. Please provide a maximum of two.
 
         Returns
@@ -15470,14 +15472,14 @@ class _Imports:
             - name : str
                 The name of the import.
             - source : dict
-                - file_ids : list[int]
+                - file_ids : List[int]
                     The file ID(s) to import, if importing Civis file(s).
                 - storage_path : dict
                     - storage_host_id : int
                         The ID of the source storage host.
                     - credential_id : int
                         The ID of the credentials for the source storage host.
-                    - file_paths : list[str]
+                    - file_paths : List[str]
                         The file or directory path(s) within the bucket from which to
                         import.  E.g. the file_path for "s3://mybucket/files/all/"
                         would be "/files/all/"If specifying a directory path, the job
@@ -15493,13 +15495,13 @@ class _Imports:
                     The ID of the destination database host.
                 - credential_id : int
                     The ID of the credentials for the destination database.
-                - primary_keys : list[str]
+                - primary_keys : List[str]
                     A list of column(s) which together uniquely identify a row in the
                     destination table.These columns must not contain NULL values. If
                     the import mode is "upsert", this field is required;see the Civis
                     Helpdesk article on "Advanced CSV Imports via the Civis API" for
                     more information.
-                - last_modified_keys : list[str]
+                - last_modified_keys : List[str]
                     A list of the columns indicating a record has been updated.If the
                     destination table does not exist, and the import mode is "upsert",
                     this field is required.
@@ -15522,7 +15524,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : list[dict]
+            - table_columns : List[dict]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15551,7 +15553,7 @@ class _Imports:
                     The diststyle to use for the table. One of "even", "all", or "key".
                 - distkey : str
                     Distkey for this table in Redshift
-                - sortkeys : list[str]
+                - sortkeys : List[str]
                     Sortkeys for this table in Redshift. Please provide a maximum of
                     two.
             - hidden : bool
@@ -15584,14 +15586,14 @@ class _Imports:
             - name : str
                 The name of the import.
             - source : dict
-                - file_ids : list[int]
+                - file_ids : List[int]
                     The file ID(s) to import, if importing Civis file(s).
                 - storage_path : dict
                     - storage_host_id : int
                         The ID of the source storage host.
                     - credential_id : int
                         The ID of the credentials for the source storage host.
-                    - file_paths : list[str]
+                    - file_paths : List[str]
                         The file or directory path(s) within the bucket from which to
                         import.  E.g. the file_path for "s3://mybucket/files/all/"
                         would be "/files/all/"If specifying a directory path, the job
@@ -15607,13 +15609,13 @@ class _Imports:
                     The ID of the destination database host.
                 - credential_id : int
                     The ID of the credentials for the destination database.
-                - primary_keys : list[str]
+                - primary_keys : List[str]
                     A list of column(s) which together uniquely identify a row in the
                     destination table.These columns must not contain NULL values. If
                     the import mode is "upsert", this field is required;see the Civis
                     Helpdesk article on "Advanced CSV Imports via the Civis API" for
                     more information.
-                - last_modified_keys : list[str]
+                - last_modified_keys : List[str]
                     A list of the columns indicating a record has been updated.If the
                     destination table does not exist, and the import mode is "upsert",
                     this field is required.
@@ -15636,7 +15638,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : list[dict]
+            - table_columns : List[dict]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15665,7 +15667,7 @@ class _Imports:
                     The diststyle to use for the table. One of "even", "all", or "key".
                 - distkey : str
                     Distkey for this table in Redshift
-                - sortkeys : list[str]
+                - sortkeys : List[str]
                     Sortkeys for this table in Redshift. Please provide a maximum of
                     two.
             - hidden : bool
@@ -15915,7 +15917,7 @@ class _Imports:
 
     def post_batches(
         self,
-        file_ids: list[int],
+        file_ids: List[int],
         schema: str,
         table: str,
         remote_host_id: int,
@@ -15929,7 +15931,7 @@ class _Imports:
 
         Parameters
         ----------
-        file_ids : list[int]
+        file_ids : List[int]
             The file IDs for the import.
         schema : str
             The destination schema name. This schema must already exist in Redshift.
@@ -16039,7 +16041,7 @@ class _Imports:
             - source : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -16048,7 +16050,7 @@ class _Imports:
             - destination : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -16057,33 +16059,33 @@ class _Imports:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -16100,7 +16102,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : list[dict]
+            - syncs : List[dict]
                 List of syncs.
 
                 - id : int
@@ -16291,47 +16293,47 @@ class _Imports:
         source : dict, optional
             - remote_host_id : int
             - credential_id : int
-            - additional_credentials : list[int]
+            - additional_credentials : List[int]
                 Array that holds additional credentials used for specific imports. For
                 DB Syncs, the first element is an SSL private key credential id, and
                 the second element is the corresponding public key credential id.
         destination : dict, optional
             - remote_host_id : int
             - credential_id : int
-            - additional_credentials : list[int]
+            - additional_credentials : List[int]
                 Array that holds additional credentials used for specific imports. For
                 DB Syncs, the first element is an SSL private key credential id, and
                 the second element is the corresponding public key credential id.
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -16357,7 +16359,7 @@ class _Imports:
             - source : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -16366,7 +16368,7 @@ class _Imports:
             - destination : dict
                 - remote_host_id : int
                 - credential_id : int
-                - additional_credentials : list[int]
+                - additional_credentials : List[int]
                     Array that holds additional credentials used for specific imports.
                     For DB Syncs, the first element is an SSL private key credential
                     id, and the second element is the corresponding public key
@@ -16375,33 +16377,33 @@ class _Imports:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -16418,7 +16420,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : list[dict]
+            - syncs : List[dict]
                 List of syncs.
 
                 - id : int
@@ -17336,16 +17338,16 @@ class _Jobs:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
         """
@@ -17373,7 +17375,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : list[dict]
+            - runs : List[dict]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -17422,16 +17424,16 @@ class _Jobs:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
         """
@@ -17478,7 +17480,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : list[dict]
+            - runs : List[dict]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -17527,16 +17529,16 @@ class _Jobs:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
         """
@@ -17563,7 +17565,7 @@ class _Jobs:
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : list[dict]
+            - runs : List[dict]
                 - id : int
                 - state : str
                 - created_at : str (time)
@@ -17585,7 +17587,7 @@ class _Jobs:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - children : list[dict]
+            - children : List[dict]
         """
         ...
 
@@ -17841,16 +17843,16 @@ class _Jobs:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -17881,24 +17883,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -17913,7 +17915,7 @@ class _Jobs:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -17924,7 +17926,7 @@ class _Jobs:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -17937,24 +17939,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -17990,7 +17992,7 @@ class _Jobs:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -18001,7 +18003,7 @@ class _Jobs:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -18014,24 +18016,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18127,7 +18129,7 @@ class _Jobs:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -18185,7 +18187,7 @@ class _Jobs:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -18273,7 +18275,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : list[dict]
+            - runs : List[dict]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -18322,16 +18324,16 @@ class _Jobs:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
         """
@@ -18433,24 +18435,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18465,7 +18467,7 @@ class _Json_Values:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -18476,7 +18478,7 @@ class _Json_Values:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -18489,24 +18491,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18542,7 +18544,7 @@ class _Json_Values:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -18553,7 +18555,7 @@ class _Json_Values:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -18566,24 +18568,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18679,7 +18681,7 @@ class _Json_Values:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -18718,24 +18720,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18750,7 +18752,7 @@ class _Match_Targets:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -18761,7 +18763,7 @@ class _Match_Targets:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -18774,24 +18776,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18827,7 +18829,7 @@ class _Match_Targets:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -18838,7 +18840,7 @@ class _Match_Targets:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -18851,24 +18853,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19064,24 +19066,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19096,7 +19098,7 @@ class _Media:
     def put_spot_orders_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19107,7 +19109,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19120,24 +19122,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19173,7 +19175,7 @@ class _Media:
     def put_spot_orders_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19184,7 +19186,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19197,24 +19199,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19294,24 +19296,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19326,7 +19328,7 @@ class _Media:
     def put_optimizations_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19337,7 +19339,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19350,24 +19352,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19403,7 +19405,7 @@ class _Media:
     def put_optimizations_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19414,7 +19416,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19427,24 +19429,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19525,9 +19527,9 @@ class _Media:
                 A link to the visual report for the optimization.
             - spot_order_link : str
                 A link to the json version of the spot order.
-            - file_links : list[str]
+            - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs of the optimization.
 
                 - market_id : int
@@ -19541,23 +19543,23 @@ class _Media:
                     data is available.
                 - reach_alpha : float (float)
                     A tuning parameter used to adjust RF.
-                - syscodes : list[int]
+                - syscodes : List[int]
                     The syscodes for the media run.
-                - rate_cards : list[str]
+                - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : list[dict]
+                - constraints : List[dict]
                     The constraints for the media run.
 
-                    - targets : list[str]
+                    - targets : List[str]
                         The targets to constrain.
                     - budget : float (float)
                         The maximum budget for these targets.
                     - frequency : float (float)
                         The maximum frequency for these targets.
-            - programs : list[str]
+            - programs : List[str]
                 An array of programs that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_programs is not also set.
-            - networks : list[str]
+            - networks : List[str]
                 An array of networks that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_networks is not also set.
             - exclude_programs : bool
@@ -19591,24 +19593,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19623,7 +19625,7 @@ class _Media:
     def put_ratecards_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19634,7 +19636,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19647,24 +19649,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19700,7 +19702,7 @@ class _Media:
     def put_ratecards_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -19711,7 +19713,7 @@ class _Media:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -19724,24 +19726,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19871,10 +19873,10 @@ class _Media:
 
     def post_optimizations(
         self,
-        runs: list[dict],
+        runs: List[dict],
         name: str | None = ...,
-        programs: list[str] | None = ...,
-        networks: list[str] | None = ...,
+        programs: List[str] | None = ...,
+        networks: List[str] | None = ...,
         exclude_programs: bool | None = ...,
         exclude_networks: bool | None = ...,
         time_slot_percentages: dict | None = ...,
@@ -19883,7 +19885,7 @@ class _Media:
 
         Parameters
         ----------
-        runs : list[dict]
+        runs : List[dict]
             The runs of the optimization.
 
             - market_id : int
@@ -19897,14 +19899,14 @@ class _Media:
                 available.
             - reach_alpha : float (float)
                 A tuning parameter used to adjust RF.
-            - syscodes : list[int]
+            - syscodes : List[int]
                 The syscodes for the media run.
-            - rate_cards : list[str]
+            - rate_cards : List[str]
                 The ratecards for the media run.
-            - constraints : list[dict]
+            - constraints : List[dict]
                 The constraints for the media run.
 
-                - targets : list[str]
+                - targets : List[str]
                     The targets to constrain.
                 - budget : float (float)
                     The maximum budget for these targets.
@@ -19912,10 +19914,10 @@ class _Media:
                     The maximum frequency for these targets.
         name : str, optional
             The name of the optimization.
-        programs : list[str], optional
+        programs : List[str], optional
             An array of programs that the Civis Media Optimizer either exclude or limit
             to.An error will be thrown if exclude_programs is not also set.
-        networks : list[str], optional
+        networks : List[str], optional
             An array of networks that the Civis Media Optimizer either exclude or limit
             to.An error will be thrown if exclude_networks is not also set.
         exclude_programs : bool, optional
@@ -19966,9 +19968,9 @@ class _Media:
                 A link to the visual report for the optimization.
             - spot_order_link : str
                 A link to the json version of the spot order.
-            - file_links : list[str]
+            - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs of the optimization.
 
                 - market_id : int
@@ -19982,23 +19984,23 @@ class _Media:
                     data is available.
                 - reach_alpha : float (float)
                     A tuning parameter used to adjust RF.
-                - syscodes : list[int]
+                - syscodes : List[int]
                     The syscodes for the media run.
-                - rate_cards : list[str]
+                - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : list[dict]
+                - constraints : List[dict]
                     The constraints for the media run.
 
-                    - targets : list[str]
+                    - targets : List[str]
                         The targets to constrain.
                     - budget : float (float)
                         The maximum budget for these targets.
                     - frequency : float (float)
                         The maximum frequency for these targets.
-            - programs : list[str]
+            - programs : List[str]
                 An array of programs that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_programs is not also set.
-            - networks : list[str]
+            - networks : List[str]
                 An array of networks that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_networks is not also set.
             - exclude_programs : bool
@@ -20062,9 +20064,9 @@ class _Media:
                 A link to the visual report for the optimization.
             - spot_order_link : str
                 A link to the json version of the spot order.
-            - file_links : list[str]
+            - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20078,23 +20080,23 @@ class _Media:
                     data is available.
                 - reach_alpha : float (float)
                     A tuning parameter used to adjust RF.
-                - syscodes : list[int]
+                - syscodes : List[int]
                     The syscodes for the media run.
-                - rate_cards : list[str]
+                - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : list[dict]
+                - constraints : List[dict]
                     The constraints for the media run.
 
-                    - targets : list[str]
+                    - targets : List[str]
                         The targets to constrain.
                     - budget : float (float)
                         The maximum budget for these targets.
                     - frequency : float (float)
                         The maximum frequency for these targets.
-            - programs : list[str]
+            - programs : List[str]
                 An array of programs that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_programs is not also set.
-            - networks : list[str]
+            - networks : List[str]
                 An array of networks that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_networks is not also set.
             - exclude_programs : bool
@@ -20117,9 +20119,9 @@ class _Media:
         self,
         id: int,
         name: str | None = ...,
-        runs: list[dict] | None = ...,
-        programs: list[str] | None = ...,
-        networks: list[str] | None = ...,
+        runs: List[dict] | None = ...,
+        programs: List[str] | None = ...,
+        networks: List[str] | None = ...,
         exclude_programs: bool | None = ...,
         exclude_networks: bool | None = ...,
         time_slot_percentages: dict | None = ...,
@@ -20132,7 +20134,7 @@ class _Media:
             The optimization ID.
         name : str, optional
             The name of the optimization.
-        runs : list[dict], optional
+        runs : List[dict], optional
             The runs of the optimization.
 
             - market_id : int
@@ -20146,23 +20148,23 @@ class _Media:
                 available.
             - reach_alpha : float (float)
                 A tuning parameter used to adjust RF.
-            - syscodes : list[int]
+            - syscodes : List[int]
                 The syscodes for the media run.
-            - rate_cards : list[str]
+            - rate_cards : List[str]
                 The ratecards for the media run.
-            - constraints : list[dict]
+            - constraints : List[dict]
                 The constraints for the media run.
 
-                - targets : list[str]
+                - targets : List[str]
                     The targets to constrain.
                 - budget : float (float)
                     The maximum budget for these targets.
                 - frequency : float (float)
                     The maximum frequency for these targets.
-        programs : list[str], optional
+        programs : List[str], optional
             An array of programs that the Civis Media Optimizer either exclude or limit
             to.An error will be thrown if exclude_programs is not also set.
-        networks : list[str], optional
+        networks : List[str], optional
             An array of networks that the Civis Media Optimizer either exclude or limit
             to.An error will be thrown if exclude_networks is not also set.
         exclude_programs : bool, optional
@@ -20213,9 +20215,9 @@ class _Media:
                 A link to the visual report for the optimization.
             - spot_order_link : str
                 A link to the json version of the spot order.
-            - file_links : list[str]
+            - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20229,23 +20231,23 @@ class _Media:
                     data is available.
                 - reach_alpha : float (float)
                     A tuning parameter used to adjust RF.
-                - syscodes : list[int]
+                - syscodes : List[int]
                     The syscodes for the media run.
-                - rate_cards : list[str]
+                - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : list[dict]
+                - constraints : List[dict]
                     The constraints for the media run.
 
-                    - targets : list[str]
+                    - targets : List[str]
                         The targets to constrain.
                     - budget : float (float)
                         The maximum budget for these targets.
                     - frequency : float (float)
                         The maximum frequency for these targets.
-            - programs : list[str]
+            - programs : List[str]
                 An array of programs that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_programs is not also set.
-            - networks : list[str]
+            - networks : List[str]
                 An array of networks that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_networks is not also set.
             - exclude_programs : bool
@@ -20309,9 +20311,9 @@ class _Media:
                 A link to the visual report for the optimization.
             - spot_order_link : str
                 A link to the json version of the spot order.
-            - file_links : list[str]
+            - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20325,23 +20327,23 @@ class _Media:
                     data is available.
                 - reach_alpha : float (float)
                     A tuning parameter used to adjust RF.
-                - syscodes : list[int]
+                - syscodes : List[int]
                     The syscodes for the media run.
-                - rate_cards : list[str]
+                - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : list[dict]
+                - constraints : List[dict]
                     The constraints for the media run.
 
-                    - targets : list[str]
+                    - targets : List[str]
                         The targets to constrain.
                     - budget : float (float)
                         The maximum budget for these targets.
                     - frequency : float (float)
                         The maximum frequency for these targets.
-            - programs : list[str]
+            - programs : List[str]
                 An array of programs that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_programs is not also set.
-            - networks : list[str]
+            - networks : List[str]
                 An array of networks that the Civis Media Optimizer either exclude or
                 limit to.An error will be thrown if exclude_networks is not also set.
             - exclude_programs : bool
@@ -21003,10 +21005,10 @@ class _Models:
                 The unique ID (primary key) of the training dataset.
             - dependent_variable : str
                 The dependent variable of the training dataset.
-            - dependent_variable_order : list[str]
+            - dependent_variable_order : List[str]
                 The order of dependent variables, especially useful for Ordinal
                 Modeling.
-            - excluded_columns : list[str]
+            - excluded_columns : List[str]
                 A list of columns which will be considered ineligible to be independent
                 variables.
             - limiting_sql : str
@@ -21020,16 +21022,16 @@ class _Models:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - parent_id : int
@@ -21067,7 +21069,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : list[dict]
+            - builds : List[dict]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -21085,7 +21087,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : list[dict]
+            - predictions : List[dict]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -21093,7 +21095,7 @@ class _Models:
                 - table_name : str
                     The qualified name of the table on which to apply the predictive
                     model.
-                - primary_key : list[str]
+                - primary_key : List[str]
                     The primary key or composite keys of the table being predicted.
                 - limiting_sql : str
                     A SQL WHERE clause used to scope the rows to be predicted.
@@ -21150,10 +21152,10 @@ class _Models:
                 The unique ID (primary key) of the training dataset.
             - dependent_variable : str
                 The dependent variable of the training dataset.
-            - dependent_variable_order : list[str]
+            - dependent_variable_order : List[str]
                 The order of dependent variables, especially useful for Ordinal
                 Modeling.
-            - excluded_columns : list[str]
+            - excluded_columns : List[str]
                 A list of columns which will be considered ineligible to be independent
                 variables.
             - limiting_sql : str
@@ -21168,20 +21170,20 @@ class _Models:
             - number_of_folds : int
                 Number of folds for cross validation. Default value is 5.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -21194,16 +21196,16 @@ class _Models:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - parent_id : int
@@ -21254,7 +21256,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : list[dict]
+            - builds : List[dict]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -21272,7 +21274,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : list[dict]
+            - predictions : List[dict]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -21280,7 +21282,7 @@ class _Models:
                 - table_name : str
                     The qualified name of the table on which to apply the predictive
                     model.
-                - primary_key : list[str]
+                - primary_key : List[str]
                     The primary key or composite keys of the table being predicted.
                 - limiting_sql : str
                     A SQL WHERE clause used to scope the rows to be predicted.
@@ -21290,16 +21292,16 @@ class _Models:
                 - schedule : dict
                     - scheduled : bool
                         If the item is scheduled.
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days of the week, based on numeric value starting at 0 for
                         Sunday. Mutually exclusive with scheduledDaysOfMonth
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours of the day it is scheduled on.
-                    - scheduled_minutes : list[int]
+                    - scheduled_minutes : List[int]
                         Minutes of the day it is scheduled on.
                     - scheduled_runs_per_hour : int
                         Deprecated in favor of scheduled minutes.
-                    - scheduled_days_of_month : list[int]
+                    - scheduled_days_of_month : List[int]
                         Days of the month it is scheduled on, mutually exclusive with
                         scheduledDays.
                 - state : str
@@ -21498,24 +21500,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21530,7 +21532,7 @@ class _Models:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -21541,7 +21543,7 @@ class _Models:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -21554,24 +21556,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21607,7 +21609,7 @@ class _Models:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -21618,7 +21620,7 @@ class _Models:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -21631,24 +21633,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21744,7 +21746,7 @@ class _Models:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -21802,7 +21804,7 @@ class _Models:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -21908,10 +21910,10 @@ class _Models:
                 The unique ID (primary key) of the training dataset.
             - dependent_variable : str
                 The dependent variable of the training dataset.
-            - dependent_variable_order : list[str]
+            - dependent_variable_order : List[str]
                 The order of dependent variables, especially useful for Ordinal
                 Modeling.
-            - excluded_columns : list[str]
+            - excluded_columns : List[str]
                 A list of columns which will be considered ineligible to be independent
                 variables.
             - limiting_sql : str
@@ -21926,20 +21928,20 @@ class _Models:
             - number_of_folds : int
                 Number of folds for cross validation. Default value is 5.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -21952,16 +21954,16 @@ class _Models:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - parent_id : int
@@ -22012,7 +22014,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : list[dict]
+            - builds : List[dict]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -22030,7 +22032,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : list[dict]
+            - predictions : List[dict]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -22038,7 +22040,7 @@ class _Models:
                 - table_name : str
                     The qualified name of the table on which to apply the predictive
                     model.
-                - primary_key : list[str]
+                - primary_key : List[str]
                     The primary key or composite keys of the table being predicted.
                 - limiting_sql : str
                     A SQL WHERE clause used to scope the rows to be predicted.
@@ -22048,16 +22050,16 @@ class _Models:
                 - schedule : dict
                     - scheduled : bool
                         If the item is scheduled.
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days of the week, based on numeric value starting at 0 for
                         Sunday. Mutually exclusive with scheduledDaysOfMonth
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours of the day it is scheduled on.
-                    - scheduled_minutes : list[int]
+                    - scheduled_minutes : List[int]
                         Minutes of the day it is scheduled on.
                     - scheduled_runs_per_hour : int
                         Deprecated in favor of scheduled minutes.
-                    - scheduled_days_of_month : list[int]
+                    - scheduled_days_of_month : List[int]
                         Days of the month it is scheduled on, mutually exclusive with
                         scheduledDays.
                 - state : str
@@ -22089,16 +22091,16 @@ class _Models:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
         """
@@ -22223,7 +22225,7 @@ class _Notebooks:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         environment_variables: dict | None = ...,
         idle_timeout: int | None = ...,
         partition_label: str | None = ...,
@@ -22258,7 +22260,7 @@ class _Notebooks:
             The amount of memory allocated to the notebook.
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the notebook.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
@@ -22356,7 +22358,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -22473,7 +22475,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -22514,7 +22516,7 @@ class _Notebooks:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         environment_variables: dict | None = ...,
         idle_timeout: int | None = ...,
         partition_label: str | None = ...,
@@ -22550,7 +22552,7 @@ class _Notebooks:
             The amount of memory allocated to the notebook.
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the notebook.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
@@ -22646,7 +22648,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -22687,7 +22689,7 @@ class _Notebooks:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         environment_variables: dict | None = ...,
         idle_timeout: int | None = ...,
         partition_label: str | None = ...,
@@ -22723,7 +22725,7 @@ class _Notebooks:
             The amount of memory allocated to the notebook.
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the notebook.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
@@ -22819,7 +22821,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -22958,7 +22960,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -23000,24 +23002,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23032,7 +23034,7 @@ class _Notebooks:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -23043,7 +23045,7 @@ class _Notebooks:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -23056,24 +23058,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23109,7 +23111,7 @@ class _Notebooks:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -23120,7 +23122,7 @@ class _Notebooks:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -23133,24 +23135,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23246,7 +23248,7 @@ class _Notebooks:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -23363,7 +23365,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of owning Notebook
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : dict
                 Environment variables to be passed into the Notebook.
@@ -23425,7 +23427,7 @@ class _Notebooks:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -24052,7 +24054,7 @@ class _Ontology:
             - title : str
             - desc : str
                 A description of this field.
-            - aliases : list[str]
+            - aliases : List[str]
         """
         ...
 
@@ -24299,24 +24301,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24331,7 +24333,7 @@ class _Permission_Sets:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -24342,7 +24344,7 @@ class _Permission_Sets:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -24355,24 +24357,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24408,7 +24410,7 @@ class _Permission_Sets:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -24419,7 +24421,7 @@ class _Permission_Sets:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -24432,24 +24434,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24545,7 +24547,7 @@ class _Permission_Sets:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -24810,24 +24812,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24843,7 +24845,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -24856,7 +24858,7 @@ class _Permission_Sets:
             The ID for this permission set.
         name : str
             The name of this resource.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -24869,24 +24871,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24926,7 +24928,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -24939,7 +24941,7 @@ class _Permission_Sets:
             The ID for this permission set.
         name : str
             The name of this resource.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -24952,24 +24954,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -25095,7 +25097,7 @@ class _Predictions:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - scored_tables : list[dict]
+            - scored_tables : List[dict]
                 An array of created prediction tables.
 
                 - id : int
@@ -25106,12 +25108,12 @@ class _Predictions:
                     The name of table with created predictions.
                 - created_at : str (date-time)
                     The time when the table with created predictions was created.
-                - score_stats : list[dict]
+                - score_stats : List[dict]
                     An array of metrics on the created predictions.
 
                     - score_name : str
                         The name of the score.
-                    - histogram : list[int]
+                    - histogram : List[int]
                         The histogram of the distribution of scores.
                     - avg_score : float (float)
                         The average score.
@@ -25122,21 +25124,21 @@ class _Predictions:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - limiting_sql : str
                 A SQL WHERE clause used to scope the rows to be predicted.
-            - primary_key : list[str]
+            - primary_key : List[str]
                 The primary key or composite keys of the table being predicted.
         """
         ...
@@ -25160,16 +25162,16 @@ class _Predictions:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - score_on_model_build : bool
@@ -25245,7 +25247,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -25310,7 +25312,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -25326,31 +25328,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25362,7 +25352,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25374,14 +25364,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25391,7 +25393,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25401,7 +25403,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25411,20 +25413,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25432,7 +25434,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25441,14 +25443,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25522,7 +25524,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -25538,31 +25540,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25574,7 +25564,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25586,14 +25576,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25603,7 +25605,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25613,7 +25615,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25623,20 +25625,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25644,7 +25646,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25653,14 +25655,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25727,7 +25729,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -25743,31 +25745,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25779,7 +25769,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25791,14 +25781,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25808,7 +25810,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25818,7 +25820,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25828,20 +25830,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25849,7 +25851,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25858,14 +25860,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25941,7 +25943,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -25957,31 +25959,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25993,7 +25983,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26005,14 +25995,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26022,7 +26024,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26032,7 +26034,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26042,20 +26044,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26063,7 +26065,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26072,14 +26074,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26150,7 +26152,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -26166,31 +26168,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26202,7 +26192,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26214,14 +26204,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26231,7 +26233,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26241,7 +26243,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26251,20 +26253,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26272,7 +26274,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26281,14 +26283,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26340,24 +26342,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26372,7 +26374,7 @@ class _Projects:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -26383,7 +26385,7 @@ class _Projects:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -26396,24 +26398,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26449,7 +26451,7 @@ class _Projects:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -26460,7 +26462,7 @@ class _Projects:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -26473,24 +26475,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26586,7 +26588,7 @@ class _Projects:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -26643,7 +26645,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -26659,31 +26661,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : list[dict]
+            - tables : List[dict]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : list[dict]
+            - surveys : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : list[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : list[dict]
+            - scripts : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26695,7 +26685,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : list[dict]
+            - imports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26707,14 +26697,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : list[dict]
+            - exports : List[dict]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : list[dict]
+            - notebooks : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26724,7 +26726,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : list[dict]
+            - services : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26734,7 +26736,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : list[dict]
+            - workflows : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26744,20 +26746,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : list[dict]
+            - reports : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : list[dict]
+            - script_templates : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : list[dict]
+            - files : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26765,7 +26767,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : list[dict]
+            - enhancements : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26774,14 +26776,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : list[dict]
+            - projects : List[dict]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : list[dict]
+            - all_objects : List[dict]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26853,7 +26855,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -26927,7 +26929,7 @@ class _Queries:
         created_after: str | None = ...,
         started_before: str | None = ...,
         started_after: str | None = ...,
-        state: list[str] | None = ...,
+        state: List[str] | None = ...,
         exclude_results: bool | None = ...,
         hidden: bool | None = ...,
         archived: str | None = ...,
@@ -26959,7 +26961,7 @@ class _Queries:
             An upper bound for the start date of the last run.
         started_after : str, optional
             A lower bound for the start date of the last run.
-        state : list[str], optional
+        state : List[str], optional
             The state of the last run. One or more of queued, running, succeeded,
             failed, and cancelled. Specify multiple values as a comma-separated list
             (e.g., "A,B").
@@ -26996,9 +26998,9 @@ class _Queries:
                 The SQL to execute.
             - credential : int
                 The credential ID.
-            - result_rows : list[list]
+            - result_rows : List[List]
                 A preview of rows returned by the query.
-            - result_columns : list[str]
+            - result_columns : List[str]
                 A preview of columns returned by the query.
             - error : str
                 The error message for this run, if present.
@@ -27078,9 +27080,9 @@ class _Queries:
                 The SQL to execute.
             - credential : int
                 The credential ID.
-            - result_rows : list[list]
+            - result_rows : List[List]
                 A preview of rows returned by the query.
-            - result_columns : list[str]
+            - result_columns : List[str]
                 A preview of columns returned by the query.
             - error : str
                 The error message for this run, if present.
@@ -27331,9 +27333,9 @@ class _Queries:
                 The SQL to execute.
             - credential : int
                 The credential ID.
-            - result_rows : list[list]
+            - result_rows : List[List]
                 A preview of rows returned by the query.
-            - result_columns : list[str]
+            - result_columns : List[str]
                 A preview of columns returned by the query.
             - error : str
                 The error message for this run, if present.
@@ -27396,9 +27398,9 @@ class _Queries:
                 The SQL to execute.
             - credential : int
                 The credential ID.
-            - result_rows : list[list]
+            - result_rows : List[List]
                 A preview of rows returned by the query.
-            - result_columns : list[str]
+            - result_columns : List[str]
                 A preview of columns returned by the query.
             - error : str
                 The error message for this run, if present.
@@ -27461,9 +27463,9 @@ class _Queries:
                 The SQL to execute.
             - credential : int
                 The credential ID.
-            - result_rows : list[list]
+            - result_rows : List[List]
                 A preview of rows returned by the query.
-            - result_columns : list[str]
+            - result_columns : List[str]
                 A preview of columns returned by the query.
             - error : str
                 The error message for this run, if present.
@@ -27787,24 +27789,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -27819,7 +27821,7 @@ class _Remote_Hosts:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -27830,7 +27832,7 @@ class _Remote_Hosts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -27843,24 +27845,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -27896,7 +27898,7 @@ class _Remote_Hosts:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -27907,7 +27909,7 @@ class _Remote_Hosts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -27920,24 +27922,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -28109,7 +28111,7 @@ class _Reports:
                 ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -28214,7 +28216,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -28600,7 +28602,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -28731,7 +28733,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -28835,7 +28837,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -28929,24 +28931,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -28961,7 +28963,7 @@ class _Reports:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -28972,7 +28974,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -28985,24 +28987,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29038,7 +29040,7 @@ class _Reports:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -29049,7 +29051,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -29062,24 +29064,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29175,7 +29177,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -29233,7 +29235,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -29342,7 +29344,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the report.
 
                 - id : int
@@ -29600,24 +29602,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29632,7 +29634,7 @@ class _Reports:
     def put_services_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -29643,7 +29645,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -29656,24 +29658,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29709,7 +29711,7 @@ class _Reports:
     def put_services_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -29720,7 +29722,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -29733,24 +29735,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29846,7 +29848,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -29904,7 +29906,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -30052,7 +30054,7 @@ class _Reports:
                 - tableau_refresh_limit : int
                     The number of monthly tableau refreshes permitted to this
                     organization.
-                - tableau_refresh_history : list[dict]
+                - tableau_refresh_history : List[dict]
                     The number of tableau refreshes used this month.
         """
         ...
@@ -30120,9 +30122,9 @@ class _Reports:
                     The SQL to execute.
                 - credential : int
                     The credential ID.
-                - result_rows : list[list]
+                - result_rows : List[List]
                     A preview of rows returned by the query.
-                - result_columns : list[str]
+                - result_columns : List[str]
                     A preview of columns returned by the query.
                 - error : str
                     The error message for this run, if present.
@@ -30201,9 +30203,9 @@ class _Reports:
                     The SQL to execute.
                 - credential : int
                     The credential ID.
-                - result_rows : list[list]
+                - result_rows : List[List]
                     A preview of rows returned by the query.
-                - result_columns : list[str]
+                - result_columns : List[str]
                     A preview of columns returned by the query.
                 - error : str
                     The error message for this run, if present.
@@ -30294,9 +30296,9 @@ class _Reports:
                     The SQL to execute.
                 - credential : int
                     The credential ID.
-                - result_rows : list[list]
+                - result_rows : List[List]
                     A preview of rows returned by the query.
-                - result_columns : list[str]
+                - result_columns : List[str]
                     A preview of columns returned by the query.
                 - error : str
                     The error message for this run, if present.
@@ -30375,9 +30377,9 @@ class _Reports:
                     The SQL to execute.
                 - credential : int
                     The credential ID.
-                - result_rows : list[list]
+                - result_rows : List[List]
                     A preview of rows returned by the query.
-                - result_columns : list[str]
+                - result_columns : List[str]
                     A preview of columns returned by the query.
                 - error : str
                     The error message for this run, if present.
@@ -30417,24 +30419,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30449,7 +30451,7 @@ class _Reports:
     def put_sql_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -30460,7 +30462,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -30473,24 +30475,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30526,7 +30528,7 @@ class _Reports:
     def put_sql_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -30537,7 +30539,7 @@ class _Reports:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -30550,24 +30552,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30663,7 +30665,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -30721,7 +30723,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -30841,9 +30843,9 @@ class _Reports:
                     The SQL to execute.
                 - credential : int
                     The credential ID.
-                - result_rows : list[list]
+                - result_rows : List[List]
                     A preview of rows returned by the query.
-                - result_columns : list[str]
+                - result_columns : List[str]
                     A preview of columns returned by the query.
                 - error : str
                     The error message for this run, if present.
@@ -30950,7 +30952,7 @@ class _Scripts:
                 The time that this run finished.
             - error : str
                 The error message for this run, if present.
-            - output : list[dict]
+            - output : List[dict]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -30969,7 +30971,7 @@ class _Scripts:
         remote_host_id: int,
         credential_id: int,
         sql: str,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         template_script_id: int | None = ...,
         notifications: dict | None = ...,
@@ -30987,7 +30989,7 @@ class _Scripts:
             The credential ID.
         sql : str
             The raw SQL query for the script.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
             Cannot be set if this script uses a template script.
 
@@ -31011,7 +31013,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -31022,20 +31024,20 @@ class _Scripts:
             The ID of the template script, if any.  A script cannot both have a
             template script and be a template for other scripts.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -31076,7 +31078,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -31088,7 +31090,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31113,7 +31115,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31138,33 +31140,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -31293,7 +31295,7 @@ class _Scripts:
                 The status of the script's last run.
             - finished_at : str (time)
                 The time that the script's last run finished.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -31336,7 +31338,7 @@ class _Scripts:
         id: int,
         name: str | None = ...,
         sql: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         template_script_id: int | None = ...,
         schedule: dict | None = ...,
@@ -31354,7 +31356,7 @@ class _Scripts:
             The name of the script.
         sql : str, optional
             The raw SQL query for the script.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
             Cannot be set if this script uses a template script.
 
@@ -31378,7 +31380,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -31391,33 +31393,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -31460,7 +31462,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -31472,7 +31474,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31497,7 +31499,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31522,33 +31524,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -31643,7 +31645,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -31655,7 +31657,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31680,7 +31682,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31705,33 +31707,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -31833,7 +31835,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -31875,7 +31877,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -31898,7 +31900,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -31908,33 +31910,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -31983,7 +31985,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32017,7 +32019,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -32029,7 +32031,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32054,7 +32056,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32079,33 +32081,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -32211,7 +32213,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32245,7 +32247,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -32257,7 +32259,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32282,7 +32284,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32307,33 +32309,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -32431,7 +32433,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -32474,7 +32476,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -32497,7 +32499,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -32507,33 +32509,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -32580,7 +32582,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32614,7 +32616,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -32626,7 +32628,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32651,7 +32653,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32676,33 +32678,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -32798,7 +32800,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -32829,7 +32831,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -32852,7 +32854,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -32862,33 +32864,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -32949,7 +32951,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32983,7 +32985,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -32995,7 +32997,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33020,7 +33022,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33045,33 +33047,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -33167,7 +33169,7 @@ class _Scripts:
         run_id: int,
         message: str | None = ...,
         level: str | None = ...,
-        messages: list[dict] | None = ...,
+        messages: List[dict] | None = ...,
         child_job_id: int | None = ...,
     ) -> Response:
         """Add log messages
@@ -33182,7 +33184,7 @@ class _Scripts:
             The log message to store.
         level : str, optional
             The log level of this message [default: info]
-        messages : list[dict], optional
+        messages : List[dict], optional
             If specified, a batch of logs to store. If createdAt timestamps for the
             logs are supplied, the ordering of this list is not preserved, and the
             timestamps are used to sort the logs.If createdAt timestamps are not
@@ -33252,7 +33254,7 @@ class _Scripts:
         credential_id: int,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -33279,7 +33281,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -33302,7 +33304,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -33312,33 +33314,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -33407,7 +33409,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -33419,7 +33421,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33444,7 +33446,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33469,33 +33471,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -33615,7 +33617,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -33627,7 +33629,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33652,7 +33654,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33677,33 +33679,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -33792,7 +33794,7 @@ class _Scripts:
         credential_id: int,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -33820,7 +33822,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -33843,7 +33845,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -33853,33 +33855,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -33946,7 +33948,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -33958,7 +33960,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33983,7 +33985,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34008,33 +34010,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -34120,7 +34122,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -34145,7 +34147,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -34168,7 +34170,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -34178,33 +34180,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -34277,7 +34279,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -34289,7 +34291,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34314,7 +34316,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34339,33 +34341,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -34451,7 +34453,7 @@ class _Scripts:
         source: str,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -34478,7 +34480,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -34501,7 +34503,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -34511,33 +34513,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -34610,7 +34612,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -34622,7 +34624,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34647,7 +34649,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34672,33 +34674,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -34814,7 +34816,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -34826,7 +34828,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34851,7 +34853,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34876,33 +34878,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -34985,7 +34987,7 @@ class _Scripts:
         source: str,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -35013,7 +35015,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -35036,7 +35038,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -35046,33 +35048,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -35143,7 +35145,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -35155,7 +35157,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35180,7 +35182,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35205,33 +35207,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -35313,7 +35315,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -35340,7 +35342,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -35363,7 +35365,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -35373,33 +35375,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -35472,7 +35474,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -35484,7 +35486,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35509,7 +35511,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35534,33 +35536,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -35642,7 +35644,7 @@ class _Scripts:
         source: str,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -35669,7 +35671,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -35692,7 +35694,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -35702,33 +35704,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -35801,7 +35803,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -35813,7 +35815,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35838,7 +35840,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35863,33 +35865,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -36005,7 +36007,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -36017,7 +36019,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36042,7 +36044,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36067,33 +36069,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -36176,7 +36178,7 @@ class _Scripts:
         source: str,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -36204,7 +36206,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -36227,7 +36229,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -36237,33 +36239,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -36334,7 +36336,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -36346,7 +36348,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36371,7 +36373,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36396,33 +36398,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -36504,7 +36506,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -36531,7 +36533,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -36554,7 +36556,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -36564,33 +36566,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -36663,7 +36665,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -36675,7 +36677,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36700,7 +36702,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36725,33 +36727,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -36835,7 +36837,7 @@ class _Scripts:
         credential_id: int,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -36861,7 +36863,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -36884,7 +36886,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -36894,33 +36896,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -36969,7 +36971,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -36981,7 +36983,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37006,7 +37008,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37031,33 +37033,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -37153,7 +37155,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -37165,7 +37167,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37190,7 +37192,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37215,33 +37217,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -37306,7 +37308,7 @@ class _Scripts:
         credential_id: int,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -37333,7 +37335,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -37356,7 +37358,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -37366,33 +37368,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -37439,7 +37441,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -37451,7 +37453,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37476,7 +37478,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37501,33 +37503,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -37589,7 +37591,7 @@ class _Scripts:
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
-        params: list[dict] | None = ...,
+        params: List[dict] | None = ...,
         arguments: dict | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -37613,7 +37615,7 @@ class _Scripts:
             The ID of the parent job that will trigger this script
         user_context : str, optional
             "runner" or "author", who to execute the script as when run as a template.
-        params : list[dict], optional
+        params : List[dict], optional
             A definition of the parameters this script accepts in the arguments field.
 
             - name : str
@@ -37636,7 +37638,7 @@ class _Scripts:
                 default value. Use true, True, t, y, yes, or 1 for true bool's or
                 false, False, f, n, no, or 0 for false bool's. Cannot be used for
                 parameters that are required or a credential type.
-            - allowed_values : list[dict]
+            - allowed_values : List[dict]
                 The possible values this parameter can take, effectively making this an
                 enumerable parameter. Allowed values is an array of hashes of the
                 following format: `{label: 'Import', 'value': 'import'}`
@@ -37646,33 +37648,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -37725,7 +37727,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -37737,7 +37739,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37762,7 +37764,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37787,33 +37789,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -37946,7 +37948,7 @@ class _Scripts:
                 The status of the script's last run.
             - finished_at : str (time)
                 The time that the script's last run finished.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -38023,33 +38025,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -38085,7 +38087,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38120,7 +38122,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -38129,7 +38131,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38154,7 +38156,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38186,33 +38188,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -38300,7 +38302,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38335,7 +38337,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -38344,7 +38346,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38369,7 +38371,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38401,33 +38403,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -38536,33 +38538,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -38596,7 +38598,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38631,7 +38633,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -38640,7 +38642,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38665,7 +38667,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38697,33 +38699,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -38832,33 +38834,33 @@ class _Scripts:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
             - success_email_from_name : str
                 Name from which success emails are sent; defaults to "Civis."
             - success_email_reply_to : str
                 Address for replies to success emails; defaults to the author of the
                 job.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -38892,7 +38894,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38927,7 +38929,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -38936,7 +38938,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38961,7 +38963,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38993,33 +38995,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -39123,7 +39125,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : list[dict]
+            - output : List[dict]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -39189,7 +39191,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : list[dict]
+            - output : List[dict]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -39239,7 +39241,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : list[dict]
+            - output : List[dict]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -42041,24 +42043,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42073,7 +42075,7 @@ class _Scripts:
     def put_sql_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -42084,7 +42086,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -42097,24 +42099,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42150,7 +42152,7 @@ class _Scripts:
     def put_sql_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -42161,7 +42163,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -42174,24 +42176,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42287,7 +42289,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -42345,7 +42347,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -42452,7 +42454,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -42464,7 +42466,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -42489,7 +42491,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -42514,33 +42516,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -42635,24 +42637,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42667,7 +42669,7 @@ class _Scripts:
     def put_containers_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -42678,7 +42680,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -42691,24 +42693,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42744,7 +42746,7 @@ class _Scripts:
     def put_containers_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -42755,7 +42757,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -42768,24 +42770,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42881,7 +42883,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -42939,7 +42941,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -43021,7 +43023,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -43055,7 +43057,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -43067,7 +43069,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -43092,7 +43094,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -43117,33 +43119,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -43248,24 +43250,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43280,7 +43282,7 @@ class _Scripts:
     def put_python3_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -43291,7 +43293,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -43304,24 +43306,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43357,7 +43359,7 @@ class _Scripts:
     def put_python3_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -43368,7 +43370,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -43381,24 +43383,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43494,7 +43496,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -43552,7 +43554,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -43659,7 +43661,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -43671,7 +43673,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -43696,7 +43698,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -43721,33 +43723,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -43838,24 +43840,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43870,7 +43872,7 @@ class _Scripts:
     def put_r_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -43881,7 +43883,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -43894,24 +43896,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43947,7 +43949,7 @@ class _Scripts:
     def put_r_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -43958,7 +43960,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -43971,24 +43973,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44084,7 +44086,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -44142,7 +44144,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -44249,7 +44251,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -44261,7 +44263,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -44286,7 +44288,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -44311,33 +44313,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -44428,24 +44430,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44460,7 +44462,7 @@ class _Scripts:
     def put_javascript_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -44471,7 +44473,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -44484,24 +44486,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44537,7 +44539,7 @@ class _Scripts:
     def put_javascript_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -44548,7 +44550,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -44561,24 +44563,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44674,7 +44676,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -44732,7 +44734,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -44839,7 +44841,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -44851,7 +44853,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -44876,7 +44878,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -44901,33 +44903,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -44998,24 +45000,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45030,7 +45032,7 @@ class _Scripts:
     def put_custom_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -45041,7 +45043,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -45054,24 +45056,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45107,7 +45109,7 @@ class _Scripts:
     def put_custom_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -45118,7 +45120,7 @@ class _Scripts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -45131,24 +45133,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45244,7 +45246,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -45302,7 +45304,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -45384,7 +45386,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -45419,7 +45421,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -45428,7 +45430,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45453,7 +45455,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45485,33 +45487,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -45634,7 +45636,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -45646,7 +45648,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45671,7 +45673,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45696,33 +45698,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -45852,7 +45854,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -45864,7 +45866,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45889,7 +45891,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45914,33 +45916,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -46046,7 +46048,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -46058,7 +46060,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46083,7 +46085,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46108,33 +46110,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -46260,7 +46262,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -46272,7 +46274,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46297,7 +46299,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46322,33 +46324,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -46449,7 +46451,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -46483,7 +46485,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -46495,7 +46497,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46520,7 +46522,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46545,33 +46547,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -46686,7 +46688,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : list[dict]
+            - from_template_aliases : List[dict]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -46721,7 +46723,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : list[dict]
+            - projects : List[dict]
                 A list of projects containing the script.
 
                 - id : int
@@ -46730,7 +46732,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46755,7 +46757,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46787,33 +46789,33 @@ class _Scripts:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
                 - success_email_from_name : str
                     Name from which success emails are sent; defaults to "Civis."
                 - success_email_reply_to : str
                     Address for replies to success emails; defaults to the author of
                     the job.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -46929,7 +46931,7 @@ class _Search:
                 The number of items matching the search query.
             - aggregations : dict
                 Aggregations by owner and type for the search results.
-            - results : list[dict]
+            - results : List[dict]
                 The items returned by the search.
 
                 - score : float (float)
@@ -46985,7 +46987,7 @@ class _Search:
         credential_id: int | None = ...,
         author_id: int | None = ...,
         archived: bool | None = ...,
-        state: list[str] | None = ...,
+        state: List[str] | None = ...,
         started_before: str | None = ...,
         started_after: str | None = ...,
         limit: int | None = ...,
@@ -47010,7 +47012,7 @@ class _Search:
             The author of the query.
         archived : bool, optional
             The archival status of the requested item(s). Defaults to false.
-        state : list[str], optional
+        state : List[str], optional
             The state of the last run. One or more of queued, running, succeeded,
             failed, and cancelled.
         started_before : str, optional
@@ -47189,7 +47191,7 @@ class _Services:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         permission_set_id: int | None = ...,
         git_repo_url: str | None = ...,
         git_repo_ref: str | None = ...,
@@ -47220,13 +47222,13 @@ class _Services:
                 after periods of inactivity.  Specific Times means the service will be
                 on when scheduled. Always On means the deployed service will always be
                 on.
-            - recurrences : list[dict]
+            - recurrences : List[dict]
                 List of day-hour combinations this item is scheduled for
 
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days it is scheduled on, based on numeric value starting at 0 for
                     Sunday
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours it is scheduled on
         replicas : int, optional
             The number of Service replicas to deploy. When maxReplicas is set,
@@ -47240,7 +47242,7 @@ class _Services:
             The amount of memory allocated to each replica of the Service.
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the Service.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
@@ -47254,7 +47256,7 @@ class _Services:
         environment_variables : dict, optional
             Environment Variables to be passed into the Service.
         notifications : dict, optional
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the service fails.
             - failure_on : bool
                 If failure email notifications are on
@@ -47296,13 +47298,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -47319,7 +47321,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -47373,7 +47375,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -47432,13 +47434,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -47455,7 +47457,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -47509,7 +47511,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -47538,7 +47540,7 @@ class _Services:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         permission_set_id: int | None = ...,
         git_repo_url: str | None = ...,
         git_repo_ref: str | None = ...,
@@ -47568,13 +47570,13 @@ class _Services:
                 after periods of inactivity.  Specific Times means the service will be
                 on when scheduled. Always On means the deployed service will always be
                 on.
-            - recurrences : list[dict]
+            - recurrences : List[dict]
                 List of day-hour combinations this item is scheduled for
 
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days it is scheduled on, based on numeric value starting at 0 for
                     Sunday
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours it is scheduled on
         replicas : int, optional
             The number of Service replicas to deploy. When maxReplicas is set,
@@ -47588,7 +47590,7 @@ class _Services:
             The amount of memory allocated to each replica of the Service.
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the Service.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
@@ -47602,7 +47604,7 @@ class _Services:
         environment_variables : dict, optional
             Environment Variables to be passed into the Service.
         notifications : dict, optional
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the service fails.
             - failure_on : bool
                 If failure email notifications are on
@@ -47642,13 +47644,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -47665,7 +47667,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -47719,7 +47721,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -47748,7 +47750,7 @@ class _Services:
         instance_type: str | None = ...,
         memory: int | None = ...,
         cpu: int | None = ...,
-        credentials: list[int] | None = ...,
+        credentials: List[int] | None = ...,
         permission_set_id: int | None = ...,
         git_repo_url: str | None = ...,
         git_repo_ref: str | None = ...,
@@ -47778,13 +47780,13 @@ class _Services:
                 after periods of inactivity.  Specific Times means the service will be
                 on when scheduled. Always On means the deployed service will always be
                 on.
-            - recurrences : list[dict]
+            - recurrences : List[dict]
                 List of day-hour combinations this item is scheduled for
 
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days it is scheduled on, based on numeric value starting at 0 for
                     Sunday
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours it is scheduled on
         replicas : int, optional
             The number of Service replicas to deploy. When maxReplicas is set,
@@ -47798,7 +47800,7 @@ class _Services:
             The amount of memory allocated to each replica of the Service.
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
-        credentials : list[int], optional
+        credentials : List[int], optional
             A list of credential IDs to pass to the Service.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
@@ -47812,7 +47814,7 @@ class _Services:
         environment_variables : dict, optional
             Environment Variables to be passed into the Service.
         notifications : dict, optional
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the service fails.
             - failure_on : bool
                 If failure email notifications are on
@@ -47852,13 +47854,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -47875,7 +47877,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -47929,7 +47931,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -47960,24 +47962,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -47992,7 +47994,7 @@ class _Services:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -48003,7 +48005,7 @@ class _Services:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -48016,24 +48018,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -48069,7 +48071,7 @@ class _Services:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -48080,7 +48082,7 @@ class _Services:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -48093,24 +48095,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -48206,7 +48208,7 @@ class _Services:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -48276,13 +48278,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -48299,7 +48301,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -48353,7 +48355,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -48404,7 +48406,7 @@ class _Services:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -48801,13 +48803,13 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : list[dict]
+                - recurrences : List[dict]
                     List of day-hour combinations this item is scheduled for
 
-                    - scheduled_days : list[int]
+                    - scheduled_days : List[int]
                         Days it is scheduled on, based on numeric value starting at 0
                         for Sunday
-                    - scheduled_hours : list[int]
+                    - scheduled_hours : List[int]
                         Hours it is scheduled on
             - time_zone : str
             - replicas : int
@@ -48824,7 +48826,7 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : list[int]
+            - credentials : List[int]
                 A list of credential IDs to pass to the Service.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
@@ -48878,7 +48880,7 @@ class _Services:
             - environment_variables : dict
                 Environment Variables to be passed into the Service.
             - notifications : dict
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the service fails.
                 - failure_on : bool
                     If failure email notifications are on
@@ -49243,24 +49245,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49275,7 +49277,7 @@ class _Storage_Hosts:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -49286,7 +49288,7 @@ class _Storage_Hosts:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -49299,24 +49301,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49352,7 +49354,7 @@ class _Storage_Hosts:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -49363,7 +49365,7 @@ class _Storage_Hosts:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -49376,24 +49378,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49489,7 +49491,7 @@ class _Storage_Hosts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -49941,11 +49943,11 @@ class _Tables:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 The primary keys for this table.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -49955,7 +49957,7 @@ class _Tables:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : list[dict]
+            - columns : List[dict]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -49963,7 +49965,7 @@ class _Tables:
                     database-agnostic, it may be helpful when loading data to R/Python.
                 - sql_type : str
                     The database-specific SQL type of the column (ex. "varchar(30)").
-                - sample_values : list[str]
+                - sample_values : List[str]
                     A sample of values from the column.
                 - encoding : str
                     The compression encoding for this columnSee: http://docs.aws.amazon
@@ -49989,7 +49991,7 @@ class _Tables:
                     Number of non-null values in the column.
                 - null_count : int
                     Number of null values in the column.
-                - possible_dependent_variable_types : list[str]
+                - possible_dependent_variable_types : List[str]
                     Possible dependent variable types the column may be used to model.
                     Null if it may not be used as a dependent variable.
                 - useable_as_independent_variable : bool
@@ -50004,7 +50006,7 @@ class _Tables:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : list[dict]
+            - joins : List[dict]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -50014,15 +50016,15 @@ class _Tables:
                 - left_join : bool
                 - created_at : str (time)
                 - updated_at : str (time)
-            - multipart_key : list[str]
-            - enhancements : list[dict]
+            - multipart_key : List[str]
+            - enhancements : List[dict]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : list[dict]
+            - outgoing_table_matches : List[dict]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -50040,7 +50042,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : list[dict]
+                    - runs : List[dict]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -50078,7 +50080,7 @@ class _Tables:
         schema: str | None = ...,
         name: str | None = ...,
         search: str | None = ...,
-        table_tag_ids: list[int] | None = ...,
+        table_tag_ids: List[int] | None = ...,
         credential_id: int | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -50104,7 +50106,7 @@ class _Tables:
             If specified, will be used to filter the tables returned. Will search
             across schema and name (in the full form schema.name) and will return any
             full name containing the search string.
-        table_tag_ids : list[int], optional
+        table_tag_ids : List[int], optional
             If specified, will be used to filter the tables returned. Will search
             across Table Tags and will return any tables that have one of the matching
             Table Tags.
@@ -50173,7 +50175,7 @@ class _Tables:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -50248,11 +50250,11 @@ class _Tables:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 The primary keys for this table.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -50262,7 +50264,7 @@ class _Tables:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : list[dict]
+            - columns : List[dict]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -50270,7 +50272,7 @@ class _Tables:
                     database-agnostic, it may be helpful when loading data to R/Python.
                 - sql_type : str
                     The database-specific SQL type of the column (ex. "varchar(30)").
-                - sample_values : list[str]
+                - sample_values : List[str]
                     A sample of values from the column.
                 - encoding : str
                     The compression encoding for this columnSee: http://docs.aws.amazon
@@ -50296,7 +50298,7 @@ class _Tables:
                     Number of non-null values in the column.
                 - null_count : int
                     Number of null values in the column.
-                - possible_dependent_variable_types : list[str]
+                - possible_dependent_variable_types : List[str]
                     Possible dependent variable types the column may be used to model.
                     Null if it may not be used as a dependent variable.
                 - useable_as_independent_variable : bool
@@ -50311,7 +50313,7 @@ class _Tables:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : list[dict]
+            - joins : List[dict]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -50321,15 +50323,15 @@ class _Tables:
                 - left_join : bool
                 - created_at : str (time)
                 - updated_at : str (time)
-            - multipart_key : list[str]
-            - enhancements : list[dict]
+            - multipart_key : List[str]
+            - enhancements : List[dict]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : list[dict]
+            - outgoing_table_matches : List[dict]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -50347,7 +50349,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : list[dict]
+                    - runs : List[dict]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -50384,8 +50386,8 @@ class _Tables:
         id: int,
         ontology_mapping: dict | None = ...,
         description: str | None = ...,
-        primary_keys: list[str] | None = ...,
-        last_modified_keys: list[str] | None = ...,
+        primary_keys: List[str] | None = ...,
+        last_modified_keys: List[str] | None = ...,
     ) -> Response:
         """Update a table
 
@@ -50398,10 +50400,10 @@ class _Tables:
             valid ontology keys.
         description : str, optional
             The user-defined description of the table.
-        primary_keys : list[str], optional
+        primary_keys : List[str], optional
             A list of column(s) which together uniquely identify a row in the
             data.These columns must not contain NULL values.
-        last_modified_keys : list[str], optional
+        last_modified_keys : List[str], optional
             The columns indicating when a row was last modified.
 
         Returns
@@ -50459,11 +50461,11 @@ class _Tables:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - primary_keys : list[str]
+            - primary_keys : List[str]
                 The primary keys for this table.
-            - last_modified_keys : list[str]
+            - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : list[dict]
+            - table_tags : List[dict]
                 The table tags associated with this table.
 
                 - id : int
@@ -50518,7 +50520,7 @@ class _Tables:
                 database-agnostic, it may be helpful when loading data to R/Python.
             - sql_type : str
                 The database-specific SQL type of the column (ex. "varchar(30)").
-            - sample_values : list[str]
+            - sample_values : List[str]
                 A sample of values from the column.
             - encoding : str
                 The compression encoding for this columnSee: http://docs.aws.amazon.com
@@ -50543,7 +50545,7 @@ class _Tables:
                 Number of non-null values in the column.
             - null_count : int
                 Number of null values in the column.
-            - possible_dependent_variable_types : list[str]
+            - possible_dependent_variable_types : List[str]
                 Possible dependent variable types the column may be used to model.
                 Null if it may not be used as a dependent variable.
             - useable_as_independent_variable : bool
@@ -50641,7 +50643,7 @@ class _Tables:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -50720,24 +50722,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50752,7 +50754,7 @@ class _Templates:
     def put_reports_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -50763,7 +50765,7 @@ class _Templates:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -50776,24 +50778,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50829,7 +50831,7 @@ class _Templates:
     def put_reports_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -50840,7 +50842,7 @@ class _Templates:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -50853,24 +50855,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50966,7 +50968,7 @@ class _Templates:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -51322,24 +51324,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51354,7 +51356,7 @@ class _Templates:
     def put_scripts_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -51365,7 +51367,7 @@ class _Templates:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -51378,24 +51380,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51431,7 +51433,7 @@ class _Templates:
     def put_scripts_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -51442,7 +51444,7 @@ class _Templates:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -51455,24 +51457,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51568,7 +51570,7 @@ class _Templates:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -51626,7 +51628,7 @@ class _Templates:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -51807,7 +51809,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -51832,7 +51834,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -51896,7 +51898,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -51921,7 +51923,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -51998,7 +52000,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -52023,7 +52025,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -52100,7 +52102,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : list[dict]
+            - params : List[dict]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -52125,7 +52127,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : list[dict]
+                - allowed_values : List[dict]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -52355,7 +52357,7 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : list[str]
+            - notification_emails : List[str]
                 Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
@@ -52387,7 +52389,7 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : list[str]
+            - notification_emails : List[str]
                 Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
@@ -52457,7 +52459,7 @@ class _Users:
         account_status: str | None = ...,
         query: str | None = ...,
         group_id: int | None = ...,
-        group_ids: list[int] | None = ...,
+        group_ids: List[int] | None = ...,
         organization_id: int | None = ...,
         exclude_groups: bool | None = ...,
         limit: int | None = ...,
@@ -52480,7 +52482,7 @@ class _Users:
         group_id : int, optional
             The ID of the group by which to filter users. Cannot be present if
             group_ids is.
-        group_ids : list[int], optional
+        group_ids : List[int], optional
             The IDs of the groups by which to filter users. Cannot be present if
             group_id is.
         organization_id : int, optional
@@ -52517,7 +52519,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52561,7 +52563,7 @@ class _Users:
         department: str | None = ...,
         title: str | None = ...,
         prefers_sms_otp: bool | None = ...,
-        group_ids: list[int] | None = ...,
+        group_ids: List[int] | None = ...,
         vpn_enabled: bool | None = ...,
         sso_disabled: bool | None = ...,
         otp_required_for_login: bool | None = ...,
@@ -52597,7 +52599,7 @@ class _Users:
             The title of this user.
         prefers_sms_otp : bool, optional
             The preference for phone authorization of this user
-        group_ids : list[int], optional
+        group_ids : List[int], optional
             An array of ids of all the groups this user is in.
         vpn_enabled : bool, optional
             The availability of vpn for this user.
@@ -52628,7 +52630,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52726,7 +52728,7 @@ class _Users:
                 The date and time at which the user last checked their announcements.
             - feature_flags : dict
                 The feature flag settings for this user.
-            - roles : list[str]
+            - roles : List[str]
                 The roles this user has, listed by slug.
             - preferences : dict
                 This user's preferences.
@@ -52734,7 +52736,7 @@ class _Users:
                 The branding of Platform for this user.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52959,7 +52961,7 @@ class _Users:
                 The date and time at which the user last checked their announcements.
             - feature_flags : dict
                 The feature flag settings for this user.
-            - roles : list[str]
+            - roles : List[str]
                 The roles this user has, listed by slug.
             - preferences : dict
                 This user's preferences.
@@ -52967,7 +52969,7 @@ class _Users:
                 The branding of Platform for this user.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53114,7 +53116,7 @@ class _Users:
                 The ID of this theme.
             - name : str
                 The name of this theme.
-            - organization_ids : list[int]
+            - organization_ids : List[int]
                 List of organization ID's allowed to use this theme.
             - settings : str
                 The theme configuration object.
@@ -53154,7 +53156,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53244,7 +53246,7 @@ class _Users:
         department: str | None = ...,
         title: str | None = ...,
         prefers_sms_otp: bool | None = ...,
-        group_ids: list[int] | None = ...,
+        group_ids: List[int] | None = ...,
         vpn_enabled: bool | None = ...,
         sso_disabled: bool | None = ...,
         otp_required_for_login: bool | None = ...,
@@ -53282,7 +53284,7 @@ class _Users:
             The title of this user.
         prefers_sms_otp : bool, optional
             The preference for phone authorization of this user
-        group_ids : list[int], optional
+        group_ids : List[int], optional
             An array of ids of all the groups this user is in.
         vpn_enabled : bool, optional
             The availability of vpn for this user.
@@ -53318,7 +53320,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53439,7 +53441,7 @@ class _Users:
                 The date and time when the key was revoked.
             - last_used_at : str (date-time)
                 The date and time when the key was last used.
-            - scopes : list[str]
+            - scopes : List[str]
                 The scopes which the key is permissioned on.
             - use_count : int
                 The number of times the key has been used.
@@ -53457,7 +53459,7 @@ class _Users:
         id: str,
         expires_in: int,
         name: str,
-        constraints: list[dict] | None = ...,
+        constraints: List[dict] | None = ...,
     ) -> Response:
         """Create a new API key belonging to the logged-in user
 
@@ -53469,7 +53471,7 @@ class _Users:
             The number of seconds the key should last for.
         name : str
             The name of the API key.
-        constraints : list[dict], optional
+        constraints : List[dict], optional
             Constraints on the abilities of the created key.
 
             - constraint : str
@@ -53504,7 +53506,7 @@ class _Users:
                 The date and time when the key was revoked.
             - last_used_at : str (date-time)
                 The date and time when the key was last used.
-            - scopes : list[str]
+            - scopes : List[str]
                 The scopes which the key is permissioned on.
             - use_count : int
                 The number of times the key has been used.
@@ -53512,7 +53514,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : list[dict]
+            - constraints : List[dict]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53565,7 +53567,7 @@ class _Users:
                 The date and time when the key was revoked.
             - last_used_at : str (date-time)
                 The date and time when the key was last used.
-            - scopes : list[str]
+            - scopes : List[str]
                 The scopes which the key is permissioned on.
             - use_count : int
                 The number of times the key has been used.
@@ -53573,7 +53575,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : list[dict]
+            - constraints : List[dict]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53624,7 +53626,7 @@ class _Users:
                 The date and time when the key was revoked.
             - last_used_at : str (date-time)
                 The date and time when the key was last used.
-            - scopes : list[str]
+            - scopes : List[str]
                 The scopes which the key is permissioned on.
             - use_count : int
                 The number of times the key has been used.
@@ -53632,7 +53634,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : list[dict]
+            - constraints : List[dict]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53680,7 +53682,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53948,7 +53950,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : list[dict]
+            - groups : List[dict]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -54049,7 +54051,7 @@ class _Workflows:
         hidden: bool | None = ...,
         archived: str | None = ...,
         author: str | None = ...,
-        state: list[str] | None = ...,
+        state: List[str] | None = ...,
         scheduled: bool | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -54069,7 +54071,7 @@ class _Workflows:
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
-        state : list[str], optional
+        state : List[str], optional
             State of the most recent execution.One or more of queued, running,
             succeeded, failed, cancelled, idle, and scheduled.
         scheduled : bool, optional
@@ -54119,16 +54121,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -54173,16 +54175,16 @@ class _Workflows:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         allow_concurrent_executions : bool, optional
@@ -54190,15 +54192,15 @@ class _Workflows:
         time_zone : str, optional
             The time zone of this workflow.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -54244,16 +54246,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -54263,15 +54265,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -54336,16 +54338,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -54355,15 +54357,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -54410,16 +54412,16 @@ class _Workflows:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         allow_concurrent_executions : bool, optional
@@ -54427,15 +54429,15 @@ class _Workflows:
         time_zone : str, optional
             The time zone of this workflow.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -54479,16 +54481,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -54498,15 +54500,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -54553,16 +54555,16 @@ class _Workflows:
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
-            - scheduled_days : list[int]
+            - scheduled_days : List[int]
                 Days of the week, based on numeric value starting at 0 for Sunday.
                 Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : list[int]
+            - scheduled_hours : List[int]
                 Hours of the day it is scheduled on.
-            - scheduled_minutes : list[int]
+            - scheduled_minutes : List[int]
                 Minutes of the day it is scheduled on.
             - scheduled_runs_per_hour : int
                 Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : list[int]
+            - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
         allow_concurrent_executions : bool, optional
@@ -54570,15 +54572,15 @@ class _Workflows:
         time_zone : str, optional
             The time zone of this workflow.
         notifications : dict, optional
-            - urls : list[str]
+            - urls : List[str]
                 URLs to receive a POST request at job completion
             - success_email_subject : str
                 Custom subject line for success e-mail.
             - success_email_body : str
                 Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : list[str]
+            - success_email_addresses : List[str]
                 Addresses to notify by e-mail when the job completes successfully.
-            - failure_email_addresses : list[str]
+            - failure_email_addresses : List[str]
                 Addresses to notify by e-mail when the job fails.
             - stall_warning_minutes : int
                 Stall warning emails will be sent after this amount of minutes.
@@ -54622,16 +54624,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -54641,15 +54643,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -54684,24 +54686,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54716,7 +54718,7 @@ class _Workflows:
     def put_shares_users(
         self,
         id: int,
-        user_ids: list[int],
+        user_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -54727,7 +54729,7 @@ class _Workflows:
         ----------
         id : int
             The ID of the resource that is shared.
-        user_ids : list[int]
+        user_ids : List[int]
             An array of one or more user IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -54740,24 +54742,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54793,7 +54795,7 @@ class _Workflows:
     def put_shares_groups(
         self,
         id: int,
-        group_ids: list[int],
+        group_ids: List[int],
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
@@ -54804,7 +54806,7 @@ class _Workflows:
         ----------
         id : int
             The ID of the resource that is shared.
-        group_ids : list[int]
+        group_ids : List[int]
             An array of one or more group IDs.
         permission_level : str
             Options are: "read", "write", or "manage".
@@ -54817,24 +54819,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - writers : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - owners : dict
-                - users : list[dict]
+                - users : List[dict]
                     - id : int
                     - name : str
-                - groups : list[dict]
+                - groups : List[dict]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54930,7 +54932,7 @@ class _Workflows:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : list[dict]
+            - dependencies : List[dict]
                 Dependent objects for this object
 
                 - object_type : str
@@ -55002,16 +55004,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -55021,15 +55023,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -55084,7 +55086,7 @@ class _Workflows:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : list[dict]
+            - users : List[dict]
                 Users who can see the project.
 
                 - id : int
@@ -55482,16 +55484,16 @@ class _Workflows:
             - schedule : dict
                 - scheduled : bool
                     If the item is scheduled.
-                - scheduled_days : list[int]
+                - scheduled_days : List[int]
                     Days of the week, based on numeric value starting at 0 for Sunday.
                     Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : list[int]
+                - scheduled_hours : List[int]
                     Hours of the day it is scheduled on.
-                - scheduled_minutes : list[int]
+                - scheduled_minutes : List[int]
                     Minutes of the day it is scheduled on.
                 - scheduled_runs_per_hour : int
                     Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : list[int]
+                - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
             - allow_concurrent_executions : bool
@@ -55501,15 +55503,15 @@ class _Workflows:
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
             - notifications : dict
-                - urls : list[str]
+                - urls : List[str]
                     URLs to receive a POST request at job completion
                 - success_email_subject : str
                     Custom subject line for success e-mail.
                 - success_email_body : str
                     Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : list[str]
+                - success_email_addresses : List[str]
                     Addresses to notify by e-mail when the job completes successfully.
-                - failure_email_addresses : list[str]
+                - failure_email_addresses : List[str]
                     Addresses to notify by e-mail when the job fails.
                 - stall_warning_minutes : int
                     Stall warning emails will be sent after this amount of minutes.
@@ -55598,7 +55600,7 @@ class _Workflows:
         id: int,
         target_task: str | None = ...,
         input: dict | None = ...,
-        included_tasks: list[str] | None = ...,
+        included_tasks: List[str] | None = ...,
     ) -> Response:
         """Execute a workflow
 
@@ -55610,7 +55612,7 @@ class _Workflows:
             For a reverse workflow, the name of the task to target.
         input : dict, optional
             Key-value pairs to send to this execution as inputs.
-        included_tasks : list[str], optional
+        included_tasks : List[str], optional
             If specified, executes only the subset of workflow tasks included as
             specified by task name.
 
@@ -55641,9 +55643,9 @@ class _Workflows:
                 The definition of the workflow for this execution.
             - input : dict
                 Key-value pairs defined for this execution.
-            - included_tasks : list[str]
+            - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : list[dict]
+            - tasks : List[dict]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55653,7 +55655,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : list[dict]
+                - runs : List[dict]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55671,7 +55673,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : list[dict]
+                - executions : List[dict]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55741,9 +55743,9 @@ class _Workflows:
                 The definition of the workflow for this execution.
             - input : dict
                 Key-value pairs defined for this execution.
-            - included_tasks : list[str]
+            - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : list[dict]
+            - tasks : List[dict]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55753,7 +55755,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : list[dict]
+                - runs : List[dict]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55771,7 +55773,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : list[dict]
+                - executions : List[dict]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55841,9 +55843,9 @@ class _Workflows:
                 The definition of the workflow for this execution.
             - input : dict
                 Key-value pairs defined for this execution.
-            - included_tasks : list[str]
+            - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : list[dict]
+            - tasks : List[dict]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55853,7 +55855,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : list[dict]
+                - runs : List[dict]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55871,7 +55873,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : list[dict]
+                - executions : List[dict]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55941,9 +55943,9 @@ class _Workflows:
                 The definition of the workflow for this execution.
             - input : dict
                 Key-value pairs defined for this execution.
-            - included_tasks : list[str]
+            - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : list[dict]
+            - tasks : List[dict]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55953,7 +55955,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : list[dict]
+                - runs : List[dict]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55971,7 +55973,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : list[dict]
+                - executions : List[dict]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -56045,9 +56047,9 @@ class _Workflows:
                 The definition of the workflow for this execution.
             - input : dict
                 Key-value pairs defined for this execution.
-            - included_tasks : list[str]
+            - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : list[dict]
+            - tasks : List[dict]
                 The tasks associated with this execution.
 
                 - name : str
@@ -56057,7 +56059,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : list[dict]
+                - runs : List[dict]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -56075,7 +56077,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : list[dict]
+                - executions : List[dict]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -56131,7 +56133,7 @@ class _Workflows:
                 success, error, or cancelled
             - mistral_state_info : str
                 Extra info associated with the state of the task.
-            - runs : list[dict]
+            - runs : List[dict]
                 The runs associated with this task, in descending order by id.
 
                 - id : int
@@ -56149,7 +56151,7 @@ class _Workflows:
                     The time that the run started.
                 - finished_at : str (time)
                     The time that the run completed.
-            - executions : list[dict]
+            - executions : List[dict]
                 The executions run by this task, in descending order by id.
 
                 - id : int
@@ -56176,7 +56178,7 @@ class APIClient:
     default_credential: int | None
     username: str
     feature_flags: tuple[str]
-    last_response: APIClient | None
+    last_response: Any
     def __init__(
         self,
         api_key: str | None = ...,

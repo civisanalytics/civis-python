@@ -54,6 +54,8 @@ DELIMITERS = {
 
 _File = collections.namedtuple("_File", "id name detected_info")
 
+_SQL_PARAMS_ARGUMENTS_KEYS = frozenset(("params", "arguments"))
+
 
 def read_civis(
     table,
@@ -169,6 +171,7 @@ def read_civis(
 def export_to_civis_file(
     sql,
     database,
+    sql_params_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -185,6 +188,12 @@ def export_to_civis_file(
     database : str or int
         Execute the query against this database. Can be the database name
         or ID.
+    sql_params_arguments : dict, optional
+        A dictionary of SQL query parameters to pass directly to
+        :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
+        documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -233,6 +242,7 @@ def export_to_civis_file(
         credential_id=credential_id,
         csv_settings=csv_settings,
         hidden=hidden,
+        sql_params_arguments=sql_params_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -248,6 +258,7 @@ def read_civis_sql(
     sql,
     database,
     use_pandas=False,
+    sql_params_arguments=None,
     encoding=None,
     job_name=None,
     client=None,
@@ -271,6 +282,12 @@ def read_civis_sql(
     use_pandas : bool, optional
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
+    sql_params_arguments : dict, optional
+        A dictionary of SQL query parameters to pass directly to
+        :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
+        documentation for how to format these two keys' values.
     encoding : str, optional
         If ``use_pandas`` is ``True``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas:pandas.read_csv`.
@@ -350,6 +367,7 @@ def read_civis_sql(
         credential_id,
         csv_settings={"compression": "gzip"},
         hidden=hidden,
+        sql_params_arguments=sql_params_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -392,6 +410,7 @@ def civis_to_csv(
     filename,
     sql,
     database,
+    sql_params_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -412,6 +431,12 @@ def civis_to_csv(
         The SQL select string to be executed.
     database : str or int
         Export data from this database. Can be the database name or ID.
+    sql_params_arguments : dict, optional
+        A dictionary of SQL query parameters to pass directly to
+        :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
+        documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -505,6 +530,7 @@ def civis_to_csv(
         credential_id,
         hidden=hidden,
         csv_settings=csv_settings,
+        sql_params_arguments=sql_params_arguments,
     )
     fut = CivisFuture(
         client.scripts.get_sql_runs,
@@ -522,6 +548,7 @@ def civis_to_csv(
 def civis_to_multifile_csv(
     sql,
     database,
+    sql_params_arguments=None,
     job_name=None,
     client=None,
     credential_id=None,
@@ -548,6 +575,12 @@ def civis_to_multifile_csv(
     database : str or int
         Execute the query against this database. Can be the database name
         or ID.
+    sql_params_arguments : dict, optional
+        A dictionary of SQL query parameters to pass directly to
+        :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
+        documentation for how to format these two keys' values.
     job_name : str, optional
         A name to give the job. If omitted, a random job name will be
         used.
@@ -656,6 +689,7 @@ def civis_to_multifile_csv(
         credential_id,
         hidden,
         csv_settings=csv_settings,
+        sql_params_arguments=sql_params_arguments,
     )
 
     fut = CivisFuture(
@@ -1237,12 +1271,26 @@ def civis_file_to_table(
 
 
 def _sql_script(
-    client, sql, database, job_name, credential_id, hidden=False, csv_settings=None
+    client,
+    sql,
+    database,
+    job_name,
+    credential_id,
+    hidden=False,
+    csv_settings=None,
+    sql_params_arguments=None,
 ):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
     credential_id = credential_id or client.default_credential
     csv_settings = csv_settings or {}
+    sql_params_arguments = sql_params_arguments or {}
+
+    if not (keys := set(sql_params_arguments.keys())) <= _SQL_PARAMS_ARGUMENTS_KEYS:
+        raise ValueError(
+            "sql_params_arguments must be a dict with keys in "
+            f"{set(_SQL_PARAMS_ARGUMENTS_KEYS)}: {keys}"
+        )
 
     export_job = client.scripts.post_sql(
         job_name,
@@ -1251,6 +1299,7 @@ def _sql_script(
         sql=sql,
         hidden=hidden,
         csv_settings=csv_settings,
+        **sql_params_arguments,
     )
 
     run_job = client.scripts.post_sql_runs(export_job.id)
