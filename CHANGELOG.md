@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Bumped the minimum required version of `joblib` to v1.3.0,
   which is the version where `joblib.parallel_config` was introduced and
   `joblib.parallel_backend` was deprecated. (#488)
-- Improved the startup time of `import civis` with a 5x speed boost. (#490, #492)
+- Improved the startup time of `import civis` with a 5x speed boost. (#490, #493)
 - The downloaded API spec due to the `civis.APIClient` instantiation is now
   a time-to-live cache in memory (15 minutes for interactive Python, or 24 hours in scripts). (#491)
 - Polling at `PollableResult` (and consequently its subclasses as well: `CivisFuture`,
@@ -36,13 +36,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   intervals. Short-running jobs' `future.result()` can now return faster, while
   longer-running jobs have a capped polling interval of 15 seconds. (#492)
 - Comparing a `Response` object with a non-`Response` object returns `False` now
-  (this previously raised a `TypeError`). (#492)
+  (this previously raised a `TypeError`). (#493)
 
 ### Fixed
 - Fixed `civis.parallel.make_backend_template_factory` so that
   keyword arguments are now accepted and passed to `client.scripts.post_custom`. (#488)
 - For `Response` objects, their "repr" form shows the class name "Response" for both
-  top-level and nested response objects. (#492)
+  top-level and nested response objects. (#493)
 
 ### Security
 - Bumped the minimum required version of `requests` to the latest v2.32.3, 
