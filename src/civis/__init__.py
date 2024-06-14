@@ -1,6 +1,7 @@
 import importlib
 import sys
 from importlib.metadata import version
+from typing import TYPE_CHECKING
 
 from civis.client import APIClient
 from civis.loggers import civis_logger
@@ -19,11 +20,14 @@ def _lazy_import(name):
     return module
 
 
-futures = _lazy_import("civis.futures")
-io = _lazy_import("civis.io")
-ml = _lazy_import("civis.ml")
-parallel = _lazy_import("civis.parallel")
-utils = _lazy_import("civis.utils")
+if TYPE_CHECKING:
+    from civis import futures, io, ml, parallel, utils
+else:
+    futures = _lazy_import("civis.futures")
+    io = _lazy_import("civis.io")
+    ml = _lazy_import("civis.ml")
+    parallel = _lazy_import("civis.parallel")
+    utils = _lazy_import("civis.utils")
 
 __version__ = version("civis")
 __all__ = [
