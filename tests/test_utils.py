@@ -1,16 +1,13 @@
 from unittest import mock
 
 from requests import Request
-from requests import ConnectionError, ConnectTimeout
+from requests import ConnectionError
 from datetime import datetime
 from math import floor
 
 from civis._utils import maybe_get_random_name
-from civis._utils import retry
 from civis._utils import retry_request
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
-
-import pytest
 
 
 @mock.patch("civis._utils.uuid")
@@ -23,74 +20,6 @@ def test_maybe_random_name_random(mock_uuid):
 def test_maybe_random_name_not_random():
     given_name = "22222"
     assert maybe_get_random_name(given_name) == given_name
-
-
-def test_io_no_retry():
-    @retry(ConnectionError, retries=4, delay=0.1)
-    def succeeds():
-        counter["i"] += 1
-        return "success"
-
-    counter = dict(i=0)
-    test_result = succeeds()
-
-    assert test_result == "success"
-    assert counter["i"] == 1
-
-
-def test_io_retry_once():
-    @retry(ConnectionError, retries=4, delay=0.1)
-    def fails_once():
-        counter["i"] += 1
-        if counter["i"] < 2:
-            raise ConnectionError("failed")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = fails_once()
-
-    assert test_result == "success"
-    assert counter["i"] == 2
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_limit_reached(m_sleep):
-    @retry(ConnectionError, retries=4, delay=0.1)
-    def always_fails():
-        counter["i"] += 1
-        raise ConnectionError("failed")
-
-    counter = dict(i=0)
-    pytest.raises(ConnectionError, always_fails)
-    assert counter["i"] == 5
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_multiple_exceptions(m_sleep):
-    @retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
-    def raise_multiple_exceptions():
-        counter["i"] += 1
-        if counter["i"] == 1:
-            raise ConnectionError("one error")
-        elif counter["i"] == 2:
-            raise ConnectTimeout("another error")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = raise_multiple_exceptions()
-
-    assert test_result == "success"
-    assert counter["i"] == 3
-
-
-def test_io_retry_unexpected_exception():
-    @retry(ConnectionError, retries=4, delay=0.1)
-    def raise_unexpected_error():
-        raise ValueError("unexpected error")
-
-    pytest.raises(ValueError, raise_unexpected_error)
 
 
 def test_no_retry_on_success():

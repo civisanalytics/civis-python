@@ -1,8 +1,6 @@
 import logging
 import os
-import time
 import uuid
-from random import random
 
 from tenacity import (
     Retrying,
@@ -78,76 +76,6 @@ def retry_request(method, prepared_req, session, max_retries=10):
 
     response = _make_request(prepared_req, session)
     return response
-
-
-def retry(exceptions, retries=5, delay=0.5, backoff=2):
-    """
-    Retry decorator
-
-    Parameters
-    ----------
-    exceptions: Exception
-        exceptions to trigger retry
-    retries: int, optional
-        number of retries to perform
-    delay: float, optional
-        delay before next retry
-    backoff: int, optional
-        factor used to calculate the exponential increase
-        delay after each retry
-
-    Returns
-    -------
-    retry decorator
-
-    Raises
-    ------
-    exception raised by decorator function
-    """
-
-    def deco_retry(f):
-        def f_retry(*args, **kwargs):
-            n_failed = 0
-            new_delay = delay
-            while True:
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as exc:
-                    if n_failed < retries:
-                        n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
-                        log.debug(msg)
-                        time.sleep(new_delay)
-                        new_delay = min(
-                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
-                            50 + 10 * random(),  # nosec
-                        )
-                    else:
-                        raise exc
-
-        return f_retry
-
-    return deco_retry
-
-
-class BufferedPartialReader(object):
-    def __init__(self, buf, max_bytes):
-        self.buf = buf
-        self.max_bytes = max_bytes
-        self.bytes_read = 0
-        self.len = max_bytes
-
-    def read(self, size=-1):
-        if self.bytes_read >= self.max_bytes:
-            return b""
-        bytes_left = self.max_bytes - self.bytes_read
-        if size < 0:
-            bytes_to_read = bytes_left
-        else:
-            bytes_to_read = min(size, bytes_left)
-        data = self.buf.read(bytes_to_read)
-        self.bytes_read += len(data)
-        return data
 
 
 class wait_for_retry_after_header(wait_base):

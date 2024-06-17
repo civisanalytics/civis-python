@@ -6,16 +6,17 @@ import logging
 import math
 from multiprocessing.dummy import Pool
 import os
+from random import random
 import re
 import shutil
 from tempfile import TemporaryDirectory
+import time
 
 import requests
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
-from civis._utils import BufferedPartialReader, retry
 
 try:
     import pandas as pd
@@ -113,7 +114,7 @@ def _single_upload(buf, name, client, **kwargs):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @retry(RETRY_EXCEPTIONS)
+    @_retry(RETRY_EXCEPTIONS)
     def _post():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -156,7 +157,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         raise ValueError(f"There are {num_parts} file parts but only {len(urls)} urls")
 
     # upload function wrapped with a retry decorator
-    @retry(RETRY_EXCEPTIONS)
+    @_retry(RETRY_EXCEPTIONS)
     def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
         offset = part_size * part_num
@@ -165,7 +166,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         log.debug("Uploading file part %s", part_num)
         with open(file_path, "rb") as fin:
             fin.seek(offset)
-            partial_buf = BufferedPartialReader(fin, num_bytes)
+            partial_buf = _BufferedPartialReader(fin, num_bytes)
             part_response = requests.put(part_url, data=partial_buf, timeout=60)
 
         if not part_response.ok:
@@ -378,7 +379,7 @@ def _civis_to_file(file_id, buf, client=None):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @retry(RETRY_EXCEPTIONS)
+    @_retry(RETRY_EXCEPTIONS)
     def _download_url_to_buf():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -648,3 +649,73 @@ def json_to_file(
         file_kwargs["expires_at"] = expires_at
     fid = file_to_civis(txt.buffer, client=client, **file_kwargs)
     return fid
+
+
+class _BufferedPartialReader:
+    def __init__(self, buf, max_bytes):
+        self.buf = buf
+        self.max_bytes = max_bytes
+        self.bytes_read = 0
+        self.len = max_bytes
+
+    def read(self, size=-1):
+        if self.bytes_read >= self.max_bytes:
+            return b""
+        bytes_left = self.max_bytes - self.bytes_read
+        if size < 0:
+            bytes_to_read = bytes_left
+        else:
+            bytes_to_read = min(size, bytes_left)
+        data = self.buf.read(bytes_to_read)
+        self.bytes_read += len(data)
+        return data
+
+
+def _retry(exceptions, retries=5, delay=0.5, backoff=2):
+    """
+    Retry decorator
+
+    Parameters
+    ----------
+    exceptions: Exception
+        exceptions to trigger retry
+    retries: int, optional
+        number of retries to perform
+    delay: float, optional
+        delay before next retry
+    backoff: int, optional
+        factor used to calculate the exponential increase
+        delay after each retry
+
+    Returns
+    -------
+    retry decorator
+
+    Raises
+    ------
+    exception raised by decorator function
+    """
+
+    def deco_retry(f):
+        def f_retry(*args, **kwargs):
+            n_failed = 0
+            new_delay = delay
+            while True:
+                try:
+                    return f(*args, **kwargs)
+                except exceptions as exc:
+                    if n_failed < retries:
+                        n_failed += 1
+                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
+                        log.debug(msg)
+                        time.sleep(new_delay)
+                        new_delay = min(
+                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
+                            50 + 10 * random(),  # nosec
+                        )
+                    else:
+                        raise exc
+
+        return f_retry
+
+    return deco_retry
