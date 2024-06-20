@@ -24,6 +24,7 @@ import civis
 from civis.io import _files
 from civis.io._files import _retry
 from civis.io._tables import _File
+from civis.io._utils import maybe_get_random_name
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.tests.mocks import create_client_mock
@@ -1627,3 +1628,15 @@ def test_io_retry_unexpected_exception():
         raise ValueError("unexpected error")
 
     pytest.raises(ValueError, raise_unexpected_error)
+
+
+@mock.patch("civis.io._utils.uuid")
+def test_maybe_random_name_random(mock_uuid):
+    random_name = "11111"
+    mock_uuid.uuid4.return_value = mock.Mock(hex=random_name)
+    assert maybe_get_random_name(None) == random_name
+
+
+def test_maybe_random_name_not_random():
+    given_name = "22222"
+    assert maybe_get_random_name(given_name) == given_name

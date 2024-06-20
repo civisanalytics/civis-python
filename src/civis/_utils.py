@@ -1,6 +1,5 @@
 import logging
 import os
-import uuid
 
 from tenacity import (
     Retrying,
@@ -19,12 +18,6 @@ MAX_RETRIES = 10
 _RETRY_CODES = [429, 502, 503, 504]
 _RETRY_VERBS = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE"]
 _POST_RETRY_CODES = [429, 503]
-
-
-def maybe_get_random_name(name):
-    if not name:
-        name = uuid.uuid4().hex
-    return name
 
 
 def get_api_key(api_key):

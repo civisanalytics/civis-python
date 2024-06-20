@@ -5,21 +5,8 @@ from requests import ConnectionError
 from datetime import datetime
 from math import floor
 
-from civis._utils import maybe_get_random_name
 from civis._utils import retry_request
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
-
-
-@mock.patch("civis._utils.uuid")
-def test_maybe_random_name_random(mock_uuid):
-    random_name = "11111"
-    mock_uuid.uuid4.return_value = mock.Mock(hex=random_name)
-    assert maybe_get_random_name(None) == random_name
-
-
-def test_maybe_random_name_not_random():
-    given_name = "22222"
-    assert maybe_get_random_name(given_name) == given_name
 
 
 def test_no_retry_on_success():
