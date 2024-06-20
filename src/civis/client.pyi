@@ -66,7 +66,7 @@ class _Admin:
                 - dedicated_dj_pool_enabled : bool
                     If true, the Organization has a dedicated delayed jobs pool.
                     Defaults to false.
-            - tableau_refresh_history : List[dict]
+            - tableau_refresh_history : List[Response]
                 The number of tableau refreshes used this month.
         """
         ...
@@ -87,24 +87,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -143,24 +143,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -220,24 +220,24 @@ class _Aliases:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -333,7 +333,7 @@ class _Aliases:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -758,7 +758,7 @@ class _Clusters:
                 The slug of this cluster's raw configuration.
             - custom_partitions : bool
                 Whether this cluster has a custom partition configuration.
-            - cluster_partitions : List[dict]
+            - cluster_partitions : List[Response]
                 List of cluster partitions associated with this cluster.
 
                 - cluster_partition_id : int
@@ -767,7 +767,7 @@ class _Clusters:
                     The name of the cluster partition.
                 - labels : List[str]
                     Labels associated with this partition.
-                - instance_configs : List[dict]
+                - instance_configs : List[Response]
                     The instances configured for this cluster partition.
 
                     - instance_config_id : int
@@ -843,7 +843,7 @@ class _Clusters:
                 The slug of this cluster's raw configuration.
             - custom_partitions : bool
                 Whether this cluster has a custom partition configuration.
-            - cluster_partitions : List[dict]
+            - cluster_partitions : List[Response]
                 List of cluster partitions associated with this cluster.
 
                 - cluster_partition_id : int
@@ -852,7 +852,7 @@ class _Clusters:
                     The name of the cluster partition.
                 - labels : List[str]
                     Labels associated with this partition.
-                - instance_configs : List[dict]
+                - instance_configs : List[Response]
                     The instances configured for this cluster partition.
 
                     - instance_config_id : int
@@ -1061,7 +1061,7 @@ class _Clusters:
                 The name of the cluster partition.
             - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : List[dict]
+            - instance_configs : List[Response]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1141,7 +1141,7 @@ class _Clusters:
                 The name of the cluster partition.
             - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : List[dict]
+            - instance_configs : List[Response]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1224,7 +1224,7 @@ class _Clusters:
                 The name of the cluster partition.
             - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : List[dict]
+            - instance_configs : List[Response]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -1315,7 +1315,7 @@ class _Clusters:
                 The name of the cluster partition.
             - labels : List[str]
                 Labels associated with this partition.
-            - instance_configs : List[dict]
+            - instance_configs : List[Response]
                 The instances configured for this cluster partition.
 
                 - instance_config_id : int
@@ -2134,24 +2134,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2190,24 +2190,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2267,24 +2267,24 @@ class _Credentials:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -2380,7 +2380,7 @@ class _Credentials:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -2590,7 +2590,7 @@ class _Databases:
                 The primary keys for this table.
             - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -2600,7 +2600,7 @@ class _Databases:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : List[dict]
+            - columns : List[Response]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -2649,7 +2649,7 @@ class _Databases:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : List[dict]
+            - joins : List[Response]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -2660,14 +2660,14 @@ class _Databases:
                 - created_at : str (time)
                 - updated_at : str (time)
             - multipart_key : List[str]
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : List[dict]
+            - outgoing_table_matches : List[Response]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -2685,7 +2685,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : List[dict]
+                    - runs : List[Response]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -2799,7 +2799,7 @@ class _Databases:
                 The primary keys for this table.
             - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -2809,7 +2809,7 @@ class _Databases:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : List[dict]
+            - columns : List[Response]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -2858,7 +2858,7 @@ class _Databases:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : List[dict]
+            - joins : List[Response]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -2869,14 +2869,14 @@ class _Databases:
                 - created_at : str (time)
                 - updated_at : str (time)
             - multipart_key : List[str]
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : List[dict]
+            - outgoing_table_matches : List[Response]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -2894,7 +2894,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : List[dict]
+                    - runs : List[Response]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -3035,8 +3035,8 @@ class _Databases:
         id : int
             The ID of the database.
         active : bool, optional
-            If true returns active users. If false returns deactivated users. If
-            omitted returns all users.
+            If true returns active users. If false returns deactivated users. Defaults
+            to true.
 
         Returns
         -------
@@ -4461,24 +4461,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4517,24 +4517,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4594,24 +4594,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -4707,7 +4707,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -4906,7 +4906,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -5032,7 +5032,7 @@ class _Enhancements:
                 The status of the enhancement's last run
             - archived : str
                 The archival status of the requested item(s).
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5303,7 +5303,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5325,7 +5325,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -5352,7 +5352,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5364,7 +5364,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -5654,7 +5654,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -5676,7 +5676,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -5703,7 +5703,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -5715,7 +5715,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6005,7 +6005,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6027,7 +6027,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6054,7 +6054,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6066,7 +6066,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6229,7 +6229,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6251,7 +6251,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6278,7 +6278,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6290,7 +6290,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -6458,7 +6458,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -6480,7 +6480,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -6507,7 +6507,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -6519,7 +6519,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -9115,24 +9115,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9171,24 +9171,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9248,24 +9248,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9361,7 +9361,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -9419,7 +9419,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -9652,24 +9652,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9708,24 +9708,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9785,24 +9785,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -9898,7 +9898,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -9956,7 +9956,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -10156,24 +10156,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10212,24 +10212,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10289,24 +10289,24 @@ class _Enhancements:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -10402,7 +10402,7 @@ class _Enhancements:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -10460,7 +10460,7 @@ class _Enhancements:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -10625,7 +10625,7 @@ class _Enhancements:
                 where records about different individuals erroneously receive the same
                 resolved ID, but also more more cases where records about the same
                 individual receive different resolved IDs.
-            - sources : List[dict]
+            - sources : List[Response]
                 The source(s) to resolve via a run of this job.
 
                 - name : str
@@ -10647,7 +10647,7 @@ class _Enhancements:
             - match_target_id : int
                 The ID of the Civis Data (Custom) match target. See /match_targets for
                 IDs.
-            - enforced_links : List[dict]
+            - enforced_links : List[Response]
                 A specification of related columns in different sources. The IDR tool
                 will ensure that records with the same values in the specified columns
                 receive the same Resolved ID.
@@ -10674,7 +10674,7 @@ class _Enhancements:
                     The name of the destination schema.
                 - table_name : str
                     The name of the destination table.
-                - fields : List[dict]
+                - fields : List[Response]
                     - field_name : str
                         The name of the field. Must be one of: first_name, middle_name,
                         last_name, name_suffix, email, phone, birth_month, birth_day,
@@ -10686,7 +10686,7 @@ class _Enhancements:
                         the most frequent well-formatted value. "preferred_source"
                         allows the user to prioritize values from particular sources
                         over others.
-                    - source_preferences : List[dict]
+                    - source_preferences : List[Response]
                         Rank order for sources, when rule_type is "preferred_source".
 
                         - source_name : str
@@ -11601,7 +11601,7 @@ class _Files:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -11679,24 +11679,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11735,24 +11735,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11812,24 +11812,24 @@ class _Files:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -11925,7 +11925,7 @@ class _Files:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -12102,7 +12102,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : List[dict]
+                - table_columns : List[Response]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12171,7 +12171,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : List[dict]
+                - table_columns : List[Response]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12240,7 +12240,7 @@ class _Files:
                     "pipe".
                 - compression : str
                     The type of compression of the file. One of "gzip", or "none".
-                - table_columns : List[dict]
+                - table_columns : List[Response]
                     An array of hashes corresponding to the columns in the file. Each
                     hash should have keys for column "name" and "sql_type"
 
@@ -12736,7 +12736,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -12829,7 +12829,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -12900,7 +12900,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -13002,7 +13002,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -13104,7 +13104,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -13141,24 +13141,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13197,24 +13197,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13274,24 +13274,24 @@ class _Groups:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13377,7 +13377,7 @@ class _Groups:
                 The ID of the user who last updated this group.
             - created_by_id : int
                 The ID of the user who created this group.
-            - members : List[dict]
+            - members : List[Response]
                 The members of this group.
 
                 - id : int
@@ -13434,13 +13434,13 @@ class _Groups:
         Returns
         -------
         :class:`civis.response.Response`
-            - manageable : List[dict]
+            - manageable : List[Response]
                 - id : int
                 - name : str
-            - writeable : List[dict]
+            - writeable : List[Response]
                 - id : int
                 - name : str
-            - readable : List[dict]
+            - readable : List[Response]
                 - id : int
                 - name : str
         """
@@ -13462,24 +13462,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13518,24 +13518,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13595,24 +13595,24 @@ class _Imports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -13708,7 +13708,7 @@ class _Imports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -13766,7 +13766,7 @@ class _Imports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -13915,7 +13915,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : List[dict]
+            - syncs : List[Response]
                 List of syncs.
 
                 - id : int
@@ -14368,7 +14368,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : List[dict]
+            - syncs : List[Response]
                 List of syncs.
 
                 - id : int
@@ -14996,7 +14996,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : List[dict]
+            - table_columns : List[Response]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15106,7 +15106,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : List[dict]
+            - table_columns : List[Response]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15315,7 +15315,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : List[dict]
+            - table_columns : List[Response]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15524,7 +15524,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : List[dict]
+            - table_columns : List[Response]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -15638,7 +15638,7 @@ class _Imports:
             - max_errors : int
                 The maximum number of rows with errors to ignore before failing. This
                 option is not supported for Postgres databases.
-            - table_columns : List[dict]
+            - table_columns : List[Response]
                 An array of hashes corresponding to the columns in the order they
                 appear in the source file. Each hash should have keys for database
                 column "name" and "sqlType".This parameter is required if the table
@@ -16102,7 +16102,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : List[dict]
+            - syncs : List[Response]
                 List of syncs.
 
                 - id : int
@@ -16420,7 +16420,7 @@ class _Imports:
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
-            - syncs : List[dict]
+            - syncs : List[Response]
                 List of syncs.
 
                 - id : int
@@ -17375,7 +17375,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : List[dict]
+            - runs : List[Response]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -17480,7 +17480,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : List[dict]
+            - runs : List[Response]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -17565,7 +17565,7 @@ class _Jobs:
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : List[dict]
+            - runs : List[Response]
                 - id : int
                 - state : str
                 - created_at : str (time)
@@ -17587,7 +17587,7 @@ class _Jobs:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - children : List[dict]
+            - children : List[Response]
         """
         ...
 
@@ -17883,24 +17883,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -17939,24 +17939,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18016,24 +18016,24 @@ class _Jobs:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18129,7 +18129,7 @@ class _Jobs:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -18187,7 +18187,7 @@ class _Jobs:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -18275,7 +18275,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
-            - runs : List[dict]
+            - runs : List[Response]
                 Information about the most recent runs of the job.
 
                 - id : int
@@ -18435,24 +18435,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18491,24 +18491,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18568,24 +18568,24 @@ class _Json_Values:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18681,7 +18681,7 @@ class _Json_Values:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -18720,24 +18720,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18776,24 +18776,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -18853,24 +18853,24 @@ class _Match_Targets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19066,24 +19066,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19122,24 +19122,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19199,24 +19199,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19296,24 +19296,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19352,24 +19352,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19429,24 +19429,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19529,7 +19529,7 @@ class _Media:
                 A link to the json version of the spot order.
             - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs of the optimization.
 
                 - market_id : int
@@ -19547,7 +19547,7 @@ class _Media:
                     The syscodes for the media run.
                 - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : List[dict]
+                - constraints : List[Response]
                     The constraints for the media run.
 
                     - targets : List[str]
@@ -19593,24 +19593,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19649,24 +19649,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19726,24 +19726,24 @@ class _Media:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -19970,7 +19970,7 @@ class _Media:
                 A link to the json version of the spot order.
             - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs of the optimization.
 
                 - market_id : int
@@ -19988,7 +19988,7 @@ class _Media:
                     The syscodes for the media run.
                 - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : List[dict]
+                - constraints : List[Response]
                     The constraints for the media run.
 
                     - targets : List[str]
@@ -20066,7 +20066,7 @@ class _Media:
                 A link to the json version of the spot order.
             - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20084,7 +20084,7 @@ class _Media:
                     The syscodes for the media run.
                 - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : List[dict]
+                - constraints : List[Response]
                     The constraints for the media run.
 
                     - targets : List[str]
@@ -20217,7 +20217,7 @@ class _Media:
                 A link to the json version of the spot order.
             - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20235,7 +20235,7 @@ class _Media:
                     The syscodes for the media run.
                 - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : List[dict]
+                - constraints : List[Response]
                     The constraints for the media run.
 
                     - targets : List[str]
@@ -20313,7 +20313,7 @@ class _Media:
                 A link to the json version of the spot order.
             - file_links : List[str]
                 Links to the csv and xml versions of the spot order.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs of the optimization.
 
                 - market_id : int
@@ -20331,7 +20331,7 @@ class _Media:
                     The syscodes for the media run.
                 - rate_cards : List[str]
                     The ratecards for the media run.
-                - constraints : List[dict]
+                - constraints : List[Response]
                     The constraints for the media run.
 
                     - targets : List[str]
@@ -21069,7 +21069,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : List[dict]
+            - builds : List[Response]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -21087,7 +21087,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : List[dict]
+            - predictions : List[Response]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -21256,7 +21256,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : List[dict]
+            - builds : List[Response]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -21274,7 +21274,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : List[dict]
+            - predictions : List[Response]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -21500,24 +21500,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21556,24 +21556,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21633,24 +21633,24 @@ class _Models:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -21746,7 +21746,7 @@ class _Models:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -21804,7 +21804,7 @@ class _Models:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -22014,7 +22014,7 @@ class _Models:
                 "queued", or "running,"or "idle", if no build has been attempted.
             - current_build_exception : str
                 Exception message, if applicable, of the current model build.
-            - builds : List[dict]
+            - builds : List[Response]
                 A list of trained models available for making predictions.
 
                 - id : int
@@ -22032,7 +22032,7 @@ class _Models:
                 - roc_auc : float (float)
                     A key metric for binary, multinomial, and ordinal models. Nil for
                     other model types.
-            - predictions : List[dict]
+            - predictions : List[Response]
                 The tables upon which the model will be applied.
 
                 - id : int
@@ -23002,24 +23002,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23058,24 +23058,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23135,24 +23135,24 @@ class _Notebooks:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -23248,7 +23248,7 @@ class _Notebooks:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -23427,7 +23427,7 @@ class _Notebooks:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -24301,24 +24301,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24357,24 +24357,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24434,24 +24434,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24547,7 +24547,7 @@ class _Permission_Sets:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -24812,24 +24812,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24871,24 +24871,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -24954,24 +24954,24 @@ class _Permission_Sets:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -25097,7 +25097,7 @@ class _Predictions:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - scored_tables : List[dict]
+            - scored_tables : List[Response]
                 An array of created prediction tables.
 
                 - id : int
@@ -25108,7 +25108,7 @@ class _Predictions:
                     The name of table with created predictions.
                 - created_at : str (date-time)
                     The time when the table with created predictions was created.
-                - score_stats : List[dict]
+                - score_stats : List[Response]
                     An array of metrics on the created predictions.
 
                     - score_name : str
@@ -25247,7 +25247,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -25312,7 +25312,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -25328,31 +25328,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25364,7 +25352,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25376,14 +25364,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25393,7 +25393,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25403,7 +25403,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25413,20 +25413,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25434,7 +25434,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25443,14 +25443,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25524,7 +25524,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -25540,31 +25540,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25576,7 +25564,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25588,14 +25576,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25605,7 +25605,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25615,7 +25615,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25625,20 +25625,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25646,7 +25646,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25655,14 +25655,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25729,7 +25729,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -25745,31 +25745,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25781,7 +25769,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25793,14 +25781,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25810,7 +25810,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25820,7 +25820,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25830,20 +25830,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25851,7 +25851,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25860,14 +25860,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -25943,7 +25943,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -25959,31 +25959,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -25995,7 +25983,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26007,14 +25995,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26024,7 +26024,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26034,7 +26034,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26044,20 +26044,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26065,7 +26065,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26074,14 +26074,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26152,7 +26152,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -26168,31 +26168,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26204,7 +26192,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26216,14 +26204,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26233,7 +26233,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26243,7 +26243,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26253,20 +26253,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26274,7 +26274,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26283,14 +26283,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26342,24 +26342,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26398,24 +26398,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26475,24 +26475,24 @@ class _Projects:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -26588,7 +26588,7 @@ class _Projects:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -26645,7 +26645,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -26661,31 +26661,19 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - tables : List[dict]
+            - tables : List[Response]
                 - schema : str
                 - name : str
                 - row_count : int
                 - column_count : int
                 - created_at : str (time)
                 - updated_at : str (time)
-            - surveys : List[dict]
+            - surveys : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
-            - scripts : List[dict]
-                - id : int
-                    The item's ID.
-                - created_at : str (time)
-                - updated_at : str (time)
-                - name : str
-                - type : str
-                - finished_at : str (time)
-                - state : str
-                - last_run : dict
-                    - state : str
-                    - updated_at : str (time)
-            - imports : List[dict]
+            - scripts : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26697,7 +26685,7 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - exports : List[dict]
+            - imports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26709,14 +26697,26 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - models : List[dict]
+            - exports : List[Response]
+                - id : int
+                    The item's ID.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - name : str
+                - type : str
+                - finished_at : str (time)
+                - state : str
+                - last_run : dict
+                    - state : str
+                    - updated_at : str (time)
+            - models : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - notebooks : List[dict]
+            - notebooks : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26726,7 +26726,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - services : List[dict]
+            - services : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26736,7 +26736,7 @@ class _Projects:
                 - last_deploy : dict
                     - state : str
                     - updated_at : str (time)
-            - workflows : List[dict]
+            - workflows : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26746,20 +26746,20 @@ class _Projects:
                 - last_execution : dict
                     - state : str
                     - updated_at : str (time)
-            - reports : List[dict]
+            - reports : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - state : str
-            - script_templates : List[dict]
+            - script_templates : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
-            - files : List[dict]
+            - files : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26767,7 +26767,7 @@ class _Projects:
                 - file_name : str
                 - file_size : int
                 - expired : bool
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
@@ -26776,14 +26776,14 @@ class _Projects:
                 - last_run : dict
                     - state : str
                     - updated_at : str (time)
-            - projects : List[dict]
+            - projects : List[Response]
                 - id : int
                     The item's ID.
                 - created_at : str (time)
                 - updated_at : str (time)
                 - name : str
                 - description : str
-            - all_objects : List[dict]
+            - all_objects : List[Response]
                 - project_id : int
                 - object_id : int
                 - object_type : str
@@ -26855,7 +26855,7 @@ class _Projects:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -27789,24 +27789,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -27845,24 +27845,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -27922,24 +27922,24 @@ class _Remote_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -28111,7 +28111,7 @@ class _Reports:
                 ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -28216,7 +28216,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -28602,7 +28602,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -28733,7 +28733,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -28837,7 +28837,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -28931,24 +28931,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -28987,24 +28987,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29064,24 +29064,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29177,7 +29177,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -29235,7 +29235,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -29344,7 +29344,7 @@ class _Reports:
                 "manage".
             - archived : str
                 The archival status of the requested item(s).
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the report.
 
                 - id : int
@@ -29602,24 +29602,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29658,24 +29658,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29735,24 +29735,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -29848,7 +29848,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -29906,7 +29906,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -30054,7 +30054,7 @@ class _Reports:
                 - tableau_refresh_limit : int
                     The number of monthly tableau refreshes permitted to this
                     organization.
-                - tableau_refresh_history : List[dict]
+                - tableau_refresh_history : List[Response]
                     The number of tableau refreshes used this month.
         """
         ...
@@ -30419,24 +30419,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30475,24 +30475,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30552,24 +30552,24 @@ class _Reports:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -30665,7 +30665,7 @@ class _Reports:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -30723,7 +30723,7 @@ class _Reports:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -30952,7 +30952,7 @@ class _Scripts:
                 The time that this run finished.
             - error : str
                 The error message for this run, if present.
-            - output : List[dict]
+            - output : List[Response]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -31078,7 +31078,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -31090,7 +31090,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31115,7 +31115,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31295,7 +31295,7 @@ class _Scripts:
                 The status of the script's last run.
             - finished_at : str (time)
                 The time that the script's last run finished.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -31462,7 +31462,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -31474,7 +31474,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31499,7 +31499,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31645,7 +31645,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -31657,7 +31657,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -31682,7 +31682,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -31831,7 +31831,6 @@ class _Scripts:
     def post_containers(
         self,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -31844,6 +31843,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -31869,8 +31869,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -31959,6 +31957,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -31985,7 +31985,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32019,7 +32019,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -32031,7 +32031,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32056,7 +32056,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32213,7 +32213,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32247,7 +32247,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -32259,7 +32259,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32284,7 +32284,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32429,7 +32429,6 @@ class _Scripts:
         self,
         id: int,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -32442,6 +32441,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -32468,8 +32468,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -32558,6 +32556,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -32582,7 +32582,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32616,7 +32616,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -32628,7 +32628,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -32653,7 +32653,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -32951,7 +32951,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -32985,7 +32985,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -32997,7 +32997,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33022,7 +33022,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33409,7 +33409,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -33421,7 +33421,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33446,7 +33446,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33617,7 +33617,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -33629,7 +33629,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33654,7 +33654,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -33948,7 +33948,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -33960,7 +33960,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -33985,7 +33985,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34279,7 +34279,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -34291,7 +34291,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34316,7 +34316,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34612,7 +34612,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -34624,7 +34624,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34649,7 +34649,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34760,8 +34760,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34773,6 +34771,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -34816,7 +34816,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -34828,7 +34828,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -34853,7 +34853,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -34964,8 +34964,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34977,6 +34975,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35145,7 +35145,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -35157,7 +35157,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35182,7 +35182,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35293,8 +35293,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35306,6 +35304,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35324,11 +35324,11 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
+        source: str | None = ...,
     ) -> Response:
         """Update some attributes of this Python Script
 
@@ -35430,8 +35430,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -35443,6 +35441,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -35474,7 +35474,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -35486,7 +35486,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35511,7 +35511,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35622,8 +35622,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35635,6 +35633,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35803,7 +35803,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -35815,7 +35815,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -35840,7 +35840,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -35951,8 +35951,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35964,6 +35962,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36007,7 +36007,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -36019,7 +36019,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36044,7 +36044,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36155,8 +36155,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36168,6 +36166,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36336,7 +36336,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -36348,7 +36348,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36373,7 +36373,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36484,8 +36484,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36497,6 +36495,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36515,11 +36515,11 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
+        source: str | None = ...,
     ) -> Response:
         """Update some attributes of this R Script
 
@@ -36621,8 +36621,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -36634,6 +36632,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -36665,7 +36665,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -36677,7 +36677,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -36702,7 +36702,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -36813,8 +36813,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36826,6 +36824,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36971,7 +36971,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -36983,7 +36983,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37008,7 +37008,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37155,7 +37155,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -37167,7 +37167,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37192,7 +37192,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37441,7 +37441,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -37453,7 +37453,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37478,7 +37478,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37727,7 +37727,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -37739,7 +37739,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -37764,7 +37764,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -37948,7 +37948,7 @@ class _Scripts:
                 The status of the script's last run.
             - finished_at : str (time)
                 The time that the script's last run finished.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -38087,7 +38087,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38122,7 +38122,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -38131,7 +38131,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38156,7 +38156,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38302,7 +38302,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38337,7 +38337,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -38346,7 +38346,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38371,7 +38371,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38598,7 +38598,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38633,7 +38633,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -38642,7 +38642,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38667,7 +38667,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -38894,7 +38894,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -38929,7 +38929,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -38938,7 +38938,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -38963,7 +38963,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -39125,7 +39125,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : List[dict]
+            - output : List[Response]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -39191,7 +39191,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : List[dict]
+            - output : List[Response]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -39241,7 +39241,7 @@ class _Scripts:
                 The time the run completed.
             - error : str
                 The error, if any, returned by the run.
-            - output : List[dict]
+            - output : List[Response]
                 A list of the outputs of this script.
 
                 - output_name : str
@@ -42043,24 +42043,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42099,24 +42099,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42176,24 +42176,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42289,7 +42289,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -42347,7 +42347,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -42454,7 +42454,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -42466,7 +42466,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -42491,7 +42491,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -42637,24 +42637,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42693,24 +42693,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42770,24 +42770,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -42883,7 +42883,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -42941,7 +42941,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -43023,7 +43023,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -43057,7 +43057,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -43069,7 +43069,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -43094,7 +43094,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -43250,24 +43250,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43306,24 +43306,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43383,24 +43383,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43496,7 +43496,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -43554,7 +43554,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -43661,7 +43661,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -43673,7 +43673,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -43698,7 +43698,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -43809,8 +43809,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -43822,6 +43820,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -43840,24 +43840,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43896,24 +43896,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -43973,24 +43973,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44086,7 +44086,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -44144,7 +44144,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -44251,7 +44251,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -44263,7 +44263,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -44288,7 +44288,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -44399,8 +44399,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -44412,6 +44410,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -44430,24 +44430,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44486,24 +44486,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44563,24 +44563,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -44676,7 +44676,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -44734,7 +44734,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -44841,7 +44841,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -44853,7 +44853,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -44878,7 +44878,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45000,24 +45000,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45056,24 +45056,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45133,24 +45133,24 @@ class _Scripts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -45246,7 +45246,7 @@ class _Scripts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -45304,7 +45304,7 @@ class _Scripts:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -45386,7 +45386,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -45421,7 +45421,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -45430,7 +45430,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45455,7 +45455,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45636,7 +45636,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -45648,7 +45648,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45673,7 +45673,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -45854,7 +45854,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -45866,7 +45866,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -45891,7 +45891,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46048,7 +46048,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -46060,7 +46060,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46085,7 +46085,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46196,8 +46196,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46209,6 +46207,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46262,7 +46262,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -46274,7 +46274,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46299,7 +46299,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46410,8 +46410,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46423,6 +46421,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46451,7 +46451,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -46485,7 +46485,7 @@ class _Scripts:
                 The time that the script's last run finished.
             - category : str
                 The category of the script.
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -46497,7 +46497,7 @@ class _Scripts:
             - user_context : str
                 "runner" or "author", who to execute the script as when run as a
                 template.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46522,7 +46522,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46688,7 +46688,7 @@ class _Scripts:
         :class:`civis.response.Response`
             - id : int
                 The ID for the script.
-            - from_template_aliases : List[dict]
+            - from_template_aliases : List[Response]
                 An array of the aliases of the template script.
 
                 - id : int
@@ -46723,7 +46723,7 @@ class _Scripts:
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
-            - projects : List[dict]
+            - projects : List[Response]
                 A list of projects containing the script.
 
                 - id : int
@@ -46732,7 +46732,7 @@ class _Scripts:
                     The name of the project.
             - parent_id : int
                 The ID of the parent job that will trigger this script
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters this script accepts in the arguments
                 field.
 
@@ -46757,7 +46757,7 @@ class _Scripts:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -46931,7 +46931,7 @@ class _Search:
                 The number of items matching the search query.
             - aggregations : dict
                 Aggregations by owner and type for the search results.
-            - results : List[dict]
+            - results : List[Response]
                 The items returned by the search.
 
                 - score : float (float)
@@ -47298,7 +47298,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -47434,7 +47434,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -47644,7 +47644,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -47854,7 +47854,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -47962,24 +47962,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -48018,24 +48018,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -48095,24 +48095,24 @@ class _Services:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -48208,7 +48208,7 @@ class _Services:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -48278,7 +48278,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -48406,7 +48406,7 @@ class _Services:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -48803,7 +48803,7 @@ class _Services:
                     after periods of inactivity.  Specific Times means the service will
                     be on when scheduled. Always On means the deployed service will
                     always be on.
-                - recurrences : List[dict]
+                - recurrences : List[Response]
                     List of day-hour combinations this item is scheduled for
 
                     - scheduled_days : List[int]
@@ -49245,24 +49245,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49301,24 +49301,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49378,24 +49378,24 @@ class _Storage_Hosts:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -49491,7 +49491,7 @@ class _Storage_Hosts:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -49947,7 +49947,7 @@ class _Tables:
                 The primary keys for this table.
             - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -49957,7 +49957,7 @@ class _Tables:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : List[dict]
+            - columns : List[Response]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -50006,7 +50006,7 @@ class _Tables:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : List[dict]
+            - joins : List[Response]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -50017,14 +50017,14 @@ class _Tables:
                 - created_at : str (time)
                 - updated_at : str (time)
             - multipart_key : List[str]
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : List[dict]
+            - outgoing_table_matches : List[Response]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -50042,7 +50042,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : List[dict]
+                    - runs : List[Response]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -50175,7 +50175,7 @@ class _Tables:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -50254,7 +50254,7 @@ class _Tables:
                 The primary keys for this table.
             - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -50264,7 +50264,7 @@ class _Tables:
             - ontology_mapping : dict
                 The ontology-key to column-name mapping.  See /ontology for the list of
                 valid ontology keys.
-            - columns : List[dict]
+            - columns : List[Response]
                 - name : str
                     Name of the column.
                 - civis_data_type : str
@@ -50313,7 +50313,7 @@ class _Tables:
                 - distinct_count : int
                     Number of distinct values in the column. NULL values are counted
                     and treated as a single distinct value.
-            - joins : List[dict]
+            - joins : List[Response]
                 - id : int
                 - left_table_id : int
                 - left_identifier : str
@@ -50324,14 +50324,14 @@ class _Tables:
                 - created_at : str (time)
                 - updated_at : str (time)
             - multipart_key : List[str]
-            - enhancements : List[dict]
+            - enhancements : List[Response]
                 - type : str
                 - created_at : str (time)
                 - updated_at : str (time)
                 - join_id : int
             - view_def : str
             - table_def : str
-            - outgoing_table_matches : List[dict]
+            - outgoing_table_matches : List[Response]
                 - source_table_id : int
                     Source table
                 - target_type : str
@@ -50349,7 +50349,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
-                    - runs : List[dict]
+                    - runs : List[Response]
                         Information about the most recent runs of the job.
 
                         - id : int
@@ -50465,7 +50465,7 @@ class _Tables:
                 The primary keys for this table.
             - last_modified_keys : List[str]
                 The columns indicating an entry's modification status for this table.
-            - table_tags : List[dict]
+            - table_tags : List[Response]
                 The table tags associated with this table.
 
                 - id : int
@@ -50643,7 +50643,7 @@ class _Tables:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -50722,24 +50722,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50778,24 +50778,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50855,24 +50855,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -50968,7 +50968,7 @@ class _Templates:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -51324,24 +51324,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51380,24 +51380,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51457,24 +51457,24 @@ class _Templates:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -51570,7 +51570,7 @@ class _Templates:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -51628,7 +51628,7 @@ class _Templates:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -51809,7 +51809,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -51834,7 +51834,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -51898,7 +51898,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -51923,7 +51923,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -52000,7 +52000,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -52025,7 +52025,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -52102,7 +52102,7 @@ class _Templates:
                 R, JavaScript)
             - user_context : str
                 The user context of the script that this template uses.
-            - params : List[dict]
+            - params : List[Response]
                 A definition of the parameters that this template's backing script
                 accepts in the arguments field.
 
@@ -52127,7 +52127,7 @@ class _Templates:
                     default value. Use true, True, t, y, yes, or 1 for true bool's or
                     false, False, f, n, no, or 0 for false bool's. Cannot be used for
                     parameters that are required or a credential type.
-                - allowed_values : List[dict]
+                - allowed_values : List[Response]
                     The possible values this parameter can take, effectively making
                     this an enumerable parameter. Allowed values is an array of hashes
                     of the following format: `{label: 'Import', 'value': 'import'}`
@@ -52519,7 +52519,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52630,7 +52630,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52736,7 +52736,7 @@ class _Users:
                 The branding of Platform for this user.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -52969,7 +52969,7 @@ class _Users:
                 The branding of Platform for this user.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53156,7 +53156,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53320,7 +53320,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53514,7 +53514,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : List[dict]
+            - constraints : List[Response]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53575,7 +53575,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : List[dict]
+            - constraints : List[Response]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53634,7 +53634,7 @@ class _Users:
                 True if the key has expired.
             - active : bool
                 True if the key has neither expired nor been revoked.
-            - constraints : List[dict]
+            - constraints : List[Response]
                 Constraints on the abilities of the created key
 
                 - constraint : str
@@ -53682,7 +53682,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -53950,7 +53950,7 @@ class _Users:
                 Whether this user account is active or deactivated.
             - primary_group_id : int
                 The ID of the primary group of this user.
-            - groups : List[dict]
+            - groups : List[Response]
                 An array of all the groups this user is in.
 
                 - id : int
@@ -54686,24 +54686,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54742,24 +54742,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54819,24 +54819,24 @@ class _Workflows:
         -------
         :class:`civis.response.Response`
             - readers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - writers : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - owners : dict
-                - users : List[dict]
+                - users : List[Response]
                     - id : int
                     - name : str
-                - groups : List[dict]
+                - groups : List[Response]
                     - id : int
                     - name : str
             - total_user_shares : int
@@ -54932,7 +54932,7 @@ class _Workflows:
         Returns
         -------
         :class:`civis.response.Response`
-            - dependencies : List[dict]
+            - dependencies : List[Response]
                 Dependent objects for this object
 
                 - object_type : str
@@ -55086,7 +55086,7 @@ class _Workflows:
                 The name of this project.
             - description : str
                 A description of the project.
-            - users : List[dict]
+            - users : List[Response]
                 Users who can see the project.
 
                 - id : int
@@ -55645,7 +55645,7 @@ class _Workflows:
                 Key-value pairs defined for this execution.
             - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : List[dict]
+            - tasks : List[Response]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55655,7 +55655,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : List[dict]
+                - runs : List[Response]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55673,7 +55673,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : List[dict]
+                - executions : List[Response]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55745,7 +55745,7 @@ class _Workflows:
                 Key-value pairs defined for this execution.
             - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : List[dict]
+            - tasks : List[Response]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55755,7 +55755,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : List[dict]
+                - runs : List[Response]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55773,7 +55773,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : List[dict]
+                - executions : List[Response]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55845,7 +55845,7 @@ class _Workflows:
                 Key-value pairs defined for this execution.
             - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : List[dict]
+            - tasks : List[Response]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55855,7 +55855,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : List[dict]
+                - runs : List[Response]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55873,7 +55873,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : List[dict]
+                - executions : List[Response]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -55945,7 +55945,7 @@ class _Workflows:
                 Key-value pairs defined for this execution.
             - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : List[dict]
+            - tasks : List[Response]
                 The tasks associated with this execution.
 
                 - name : str
@@ -55955,7 +55955,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : List[dict]
+                - runs : List[Response]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -55973,7 +55973,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : List[dict]
+                - executions : List[Response]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -56049,7 +56049,7 @@ class _Workflows:
                 Key-value pairs defined for this execution.
             - included_tasks : List[str]
                 The subset of workflow tasks selected to execute.
-            - tasks : List[dict]
+            - tasks : List[Response]
                 The tasks associated with this execution.
 
                 - name : str
@@ -56059,7 +56059,7 @@ class _Workflows:
                     success, error, or cancelled
                 - mistral_state_info : str
                     Extra info associated with the state of the task.
-                - runs : List[dict]
+                - runs : List[Response]
                     The runs associated with this task, in descending order by id.
 
                     - id : int
@@ -56077,7 +56077,7 @@ class _Workflows:
                         The time that the run started.
                     - finished_at : str (time)
                         The time that the run completed.
-                - executions : List[dict]
+                - executions : List[Response]
                     The executions run by this task, in descending order by id.
 
                     - id : int
@@ -56133,7 +56133,7 @@ class _Workflows:
                 success, error, or cancelled
             - mistral_state_info : str
                 Extra info associated with the state of the task.
-            - runs : List[dict]
+            - runs : List[Response]
                 The runs associated with this task, in descending order by id.
 
                 - id : int
@@ -56151,7 +56151,7 @@ class _Workflows:
                     The time that the run started.
                 - finished_at : str (time)
                     The time that the run completed.
-            - executions : List[dict]
+            - executions : List[Response]
                 The executions run by this task, in descending order by id.
 
                 - id : int
