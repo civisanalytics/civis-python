@@ -14,6 +14,8 @@ _RETRY_VERBS = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE"]
 _POST_RETRY_CODES = [429, 503]
 
 
+# Defining the default tenacity.Retrying as a user-friendly code string
+# so that it can be shown in civis.APIClient's docstring.
 DEFAULT_RETRYING_STR = """
 tenacity.Retrying(
     wait=tenacity.wait_random_exponential(multiplier=2, max=60),
