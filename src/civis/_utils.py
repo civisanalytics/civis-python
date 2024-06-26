@@ -24,7 +24,7 @@ tenacity.Retrying(
 
 # Explicitly set the available globals and locals
 # to mitigate risk of unwanted code execution
-DEFAULT_RETRYING = eval(
+DEFAULT_RETRYING = eval(  # nosec
     DEFAULT_RETRYING_STR,
     {"tenacity": tenacity, "__builtins__": {}},  # globals
     {},  # locals
