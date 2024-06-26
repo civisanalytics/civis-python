@@ -65,18 +65,18 @@ def get_properties(x):
     return x.get("properties") or x.get("items", {}).get("properties")
 
 
-def property_type(props, response=False):
-    t = type_from_param(props, response)
+def property_type(props):
+    t = type_from_param(props)
     fmt = props.get("format")
     return "{} ({})".format(t, fmt) if fmt else t
 
 
-def name_and_type_doc(name, prop, level, optional=False, response=False):
+def name_and_type_doc(name, prop, level, optional=False):
     """Create a doc string element that includes a parameter's name
     and its type. This is intended to be combined with another
     doc string element that gives a description of the parameter.
     """
-    prop_type = property_type(prop, response)
+    prop_type = property_type(prop)
     snake_name = camel_to_snake(name)
     indent = " " * level * 4
     dash = "- " if level > 0 else ""
@@ -85,7 +85,7 @@ def name_and_type_doc(name, prop, level, optional=False, response=False):
     return doc.format(indent, dash, snake_name, prop_type, opt_str)
 
 
-def docs_from_property(name, prop, properties, level, optional=False, response=False):
+def docs_from_property(name, prop, properties, level, optional=False):
     """Create a list of doc string elements from a single property
     object. Avoids infinite recursion when a property contains a
     circular reference to its parent.
@@ -93,7 +93,7 @@ def docs_from_property(name, prop, properties, level, optional=False, response=F
     docs = []
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
-    docs.append(name_and_type_doc(name, prop, level, optional, response))
+    docs.append(name_and_type_doc(name, prop, level, optional))
     doc_str = prop.get("description")
     if doc_str:
         indent = 4 * (level + 1) * " "
@@ -102,16 +102,16 @@ def docs_from_property(name, prop, properties, level, optional=False, response=F
         )
         docs.append(f"{doc_wrap}\n") if child else docs.append(doc_wrap)
     if child:
-        child_docs = docs_from_properties(child, level + 1, response)
+        child_docs = docs_from_properties(child, level + 1)
         docs.append("\n".join(child_docs))
     return docs
 
 
-def docs_from_properties(properties, level=0, response=False):
+def docs_from_properties(properties, level=0):
     """Return doc string elements from a dictionary of properties."""
     docs = []
     for name, prop in properties.items():
-        doc_list = docs_from_property(name, prop, properties, level, response=response)
+        doc_list = docs_from_property(name, prop, properties, level)
         docs.extend(doc_list)
     return docs
 
@@ -138,9 +138,7 @@ def doc_from_responses(responses, is_iterable):
             resp_type = ":class:`civis.response.PaginatedResponse`\n"
         else:
             resp_type = ":class:`civis.response.Response`\n"
-        result_doc = resp_type + (
-            "\n".join(docs_from_properties(properties, level=1, response=True))
-        )
+        result_doc = resp_type + ("\n".join(docs_from_properties(properties, level=1)))
     else:
         description = response_object["description"]
         result_doc_fmt = "None\n    Response code {}: {}"
@@ -152,7 +150,7 @@ def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
 
-def type_from_param(param, response=False):
+def type_from_param(param):
     main_type = TYPE_MAP[param["type"]]
     item_type = None
     if main_type == "List":
@@ -161,8 +159,6 @@ def type_from_param(param, response=False):
             item_type = TYPE_MAP[items["type"]]
         elif "$ref" in items:
             item_type = "dict"
-        if response and item_type == "dict":
-            item_type = "Response"
     return f"{main_type}[{item_type}]" if item_type else main_type
 
 
