@@ -1,5 +1,7 @@
-API Responses
-=============
+.. _responses:
+
+Responses
+=========
 
 A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.response.Response` object
 (or a :class:`civis.response.PaginatedResponse` object, if ``<method>`` is a "list" call):

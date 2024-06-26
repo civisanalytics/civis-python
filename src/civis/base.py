@@ -10,7 +10,7 @@ import requests
 
 import civis
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import retry_request, MAX_RETRIES
+from civis._utils import retry_request, DEFAULT_RETRYING
 
 FINISHED = ["success", "succeeded"]
 FAILED = ["failed"]
@@ -123,12 +123,17 @@ class Endpoint:
         url = self._build_path(path)
 
         with self._lock:
+            if self._client._retrying is None:
+                retrying = self._session_kwargs.pop("retrying", None)
+                self._client._retrying = retrying if retrying else DEFAULT_RETRYING
             with open_session(**self._session_kwargs) as sess:
                 request = requests.Request(
                     method, url, json=data, params=params, **kwargs
                 )
                 pre_request = sess.prepare_request(request)
-                response = retry_request(method, pre_request, sess, MAX_RETRIES)
+                response = retry_request(
+                    method, pre_request, sess, self._client._retrying
+                )
 
         if response.status_code == 401:
             auth_error = response.headers["www-authenticate"]

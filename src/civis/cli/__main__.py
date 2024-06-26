@@ -41,7 +41,7 @@ from civis.cli._cli_commands import (
 from civis.base import open_session
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
-from civis._utils import retry_request, MAX_RETRIES
+from civis._utils import retry_request
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r"[^A-Za-z0-9]+")
@@ -173,7 +173,7 @@ def invoke(method, path, op, *args, **kwargs):
     with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
         request = Request(**request_info)
         pre_request = sess.prepare_request(request)
-        response = retry_request(method, pre_request, sess, MAX_RETRIES)
+        response = retry_request(method, pre_request, sess)
 
     # Print the response to stderr and set exit code to 1 if there was an error
     output_file = sys.stdout

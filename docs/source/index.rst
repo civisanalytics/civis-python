@@ -31,11 +31,6 @@ User Guide
 For a more detailed walkthrough, see the :ref:`user_guide`.
 
 
-.. include:: ../../README.rst
-  :start-after: start-include-marker-retries-section
-  :end-before: end-include-marker-retires-section
-
-
 Table of Contents
 -----------------
 

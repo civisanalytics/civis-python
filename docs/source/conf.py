@@ -43,6 +43,7 @@ intersphinx_mapping = {
     "requests": ("https://docs.python-requests.org/en/latest/", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
+    "tenacity": ("https://tenacity.readthedocs.io/en/latest/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.

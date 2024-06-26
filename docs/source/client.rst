@@ -12,6 +12,9 @@ requests are made with the following syntax:
    client = civis.APIClient()
    response = client.resource.method(params)
 
+Dynamically Created Resources and Methods
+-----------------------------------------
+
 The methods on :class:`~civis.APIClient` are created dynamically at runtime
 by parsing an :class:`python:collections.OrderedDict` representation of the
 Civis API specification.
@@ -84,13 +87,47 @@ specification has been saved.
        json.dump(spec, f)
    client = civis.APIClient(local_api_spec='local_api_spec.json')
 
+
+.. _retries:
+
+Retries
+-------
+
+The API client will automatically retry for certain API error responses.
+
+If the error is one of [413, 429, 503] and the API client is told how long it needs
+to wait before it's safe to retry (this is always the case with 429s, which are
+rate limit errors), then the client will wait the specified amount of time
+before retrying the request.
+
+If the error is one of [429, 502, 503, 504] and the request is not a ``patch*`` or ``post*``
+method, then the API client will retry the request several times, with an exponential delay,
+to see if it will succeed. If the request is of type ``post*`` it will retry with the same parameters
+for error codes [429, 503].
+
+
+Responses
+---------
+
+Please see :ref:`responses`.
+
+
+API Resources
+-------------
+
+Please see :ref:`api_resources`.
+
+
+Object Reference
+----------------
+
 .. currentmodule:: civis
 
 .. autoclass:: civis.APIClient
    :members:
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
 
    responses
    api_resources

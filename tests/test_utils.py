@@ -1,12 +1,21 @@
-from unittest import mock
-
-from requests import Request
-from requests import ConnectionError
+import copy
 from datetime import datetime
 from math import floor
+from unittest import mock
 
-from civis._utils import retry_request
+import tenacity
+from requests import Request
+from requests import ConnectionError
+
+from civis._utils import retry_request, DEFAULT_RETRYING
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
+
+
+def _get_retrying(retries: int):
+    retrying = copy.copy(DEFAULT_RETRYING)
+    stop = tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(retries)
+    retrying.stop = stop
+    return retrying
 
 
 def test_no_retry_on_success():
@@ -28,7 +37,7 @@ def test_no_retry_on_success():
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
-        retry_request(verb, pre_request, session_context, 3)
+        retry_request(verb, pre_request, session_context, _get_retrying(3))
 
         assert session_context.send.call_count == expected_call_count
 
@@ -53,7 +62,7 @@ def test_no_retry_on_get_no_retry_failure():
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
-        retry_request(verb, pre_request, session_context, max_calls)
+        retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
 
         assert session_context.send.call_count == expected_call_count
 
@@ -80,7 +89,7 @@ def test_retry_on_retry_eligible_failures(m_sleep):
 
             request = Request(**request_info)
             pre_request = session_context.prepare_request(request)
-            retry_request(verb, pre_request, session_context, max_calls)
+            retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
 
             assert session_context.send.call_count == expected_call_count
 
@@ -107,7 +116,7 @@ def test_retry_on_retry_eligible_failures_lowercase_verbs(m_sleep):
 
             request = Request(**request_info)
             pre_request = session_context.prepare_request(request)
-            retry_request(verb, pre_request, session_context, max_calls)
+            retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
 
             assert session_context.send.call_count == expected_call_count
 
@@ -130,7 +139,7 @@ def test_no_retry_on_post_success():
     )
     request = Request(**request_info)
     pre_request = session_context.prepare_request(request)
-    retry_request("post", pre_request, session_context, max_calls)
+    retry_request("post", pre_request, session_context, _get_retrying(max_calls))
 
     assert session_context.send.call_count == expected_call_count
 
@@ -156,7 +165,7 @@ def test_retry_on_retry_eligible_post_failures(m_sleep):
         )
         request = Request(**request_info)
         pre_request = session_context.prepare_request(request)
-        retry_request("post", pre_request, session_context, max_calls)
+        retry_request("post", pre_request, session_context, _get_retrying(max_calls))
 
         assert session_context.send.call_count == expected_call_count
 
@@ -182,7 +191,7 @@ def test_no_retry_on_connection_error():
 
         session_context.send.side_effect = ConnectionError()
         try:
-            retry_request(verb, pre_request, session_context, 3)
+            retry_request(verb, pre_request, session_context, _get_retrying(3))
         except ConnectionError:
             pass
 
@@ -230,7 +239,7 @@ def test_retry_respect_retry_after_headers():
         pre_request = session_context.prepare_request(request)
 
         start_time = datetime.now().timestamp()
-        retry_request(verb, pre_request, session_context, max_calls)
+        retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
         end_time = datetime.now().timestamp()
         duration = end_time - start_time
 
