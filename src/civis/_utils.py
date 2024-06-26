@@ -7,8 +7,6 @@ from tenacity.wait import wait_base
 
 log = logging.getLogger(__name__)
 
-MAX_RETRIES = 10
-
 _RETRY_CODES = [429, 502, 503, 504]
 _RETRY_VERBS = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE"]
 _POST_RETRY_CODES = [429, 503]
