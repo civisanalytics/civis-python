@@ -1,7 +1,9 @@
+"""Validation for Civis Platform workflow definitions."""
+
 import jsonschema
 import yaml
 
-from ._schema import WORKFLOW_SCHEMA
+from ._schemas import WORKFLOW_SCHEMA
 
 
 class WorkflowValidationError(Exception):
@@ -9,12 +11,12 @@ class WorkflowValidationError(Exception):
 
 
 def validate_workflow_yaml(wf_def: str, /) -> None:
-    """Validate a YAML-formated workflow definition.
+    """Validate a YAML-formatted workflow definition.
 
     Parameters
     ----------
     wf_def : str
-        YAML-formated workflow definition.
+        YAML-formatted workflow definition.
 
     Raises
     ------

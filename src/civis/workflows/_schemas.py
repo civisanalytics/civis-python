@@ -1,7 +1,11 @@
-# Mistral Workflow Language v2:
-#   https://docs.openstack.org/mistral/latest/user/wf_lang_v2.html#workflows
-# Civis Platform workflows:
-#   https://support.civisanalytics.com/hc/en-us/articles/115004172983-Workflows-Basics
+"""Schemas for Civis Platform workflow definitions.
+
+Civis Platform workflows:
+https://support.civisanalytics.com/hc/en-us/articles/115004172983-Workflows-Basics
+
+Mistral Workflow Language v2:
+https://docs.openstack.org/mistral/latest/user/wf_lang_v2.html#workflows
+"""
 
 from __future__ import annotations
 
@@ -41,11 +45,13 @@ def _if_then_create_script(action: str) -> dict:
             "properties": {
                 "input": {
                     "type": "object",
+                    # Although we have type annotations for each key name,
+                    # leave the value unspecified as {} to allow YAQL expressions.
                     "properties": {name: {} for name in required + optional},
                     "required": required,
                     "additionalProperties": False,
-                }
-            }
+                },
+            },
         },
     }
 
@@ -62,6 +68,8 @@ def _if_then_import() -> dict:
         **{name: {} for name in required_post + optional_post},
         "syncs": {
             "type": "object",
+            # Although we have type annotations for each key name,
+            # leave the value unspecified as {} to allow YAQL expressions.
             "properties": {
                 name: {} for name in required_post_syncs + optional_post_syncs
             },
@@ -78,8 +86,8 @@ def _if_then_import() -> dict:
                     "properties": properties,
                     "required": required_post,
                     "additionalProperties": False,
-                }
-            }
+                },
+            },
         },
     }
 
@@ -91,11 +99,13 @@ def _if_then_execute(action: str, id_name: str) -> dict:
             "properties": {
                 "input": {
                     "type": "object",
+                    # Although the ID should be an integer,
+                    # leave it unspecified as {} to allow YAQL expressions.
                     "properties": {id_name: {}},
                     "required": [id_name],
                     "additionalProperties": False,
-                }
-            }
+                },
+            },
         },
     }
 
@@ -104,7 +114,11 @@ TASK_SCHEMA = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {
-        "name": {"type": "string", "maxLength": 255},
+        "name": {
+            "type": "string",
+            "maxLength": 255,
+            "not": {"enum": ["noop", "fail", "succeed", "pause"]},
+        },
         "description": {"type": "string"},
         "action": {
             "type": "string",
@@ -143,14 +157,14 @@ TASK_SCHEMA = {
             "oneOf": [
                 {"type": "string"},
                 {"type": "array", "items": {"type": "string"}},
-            ]
+            ],
         },
         "keep-result": {"type": "boolean"},
         "target": {"type": "string"},
         "pause-before": {"type": "boolean"},
         "wait-before": {"type": "number", "minimum": 0},
         "wait-after": {"type": "number", "minimum": 0},
-        "fail-on": {},
+        "fail-on": {"type": "string"},
         "timeout": {"type": "number", "minimum": 0},
         "retry": {
             "oneOf": [
@@ -164,7 +178,7 @@ TASK_SCHEMA = {
                         "continue-on": {"type": "string"},
                     },
                 },
-            ]
+            ],
         },
         "concurrency": {"type": "number", "minimum": 1},
         "safe-rerun": {"type": "boolean"},
@@ -213,12 +227,14 @@ WORKFLOW_SCHEMA = {
                 "tasks": {
                     "type": "object",
                     "patternProperties": {"^.*$": TASK_SCHEMA},
+                    "minProperties": 1,
                 },
             },
             "required": ["tasks"],
             "additionalProperties": True,  # Allow anchor definitions.
         },
     },
+    "required": ["version"],
     "minProperties": 2,
     "maxProperties": 2,
 }
