@@ -43,4 +43,5 @@ __all__ = [
     "parallel",
     "ServiceClient",
     "utils",
+    "workflows",
 ]

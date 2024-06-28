@@ -21,10 +21,10 @@ def validate_workflow_yaml(wf_def: str, /) -> None:
     WorkflowValidationError
         If the workflow definition is invalid.
     """
-    _validate(yaml.safe_load(wf_def))
+    _validate_workflow(yaml.safe_load(wf_def))
 
 
-def _validate(wf: dict) -> None:
+def _validate_workflow(wf: dict) -> None:
     try:
         jsonschema.validate(wf, WORKFLOW_SCHEMA)
     except jsonschema.ValidationError as e:
