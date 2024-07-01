@@ -1,6 +1,12 @@
 API Client
 ==========
 
+.. toctree::
+   :maxdepth: 1
+
+   responses
+   api_resources
+
 :class:`~civis.APIClient` is a class for handling requests to the Civis API.
 An instantiated :class:`~civis.APIClient` contains a set of resources
 (listed below) where each resource is an object with methods. By convention,
@@ -105,17 +111,9 @@ method, then the API client will retry the request several times, with an expone
 to see if it will succeed. If the request is of type ``post*`` it will retry with the same parameters
 for error codes [429, 503].
 
-
-Responses
----------
-
-Please see :ref:`responses`.
-
-
-API Resources
--------------
-
-Please see :ref:`api_resources`.
+While the conditions under which retries are attempted are set as described above,
+the behavior of the retries is customizable by passing in a :class:`tenacity.Retrying` instance
+to the ``retries`` kwarg of :class:`civis.APIClient`.
 
 
 Object Reference
@@ -125,9 +123,3 @@ Object Reference
 
 .. autoclass:: civis.APIClient
    :members:
-
-.. toctree::
-   :hidden:
-
-   responses
-   api_resources
