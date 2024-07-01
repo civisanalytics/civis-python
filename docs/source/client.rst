@@ -1,15 +1,9 @@
 API Client
 ==========
 
-.. toctree::
-   :maxdepth: 1
-
-   responses
-   api_resources
-
 :class:`~civis.APIClient` is a class for handling requests to the Civis API.
 An instantiated :class:`~civis.APIClient` contains a set of resources
-(listed below) where each resource is an object with methods. By convention,
+(listed in :ref:`api_resources`) where each resource is an object with methods. By convention,
 an instantiated :class:`~civis.APIClient` object is named ``client`` and API
 requests are made with the following syntax:
 
@@ -17,6 +11,14 @@ requests are made with the following syntax:
 
    client = civis.APIClient()
    response = client.resource.method(params)
+
+
+.. toctree::
+   :maxdepth: 1
+
+   api_resources
+   responses
+
 
 Dynamically Created Resources and Methods
 -----------------------------------------
