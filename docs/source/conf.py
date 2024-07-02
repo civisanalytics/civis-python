@@ -43,6 +43,7 @@ intersphinx_mapping = {
     "requests": ("https://docs.python-requests.org/en/latest/", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
+    "tenacity": ("https://tenacity.readthedocs.io/en/latest/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -361,12 +362,14 @@ def _write_resources_rst(class_names, filename, civis_module):
             "API Resources\n"
             "=============\n\n"
             ".. note::\n\n"
-            "   As the Civis API is updated from time to time, "
-            "   the API resources available on a :class:`civis.APIClient` "
-            "   instance may differ from what's documented below. "
-            "   While we strive to keep this documentation up-to-date, the Civis API "
-            "   is officially documented at https://api.civisanalytics.com "
-            "   (Civis Platform login required).\n\n"
+            "   The API resources listed in this documentation are those for "
+            "   a standard Civis Platform user. "
+            "   Particular users may have access to resources and/or "
+            "   methods that are featured-flagged or still under development and "
+            "   therefore do not appear in this documentation. "
+            "   For the exact API resources and methods available to a given "
+            "   Civis Platform user, log on as that user and go to "
+            "   https://api.civisanalytics.com.\n\n"
             ".. toctree::\n"
             "   :titlesonly:\n\n"
         )

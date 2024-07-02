@@ -14,7 +14,7 @@ from requests import Request
 
 from civis.base import Endpoint, get_base_url, open_session
 from civis._camel_to_snake import camel_to_snake
-from civis._utils import get_api_key, retry_request, MAX_RETRIES
+from civis._utils import get_api_key, retry_request
 
 
 API_VERSIONS = frozenset({"1.0"})
@@ -560,7 +560,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         with open_session(api_key, user_agent=user_agent) as sess:
             request = Request("GET", "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
-            response = retry_request("get", pre_request, sess, MAX_RETRIES)
+            response = retry_request("get", pre_request, sess)
     else:
         msg = "API specification for api version {} cannot be found"
         raise ValueError(msg.format(api_version))

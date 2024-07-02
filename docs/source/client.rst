@@ -3,7 +3,7 @@ API Client
 
 :class:`~civis.APIClient` is a class for handling requests to the Civis API.
 An instantiated :class:`~civis.APIClient` contains a set of resources
-(listed below) where each resource is an object with methods. By convention,
+(listed in :ref:`api_resources`) where each resource is an object with methods. By convention,
 an instantiated :class:`~civis.APIClient` object is named ``client`` and API
 requests are made with the following syntax:
 
@@ -11,6 +11,17 @@ requests are made with the following syntax:
 
    client = civis.APIClient()
    response = client.resource.method(params)
+
+
+.. toctree::
+   :maxdepth: 1
+
+   api_resources
+   responses
+
+
+Dynamically Created Resources and Methods
+-----------------------------------------
 
 The methods on :class:`~civis.APIClient` are created dynamically at runtime
 by parsing an :class:`python:collections.OrderedDict` representation of the
@@ -84,13 +95,33 @@ specification has been saved.
        json.dump(spec, f)
    client = civis.APIClient(local_api_spec='local_api_spec.json')
 
+
+.. _retries:
+
+Retries
+-------
+
+The API client will automatically retry for certain API error responses.
+
+If the error is one of [413, 429, 503] and the API client is told how long it needs
+to wait before it's safe to retry (this is always the case with 429s, which are
+rate limit errors), then the client will wait the specified amount of time
+before retrying the request.
+
+If the error is one of [429, 502, 503, 504] and the request is not a ``patch*`` or ``post*``
+method, then the API client will retry the request several times, with an exponential delay,
+to see if it will succeed. If the request is of type ``post*`` it will retry with the same parameters
+for error codes [429, 503].
+
+While the conditions under which retries are attempted are set as described above,
+the behavior of the retries is customizable by passing in a :class:`tenacity.Retrying` instance
+to the ``retries`` kwarg of :class:`civis.APIClient`.
+
+
+Object Reference
+----------------
+
 .. currentmodule:: civis
 
 .. autoclass:: civis.APIClient
    :members:
-
-.. toctree::
-   :maxdepth: 1
-
-   responses
-   api_resources

@@ -63,9 +63,9 @@ jobs:
           shell: bash.exe
           command: |
             python --version && \
-            pip install --upgrade pip setuptools wheel && \
-            pip install ".[dev-core,dev-civisml]" && \
-            pip list && \
+            python.exe -m pip install --upgrade pip setuptools wheel && \
+            python.exe -m pip install ".[dev-core,dev-civisml]" && \
+            python.exe -m pip list && \
             CIVIS_API_KEY=foobar pytest
 
 workflows:

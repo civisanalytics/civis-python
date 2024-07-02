@@ -1,32 +1,34 @@
 import logging
 import os
-import time
-import uuid
-from random import random
 
-from tenacity import (
-    Retrying,
-    retry_if_result,
-    stop_after_attempt,
-    stop_after_delay,
-    wait_random_exponential,
-)
+import tenacity
 from tenacity.wait import wait_base
 
 
 log = logging.getLogger(__name__)
-
-MAX_RETRIES = 10
 
 _RETRY_CODES = [429, 502, 503, 504]
 _RETRY_VERBS = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE"]
 _POST_RETRY_CODES = [429, 503]
 
 
-def maybe_get_random_name(name):
-    if not name:
-        name = uuid.uuid4().hex
-    return name
+# Defining the default tenacity.Retrying as a user-friendly code string
+# so that it can be shown in civis.APIClient's docstring.
+DEFAULT_RETRYING_STR = """
+tenacity.Retrying(
+    wait=tenacity.wait_random_exponential(multiplier=2, max=60),
+    stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(10)),
+    retry_error_callback=lambda retry_state: retry_state.outcome.result(),
+)
+"""
+
+# Explicitly set the available globals and locals
+# to mitigate risk of unwanted code execution
+DEFAULT_RETRYING = eval(  # nosec
+    DEFAULT_RETRYING_STR,
+    {"tenacity": tenacity, "__builtins__": {}},  # globals
+    {},  # locals
+)
 
 
 def get_api_key(api_key):
@@ -44,110 +46,32 @@ def get_api_key(api_key):
     return api_key
 
 
-def retry_request(method, prepared_req, session, max_retries=10):
+def retry_request(method, prepared_req, session, retrying=None):
     retry_conditions = None
+    retrying = retrying if retrying else DEFAULT_RETRYING
 
     def _make_request(req, sess):
         """send the prepared session request"""
         response = sess.send(req)
         return response
 
-    def _return_last_value(retry_state):
-        """return the result of the last call attempt
-        and let code pick up the error"""
-        return retry_state.outcome.result()
-
     if method.upper() == "POST":
-        retry_conditions = retry_if_result(
+        retry_conditions = tenacity.retry_if_result(
             lambda res: res.status_code in _POST_RETRY_CODES
         )
     elif method.upper() in _RETRY_VERBS:
-        retry_conditions = retry_if_result(lambda res: res.status_code in _RETRY_CODES)
+        retry_conditions = tenacity.retry_if_result(
+            lambda res: res.status_code in _RETRY_CODES
+        )
 
     if retry_conditions:
-        retry_config = Retrying(
-            retry=retry_conditions,
-            wait=wait_for_retry_after_header(
-                fallback=wait_random_exponential(multiplier=2, max=60)
-            ),
-            stop=(stop_after_delay(600) | stop_after_attempt(max_retries)),
-            retry_error_callback=_return_last_value,
-        )
-        response = retry_config(_make_request, prepared_req, session)
+        retrying.retry = retry_conditions
+        retrying.wait = wait_for_retry_after_header(fallback=retrying.wait)
+        response = retrying(_make_request, prepared_req, session)
         return response
 
     response = _make_request(prepared_req, session)
     return response
-
-
-def retry(exceptions, retries=5, delay=0.5, backoff=2):
-    """
-    Retry decorator
-
-    Parameters
-    ----------
-    exceptions: Exception
-        exceptions to trigger retry
-    retries: int, optional
-        number of retries to perform
-    delay: float, optional
-        delay before next retry
-    backoff: int, optional
-        factor used to calculate the exponential increase
-        delay after each retry
-
-    Returns
-    -------
-    retry decorator
-
-    Raises
-    ------
-    exception raised by decorator function
-    """
-
-    def deco_retry(f):
-        def f_retry(*args, **kwargs):
-            n_failed = 0
-            new_delay = delay
-            while True:
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as exc:
-                    if n_failed < retries:
-                        n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
-                        log.debug(msg)
-                        time.sleep(new_delay)
-                        new_delay = min(
-                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
-                            50 + 10 * random(),  # nosec
-                        )
-                    else:
-                        raise exc
-
-        return f_retry
-
-    return deco_retry
-
-
-class BufferedPartialReader(object):
-    def __init__(self, buf, max_bytes):
-        self.buf = buf
-        self.max_bytes = max_bytes
-        self.bytes_read = 0
-        self.len = max_bytes
-
-    def read(self, size=-1):
-        if self.bytes_read >= self.max_bytes:
-            return b""
-        bytes_left = self.max_bytes - self.bytes_read
-        if size < 0:
-            bytes_to_read = bytes_left
-        else:
-            bytes_to_read = min(size, bytes_left)
-        data = self.buf.read(bytes_to_read)
-        self.bytes_read += len(data)
-        return data
 
 
 class wait_for_retry_after_header(wait_base):

@@ -17,7 +17,7 @@ import gzip
 import zipfile
 
 from civis import APIClient
-from civis._utils import maybe_get_random_name
+from civis.io._utils import maybe_get_random_name
 from civis.base import EmptyResultError, CivisImportError, CivisAPIError
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis
