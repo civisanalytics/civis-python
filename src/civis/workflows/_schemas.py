@@ -39,6 +39,7 @@ def _if_then_create_script(action: str) -> dict:
     if "name" in required:
         # Civis Platform allows the workflow task name to be the script name.
         required.remove("name")
+        optional.append("name")
     return {
         "if": {"properties": {"action": {"const": action}}},
         "then": {
@@ -64,17 +65,24 @@ def _if_then_import() -> dict:
     if "name" in required_post:
         # Civis Platform allows the workflow task name to be the script name.
         required_post.remove("name")
+        optional_post.append("name")
+    if "id" in required_post_syncs:
+        # The "id" will come from the job ID of the "post" call.
+        required_post_syncs.remove("id")
     properties = {
         **{name: {} for name in required_post + optional_post},
         "syncs": {
-            "type": "object",
-            # Although we have type annotations for each key name,
-            # leave the value unspecified as {} to allow YAQL expressions.
-            "properties": {
-                name: {} for name in required_post_syncs + optional_post_syncs
+            "type": "array",
+            "items": {
+                "type": "object",
+                # Although we have type annotations for each key name,
+                # leave the value unspecified as {} to allow YAQL expressions.
+                "properties": {
+                    name: {} for name in required_post_syncs + optional_post_syncs
+                },
+                "required": required_post_syncs,
+                "additionalProperties": False,
             },
-            "required": required_post_syncs,
-            "additionalProperties": False,
         },
     }
     return {
