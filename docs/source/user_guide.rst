@@ -223,6 +223,7 @@ For endpoints that support pagination when the `iterator` kwarg is specified,
 a :class:`civis.response.PaginatedResponse` object is returned.
 To facilitate working with :class:`civis.response.Response` objects,
 the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
+For more notes, see :ref:`responses`.
 
 
 Testing Your Code

@@ -45,12 +45,12 @@ dev-core = [
     "bandit",  # Install the latest version.
     "black == 24.4.2",
     "build == 1.2.1",
-    "flake8 == 7.0.0",
+    "flake8 == 7.1.0",
     "pandas == 2.2.2",
     "pip-audit",  # Install the latest version.
     "pytest == 8.2.2",
     "pytest-cov == 5.0.0",
-    "twine == 5.1.0",
+    "twine == 5.1.1",
 ]
 dev-civisml = [
     "feather-format == 0.4.1",
