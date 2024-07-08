@@ -38,6 +38,7 @@ def test_valid_workflow_yaml():
     ],
 )
 def test_invalid_workflow_yaml(replace_to_break):
+    """Break a valid workflow yaml, which should raise a WorkflowValidationError."""
     invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(*replace_to_break)
     with pytest.raises(WorkflowValidationError):
         validate_workflow_yaml(invalid_wf_yaml)
