@@ -36,9 +36,10 @@ def generate_client_pyi(client_pyi_path, api_spec_path):
 # Do not edit it by hand.
 
 from collections import OrderedDict
+from collections.abc import Iterator
 from typing import Any, List
 
-from civis.response import Response, PaginatedResponse
+from civis.response import Response
 
 """
         )
@@ -52,7 +53,7 @@ from civis.response import Response, PaginatedResponse
                     continue
                 params = inspect.signature(method).parameters
                 if "iterator" in params:
-                    return_type = "PaginatedResponse"
+                    return_type = "Iterator[Response]"
                 else:
                     return_type = "Response"
                 method_def += f"    def {method_name}(\n"
