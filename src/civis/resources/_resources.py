@@ -7,6 +7,7 @@ import sys
 import time
 import textwrap
 from inspect import Signature, Parameter
+from typing import Iterator
 
 from jsonref import JsonRef
 import requests
@@ -15,6 +16,7 @@ from requests import Request
 from civis.base import Endpoint, get_base_url, open_session
 from civis._camel_to_snake import camel_to_snake
 from civis._utils import get_api_key, retry_request
+from civis.response import Response
 
 
 API_VERSIONS = frozenset({"1.0"})
@@ -146,7 +148,34 @@ def doc_from_responses(responses, is_iterable):
     return "Returns\n-------\n" + result_doc
 
 
-def return_annotation_from_responses(responses, is_iterable): ...  # TODO
+def return_annotation_from_responses(method_name, responses, is_iterable):
+    response_object = next(iter(responses.values()))
+    schema = response_object.get("schema", {})
+    properties = get_properties(schema)
+    if properties:
+        return_annotation = return_annotation_from_properties(method_name, properties)
+        if is_iterable:
+            return Iterator[return_annotation]
+        else:
+            return return_annotation
+    else:
+        return Response
+
+
+def return_annotation_from_properties(method_name, properties):
+    klass_name = f"_Response{''.join(s.title() for s in method_name.split('_'))}"
+    klass = type(klass_name, (), {})
+    klass.__annotations__ = {}
+    for name, prop in properties:
+        name = camel_to_snake(name)
+        klass.__annotations__[name] = return_annotation_from_property(
+            method_name, prop, properties
+        )
+    return klass
+
+
+def return_annotation_from_property(method_name, prop, properties):
+    return ...  # TODO
 
 
 def join_doc_elements(*args):
@@ -498,8 +527,8 @@ def parse_method(verb, operation, path):
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
     response_doc = doc_from_responses(responses, is_iterable)
-    return_annotation = return_annotation_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
+    return_annotation = return_annotation_from_responses(name, responses, is_iterable)
 
     method = create_method(
         args,
