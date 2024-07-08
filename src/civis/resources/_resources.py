@@ -146,6 +146,9 @@ def doc_from_responses(responses, is_iterable):
     return "Returns\n-------\n" + result_doc
 
 
+def return_annotation_from_responses(responses, is_iterable): ...  # TODO
+
+
 def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
@@ -193,7 +196,9 @@ def iterable_method(method, params):
     return method.lower() == "get" and params_present
 
 
-def create_signature(args, optional_args, prepend_self=False):
+def create_signature(
+    args, optional_args, prepend_self=False, return_annotation=Signature.empty
+):
     """Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -209,6 +214,8 @@ def create_signature(args, optional_args, prepend_self=False):
         and their default values.
     prepend_self : bool, optional
         If True, add the "self" arg as the first arg for a class method.
+    return_annotation : object, optional
+        Return annotation of the function.
 
     Returns
     -------
@@ -232,7 +239,7 @@ def create_signature(args, optional_args, prepend_self=False):
         )
         for name, arg in optional_args.items()
     ]
-    return Signature(p)
+    return Signature(p, return_annotation=return_annotation)
 
 
 def split_method_params(params):
@@ -260,7 +267,14 @@ def split_method_params(params):
 
 
 def create_method(
-    params, verb, method_name, path, deprecation_warning, param_doc, response_doc
+    params,
+    verb,
+    method_name,
+    path,
+    deprecation_warning,
+    param_doc,
+    response_doc,
+    return_annotation,
 ):
     """Dynamically create a function to make an API call.
 
@@ -287,6 +301,8 @@ def create_method(
         Documentation string for the returned function f's parameters
     response_doc : str
         Documentation string for the returned function f's response
+    return_annotation : object
+        Return annotation of the returned function.
 
     Returns
     ------
@@ -319,7 +335,9 @@ def create_method(
         )
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(sig_args, sig_opt_args, prepend_self=True)
+    sig_self = create_signature(
+        sig_args, sig_opt_args, prepend_self=True, return_annotation=return_annotation
+    )
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
@@ -480,10 +498,18 @@ def parse_method(verb, operation, path):
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
     response_doc = doc_from_responses(responses, is_iterable)
+    return_annotation = return_annotation_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
 
     method = create_method(
-        args, verb, name, path, deprecation_warning, param_doc, response_doc
+        args,
+        verb,
+        name,
+        path,
+        deprecation_warning,
+        param_doc,
+        response_doc,
+        return_annotation,
     )
     return name, method
 
