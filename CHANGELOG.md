@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - The new kwarg `retries` has been added to `civis.APIClient` so that
   a `tenacity.Retrying` instance can be provided to customize retries. (#495)
+- Added `civis.workflows.validate_workflow_yaml`
+  to validate a Civis Platform workflow YAML definition. (#497)
 
 ### Changed
 ### Deprecated

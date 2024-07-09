@@ -226,6 +226,43 @@ the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
 For more notes, see :ref:`responses`.
 
 
+Workflows
+=========
+
+Civis Platform `workflows <https://support.civisanalytics.com/hc/en-us/articles/115004172983-Workflows-Basics>`_
+are a powerful feature to build and manage data pipelines
+that consist of multiple Civis Platform scripts of different job types.
+
+A workflow is defined by the YAML-based Mistral workflow language.
+To validate your workflow definition (e.g., in your project's test suite run on
+continuous integration), use :func:`civis.workflows.validate_workflow_yaml`:
+
+.. code-block:: python
+
+    from civis.workflows import validate_workflow_yaml, WorkflowValidationError
+
+    # If your workflow definition is valid, nothing happens.
+    with open("path/to/your/workflow.yaml") as f:
+        validate_workflow_yaml(f.read())
+
+    # If your workflow definition is invalid, a WorkflowValidationError is raised.
+    try:
+        with open("path/to/your/workflow.yaml") as f:
+            validate_workflow_yaml(f.read())
+    except WorkflowValidationError:
+        print("workflow yaml isn't formatted correctly -- fix it!")
+
+For examples of Civis Platform workflow YAML definitions, please check out the
+`workflows-public <https://github.com/civisanalytics/workflows-public>`_ repository.
+
+.. currentmodule:: civis.workflows
+
+.. autosummary::
+   :toctree: generated
+
+   validate_workflow_yaml
+
+
 Testing Your Code
 =================
 

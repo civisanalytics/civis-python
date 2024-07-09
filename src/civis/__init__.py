@@ -21,13 +21,14 @@ def _lazy_import(name):
 
 
 if TYPE_CHECKING:
-    from civis import futures, io, ml, parallel, utils
+    from civis import futures, io, ml, parallel, utils, workflows
 else:
     futures = _lazy_import("civis.futures")
     io = _lazy_import("civis.io")
     ml = _lazy_import("civis.ml")
     parallel = _lazy_import("civis.parallel")
     utils = _lazy_import("civis.utils")
+    workflows = _lazy_import("civis.workflows")
 
 __version__ = version("civis")
 __all__ = [
@@ -42,4 +43,5 @@ __all__ = [
     "parallel",
     "ServiceClient",
     "utils",
+    "workflows",
 ]
