@@ -1,8 +1,10 @@
 import inspect
 import os
 import textwrap
+import typing
 
 from civis.resources import generate_classes_maybe_cached
+from civis.response import Response
 
 
 CLIENT_PYI_PATH = os.path.join(
@@ -44,6 +46,8 @@ from civis.response import Response
 """
         )
 
+        response_classes = []
+
         for endpoint_name, endpoint_class in classes.items():
             f.write(f"class {_get_endpoint_class_name(endpoint_name)}:\n")
             method_defs = []
@@ -51,11 +55,21 @@ from civis.response import Response
                 method_def = ""
                 if method_name.startswith("_"):
                     continue
+                signature = inspect.signature(method)
+                return_type = signature.return_annotation
+                if return_type is not Response and not isinstance(
+                    return_type,
+                    (str, typing._SpecialGenericAlias, typing._GenericAlias),
+                ):
+                    response_classes.append(return_type)
+                    for typ in return_type.__annotations__.values():
+                        if isinstance(typ, str):
+                            continue
+                        if isinstance(typ, typing._GenericAlias):
+                            response_classes.append(typing.get_args(typ)[0])
+                        else:
+                            response_classes.append(typ)
                 params = inspect.signature(method).parameters
-                if "iterator" in params:
-                    return_type = "Iterator[Response]"
-                else:
-                    return_type = "Response"
                 method_def += f"    def {method_name}(\n"
                 for param_name, param in params.items():
                     annotation = _get_annotation(param)
@@ -65,11 +79,20 @@ from civis.response import Response
                         method_def += f"        {param_name}: {annotation},\n"
                     else:
                         method_def += f"        {param_name}: {annotation} = ...,\n"
-                method_def += f"    ) -> {return_type}:\n"
+                # TODO: when return_str is 'Iterator', add the subscript response class.
+                return_str = rt if isinstance(rt := return_type, str) else rt.__name__
+                method_def += f"    ) -> {return_str}:\n"
                 method_doc = textwrap.indent(method.__doc__, " " * 8).lstrip()
                 method_def += f'        """{method_doc}\n        """\n        ...\n'
                 method_defs.append(method_def)
             f.write("\n".join(method_defs))
+            f.write("\n")
+
+        for response_class in response_classes:
+            f.write(f"\nclass {response_class.__name__}(Response):\n")
+            for name, anno in response_class.__annotations__.items():
+                anno_str = anno if isinstance(anno, str) else anno.__name__
+                f.write(f"    {name}: {anno_str}\n")
             f.write("\n")
 
         f.write(

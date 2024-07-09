@@ -152,13 +152,15 @@ def doc_from_responses(responses, is_iterable):
     return "Returns\n-------\n" + result_doc
 
 
-def return_annotation_from_responses(method_name, responses, is_iterable):
+def return_annotation_from_responses(
+    endpoint_name, method_name, responses, is_iterable
+):
     response_object = next(iter(responses.values()))
     schema = response_object.get("schema", {})
     properties = get_properties(schema)
     if properties:
         return_annotation = return_annotation_from_properties(
-            method_name, "", properties
+            endpoint_name, method_name, "", properties
         )
         if is_iterable:
             return Iterator[return_annotation]
@@ -168,26 +170,37 @@ def return_annotation_from_responses(method_name, responses, is_iterable):
         return Response
 
 
-def return_annotation_from_properties(method_name, param_name, properties):
-    klass_name = f"_Response{_snake_to_camel(method_name)}{_snake_to_camel(param_name)}"
+def return_annotation_from_properties(
+    endpoint_name, method_name, param_name, properties
+):
+    klass_name = (
+        "_Response"
+        + _snake_to_camel(endpoint_name)
+        + _snake_to_camel(method_name)
+        + _snake_to_camel(param_name)
+    )
     klass = type(klass_name, (), {})
     klass.__annotations__ = {}
     for name, prop in properties.items():
         name = camel_to_snake(name)
         klass.__annotations__[name] = return_annotation_from_property(
-            method_name, name, prop, properties
+            endpoint_name, method_name, name, prop, properties
         )
     return klass
 
 
-def return_annotation_from_property(method_name, name, prop, properties):
+def return_annotation_from_property(endpoint_name, method_name, name, prop, properties):
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
     prop_type = property_type(prop, get_format=False, get_item_type=False)
     if child and prop_type == "List":
-        return List[return_annotation_from_properties(method_name, name, child)]
+        return List[
+            return_annotation_from_properties(endpoint_name, method_name, name, child)
+        ]
     elif child:
-        return return_annotation_from_properties(method_name, name, child)
+        return return_annotation_from_properties(
+            endpoint_name, method_name, name, child
+        )
     else:
         return prop_type
 
@@ -542,7 +555,9 @@ def parse_method(verb, operation, path):
     is_iterable = iterable_method(verb, query_params)
     response_doc = doc_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
-    return_annotation = return_annotation_from_responses(name, responses, is_iterable)
+    return_annotation = return_annotation_from_responses(
+        path.split("/")[0], name, responses, is_iterable
+    )
 
     method = create_method(
         args,

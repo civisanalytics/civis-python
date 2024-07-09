@@ -2,16 +2,17 @@
 # Do not edit it by hand.
 
 from collections import OrderedDict
+from collections.abc import Iterator
 from typing import Any, List
 
-from civis.response import Response, PaginatedResponse
+from civis.response import Response
 
 class _Admin:
     def list_organizations(
         self,
         status: List[str] | None = ...,
         org_type: List[str] | None = ...,
-    ) -> Response:
+    ) -> _ResponseAdminListOrganizations:
         """List organizations
 
         Parameters
@@ -75,7 +76,7 @@ class _Aliases:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseAliasesListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -123,7 +124,7 @@ class _Aliases:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -200,7 +201,7 @@ class _Aliases:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -274,7 +275,7 @@ class _Aliases:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -314,7 +315,7 @@ class _Aliases:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -364,7 +365,7 @@ class _Aliases:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Aliases
 
         Parameters
@@ -420,7 +421,7 @@ class _Aliases:
         object_type: str,
         alias: str,
         display_name: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPost:
         """Create an Alias
 
         Parameters
@@ -465,7 +466,7 @@ class _Aliases:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseAliasesGet:
         """Get an Alias
 
         Parameters
@@ -502,7 +503,7 @@ class _Aliases:
         object_type: str,
         alias: str,
         display_name: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPut:
         """Replace all attributes of this Alias
 
         Parameters
@@ -553,7 +554,7 @@ class _Aliases:
         object_type: str | None = ...,
         alias: str | None = ...,
         display_name: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseAliasesPatch:
         """Update some attributes of this Alias
 
         Parameters
@@ -619,7 +620,7 @@ class _Aliases:
         self,
         object_type: str,
         alias: str,
-    ) -> Response:
+    ) -> _ResponseAliasesGetObjectType:
         """Get details about an alias within an FCO type
 
         Parameters
@@ -664,7 +665,7 @@ class _Announcements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List announcements
 
         Parameters
@@ -712,7 +713,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Kubernetes Clusters
 
         Parameters
@@ -818,7 +819,7 @@ class _Clusters:
         self,
         id: int,
         include_usage_stats: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersGetKubernetes:
         """Describe a Kubernetes Cluster
 
         Parameters
@@ -905,7 +906,7 @@ class _Clusters:
         self,
         id: int,
         include_usage_stats: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesComputeHours:
         """List compute hours for a Kubernetes Cluster
 
         Parameters
@@ -938,7 +939,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the deployments associated with a Kubernetes Cluster
 
         Parameters
@@ -1012,7 +1013,7 @@ class _Clusters:
     def list_kubernetes_deployment_stats(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesDeploymentStats:
         """Get stats about deployments associated with a Kubernetes Cluster
 
         Parameters
@@ -1042,7 +1043,7 @@ class _Clusters:
         self,
         id: int,
         include_usage_stats: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesPartitions:
         """List Cluster Partitions for given cluster
 
         Parameters
@@ -1110,7 +1111,7 @@ class _Clusters:
         instance_configs: List[dict],
         name: str,
         labels: List[str],
-    ) -> Response:
+    ) -> _ResponseClustersPostKubernetesPartitions:
         """Create a Cluster Partition for given cluster
 
         Parameters
@@ -1191,7 +1192,7 @@ class _Clusters:
         instance_configs: List[dict] | None = ...,
         name: str | None = ...,
         labels: List[str] | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersPatchKubernetesPartitions:
         """Update a Cluster Partition
 
         Parameters
@@ -1293,7 +1294,7 @@ class _Clusters:
         id: int,
         cluster_partition_id: int,
         include_usage_stats: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersGetKubernetesPartitions:
         """Describe a Cluster Partition
 
         Parameters
@@ -1362,7 +1363,7 @@ class _Clusters:
         self,
         instance_config_id: int,
         include_usage_stats: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersGetKubernetesInstanceConfigs:
         """Describe an Instance Config
 
         Parameters
@@ -1422,7 +1423,7 @@ class _Clusters:
         self,
         id: int,
         state: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesInstanceConfigsActiveWorkloads:
         """List active workloads in an Instance Config
 
         Parameters
@@ -1486,7 +1487,7 @@ class _Clusters:
         instance_config_id: int,
         order: str | None = ...,
         order_dir: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesInstanceConfigsUserStatistics:
         """Get statistics about the current users of an Instance Config
 
         Parameters
@@ -1534,7 +1535,7 @@ class _Clusters:
         self,
         instance_config_id: int,
         timeframe: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs:
         """Get graphs of historical resource usage in an Instance Config
 
         Parameters
@@ -1557,7 +1558,7 @@ class _Clusters:
 class _Credentials:
     def list_types(
         self,
-    ) -> Response:
+    ) -> _ResponseCredentialsListTypes:
         """Get list of Credential Types
 
         Returns
@@ -1581,7 +1582,7 @@ class _Credentials:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List credentials
 
         Parameters
@@ -1680,7 +1681,7 @@ class _Credentials:
         system_credential: bool | None = ...,
         default: bool | None = ...,
         oauth: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPost:
         """Create a credential
 
         Parameters
@@ -1773,7 +1774,7 @@ class _Credentials:
         system_credential: bool | None = ...,
         default: bool | None = ...,
         oauth: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPut:
         """Update an existing credential
 
         Parameters
@@ -1868,7 +1869,7 @@ class _Credentials:
         system_credential: bool | None = ...,
         default: bool | None = ...,
         oauth: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPatch:
         """Update some attributes of a credential
 
         Parameters
@@ -1952,7 +1953,7 @@ class _Credentials:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseCredentialsGet:
         """Get a credential
 
         Parameters
@@ -2029,7 +2030,7 @@ class _Credentials:
         remote_host_type: str,
         username: str,
         password: str,
-    ) -> Response:
+    ) -> _ResponseCredentialsPostAuthenticate:
         """Authenticate against a remote host
 
         Parameters
@@ -2096,7 +2097,7 @@ class _Credentials:
         self,
         id: int,
         duration: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPostTemporary:
         """Generate a temporary credential for accessing S3
 
         Parameters
@@ -2122,7 +2123,7 @@ class _Credentials:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseCredentialsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -2170,7 +2171,7 @@ class _Credentials:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -2247,7 +2248,7 @@ class _Credentials:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -2321,7 +2322,7 @@ class _Credentials:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -2361,7 +2362,7 @@ class _Credentials:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseCredentialsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -2406,7 +2407,7 @@ class _Credentials:
 class _Databases:
     def list(
         self,
-    ) -> Response:
+    ) -> _ResponseDatabasesList:
         """List databases
 
         Returns
@@ -2428,7 +2429,7 @@ class _Databases:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseDatabasesGet:
         """Show database information
 
         Parameters
@@ -2457,7 +2458,7 @@ class _Databases:
         id: int,
         name: str | None = ...,
         credential_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesListSchemas:
         """List schemas in this database
 
         Parameters
@@ -2484,7 +2485,7 @@ class _Databases:
         id: int,
         schema_name: str,
         credential_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesListSchemasTables:
         """List tables in this schema
 
         Parameters
@@ -2517,7 +2518,7 @@ class _Databases:
         schema_name: str,
         table_name: str,
         credential_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesGetSchemasTables:
         """Show basic table info
 
         Parameters
@@ -2724,7 +2725,7 @@ class _Databases:
         table_name: str,
         credential_id: int | None = ...,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesPatchSchemasTables:
         """Update a table
 
         Parameters
@@ -2931,7 +2932,7 @@ class _Databases:
         id: int,
         schema: str,
         stats_priority: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesPostSchemasScan:
         """Creates and enqueues a schema scanner job
 
         Parameters
@@ -2964,7 +2965,7 @@ class _Databases:
         schema_name: str,
         table_name: str,
         credential_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesGetTablePrivilegesSchemaName:
         """Show table privileges
 
         Parameters
@@ -2997,7 +2998,7 @@ class _Databases:
         id: int,
         schema_name: str,
         credential_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesGetSchemaPrivileges:
         """Show schema privileges
 
         Parameters
@@ -3027,7 +3028,7 @@ class _Databases:
         self,
         id: int,
         active: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesListUsers:
         """Show list of database users
 
         Parameters
@@ -3035,8 +3036,8 @@ class _Databases:
         id : int
             The ID of the database.
         active : bool, optional
-            If true returns active users. If false returns deactivated users. If
-            omitted returns all users.
+            If true returns active users. If false returns deactivated users. Defaults
+            to true.
 
         Returns
         -------
@@ -3051,7 +3052,7 @@ class _Databases:
     def list_groups(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseDatabasesListGroups:
         """List groups in the specified database
 
         Parameters
@@ -3072,7 +3073,7 @@ class _Databases:
     def list_whitelist_ips(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseDatabasesListWhitelistIps:
         """List whitelisted IPs for the specified database
 
         Parameters
@@ -3102,7 +3103,7 @@ class _Databases:
         self,
         id: int,
         whitelisted_ip_id: int,
-    ) -> Response:
+    ) -> _ResponseDatabasesGetWhitelistIps:
         """View details about a whitelisted IP
 
         Parameters
@@ -3137,7 +3138,7 @@ class _Databases:
     def list_advanced_settings(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseDatabasesListAdvancedSettings:
         """Get the advanced settings for this database
 
         Parameters
@@ -3158,7 +3159,7 @@ class _Databases:
         self,
         id: int,
         export_caching_enabled: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseDatabasesPatchAdvancedSettings:
         """Update the advanced settings for this database
 
         Parameters
@@ -3182,7 +3183,7 @@ class _Databases:
         self,
         id: int,
         export_caching_enabled: bool,
-    ) -> Response:
+    ) -> _ResponseDatabasesPutAdvancedSettings:
         """Edit the advanced settings for this database
 
         Parameters
@@ -3206,7 +3207,7 @@ class _Databases:
         self,
         id: int,
         timeframe: str,
-    ) -> Response:
+    ) -> _ResponseDatabasesGetStatusGraphsTimeframe:
         """Get the status graphs for this database
 
         Parameters
@@ -3262,7 +3263,7 @@ class _Enhancements:
         threshold: float | None = ...,
         archived: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCivisDataMatch:
         """Create a Civis Data Match Enhancement
 
         Parameters
@@ -3470,7 +3471,7 @@ class _Enhancements:
     def get_civis_data_match(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetCivisDataMatch:
         """Get a Civis Data Match Enhancement
 
         Parameters
@@ -3618,7 +3619,7 @@ class _Enhancements:
         threshold: float | None = ...,
         archived: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCivisDataMatch:
         """Replace all attributes of this Civis Data Match Enhancement
 
         Parameters
@@ -3839,7 +3840,7 @@ class _Enhancements:
         threshold: float | None = ...,
         archived: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPatchCivisDataMatch:
         """Update some attributes of this Civis Data Match Enhancement
 
         Parameters
@@ -4052,7 +4053,7 @@ class _Enhancements:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCivisDataMatchClone:
         """Clone this Civis Data Match Enhancement
 
         Parameters
@@ -4196,7 +4197,7 @@ class _Enhancements:
     def post_civis_data_match_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCivisDataMatchRuns:
         """Start a run
 
         Parameters
@@ -4235,7 +4236,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Civis Data Match job
 
         Parameters
@@ -4284,7 +4285,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetCivisDataMatchRuns:
         """Check status of a run
 
         Parameters
@@ -4344,7 +4345,7 @@ class _Enhancements:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCivisDataMatchRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -4377,7 +4378,7 @@ class _Enhancements:
     def post_civis_data_match_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCivisDataMatchCancel:
         """Cancel a run
 
         Parameters
@@ -4406,7 +4407,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -4449,7 +4450,7 @@ class _Enhancements:
     def list_civis_data_match_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCivisDataMatchShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -4497,7 +4498,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCivisDataMatchSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -4574,7 +4575,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCivisDataMatchSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -4648,7 +4649,7 @@ class _Enhancements:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCivisDataMatchDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -4688,7 +4689,7 @@ class _Enhancements:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCivisDataMatchTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -4734,7 +4735,7 @@ class _Enhancements:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCivisDataMatchArchive:
         """Update the archive status of this object
 
         Parameters
@@ -4875,7 +4876,7 @@ class _Enhancements:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCivisDataMatchProjects:
         """List the projects a Civis Data Match Enhancement belongs to
 
         Parameters
@@ -4978,7 +4979,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Identity Resolution Enhancements
 
         Parameters
@@ -5086,7 +5087,7 @@ class _Enhancements:
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
         legacy_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostIdentityResolution:
         """Create an Identity Resolution Enhancement
 
         Parameters
@@ -5437,7 +5438,7 @@ class _Enhancements:
         customer_graph: dict | None = ...,
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutIdentityResolution:
         """Replace all attributes of this Identity Resolution Enhancement
 
         Parameters
@@ -5788,7 +5789,7 @@ class _Enhancements:
         customer_graph: dict | None = ...,
         golden_table: dict | None = ...,
         link_scores: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPatchIdentityResolution:
         """Update some attributes of this Identity Resolution Enhancement
 
         Parameters
@@ -6130,7 +6131,7 @@ class _Enhancements:
         self,
         id: int,
         is_legacy_id: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetIdentityResolution:
         """Get an Identity Resolution Enhancement
 
         Parameters
@@ -6356,7 +6357,7 @@ class _Enhancements:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostIdentityResolutionClone:
         """Clone this Identity Resolution Enhancement
 
         Parameters
@@ -6582,7 +6583,7 @@ class _Enhancements:
     def post_identity_resolution_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostIdentityResolutionRuns:
         """Start a run
 
         Parameters
@@ -6649,7 +6650,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Identity Resolution job
 
         Parameters
@@ -6720,7 +6721,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetIdentityResolutionRuns:
         """Check status of a run
 
         Parameters
@@ -6808,7 +6809,7 @@ class _Enhancements:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListIdentityResolutionRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -6841,7 +6842,7 @@ class _Enhancements:
     def post_identity_resolution_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostIdentityResolutionCancel:
         """Cancel a run
 
         Parameters
@@ -6863,7 +6864,7 @@ class _Enhancements:
 
     def list_types(
         self,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListTypes:
         """List available enhancement types
 
         Returns
@@ -6876,7 +6877,7 @@ class _Enhancements:
 
     def list_field_mapping(
         self,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListFieldMapping:
         """List the fields in a field mapping for Civis Data Match, Data Unification, and
         Table Deduplication jobs
 
@@ -6901,7 +6902,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Enhancements
 
         Parameters
@@ -6978,7 +6979,7 @@ class _Enhancements:
         limiting_sql: str | None = ...,
         batch_size: int | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCassNcoa:
         """Create a CASS/NCOA Enhancement
 
         Parameters
@@ -7223,7 +7224,7 @@ class _Enhancements:
     def get_cass_ncoa(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetCassNcoa:
         """Get a CASS/NCOA Enhancement
 
         Parameters
@@ -7387,7 +7388,7 @@ class _Enhancements:
         limiting_sql: str | None = ...,
         batch_size: int | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCassNcoa:
         """Replace all attributes of this CASS/NCOA Enhancement
 
         Parameters
@@ -7647,7 +7648,7 @@ class _Enhancements:
         limiting_sql: str | None = ...,
         batch_size: int | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPatchCassNcoa:
         """Update some attributes of this CASS/NCOA Enhancement
 
         Parameters
@@ -7894,7 +7895,7 @@ class _Enhancements:
     def post_cass_ncoa_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCassNcoaRuns:
         """Start a run
 
         Parameters
@@ -7933,7 +7934,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given CASS NCOA job
 
         Parameters
@@ -7982,7 +7983,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetCassNcoaRuns:
         """Check status of a run
 
         Parameters
@@ -8042,7 +8043,7 @@ class _Enhancements:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCassNcoaRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -8075,7 +8076,7 @@ class _Enhancements:
     def post_cass_ncoa_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostCassNcoaCancel:
         """Cancel a run
 
         Parameters
@@ -8104,7 +8105,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -8160,7 +8161,7 @@ class _Enhancements:
         provider: str | None = ...,
         output_address: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostGeocode:
         """Create a Geocode Enhancement
 
         Parameters
@@ -8340,7 +8341,7 @@ class _Enhancements:
     def get_geocode(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetGeocode:
         """Get a Geocode Enhancement
 
         Parameters
@@ -8472,7 +8473,7 @@ class _Enhancements:
         provider: str | None = ...,
         output_address: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutGeocode:
         """Replace all attributes of this Geocode Enhancement
 
         Parameters
@@ -8668,7 +8669,7 @@ class _Enhancements:
         provider: str | None = ...,
         output_address: bool | None = ...,
         parent_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPatchGeocode:
         """Update some attributes of this Geocode Enhancement
 
         Parameters
@@ -8850,7 +8851,7 @@ class _Enhancements:
     def post_geocode_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostGeocodeRuns:
         """Start a run
 
         Parameters
@@ -8889,7 +8890,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Geocode job
 
         Parameters
@@ -8938,7 +8939,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsGetGeocodeRuns:
         """Check status of a run
 
         Parameters
@@ -8998,7 +8999,7 @@ class _Enhancements:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListGeocodeRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -9031,7 +9032,7 @@ class _Enhancements:
     def post_geocode_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPostGeocodeCancel:
         """Cancel a run
 
         Parameters
@@ -9060,7 +9061,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -9103,7 +9104,7 @@ class _Enhancements:
     def list_cass_ncoa_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCassNcoaShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -9151,7 +9152,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCassNcoaSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -9228,7 +9229,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCassNcoaSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -9302,7 +9303,7 @@ class _Enhancements:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCassNcoaDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -9342,7 +9343,7 @@ class _Enhancements:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCassNcoaTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -9388,7 +9389,7 @@ class _Enhancements:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListCassNcoaProjects:
         """List the projects a CASS/NCOA Enhancement belongs to
 
         Parameters
@@ -9486,7 +9487,7 @@ class _Enhancements:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutCassNcoaArchive:
         """Update the archive status of this object
 
         Parameters
@@ -9640,7 +9641,7 @@ class _Enhancements:
     def list_geocode_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListGeocodeShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -9688,7 +9689,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutGeocodeSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -9765,7 +9766,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutGeocodeSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -9839,7 +9840,7 @@ class _Enhancements:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListGeocodeDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -9879,7 +9880,7 @@ class _Enhancements:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutGeocodeTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -9925,7 +9926,7 @@ class _Enhancements:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListGeocodeProjects:
         """List the projects a Geocode Enhancement belongs to
 
         Parameters
@@ -10023,7 +10024,7 @@ class _Enhancements:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutGeocodeArchive:
         """Update the archive status of this object
 
         Parameters
@@ -10144,7 +10145,7 @@ class _Enhancements:
     def list_identity_resolution_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListIdentityResolutionShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -10192,7 +10193,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutIdentityResolutionSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -10269,7 +10270,7 @@ class _Enhancements:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutIdentityResolutionSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -10343,7 +10344,7 @@ class _Enhancements:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListIdentityResolutionDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -10383,7 +10384,7 @@ class _Enhancements:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutIdentityResolutionTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -10429,7 +10430,7 @@ class _Enhancements:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseEnhancementsListIdentityResolutionProjects:
         """List the projects an Identity Resolution Enhancement belongs to
 
         Parameters
@@ -10527,7 +10528,7 @@ class _Enhancements:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseEnhancementsPutIdentityResolutionArchive:
         """Update the archive status of this object
 
         Parameters
@@ -10759,7 +10760,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List
 
         Parameters
@@ -10836,7 +10837,7 @@ class _Exports:
     def post_files_csv_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseExportsPostFilesCsvRuns:
         """Start a run
 
         Parameters
@@ -10871,7 +10872,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given CSV Export job
 
         Parameters
@@ -10913,7 +10914,7 @@ class _Exports:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseExportsGetFilesCsvRuns:
         """Check status of a run
 
         Parameters
@@ -10969,7 +10970,7 @@ class _Exports:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseExportsListFilesCsvRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -11008,7 +11009,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -11059,7 +11060,7 @@ class _Exports:
         hidden: bool | None = ...,
         force_multifile: bool | None = ...,
         max_file_size: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseExportsPostFilesCsv:
         """Create a CSV Export
 
         Parameters
@@ -11174,7 +11175,7 @@ class _Exports:
     def get_files_csv(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseExportsGetFilesCsv:
         """Get a CSV Export
 
         Parameters
@@ -11252,7 +11253,7 @@ class _Exports:
         hidden: bool | None = ...,
         force_multifile: bool | None = ...,
         max_file_size: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseExportsPutFilesCsv:
         """Replace all attributes of this CSV Export
 
         Parameters
@@ -11378,7 +11379,7 @@ class _Exports:
         hidden: bool | None = ...,
         force_multifile: bool | None = ...,
         max_file_size: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseExportsPatchFilesCsv:
         """Update some attributes of this CSV Export
 
         Parameters
@@ -11496,7 +11497,7 @@ class _Exports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseExportsPutFilesCsvArchive:
         """Update the archive status of this object
 
         Parameters
@@ -11570,7 +11571,7 @@ class _Files:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesListProjects:
         """List the projects a File belongs to
 
         Parameters
@@ -11667,7 +11668,7 @@ class _Files:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseFilesListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -11715,7 +11716,7 @@ class _Files:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -11792,7 +11793,7 @@ class _Files:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -11866,7 +11867,7 @@ class _Files:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -11906,7 +11907,7 @@ class _Files:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -11952,7 +11953,7 @@ class _Files:
         self,
         name: str,
         expires_at: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPost:
         """Initiate an upload of a file into the platform
 
         Parameters
@@ -11994,7 +11995,7 @@ class _Files:
         name: str,
         num_parts: int,
         expires_at: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPostMultipart:
         """Initiate a multipart upload
 
         Parameters
@@ -12051,7 +12052,7 @@ class _Files:
         id: int,
         link_expires_at: str | None = ...,
         inline: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesGet:
         """Get details about a file
 
         Parameters
@@ -12121,7 +12122,7 @@ class _Files:
         id: int,
         name: str,
         expires_at: str,
-    ) -> Response:
+    ) -> _ResponseFilesPut:
         """Update details about a file
 
         Parameters
@@ -12190,7 +12191,7 @@ class _Files:
         id: int,
         name: str | None = ...,
         expires_at: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPatch:
         """Update details about a file
 
         Parameters
@@ -12263,7 +12264,7 @@ class _Files:
         include_header: bool | None = ...,
         column_delimiter: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPostPreprocessCsv:
         """Create a Preprocess CSV
 
         Parameters
@@ -12324,7 +12325,7 @@ class _Files:
     def get_preprocess_csv(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseFilesGetPreprocessCsv:
         """Get a Preprocess CSV
 
         Parameters
@@ -12370,7 +12371,7 @@ class _Files:
         force_character_set_conversion: bool | None = ...,
         include_header: bool | None = ...,
         column_delimiter: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPutPreprocessCsv:
         """Replace all attributes of this Preprocess CSV
 
         Parameters
@@ -12437,7 +12438,7 @@ class _Files:
         force_character_set_conversion: bool | None = ...,
         include_header: bool | None = ...,
         column_delimiter: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseFilesPatchPreprocessCsv:
         """Update some attributes of this Preprocess CSV
 
         Parameters
@@ -12499,7 +12500,7 @@ class _Files:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseFilesPutPreprocessCsvArchive:
         """Update the archive status of this object
 
         Parameters
@@ -12547,7 +12548,7 @@ class _Git_Repos:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List bookmarked git repositories
 
         Parameters
@@ -12582,7 +12583,7 @@ class _Git_Repos:
     def post(
         self,
         repo_url: str,
-    ) -> Response:
+    ) -> _ResponseGitReposPost:
         """Bookmark a git repository
 
         Parameters
@@ -12605,7 +12606,7 @@ class _Git_Repos:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseGitReposGet:
         """Get a bookmarked git repository
 
         Parameters
@@ -12646,7 +12647,7 @@ class _Git_Repos:
     def list_refs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseGitReposListRefs:
         """Get all branches and tags of a bookmarked git repository
 
         Parameters
@@ -12677,7 +12678,7 @@ class _Groups:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Groups
 
         Parameters
@@ -12764,7 +12765,7 @@ class _Groups:
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
         default_services_label: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseGroupsPost:
         """Create a Group
 
         Parameters
@@ -12854,7 +12855,7 @@ class _Groups:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseGroupsGet:
         """Get a Group
 
         Parameters
@@ -12935,7 +12936,7 @@ class _Groups:
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
         default_services_label: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseGroupsPut:
         """Replace all attributes of this Group
 
         Parameters
@@ -13037,7 +13038,7 @@ class _Groups:
         default_jobs_label: str | None = ...,
         default_notebooks_label: str | None = ...,
         default_services_label: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseGroupsPatch:
         """Update some attributes of this Group
 
         Parameters
@@ -13129,7 +13130,7 @@ class _Groups:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseGroupsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -13177,7 +13178,7 @@ class _Groups:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseGroupsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -13254,7 +13255,7 @@ class _Groups:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseGroupsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -13328,7 +13329,7 @@ class _Groups:
         self,
         id: int,
         user_id: int,
-    ) -> Response:
+    ) -> _ResponseGroupsPutMembers:
         """Add a user to a group
 
         Parameters
@@ -13423,7 +13424,7 @@ class _Groups:
     def list_child_groups(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseGroupsListChildGroups:
         """Get child groups of this group
 
         Parameters
@@ -13450,7 +13451,7 @@ class _Imports:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -13498,7 +13499,7 @@ class _Imports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -13575,7 +13576,7 @@ class _Imports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -13649,7 +13650,7 @@ class _Imports:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -13689,7 +13690,7 @@ class _Imports:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -13735,7 +13736,7 @@ class _Imports:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsListProjects:
         """List the projects an Import belongs to
 
         Parameters
@@ -13833,7 +13834,7 @@ class _Imports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseImportsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -14091,7 +14092,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Imports
 
         Parameters
@@ -14225,7 +14226,7 @@ class _Imports:
         next_run_at: str | None = ...,
         time_zone: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPost:
         """Create a new import configuration
 
         Parameters
@@ -14547,7 +14548,7 @@ class _Imports:
         multipart: bool | None = ...,
         escaped: bool | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPostFiles:
         """Initate an import of a tabular file into the platform
 
         Parameters
@@ -14613,7 +14614,7 @@ class _Imports:
     def post_files_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsPostFilesRuns:
         """Start a run
 
         Parameters
@@ -14652,7 +14653,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Import job
 
         Parameters
@@ -14701,7 +14702,7 @@ class _Imports:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseImportsGetFilesRuns:
         """Check status of a run
 
         Parameters
@@ -14761,7 +14762,7 @@ class _Imports:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsListFilesRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -14797,7 +14798,7 @@ class _Imports:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsListRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -14843,7 +14844,7 @@ class _Imports:
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPostFilesCsv:
         """Create a CSV Import
 
         Parameters
@@ -15039,7 +15040,7 @@ class _Imports:
     def get_files_csv(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsGetFilesCsv:
         """Get a CSV Import
 
         Parameters
@@ -15162,7 +15163,7 @@ class _Imports:
         loosen_types: bool | None = ...,
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutFilesCsv:
         """Replace all attributes of this CSV Import
 
         Parameters
@@ -15371,7 +15372,7 @@ class _Imports:
         loosen_types: bool | None = ...,
         execution: str | None = ...,
         redshift_destination_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPatchFilesCsv:
         """Update some attributes of this CSV Import
 
         Parameters
@@ -15568,7 +15569,7 @@ class _Imports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseImportsPutFilesCsvArchive:
         """Update the archive status of this object
 
         Parameters
@@ -15681,7 +15682,7 @@ class _Imports:
     def post_files_csv_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsPostFilesCsvRuns:
         """Start a run
 
         Parameters
@@ -15720,7 +15721,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given CSV Import job
 
         Parameters
@@ -15769,7 +15770,7 @@ class _Imports:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseImportsGetFilesCsvRuns:
         """Check status of a run
 
         Parameters
@@ -15829,7 +15830,7 @@ class _Imports:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsListFilesCsvRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -15867,7 +15868,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List batch imports
 
         Parameters
@@ -15926,7 +15927,7 @@ class _Imports:
         first_row_is_header: bool | None = ...,
         compression: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPostBatches:
         """Upload multiple files to Civis
 
         Parameters
@@ -15984,7 +15985,7 @@ class _Imports:
     def get_batches(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsGetBatches:
         """Get details about a batch import
 
         Parameters
@@ -16022,7 +16023,7 @@ class _Imports:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsGet:
         """Get details about an import
 
         Parameters
@@ -16277,7 +16278,7 @@ class _Imports:
         parent_id: int | None = ...,
         next_run_at: str | None = ...,
         time_zone: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPut:
         """Update an import
 
         Parameters
@@ -16585,7 +16586,7 @@ class _Imports:
     def list_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsListRuns:
         """Get the run history of this import
 
         Parameters
@@ -16611,7 +16612,7 @@ class _Imports:
     def post_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsPostRuns:
         """Run an import
 
         Parameters
@@ -16630,7 +16631,7 @@ class _Imports:
     def post_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseImportsPostCancel:
         """Cancel a run
 
         Parameters
@@ -16656,7 +16657,7 @@ class _Imports:
         source: dict,
         destination: dict,
         advanced_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPostSyncs:
         """Create a sync
 
         Parameters
@@ -16886,7 +16887,7 @@ class _Imports:
         source: dict,
         destination: dict,
         advanced_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutSyncs:
         """Update a sync
 
         Parameters
@@ -17117,7 +17118,7 @@ class _Imports:
         id: int,
         sync_id: int,
         status: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseImportsPutSyncsArchive:
         """Update the archive status of this sync
 
         Parameters
@@ -17259,7 +17260,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Jobs
 
         Parameters
@@ -17356,7 +17357,7 @@ class _Jobs:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsGet:
         """Show basic job info
 
         Parameters
@@ -17442,7 +17443,7 @@ class _Jobs:
     def post_trigger_email(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsPostTriggerEmail:
         """Generate and retrieve trigger email address
 
         Parameters
@@ -17461,7 +17462,7 @@ class _Jobs:
     def list_parents(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsListParents:
         """Show chain of parents as a list that this job triggers from
 
         Parameters
@@ -17547,7 +17548,7 @@ class _Jobs:
     def list_children(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsListChildren:
         """Show nested tree of children that this job triggers
 
         Parameters
@@ -17599,7 +17600,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given job
 
         Parameters
@@ -17640,7 +17641,7 @@ class _Jobs:
     def post_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsPostRuns:
         """Run a job
 
         Parameters
@@ -17668,7 +17669,7 @@ class _Jobs:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseJobsGetRuns:
         """Check status of a job
 
         Parameters
@@ -17724,7 +17725,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -17770,7 +17771,7 @@ class _Jobs:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsListRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -17804,7 +17805,7 @@ class _Jobs:
         self,
         id: int,
         archived: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsListWorkflows:
         """List the workflows a job belongs to
 
         Parameters
@@ -17871,7 +17872,7 @@ class _Jobs:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJobsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -17919,7 +17920,7 @@ class _Jobs:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -17996,7 +17997,7 @@ class _Jobs:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -18070,7 +18071,7 @@ class _Jobs:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -18110,7 +18111,7 @@ class _Jobs:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -18156,7 +18157,7 @@ class _Jobs:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJobsListProjects:
         """List the projects a Job belongs to
 
         Parameters
@@ -18254,7 +18255,7 @@ class _Jobs:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseJobsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -18344,7 +18345,7 @@ class _Json_Values:
         self,
         value_str: str,
         name: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesPost:
         """Create a JSON Value
 
         Parameters
@@ -18370,7 +18371,7 @@ class _Json_Values:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJsonValuesGet:
         """Get details about a JSON Value
 
         Parameters
@@ -18395,7 +18396,7 @@ class _Json_Values:
         id: int,
         name: str | None = ...,
         value_str: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesPatch:
         """Update some attributes of this JSON Value
 
         Parameters
@@ -18423,7 +18424,7 @@ class _Json_Values:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseJsonValuesListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -18471,7 +18472,7 @@ class _Json_Values:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -18548,7 +18549,7 @@ class _Json_Values:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -18622,7 +18623,7 @@ class _Json_Values:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -18662,7 +18663,7 @@ class _Json_Values:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseJsonValuesPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -18708,7 +18709,7 @@ class _Match_Targets:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -18756,7 +18757,7 @@ class _Match_Targets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -18833,7 +18834,7 @@ class _Match_Targets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -18907,7 +18908,7 @@ class _Match_Targets:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -18935,7 +18936,7 @@ class _Match_Targets:
 
     def list(
         self,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsList:
         """List match targets
 
         Returns
@@ -18959,7 +18960,7 @@ class _Match_Targets:
         name: str,
         target_file_name: str | None = ...,
         archived: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsPost:
         """Create a new match target
 
         Parameters
@@ -18990,7 +18991,7 @@ class _Match_Targets:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsGet:
         """Show Match Target info
 
         Parameters
@@ -19020,7 +19021,7 @@ class _Match_Targets:
         name: str | None = ...,
         target_file_name: str | None = ...,
         archived: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMatchTargetsPatch:
         """Update a match target
 
         Parameters
@@ -19054,7 +19055,7 @@ class _Media:
     def list_spot_orders_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaListSpotOrdersShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -19102,7 +19103,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutSpotOrdersSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -19179,7 +19180,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutSpotOrdersSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -19253,7 +19254,7 @@ class _Media:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseMediaPutSpotOrdersArchive:
         """Update the archive status of this object
 
         Parameters
@@ -19284,7 +19285,7 @@ class _Media:
     def list_optimizations_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaListOptimizationsShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -19332,7 +19333,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutOptimizationsSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -19409,7 +19410,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutOptimizationsSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -19483,7 +19484,7 @@ class _Media:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseMediaPutOptimizationsArchive:
         """Update the archive status of this object
 
         Parameters
@@ -19581,7 +19582,7 @@ class _Media:
     def list_ratecards_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaListRatecardsShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -19629,7 +19630,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutRatecardsSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -19706,7 +19707,7 @@ class _Media:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutRatecardsSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -19780,7 +19781,7 @@ class _Media:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseMediaPutRatecardsArchive:
         """Update the archive status of this object
 
         Parameters
@@ -19816,7 +19817,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List all optimizations
 
         Parameters
@@ -19880,7 +19881,7 @@ class _Media:
         exclude_programs: bool | None = ...,
         exclude_networks: bool | None = ...,
         time_slot_percentages: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPostOptimizations:
         """Create a new optimization
 
         Parameters
@@ -20022,7 +20023,7 @@ class _Media:
     def get_optimizations(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaGetOptimizations:
         """Show a single optimization
 
         Parameters
@@ -20125,7 +20126,7 @@ class _Media:
         exclude_programs: bool | None = ...,
         exclude_networks: bool | None = ...,
         time_slot_percentages: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPatchOptimizations:
         """Edit an existing optimization
 
         Parameters
@@ -20269,7 +20270,7 @@ class _Media:
     def post_optimizations_clone(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaPostOptimizationsClone:
         """Clone an existing optimization
 
         Parameters
@@ -20365,7 +20366,7 @@ class _Media:
     def post_optimizations_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaPostOptimizationsRuns:
         """Start a run
 
         Parameters
@@ -20404,7 +20405,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Optimization job
 
         Parameters
@@ -20453,7 +20454,7 @@ class _Media:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseMediaGetOptimizationsRuns:
         """Check status of a run
 
         Parameters
@@ -20513,7 +20514,7 @@ class _Media:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaListOptimizationsRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -20547,7 +20548,7 @@ class _Media:
         self,
         id: int | None = ...,
         archived: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaListSpotOrders:
         """List all spot orders
 
         Parameters
@@ -20570,7 +20571,7 @@ class _Media:
     def post_spot_orders(
         self,
         body: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPostSpotOrders:
         """Create a spot order
 
         Parameters
@@ -20599,7 +20600,7 @@ class _Media:
     def get_spot_orders(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaGetSpotOrders:
         """Show a single spot order
 
         Parameters
@@ -20629,7 +20630,7 @@ class _Media:
         self,
         id: int,
         body: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPutSpotOrders:
         """Edit the specified spot order
 
         Parameters
@@ -20662,7 +20663,7 @@ class _Media:
         archived: str | None = ...,
         filename: str | None = ...,
         dma_number: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaListRatecards:
         """List all ratecards
 
         Parameters
@@ -20700,7 +20701,7 @@ class _Media:
         start_on: str,
         end_on: str,
         dma_number: int,
-    ) -> Response:
+    ) -> _ResponseMediaPostRatecards:
         """Create a Ratecard
 
         Parameters
@@ -20735,7 +20736,7 @@ class _Media:
     def get_ratecards(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseMediaGetRatecards:
         """Get a Ratecard
 
         Parameters
@@ -20767,7 +20768,7 @@ class _Media:
         start_on: str,
         end_on: str,
         dma_number: int,
-    ) -> Response:
+    ) -> _ResponseMediaPutRatecards:
         """Replace all attributes of this Ratecard
 
         Parameters
@@ -20808,7 +20809,7 @@ class _Media:
         start_on: str | None = ...,
         end_on: str | None = ...,
         dma_number: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaPatchRatecards:
         """Update some attributes of this Ratecard
 
         Parameters
@@ -20846,7 +20847,7 @@ class _Media:
         self,
         name: str | None = ...,
         number: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaListDmas:
         """List all Designated Market Areas
 
         Parameters
@@ -20873,7 +20874,7 @@ class _Media:
         name: str | None = ...,
         identifier: str | None = ...,
         data_source: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseMediaListTargets:
         """List all Media Targets
 
         Parameters
@@ -20900,7 +20901,7 @@ class _Media:
 class _Models:
     def list_types(
         self,
-    ) -> Response:
+    ) -> _ResponseModelsListTypes:
         """List all available model types
 
         Returns
@@ -20931,7 +20932,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List
 
         Parameters
@@ -21115,7 +21116,7 @@ class _Models:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseModelsGet:
         """Retrieve model configuration
 
         Parameters
@@ -21318,7 +21319,7 @@ class _Models:
         self,
         id: int,
         build_id: int,
-    ) -> Response:
+    ) -> _ResponseModelsGetBuilds:
         """Check status of a build
 
         Parameters
@@ -21392,7 +21393,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List builds for the given Model job
 
         Parameters
@@ -21455,7 +21456,7 @@ class _Models:
         build_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsListBuildsLogs:
         """Get the logs for a build
 
         Parameters
@@ -21488,7 +21489,7 @@ class _Models:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseModelsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -21536,7 +21537,7 @@ class _Models:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -21613,7 +21614,7 @@ class _Models:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -21687,7 +21688,7 @@ class _Models:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -21727,7 +21728,7 @@ class _Models:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -21773,7 +21774,7 @@ class _Models:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseModelsListProjects:
         """List the projects a Model belongs to
 
         Parameters
@@ -21871,7 +21872,7 @@ class _Models:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseModelsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -22075,7 +22076,7 @@ class _Models:
     def list_schedules(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseModelsListSchedules:
         """Show the model build schedule
 
         Parameters
@@ -22118,7 +22119,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Notebooks
 
         Parameters
@@ -22233,7 +22234,7 @@ class _Notebooks:
         git_ref: str | None = ...,
         git_path: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPost:
         """Create a Notebook
 
         Parameters
@@ -22388,7 +22389,7 @@ class _Notebooks:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksGet:
         """Get a Notebook
 
         Parameters
@@ -22523,7 +22524,7 @@ class _Notebooks:
         git_repo_url: str | None = ...,
         git_ref: str | None = ...,
         git_path: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPut:
         """Replace all attributes of this Notebook
 
         Parameters
@@ -22696,7 +22697,7 @@ class _Notebooks:
         git_repo_url: str | None = ...,
         git_ref: str | None = ...,
         git_path: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPatch:
         """Update some attributes of this Notebook
 
         Parameters
@@ -22851,7 +22852,7 @@ class _Notebooks:
     def list_update_links(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksListUpdateLinks:
         """Get URLs to update notebook
 
         Parameters
@@ -22873,7 +22874,7 @@ class _Notebooks:
     def post_clone(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksPostClone:
         """Clone this Notebook
 
         Parameters
@@ -22990,7 +22991,7 @@ class _Notebooks:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -23038,7 +23039,7 @@ class _Notebooks:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -23115,7 +23116,7 @@ class _Notebooks:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -23189,7 +23190,7 @@ class _Notebooks:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -23229,7 +23230,7 @@ class _Notebooks:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -23275,7 +23276,7 @@ class _Notebooks:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseNotebooksPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -23396,7 +23397,7 @@ class _Notebooks:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksListProjects:
         """List the projects a Notebook belongs to
 
         Parameters
@@ -23499,7 +23500,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List deployments for a Notebook
 
         Parameters
@@ -23565,7 +23566,7 @@ class _Notebooks:
         self,
         notebook_id: int,
         deployment_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPostDeployments:
         """Deploy a Notebook
 
         Parameters
@@ -23619,7 +23620,7 @@ class _Notebooks:
         self,
         notebook_id: int,
         deployment_id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksGetDeployments:
         """Get details about a Notebook deployment
 
         Parameters
@@ -23697,7 +23698,7 @@ class _Notebooks:
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksListDeploymentsLogs:
         """Get the logs for a Notebook deployment
 
         Parameters
@@ -23730,7 +23731,7 @@ class _Notebooks:
     def list_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksListGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -23772,7 +23773,7 @@ class _Notebooks:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPutGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -23827,7 +23828,7 @@ class _Notebooks:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseNotebooksPatchGit:
         """Update an attached git file
 
         Parameters
@@ -23876,7 +23877,7 @@ class _Notebooks:
     def list_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksListGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -23904,7 +23905,7 @@ class _Notebooks:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseNotebooksPostGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -23936,7 +23937,7 @@ class _Notebooks:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseNotebooksGetGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -23963,7 +23964,7 @@ class _Notebooks:
     def post_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksPostGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -23988,7 +23989,7 @@ class _Notebooks:
     def post_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseNotebooksPostGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -24039,7 +24040,7 @@ class _Ontology:
     def list(
         self,
         subset: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseOntologyList:
         """List the ontology of column names Civis uses
 
         Parameters
@@ -24068,7 +24069,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Permission Sets
 
         Parameters
@@ -24124,7 +24125,7 @@ class _Permission_Sets:
         self,
         name: str,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPost:
         """Create a Permission Set
 
         Parameters
@@ -24164,7 +24165,7 @@ class _Permission_Sets:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsGet:
         """Get a Permission Set
 
         Parameters
@@ -24203,7 +24204,7 @@ class _Permission_Sets:
         id: int,
         name: str,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPut:
         """Replace all attributes of this Permission Set
 
         Parameters
@@ -24247,7 +24248,7 @@ class _Permission_Sets:
         id: int,
         name: str | None = ...,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPatch:
         """Update some attributes of this Permission Set
 
         Parameters
@@ -24289,7 +24290,7 @@ class _Permission_Sets:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -24337,7 +24338,7 @@ class _Permission_Sets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -24414,7 +24415,7 @@ class _Permission_Sets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -24488,7 +24489,7 @@ class _Permission_Sets:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -24528,7 +24529,7 @@ class _Permission_Sets:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -24574,7 +24575,7 @@ class _Permission_Sets:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -24615,7 +24616,7 @@ class _Permission_Sets:
         self,
         id: int,
         user_id: int,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsListUsersPermissions:
         """Get all permissions for a user, in this permission set
 
         Parameters
@@ -24647,7 +24648,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List resources in a permission set
 
         Parameters
@@ -24688,7 +24689,7 @@ class _Permission_Sets:
         id: int,
         name: str,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPostResources:
         """Create a resource in a permission set
 
         Parameters
@@ -24718,7 +24719,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsGetResources:
         """Get a resource in a permission set
 
         Parameters
@@ -24747,7 +24748,7 @@ class _Permission_Sets:
         id: int,
         name: str,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPatchResources:
         """Update a resource in a permission set
 
         Parameters
@@ -24798,7 +24799,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsListResourcesShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -24849,7 +24850,7 @@ class _Permission_Sets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutResourcesSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -24932,7 +24933,7 @@ class _Permission_Sets:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponsePermissionSetsPutResourcesSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -25011,7 +25012,7 @@ class _Predictions:
     def list(
         self,
         model_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponsePredictionsList:
         """List predictions
 
         Parameters
@@ -25057,7 +25058,7 @@ class _Predictions:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponsePredictionsGet:
         """Show the specified prediction
 
         Parameters
@@ -25146,7 +25147,7 @@ class _Predictions:
     def list_schedules(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponsePredictionsListSchedules:
         """Show the prediction schedule
 
         Parameters
@@ -25193,7 +25194,7 @@ class _Projects:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List projects
 
         Parameters
@@ -25275,7 +25276,7 @@ class _Projects:
         note: str | None = ...,
         auto_share: bool | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPost:
         """Create a project
 
         Parameters
@@ -25492,7 +25493,7 @@ class _Projects:
         id: int,
         clone_schedule: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPostClone:
         """Clone this
 
         Parameters
@@ -25702,7 +25703,7 @@ class _Projects:
     def get(
         self,
         project_id: int,
-    ) -> Response:
+    ) -> _ResponseProjectsGet:
         """Get a detailed view of a project and the objects in it
 
         Parameters
@@ -25910,7 +25911,7 @@ class _Projects:
         name: str | None = ...,
         description: str | None = ...,
         note: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPut:
         """Update a project
 
         Parameters
@@ -26122,7 +26123,7 @@ class _Projects:
         self,
         project_id: int,
         auto_share: bool,
-    ) -> Response:
+    ) -> _ResponseProjectsPutAutoShare:
         """Enable or disable Auto-Share on a project
 
         Parameters
@@ -26330,7 +26331,7 @@ class _Projects:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseProjectsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -26378,7 +26379,7 @@ class _Projects:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -26455,7 +26456,7 @@ class _Projects:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -26529,7 +26530,7 @@ class _Projects:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -26569,7 +26570,7 @@ class _Projects:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -26615,7 +26616,7 @@ class _Projects:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseProjectsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -26824,7 +26825,7 @@ class _Projects:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseProjectsListParentProjects:
         """List the Parent Projects an item belongs to
 
         Parameters
@@ -26938,7 +26939,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List queries
 
         Parameters
@@ -27041,7 +27042,7 @@ class _Queries:
         column_delimiter: str | None = ...,
         unquoted: bool | None = ...,
         filename_prefix: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseQueriesPost:
         """Execute a query
 
         Parameters
@@ -27130,7 +27131,7 @@ class _Queries:
     def post_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseQueriesPostRuns:
         """Start a run
 
         Parameters
@@ -27169,7 +27170,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Query job
 
         Parameters
@@ -27218,7 +27219,7 @@ class _Queries:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseQueriesGetRuns:
         """Check status of a run
 
         Parameters
@@ -27278,7 +27279,7 @@ class _Queries:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseQueriesListRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -27312,7 +27313,7 @@ class _Queries:
         self,
         id: int,
         script_id: int,
-    ) -> Response:
+    ) -> _ResponseQueriesPutScripts:
         """Update the query's associated script
 
         Parameters
@@ -27379,7 +27380,7 @@ class _Queries:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseQueriesGet:
         """Get details about a query
 
         Parameters
@@ -27444,7 +27445,7 @@ class _Queries:
     def delete(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseQueriesDelete:
         """Sets Query Hidden to true
 
         Parameters
@@ -27510,7 +27511,7 @@ class _Remote_Hosts:
     def list(
         self,
         type: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsList:
         """List Remote Hosts
 
         Parameters
@@ -27546,7 +27547,7 @@ class _Remote_Hosts:
         name: str,
         url: str,
         type: str,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsPost:
         """Create a Remote Host
 
         Parameters
@@ -27602,7 +27603,7 @@ class _Remote_Hosts:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsGet:
         """Get a Remote Host
 
         Parameters
@@ -27653,7 +27654,7 @@ class _Remote_Hosts:
         type: str,
         url: str,
         description: str,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsPut:
         """Replace all attributes of this Remote Host
 
         Parameters
@@ -27717,7 +27718,7 @@ class _Remote_Hosts:
         type: str | None = ...,
         url: str | None = ...,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsPatch:
         """Update some attributes of this Remote Host
 
         Parameters
@@ -27777,7 +27778,7 @@ class _Remote_Hosts:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -27825,7 +27826,7 @@ class _Remote_Hosts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -27902,7 +27903,7 @@ class _Remote_Hosts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -28008,7 +28009,7 @@ class _Remote_Hosts:
         password: str | None = ...,
         q: str | None = ...,
         s: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseRemoteHostsListDataSets:
         """List data sets available from a remote host
 
         Parameters
@@ -28051,7 +28052,7 @@ class _Reports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Reports
 
         Parameters
@@ -28162,7 +28163,7 @@ class _Reports:
         template_id: int | None = ...,
         description: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPost:
         """Create an HTML report
 
         Parameters
@@ -28279,7 +28280,7 @@ class _Reports:
     def list_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsListGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -28321,7 +28322,7 @@ class _Reports:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -28376,7 +28377,7 @@ class _Reports:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPatchGit:
         """Update an attached git file
 
         Parameters
@@ -28425,7 +28426,7 @@ class _Reports:
     def list_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsListGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -28453,7 +28454,7 @@ class _Reports:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseReportsPostGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -28485,7 +28486,7 @@ class _Reports:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseReportsGetGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -28512,7 +28513,7 @@ class _Reports:
     def post_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsPostGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -28537,7 +28538,7 @@ class _Reports:
     def post_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsPostGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -28562,7 +28563,7 @@ class _Reports:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsGet:
         """Get a single report
 
         Parameters
@@ -28674,7 +28675,7 @@ class _Reports:
         template_id: int | None = ...,
         use_viewers_tableau_username: bool | None = ...,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPatch:
         """Update a report
 
         Parameters
@@ -28796,7 +28797,7 @@ class _Reports:
     def post_grants(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsPostGrants:
         """Grant this report the ability to perform Civis platform API operations on your
         behalf
 
@@ -28919,7 +28920,7 @@ class _Reports:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -28967,7 +28968,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -29044,7 +29045,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -29118,7 +29119,7 @@ class _Reports:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -29158,7 +29159,7 @@ class _Reports:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -29204,7 +29205,7 @@ class _Reports:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListProjects:
         """List the projects a Report belongs to
 
         Parameters
@@ -29302,7 +29303,7 @@ class _Reports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseReportsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -29407,7 +29408,7 @@ class _Reports:
     def get_services(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsGetServices:
         """Get a single service report
 
         Parameters
@@ -29467,7 +29468,7 @@ class _Reports:
         id: int,
         name: str | None = ...,
         provide_api_key: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPatchServices:
         """Update some attributes of this service report
 
         Parameters
@@ -29530,7 +29531,7 @@ class _Reports:
         self,
         service_id: int,
         provide_api_key: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPostServices:
         """Create a service report
 
         Parameters
@@ -29590,7 +29591,7 @@ class _Reports:
     def list_services_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsListServicesShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -29638,7 +29639,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutServicesSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -29715,7 +29716,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutServicesSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -29789,7 +29790,7 @@ class _Reports:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListServicesDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -29829,7 +29830,7 @@ class _Reports:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutServicesTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -29875,7 +29876,7 @@ class _Reports:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListServicesProjects:
         """List the projects a Service Report belongs to
 
         Parameters
@@ -29973,7 +29974,7 @@ class _Reports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseReportsPutServicesArchive:
         """Update the archive status of this object
 
         Parameters
@@ -30033,7 +30034,7 @@ class _Reports:
     def post_refresh(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsPostRefresh:
         """Refresh the data in this Tableau report
 
         Parameters
@@ -30065,7 +30066,7 @@ class _Reports:
         name: str,
         config: str,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPostSql:
         """Create a SQL report
 
         Parameters
@@ -30152,7 +30153,7 @@ class _Reports:
     def get_sql(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsGetSql:
         """Get a single SQL report
 
         Parameters
@@ -30237,7 +30238,7 @@ class _Reports:
         name: str | None = ...,
         config: str | None = ...,
         description: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPatchSql:
         """Update a SQL report
 
         Parameters
@@ -30326,7 +30327,7 @@ class _Reports:
     def post_sql_refresh(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsPostSqlRefresh:
         """Refresh the data in a SQL report
 
         Parameters
@@ -30407,7 +30408,7 @@ class _Reports:
     def list_sql_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseReportsListSqlShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -30455,7 +30456,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutSqlSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -30532,7 +30533,7 @@ class _Reports:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutSqlSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -30606,7 +30607,7 @@ class _Reports:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListSqlDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -30646,7 +30647,7 @@ class _Reports:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsPutSqlTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -30692,7 +30693,7 @@ class _Reports:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseReportsListSqlProjects:
         """List the projects a SQL Report belongs to
 
         Parameters
@@ -30790,7 +30791,7 @@ class _Reports:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseReportsPutSqlArchive:
         """Update the archive status of this object
 
         Parameters
@@ -30878,7 +30879,7 @@ class _Roles:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Roles
 
         Parameters
@@ -30915,7 +30916,7 @@ class _Roles:
 class _Scripts:
     def list_types(
         self,
-    ) -> Response:
+    ) -> _ResponseScriptsListTypes:
         """List available script types
 
         Returns
@@ -30929,7 +30930,7 @@ class _Scripts:
     def list_history(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListHistory:
         """Get the run history and outputs of this script
 
         Parameters
@@ -30976,7 +30977,7 @@ class _Scripts:
         template_script_id: int | None = ...,
         notifications: dict | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPost:
         """Create a script
 
         Parameters
@@ -31229,7 +31230,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Scripts
 
         Parameters
@@ -31345,7 +31346,7 @@ class _Scripts:
         notifications: dict | None = ...,
         parent_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatch:
         """Update a script
 
         Parameters
@@ -31607,7 +31608,7 @@ class _Scripts:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGet:
         """Get details about a script
 
         Parameters
@@ -31808,7 +31809,7 @@ class _Scripts:
     def post_cancel(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostCancel:
         """Cancel a run
 
         Parameters
@@ -31831,7 +31832,6 @@ class _Scripts:
     def post_containers(
         self,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -31844,6 +31844,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -31852,7 +31853,7 @@ class _Scripts:
         hidden: bool | None = ...,
         target_project_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostContainers:
         """Create a container
 
         Parameters
@@ -31869,8 +31870,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -31959,6 +31958,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -32200,7 +32201,7 @@ class _Scripts:
     def get_containers(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetContainers:
         """View a container
 
         Parameters
@@ -32429,7 +32430,6 @@ class _Scripts:
         self,
         id: int,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -32442,6 +32442,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -32449,7 +32450,7 @@ class _Scripts:
         partition_label: str | None = ...,
         target_project_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutContainers:
         """Edit a container
 
         Parameters
@@ -32468,8 +32469,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -32558,6 +32557,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -32818,7 +32819,7 @@ class _Scripts:
         partition_label: str | None = ...,
         target_project_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchContainers:
         """Update a container
 
         Parameters
@@ -33216,7 +33217,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListContainersRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -33264,7 +33265,7 @@ class _Scripts:
         target_project_id: int | None = ...,
         csv_settings: dict | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSql:
         """Create a SQL Script
 
         Parameters
@@ -33580,7 +33581,7 @@ class _Scripts:
     def get_sql(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetSql:
         """Get a SQL Script
 
         Parameters
@@ -33803,7 +33804,7 @@ class _Scripts:
         target_project_id: int | None = ...,
         csv_settings: dict | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSql:
         """Replace all attributes of this SQL Script
 
         Parameters
@@ -34134,7 +34135,7 @@ class _Scripts:
         credential_id: int | None = ...,
         csv_settings: dict | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchSql:
         """Update some attributes of this SQL Script
 
         Parameters
@@ -34467,7 +34468,7 @@ class _Scripts:
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3:
         """Create a Python Script
 
         Parameters
@@ -34760,8 +34761,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34773,13 +34772,15 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
     def get_python3(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetPython3:
         """Get a Python Script
 
         Parameters
@@ -34964,8 +34965,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34977,6 +34976,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35000,7 +35001,7 @@ class _Scripts:
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3:
         """Replace all attributes of this Python Script
 
         Parameters
@@ -35293,8 +35294,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35306,6 +35305,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35324,12 +35325,12 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+        source: str | None = ...,
+    ) -> _ResponseScriptsPatchPython3:
         """Update some attributes of this Python Script
 
         Parameters
@@ -35430,8 +35431,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -35443,6 +35442,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -35622,8 +35623,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35635,6 +35634,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35658,7 +35659,7 @@ class _Scripts:
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostR:
         """Create an R Script
 
         Parameters
@@ -35951,8 +35952,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35964,13 +35963,15 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
     def get_r(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetR:
         """Get an R Script
 
         Parameters
@@ -36155,8 +36156,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36168,6 +36167,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36191,7 +36192,7 @@ class _Scripts:
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutR:
         """Replace all attributes of this R Script
 
         Parameters
@@ -36484,8 +36485,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36497,6 +36496,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36515,12 +36516,12 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+        source: str | None = ...,
+    ) -> _ResponseScriptsPatchR:
         """Update some attributes of this R Script
 
         Parameters
@@ -36621,8 +36622,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -36634,6 +36633,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -36813,8 +36814,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36826,6 +36825,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36846,7 +36847,7 @@ class _Scripts:
         hidden: bool | None = ...,
         target_project_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascript:
         """Create a JavaScript Script
 
         Parameters
@@ -37118,7 +37119,7 @@ class _Scripts:
     def get_javascript(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetJavascript:
         """Get a JavaScript Script
 
         Parameters
@@ -37316,7 +37317,7 @@ class _Scripts:
         time_zone: str | None = ...,
         target_project_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascript:
         """Replace all attributes of this JavaScript Script
 
         Parameters
@@ -37602,7 +37603,7 @@ class _Scripts:
         remote_host_id: int | None = ...,
         credential_id: int | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchJavascript:
         """Update some attributes of this JavaScript Script
 
         Parameters
@@ -37883,7 +37884,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Custom Scripts
 
         Parameters
@@ -38004,7 +38005,7 @@ class _Scripts:
         required_resources: dict | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostCustom:
         """Create a Custom Script
 
         Parameters
@@ -38290,7 +38291,7 @@ class _Scripts:
     def get_custom(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetCustom:
         """Get a Custom Script
 
         Parameters
@@ -38517,7 +38518,7 @@ class _Scripts:
         required_resources: dict | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutCustom:
         """Replace all attributes of this Custom Script
 
         Parameters
@@ -38813,7 +38814,7 @@ class _Scripts:
         required_resources: dict | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchCustom:
         """Update some attributes of this Custom Script
 
         Parameters
@@ -39097,7 +39098,7 @@ class _Scripts:
     def post_sql_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSqlRuns:
         """Start a run
 
         Parameters
@@ -39149,7 +39150,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given SQL job
 
         Parameters
@@ -39211,7 +39212,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetSqlRuns:
         """Check status of a run
 
         Parameters
@@ -39308,7 +39309,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -39341,7 +39342,7 @@ class _Scripts:
     def post_containers_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostContainersRuns:
         """Start a run
 
         Parameters
@@ -39386,7 +39387,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Container job
 
         Parameters
@@ -39441,7 +39442,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetContainersRuns:
         """Check status of a run
 
         Parameters
@@ -39504,7 +39505,7 @@ class _Scripts:
     def post_python3_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3Runs:
         """Start a run
 
         Parameters
@@ -39549,7 +39550,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Python job
 
         Parameters
@@ -39604,7 +39605,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetPython3Runs:
         """Check status of a run
 
         Parameters
@@ -39694,7 +39695,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3RunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -39727,7 +39728,7 @@ class _Scripts:
     def post_r_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRRuns:
         """Start a run
 
         Parameters
@@ -39772,7 +39773,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given R job
 
         Parameters
@@ -39827,7 +39828,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetRRuns:
         """Check status of a run
 
         Parameters
@@ -39917,7 +39918,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListRRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -39953,7 +39954,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListDbtRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -39986,7 +39987,7 @@ class _Scripts:
     def post_javascript_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptRuns:
         """Start a run
 
         Parameters
@@ -40025,7 +40026,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Javascript job
 
         Parameters
@@ -40074,7 +40075,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetJavascriptRuns:
         """Check status of a run
 
         Parameters
@@ -40158,7 +40159,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -40191,7 +40192,7 @@ class _Scripts:
     def post_custom_runs(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostCustomRuns:
         """Start a run
 
         Parameters
@@ -40238,7 +40239,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List runs for the given Custom job
 
         Parameters
@@ -40295,7 +40296,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsGetCustomRuns:
         """Check status of a run
 
         Parameters
@@ -40363,7 +40364,7 @@ class _Scripts:
         run_id: int,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListCustomRunsLogs:
         """Get the logs for a run
 
         Parameters
@@ -40402,7 +40403,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40451,7 +40452,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40497,7 +40498,7 @@ class _Scripts:
         run_id: int,
         object_type: str,
         object_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostContainersRunsOutputs:
         """Add an output for a run
 
         Parameters
@@ -40537,7 +40538,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40583,7 +40584,7 @@ class _Scripts:
         run_id: int,
         object_type: str,
         object_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3RunsOutputs:
         """Add an output for a run
 
         Parameters
@@ -40623,7 +40624,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40669,7 +40670,7 @@ class _Scripts:
         run_id: int,
         object_type: str,
         object_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRRunsOutputs:
         """Add an output for a run
 
         Parameters
@@ -40709,7 +40710,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40755,7 +40756,7 @@ class _Scripts:
         run_id: int,
         object_type: str,
         object_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptRunsOutputs:
         """Add an output for a run
 
         Parameters
@@ -40795,7 +40796,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List the outputs for a run
 
         Parameters
@@ -40841,7 +40842,7 @@ class _Scripts:
         run_id: int,
         object_type: str,
         object_id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostCustomRunsOutputs:
         """Add an output for a run
 
         Parameters
@@ -40899,7 +40900,7 @@ class _Scripts:
     def list_sql_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -40941,7 +40942,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSqlGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -40996,7 +40997,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchSqlGit:
         """Update an attached git file
 
         Parameters
@@ -41045,7 +41046,7 @@ class _Scripts:
     def list_sql_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -41073,7 +41074,7 @@ class _Scripts:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSqlGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -41105,7 +41106,7 @@ class _Scripts:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsGetSqlGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -41132,7 +41133,7 @@ class _Scripts:
     def post_sql_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSqlGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -41157,7 +41158,7 @@ class _Scripts:
     def post_sql_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSqlGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -41182,7 +41183,7 @@ class _Scripts:
     def list_javascript_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -41224,7 +41225,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascriptGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -41279,7 +41280,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchJavascriptGit:
         """Update an attached git file
 
         Parameters
@@ -41328,7 +41329,7 @@ class _Scripts:
     def list_javascript_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -41356,7 +41357,7 @@ class _Scripts:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -41388,7 +41389,7 @@ class _Scripts:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsGetJavascriptGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -41415,7 +41416,7 @@ class _Scripts:
     def post_javascript_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -41440,7 +41441,7 @@ class _Scripts:
     def post_javascript_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -41465,7 +41466,7 @@ class _Scripts:
     def list_python3_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3Git:
         """Get the git metadata attached to an item
 
         Parameters
@@ -41507,7 +41508,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3Git:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -41562,7 +41563,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchPython3Git:
         """Update an attached git file
 
         Parameters
@@ -41611,7 +41612,7 @@ class _Scripts:
     def list_python3_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3GitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -41639,7 +41640,7 @@ class _Scripts:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3GitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -41671,7 +41672,7 @@ class _Scripts:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsGetPython3GitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -41698,7 +41699,7 @@ class _Scripts:
     def post_python3_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3GitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -41723,7 +41724,7 @@ class _Scripts:
     def post_python3_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3GitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -41748,7 +41749,7 @@ class _Scripts:
     def list_r_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListRGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -41790,7 +41791,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutRGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -41845,7 +41846,7 @@ class _Scripts:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPatchRGit:
         """Update an attached git file
 
         Parameters
@@ -41894,7 +41895,7 @@ class _Scripts:
     def list_r_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListRGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -41922,7 +41923,7 @@ class _Scripts:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -41954,7 +41955,7 @@ class _Scripts:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseScriptsGetRGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -41981,7 +41982,7 @@ class _Scripts:
     def post_r_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -42006,7 +42007,7 @@ class _Scripts:
     def post_r_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -42031,7 +42032,7 @@ class _Scripts:
     def list_sql_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -42079,7 +42080,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSqlSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -42156,7 +42157,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSqlSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -42230,7 +42231,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -42270,7 +42271,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSqlTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -42316,7 +42317,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListSqlProjects:
         """List the projects a SQL Script belongs to
 
         Parameters
@@ -42414,7 +42415,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutSqlArchive:
         """Update the archive status of this object
 
         Parameters
@@ -42625,7 +42626,7 @@ class _Scripts:
     def list_containers_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListContainersShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -42673,7 +42674,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutContainersSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -42750,7 +42751,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutContainersSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -42824,7 +42825,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListContainersDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -42864,7 +42865,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutContainersTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -42910,7 +42911,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListContainersProjects:
         """List the projects a Container Script belongs to
 
         Parameters
@@ -43008,7 +43009,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutContainersArchive:
         """Update the archive status of this object
 
         Parameters
@@ -43238,7 +43239,7 @@ class _Scripts:
     def list_python3_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3Shares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -43286,7 +43287,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3SharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -43363,7 +43364,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3SharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -43437,7 +43438,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3Dependencies:
         """List dependent objects for this object
 
         Parameters
@@ -43477,7 +43478,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3Transfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -43523,7 +43524,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListPython3Projects:
         """List the projects a Python Script belongs to
 
         Parameters
@@ -43621,7 +43622,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutPython3Archive:
         """Update the archive status of this object
 
         Parameters
@@ -43809,8 +43810,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -43822,13 +43821,15 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
     def list_r_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListRShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -43876,7 +43877,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutRSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -43953,7 +43954,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutRSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -44027,7 +44028,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListRDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -44067,7 +44068,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutRTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -44113,7 +44114,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListRProjects:
         """List the projects an R Script belongs to
 
         Parameters
@@ -44211,7 +44212,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutRArchive:
         """Update the archive status of this object
 
         Parameters
@@ -44399,8 +44400,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -44412,13 +44411,15 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
     def list_javascript_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -44466,7 +44467,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascriptSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -44543,7 +44544,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascriptSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -44617,7 +44618,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -44657,7 +44658,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascriptTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -44703,7 +44704,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListJavascriptProjects:
         """List the projects a JavaScript Script belongs to
 
         Parameters
@@ -44801,7 +44802,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutJavascriptArchive:
         """Update the archive status of this object
 
         Parameters
@@ -44988,7 +44989,7 @@ class _Scripts:
     def list_custom_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseScriptsListCustomShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -45036,7 +45037,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutCustomSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -45113,7 +45114,7 @@ class _Scripts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutCustomSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -45187,7 +45188,7 @@ class _Scripts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListCustomDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -45227,7 +45228,7 @@ class _Scripts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPutCustomTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -45273,7 +45274,7 @@ class _Scripts:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsListCustomProjects:
         """List the projects a Custom Script belongs to
 
         Parameters
@@ -45371,7 +45372,7 @@ class _Scripts:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseScriptsPutCustomArchive:
         """Update the archive status of this object
 
         Parameters
@@ -45592,7 +45593,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostSqlClone:
         """Clone this SQL Script
 
         Parameters
@@ -45810,7 +45811,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostJavascriptClone:
         """Clone this JavaScript Script
 
         Parameters
@@ -46004,7 +46005,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostPython3Clone:
         """Clone this Python Script
 
         Parameters
@@ -46196,8 +46197,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46209,6 +46208,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46218,7 +46219,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostRClone:
         """Clone this R Script
 
         Parameters
@@ -46410,8 +46411,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46423,6 +46422,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46432,7 +46433,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostContainersClone:
         """Clone this Container Script
 
         Parameters
@@ -46669,7 +46670,7 @@ class _Scripts:
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseScriptsPostCustomClone:
         """Clone this Custom Script
 
         Parameters
@@ -46899,7 +46900,7 @@ class _Search:
         limit: int | None = ...,
         archived: str | None = ...,
         last_run_state: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseSearchList:
         """Perform a search
 
         Parameters
@@ -46969,7 +46970,7 @@ class _Search:
 
     def list_types(
         self,
-    ) -> Response:
+    ) -> _ResponseSearchListTypes:
         """List available search types
 
         Returns
@@ -46995,7 +46996,7 @@ class _Search:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """Search queries that are not hidden
 
         Parameters
@@ -47077,7 +47078,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Services
 
         Parameters
@@ -47200,7 +47201,7 @@ class _Services:
         notifications: dict | None = ...,
         partition_label: str | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPost:
         """Create a Service
 
         Parameters
@@ -47394,7 +47395,7 @@ class _Services:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseServicesGet:
         """Get a Service
 
         Parameters
@@ -47548,7 +47549,7 @@ class _Services:
         environment_variables: dict | None = ...,
         notifications: dict | None = ...,
         partition_label: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPut:
         """Replace all attributes of this Service
 
         Parameters
@@ -47758,7 +47759,7 @@ class _Services:
         environment_variables: dict | None = ...,
         notifications: dict | None = ...,
         partition_label: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPatch:
         """Update some attributes of this Service
 
         Parameters
@@ -47950,7 +47951,7 @@ class _Services:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseServicesListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -47998,7 +47999,7 @@ class _Services:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -48075,7 +48076,7 @@ class _Services:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -48149,7 +48150,7 @@ class _Services:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -48189,7 +48190,7 @@ class _Services:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -48235,7 +48236,7 @@ class _Services:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseServicesPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -48375,7 +48376,7 @@ class _Services:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesListProjects:
         """List the projects a Service belongs to
 
         Parameters
@@ -48478,7 +48479,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List deployments for a Service
 
         Parameters
@@ -48544,7 +48545,7 @@ class _Services:
         self,
         service_id: int,
         deployment_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPostDeployments:
         """Deploy a Service
 
         Parameters
@@ -48598,7 +48599,7 @@ class _Services:
         self,
         service_id: int,
         deployment_id: int,
-    ) -> Response:
+    ) -> _ResponseServicesGetDeployments:
         """Get details about a Service deployment
 
         Parameters
@@ -48673,7 +48674,7 @@ class _Services:
         self,
         service_id: int,
         deployment_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPostRedeploy:
         """Redeploy a Service
 
         Parameters
@@ -48730,7 +48731,7 @@ class _Services:
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesListDeploymentsLogs:
         """Get the logs for a Service deployment
 
         Parameters
@@ -48763,7 +48764,7 @@ class _Services:
     def post_clone(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseServicesPostClone:
         """Clone this Service
 
         Parameters
@@ -48902,7 +48903,7 @@ class _Services:
         name: str,
         machine_token: bool | None = ...,
         expires_in: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseServicesPostTokens:
         """Create a new long-lived service token
 
         Parameters
@@ -48948,7 +48949,7 @@ class _Services:
     def list_tokens(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseServicesListTokens:
         """List tokens
 
         Parameters
@@ -49007,7 +49008,7 @@ class _Services:
 class _Storage_Hosts:
     def list(
         self,
-    ) -> Response:
+    ) -> _ResponseStorageHostsList:
         """List the storage hosts
 
         Returns
@@ -49044,7 +49045,7 @@ class _Storage_Hosts:
         bucket: str,
         name: str,
         s3_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPost:
         """Create a new storage host
 
         Parameters
@@ -49090,7 +49091,7 @@ class _Storage_Hosts:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseStorageHostsGet:
         """Get a storage host
 
         Parameters
@@ -49133,7 +49134,7 @@ class _Storage_Hosts:
         provider: str,
         bucket: str,
         s3_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPut:
         """Replace all attributes of this storage host
 
         Parameters
@@ -49185,7 +49186,7 @@ class _Storage_Hosts:
         provider: str | None = ...,
         bucket: str | None = ...,
         s3_options: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPatch:
         """Update some attributes of this storage host
 
         Parameters
@@ -49233,7 +49234,7 @@ class _Storage_Hosts:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseStorageHostsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -49281,7 +49282,7 @@ class _Storage_Hosts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -49358,7 +49359,7 @@ class _Storage_Hosts:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -49432,7 +49433,7 @@ class _Storage_Hosts:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -49472,7 +49473,7 @@ class _Storage_Hosts:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseStorageHostsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -49523,7 +49524,7 @@ class _Table_Tags:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Table Tags
 
         Parameters
@@ -49571,7 +49572,7 @@ class _Table_Tags:
     def post(
         self,
         name: str,
-    ) -> Response:
+    ) -> _ResponseTableTagsPost:
         """Create a Table Tag
 
         Parameters
@@ -49609,7 +49610,7 @@ class _Table_Tags:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTableTagsGet:
         """Get a Table Tag
 
         Parameters
@@ -49664,7 +49665,7 @@ class _Tables:
     def post_enhancements_geocodings(
         self,
         source_table_id: int,
-    ) -> Response:
+    ) -> _ResponseTablesPostEnhancementsGeocodings:
         """.. warning::
 
             Warning: The tables/:source_table_id/enhancements/geocodings endpoint is deprecated and will be removed after January 1, 2021.
@@ -49700,7 +49701,7 @@ class _Tables:
         ncoa_credential_id: int | None = ...,
         output_level: str | None = ...,
         batch_size: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseTablesPostEnhancementsCassNcoa:
         """.. warning::
 
             Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is deprecated and will be removed after January 1, 2021.
@@ -49760,7 +49761,7 @@ class _Tables:
         self,
         id: int,
         source_table_id: int,
-    ) -> Response:
+    ) -> _ResponseTablesGetEnhancementsGeocodings:
         """.. warning::
 
             Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is deprecated and will be removed after January 1, 2021.
@@ -49795,7 +49796,7 @@ class _Tables:
         self,
         id: int,
         source_table_id: int,
-    ) -> Response:
+    ) -> _ResponseTablesGetEnhancementsCassNcoa:
         """.. warning::
 
             Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is deprecated and will be removed after January 1, 2021.
@@ -49846,7 +49847,7 @@ class _Tables:
         schema: str,
         table_name: str,
         stats_priority: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseTablesPostScan:
         """Creates and enqueues a single table scanner job on a new table
 
         Parameters
@@ -49877,7 +49878,7 @@ class _Tables:
     def post_refresh(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTablesPostRefresh:
         """.. warning::
 
             Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan from now on.
@@ -50087,7 +50088,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List tables
 
         Parameters
@@ -50188,7 +50189,7 @@ class _Tables:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTablesGet:
         """Show basic table info
 
         Parameters
@@ -50388,7 +50389,7 @@ class _Tables:
         description: str | None = ...,
         primary_keys: List[str] | None = ...,
         last_modified_keys: List[str] | None = ...,
-    ) -> Response:
+    ) -> _ResponseTablesPatch:
         """Update a table
 
         Parameters
@@ -50487,7 +50488,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List columns in the specified table
 
         Parameters
@@ -50567,7 +50568,7 @@ class _Tables:
         self,
         id: int,
         table_tag_id: int,
-    ) -> Response:
+    ) -> _ResponseTablesPutTags:
         """Add a tag to a table
 
         Parameters
@@ -50612,7 +50613,7 @@ class _Tables:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTablesListProjects:
         """List the projects a Table belongs to
 
         Parameters
@@ -50710,7 +50711,7 @@ class _Templates:
     def list_reports_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTemplatesListReportsShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -50758,7 +50759,7 @@ class _Templates:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutReportsSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -50835,7 +50836,7 @@ class _Templates:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutReportsSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -50909,7 +50910,7 @@ class _Templates:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesListReportsDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -50949,7 +50950,7 @@ class _Templates:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutReportsTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -51001,7 +51002,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Report Templates
 
         Parameters
@@ -51069,7 +51070,7 @@ class _Templates:
         archived: bool | None = ...,
         provide_api_key: bool | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPostReports:
         """Create a Report Template
 
         Parameters
@@ -51131,7 +51132,7 @@ class _Templates:
     def get_reports(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTemplatesGetReports:
         """Get a Report Template
 
         Parameters
@@ -51185,7 +51186,7 @@ class _Templates:
         category: str | None = ...,
         archived: bool | None = ...,
         provide_api_key: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutReports:
         """Replace all attributes of this Report Template
 
         Parameters
@@ -51251,7 +51252,7 @@ class _Templates:
         archived: bool | None = ...,
         code_body: str | None = ...,
         provide_api_key: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPatchReports:
         """Update some attributes of this Report Template
 
         Parameters
@@ -51312,7 +51313,7 @@ class _Templates:
     def list_scripts_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTemplatesListScriptsShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -51360,7 +51361,7 @@ class _Templates:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutScriptsSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -51437,7 +51438,7 @@ class _Templates:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutScriptsSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -51511,7 +51512,7 @@ class _Templates:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesListScriptsDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -51551,7 +51552,7 @@ class _Templates:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutScriptsTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -51597,7 +51598,7 @@ class _Templates:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesListScriptsProjects:
         """List the projects a Script Template belongs to
 
         Parameters
@@ -51701,7 +51702,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Script Templates
 
         Parameters
@@ -51777,7 +51778,7 @@ class _Templates:
         ui_report_id: int | None = ...,
         archived: bool | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPostScripts:
         """Create a Script Template
 
         Parameters
@@ -51878,7 +51879,7 @@ class _Templates:
     def get_scripts(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseTemplatesGetScripts:
         """Get a Script Template
 
         Parameters
@@ -51971,7 +51972,7 @@ class _Templates:
         note: str | None = ...,
         ui_report_id: int | None = ...,
         archived: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPutScripts:
         """Replace all attributes of this Script Template
 
         Parameters
@@ -52073,7 +52074,7 @@ class _Templates:
         note: str | None = ...,
         ui_report_id: int | None = ...,
         archived: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseTemplatesPatchScripts:
         """Update some attributes of this Script Template
 
         Parameters
@@ -52175,7 +52176,7 @@ class _Usage:
         task: str | None = ...,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsageListMatching:
         """Get usage statistics for a given organization
 
         Parameters
@@ -52217,7 +52218,7 @@ class _Usage:
         org_id: int | None = ...,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsageListLlm:
         """Get a list of usage statistics for a given organization
 
         Parameters
@@ -52264,7 +52265,7 @@ class _Usage:
     def get_llm(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsageGetLlm:
         """Get an individual usage statistic for a given organization
 
         Parameters
@@ -52305,7 +52306,7 @@ class _Usage:
         org_id: int,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsageListLlmOrganizationSummary:
         """Get summarized usage statistics for a given organization
 
         Parameters
@@ -52335,7 +52336,7 @@ class _Usage_Limits:
     def list_matching(
         self,
         task: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsageLimitsListMatching:
         """List Matching Usage Limits
 
         Parameters
@@ -52367,7 +52368,7 @@ class _Usage_Limits:
     def get_matching(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsageLimitsGetMatching:
         """Get a Matching Usage Limit
 
         Parameters
@@ -52399,7 +52400,7 @@ class _Usage_Limits:
     def list_llm(
         self,
         organization_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsageLimitsListLlm:
         """List LLM Usage Limits
 
         Parameters
@@ -52427,7 +52428,7 @@ class _Usage_Limits:
     def get_llm(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsageLimitsGetLlm:
         """Get a LLM Usage Limit
 
         Parameters
@@ -52467,7 +52468,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List users
 
         Parameters
@@ -52570,7 +52571,7 @@ class _Users:
         exempt_from_org_sms_otp_disabled: bool | None = ...,
         robot: bool | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsersPost:
         """Create a new user (must be a team or org admin)
 
         Parameters
@@ -52708,7 +52709,7 @@ class _Users:
 
     def list_me(
         self,
-    ) -> Response:
+    ) -> _ResponseUsersListMe:
         """Show info about the logged-in user
 
         Returns
@@ -52783,7 +52784,7 @@ class _Users:
         self,
         preferences: dict | None = ...,
         last_checked_announcements: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsersPatchMe:
         """Update info about the logged-in user
 
         Parameters
@@ -53017,7 +53018,7 @@ class _Users:
         status: str | None = ...,
         author: str | None = ...,
         order: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsersListMeActivity:
         """Get recent activity for logged-in user
 
         Parameters
@@ -53060,7 +53061,7 @@ class _Users:
 
     def list_me_organization_admins(
         self,
-    ) -> Response:
+    ) -> _ResponseUsersListMeOrganizationAdmins:
         """Get list of organization admins for logged-in user
 
         Returns
@@ -53083,7 +53084,7 @@ class _Users:
 
     def list_me_themes(
         self,
-    ) -> Response:
+    ) -> _ResponseUsersListMeThemes:
         """List themes
 
         Returns
@@ -53101,7 +53102,7 @@ class _Users:
     def get_me_themes(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsersGetMeThemes:
         """Show a theme
 
         Parameters
@@ -53133,7 +53134,7 @@ class _Users:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsersGet:
         """Show info about a user
 
         Parameters
@@ -53255,7 +53256,7 @@ class _Users:
         phone: str | None = ...,
         password: str | None = ...,
         account_status: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsersPatch:
         """Update info about a user (must be a team or org admin)
 
         Parameters
@@ -53404,7 +53405,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """Show API keys belonging to the specified user
 
         Parameters
@@ -53460,7 +53461,7 @@ class _Users:
         expires_in: int,
         name: str,
         constraints: List[dict] | None = ...,
-    ) -> Response:
+    ) -> _ResponseUsersPostApiKeys:
         """Create a new API key belonging to the logged-in user
 
         Parameters
@@ -53542,7 +53543,7 @@ class _Users:
         self,
         id: str,
         key_id: int,
-    ) -> Response:
+    ) -> _ResponseUsersGetApiKeys:
         """Show the specified API key
 
         Parameters
@@ -53601,7 +53602,7 @@ class _Users:
         self,
         id: str,
         key_id: int,
-    ) -> Response:
+    ) -> _ResponseUsersDeleteApiKeys:
         """Revoke the specified API key
 
         Parameters
@@ -53659,7 +53660,7 @@ class _Users:
     def delete_sessions(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsersDeleteSessions:
         """Terminate all of the user's active sessions (must be a team or org admin)
 
         Parameters
@@ -53767,7 +53768,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Favorites
 
         Parameters
@@ -53835,7 +53836,7 @@ class _Users:
         self,
         object_id: int,
         object_type: str,
-    ) -> Response:
+    ) -> _ResponseUsersPostMeFavorites:
         """Favorite an item
 
         Parameters
@@ -53903,7 +53904,7 @@ class _Users:
     def post_unsuspend(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsersPostUnsuspend:
         """Unsuspends user
 
         Parameters
@@ -53926,7 +53927,7 @@ class _Users:
     def delete_2fa(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseUsersDelete2Fa:
         """Wipes the user's current 2FA settings so that they must reset them upon next
         login
 
@@ -54058,7 +54059,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List Workflows
 
         Parameters
@@ -54157,7 +54158,7 @@ class _Workflows:
         time_zone: str | None = ...,
         notifications: dict | None = ...,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPost:
         """Create a Workflow
 
         Parameters
@@ -54296,7 +54297,7 @@ class _Workflows:
     def get(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsGet:
         """Get a Workflow
 
         Parameters
@@ -54395,7 +54396,7 @@ class _Workflows:
         allow_concurrent_executions: bool | None = ...,
         time_zone: str | None = ...,
         notifications: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPut:
         """Replace all attributes of this Workflow
 
         Parameters
@@ -54538,7 +54539,7 @@ class _Workflows:
         allow_concurrent_executions: bool | None = ...,
         time_zone: str | None = ...,
         notifications: dict | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPatch:
         """Update some attributes of this Workflow
 
         Parameters
@@ -54674,7 +54675,7 @@ class _Workflows:
     def list_shares(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsListShares:
         """List users and groups permissioned on this object
 
         Parameters
@@ -54722,7 +54723,7 @@ class _Workflows:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPutSharesUsers:
         """Set the permissions users have on this object
 
         Parameters
@@ -54799,7 +54800,7 @@ class _Workflows:
         permission_level: str,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPutSharesGroups:
         """Set the permissions groups has on this object
 
         Parameters
@@ -54873,7 +54874,7 @@ class _Workflows:
         self,
         id: int,
         user_id: int | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsListDependencies:
         """List dependent objects for this object
 
         Parameters
@@ -54913,7 +54914,7 @@ class _Workflows:
         include_dependencies: bool,
         email_body: str | None = ...,
         send_email: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPutTransfer:
         """Transfer ownership of this object to another user
 
         Parameters
@@ -54959,7 +54960,7 @@ class _Workflows:
         self,
         id: int,
         status: bool,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPutArchive:
         """Update the archive status of this object
 
         Parameters
@@ -55055,7 +55056,7 @@ class _Workflows:
         self,
         id: int,
         hidden: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsListProjects:
         """List the projects a Workflow belongs to
 
         Parameters
@@ -55152,7 +55153,7 @@ class _Workflows:
     def list_git(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsListGit:
         """Get the git metadata attached to an item
 
         Parameters
@@ -55194,7 +55195,7 @@ class _Workflows:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPutGit:
         """Attach an item to a file in a git repo
 
         Parameters
@@ -55249,7 +55250,7 @@ class _Workflows:
         git_repo_url: str | None = ...,
         git_ref_type: str | None = ...,
         pull_from_git: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPatchGit:
         """Update an attached git file
 
         Parameters
@@ -55298,7 +55299,7 @@ class _Workflows:
     def list_git_commits(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsListGitCommits:
         """Get the git commits for an item on the current branch
 
         Parameters
@@ -55326,7 +55327,7 @@ class _Workflows:
         content: str,
         message: str,
         file_hash: str,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostGitCommits:
         """Commit and push a new version of the file
 
         Parameters
@@ -55358,7 +55359,7 @@ class _Workflows:
         self,
         id: int,
         commit_hash: str,
-    ) -> Response:
+    ) -> _ResponseWorkflowsGetGitCommits:
         """Get file contents at git ref
 
         Parameters
@@ -55385,7 +55386,7 @@ class _Workflows:
     def post_git_checkout_latest(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
         Parameters
@@ -55410,7 +55411,7 @@ class _Workflows:
     def post_git_checkout(
         self,
         id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
@@ -55437,7 +55438,7 @@ class _Workflows:
         id: int,
         clone_schedule: bool | None = ...,
         clone_notifications: bool | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostClone:
         """Clone this Workflow
 
         Parameters
@@ -55539,7 +55540,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse:
+    ) -> Iterator:
         """List workflow executions
 
         Parameters
@@ -55601,7 +55602,7 @@ class _Workflows:
         target_task: str | None = ...,
         input: dict | None = ...,
         included_tasks: List[str] | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostExecutions:
         """Execute a workflow
 
         Parameters
@@ -55706,7 +55707,7 @@ class _Workflows:
         self,
         id: int,
         execution_id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsGetExecutions:
         """Get a workflow execution
 
         Parameters
@@ -55806,7 +55807,7 @@ class _Workflows:
         self,
         id: int,
         execution_id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostExecutionsCancel:
         """Cancel a workflow execution
 
         Parameters
@@ -55906,7 +55907,7 @@ class _Workflows:
         self,
         id: int,
         execution_id: int,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostExecutionsResume:
         """Resume a paused workflow execution
 
         Parameters
@@ -56007,7 +56008,7 @@ class _Workflows:
         id: int,
         execution_id: int,
         task_name: str | None = ...,
-    ) -> Response:
+    ) -> _ResponseWorkflowsPostExecutionsRetry:
         """Retry a failed task, or all failed tasks in an execution
 
         Parameters
@@ -56111,7 +56112,7 @@ class _Workflows:
         id: int,
         execution_id: int,
         task_name: str,
-    ) -> Response:
+    ) -> _ResponseWorkflowsGetExecutionsTasks:
         """Get a task of a workflow execution
 
         Parameters
@@ -56171,6 +56172,17032 @@ class _Workflows:
                     The time this execution finished.
         """
         ...
+
+class _ResponseAdminListOrganizations(Response):
+    id: int
+    name: str
+    slug: str
+    account_manager_id: int
+    cs_specialist_id: int
+    status: str
+    org_type: str
+    custom_branding: str
+    contract_size: int
+    max_analyst_users: int
+    max_report_users: int
+    vertical: str
+    cs_metadata: str
+    remove_footer_in_emails: bool
+    salesforce_account_id: str
+    tableau_site_id: str
+    fedramp_enabled: bool
+    created_by_id: int
+    last_updated_by_id: int
+    advanced_settings: _ResponseAdminListOrganizationsAdvancedSettings
+    tableau_refresh_history: List
+
+class _ResponseAdminListOrganizationsAdvancedSettings(Response):
+    dedicated_dj_pool_enabled: bool
+
+class _ResponseAliasesListShares(Response):
+    readers: _ResponseAliasesListSharesReaders
+    writers: _ResponseAliasesListSharesWriters
+    owners: _ResponseAliasesListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseAliasesListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesUsers(Response):
+    readers: _ResponseAliasesPutSharesUsersReaders
+    writers: _ResponseAliasesPutSharesUsersWriters
+    owners: _ResponseAliasesPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseAliasesPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesGroups(Response):
+    readers: _ResponseAliasesPutSharesGroupsReaders
+    writers: _ResponseAliasesPutSharesGroupsWriters
+    owners: _ResponseAliasesPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseAliasesPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseAliasesListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseAliasesPutTransfer(Response):
+    dependencies: List
+
+class _ResponseAliasesPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseAliasesPost(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
+class _ResponseAliasesGet(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
+class _ResponseAliasesPut(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
+class _ResponseAliasesPatch(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
+class _ResponseAliasesGetObjectType(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
+class _ResponseClustersGetKubernetes(Response):
+    id: int
+    organization_id: str
+    organization_name: str
+    organization_slug: str
+    raw_cluster_slug: str
+    custom_partitions: bool
+    cluster_partitions: List
+    is_nat_enabled: bool
+    hours: float
+
+class _ResponseClustersGetKubernetesClusterPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: List
+    default_instance_config_id: int
+
+class _ResponseClustersListKubernetesComputeHours(Response):
+    total_normalized_hours: int
+    normalized_hours_by_instance_type: str
+    updated_at: str
+    month_and_year: str
+
+class _ResponseClustersListKubernetesDeploymentStats(Response):
+    base_type: str
+    state: str
+    count: int
+    total_cpu: int
+    total_memory: int
+
+class _ResponseClustersListKubernetesPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: List
+    default_instance_config_id: int
+
+class _ResponseClustersListKubernetesPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: _ResponseClustersListKubernetesPartitionsUsageStats
+
+class _ResponseClustersPostKubernetesPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: List
+    default_instance_config_id: int
+
+class _ResponseClustersPostKubernetesPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: _ResponseClustersPostKubernetesPartitionsUsageStats
+
+class _ResponseClustersPatchKubernetesPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: List
+    default_instance_config_id: int
+
+class _ResponseClustersPatchKubernetesPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: _ResponseClustersPatchKubernetesPartitionsUsageStats
+
+class _ResponseClustersGetKubernetesPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: List
+    default_instance_config_id: int
+
+class _ResponseClustersGetKubernetesPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: _ResponseClustersGetKubernetesPartitionsUsageStats
+
+class _ResponseClustersGetKubernetesInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: _ResponseClustersGetKubernetesInstanceConfigsUsageStats
+    cluster_partition_id: int
+    cluster_partition_name: str
+
+class _ResponseClustersGetKubernetesInstanceConfigsUsageStats(Response):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
+
+class _ResponseClustersListKubernetesInstanceConfigsActiveWorkloads(Response):
+    id: int
+    base_type: str
+    base_id: int
+    base_object_name: str
+    job_type: str
+    job_id: int
+    job_cancel_requested_at: str
+    state: str
+    cpu: int
+    memory: int
+    disk_space: int
+    user: _ResponseClustersListKubernetesInstanceConfigsActiveWorkloadsUser
+    created_at: str
+    cancellable: bool
+
+class _ResponseClustersListKubernetesInstanceConfigsActiveWorkloadsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseClustersListKubernetesInstanceConfigsUserStatistics(Response):
+    user_id: str
+    user_name: str
+    pending_deployments: int
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_deployments: int
+    running_memory_requested: int
+    running_cpu_requested: int
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs(Response):
+    cpu_graph_url: str
+    mem_graph_url: str
+
+class _ResponseCredentialsListTypes(Response):
+    types: List
+
+class _ResponseCredentialsPost(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsPostUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCredentialsPut(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsPutUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCredentialsPatch(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsPatchUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCredentialsGet(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsGetUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCredentialsPostAuthenticate(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsPostAuthenticateUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsPostAuthenticateUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCredentialsPostTemporary(Response):
+    access_key: str
+    secret_access_key: str
+    session_token: str
+
+class _ResponseCredentialsListShares(Response):
+    readers: _ResponseCredentialsListSharesReaders
+    writers: _ResponseCredentialsListSharesWriters
+    owners: _ResponseCredentialsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseCredentialsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesUsers(Response):
+    readers: _ResponseCredentialsPutSharesUsersReaders
+    writers: _ResponseCredentialsPutSharesUsersWriters
+    owners: _ResponseCredentialsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseCredentialsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesGroups(Response):
+    readers: _ResponseCredentialsPutSharesGroupsReaders
+    writers: _ResponseCredentialsPutSharesGroupsWriters
+    owners: _ResponseCredentialsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseCredentialsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseCredentialsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseCredentialsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseCredentialsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseDatabasesList(Response):
+    id: int
+    name: str
+    adapter: str
+    cluster_identifier: str
+    managed: bool
+
+class _ResponseDatabasesGet(Response):
+    id: int
+    name: str
+    adapter: str
+    cluster_identifier: str
+    managed: bool
+
+class _ResponseDatabasesListSchemas(Response):
+    schema: str
+
+class _ResponseDatabasesListSchemasTables(Response):
+    name: str
+    schema: str
+    is_view: bool
+    database_id: int
+
+class _ResponseDatabasesGetSchemasTables(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    data_updated_at: str
+    schema_updated_at: str
+    refresh_id: str
+    last_run: _ResponseDatabasesGetSchemasTablesLastRun
+    primary_keys: List
+    last_modified_keys: List
+    table_tags: List
+    ontology_mapping: dict
+    columns: List
+    joins: List
+    multipart_key: List
+    enhancements: List
+    view_def: str
+    table_def: str
+    outgoing_table_matches: List
+
+class _ResponseDatabasesGetSchemasTablesLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesGetSchemasTablesTableTags(Response):
+    id: int
+    name: str
+
+class _ResponseDatabasesGetSchemasTablesColumns(Response):
+    name: str
+    civis_data_type: str
+    sql_type: str
+    sample_values: List
+    encoding: str
+    description: str
+    order: int
+    min_value: str
+    max_value: str
+    avg_value: float
+    stddev: float
+    value_distribution_percent: dict
+    coverage_count: int
+    null_count: int
+    possible_dependent_variable_types: List
+    useable_as_independent_variable: bool
+    useable_as_primary_key: bool
+    value_distribution: dict
+    distinct_count: int
+
+class _ResponseDatabasesGetSchemasTablesJoins(Response):
+    id: int
+    left_table_id: int
+    left_identifier: str
+    right_table_id: int
+    right_identifier: str
+    on: str
+    left_join: bool
+    created_at: str
+    updated_at: str
+
+class _ResponseDatabasesGetSchemasTablesEnhancements(Response):
+    type: str
+    created_at: str
+    updated_at: str
+    join_id: int
+
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatches(Response):
+    source_table_id: int
+    target_type: str
+    target_id: int
+    target: _ResponseDatabasesGetSchemasTablesTarget
+    job: _ResponseDatabasesGetSchemasTablesJob
+
+class _ResponseDatabasesPatchSchemasTables(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    data_updated_at: str
+    schema_updated_at: str
+    refresh_id: str
+    last_run: _ResponseDatabasesPatchSchemasTablesLastRun
+    primary_keys: List
+    last_modified_keys: List
+    table_tags: List
+    ontology_mapping: dict
+    columns: List
+    joins: List
+    multipart_key: List
+    enhancements: List
+    view_def: str
+    table_def: str
+    outgoing_table_matches: List
+
+class _ResponseDatabasesPatchSchemasTablesLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesPatchSchemasTablesTableTags(Response):
+    id: int
+    name: str
+
+class _ResponseDatabasesPatchSchemasTablesColumns(Response):
+    name: str
+    civis_data_type: str
+    sql_type: str
+    sample_values: List
+    encoding: str
+    description: str
+    order: int
+    min_value: str
+    max_value: str
+    avg_value: float
+    stddev: float
+    value_distribution_percent: dict
+    coverage_count: int
+    null_count: int
+    possible_dependent_variable_types: List
+    useable_as_independent_variable: bool
+    useable_as_primary_key: bool
+    value_distribution: dict
+    distinct_count: int
+
+class _ResponseDatabasesPatchSchemasTablesJoins(Response):
+    id: int
+    left_table_id: int
+    left_identifier: str
+    right_table_id: int
+    right_identifier: str
+    on: str
+    left_join: bool
+    created_at: str
+    updated_at: str
+
+class _ResponseDatabasesPatchSchemasTablesEnhancements(Response):
+    type: str
+    created_at: str
+    updated_at: str
+    join_id: int
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatches(Response):
+    source_table_id: int
+    target_type: str
+    target_id: int
+    target: _ResponseDatabasesPatchSchemasTablesTarget
+    job: _ResponseDatabasesPatchSchemasTablesJob
+
+class _ResponseDatabasesPostSchemasScan(Response):
+    job_id: int
+    run_id: int
+
+class _ResponseDatabasesGetTablePrivilegesSchemaName(Response):
+    grantee: str
+    grantee_type: str
+    privileges: List
+    grantable_privileges: List
+
+class _ResponseDatabasesGetSchemaPrivileges(Response):
+    grantee: str
+    grantee_type: str
+    privileges: List
+    grantable_privileges: List
+
+class _ResponseDatabasesListUsers(Response):
+    username: str
+    active: bool
+
+class _ResponseDatabasesListGroups(Response):
+    group_name: str
+    members: List
+
+class _ResponseDatabasesListWhitelistIps(Response):
+    id: int
+    remote_host_id: int
+    security_group_id: str
+    subnet_mask: str
+    created_at: str
+    updated_at: str
+
+class _ResponseDatabasesGetWhitelistIps(Response):
+    id: int
+    remote_host_id: int
+    security_group_id: str
+    subnet_mask: str
+    authorized_by: str
+    is_active: bool
+    created_at: str
+    updated_at: str
+
+class _ResponseDatabasesListAdvancedSettings(Response):
+    export_caching_enabled: bool
+
+class _ResponseDatabasesPatchAdvancedSettings(Response):
+    export_caching_enabled: bool
+
+class _ResponseDatabasesPutAdvancedSettings(Response):
+    export_caching_enabled: bool
+
+class _ResponseDatabasesGetStatusGraphsTimeframe(Response):
+    cpu_graph_url: str
+    disk_graph_url: str
+    queue_length_graph_url: str
+    status_graph_url: str
+    maintenance_graph_url: str
+    query_duration_graph_url: str
+
+class _ResponseEnhancementsPostCivisDataMatch(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostCivisDataMatchAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostCivisDataMatchSchedule
+    notifications: _ResponseEnhancementsPostCivisDataMatchNotifications
+    running_as: _ResponseEnhancementsPostCivisDataMatchRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsPostCivisDataMatchInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsPostCivisDataMatchOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsPostCivisDataMatchLastRun
+    parent_id: int
+
+class _ResponseEnhancementsPostCivisDataMatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCivisDataMatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostCivisDataMatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostCivisDataMatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCivisDataMatchInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPostCivisDataMatchOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPostCivisDataMatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsGetCivisDataMatch(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsGetCivisDataMatchAuthor
+    state: str
+    schedule: _ResponseEnhancementsGetCivisDataMatchSchedule
+    notifications: _ResponseEnhancementsGetCivisDataMatchNotifications
+    running_as: _ResponseEnhancementsGetCivisDataMatchRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsGetCivisDataMatchInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsGetCivisDataMatchOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsGetCivisDataMatchLastRun
+    parent_id: int
+
+class _ResponseEnhancementsGetCivisDataMatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetCivisDataMatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsGetCivisDataMatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetCivisDataMatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetCivisDataMatchInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsGetCivisDataMatchOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsGetCivisDataMatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsPutCivisDataMatch(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutCivisDataMatchAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutCivisDataMatchSchedule
+    notifications: _ResponseEnhancementsPutCivisDataMatchNotifications
+    running_as: _ResponseEnhancementsPutCivisDataMatchRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsPutCivisDataMatchInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsPutCivisDataMatchOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsPutCivisDataMatchLastRun
+    parent_id: int
+
+class _ResponseEnhancementsPutCivisDataMatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCivisDataMatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutCivisDataMatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutCivisDataMatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCivisDataMatchInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPutCivisDataMatchOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPutCivisDataMatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsPatchCivisDataMatch(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPatchCivisDataMatchAuthor
+    state: str
+    schedule: _ResponseEnhancementsPatchCivisDataMatchSchedule
+    notifications: _ResponseEnhancementsPatchCivisDataMatchNotifications
+    running_as: _ResponseEnhancementsPatchCivisDataMatchRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsPatchCivisDataMatchInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsPatchCivisDataMatchOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsPatchCivisDataMatchLastRun
+    parent_id: int
+
+class _ResponseEnhancementsPatchCivisDataMatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchCivisDataMatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPatchCivisDataMatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPatchCivisDataMatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchCivisDataMatchInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPatchCivisDataMatchOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPatchCivisDataMatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsPostCivisDataMatchClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostCivisDataMatchCloneAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostCivisDataMatchCloneSchedule
+    notifications: _ResponseEnhancementsPostCivisDataMatchCloneNotifications
+    running_as: _ResponseEnhancementsPostCivisDataMatchCloneRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsPostCivisDataMatchCloneInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsPostCivisDataMatchCloneOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsPostCivisDataMatchCloneLastRun
+    parent_id: int
+
+class _ResponseEnhancementsPostCivisDataMatchCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCivisDataMatchCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostCivisDataMatchCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostCivisDataMatchCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCivisDataMatchCloneInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPostCivisDataMatchCloneOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPostCivisDataMatchCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsPostCivisDataMatchRuns(Response):
+    id: int
+    civis_data_match_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsGetCivisDataMatchRuns(Response):
+    id: int
+    civis_data_match_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsListCivisDataMatchRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseEnhancementsPostCivisDataMatchCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseEnhancementsListCivisDataMatchShares(Response):
+    readers: _ResponseEnhancementsListCivisDataMatchSharesReaders
+    writers: _ResponseEnhancementsListCivisDataMatchSharesWriters
+    owners: _ResponseEnhancementsListCivisDataMatchSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsListCivisDataMatchSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCivisDataMatchSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCivisDataMatchSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsers(Response):
+    readers: _ResponseEnhancementsPutCivisDataMatchSharesUsersReaders
+    writers: _ResponseEnhancementsPutCivisDataMatchSharesUsersWriters
+    owners: _ResponseEnhancementsPutCivisDataMatchSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroups(Response):
+    readers: _ResponseEnhancementsPutCivisDataMatchSharesGroupsReaders
+    writers: _ResponseEnhancementsPutCivisDataMatchSharesGroupsWriters
+    owners: _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCivisDataMatchDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseEnhancementsPutCivisDataMatchTransfer(Response):
+    dependencies: List
+
+class _ResponseEnhancementsPutCivisDataMatchTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseEnhancementsPutCivisDataMatchArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutCivisDataMatchArchiveAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutCivisDataMatchArchiveSchedule
+    notifications: _ResponseEnhancementsPutCivisDataMatchArchiveNotifications
+    running_as: _ResponseEnhancementsPutCivisDataMatchArchiveRunningAs
+    my_permission_level: str
+    input_field_mapping: dict
+    input_table: _ResponseEnhancementsPutCivisDataMatchArchiveInputTable
+    match_target_id: int
+    output_table: _ResponseEnhancementsPutCivisDataMatchArchiveOutputTable
+    max_matches: int
+    threshold: float
+    archived: bool
+    last_run: _ResponseEnhancementsPutCivisDataMatchArchiveLastRun
+    parent_id: int
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveInputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveOutputTable(Response):
+    database_name: str
+    schema: str
+    table: str
+
+class _ResponseEnhancementsPutCivisDataMatchArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsListCivisDataMatchProjects(Response):
+    id: int
+    author: _ResponseEnhancementsListCivisDataMatchProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseEnhancementsListCivisDataMatchProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListCivisDataMatchProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostIdentityResolution(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostIdentityResolutionAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostIdentityResolutionSchedule
+    notifications: _ResponseEnhancementsPostIdentityResolutionNotifications
+    running_as: _ResponseEnhancementsPostIdentityResolutionRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsPostIdentityResolutionCustomerGraph
+    golden_table: _ResponseEnhancementsPostIdentityResolutionGoldenTable
+    link_scores: _ResponseEnhancementsPostIdentityResolutionLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsPostIdentityResolutionLastRun
+
+class _ResponseEnhancementsPostIdentityResolutionAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostIdentityResolutionSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostIdentityResolutionNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostIdentityResolutionRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostIdentityResolutionSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsPostIdentityResolutionEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsPostIdentityResolutionCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPostIdentityResolutionGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsPostIdentityResolutionLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPostIdentityResolutionLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPostIdentityResolutionRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsPutIdentityResolution(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutIdentityResolutionAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutIdentityResolutionSchedule
+    notifications: _ResponseEnhancementsPutIdentityResolutionNotifications
+    running_as: _ResponseEnhancementsPutIdentityResolutionRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsPutIdentityResolutionCustomerGraph
+    golden_table: _ResponseEnhancementsPutIdentityResolutionGoldenTable
+    link_scores: _ResponseEnhancementsPutIdentityResolutionLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsPutIdentityResolutionLastRun
+
+class _ResponseEnhancementsPutIdentityResolutionAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutIdentityResolutionSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutIdentityResolutionNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutIdentityResolutionRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutIdentityResolutionSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsPutIdentityResolutionEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsPutIdentityResolutionCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPutIdentityResolutionGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsPutIdentityResolutionLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPutIdentityResolutionLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPutIdentityResolutionRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsPatchIdentityResolution(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPatchIdentityResolutionAuthor
+    state: str
+    schedule: _ResponseEnhancementsPatchIdentityResolutionSchedule
+    notifications: _ResponseEnhancementsPatchIdentityResolutionNotifications
+    running_as: _ResponseEnhancementsPatchIdentityResolutionRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsPatchIdentityResolutionCustomerGraph
+    golden_table: _ResponseEnhancementsPatchIdentityResolutionGoldenTable
+    link_scores: _ResponseEnhancementsPatchIdentityResolutionLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsPatchIdentityResolutionLastRun
+
+class _ResponseEnhancementsPatchIdentityResolutionAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchIdentityResolutionSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPatchIdentityResolutionNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPatchIdentityResolutionRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchIdentityResolutionSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsPatchIdentityResolutionEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsPatchIdentityResolutionCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPatchIdentityResolutionGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsPatchIdentityResolutionLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPatchIdentityResolutionLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPatchIdentityResolutionRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsGetIdentityResolution(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsGetIdentityResolutionAuthor
+    state: str
+    schedule: _ResponseEnhancementsGetIdentityResolutionSchedule
+    notifications: _ResponseEnhancementsGetIdentityResolutionNotifications
+    running_as: _ResponseEnhancementsGetIdentityResolutionRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsGetIdentityResolutionCustomerGraph
+    golden_table: _ResponseEnhancementsGetIdentityResolutionGoldenTable
+    link_scores: _ResponseEnhancementsGetIdentityResolutionLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsGetIdentityResolutionLastRun
+
+class _ResponseEnhancementsGetIdentityResolutionAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetIdentityResolutionSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsGetIdentityResolutionNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetIdentityResolutionRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetIdentityResolutionSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsGetIdentityResolutionEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsGetIdentityResolutionCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsGetIdentityResolutionGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsGetIdentityResolutionLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsGetIdentityResolutionLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsGetIdentityResolutionRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsPostIdentityResolutionClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostIdentityResolutionCloneAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostIdentityResolutionCloneSchedule
+    notifications: _ResponseEnhancementsPostIdentityResolutionCloneNotifications
+    running_as: _ResponseEnhancementsPostIdentityResolutionCloneRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsPostIdentityResolutionCloneCustomerGraph
+    golden_table: _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable
+    link_scores: _ResponseEnhancementsPostIdentityResolutionCloneLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsPostIdentityResolutionCloneLastRun
+
+class _ResponseEnhancementsPostIdentityResolutionCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostIdentityResolutionCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostIdentityResolutionCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostIdentityResolutionCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostIdentityResolutionCloneSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsPostIdentityResolutionCloneEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsPostIdentityResolutionCloneCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsPostIdentityResolutionCloneLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPostIdentityResolutionCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPostIdentityResolutionCloneRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsPostIdentityResolutionRuns(Response):
+    id: int
+    identity_resolution_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPostIdentityResolutionRunsRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsPostIdentityResolutionRunsRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
+
+class _ResponseEnhancementsGetIdentityResolutionRuns(Response):
+    id: int
+    identity_resolution_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsGetIdentityResolutionRunsRunMetrics
+    error_section: str
+
+class _ResponseEnhancementsGetIdentityResolutionRunsRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
+
+class _ResponseEnhancementsListIdentityResolutionRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseEnhancementsPostIdentityResolutionCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseEnhancementsListTypes(Response):
+    name: str
+
+class _ResponseEnhancementsListFieldMapping(Response):
+    field: str
+    description: str
+
+class _ResponseEnhancementsPostCassNcoa(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostCassNcoaAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostCassNcoaSchedule
+    notifications: _ResponseEnhancementsPostCassNcoaNotifications
+    running_as: _ResponseEnhancementsPostCassNcoaRunningAs
+    my_permission_level: str
+    source: _ResponseEnhancementsPostCassNcoaSource
+    destination: _ResponseEnhancementsPostCassNcoaDestination
+    column_mapping: _ResponseEnhancementsPostCassNcoaColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPostCassNcoaAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCassNcoaSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostCassNcoaNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostCassNcoaRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostCassNcoaSource(Response):
+    database_table: _ResponseEnhancementsPostCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPostCassNcoaDestination(Response):
+    database_table: _ResponseEnhancementsPostCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPostCassNcoaColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
+class _ResponseEnhancementsGetCassNcoa(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsGetCassNcoaAuthor
+    state: str
+    schedule: _ResponseEnhancementsGetCassNcoaSchedule
+    notifications: _ResponseEnhancementsGetCassNcoaNotifications
+    running_as: _ResponseEnhancementsGetCassNcoaRunningAs
+    my_permission_level: str
+    source: _ResponseEnhancementsGetCassNcoaSource
+    destination: _ResponseEnhancementsGetCassNcoaDestination
+    column_mapping: _ResponseEnhancementsGetCassNcoaColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsGetCassNcoaAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetCassNcoaSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsGetCassNcoaNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetCassNcoaRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetCassNcoaSource(Response):
+    database_table: _ResponseEnhancementsGetCassNcoaDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaDestination(Response):
+    database_table: _ResponseEnhancementsGetCassNcoaDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
+class _ResponseEnhancementsPutCassNcoa(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutCassNcoaAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutCassNcoaSchedule
+    notifications: _ResponseEnhancementsPutCassNcoaNotifications
+    running_as: _ResponseEnhancementsPutCassNcoaRunningAs
+    my_permission_level: str
+    source: _ResponseEnhancementsPutCassNcoaSource
+    destination: _ResponseEnhancementsPutCassNcoaDestination
+    column_mapping: _ResponseEnhancementsPutCassNcoaColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPutCassNcoaAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCassNcoaSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutCassNcoaNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutCassNcoaRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCassNcoaSource(Response):
+    database_table: _ResponseEnhancementsPutCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaDestination(Response):
+    database_table: _ResponseEnhancementsPutCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
+class _ResponseEnhancementsPatchCassNcoa(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPatchCassNcoaAuthor
+    state: str
+    schedule: _ResponseEnhancementsPatchCassNcoaSchedule
+    notifications: _ResponseEnhancementsPatchCassNcoaNotifications
+    running_as: _ResponseEnhancementsPatchCassNcoaRunningAs
+    my_permission_level: str
+    source: _ResponseEnhancementsPatchCassNcoaSource
+    destination: _ResponseEnhancementsPatchCassNcoaDestination
+    column_mapping: _ResponseEnhancementsPatchCassNcoaColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPatchCassNcoaAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchCassNcoaSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPatchCassNcoaNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPatchCassNcoaRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchCassNcoaSource(Response):
+    database_table: _ResponseEnhancementsPatchCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPatchCassNcoaDestination(Response):
+    database_table: _ResponseEnhancementsPatchCassNcoaDatabaseTable
+
+class _ResponseEnhancementsPatchCassNcoaColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
+class _ResponseEnhancementsPostCassNcoaRuns(Response):
+    id: int
+    cass_ncoa_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsGetCassNcoaRuns(Response):
+    id: int
+    cass_ncoa_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsListCassNcoaRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseEnhancementsPostCassNcoaCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseEnhancementsPostGeocode(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostGeocodeAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostGeocodeSchedule
+    notifications: _ResponseEnhancementsPostGeocodeNotifications
+    running_as: _ResponseEnhancementsPostGeocodeRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPostGeocodeAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostGeocodeSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPostGeocodeNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostGeocodeRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetGeocode(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsGetGeocodeAuthor
+    state: str
+    schedule: _ResponseEnhancementsGetGeocodeSchedule
+    notifications: _ResponseEnhancementsGetGeocodeNotifications
+    running_as: _ResponseEnhancementsGetGeocodeRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsGetGeocodeAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsGetGeocodeSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsGetGeocodeNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetGeocodeRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutGeocode(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutGeocodeAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutGeocodeSchedule
+    notifications: _ResponseEnhancementsPutGeocodeNotifications
+    running_as: _ResponseEnhancementsPutGeocodeRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPutGeocodeAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutGeocodeSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutGeocodeNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutGeocodeRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchGeocode(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPatchGeocodeAuthor
+    state: str
+    schedule: _ResponseEnhancementsPatchGeocodeSchedule
+    notifications: _ResponseEnhancementsPatchGeocodeNotifications
+    running_as: _ResponseEnhancementsPatchGeocodeRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPatchGeocodeAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPatchGeocodeSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPatchGeocodeNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPatchGeocodeRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostGeocodeRuns(Response):
+    id: int
+    geocode_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsGetGeocodeRuns(Response):
+    id: int
+    geocode_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseEnhancementsListGeocodeRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseEnhancementsPostGeocodeCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseEnhancementsListCassNcoaShares(Response):
+    readers: _ResponseEnhancementsListCassNcoaSharesReaders
+    writers: _ResponseEnhancementsListCassNcoaSharesWriters
+    owners: _ResponseEnhancementsListCassNcoaSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsListCassNcoaSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCassNcoaSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCassNcoaSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesUsers(Response):
+    readers: _ResponseEnhancementsPutCassNcoaSharesUsersReaders
+    writers: _ResponseEnhancementsPutCassNcoaSharesUsersWriters
+    owners: _ResponseEnhancementsPutCassNcoaSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesGroups(Response):
+    readers: _ResponseEnhancementsPutCassNcoaSharesGroupsReaders
+    writers: _ResponseEnhancementsPutCassNcoaSharesGroupsWriters
+    owners: _ResponseEnhancementsPutCassNcoaSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListCassNcoaDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseEnhancementsPutCassNcoaTransfer(Response):
+    dependencies: List
+
+class _ResponseEnhancementsPutCassNcoaTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseEnhancementsListCassNcoaProjects(Response):
+    id: int
+    author: _ResponseEnhancementsListCassNcoaProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseEnhancementsListCassNcoaProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListCassNcoaProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCassNcoaArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutCassNcoaArchiveAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutCassNcoaArchiveSchedule
+    notifications: _ResponseEnhancementsPutCassNcoaArchiveNotifications
+    running_as: _ResponseEnhancementsPutCassNcoaArchiveRunningAs
+    my_permission_level: str
+    source: _ResponseEnhancementsPutCassNcoaArchiveSource
+    destination: _ResponseEnhancementsPutCassNcoaArchiveDestination
+    column_mapping: _ResponseEnhancementsPutCassNcoaArchiveColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPutCassNcoaArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCassNcoaArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutCassNcoaArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutCassNcoaArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutCassNcoaArchiveSource(Response):
+    database_table: _ResponseEnhancementsPutCassNcoaArchiveDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaArchiveDestination(Response):
+    database_table: _ResponseEnhancementsPutCassNcoaArchiveDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaArchiveColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
+class _ResponseEnhancementsListGeocodeShares(Response):
+    readers: _ResponseEnhancementsListGeocodeSharesReaders
+    writers: _ResponseEnhancementsListGeocodeSharesWriters
+    owners: _ResponseEnhancementsListGeocodeSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsListGeocodeSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListGeocodeSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListGeocodeSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesUsers(Response):
+    readers: _ResponseEnhancementsPutGeocodeSharesUsersReaders
+    writers: _ResponseEnhancementsPutGeocodeSharesUsersWriters
+    owners: _ResponseEnhancementsPutGeocodeSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutGeocodeSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesGroups(Response):
+    readers: _ResponseEnhancementsPutGeocodeSharesGroupsReaders
+    writers: _ResponseEnhancementsPutGeocodeSharesGroupsWriters
+    owners: _ResponseEnhancementsPutGeocodeSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListGeocodeDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseEnhancementsPutGeocodeTransfer(Response):
+    dependencies: List
+
+class _ResponseEnhancementsPutGeocodeTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseEnhancementsListGeocodeProjects(Response):
+    id: int
+    author: _ResponseEnhancementsListGeocodeProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseEnhancementsListGeocodeProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListGeocodeProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutGeocodeArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutGeocodeArchiveAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutGeocodeArchiveSchedule
+    notifications: _ResponseEnhancementsPutGeocodeArchiveNotifications
+    running_as: _ResponseEnhancementsPutGeocodeArchiveRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPutGeocodeArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutGeocodeArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutGeocodeArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutGeocodeArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListIdentityResolutionShares(Response):
+    readers: _ResponseEnhancementsListIdentityResolutionSharesReaders
+    writers: _ResponseEnhancementsListIdentityResolutionSharesWriters
+    owners: _ResponseEnhancementsListIdentityResolutionSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsListIdentityResolutionSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListIdentityResolutionSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListIdentityResolutionSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsers(Response):
+    readers: _ResponseEnhancementsPutIdentityResolutionSharesUsersReaders
+    writers: _ResponseEnhancementsPutIdentityResolutionSharesUsersWriters
+    owners: _ResponseEnhancementsPutIdentityResolutionSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroups(Response):
+    readers: _ResponseEnhancementsPutIdentityResolutionSharesGroupsReaders
+    writers: _ResponseEnhancementsPutIdentityResolutionSharesGroupsWriters
+    owners: _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseEnhancementsListIdentityResolutionDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseEnhancementsPutIdentityResolutionTransfer(Response):
+    dependencies: List
+
+class _ResponseEnhancementsPutIdentityResolutionTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseEnhancementsListIdentityResolutionProjects(Response):
+    id: int
+    author: _ResponseEnhancementsListIdentityResolutionProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseEnhancementsListIdentityResolutionProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListIdentityResolutionProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutIdentityResolutionArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPutIdentityResolutionArchiveAuthor
+    state: str
+    schedule: _ResponseEnhancementsPutIdentityResolutionArchiveSchedule
+    notifications: _ResponseEnhancementsPutIdentityResolutionArchiveNotifications
+    running_as: _ResponseEnhancementsPutIdentityResolutionArchiveRunningAs
+    my_permission_level: str
+    archived: str
+    threshold: float
+    sources: List
+    match_target_id: int
+    enforced_links: List
+    customer_graph: _ResponseEnhancementsPutIdentityResolutionArchiveCustomerGraph
+    golden_table: _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable
+    link_scores: _ResponseEnhancementsPutIdentityResolutionArchiveLinkScores
+    legacy_id: int
+    last_run: _ResponseEnhancementsPutIdentityResolutionArchiveLastRun
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveSources(Response):
+    name: str
+    description: str
+    database_name: str
+    schema_name: str
+    table_name: str
+    field_mapping: dict
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveEnforcedLinks(Response):
+    source1: str
+    source1_join_col: str
+    source2: str
+    source2_join_col: str
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveCustomerGraph(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+    fields: List
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveLinkScores(Response):
+    database_name: str
+    schema_name: str
+    table_name: str
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    config: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsPutIdentityResolutionArchiveRunMetrics
+    error_section: str
+
+class _ResponseExportsPostFilesCsvRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    output_cached_on: str
+
+class _ResponseExportsGetFilesCsvRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    output_cached_on: str
+
+class _ResponseExportsListFilesCsvRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseExportsPostFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseExportsPostFilesCsvSource
+    destination: _ResponseExportsPostFilesCsvDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+    my_permission_level: str
+
+class _ResponseExportsPostFilesCsvSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsPostFilesCsvDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsPostFilesCsvStoragePath
+
+class _ResponseExportsGetFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseExportsGetFilesCsvSource
+    destination: _ResponseExportsGetFilesCsvDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+    my_permission_level: str
+
+class _ResponseExportsGetFilesCsvSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsGetFilesCsvDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsGetFilesCsvStoragePath
+
+class _ResponseExportsPutFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseExportsPutFilesCsvSource
+    destination: _ResponseExportsPutFilesCsvDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+    my_permission_level: str
+
+class _ResponseExportsPutFilesCsvSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsPutFilesCsvDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsPutFilesCsvStoragePath
+
+class _ResponseExportsPatchFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseExportsPatchFilesCsvSource
+    destination: _ResponseExportsPatchFilesCsvDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+    my_permission_level: str
+
+class _ResponseExportsPatchFilesCsvSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsPatchFilesCsvDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsPatchFilesCsvStoragePath
+
+class _ResponseExportsPutFilesCsvArchive(Response):
+    id: int
+    name: str
+    source: _ResponseExportsPutFilesCsvArchiveSource
+    destination: _ResponseExportsPutFilesCsvArchiveDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+    my_permission_level: str
+
+class _ResponseExportsPutFilesCsvArchiveSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsPutFilesCsvArchiveDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsPutFilesCsvArchiveStoragePath
+
+class _ResponseFilesListProjects(Response):
+    id: int
+    author: _ResponseFilesListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseFilesListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseFilesListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseFilesListShares(Response):
+    readers: _ResponseFilesListSharesReaders
+    writers: _ResponseFilesListSharesWriters
+    owners: _ResponseFilesListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseFilesListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesUsers(Response):
+    readers: _ResponseFilesPutSharesUsersReaders
+    writers: _ResponseFilesPutSharesUsersWriters
+    owners: _ResponseFilesPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseFilesPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesGroups(Response):
+    readers: _ResponseFilesPutSharesGroupsReaders
+    writers: _ResponseFilesPutSharesGroupsWriters
+    owners: _ResponseFilesPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseFilesPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseFilesListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseFilesPutTransfer(Response):
+    dependencies: List
+
+class _ResponseFilesPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseFilesPost(Response):
+    id: int
+    name: str
+    created_at: str
+    file_size: int
+    expires_at: str
+    upload_url: str
+    upload_fields: dict
+    my_permission_level: str
+
+class _ResponseFilesPostMultipart(Response):
+    id: int
+    name: str
+    created_at: str
+    file_size: int
+    expires_at: str
+    upload_urls: List
+
+class _ResponseFilesGet(Response):
+    id: int
+    name: str
+    created_at: str
+    file_size: int
+    expires_at: str
+    author: _ResponseFilesGetAuthor
+    download_url: str
+    file_url: str
+    detected_info: _ResponseFilesGetDetectedInfo
+    my_permission_level: str
+
+class _ResponseFilesGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseFilesGetDetectedInfo(Response):
+    include_header: bool
+    column_delimiter: str
+    compression: str
+    table_columns: List
+
+class _ResponseFilesPut(Response):
+    id: int
+    name: str
+    created_at: str
+    file_size: int
+    expires_at: str
+    author: _ResponseFilesPutAuthor
+    download_url: str
+    file_url: str
+    detected_info: _ResponseFilesPutDetectedInfo
+    my_permission_level: str
+
+class _ResponseFilesPutAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseFilesPutDetectedInfo(Response):
+    include_header: bool
+    column_delimiter: str
+    compression: str
+    table_columns: List
+
+class _ResponseFilesPatch(Response):
+    id: int
+    name: str
+    created_at: str
+    file_size: int
+    expires_at: str
+    author: _ResponseFilesPatchAuthor
+    download_url: str
+    file_url: str
+    detected_info: _ResponseFilesPatchDetectedInfo
+    my_permission_level: str
+
+class _ResponseFilesPatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseFilesPatchDetectedInfo(Response):
+    include_header: bool
+    column_delimiter: str
+    compression: str
+    table_columns: List
+
+class _ResponseFilesPostPreprocessCsv(Response):
+    id: int
+    file_id: int
+    in_place: bool
+    detect_table_columns: bool
+    force_character_set_conversion: bool
+    include_header: bool
+    column_delimiter: str
+    hidden: bool
+
+class _ResponseFilesGetPreprocessCsv(Response):
+    id: int
+    file_id: int
+    in_place: bool
+    detect_table_columns: bool
+    force_character_set_conversion: bool
+    include_header: bool
+    column_delimiter: str
+    hidden: bool
+
+class _ResponseFilesPutPreprocessCsv(Response):
+    id: int
+    file_id: int
+    in_place: bool
+    detect_table_columns: bool
+    force_character_set_conversion: bool
+    include_header: bool
+    column_delimiter: str
+    hidden: bool
+
+class _ResponseFilesPatchPreprocessCsv(Response):
+    id: int
+    file_id: int
+    in_place: bool
+    detect_table_columns: bool
+    force_character_set_conversion: bool
+    include_header: bool
+    column_delimiter: str
+    hidden: bool
+
+class _ResponseFilesPutPreprocessCsvArchive(Response):
+    id: int
+    file_id: int
+    in_place: bool
+    detect_table_columns: bool
+    force_character_set_conversion: bool
+    include_header: bool
+    column_delimiter: str
+    hidden: bool
+
+class _ResponseGitReposPost(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseGitReposGet(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseGitReposListRefs(Response):
+    branches: List
+    tags: List
+
+class _ResponseGroupsPost(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
+
+class _ResponseGroupsPostMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+    primary_group_id: int
+    active: bool
+
+class _ResponseGroupsGet(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
+
+class _ResponseGroupsGetMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+    primary_group_id: int
+    active: bool
+
+class _ResponseGroupsPut(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
+
+class _ResponseGroupsPutMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+    primary_group_id: int
+    active: bool
+
+class _ResponseGroupsPatch(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
+
+class _ResponseGroupsPatchMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+    primary_group_id: int
+    active: bool
+
+class _ResponseGroupsListShares(Response):
+    readers: _ResponseGroupsListSharesReaders
+    writers: _ResponseGroupsListSharesWriters
+    owners: _ResponseGroupsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseGroupsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesUsers(Response):
+    readers: _ResponseGroupsPutSharesUsersReaders
+    writers: _ResponseGroupsPutSharesUsersWriters
+    owners: _ResponseGroupsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseGroupsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesGroups(Response):
+    readers: _ResponseGroupsPutSharesGroupsReaders
+    writers: _ResponseGroupsPutSharesGroupsWriters
+    owners: _ResponseGroupsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseGroupsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseGroupsPutMembers(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
+
+class _ResponseGroupsPutMembersMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+    primary_group_id: int
+    active: bool
+
+class _ResponseGroupsListChildGroups(Response):
+    manageable: List
+    writeable: List
+    readable: List
+
+class _ResponseGroupsListChildGroupsManageable(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsListChildGroupsWriteable(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsListChildGroupsReadable(Response):
+    id: int
+    name: str
+
+class _ResponseImportsListShares(Response):
+    readers: _ResponseImportsListSharesReaders
+    writers: _ResponseImportsListSharesWriters
+    owners: _ResponseImportsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseImportsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesUsers(Response):
+    readers: _ResponseImportsPutSharesUsersReaders
+    writers: _ResponseImportsPutSharesUsersWriters
+    owners: _ResponseImportsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseImportsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesGroups(Response):
+    readers: _ResponseImportsPutSharesGroupsReaders
+    writers: _ResponseImportsPutSharesGroupsWriters
+    owners: _ResponseImportsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseImportsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseImportsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseImportsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseImportsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseImportsListProjects(Response):
+    id: int
+    author: _ResponseImportsListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseImportsListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPutArchive(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsPutArchiveSource
+    destination: _ResponseImportsPutArchiveDestination
+    schedule: _ResponseImportsPutArchiveSchedule
+    notifications: _ResponseImportsPutArchiveNotifications
+    parent_id: int
+    id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsPutArchiveLastRun
+    user: _ResponseImportsPutArchiveUser
+    running_as: _ResponseImportsPutArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsPutArchiveSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPutArchiveDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPutArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseImportsPutArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsPutArchiveSyncs(Response):
+    id: int
+    source: _ResponseImportsPutArchiveSource
+    destination: _ResponseImportsPutArchiveDestination
+    advanced_options: _ResponseImportsPutArchiveAdvancedOptions
+
+class _ResponseImportsPutArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPutArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPost(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsPostSource
+    destination: _ResponseImportsPostDestination
+    schedule: _ResponseImportsPostSchedule
+    notifications: _ResponseImportsPostNotifications
+    parent_id: int
+    id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsPostLastRun
+    user: _ResponseImportsPostUser
+    running_as: _ResponseImportsPostRunningAs
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsPostSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPostDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPostSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseImportsPostNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsPostSyncs(Response):
+    id: int
+    source: _ResponseImportsPostSource
+    destination: _ResponseImportsPostDestination
+    advanced_options: _ResponseImportsPostAdvancedOptions
+
+class _ResponseImportsPostLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPostRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPostFiles(Response):
+    id: int
+    upload_uri: str
+    run_uri: str
+    upload_fields: dict
+
+class _ResponseImportsPostFilesRuns(Response):
+    id: int
+    import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsGetFilesRuns(Response):
+    id: int
+    import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsListFilesRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseImportsListRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseImportsPostFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPostFilesCsvSource
+    destination: _ResponseImportsPostFilesCsvDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: _ResponseImportsPostFilesCsvRedshiftDestinationOptions
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseImportsPostFilesCsvSource(Response):
+    file_ids: List
+    storage_path: _ResponseImportsPostFilesCsvStoragePath
+
+class _ResponseImportsPostFilesCsvDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List
+    last_modified_keys: List
+
+class _ResponseImportsPostFilesCsvTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsPostFilesCsvRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List
+
+class _ResponseImportsGetFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseImportsGetFilesCsvSource
+    destination: _ResponseImportsGetFilesCsvDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: _ResponseImportsGetFilesCsvRedshiftDestinationOptions
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseImportsGetFilesCsvSource(Response):
+    file_ids: List
+    storage_path: _ResponseImportsGetFilesCsvStoragePath
+
+class _ResponseImportsGetFilesCsvDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List
+    last_modified_keys: List
+
+class _ResponseImportsGetFilesCsvTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsGetFilesCsvRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List
+
+class _ResponseImportsPutFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPutFilesCsvSource
+    destination: _ResponseImportsPutFilesCsvDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: _ResponseImportsPutFilesCsvRedshiftDestinationOptions
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseImportsPutFilesCsvSource(Response):
+    file_ids: List
+    storage_path: _ResponseImportsPutFilesCsvStoragePath
+
+class _ResponseImportsPutFilesCsvDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List
+    last_modified_keys: List
+
+class _ResponseImportsPutFilesCsvTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsPutFilesCsvRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List
+
+class _ResponseImportsPatchFilesCsv(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPatchFilesCsvSource
+    destination: _ResponseImportsPatchFilesCsvDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: (
+        _ResponseImportsPatchFilesCsvRedshiftDestinationOptions
+    )
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseImportsPatchFilesCsvSource(Response):
+    file_ids: List
+    storage_path: _ResponseImportsPatchFilesCsvStoragePath
+
+class _ResponseImportsPatchFilesCsvDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List
+    last_modified_keys: List
+
+class _ResponseImportsPatchFilesCsvTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsPatchFilesCsvRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List
+
+class _ResponseImportsPutFilesCsvArchive(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPutFilesCsvArchiveSource
+    destination: _ResponseImportsPutFilesCsvArchiveDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: (
+        _ResponseImportsPutFilesCsvArchiveRedshiftDestinationOptions
+    )
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseImportsPutFilesCsvArchiveSource(Response):
+    file_ids: List
+    storage_path: _ResponseImportsPutFilesCsvArchiveStoragePath
+
+class _ResponseImportsPutFilesCsvArchiveDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List
+    last_modified_keys: List
+
+class _ResponseImportsPutFilesCsvArchiveTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsPutFilesCsvArchiveRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List
+
+class _ResponseImportsPostFilesCsvRuns(Response):
+    id: int
+    csv_import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsGetFilesCsvRuns(Response):
+    id: int
+    csv_import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsListFilesCsvRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseImportsPostBatches(Response):
+    id: int
+    schema: str
+    table: str
+    remote_host_id: int
+    state: str
+    started_at: str
+    finished_at: str
+    error: str
+    hidden: bool
+
+class _ResponseImportsGetBatches(Response):
+    id: int
+    schema: str
+    table: str
+    remote_host_id: int
+    state: str
+    started_at: str
+    finished_at: str
+    error: str
+    hidden: bool
+
+class _ResponseImportsGet(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsGetSource
+    destination: _ResponseImportsGetDestination
+    schedule: _ResponseImportsGetSchedule
+    notifications: _ResponseImportsGetNotifications
+    parent_id: int
+    id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsGetLastRun
+    user: _ResponseImportsGetUser
+    running_as: _ResponseImportsGetRunningAs
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsGetSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsGetDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseImportsGetNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsGetSyncs(Response):
+    id: int
+    source: _ResponseImportsGetSource
+    destination: _ResponseImportsGetDestination
+    advanced_options: _ResponseImportsGetAdvancedOptions
+
+class _ResponseImportsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsGetRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPut(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsPutSource
+    destination: _ResponseImportsPutDestination
+    schedule: _ResponseImportsPutSchedule
+    notifications: _ResponseImportsPutNotifications
+    parent_id: int
+    id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsPutLastRun
+    user: _ResponseImportsPutUser
+    running_as: _ResponseImportsPutRunningAs
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsPutSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPutDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsPutSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseImportsPutNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsPutSyncs(Response):
+    id: int
+    source: _ResponseImportsPutSource
+    destination: _ResponseImportsPutDestination
+    advanced_options: _ResponseImportsPutAdvancedOptions
+
+class _ResponseImportsPutLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPutRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsListRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPostRuns(Response):
+    run_id: int
+
+class _ResponseImportsPostCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseImportsPostSyncs(Response):
+    id: int
+    source: _ResponseImportsPostSyncsSource
+    destination: _ResponseImportsPostSyncsDestination
+    advanced_options: _ResponseImportsPostSyncsAdvancedOptions
+
+class _ResponseImportsPostSyncsSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsPostSyncsDatabaseTable
+    file: _ResponseImportsPostSyncsFile
+    google_worksheet: _ResponseImportsPostSyncsGoogleWorksheet
+    salesforce: _ResponseImportsPostSyncsSalesforce
+
+class _ResponseImportsPostSyncsDestination(Response):
+    path: str
+    database_table: _ResponseImportsPostSyncsDatabaseTable
+    google_worksheet: _ResponseImportsPostSyncsGoogleWorksheet
+
+class _ResponseImportsPostSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
+class _ResponseImportsPutSyncs(Response):
+    id: int
+    source: _ResponseImportsPutSyncsSource
+    destination: _ResponseImportsPutSyncsDestination
+    advanced_options: _ResponseImportsPutSyncsAdvancedOptions
+
+class _ResponseImportsPutSyncsSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsPutSyncsDatabaseTable
+    file: _ResponseImportsPutSyncsFile
+    google_worksheet: _ResponseImportsPutSyncsGoogleWorksheet
+    salesforce: _ResponseImportsPutSyncsSalesforce
+
+class _ResponseImportsPutSyncsDestination(Response):
+    path: str
+    database_table: _ResponseImportsPutSyncsDatabaseTable
+    google_worksheet: _ResponseImportsPutSyncsGoogleWorksheet
+
+class _ResponseImportsPutSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
+class _ResponseImportsPutSyncsArchive(Response):
+    id: int
+    source: _ResponseImportsPutSyncsArchiveSource
+    destination: _ResponseImportsPutSyncsArchiveDestination
+    advanced_options: _ResponseImportsPutSyncsArchiveAdvancedOptions
+
+class _ResponseImportsPutSyncsArchiveSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsPutSyncsArchiveDatabaseTable
+    file: _ResponseImportsPutSyncsArchiveFile
+    google_worksheet: _ResponseImportsPutSyncsArchiveGoogleWorksheet
+    salesforce: _ResponseImportsPutSyncsArchiveSalesforce
+
+class _ResponseImportsPutSyncsArchiveDestination(Response):
+    path: str
+    database_table: _ResponseImportsPutSyncsArchiveDatabaseTable
+    google_worksheet: _ResponseImportsPutSyncsArchiveGoogleWorksheet
+
+class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
+class _ResponseJobsGet(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseJobsGetLastRun
+    hidden: bool
+    archived: str
+    author: _ResponseJobsGetAuthor
+    my_permission_level: str
+    success_email_subject: str
+    success_email_body: str
+    running_as_user: str
+    run_by_user: str
+    schedule: _ResponseJobsGetSchedule
+
+class _ResponseJobsGetRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseJobsPostTriggerEmail(Response):
+    trigger_email: str
+
+class _ResponseJobsListParents(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseJobsListParentsLastRun
+    hidden: bool
+    archived: str
+    author: _ResponseJobsListParentsAuthor
+    my_permission_level: str
+    success_email_subject: str
+    success_email_body: str
+    running_as_user: str
+    run_by_user: str
+    schedule: _ResponseJobsListParentsSchedule
+
+class _ResponseJobsListParentsRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsListParentsLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsListParentsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsListParentsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseJobsListChildren(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseJobsListChildrenLastRun
+    children: List
+
+class _ResponseJobsListChildrenRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsListChildrenLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsPostRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsGetRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsListRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseJobsListWorkflows(Response):
+    id: int
+    name: str
+    description: str
+    valid: bool
+    file_id: str
+    user: _ResponseJobsListWorkflowsUser
+    state: str
+    schedule: _ResponseJobsListWorkflowsSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    archived: str
+    created_at: str
+    updated_at: str
+
+class _ResponseJobsListWorkflowsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsListWorkflowsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseJobsListShares(Response):
+    readers: _ResponseJobsListSharesReaders
+    writers: _ResponseJobsListSharesWriters
+    owners: _ResponseJobsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJobsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesUsers(Response):
+    readers: _ResponseJobsPutSharesUsersReaders
+    writers: _ResponseJobsPutSharesUsersWriters
+    owners: _ResponseJobsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJobsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesGroups(Response):
+    readers: _ResponseJobsPutSharesGroupsReaders
+    writers: _ResponseJobsPutSharesGroupsWriters
+    owners: _ResponseJobsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJobsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJobsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseJobsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseJobsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseJobsListProjects(Response):
+    id: int
+    author: _ResponseJobsListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseJobsListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsPutArchive(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseJobsPutArchiveLastRun
+    hidden: bool
+    archived: str
+    author: _ResponseJobsPutArchiveAuthor
+    my_permission_level: str
+    success_email_subject: str
+    success_email_body: str
+    running_as_user: str
+    run_by_user: str
+    schedule: _ResponseJobsPutArchiveSchedule
+
+class _ResponseJobsPutArchiveRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsPutArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsPutArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsPutArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseJsonValuesPost(Response):
+    id: int
+    name: str
+    value: str
+
+class _ResponseJsonValuesGet(Response):
+    id: int
+    name: str
+    value: str
+
+class _ResponseJsonValuesPatch(Response):
+    id: int
+    name: str
+    value: str
+
+class _ResponseJsonValuesListShares(Response):
+    readers: _ResponseJsonValuesListSharesReaders
+    writers: _ResponseJsonValuesListSharesWriters
+    owners: _ResponseJsonValuesListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJsonValuesListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesUsers(Response):
+    readers: _ResponseJsonValuesPutSharesUsersReaders
+    writers: _ResponseJsonValuesPutSharesUsersWriters
+    owners: _ResponseJsonValuesPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJsonValuesPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesGroups(Response):
+    readers: _ResponseJsonValuesPutSharesGroupsReaders
+    writers: _ResponseJsonValuesPutSharesGroupsWriters
+    owners: _ResponseJsonValuesPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseJsonValuesPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseJsonValuesListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseJsonValuesPutTransfer(Response):
+    dependencies: List
+
+class _ResponseJsonValuesPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseMatchTargetsListShares(Response):
+    readers: _ResponseMatchTargetsListSharesReaders
+    writers: _ResponseMatchTargetsListSharesWriters
+    owners: _ResponseMatchTargetsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMatchTargetsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesUsers(Response):
+    readers: _ResponseMatchTargetsPutSharesUsersReaders
+    writers: _ResponseMatchTargetsPutSharesUsersWriters
+    owners: _ResponseMatchTargetsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMatchTargetsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesGroups(Response):
+    readers: _ResponseMatchTargetsPutSharesGroupsReaders
+    writers: _ResponseMatchTargetsPutSharesGroupsWriters
+    owners: _ResponseMatchTargetsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMatchTargetsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMatchTargetsPutArchive(Response):
+    id: int
+    name: str
+    target_file_name: str
+    created_at: str
+    updated_at: str
+    archived: bool
+
+class _ResponseMatchTargetsList(Response):
+    id: int
+    name: str
+    target_file_name: str
+    created_at: str
+    updated_at: str
+    archived: bool
+
+class _ResponseMatchTargetsPost(Response):
+    id: int
+    name: str
+    target_file_name: str
+    created_at: str
+    updated_at: str
+    archived: bool
+
+class _ResponseMatchTargetsGet(Response):
+    id: int
+    name: str
+    target_file_name: str
+    created_at: str
+    updated_at: str
+    archived: bool
+
+class _ResponseMatchTargetsPatch(Response):
+    id: int
+    name: str
+    target_file_name: str
+    created_at: str
+    updated_at: str
+    archived: bool
+
+class _ResponseMediaListSpotOrdersShares(Response):
+    readers: _ResponseMediaListSpotOrdersSharesReaders
+    writers: _ResponseMediaListSpotOrdersSharesWriters
+    owners: _ResponseMediaListSpotOrdersSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaListSpotOrdersSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListSpotOrdersSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListSpotOrdersSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesUsers(Response):
+    readers: _ResponseMediaPutSpotOrdersSharesUsersReaders
+    writers: _ResponseMediaPutSpotOrdersSharesUsersWriters
+    owners: _ResponseMediaPutSpotOrdersSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutSpotOrdersSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesGroups(Response):
+    readers: _ResponseMediaPutSpotOrdersSharesGroupsReaders
+    writers: _ResponseMediaPutSpotOrdersSharesGroupsWriters
+    owners: _ResponseMediaPutSpotOrdersSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutSpotOrdersSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutSpotOrdersArchive(Response):
+    id: int
+    archived: str
+    csv_s3_uri: str
+    json_s3_uri: str
+    xml_archive_s3_uri: str
+    last_transform_job_id: int
+
+class _ResponseMediaListOptimizationsShares(Response):
+    readers: _ResponseMediaListOptimizationsSharesReaders
+    writers: _ResponseMediaListOptimizationsSharesWriters
+    owners: _ResponseMediaListOptimizationsSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaListOptimizationsSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListOptimizationsSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListOptimizationsSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesUsers(Response):
+    readers: _ResponseMediaPutOptimizationsSharesUsersReaders
+    writers: _ResponseMediaPutOptimizationsSharesUsersWriters
+    owners: _ResponseMediaPutOptimizationsSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutOptimizationsSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesGroups(Response):
+    readers: _ResponseMediaPutOptimizationsSharesGroupsReaders
+    writers: _ResponseMediaPutOptimizationsSharesGroupsWriters
+    owners: _ResponseMediaPutOptimizationsSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutOptimizationsSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutOptimizationsArchive(Response):
+    id: int
+    author: _ResponseMediaPutOptimizationsArchiveAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+    report_link: str
+    spot_order_link: str
+    file_links: List
+    runs: List
+    programs: List
+    networks: List
+    exclude_programs: bool
+    exclude_networks: bool
+    time_slot_percentages: dict
+
+class _ResponseMediaPutOptimizationsArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseMediaPutOptimizationsArchiveRuns(Response):
+    market_id: int
+    start_date: str
+    end_date: str
+    force_cpm: bool
+    reach_alpha: float
+    syscodes: List
+    rate_cards: List
+    constraints: List
+
+class _ResponseMediaListRatecardsShares(Response):
+    readers: _ResponseMediaListRatecardsSharesReaders
+    writers: _ResponseMediaListRatecardsSharesWriters
+    owners: _ResponseMediaListRatecardsSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaListRatecardsSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListRatecardsSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaListRatecardsSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesUsers(Response):
+    readers: _ResponseMediaPutRatecardsSharesUsersReaders
+    writers: _ResponseMediaPutRatecardsSharesUsersWriters
+    owners: _ResponseMediaPutRatecardsSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutRatecardsSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesGroups(Response):
+    readers: _ResponseMediaPutRatecardsSharesGroupsReaders
+    writers: _ResponseMediaPutRatecardsSharesGroupsWriters
+    owners: _ResponseMediaPutRatecardsSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseMediaPutRatecardsSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseMediaPutRatecardsArchive(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaPostOptimizations(Response):
+    id: int
+    author: _ResponseMediaPostOptimizationsAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+    report_link: str
+    spot_order_link: str
+    file_links: List
+    runs: List
+    programs: List
+    networks: List
+    exclude_programs: bool
+    exclude_networks: bool
+    time_slot_percentages: dict
+
+class _ResponseMediaPostOptimizationsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseMediaPostOptimizationsRuns(Response):
+    market_id: int
+    start_date: str
+    end_date: str
+    force_cpm: bool
+    reach_alpha: float
+    syscodes: List
+    rate_cards: List
+    constraints: List
+
+class _ResponseMediaGetOptimizations(Response):
+    id: int
+    author: _ResponseMediaGetOptimizationsAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+    report_link: str
+    spot_order_link: str
+    file_links: List
+    runs: List
+    programs: List
+    networks: List
+    exclude_programs: bool
+    exclude_networks: bool
+    time_slot_percentages: dict
+
+class _ResponseMediaGetOptimizationsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseMediaGetOptimizationsRuns(Response):
+    market_id: int
+    start_date: str
+    end_date: str
+    force_cpm: bool
+    reach_alpha: float
+    syscodes: List
+    rate_cards: List
+    constraints: List
+
+class _ResponseMediaPatchOptimizations(Response):
+    id: int
+    author: _ResponseMediaPatchOptimizationsAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+    report_link: str
+    spot_order_link: str
+    file_links: List
+    runs: List
+    programs: List
+    networks: List
+    exclude_programs: bool
+    exclude_networks: bool
+    time_slot_percentages: dict
+
+class _ResponseMediaPatchOptimizationsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseMediaPatchOptimizationsRuns(Response):
+    market_id: int
+    start_date: str
+    end_date: str
+    force_cpm: bool
+    reach_alpha: float
+    syscodes: List
+    rate_cards: List
+    constraints: List
+
+class _ResponseMediaPostOptimizationsClone(Response):
+    id: int
+    author: _ResponseMediaPostOptimizationsCloneAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+    report_link: str
+    spot_order_link: str
+    file_links: List
+    runs: List
+    programs: List
+    networks: List
+    exclude_programs: bool
+    exclude_networks: bool
+    time_slot_percentages: dict
+
+class _ResponseMediaPostOptimizationsCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseMediaPostOptimizationsCloneRuns(Response):
+    market_id: int
+    start_date: str
+    end_date: str
+    force_cpm: bool
+    reach_alpha: float
+    syscodes: List
+    rate_cards: List
+    constraints: List
+
+class _ResponseMediaPostOptimizationsRuns(Response):
+    id: int
+    optimization_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseMediaGetOptimizationsRuns(Response):
+    id: int
+    optimization_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseMediaListOptimizationsRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseMediaListSpotOrders(Response):
+    id: int
+    archived: str
+
+class _ResponseMediaPostSpotOrders(Response):
+    id: int
+    archived: str
+    csv_s3_uri: str
+    json_s3_uri: str
+    xml_archive_s3_uri: str
+    last_transform_job_id: int
+
+class _ResponseMediaGetSpotOrders(Response):
+    id: int
+    archived: str
+    csv_s3_uri: str
+    json_s3_uri: str
+    xml_archive_s3_uri: str
+    last_transform_job_id: int
+
+class _ResponseMediaPutSpotOrders(Response):
+    id: int
+    archived: str
+    csv_s3_uri: str
+    json_s3_uri: str
+    xml_archive_s3_uri: str
+    last_transform_job_id: int
+
+class _ResponseMediaListRatecards(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaPostRatecards(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaGetRatecards(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaPutRatecards(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaPatchRatecards(Response):
+    id: int
+    filename: str
+    start_on: str
+    end_on: str
+    dma_number: int
+    archived: str
+
+class _ResponseMediaListDmas(Response):
+    name: str
+    number: int
+
+class _ResponseMediaListTargets(Response):
+    name: str
+    identifier: str
+    data_source: str
+
+class _ResponseModelsListTypes(Response):
+    id: int
+    algorithm: str
+    dv_type: str
+    fint_allowed: bool
+
+class _ResponseModelsGet(Response):
+    id: int
+    table_name: str
+    database_id: int
+    credential_id: int
+    model_name: str
+    description: str
+    interaction_terms: bool
+    box_cox_transformation: bool
+    model_type_id: int
+    primary_key: str
+    dependent_variable: str
+    dependent_variable_order: List
+    excluded_columns: List
+    limiting_sql: str
+    active_build_id: int
+    cross_validation_parameters: dict
+    number_of_folds: int
+    notifications: _ResponseModelsGetNotifications
+    schedule: _ResponseModelsGetSchedule
+    parent_id: int
+    running_as: _ResponseModelsGetRunningAs
+    time_zone: str
+    last_run: _ResponseModelsGetLastRun
+    hidden: bool
+    user: _ResponseModelsGetUser
+    created_at: str
+    updated_at: str
+    current_build_state: str
+    current_build_exception: str
+    builds: List
+    predictions: List
+    last_output_location: str
+    archived: str
+
+class _ResponseModelsGetNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseModelsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseModelsGetRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseModelsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsGetBuilds(Response):
+    id: int
+    name: str
+    created_at: str
+    description: str
+    root_mean_squared_error: float
+    r_squared_error: float
+    roc_auc: float
+
+class _ResponseModelsGetPredictions(Response):
+    id: int
+    table_name: str
+    primary_key: List
+    limiting_sql: str
+    output_table: str
+    schedule: _ResponseModelsGetSchedule
+    state: str
+
+class _ResponseModelsGetBuilds(Response):
+    id: int
+    state: str
+    error: str
+    name: str
+    created_at: str
+    description: str
+    root_mean_squared_error: float
+    r_squared_error: float
+    roc_auc: float
+    transformation_metadata: str
+    output: str
+    output_location: str
+
+class _ResponseModelsListBuildsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseModelsListShares(Response):
+    readers: _ResponseModelsListSharesReaders
+    writers: _ResponseModelsListSharesWriters
+    owners: _ResponseModelsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseModelsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesUsers(Response):
+    readers: _ResponseModelsPutSharesUsersReaders
+    writers: _ResponseModelsPutSharesUsersWriters
+    owners: _ResponseModelsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseModelsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesGroups(Response):
+    readers: _ResponseModelsPutSharesGroupsReaders
+    writers: _ResponseModelsPutSharesGroupsWriters
+    owners: _ResponseModelsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseModelsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseModelsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseModelsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseModelsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseModelsListProjects(Response):
+    id: int
+    author: _ResponseModelsListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseModelsListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsPutArchive(Response):
+    id: int
+    table_name: str
+    database_id: int
+    credential_id: int
+    model_name: str
+    description: str
+    interaction_terms: bool
+    box_cox_transformation: bool
+    model_type_id: int
+    primary_key: str
+    dependent_variable: str
+    dependent_variable_order: List
+    excluded_columns: List
+    limiting_sql: str
+    active_build_id: int
+    cross_validation_parameters: dict
+    number_of_folds: int
+    notifications: _ResponseModelsPutArchiveNotifications
+    schedule: _ResponseModelsPutArchiveSchedule
+    parent_id: int
+    running_as: _ResponseModelsPutArchiveRunningAs
+    time_zone: str
+    last_run: _ResponseModelsPutArchiveLastRun
+    hidden: bool
+    user: _ResponseModelsPutArchiveUser
+    created_at: str
+    updated_at: str
+    current_build_state: str
+    current_build_exception: str
+    builds: List
+    predictions: List
+    last_output_location: str
+    archived: str
+
+class _ResponseModelsPutArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseModelsPutArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseModelsPutArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsPutArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseModelsPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsPutArchiveBuilds(Response):
+    id: int
+    name: str
+    created_at: str
+    description: str
+    root_mean_squared_error: float
+    r_squared_error: float
+    roc_auc: float
+
+class _ResponseModelsPutArchivePredictions(Response):
+    id: int
+    table_name: str
+    primary_key: List
+    limiting_sql: str
+    output_table: str
+    schedule: _ResponseModelsPutArchiveSchedule
+    state: str
+
+class _ResponseModelsListSchedules(Response):
+    id: int
+    schedule: _ResponseModelsListSchedulesSchedule
+
+class _ResponseModelsListSchedulesSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseNotebooksPost(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksPostUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksPostMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPostMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksGet(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksGetUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksGetMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksGetMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksPut(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksPutUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksPutMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPutMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksPatch(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksPatchUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksPatchMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPatchMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksListUpdateLinks(Response):
+    update_url: str
+    update_preview_url: str
+
+class _ResponseNotebooksPostClone(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksPostCloneUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksPostCloneMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksPostCloneUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPostCloneMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksListShares(Response):
+    readers: _ResponseNotebooksListSharesReaders
+    writers: _ResponseNotebooksListSharesWriters
+    owners: _ResponseNotebooksListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseNotebooksListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesUsers(Response):
+    readers: _ResponseNotebooksPutSharesUsersReaders
+    writers: _ResponseNotebooksPutSharesUsersWriters
+    owners: _ResponseNotebooksPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseNotebooksPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesGroups(Response):
+    readers: _ResponseNotebooksPutSharesGroupsReaders
+    writers: _ResponseNotebooksPutSharesGroupsWriters
+    owners: _ResponseNotebooksPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseNotebooksPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseNotebooksListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseNotebooksPutTransfer(Response):
+    dependencies: List
+
+class _ResponseNotebooksPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseNotebooksPutArchive(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    notebook_url: str
+    notebook_preview_url: str
+    requirements_url: str
+    file_id: str
+    requirements_file_id: str
+    user: _ResponseNotebooksPutArchiveUser
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksPutArchiveMostRecentDeployment
+    credentials: List
+    environment_variables: dict
+    idle_timeout: int
+    partition_label: str
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    git_path: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseNotebooksPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPutArchiveMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksListProjects(Response):
+    id: int
+    author: _ResponseNotebooksListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseNotebooksListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksPostDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksGetDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
+class _ResponseNotebooksListDeploymentsLogs(Response):
+    message: str
+    stream: str
+    created_at: str
+    source: str
+
+class _ResponseNotebooksListGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseNotebooksListGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseNotebooksListGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseNotebooksPutGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseNotebooksPutGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseNotebooksPutGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseNotebooksPatchGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseNotebooksPatchGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseNotebooksPatchGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseNotebooksListGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseNotebooksPostGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseNotebooksGetGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseNotebooksPostGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseNotebooksPostGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseOntologyList(Response):
+    key: str
+    title: str
+    desc: str
+    aliases: List
+
+class _ResponsePermissionSetsPost(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsPostAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsPostAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponsePermissionSetsGet(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsGetAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponsePermissionSetsPut(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsPutAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsPutAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponsePermissionSetsPatch(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsPatchAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsPatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponsePermissionSetsListShares(Response):
+    readers: _ResponsePermissionSetsListSharesReaders
+    writers: _ResponsePermissionSetsListSharesWriters
+    owners: _ResponsePermissionSetsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesUsers(Response):
+    readers: _ResponsePermissionSetsPutSharesUsersReaders
+    writers: _ResponsePermissionSetsPutSharesUsersWriters
+    owners: _ResponsePermissionSetsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesGroups(Response):
+    readers: _ResponsePermissionSetsPutSharesGroupsReaders
+    writers: _ResponsePermissionSetsPutSharesGroupsWriters
+    owners: _ResponsePermissionSetsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponsePermissionSetsPutTransfer(Response):
+    dependencies: List
+
+class _ResponsePermissionSetsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponsePermissionSetsPutArchive(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsPutArchiveAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsPutArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponsePermissionSetsListUsersPermissions(Response):
+    resource_name: str
+    read: bool
+    write: bool
+    manage: bool
+
+class _ResponsePermissionSetsPostResources(Response):
+    permission_set_id: int
+    name: str
+    description: str
+    created_at: str
+    updated_at: str
+
+class _ResponsePermissionSetsGetResources(Response):
+    permission_set_id: int
+    name: str
+    description: str
+    created_at: str
+    updated_at: str
+
+class _ResponsePermissionSetsPatchResources(Response):
+    permission_set_id: int
+    name: str
+    description: str
+    created_at: str
+    updated_at: str
+
+class _ResponsePermissionSetsListResourcesShares(Response):
+    readers: _ResponsePermissionSetsListResourcesSharesReaders
+    writers: _ResponsePermissionSetsListResourcesSharesWriters
+    owners: _ResponsePermissionSetsListResourcesSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsListResourcesSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsListResourcesSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsListResourcesSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesUsers(Response):
+    readers: _ResponsePermissionSetsPutResourcesSharesUsersReaders
+    writers: _ResponsePermissionSetsPutResourcesSharesUsersWriters
+    owners: _ResponsePermissionSetsPutResourcesSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsPutResourcesSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesGroups(Response):
+    readers: _ResponsePermissionSetsPutResourcesSharesGroupsReaders
+    writers: _ResponsePermissionSetsPutResourcesSharesGroupsWriters
+    owners: _ResponsePermissionSetsPutResourcesSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponsePredictionsList(Response):
+    id: int
+    model_id: int
+    scored_table_id: int
+    scored_table_name: str
+    output_table_name: str
+    state: str
+    error: str
+    started_at: str
+    finished_at: str
+    last_run: _ResponsePredictionsListLastRun
+
+class _ResponsePredictionsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponsePredictionsGet(Response):
+    id: int
+    model_id: int
+    scored_table_id: int
+    scored_table_name: str
+    output_table_name: str
+    state: str
+    error: str
+    started_at: str
+    finished_at: str
+    last_run: _ResponsePredictionsGetLastRun
+    scored_tables: List
+    schedule: _ResponsePredictionsGetSchedule
+    limiting_sql: str
+    primary_key: List
+
+class _ResponsePredictionsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponsePredictionsGetScoredTables(Response):
+    id: int
+    schema: str
+    name: str
+    created_at: str
+    score_stats: List
+
+class _ResponsePredictionsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponsePredictionsListSchedules(Response):
+    id: int
+    schedule: _ResponsePredictionsListSchedulesSchedule
+    score_on_model_build: bool
+
+class _ResponsePredictionsListSchedulesSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseProjectsPost(Response):
+    id: int
+    author: _ResponseProjectsPostAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsPostParentProject
+    my_permission_level: str
+
+class _ResponseProjectsPostAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPostUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPostTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPostSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPostScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostLastRun
+
+class _ResponseProjectsPostImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostLastRun
+
+class _ResponseProjectsPostExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostLastRun
+
+class _ResponseProjectsPostModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPostNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPostLastDeploy
+
+class _ResponseProjectsPostServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPostLastDeploy
+
+class _ResponseProjectsPostWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsPostLastExecution
+
+class _ResponseProjectsPostReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPostScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsPostFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsPostEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsPostLastRun
+
+class _ResponseProjectsPostProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsPostAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsPostParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsPostClone(Response):
+    id: int
+    author: _ResponseProjectsPostCloneAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsPostCloneParentProject
+    my_permission_level: str
+
+class _ResponseProjectsPostCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPostCloneUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPostCloneTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPostCloneSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPostCloneScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostCloneLastRun
+
+class _ResponseProjectsPostCloneImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostCloneLastRun
+
+class _ResponseProjectsPostCloneExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPostCloneLastRun
+
+class _ResponseProjectsPostCloneModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPostCloneNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPostCloneLastDeploy
+
+class _ResponseProjectsPostCloneServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPostCloneLastDeploy
+
+class _ResponseProjectsPostCloneWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsPostCloneLastExecution
+
+class _ResponseProjectsPostCloneReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPostCloneScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsPostCloneFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsPostCloneEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsPostCloneLastRun
+
+class _ResponseProjectsPostCloneProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsPostCloneAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsPostCloneParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsGet(Response):
+    id: int
+    author: _ResponseProjectsGetAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsGetParentProject
+    my_permission_level: str
+
+class _ResponseProjectsGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsGetUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsGetTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsGetSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsGetScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsGetLastRun
+
+class _ResponseProjectsGetImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsGetLastRun
+
+class _ResponseProjectsGetExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsGetLastRun
+
+class _ResponseProjectsGetModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsGetNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsGetLastDeploy
+
+class _ResponseProjectsGetServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsGetLastDeploy
+
+class _ResponseProjectsGetWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsGetLastExecution
+
+class _ResponseProjectsGetReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsGetScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsGetFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsGetEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsGetLastRun
+
+class _ResponseProjectsGetProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsGetAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsGetParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsPut(Response):
+    id: int
+    author: _ResponseProjectsPutAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsPutParentProject
+    my_permission_level: str
+
+class _ResponseProjectsPutAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutLastRun
+
+class _ResponseProjectsPutImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutLastRun
+
+class _ResponseProjectsPutExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutLastRun
+
+class _ResponseProjectsPutModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutLastDeploy
+
+class _ResponseProjectsPutServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutLastDeploy
+
+class _ResponseProjectsPutWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsPutLastExecution
+
+class _ResponseProjectsPutReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsPutFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsPutEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsPutLastRun
+
+class _ResponseProjectsPutProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsPutAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsPutParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsPutAutoShare(Response):
+    id: int
+    author: _ResponseProjectsPutAutoShareAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsPutAutoShareParentProject
+    my_permission_level: str
+
+class _ResponseProjectsPutAutoShareAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutAutoShareUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutAutoShareTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutAutoShareSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutAutoShareScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutAutoShareLastRun
+
+class _ResponseProjectsPutAutoShareImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutAutoShareLastRun
+
+class _ResponseProjectsPutAutoShareExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutAutoShareLastRun
+
+class _ResponseProjectsPutAutoShareModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutAutoShareNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutAutoShareLastDeploy
+
+class _ResponseProjectsPutAutoShareServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutAutoShareLastDeploy
+
+class _ResponseProjectsPutAutoShareWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsPutAutoShareLastExecution
+
+class _ResponseProjectsPutAutoShareReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutAutoShareScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsPutAutoShareFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsPutAutoShareEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsPutAutoShareLastRun
+
+class _ResponseProjectsPutAutoShareProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsPutAutoShareAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsPutAutoShareParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsListShares(Response):
+    readers: _ResponseProjectsListSharesReaders
+    writers: _ResponseProjectsListSharesWriters
+    owners: _ResponseProjectsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseProjectsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesUsers(Response):
+    readers: _ResponseProjectsPutSharesUsersReaders
+    writers: _ResponseProjectsPutSharesUsersWriters
+    owners: _ResponseProjectsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseProjectsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesGroups(Response):
+    readers: _ResponseProjectsPutSharesGroupsReaders
+    writers: _ResponseProjectsPutSharesGroupsWriters
+    owners: _ResponseProjectsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseProjectsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseProjectsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseProjectsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseProjectsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseProjectsPutArchive(Response):
+    id: int
+    author: _ResponseProjectsPutArchiveAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    tables: List
+    surveys: List
+    scripts: List
+    imports: List
+    exports: List
+    models: List
+    notebooks: List
+    services: List
+    workflows: List
+    reports: List
+    script_templates: List
+    files: List
+    enhancements: List
+    projects: List
+    all_objects: List
+    note: str
+    can_current_user_enable_auto_share: bool
+    hidden: bool
+    archived: str
+    parent_project: _ResponseProjectsPutArchiveParentProject
+    my_permission_level: str
+
+class _ResponseProjectsPutArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutArchiveUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsPutArchiveTables(Response):
+    schema: str
+    name: str
+    row_count: int
+    column_count: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutArchiveSurveys(Response):
+    id: int
+    created_at: str
+    updated_at: str
+
+class _ResponseProjectsPutArchiveScripts(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutArchiveLastRun
+
+class _ResponseProjectsPutArchiveImports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutArchiveLastRun
+
+class _ResponseProjectsPutArchiveExports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    type: str
+    finished_at: str
+    state: str
+    last_run: _ResponseProjectsPutArchiveLastRun
+
+class _ResponseProjectsPutArchiveModels(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutArchiveNotebooks(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutArchiveLastDeploy
+
+class _ResponseProjectsPutArchiveServices(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    current_deployment_id: int
+    last_deploy: _ResponseProjectsPutArchiveLastDeploy
+
+class _ResponseProjectsPutArchiveWorkflows(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+    last_execution: _ResponseProjectsPutArchiveLastExecution
+
+class _ResponseProjectsPutArchiveReports(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    state: str
+
+class _ResponseProjectsPutArchiveScriptTemplates(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+
+class _ResponseProjectsPutArchiveFiles(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    file_name: str
+    file_size: int
+    expired: bool
+
+class _ResponseProjectsPutArchiveEnhancements(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    last_run: _ResponseProjectsPutArchiveLastRun
+
+class _ResponseProjectsPutArchiveProjects(Response):
+    id: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+
+class _ResponseProjectsPutArchiveAllObjects(Response):
+    project_id: int
+    object_id: int
+    object_type: str
+    fco_type: str
+    sub_type: str
+    name: str
+    icon: str
+    author: str
+    updated_at: str
+    auto_share: bool
+    archived: str
+    hidden: bool
+    my_permission_level: str
+
+class _ResponseProjectsPutArchiveParentProject(Response):
+    id: int
+    name: int
+
+class _ResponseProjectsListParentProjects(Response):
+    id: int
+    author: _ResponseProjectsListParentProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseProjectsListParentProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsListParentProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseQueriesPost(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    script_id: int
+    exception: str
+    created_at: str
+    updated_at: str
+    last_run_id: int
+    hidden: bool
+    archived: str
+    my_permission_level: str
+    interactive: bool
+    preview_rows: int
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    filename_prefix: str
+    report_id: int
+
+class _ResponseQueriesPostRuns(Response):
+    id: int
+    query_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseQueriesGetRuns(Response):
+    id: int
+    query_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseQueriesListRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseQueriesPutScripts(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    script_id: int
+    exception: str
+    created_at: str
+    updated_at: str
+    last_run_id: int
+    hidden: bool
+    archived: str
+    name: str
+    author: _ResponseQueriesPutScriptsAuthor
+    report_id: int
+
+class _ResponseQueriesPutScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseQueriesGet(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    script_id: int
+    exception: str
+    created_at: str
+    updated_at: str
+    last_run_id: int
+    hidden: bool
+    archived: str
+    name: str
+    author: _ResponseQueriesGetAuthor
+    report_id: int
+
+class _ResponseQueriesGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseQueriesDelete(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    script_id: int
+    exception: str
+    created_at: str
+    updated_at: str
+    last_run_id: int
+    hidden: bool
+    archived: str
+    name: str
+    author: _ResponseQueriesDeleteAuthor
+    report_id: int
+
+class _ResponseQueriesDeleteAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseRemoteHostsList(Response):
+    id: int
+    name: str
+    type: str
+    url: str
+
+class _ResponseRemoteHostsPost(Response):
+    id: int
+    name: str
+    type: str
+    url: str
+    description: str
+    my_permission_level: str
+    user: _ResponseRemoteHostsPostUser
+    created_at: str
+    updated_at: str
+
+class _ResponseRemoteHostsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseRemoteHostsGet(Response):
+    id: int
+    name: str
+    type: str
+    url: str
+    description: str
+    my_permission_level: str
+    user: _ResponseRemoteHostsGetUser
+    created_at: str
+    updated_at: str
+
+class _ResponseRemoteHostsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseRemoteHostsPut(Response):
+    id: int
+    name: str
+    type: str
+    url: str
+    description: str
+    my_permission_level: str
+    user: _ResponseRemoteHostsPutUser
+    created_at: str
+    updated_at: str
+
+class _ResponseRemoteHostsPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseRemoteHostsPatch(Response):
+    id: int
+    name: str
+    type: str
+    url: str
+    description: str
+    my_permission_level: str
+    user: _ResponseRemoteHostsPatchUser
+    created_at: str
+    updated_at: str
+
+class _ResponseRemoteHostsPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseRemoteHostsListShares(Response):
+    readers: _ResponseRemoteHostsListSharesReaders
+    writers: _ResponseRemoteHostsListSharesWriters
+    owners: _ResponseRemoteHostsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseRemoteHostsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesUsers(Response):
+    readers: _ResponseRemoteHostsPutSharesUsersReaders
+    writers: _ResponseRemoteHostsPutSharesUsersWriters
+    owners: _ResponseRemoteHostsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseRemoteHostsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesGroups(Response):
+    readers: _ResponseRemoteHostsPutSharesGroupsReaders
+    writers: _ResponseRemoteHostsPutSharesGroupsWriters
+    owners: _ResponseRemoteHostsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseRemoteHostsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseRemoteHostsListDataSets(Response):
+    name: str
+    full_path: bool
+
+class _ResponseReportsPost(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPostUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    projects: List
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsPostScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsPostLastRun
+    hidden: bool
+    auth_data_url: str
+    auth_code_url: str
+    config: str
+    valid_output_file: bool
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+    app_state: dict
+    use_viewers_tableau_username: bool
+
+class _ResponseReportsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostProjects(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPostScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsPostLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseReportsListGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseReportsListGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseReportsListGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseReportsPutGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseReportsPutGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseReportsPutGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseReportsPatchGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseReportsPatchGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseReportsPatchGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseReportsListGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseReportsPostGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseReportsGetGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseReportsPostGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseReportsPostGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseReportsGet(Response):
+    id: int
+    name: str
+    user: _ResponseReportsGetUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    projects: List
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsGetScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsGetLastRun
+    hidden: bool
+    auth_data_url: str
+    auth_code_url: str
+    config: str
+    valid_output_file: bool
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+    app_state: dict
+    use_viewers_tableau_username: bool
+
+class _ResponseReportsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsGetProjects(Response):
+    id: int
+    name: str
+
+class _ResponseReportsGetScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseReportsPatch(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPatchUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    projects: List
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsPatchScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsPatchLastRun
+    hidden: bool
+    auth_data_url: str
+    auth_code_url: str
+    config: str
+    valid_output_file: bool
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+    app_state: dict
+    use_viewers_tableau_username: bool
+
+class _ResponseReportsPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPatchProjects(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPatchScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsPatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseReportsPostGrants(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPostGrantsUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    projects: List
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsPostGrantsScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsPostGrantsLastRun
+    hidden: bool
+    auth_data_url: str
+    auth_code_url: str
+    config: str
+    valid_output_file: bool
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+    app_state: dict
+    use_viewers_tableau_username: bool
+
+class _ResponseReportsPostGrantsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostGrantsProjects(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPostGrantsScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsPostGrantsLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseReportsListShares(Response):
+    readers: _ResponseReportsListSharesReaders
+    writers: _ResponseReportsListSharesWriters
+    owners: _ResponseReportsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesUsers(Response):
+    readers: _ResponseReportsPutSharesUsersReaders
+    writers: _ResponseReportsPutSharesUsersWriters
+    owners: _ResponseReportsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesGroups(Response):
+    readers: _ResponseReportsPutSharesGroupsReaders
+    writers: _ResponseReportsPutSharesGroupsWriters
+    owners: _ResponseReportsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseReportsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseReportsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseReportsListProjects(Response):
+    id: int
+    author: _ResponseReportsListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseReportsListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPutArchive(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPutArchiveUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    projects: List
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsPutArchiveScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsPutArchiveLastRun
+    hidden: bool
+    auth_data_url: str
+    auth_code_url: str
+    config: str
+    valid_output_file: bool
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+    app_state: dict
+    use_viewers_tableau_username: bool
+
+class _ResponseReportsPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPutArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutArchiveScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsPutArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseReportsGetServices(Response):
+    id: int
+    name: str
+    user: _ResponseReportsGetServicesUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    host: str
+    display_url: str
+    service_id: int
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+
+class _ResponseReportsGetServicesUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPatchServices(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPatchServicesUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    host: str
+    display_url: str
+    service_id: int
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+
+class _ResponseReportsPatchServicesUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostServices(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPostServicesUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    host: str
+    display_url: str
+    service_id: int
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+
+class _ResponseReportsPostServicesUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsListServicesShares(Response):
+    readers: _ResponseReportsListServicesSharesReaders
+    writers: _ResponseReportsListServicesSharesWriters
+    owners: _ResponseReportsListServicesSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsListServicesSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListServicesSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListServicesSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesUsers(Response):
+    readers: _ResponseReportsPutServicesSharesUsersReaders
+    writers: _ResponseReportsPutServicesSharesUsersWriters
+    owners: _ResponseReportsPutServicesSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutServicesSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesGroups(Response):
+    readers: _ResponseReportsPutServicesSharesGroupsReaders
+    writers: _ResponseReportsPutServicesSharesGroupsWriters
+    owners: _ResponseReportsPutServicesSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutServicesSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutServicesSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListServicesDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseReportsPutServicesTransfer(Response):
+    dependencies: List
+
+class _ResponseReportsPutServicesTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseReportsListServicesProjects(Response):
+    id: int
+    author: _ResponseReportsListServicesProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseReportsListServicesProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsListServicesProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPutServicesArchive(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPutServicesArchiveUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    host: str
+    display_url: str
+    service_id: int
+    provide_api_key: bool
+    api_key: str
+    api_key_id: int
+
+class _ResponseReportsPutServicesArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostRefresh(Response):
+    id: int
+    organization: _ResponseReportsPostRefreshOrganization
+
+class _ResponseReportsPostRefreshOrganization(Response):
+    id: int
+    tableau_refresh_usage: int
+    tableau_refresh_limit: int
+    tableau_refresh_history: List
+
+class _ResponseReportsPostSql(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPostSqlUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    config: str
+    query: _ResponseReportsPostSqlQuery
+
+class _ResponseReportsPostSqlUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostSqlQuery(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    running_as: _ResponseReportsPostSqlRunningAs
+
+class _ResponseReportsGetSql(Response):
+    id: int
+    name: str
+    user: _ResponseReportsGetSqlUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    config: str
+    query: _ResponseReportsGetSqlQuery
+
+class _ResponseReportsGetSqlUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsGetSqlQuery(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    running_as: _ResponseReportsGetSqlRunningAs
+
+class _ResponseReportsPatchSql(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPatchSqlUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    config: str
+    query: _ResponseReportsPatchSqlQuery
+
+class _ResponseReportsPatchSqlUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPatchSqlQuery(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    running_as: _ResponseReportsPatchSqlRunningAs
+
+class _ResponseReportsPostSqlRefresh(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPostSqlRefreshUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    config: str
+    query: _ResponseReportsPostSqlRefreshQuery
+
+class _ResponseReportsPostSqlRefreshUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPostSqlRefreshQuery(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    running_as: _ResponseReportsPostSqlRefreshRunningAs
+
+class _ResponseReportsListSqlShares(Response):
+    readers: _ResponseReportsListSqlSharesReaders
+    writers: _ResponseReportsListSqlSharesWriters
+    owners: _ResponseReportsListSqlSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsListSqlSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListSqlSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListSqlSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesUsers(Response):
+    readers: _ResponseReportsPutSqlSharesUsersReaders
+    writers: _ResponseReportsPutSqlSharesUsersWriters
+    owners: _ResponseReportsPutSqlSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutSqlSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesGroups(Response):
+    readers: _ResponseReportsPutSqlSharesGroupsReaders
+    writers: _ResponseReportsPutSqlSharesGroupsWriters
+    owners: _ResponseReportsPutSqlSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseReportsPutSqlSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsPutSqlSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseReportsListSqlDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseReportsPutSqlTransfer(Response):
+    dependencies: List
+
+class _ResponseReportsPutSqlTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseReportsListSqlProjects(Response):
+    id: int
+    author: _ResponseReportsListSqlProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseReportsListSqlProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsListSqlProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPutSqlArchive(Response):
+    id: int
+    name: str
+    user: _ResponseReportsPutSqlArchiveUser
+    created_at: str
+    updated_at: str
+    type: str
+    description: str
+    my_permission_level: str
+    archived: str
+    config: str
+    query: _ResponseReportsPutSqlArchiveQuery
+
+class _ResponseReportsPutSqlArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsPutSqlArchiveQuery(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    running_as: _ResponseReportsPutSqlArchiveRunningAs
+
+class _ResponseScriptsListTypes(Response):
+    name: str
+
+class _ResponseScriptsListHistory(Response):
+    id: int
+    sql_id: int
+    state: str
+    is_cancel_requested: bool
+    finished_at: str
+    error: str
+    output: List
+
+class _ResponseScriptsListHistoryOutput(Response):
+    output_name: str
+    file_id: int
+    path: str
+
+class _ResponseScriptsPost(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostLinks
+    schedule: _ResponseScriptsPostSchedule
+    notifications: _ResponseScriptsPostNotifications
+    running_as: _ResponseScriptsPostRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    template_script_id: int
+
+class _ResponseScriptsPostAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatch(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchLinks
+    schedule: _ResponseScriptsPatchSchedule
+    notifications: _ResponseScriptsPatchNotifications
+    running_as: _ResponseScriptsPatchRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    template_script_id: int
+
+class _ResponseScriptsPatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGet(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetLinks
+    schedule: _ResponseScriptsGetSchedule
+    notifications: _ResponseScriptsGetNotifications
+    running_as: _ResponseScriptsGetRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    template_script_id: int
+
+class _ResponseScriptsGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
+
+class _ResponseScriptsPostContainers(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostContainersAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsPostContainersLinks
+    schedule: _ResponseScriptsPostContainersSchedule
+    notifications: _ResponseScriptsPostContainersNotifications
+    running_as: _ResponseScriptsPostContainersRunningAs
+    required_resources: _ResponseScriptsPostContainersRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsPostContainersLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsPostContainersFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPostContainersAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostContainersProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostContainersParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostContainersLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostContainersSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostContainersNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostContainersRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostContainersRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostContainersLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetContainers(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetContainersAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsGetContainersLinks
+    schedule: _ResponseScriptsGetContainersSchedule
+    notifications: _ResponseScriptsGetContainersNotifications
+    running_as: _ResponseScriptsGetContainersRunningAs
+    required_resources: _ResponseScriptsGetContainersRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsGetContainersLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsGetContainersFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsGetContainersAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetContainersProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetContainersParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetContainersLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetContainersSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetContainersNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetContainersRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetContainersRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetContainersLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutContainers(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutContainersAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsPutContainersLinks
+    schedule: _ResponseScriptsPutContainersSchedule
+    notifications: _ResponseScriptsPutContainersNotifications
+    running_as: _ResponseScriptsPutContainersRunningAs
+    required_resources: _ResponseScriptsPutContainersRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsPutContainersLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsPutContainersFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPutContainersAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutContainersProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutContainersLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutContainersSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutContainersNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutContainersRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutContainersRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutContainersLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchContainers(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchContainersAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsPatchContainersLinks
+    schedule: _ResponseScriptsPatchContainersSchedule
+    notifications: _ResponseScriptsPatchContainersNotifications
+    running_as: _ResponseScriptsPatchContainersRunningAs
+    required_resources: _ResponseScriptsPatchContainersRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsPatchContainersLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsPatchContainersFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPatchContainersAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchContainersProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchContainersParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchContainersLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchContainersSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchContainersNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchContainersRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchContainersRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPatchContainersLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsListContainersRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostSql(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostSqlAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostSqlLinks
+    schedule: _ResponseScriptsPostSqlSchedule
+    notifications: _ResponseScriptsPostSqlNotifications
+    running_as: _ResponseScriptsPostSqlRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostSqlLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsPostSqlCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsPostSqlAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostSqlProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostSqlParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostSqlLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostSqlSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostSqlNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostSqlRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostSqlLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostSqlCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsGetSql(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetSqlAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetSqlLinks
+    schedule: _ResponseScriptsGetSqlSchedule
+    notifications: _ResponseScriptsGetSqlNotifications
+    running_as: _ResponseScriptsGetSqlRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetSqlLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsGetSqlCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsGetSqlAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetSqlProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetSqlParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetSqlLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetSqlSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetSqlNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetSqlRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetSqlLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetSqlCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsPutSql(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutSqlAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutSqlLinks
+    schedule: _ResponseScriptsPutSqlSchedule
+    notifications: _ResponseScriptsPutSqlNotifications
+    running_as: _ResponseScriptsPutSqlRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutSqlLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsPutSqlCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsPutSqlAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutSqlProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutSqlLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutSqlSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutSqlNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutSqlRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutSqlLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutSqlCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsPatchSql(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchSqlAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchSqlLinks
+    schedule: _ResponseScriptsPatchSqlSchedule
+    notifications: _ResponseScriptsPatchSqlNotifications
+    running_as: _ResponseScriptsPatchSqlRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchSqlLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsPatchSqlCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsPatchSqlAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchSqlProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchSqlParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchSqlLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchSqlSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchSqlNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchSqlRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchSqlLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchSqlCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsPostPython3(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostPython3Author
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostPython3Links
+    schedule: _ResponseScriptsPostPython3Schedule
+    notifications: _ResponseScriptsPostPython3Notifications
+    running_as: _ResponseScriptsPostPython3RunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostPython3LastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostPython3RequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPostPython3Author(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostPython3Projects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostPython3Params(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostPython3Links(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostPython3Schedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostPython3Notifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostPython3RunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostPython3LastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostPython3RequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetPython3(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetPython3Author
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetPython3Links
+    schedule: _ResponseScriptsGetPython3Schedule
+    notifications: _ResponseScriptsGetPython3Notifications
+    running_as: _ResponseScriptsGetPython3RunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetPython3LastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsGetPython3RequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsGetPython3Author(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetPython3Projects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetPython3Params(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetPython3Links(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetPython3Schedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetPython3Notifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetPython3RunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetPython3LastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetPython3RequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutPython3(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutPython3Author
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutPython3Links
+    schedule: _ResponseScriptsPutPython3Schedule
+    notifications: _ResponseScriptsPutPython3Notifications
+    running_as: _ResponseScriptsPutPython3RunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutPython3LastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutPython3RequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPutPython3Author(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutPython3Projects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3Params(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutPython3Links(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutPython3Schedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutPython3Notifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutPython3RunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutPython3LastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutPython3RequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPatchPython3(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchPython3Author
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchPython3Links
+    schedule: _ResponseScriptsPatchPython3Schedule
+    notifications: _ResponseScriptsPatchPython3Notifications
+    running_as: _ResponseScriptsPatchPython3RunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchPython3LastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPatchPython3RequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPatchPython3Author(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchPython3Projects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchPython3Params(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchPython3Links(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchPython3Schedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchPython3Notifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchPython3RunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchPython3LastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchPython3RequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostR(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostRAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostRLinks
+    schedule: _ResponseScriptsPostRSchedule
+    notifications: _ResponseScriptsPostRNotifications
+    running_as: _ResponseScriptsPostRRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostRLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostRRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPostRAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostRProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostRParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostRLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostRSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostRNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostRRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostRLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostRRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetR(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetRAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetRLinks
+    schedule: _ResponseScriptsGetRSchedule
+    notifications: _ResponseScriptsGetRNotifications
+    running_as: _ResponseScriptsGetRRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetRLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsGetRRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsGetRAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetRProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetRParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetRLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetRSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetRNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetRRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetRLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetRRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutR(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutRAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutRLinks
+    schedule: _ResponseScriptsPutRSchedule
+    notifications: _ResponseScriptsPutRNotifications
+    running_as: _ResponseScriptsPutRRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutRLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutRRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPutRAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutRProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutRLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutRSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutRNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutRRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutRLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutRRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPatchR(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchRAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchRLinks
+    schedule: _ResponseScriptsPatchRSchedule
+    notifications: _ResponseScriptsPatchRNotifications
+    running_as: _ResponseScriptsPatchRRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchRLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPatchRRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPatchRAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchRProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchRParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchRLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchRSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchRNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchRRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchRLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchRRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostJavascript(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostJavascriptAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostJavascriptLinks
+    schedule: _ResponseScriptsPostJavascriptSchedule
+    notifications: _ResponseScriptsPostJavascriptNotifications
+    running_as: _ResponseScriptsPostJavascriptRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostJavascriptLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsPostJavascriptAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostJavascriptProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostJavascriptParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostJavascriptLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostJavascriptSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostJavascriptNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostJavascriptRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostJavascriptLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetJavascript(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetJavascriptAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetJavascriptLinks
+    schedule: _ResponseScriptsGetJavascriptSchedule
+    notifications: _ResponseScriptsGetJavascriptNotifications
+    running_as: _ResponseScriptsGetJavascriptRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetJavascriptLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsGetJavascriptAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetJavascriptProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetJavascriptParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetJavascriptLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetJavascriptSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetJavascriptNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetJavascriptRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetJavascriptLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutJavascript(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutJavascriptAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutJavascriptLinks
+    schedule: _ResponseScriptsPutJavascriptSchedule
+    notifications: _ResponseScriptsPutJavascriptNotifications
+    running_as: _ResponseScriptsPutJavascriptRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutJavascriptLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsPutJavascriptAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutJavascriptProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutJavascriptLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutJavascriptSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutJavascriptNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutJavascriptRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutJavascriptLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchJavascript(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchJavascriptAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchJavascriptLinks
+    schedule: _ResponseScriptsPatchJavascriptSchedule
+    notifications: _ResponseScriptsPatchJavascriptNotifications
+    running_as: _ResponseScriptsPatchJavascriptRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchJavascriptLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsPatchJavascriptAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchJavascriptProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchJavascriptParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchJavascriptLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchJavascriptSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchJavascriptNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchJavascriptRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchJavascriptLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustom(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostCustomAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsPostCustomSchedule
+    notifications: _ResponseScriptsPostCustomNotifications
+    running_as: _ResponseScriptsPostCustomRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsPostCustomLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsPostCustomLastSuccessfulRun
+    required_resources: _ResponseScriptsPostCustomRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsPostCustomFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPostCustomAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostCustomProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostCustomParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostCustomSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostCustomNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostCustomRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostCustomLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustomLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustomRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetCustom(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetCustomAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsGetCustomSchedule
+    notifications: _ResponseScriptsGetCustomNotifications
+    running_as: _ResponseScriptsGetCustomRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsGetCustomLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsGetCustomLastSuccessfulRun
+    required_resources: _ResponseScriptsGetCustomRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsGetCustomFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsGetCustomAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetCustomProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetCustomParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetCustomSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsGetCustomNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetCustomRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetCustomLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetCustomLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetCustomRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutCustom(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutCustomAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsPutCustomSchedule
+    notifications: _ResponseScriptsPutCustomNotifications
+    running_as: _ResponseScriptsPutCustomRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsPutCustomLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsPutCustomLastSuccessfulRun
+    required_resources: _ResponseScriptsPutCustomRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsPutCustomFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPutCustomAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutCustomProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutCustomSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutCustomNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutCustomRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutCustomLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutCustomLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutCustomRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPatchCustom(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchCustomAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsPatchCustomSchedule
+    notifications: _ResponseScriptsPatchCustomNotifications
+    running_as: _ResponseScriptsPatchCustomRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsPatchCustomLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsPatchCustomLastSuccessfulRun
+    required_resources: _ResponseScriptsPatchCustomRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsPatchCustomFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPatchCustomAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchCustomProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchCustomParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchCustomSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPatchCustomNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchCustomRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchCustomLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchCustomLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchCustomRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostSqlRuns(Response):
+    id: int
+    sql_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    output: List
+    output_cached_on: str
+
+class _ResponseScriptsPostSqlRunsOutput(Response):
+    output_name: str
+    file_id: int
+    path: str
+
+class _ResponseScriptsGetSqlRuns(Response):
+    id: int
+    sql_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    output: List
+    output_cached_on: str
+
+class _ResponseScriptsGetSqlRunsOutput(Response):
+    output_name: str
+    file_id: int
+    path: str
+
+class _ResponseScriptsListSqlRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostContainersRuns(Response):
+    id: int
+    container_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsGetContainersRuns(Response):
+    id: int
+    container_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsPostPython3Runs(Response):
+    id: int
+    python_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsGetPython3Runs(Response):
+    id: int
+    python_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListPython3RunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostRRuns(Response):
+    id: int
+    r_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsGetRRuns(Response):
+    id: int
+    r_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListRRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsListDbtRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostJavascriptRuns(Response):
+    id: int
+    javascript_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetJavascriptRuns(Response):
+    id: int
+    javascript_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsListJavascriptRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostCustomRuns(Response):
+    id: int
+    custom_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsGetCustomRuns(Response):
+    id: int
+    custom_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListCustomRunsLogs(Response):
+    id: int
+    created_at: str
+    message: str
+    level: str
+
+class _ResponseScriptsPostContainersRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsPostPython3RunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsPostRRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsPostJavascriptRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsPostCustomRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsListSqlGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsListSqlGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsListSqlGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPutSqlGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPutSqlGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPutSqlGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPatchSqlGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPatchSqlGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPatchSqlGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsListSqlGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseScriptsPostSqlGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsGetSqlGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostSqlGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostSqlGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsListJavascriptGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsListJavascriptGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsListJavascriptGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPutJavascriptGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPutJavascriptGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPutJavascriptGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPatchJavascriptGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPatchJavascriptGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPatchJavascriptGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsListJavascriptGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseScriptsPostJavascriptGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsGetJavascriptGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostJavascriptGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostJavascriptGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsListPython3Git(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsListPython3GitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsListPython3GitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPutPython3Git(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPutPython3GitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPutPython3GitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPatchPython3Git(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPatchPython3GitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPatchPython3GitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsListPython3GitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseScriptsPostPython3GitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsGetPython3GitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostPython3GitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostPython3GitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsListRGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsListRGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsListRGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPutRGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPutRGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPutRGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsPatchRGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsPatchRGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsPatchRGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsListRGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseScriptsPostRGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsGetRGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostRGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsPostRGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseScriptsListSqlShares(Response):
+    readers: _ResponseScriptsListSqlSharesReaders
+    writers: _ResponseScriptsListSqlSharesWriters
+    owners: _ResponseScriptsListSqlSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListSqlSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListSqlSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListSqlSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesUsers(Response):
+    readers: _ResponseScriptsPutSqlSharesUsersReaders
+    writers: _ResponseScriptsPutSqlSharesUsersWriters
+    owners: _ResponseScriptsPutSqlSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutSqlSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesGroups(Response):
+    readers: _ResponseScriptsPutSqlSharesGroupsReaders
+    writers: _ResponseScriptsPutSqlSharesGroupsWriters
+    owners: _ResponseScriptsPutSqlSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutSqlSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutSqlSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListSqlDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutSqlTransfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutSqlTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListSqlProjects(Response):
+    id: int
+    author: _ResponseScriptsListSqlProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListSqlProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListSqlProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutSqlArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutSqlArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutSqlArchiveLinks
+    schedule: _ResponseScriptsPutSqlArchiveSchedule
+    notifications: _ResponseScriptsPutSqlArchiveNotifications
+    running_as: _ResponseScriptsPutSqlArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutSqlArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsPutSqlArchiveCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsPutSqlArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutSqlArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutSqlArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutSqlArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutSqlArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutSqlArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutSqlArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutSqlArchiveCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsListContainersShares(Response):
+    readers: _ResponseScriptsListContainersSharesReaders
+    writers: _ResponseScriptsListContainersSharesWriters
+    owners: _ResponseScriptsListContainersSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListContainersSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListContainersSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListContainersSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesUsers(Response):
+    readers: _ResponseScriptsPutContainersSharesUsersReaders
+    writers: _ResponseScriptsPutContainersSharesUsersWriters
+    owners: _ResponseScriptsPutContainersSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutContainersSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesGroups(Response):
+    readers: _ResponseScriptsPutContainersSharesGroupsReaders
+    writers: _ResponseScriptsPutContainersSharesGroupsWriters
+    owners: _ResponseScriptsPutContainersSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutContainersSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutContainersSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListContainersDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutContainersTransfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutContainersTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListContainersProjects(Response):
+    id: int
+    author: _ResponseScriptsListContainersProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListContainersProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListContainersProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutContainersArchive(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutContainersArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsPutContainersArchiveLinks
+    schedule: _ResponseScriptsPutContainersArchiveSchedule
+    notifications: _ResponseScriptsPutContainersArchiveNotifications
+    running_as: _ResponseScriptsPutContainersArchiveRunningAs
+    required_resources: _ResponseScriptsPutContainersArchiveRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsPutContainersArchiveLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsPutContainersArchiveFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPutContainersArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutContainersArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutContainersArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutContainersArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutContainersArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutContainersArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutContainersArchiveRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutContainersArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsListPython3Shares(Response):
+    readers: _ResponseScriptsListPython3SharesReaders
+    writers: _ResponseScriptsListPython3SharesWriters
+    owners: _ResponseScriptsListPython3SharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListPython3SharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListPython3SharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListPython3SharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesUsers(Response):
+    readers: _ResponseScriptsPutPython3SharesUsersReaders
+    writers: _ResponseScriptsPutPython3SharesUsersWriters
+    owners: _ResponseScriptsPutPython3SharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutPython3SharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesGroups(Response):
+    readers: _ResponseScriptsPutPython3SharesGroupsReaders
+    writers: _ResponseScriptsPutPython3SharesGroupsWriters
+    owners: _ResponseScriptsPutPython3SharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutPython3SharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutPython3SharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListPython3Dependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutPython3Transfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutPython3TransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListPython3Projects(Response):
+    id: int
+    author: _ResponseScriptsListPython3ProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListPython3ProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListPython3ProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutPython3Archive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutPython3ArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutPython3ArchiveLinks
+    schedule: _ResponseScriptsPutPython3ArchiveSchedule
+    notifications: _ResponseScriptsPutPython3ArchiveNotifications
+    running_as: _ResponseScriptsPutPython3ArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutPython3ArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutPython3ArchiveRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPutPython3ArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutPython3ArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3ArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutPython3ArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutPython3ArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutPython3ArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutPython3ArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutPython3ArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutPython3ArchiveRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsListRShares(Response):
+    readers: _ResponseScriptsListRSharesReaders
+    writers: _ResponseScriptsListRSharesWriters
+    owners: _ResponseScriptsListRSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListRSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListRSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListRSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesUsers(Response):
+    readers: _ResponseScriptsPutRSharesUsersReaders
+    writers: _ResponseScriptsPutRSharesUsersWriters
+    owners: _ResponseScriptsPutRSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutRSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesGroups(Response):
+    readers: _ResponseScriptsPutRSharesGroupsReaders
+    writers: _ResponseScriptsPutRSharesGroupsWriters
+    owners: _ResponseScriptsPutRSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutRSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutRSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListRDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutRTransfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutRTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListRProjects(Response):
+    id: int
+    author: _ResponseScriptsListRProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListRProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListRProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutRArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutRArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutRArchiveLinks
+    schedule: _ResponseScriptsPutRArchiveSchedule
+    notifications: _ResponseScriptsPutRArchiveNotifications
+    running_as: _ResponseScriptsPutRArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutRArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutRArchiveRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPutRArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutRArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutRArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutRArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutRArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutRArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutRArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutRArchiveRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsListJavascriptShares(Response):
+    readers: _ResponseScriptsListJavascriptSharesReaders
+    writers: _ResponseScriptsListJavascriptSharesWriters
+    owners: _ResponseScriptsListJavascriptSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListJavascriptSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListJavascriptSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListJavascriptSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesUsers(Response):
+    readers: _ResponseScriptsPutJavascriptSharesUsersReaders
+    writers: _ResponseScriptsPutJavascriptSharesUsersWriters
+    owners: _ResponseScriptsPutJavascriptSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutJavascriptSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesGroups(Response):
+    readers: _ResponseScriptsPutJavascriptSharesGroupsReaders
+    writers: _ResponseScriptsPutJavascriptSharesGroupsWriters
+    owners: _ResponseScriptsPutJavascriptSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutJavascriptSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutJavascriptSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListJavascriptDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutJavascriptTransfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutJavascriptTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListJavascriptProjects(Response):
+    id: int
+    author: _ResponseScriptsListJavascriptProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListJavascriptProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListJavascriptProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutJavascriptArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutJavascriptArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutJavascriptArchiveLinks
+    schedule: _ResponseScriptsPutJavascriptArchiveSchedule
+    notifications: _ResponseScriptsPutJavascriptArchiveNotifications
+    running_as: _ResponseScriptsPutJavascriptArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutJavascriptArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsPutJavascriptArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutJavascriptArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutJavascriptArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutJavascriptArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutJavascriptArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutJavascriptArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutJavascriptArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsListCustomShares(Response):
+    readers: _ResponseScriptsListCustomSharesReaders
+    writers: _ResponseScriptsListCustomSharesWriters
+    owners: _ResponseScriptsListCustomSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListCustomSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListCustomSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListCustomSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesUsers(Response):
+    readers: _ResponseScriptsPutCustomSharesUsersReaders
+    writers: _ResponseScriptsPutCustomSharesUsersWriters
+    owners: _ResponseScriptsPutCustomSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutCustomSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesGroups(Response):
+    readers: _ResponseScriptsPutCustomSharesGroupsReaders
+    writers: _ResponseScriptsPutCustomSharesGroupsWriters
+    owners: _ResponseScriptsPutCustomSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutCustomSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsPutCustomSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseScriptsListCustomDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutCustomTransfer(Response):
+    dependencies: List
+
+class _ResponseScriptsPutCustomTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListCustomProjects(Response):
+    id: int
+    author: _ResponseScriptsListCustomProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListCustomProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListCustomProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutCustomArchive(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutCustomArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsPutCustomArchiveSchedule
+    notifications: _ResponseScriptsPutCustomArchiveNotifications
+    running_as: _ResponseScriptsPutCustomArchiveRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsPutCustomArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsPutCustomArchiveLastSuccessfulRun
+    required_resources: _ResponseScriptsPutCustomArchiveRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsPutCustomArchiveFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPutCustomArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutCustomArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutCustomArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPutCustomArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutCustomArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutCustomArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutCustomArchiveLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutCustomArchiveRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostSqlClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostSqlCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostSqlCloneLinks
+    schedule: _ResponseScriptsPostSqlCloneSchedule
+    notifications: _ResponseScriptsPostSqlCloneNotifications
+    running_as: _ResponseScriptsPostSqlCloneRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostSqlCloneLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    sql: str
+    expanded_arguments: dict
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    csv_settings: _ResponseScriptsPostSqlCloneCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsPostSqlCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostSqlCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostSqlCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostSqlCloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostSqlCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostSqlCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostSqlCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostSqlCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostSqlCloneCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsPostJavascriptClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostJavascriptCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostJavascriptCloneLinks
+    schedule: _ResponseScriptsPostJavascriptCloneSchedule
+    notifications: _ResponseScriptsPostJavascriptCloneNotifications
+    running_as: _ResponseScriptsPostJavascriptCloneRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostJavascriptCloneLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsPostJavascriptCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostJavascriptCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostJavascriptCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostJavascriptCloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostJavascriptCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostJavascriptCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostJavascriptCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostJavascriptCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostPython3Clone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostPython3CloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostPython3CloneLinks
+    schedule: _ResponseScriptsPostPython3CloneSchedule
+    notifications: _ResponseScriptsPostPython3CloneNotifications
+    running_as: _ResponseScriptsPostPython3CloneRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostPython3CloneLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostPython3CloneRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPostPython3CloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostPython3CloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostPython3CloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostPython3CloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostPython3CloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostPython3CloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostPython3CloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostPython3CloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostPython3CloneRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostRClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostRCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostRCloneLinks
+    schedule: _ResponseScriptsPostRCloneSchedule
+    notifications: _ResponseScriptsPostRCloneNotifications
+    running_as: _ResponseScriptsPostRCloneRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostRCloneLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostRCloneRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsPostRCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostRCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostRCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostRCloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostRCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostRCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostRCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostRCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostRCloneRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostContainersClone(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostContainersCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    user_context: str
+    params: List
+    arguments: dict
+    is_template: bool
+    template_dependents_count: int
+    published_as_template_id: int
+    from_template_id: int
+    template_script_name: str
+    links: _ResponseScriptsPostContainersCloneLinks
+    schedule: _ResponseScriptsPostContainersCloneSchedule
+    notifications: _ResponseScriptsPostContainersCloneNotifications
+    running_as: _ResponseScriptsPostContainersCloneRunningAs
+    required_resources: _ResponseScriptsPostContainersCloneRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    last_run: _ResponseScriptsPostContainersCloneLastRun
+    time_zone: str
+    partition_label: str
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsPostContainersCloneFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPostContainersCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostContainersCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostContainersCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostContainersCloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostContainersCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostContainersCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostContainersCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostContainersCloneRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostContainersCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustomClone(Response):
+    id: int
+    from_template_aliases: List
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostCustomCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List
+    parent_id: int
+    params: List
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    ui_report_url: int
+    ui_report_id: int
+    ui_report_provide_api_key: bool
+    template_script_name: str
+    template_note: str
+    remote_host_id: int
+    credential_id: int
+    code_preview: str
+    schedule: _ResponseScriptsPostCustomCloneSchedule
+    notifications: _ResponseScriptsPostCustomCloneNotifications
+    running_as: _ResponseScriptsPostCustomCloneRunningAs
+    time_zone: str
+    last_run: _ResponseScriptsPostCustomCloneLastRun
+    my_permission_level: str
+    hidden: bool
+    archived: str
+    target_project_id: int
+    last_successful_run: _ResponseScriptsPostCustomCloneLastSuccessfulRun
+    required_resources: _ResponseScriptsPostCustomCloneRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsPostCustomCloneFromTemplateAliases(Response):
+    id: int
+    object_id: int
+    alias: str
+
+class _ResponseScriptsPostCustomCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostCustomCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostCustomCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostCustomCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseScriptsPostCustomCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostCustomCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostCustomCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustomCloneLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostCustomCloneRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseSearchList(Response):
+    total_results: int
+    aggregations: dict
+    results: List
+
+class _ResponseSearchListResults(Response):
+    score: float
+    type: str
+    id: int
+    name: str
+    type_name: str
+    updated_at: str
+    owner: str
+    use_count: int
+    last_run_id: int
+    last_run_state: str
+    last_run_start: str
+    last_run_finish: str
+    public: bool
+    last_run_exception: str
+    auto_share: bool
+
+class _ResponseSearchListTypes(Response):
+    type: str
+
+class _ResponseServicesPost(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesPostUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesPostSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesPostCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesPostNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPostSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesPostCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPostNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesGet(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesGetUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesGetSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesGetCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesGetNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesGetSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesGetCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesGetNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesPut(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesPutUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesPutSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesPutCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesPutNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPutSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesPutCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPutNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesPatch(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesPatchUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesPatchSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesPatchCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesPatchNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPatchSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesPatchCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPatchNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesListShares(Response):
+    readers: _ResponseServicesListSharesReaders
+    writers: _ResponseServicesListSharesWriters
+    owners: _ResponseServicesListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseServicesListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesUsers(Response):
+    readers: _ResponseServicesPutSharesUsersReaders
+    writers: _ResponseServicesPutSharesUsersWriters
+    owners: _ResponseServicesPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseServicesPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesGroups(Response):
+    readers: _ResponseServicesPutSharesGroupsReaders
+    writers: _ResponseServicesPutSharesGroupsWriters
+    owners: _ResponseServicesPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseServicesPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseServicesListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseServicesPutTransfer(Response):
+    dependencies: List
+
+class _ResponseServicesPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseServicesPutArchive(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesPutArchiveUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesPutArchiveSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesPutArchiveCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesPutArchiveNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPutArchiveSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesPutArchiveCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPutArchiveNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesListProjects(Response):
+    id: int
+    author: _ResponseServicesListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseServicesListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPostDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesGetDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPostRedeploy(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesListDeploymentsLogs(Response):
+    message: str
+    stream: str
+    created_at: str
+    source: str
+
+class _ResponseServicesPostClone(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesPostCloneUser
+    type: str
+    docker_image_name: str
+    docker_image_tag: str
+    schedule: _ResponseServicesPostCloneSchedule
+    time_zone: str
+    replicas: int
+    max_replicas: int
+    instance_type: str
+    memory: int
+    cpu: int
+    created_at: str
+    updated_at: str
+    credentials: List
+    permission_set_id: int
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    report_id: int
+    current_deployment: _ResponseServicesPostCloneCurrentDeployment
+    current_url: str
+    environment_variables: dict
+    notifications: _ResponseServicesPostCloneNotifications
+    partition_label: str
+    my_permission_level: str
+    archived: str
+    hidden: bool
+
+class _ResponseServicesPostCloneUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesPostCloneSchedule(Response):
+    runtime_plan: str
+    recurrences: List
+
+class _ResponseServicesPostCloneCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
+class _ResponseServicesPostCloneNotifications(Response):
+    failure_email_addresses: List
+    failure_on: bool
+
+class _ResponseServicesPostTokens(Response):
+    id: int
+    name: str
+    user: _ResponseServicesPostTokensUser
+    machine_token: bool
+    expires_at: str
+    created_at: str
+    token: str
+
+class _ResponseServicesPostTokensUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesListTokens(Response):
+    id: int
+    name: str
+    user: _ResponseServicesListTokensUser
+    machine_token: bool
+    expires_at: str
+    created_at: str
+
+class _ResponseServicesListTokensUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsList(Response):
+    id: int
+    owner: _ResponseStorageHostsListOwner
+    name: str
+    provider: str
+    bucket: str
+    s3_options: _ResponseStorageHostsListS3Options
+
+class _ResponseStorageHostsListOwner(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsListS3Options(Response):
+    region: str
+
+class _ResponseStorageHostsPost(Response):
+    id: int
+    owner: _ResponseStorageHostsPostOwner
+    name: str
+    provider: str
+    bucket: str
+    s3_options: _ResponseStorageHostsPostS3Options
+
+class _ResponseStorageHostsPostOwner(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsPostS3Options(Response):
+    region: str
+
+class _ResponseStorageHostsGet(Response):
+    id: int
+    owner: _ResponseStorageHostsGetOwner
+    name: str
+    provider: str
+    bucket: str
+    s3_options: _ResponseStorageHostsGetS3Options
+
+class _ResponseStorageHostsGetOwner(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsGetS3Options(Response):
+    region: str
+
+class _ResponseStorageHostsPut(Response):
+    id: int
+    owner: _ResponseStorageHostsPutOwner
+    name: str
+    provider: str
+    bucket: str
+    s3_options: _ResponseStorageHostsPutS3Options
+
+class _ResponseStorageHostsPutOwner(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsPutS3Options(Response):
+    region: str
+
+class _ResponseStorageHostsPatch(Response):
+    id: int
+    owner: _ResponseStorageHostsPatchOwner
+    name: str
+    provider: str
+    bucket: str
+    s3_options: _ResponseStorageHostsPatchS3Options
+
+class _ResponseStorageHostsPatchOwner(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStorageHostsPatchS3Options(Response):
+    region: str
+
+class _ResponseStorageHostsListShares(Response):
+    readers: _ResponseStorageHostsListSharesReaders
+    writers: _ResponseStorageHostsListSharesWriters
+    owners: _ResponseStorageHostsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseStorageHostsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesUsers(Response):
+    readers: _ResponseStorageHostsPutSharesUsersReaders
+    writers: _ResponseStorageHostsPutSharesUsersWriters
+    owners: _ResponseStorageHostsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseStorageHostsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesGroups(Response):
+    readers: _ResponseStorageHostsPutSharesGroupsReaders
+    writers: _ResponseStorageHostsPutSharesGroupsWriters
+    owners: _ResponseStorageHostsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseStorageHostsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseStorageHostsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseStorageHostsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseStorageHostsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseTableTagsPost(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    table_count: int
+    user: _ResponseTableTagsPostUser
+
+class _ResponseTableTagsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTableTagsGet(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    table_count: int
+    user: _ResponseTableTagsGetUser
+
+class _ResponseTableTagsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTablesPostEnhancementsGeocodings(Response):
+    id: int
+    source_table_id: int
+    state: str
+    enhanced_table_schema: str
+    enhanced_table_name: str
+
+class _ResponseTablesPostEnhancementsCassNcoa(Response):
+    id: int
+    source_table_id: int
+    state: str
+    enhanced_table_schema: str
+    enhanced_table_name: str
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    batch_size: int
+
+class _ResponseTablesGetEnhancementsGeocodings(Response):
+    id: int
+    source_table_id: int
+    state: str
+    enhanced_table_schema: str
+    enhanced_table_name: str
+
+class _ResponseTablesGetEnhancementsCassNcoa(Response):
+    id: int
+    source_table_id: int
+    state: str
+    enhanced_table_schema: str
+    enhanced_table_name: str
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    batch_size: int
+
+class _ResponseTablesPostScan(Response):
+    job_id: int
+    run_id: int
+
+class _ResponseTablesPostRefresh(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    data_updated_at: str
+    schema_updated_at: str
+    refresh_id: str
+    last_run: _ResponseTablesPostRefreshLastRun
+    primary_keys: List
+    last_modified_keys: List
+    table_tags: List
+    ontology_mapping: dict
+    columns: List
+    joins: List
+    multipart_key: List
+    enhancements: List
+    view_def: str
+    table_def: str
+    outgoing_table_matches: List
+
+class _ResponseTablesPostRefreshLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesPostRefreshTableTags(Response):
+    id: int
+    name: str
+
+class _ResponseTablesPostRefreshColumns(Response):
+    name: str
+    civis_data_type: str
+    sql_type: str
+    sample_values: List
+    encoding: str
+    description: str
+    order: int
+    min_value: str
+    max_value: str
+    avg_value: float
+    stddev: float
+    value_distribution_percent: dict
+    coverage_count: int
+    null_count: int
+    possible_dependent_variable_types: List
+    useable_as_independent_variable: bool
+    useable_as_primary_key: bool
+    value_distribution: dict
+    distinct_count: int
+
+class _ResponseTablesPostRefreshJoins(Response):
+    id: int
+    left_table_id: int
+    left_identifier: str
+    right_table_id: int
+    right_identifier: str
+    on: str
+    left_join: bool
+    created_at: str
+    updated_at: str
+
+class _ResponseTablesPostRefreshEnhancements(Response):
+    type: str
+    created_at: str
+    updated_at: str
+    join_id: int
+
+class _ResponseTablesPostRefreshOutgoingTableMatches(Response):
+    source_table_id: int
+    target_type: str
+    target_id: int
+    target: _ResponseTablesPostRefreshTarget
+    job: _ResponseTablesPostRefreshJob
+
+class _ResponseTablesGet(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    data_updated_at: str
+    schema_updated_at: str
+    refresh_id: str
+    last_run: _ResponseTablesGetLastRun
+    primary_keys: List
+    last_modified_keys: List
+    table_tags: List
+    ontology_mapping: dict
+    columns: List
+    joins: List
+    multipart_key: List
+    enhancements: List
+    view_def: str
+    table_def: str
+    outgoing_table_matches: List
+
+class _ResponseTablesGetLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesGetTableTags(Response):
+    id: int
+    name: str
+
+class _ResponseTablesGetColumns(Response):
+    name: str
+    civis_data_type: str
+    sql_type: str
+    sample_values: List
+    encoding: str
+    description: str
+    order: int
+    min_value: str
+    max_value: str
+    avg_value: float
+    stddev: float
+    value_distribution_percent: dict
+    coverage_count: int
+    null_count: int
+    possible_dependent_variable_types: List
+    useable_as_independent_variable: bool
+    useable_as_primary_key: bool
+    value_distribution: dict
+    distinct_count: int
+
+class _ResponseTablesGetJoins(Response):
+    id: int
+    left_table_id: int
+    left_identifier: str
+    right_table_id: int
+    right_identifier: str
+    on: str
+    left_join: bool
+    created_at: str
+    updated_at: str
+
+class _ResponseTablesGetEnhancements(Response):
+    type: str
+    created_at: str
+    updated_at: str
+    join_id: int
+
+class _ResponseTablesGetOutgoingTableMatches(Response):
+    source_table_id: int
+    target_type: str
+    target_id: int
+    target: _ResponseTablesGetTarget
+    job: _ResponseTablesGetJob
+
+class _ResponseTablesPatch(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    data_updated_at: str
+    schema_updated_at: str
+    refresh_id: str
+    last_run: _ResponseTablesPatchLastRun
+    primary_keys: List
+    last_modified_keys: List
+    table_tags: List
+    ontology_mapping: dict
+
+class _ResponseTablesPatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesPatchTableTags(Response):
+    id: int
+    name: str
+
+class _ResponseTablesPutTags(Response):
+    id: int
+    table_tag_id: int
+
+class _ResponseTablesListProjects(Response):
+    id: int
+    author: _ResponseTablesListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseTablesListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTablesListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesListReportsShares(Response):
+    readers: _ResponseTemplatesListReportsSharesReaders
+    writers: _ResponseTemplatesListReportsSharesWriters
+    owners: _ResponseTemplatesListReportsSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesListReportsSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListReportsSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListReportsSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesUsers(Response):
+    readers: _ResponseTemplatesPutReportsSharesUsersReaders
+    writers: _ResponseTemplatesPutReportsSharesUsersWriters
+    owners: _ResponseTemplatesPutReportsSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesPutReportsSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesGroups(Response):
+    readers: _ResponseTemplatesPutReportsSharesGroupsReaders
+    writers: _ResponseTemplatesPutReportsSharesGroupsWriters
+    owners: _ResponseTemplatesPutReportsSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesPutReportsSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutReportsSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListReportsDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseTemplatesPutReportsTransfer(Response):
+    dependencies: List
+
+class _ResponseTemplatesPutReportsTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseTemplatesPostReports(Response):
+    id: int
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    archived: bool
+    tech_reviewed: bool
+    author: _ResponseTemplatesPostReportsAuthor
+    auth_code_url: str
+    provide_api_key: bool
+    hidden: bool
+
+class _ResponseTemplatesPostReportsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesGetReports(Response):
+    id: int
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    archived: bool
+    tech_reviewed: bool
+    author: _ResponseTemplatesGetReportsAuthor
+    auth_code_url: str
+    provide_api_key: bool
+    hidden: bool
+
+class _ResponseTemplatesGetReportsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesPutReports(Response):
+    id: int
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    archived: bool
+    tech_reviewed: bool
+    author: _ResponseTemplatesPutReportsAuthor
+    auth_code_url: str
+    provide_api_key: bool
+    hidden: bool
+
+class _ResponseTemplatesPutReportsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesPatchReports(Response):
+    id: int
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    archived: bool
+    tech_reviewed: bool
+    author: _ResponseTemplatesPatchReportsAuthor
+    auth_code_url: str
+    provide_api_key: bool
+    hidden: bool
+
+class _ResponseTemplatesPatchReportsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesListScriptsShares(Response):
+    readers: _ResponseTemplatesListScriptsSharesReaders
+    writers: _ResponseTemplatesListScriptsSharesWriters
+    owners: _ResponseTemplatesListScriptsSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesListScriptsSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListScriptsSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListScriptsSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesUsers(Response):
+    readers: _ResponseTemplatesPutScriptsSharesUsersReaders
+    writers: _ResponseTemplatesPutScriptsSharesUsersWriters
+    owners: _ResponseTemplatesPutScriptsSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesPutScriptsSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesGroups(Response):
+    readers: _ResponseTemplatesPutScriptsSharesGroupsReaders
+    writers: _ResponseTemplatesPutScriptsSharesGroupsWriters
+    owners: _ResponseTemplatesPutScriptsSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseTemplatesPutScriptsSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesPutScriptsSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseTemplatesListScriptsDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseTemplatesPutScriptsTransfer(Response):
+    dependencies: List
+
+class _ResponseTemplatesPutScriptsTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseTemplatesListScriptsProjects(Response):
+    id: int
+    author: _ResponseTemplatesListScriptsProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseTemplatesListScriptsProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesListScriptsProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesPostScripts(Response):
+    id: int
+    public: bool
+    script_id: int
+    script_type: str
+    user_context: str
+    params: List
+    name: str
+    category: str
+    note: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    ui_report_id: int
+    tech_reviewed: bool
+    archived: bool
+    hidden: bool
+    author: _ResponseTemplatesPostScriptsAuthor
+    my_permission_level: str
+
+class _ResponseTemplatesPostScriptsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseTemplatesPostScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesGetScripts(Response):
+    id: int
+    public: bool
+    script_id: int
+    script_type: str
+    user_context: str
+    params: List
+    name: str
+    category: str
+    note: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    ui_report_id: int
+    tech_reviewed: bool
+    archived: bool
+    hidden: bool
+    author: _ResponseTemplatesGetScriptsAuthor
+    my_permission_level: str
+
+class _ResponseTemplatesGetScriptsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseTemplatesGetScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesPutScripts(Response):
+    id: int
+    public: bool
+    script_id: int
+    script_type: str
+    user_context: str
+    params: List
+    name: str
+    category: str
+    note: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    ui_report_id: int
+    tech_reviewed: bool
+    archived: bool
+    hidden: bool
+    author: _ResponseTemplatesPutScriptsAuthor
+    my_permission_level: str
+
+class _ResponseTemplatesPutScriptsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseTemplatesPutScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseTemplatesPatchScripts(Response):
+    id: int
+    public: bool
+    script_id: int
+    script_type: str
+    user_context: str
+    params: List
+    name: str
+    category: str
+    note: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    ui_report_id: int
+    tech_reviewed: bool
+    archived: bool
+    hidden: bool
+    author: _ResponseTemplatesPatchScriptsAuthor
+    my_permission_level: str
+
+class _ResponseTemplatesPatchScriptsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseTemplatesPatchScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseUsageListMatching(Response):
+    run_id: int
+    job_id: int
+    user_id: int
+    organization_id: int
+    run_created_at: str
+    run_time: int
+    num_records: int
+    task: str
+
+class _ResponseUsageListLlm(Response):
+    id: int
+    run_id: int
+    job_id: int
+    user_id: int
+    organization_id: int
+    run_created_at: str
+    run_time: int
+    credits: float
+    input_tokens: int
+    output_tokens: int
+    model_id: str
+
+class _ResponseUsageGetLlm(Response):
+    id: int
+    run_id: int
+    job_id: int
+    user_id: int
+    organization_id: int
+    run_created_at: str
+    run_time: int
+    credits: float
+    input_tokens: int
+    output_tokens: int
+    model_id: str
+
+class _ResponseUsageListLlmOrganizationSummary(Response):
+    credits: float
+    organization_id: int
+
+class _ResponseUsageLimitsListMatching(Response):
+    id: int
+    organization_id: int
+    created_at: str
+    updated_at: str
+    hard_limit: int
+    notification_emails: List
+    task: str
+
+class _ResponseUsageLimitsGetMatching(Response):
+    id: int
+    organization_id: int
+    created_at: str
+    updated_at: str
+    hard_limit: int
+    notification_emails: List
+    task: str
+
+class _ResponseUsageLimitsListLlm(Response):
+    id: int
+    organization_id: int
+    created_at: str
+    updated_at: str
+    hard_limit: int
+
+class _ResponseUsageLimitsGetLlm(Response):
+    id: int
+    organization_id: int
+    created_at: str
+    updated_at: str
+    hard_limit: int
+
+class _ResponseUsersPost(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List
+    city: str
+    state: str
+    time_zone: str
+    initials: str
+    department: str
+    title: str
+    github_username: str
+    prefers_sms_otp: bool
+    vpn_enabled: bool
+    sso_disabled: bool
+    otp_required_for_login: bool
+    exempt_from_org_sms_otp_disabled: bool
+    sms_otp_allowed: bool
+    robot: bool
+    phone: str
+    organization_slug: str
+    organization_sso_disable_capable: bool
+    organization_login_type: str
+    organization_sms_otp_disabled: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+    unconfirmed_email: str
+    account_status: str
+
+class _ResponseUsersPostGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersListMe(Response):
+    id: int
+    name: str
+    email: str
+    username: str
+    initials: str
+    last_checked_announcements: str
+    feature_flags: dict
+    roles: List
+    preferences: dict
+    custom_branding: str
+    primary_group_id: int
+    groups: List
+    organization_name: str
+    organization_slug: str
+    organization_default_theme_id: int
+    created_at: str
+    sign_in_count: int
+    assuming_role: bool
+    assuming_admin: bool
+    assuming_admin_expiration: str
+    superadmin_mode_expiration: str
+    disable_non_compliant_fedramp_features: bool
+    persona_role: str
+    created_by_id: int
+    last_updated_by_id: int
+
+class _ResponseUsersListMeGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersPatchMe(Response):
+    id: int
+    name: str
+    email: str
+    username: str
+    initials: str
+    last_checked_announcements: str
+    feature_flags: dict
+    roles: List
+    preferences: dict
+    custom_branding: str
+    primary_group_id: int
+    groups: List
+    organization_name: str
+    organization_slug: str
+    organization_default_theme_id: int
+    created_at: str
+    sign_in_count: int
+    assuming_role: bool
+    assuming_admin: bool
+    assuming_admin_expiration: str
+    superadmin_mode_expiration: str
+    disable_non_compliant_fedramp_features: bool
+    persona_role: str
+    created_by_id: int
+    last_updated_by_id: int
+
+class _ResponseUsersPatchMeGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersListMeActivity(Response):
+    id: str
+    name: str
+    type: str
+    user: str
+    category: str
+    state: str
+    updated_at: str
+    next_run_at: str
+    last_run_id: str
+    last_run_state: str
+
+class _ResponseUsersListMeOrganizationAdmins(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+    email: str
+
+class _ResponseUsersListMeThemes(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+
+class _ResponseUsersGetMeThemes(Response):
+    id: int
+    name: str
+    organization_ids: List
+    settings: str
+    logo_file: _ResponseUsersGetMeThemesLogoFile
+    created_at: str
+    updated_at: str
+
+class _ResponseUsersGetMeThemesLogoFile(Response):
+    id: int
+    download_url: str
+
+class _ResponseUsersGet(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List
+    city: str
+    state: str
+    time_zone: str
+    initials: str
+    department: str
+    title: str
+    github_username: str
+    prefers_sms_otp: bool
+    vpn_enabled: bool
+    sso_disabled: bool
+    otp_required_for_login: bool
+    exempt_from_org_sms_otp_disabled: bool
+    sms_otp_allowed: bool
+    robot: bool
+    phone: str
+    organization_slug: str
+    organization_sso_disable_capable: bool
+    organization_login_type: str
+    organization_sms_otp_disabled: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+    unconfirmed_email: str
+    account_status: str
+
+class _ResponseUsersGetGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersPatch(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List
+    city: str
+    state: str
+    time_zone: str
+    initials: str
+    department: str
+    title: str
+    github_username: str
+    prefers_sms_otp: bool
+    vpn_enabled: bool
+    sso_disabled: bool
+    otp_required_for_login: bool
+    exempt_from_org_sms_otp_disabled: bool
+    sms_otp_allowed: bool
+    robot: bool
+    phone: str
+    organization_slug: str
+    organization_sso_disable_capable: bool
+    organization_login_type: str
+    organization_sms_otp_disabled: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+    unconfirmed_email: str
+    account_status: str
+
+class _ResponseUsersPatchGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersPostApiKeys(Response):
+    id: int
+    name: str
+    expires_at: str
+    created_at: str
+    revoked_at: str
+    last_used_at: str
+    scopes: List
+    use_count: int
+    expired: bool
+    active: bool
+    constraints: List
+    token: str
+
+class _ResponseUsersPostApiKeysConstraints(Response):
+    constraint: str
+    constraint_type: str
+    get_allowed: bool
+    head_allowed: bool
+    post_allowed: bool
+    put_allowed: bool
+    patch_allowed: bool
+    delete_allowed: bool
+
+class _ResponseUsersGetApiKeys(Response):
+    id: int
+    name: str
+    expires_at: str
+    created_at: str
+    revoked_at: str
+    last_used_at: str
+    scopes: List
+    use_count: int
+    expired: bool
+    active: bool
+    constraints: List
+
+class _ResponseUsersGetApiKeysConstraints(Response):
+    constraint: str
+    constraint_type: str
+    get_allowed: bool
+    head_allowed: bool
+    post_allowed: bool
+    put_allowed: bool
+    patch_allowed: bool
+    delete_allowed: bool
+
+class _ResponseUsersDeleteApiKeys(Response):
+    id: int
+    name: str
+    expires_at: str
+    created_at: str
+    revoked_at: str
+    last_used_at: str
+    scopes: List
+    use_count: int
+    expired: bool
+    active: bool
+    constraints: List
+
+class _ResponseUsersDeleteApiKeysConstraints(Response):
+    constraint: str
+    constraint_type: str
+    get_allowed: bool
+    head_allowed: bool
+    post_allowed: bool
+    put_allowed: bool
+    patch_allowed: bool
+    delete_allowed: bool
+
+class _ResponseUsersDeleteSessions(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List
+    city: str
+    state: str
+    time_zone: str
+    initials: str
+    department: str
+    title: str
+    github_username: str
+    prefers_sms_otp: bool
+    vpn_enabled: bool
+    sso_disabled: bool
+    otp_required_for_login: bool
+    exempt_from_org_sms_otp_disabled: bool
+    sms_otp_allowed: bool
+    robot: bool
+    phone: str
+    organization_slug: str
+    organization_sso_disable_capable: bool
+    organization_login_type: str
+    organization_sms_otp_disabled: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+    unconfirmed_email: str
+    account_status: str
+
+class _ResponseUsersDeleteSessionsGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersPostMeFavorites(Response):
+    id: int
+    object_id: int
+    object_type: str
+    object_name: str
+    created_at: str
+    object_updated_at: str
+    object_author: _ResponseUsersPostMeFavoritesObjectAuthor
+
+class _ResponseUsersPostMeFavoritesObjectAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseUsersPostUnsuspend(Response):
+    id: int
+    user: str
+    unlocked_at: str
+
+class _ResponseUsersDelete2Fa(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List
+    city: str
+    state: str
+    time_zone: str
+    initials: str
+    department: str
+    title: str
+    github_username: str
+    prefers_sms_otp: bool
+    vpn_enabled: bool
+    sso_disabled: bool
+    otp_required_for_login: bool
+    exempt_from_org_sms_otp_disabled: bool
+    sms_otp_allowed: bool
+    robot: bool
+    phone: str
+    organization_slug: str
+    organization_sso_disable_capable: bool
+    organization_login_type: str
+    organization_sms_otp_disabled: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+    unconfirmed_email: str
+    account_status: str
+
+class _ResponseUsersDelete2FaGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseWorkflowsPost(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsPostUser
+    state: str
+    schedule: _ResponseWorkflowsPostSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsPostNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsPostNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsGet(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsGetUser
+    state: str
+    schedule: _ResponseWorkflowsGetSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsGetNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsGetUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsGetNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsPut(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsPutUser
+    state: str
+    schedule: _ResponseWorkflowsPutSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsPutNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPutSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsPutNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsPatch(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsPatchUser
+    state: str
+    schedule: _ResponseWorkflowsPatchSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsPatchNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsPatchNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsListShares(Response):
+    readers: _ResponseWorkflowsListSharesReaders
+    writers: _ResponseWorkflowsListSharesWriters
+    owners: _ResponseWorkflowsListSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseWorkflowsListSharesReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsListSharesWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsListSharesOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesUsers(Response):
+    readers: _ResponseWorkflowsPutSharesUsersReaders
+    writers: _ResponseWorkflowsPutSharesUsersWriters
+    owners: _ResponseWorkflowsPutSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseWorkflowsPutSharesUsersReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesUsersWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesUsersOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesGroups(Response):
+    readers: _ResponseWorkflowsPutSharesGroupsReaders
+    writers: _ResponseWorkflowsPutSharesGroupsWriters
+    owners: _ResponseWorkflowsPutSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseWorkflowsPutSharesGroupsReaders(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesGroupsWriters(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsPutSharesGroupsOwners(Response):
+    users: List
+    groups: List
+
+class _ResponseWorkflowsListDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseWorkflowsPutTransfer(Response):
+    dependencies: List
+
+class _ResponseWorkflowsPutTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseWorkflowsPutArchive(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsPutArchiveUser
+    state: str
+    schedule: _ResponseWorkflowsPutArchiveSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsPutArchiveNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPutArchiveUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPutArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsPutArchiveNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsListProjects(Response):
+    id: int
+    author: _ResponseWorkflowsListProjectsAuthor
+    name: str
+    description: str
+    users: List
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseWorkflowsListProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsListProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsListGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseWorkflowsListGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseWorkflowsListGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPutGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseWorkflowsPutGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseWorkflowsPutGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPatchGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseWorkflowsPatchGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseWorkflowsPatchGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsListGitCommits(Response):
+    commit_hash: str
+    author_name: str
+    date: str
+    message: str
+
+class _ResponseWorkflowsPostGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseWorkflowsGetGitCommits(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseWorkflowsPostGitCheckoutLatest(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseWorkflowsPostGitCheckout(Response):
+    content: str
+    type: str
+    size: int
+    file_hash: str
+
+class _ResponseWorkflowsPostClone(Response):
+    id: int
+    name: str
+    description: str
+    definition: str
+    valid: bool
+    validation_errors: str
+    file_id: str
+    user: _ResponseWorkflowsPostCloneUser
+    state: str
+    schedule: _ResponseWorkflowsPostCloneSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    notifications: _ResponseWorkflowsPostCloneNotifications
+    archived: str
+    hidden: bool
+    my_permission_level: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostCloneUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseWorkflowsPostCloneNotifications(Response):
+    urls: List
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List
+    failure_email_addresses: List
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseWorkflowsPostExecutions(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsPostExecutionsUser
+    definition: str
+    input: dict
+    included_tasks: List
+    tasks: List
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostExecutionsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostExecutionsTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsGetExecutions(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsGetExecutionsUser
+    definition: str
+    input: dict
+    included_tasks: List
+    tasks: List
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsGetExecutionsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsGetExecutionsTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsPostExecutionsCancel(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsPostExecutionsCancelUser
+    definition: str
+    input: dict
+    included_tasks: List
+    tasks: List
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostExecutionsCancelUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostExecutionsCancelTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsPostExecutionsResume(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsPostExecutionsResumeUser
+    definition: str
+    input: dict
+    included_tasks: List
+    tasks: List
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostExecutionsResumeUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostExecutionsResumeTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsPostExecutionsRetry(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsPostExecutionsRetryUser
+    definition: str
+    input: dict
+    included_tasks: List
+    tasks: List
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsPostExecutionsRetryUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsPostExecutionsRetryTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsGetExecutionsTasks(Response):
+    name: str
+    mistral_state: str
+    mistral_state_info: str
+    runs: List
+    executions: List
+
+class _ResponseWorkflowsGetExecutionsTasksRuns(Response):
+    id: int
+    job_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
+class _ResponseWorkflowsGetExecutionsTasksExecutions(Response):
+    id: int
+    workflow_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
 
 # Need the individual endpoint classes defined first as above,
 # before we can define APIClient to use them.
