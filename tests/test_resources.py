@@ -688,3 +688,8 @@ def test_generate_classes_with_ttl_cache__expire_cache(mock_gen, mock_expire_tim
         # so that we should trigger the cache clearing at every iteration.
         time.sleep(0.001)
     assert mock_gen.call_count == 5
+
+
+@pytest.mark.parametrize("source, expected", [("ab_cd", "AbCd"), ("", "")])
+def test_snake_to_camel(source, expected):
+    assert _resources._snake_to_camel(source) == expected

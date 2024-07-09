@@ -7,7 +7,7 @@ import sys
 import time
 import textwrap
 from inspect import Signature, Parameter
-from typing import Iterator
+from typing import Iterator, List
 
 from jsonref import JsonRef
 import requests
@@ -54,6 +54,10 @@ DEFAULT_ARG_VALUE = None
 _BRACKETED_REGEX = re.compile(r"^{.*}$")
 
 
+def _snake_to_camel(s):
+    return "".join(s.title() for s in s.split("_"))
+
+
 def exclude_resource(path, api_version):
     # TODO: api_version is not used here.
     #   Dropping it would affect upstream code, including civis.APIClient.
@@ -67,10 +71,10 @@ def get_properties(x):
     return x.get("properties") or x.get("items", {}).get("properties")
 
 
-def property_type(props):
-    t = type_from_param(props)
+def property_type(props, get_format=True, get_item_type=True):
+    t = type_from_param(props, get_item_type=get_item_type)
     fmt = props.get("format")
-    return "{} ({})".format(t, fmt) if fmt else t
+    return "{} ({})".format(t, fmt) if get_format and fmt else t
 
 
 def name_and_type_doc(name, prop, level, optional=False):
@@ -153,7 +157,9 @@ def return_annotation_from_responses(method_name, responses, is_iterable):
     schema = response_object.get("schema", {})
     properties = get_properties(schema)
     if properties:
-        return_annotation = return_annotation_from_properties(method_name, properties)
+        return_annotation = return_annotation_from_properties(
+            method_name, "", properties
+        )
         if is_iterable:
             return Iterator[return_annotation]
         else:
@@ -162,30 +168,38 @@ def return_annotation_from_responses(method_name, responses, is_iterable):
         return Response
 
 
-def return_annotation_from_properties(method_name, properties):
-    klass_name = f"_Response{''.join(s.title() for s in method_name.split('_'))}"
+def return_annotation_from_properties(method_name, param_name, properties):
+    klass_name = f"_Response{_snake_to_camel(method_name)}{_snake_to_camel(param_name)}"
     klass = type(klass_name, (), {})
     klass.__annotations__ = {}
-    for name, prop in properties:
+    for name, prop in properties.items():
         name = camel_to_snake(name)
         klass.__annotations__[name] = return_annotation_from_property(
-            method_name, prop, properties
+            method_name, name, prop, properties
         )
     return klass
 
 
-def return_annotation_from_property(method_name, prop, properties):
-    return ...  # TODO
+def return_annotation_from_property(method_name, name, prop, properties):
+    child_properties = get_properties(prop)
+    child = None if child_properties == properties else child_properties
+    prop_type = property_type(prop, get_format=False, get_item_type=False)
+    if child and prop_type == "List":
+        return List[return_annotation_from_properties(method_name, name, child)]
+    elif child:
+        return return_annotation_from_properties(method_name, name, child)
+    else:
+        return prop_type
 
 
 def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
 
-def type_from_param(param):
+def type_from_param(param, get_item_type=True):
     main_type = TYPE_MAP[param["type"]]
     item_type = None
-    if main_type == "List":
+    if get_item_type and main_type == "List":
         items = param.get("items", {})
         if "type" in items:
             item_type = TYPE_MAP[items["type"]]
