@@ -89,10 +89,13 @@ from civis.response import Response
             f.write("\n")
 
         for response_class in response_classes:
-            f.write(f"\nclass {response_class.__name__}(Response):\n")
+            f.write(f"class {response_class.__name__}(Response):\n")
             for name, anno in response_class.__annotations__.items():
                 anno_str = anno if isinstance(anno, str) else anno.__name__
-                f.write(f"    {name}: {anno_str}\n")
+                if len(line := f"    {name}: {anno_str}") <= 88:
+                    f.write(f"{line}\n")
+                else:
+                    f.write(f"    {name}: (\n        {anno_str}\n    )\n")
             f.write("\n")
 
         f.write(
