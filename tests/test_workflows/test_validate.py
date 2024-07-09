@@ -31,10 +31,24 @@ def test_valid_workflow_yaml():
 @pytest.mark.parametrize(
     "replace_to_break",
     [
-        ('version: "2.0"', ""),  # "version" is required
-        ("tasks:", "foobar:"),  # "tasks" is required
-        ("civis.scripts.container", "civis.script.container"),  # invalid "action"
-        ("      action:", "      foo: bar\n      action:"),  # invalid "task" property
+        # "version" is required
+        ('version: "2.0"', ""),
+        # "tasks" is required
+        ("tasks:", "foobar:"),
+        # invalid "action"
+        ("civis.scripts.container", "civis.script.container"),
+        # invalid "task" property
+        ("      action:", "      foo: bar\n      action:"),
+        # task transitioning to itself
+        (
+            "      input:",
+            "      on-success:\n        - task_1\n      input:",
+        ),
+        # task transitioning to an undefined task
+        (
+            "      input:",
+            "      on-success:\n        - undefined_task\n      input:",
+        ),
     ],
 )
 def test_invalid_workflow_yaml(replace_to_break):

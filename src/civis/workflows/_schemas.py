@@ -118,6 +118,30 @@ def _if_then_execute(action: str, id_name: str) -> dict:
     }
 
 
+TASK_TRANSITION_SCHEMA = {
+    "oneOf": [
+        # A single task name.
+        {"type": "string"},
+        # A list of task names to transition to.
+        {"type": "array", "items": {"type": "string"}},
+        # A list of task names that each have a YAQL guard expression.
+        {"type": "array", "items": {"type": "object"}},
+        # A single task name or a list of task names under the (optional?) key "next".
+        {
+            "type": "object",
+            "properties": {
+                "next": {
+                    "oneOf": [
+                        {"type": "string"},
+                        {"type": "array", "items": {"type": "string"}},
+                        {"type": "array", "items": {"type": "object"}},
+                    ],
+                },
+            },
+        },
+    ],
+}
+
 TASK_SCHEMA = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
@@ -151,9 +175,9 @@ TASK_SCHEMA = {
         "input": {"type": "object"},
         "publish": {"type": "object"},
         "publish-on-error": {"type": "object"},
-        "on-success": {"type": "array"},
-        "on-error": {"type": "array"},
-        "on-complete": {"type": "array"},
+        "on-success": TASK_TRANSITION_SCHEMA,
+        "on-error": TASK_TRANSITION_SCHEMA,
+        "on-complete": TASK_TRANSITION_SCHEMA,
         "join": {
             "oneOf": [
                 {"const": "all"},
