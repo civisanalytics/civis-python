@@ -71,8 +71,8 @@ def get_properties(x):
     return x.get("properties") or x.get("items", {}).get("properties")
 
 
-def property_type(props, get_format=True, get_item_type=True):
-    t = type_from_param(props, get_item_type=get_item_type)
+def property_type(props, get_format=True, skip_dict_item_type=False):
+    t = type_from_param(props, skip_dict_item_type=skip_dict_item_type)
     fmt = props.get("format")
     return "{} ({})".format(t, fmt) if get_format and fmt else t
 
@@ -192,7 +192,7 @@ def return_annotation_from_properties(
 def return_annotation_from_property(endpoint_name, method_name, name, prop, properties):
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
-    prop_type = property_type(prop, get_format=False, get_item_type=False)
+    prop_type = property_type(prop, get_format=False, skip_dict_item_type=True)
     if child and prop_type == "List":
         return List[
             return_annotation_from_properties(endpoint_name, method_name, name, child)
@@ -209,15 +209,17 @@ def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
 
-def type_from_param(param, get_item_type=True):
+def type_from_param(param, skip_dict_item_type=False):
     main_type = TYPE_MAP[param["type"]]
     item_type = None
-    if get_item_type and main_type == "List":
+    if main_type == "List":
         items = param.get("items", {})
         if "type" in items:
             item_type = TYPE_MAP[items["type"]]
         elif "$ref" in items:
             item_type = "dict"
+        if skip_dict_item_type and item_type == "dict":
+            item_type = None
     return f"{main_type}[{item_type}]" if item_type else main_type
 
 

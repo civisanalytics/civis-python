@@ -56418,7 +56418,7 @@ class _ResponseClustersListKubernetes(Response):
 class _ResponseClustersListKubernetesClusterPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[
         _ResponseClustersListKubernetesClusterPartitionsInstanceConfigs
     ]
@@ -56460,7 +56460,7 @@ class _ResponseClustersGetKubernetes(Response):
 class _ResponseClustersGetKubernetesClusterPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[
         _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs
     ]
@@ -56527,7 +56527,7 @@ class _ResponseClustersListKubernetesDeploymentStats(Response):
 class _ResponseClustersListKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[_ResponseClustersListKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
@@ -56552,7 +56552,7 @@ class _ResponseClustersListKubernetesPartitionsInstanceConfigsUsageStats(Respons
 class _ResponseClustersPostKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[_ResponseClustersPostKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
@@ -56577,7 +56577,7 @@ class _ResponseClustersPostKubernetesPartitionsInstanceConfigsUsageStats(Respons
 class _ResponseClustersPatchKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[_ResponseClustersPatchKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
@@ -56602,7 +56602,7 @@ class _ResponseClustersPatchKubernetesPartitionsInstanceConfigsUsageStats(Respon
 class _ResponseClustersGetKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
-    labels: List
+    labels: List[str]
     instance_configs: List[_ResponseClustersGetKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
@@ -56682,7 +56682,7 @@ class _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs(Response):
     mem_graph_url: str
 
 class _ResponseCredentialsListTypes(Response):
-    types: List
+    types: List[str]
 
 class _ResponseCredentialsList(Response):
     id: int
@@ -57019,13 +57019,13 @@ class _ResponseDatabasesGetSchemasTables(Response):
     schema_updated_at: str
     refresh_id: str
     last_run: _ResponseDatabasesGetSchemasTablesLastRun
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
     table_tags: List[_ResponseDatabasesGetSchemasTablesTableTags]
     ontology_mapping: dict
     columns: List[_ResponseDatabasesGetSchemasTablesColumns]
     joins: List[_ResponseDatabasesGetSchemasTablesJoins]
-    multipart_key: List
+    multipart_key: List[str]
     enhancements: List[_ResponseDatabasesGetSchemasTablesEnhancements]
     view_def: str
     table_def: str
@@ -57047,7 +57047,7 @@ class _ResponseDatabasesGetSchemasTablesColumns(Response):
     name: str
     civis_data_type: str
     sql_type: str
-    sample_values: List
+    sample_values: List[str]
     encoding: str
     description: str
     order: int
@@ -57058,7 +57058,7 @@ class _ResponseDatabasesGetSchemasTablesColumns(Response):
     value_distribution_percent: dict
     coverage_count: int
     null_count: int
-    possible_dependent_variable_types: List
+    possible_dependent_variable_types: List[str]
     useable_as_independent_variable: bool
     useable_as_primary_key: bool
     value_distribution: dict
@@ -57143,13 +57143,13 @@ class _ResponseDatabasesPatchSchemasTables(Response):
     schema_updated_at: str
     refresh_id: str
     last_run: _ResponseDatabasesPatchSchemasTablesLastRun
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
     table_tags: List[_ResponseDatabasesPatchSchemasTablesTableTags]
     ontology_mapping: dict
     columns: List[_ResponseDatabasesPatchSchemasTablesColumns]
     joins: List[_ResponseDatabasesPatchSchemasTablesJoins]
-    multipart_key: List
+    multipart_key: List[str]
     enhancements: List[_ResponseDatabasesPatchSchemasTablesEnhancements]
     view_def: str
     table_def: str
@@ -57173,7 +57173,7 @@ class _ResponseDatabasesPatchSchemasTablesColumns(Response):
     name: str
     civis_data_type: str
     sql_type: str
-    sample_values: List
+    sample_values: List[str]
     encoding: str
     description: str
     order: int
@@ -57184,7 +57184,7 @@ class _ResponseDatabasesPatchSchemasTablesColumns(Response):
     value_distribution_percent: dict
     coverage_count: int
     null_count: int
-    possible_dependent_variable_types: List
+    possible_dependent_variable_types: List[str]
     useable_as_independent_variable: bool
     useable_as_primary_key: bool
     value_distribution: dict
@@ -57259,14 +57259,14 @@ class _ResponseDatabasesPostSchemasScan(Response):
 class _ResponseDatabasesGetTablePrivilegesSchemaName(Response):
     grantee: str
     grantee_type: str
-    privileges: List
-    grantable_privileges: List
+    privileges: List[str]
+    grantable_privileges: List[str]
 
 class _ResponseDatabasesGetSchemaPrivileges(Response):
     grantee: str
     grantee_type: str
-    privileges: List
-    grantable_privileges: List
+    privileges: List[str]
+    grantable_privileges: List[str]
 
 class _ResponseDatabasesListUsers(Response):
     username: str
@@ -57274,7 +57274,7 @@ class _ResponseDatabasesListUsers(Response):
 
 class _ResponseDatabasesListGroups(Response):
     group_name: str
-    members: List
+    members: List[str]
 
 class _ResponseDatabasesListWhitelistIps(Response):
     id: int
@@ -57342,20 +57342,20 @@ class _ResponseEnhancementsPostCivisDataMatchAuthor(Response):
 
 class _ResponseEnhancementsPostCivisDataMatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostCivisDataMatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -57416,20 +57416,20 @@ class _ResponseEnhancementsGetCivisDataMatchAuthor(Response):
 
 class _ResponseEnhancementsGetCivisDataMatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsGetCivisDataMatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -57490,20 +57490,20 @@ class _ResponseEnhancementsPutCivisDataMatchAuthor(Response):
 
 class _ResponseEnhancementsPutCivisDataMatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutCivisDataMatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -57564,20 +57564,20 @@ class _ResponseEnhancementsPatchCivisDataMatchAuthor(Response):
 
 class _ResponseEnhancementsPatchCivisDataMatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPatchCivisDataMatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -57638,20 +57638,20 @@ class _ResponseEnhancementsPostCivisDataMatchCloneAuthor(Response):
 
 class _ResponseEnhancementsPostCivisDataMatchCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostCivisDataMatchCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -57910,20 +57910,20 @@ class _ResponseEnhancementsPutCivisDataMatchArchiveAuthor(Response):
 
 class _ResponseEnhancementsPutCivisDataMatchArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutCivisDataMatchArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58051,20 +58051,20 @@ class _ResponseEnhancementsPostIdentityResolutionAuthor(Response):
 
 class _ResponseEnhancementsPostIdentityResolutionSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostIdentityResolutionNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58172,20 +58172,20 @@ class _ResponseEnhancementsPutIdentityResolutionAuthor(Response):
 
 class _ResponseEnhancementsPutIdentityResolutionSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutIdentityResolutionNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58293,20 +58293,20 @@ class _ResponseEnhancementsPatchIdentityResolutionAuthor(Response):
 
 class _ResponseEnhancementsPatchIdentityResolutionSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPatchIdentityResolutionNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58414,20 +58414,20 @@ class _ResponseEnhancementsGetIdentityResolutionAuthor(Response):
 
 class _ResponseEnhancementsGetIdentityResolutionSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsGetIdentityResolutionNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58535,20 +58535,20 @@ class _ResponseEnhancementsPostIdentityResolutionCloneAuthor(Response):
 
 class _ResponseEnhancementsPostIdentityResolutionCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostIdentityResolutionCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58759,20 +58759,20 @@ class _ResponseEnhancementsPostCassNcoaAuthor(Response):
 
 class _ResponseEnhancementsPostCassNcoaSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostCassNcoaNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58792,7 +58792,7 @@ class _ResponseEnhancementsPostCassNcoaSourceDatabaseTable(Response):
     table: str
     remote_host_id: int
     credential_id: int
-    multipart_key: List
+    multipart_key: List[str]
 
 class _ResponseEnhancementsPostCassNcoaDestination(Response):
     database_table: _ResponseEnhancementsPostCassNcoaDestinationDatabaseTable
@@ -58843,20 +58843,20 @@ class _ResponseEnhancementsGetCassNcoaAuthor(Response):
 
 class _ResponseEnhancementsGetCassNcoaSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsGetCassNcoaNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58876,7 +58876,7 @@ class _ResponseEnhancementsGetCassNcoaSourceDatabaseTable(Response):
     table: str
     remote_host_id: int
     credential_id: int
-    multipart_key: List
+    multipart_key: List[str]
 
 class _ResponseEnhancementsGetCassNcoaDestination(Response):
     database_table: _ResponseEnhancementsGetCassNcoaDestinationDatabaseTable
@@ -58927,20 +58927,20 @@ class _ResponseEnhancementsPutCassNcoaAuthor(Response):
 
 class _ResponseEnhancementsPutCassNcoaSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutCassNcoaNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -58960,7 +58960,7 @@ class _ResponseEnhancementsPutCassNcoaSourceDatabaseTable(Response):
     table: str
     remote_host_id: int
     credential_id: int
-    multipart_key: List
+    multipart_key: List[str]
 
 class _ResponseEnhancementsPutCassNcoaDestination(Response):
     database_table: _ResponseEnhancementsPutCassNcoaDestinationDatabaseTable
@@ -59011,20 +59011,20 @@ class _ResponseEnhancementsPatchCassNcoaAuthor(Response):
 
 class _ResponseEnhancementsPatchCassNcoaSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPatchCassNcoaNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59044,7 +59044,7 @@ class _ResponseEnhancementsPatchCassNcoaSourceDatabaseTable(Response):
     table: str
     remote_host_id: int
     credential_id: int
-    multipart_key: List
+    multipart_key: List[str]
 
 class _ResponseEnhancementsPatchCassNcoaDestination(Response):
     database_table: _ResponseEnhancementsPatchCassNcoaDestinationDatabaseTable
@@ -59125,7 +59125,7 @@ class _ResponseEnhancementsPostGeocode(Response):
     remote_host_id: int
     credential_id: int
     source_schema_and_table: str
-    multipart_key: List
+    multipart_key: List[str]
     limiting_sql: str
     target_schema: str
     target_table: str
@@ -59144,20 +59144,20 @@ class _ResponseEnhancementsPostGeocodeAuthor(Response):
 
 class _ResponseEnhancementsPostGeocodeSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPostGeocodeNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59184,7 +59184,7 @@ class _ResponseEnhancementsGetGeocode(Response):
     remote_host_id: int
     credential_id: int
     source_schema_and_table: str
-    multipart_key: List
+    multipart_key: List[str]
     limiting_sql: str
     target_schema: str
     target_table: str
@@ -59203,20 +59203,20 @@ class _ResponseEnhancementsGetGeocodeAuthor(Response):
 
 class _ResponseEnhancementsGetGeocodeSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsGetGeocodeNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59243,7 +59243,7 @@ class _ResponseEnhancementsPutGeocode(Response):
     remote_host_id: int
     credential_id: int
     source_schema_and_table: str
-    multipart_key: List
+    multipart_key: List[str]
     limiting_sql: str
     target_schema: str
     target_table: str
@@ -59262,20 +59262,20 @@ class _ResponseEnhancementsPutGeocodeAuthor(Response):
 
 class _ResponseEnhancementsPutGeocodeSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutGeocodeNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59302,7 +59302,7 @@ class _ResponseEnhancementsPatchGeocode(Response):
     remote_host_id: int
     credential_id: int
     source_schema_and_table: str
-    multipart_key: List
+    multipart_key: List[str]
     limiting_sql: str
     target_schema: str
     target_table: str
@@ -59321,20 +59321,20 @@ class _ResponseEnhancementsPatchGeocodeAuthor(Response):
 
 class _ResponseEnhancementsPatchGeocodeSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPatchGeocodeNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59602,20 +59602,20 @@ class _ResponseEnhancementsPutCassNcoaArchiveAuthor(Response):
 
 class _ResponseEnhancementsPutCassNcoaArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutCassNcoaArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -59635,7 +59635,7 @@ class _ResponseEnhancementsPutCassNcoaArchiveSourceDatabaseTable(Response):
     table: str
     remote_host_id: int
     credential_id: int
-    multipart_key: List
+    multipart_key: List[str]
 
 class _ResponseEnhancementsPutCassNcoaArchiveDestination(Response):
     database_table: _ResponseEnhancementsPutCassNcoaArchiveDestinationDatabaseTable
@@ -59843,7 +59843,7 @@ class _ResponseEnhancementsPutGeocodeArchive(Response):
     remote_host_id: int
     credential_id: int
     source_schema_and_table: str
-    multipart_key: List
+    multipart_key: List[str]
     limiting_sql: str
     target_schema: str
     target_table: str
@@ -59862,20 +59862,20 @@ class _ResponseEnhancementsPutGeocodeArchiveAuthor(Response):
 
 class _ResponseEnhancementsPutGeocodeArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutGeocodeArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -60094,20 +60094,20 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveAuthor(Response):
 
 class _ResponseEnhancementsPutIdentityResolutionArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseEnhancementsPutIdentityResolutionArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -60578,7 +60578,7 @@ class _ResponseFilesPostMultipart(Response):
     created_at: str
     file_size: int
     expires_at: str
-    upload_urls: List
+    upload_urls: List[str]
 
 class _ResponseFilesGet(Response):
     id: int
@@ -60736,8 +60736,8 @@ class _ResponseGitReposGet(Response):
     updated_at: str
 
 class _ResponseGitReposListRefs(Response):
-    branches: List
-    tags: List
+    branches: List[str]
+    tags: List[str]
 
 class _ResponseGroupsList(Response):
     id: int
@@ -60773,7 +60773,7 @@ class _ResponseGroupsPost(Response):
     member_count: int
     total_member_count: int
     default_otp_required_for_login: bool
-    role_ids: List
+    role_ids: List[int]
     default_time_zone: str
     default_jobs_label: str
     default_notebooks_label: str
@@ -60804,7 +60804,7 @@ class _ResponseGroupsGet(Response):
     member_count: int
     total_member_count: int
     default_otp_required_for_login: bool
-    role_ids: List
+    role_ids: List[int]
     default_time_zone: str
     default_jobs_label: str
     default_notebooks_label: str
@@ -60835,7 +60835,7 @@ class _ResponseGroupsPut(Response):
     member_count: int
     total_member_count: int
     default_otp_required_for_login: bool
-    role_ids: List
+    role_ids: List[int]
     default_time_zone: str
     default_jobs_label: str
     default_notebooks_label: str
@@ -60856,7 +60856,7 @@ class _ResponseGroupsPutMembers(Response):
     member_count: int
     total_member_count: int
     default_otp_required_for_login: bool
-    role_ids: List
+    role_ids: List[int]
     default_time_zone: str
     default_jobs_label: str
     default_notebooks_label: str
@@ -60877,7 +60877,7 @@ class _ResponseGroupsPatch(Response):
     member_count: int
     total_member_count: int
     default_otp_required_for_login: bool
-    role_ids: List
+    role_ids: List[int]
     default_time_zone: str
     default_jobs_label: str
     default_notebooks_label: str
@@ -61254,31 +61254,31 @@ class _ResponseImportsPutArchive(Response):
 class _ResponseImportsPutArchiveSource(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPutArchiveDestination(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPutArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseImportsPutArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -61403,22 +61403,22 @@ class _ResponseImportsList(Response):
 class _ResponseImportsListSource(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsListDestination(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsListSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseImportsListLastRun(Response):
     id: int
@@ -61462,31 +61462,31 @@ class _ResponseImportsPost(Response):
 class _ResponseImportsPostSource(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPostDestination(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPostSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseImportsPostNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -61658,21 +61658,21 @@ class _ResponseImportsPostFilesCsv(Response):
     my_permission_level: str
 
 class _ResponseImportsPostFilesCsvSource(Response):
-    file_ids: List
+    file_ids: List[int]
     storage_path: _ResponseImportsPostFilesCsvSourceStoragePath
 
 class _ResponseImportsPostFilesCsvSourceStoragePath(Response):
     storage_host_id: int
     credential_id: int
-    file_paths: List
+    file_paths: List[str]
 
 class _ResponseImportsPostFilesCsvDestination(Response):
     schema: str
     table: str
     remote_host_id: int
     credential_id: int
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
 
 class _ResponseImportsPostFilesCsvTableColumns(Response):
     name: str
@@ -61681,7 +61681,7 @@ class _ResponseImportsPostFilesCsvTableColumns(Response):
 class _ResponseImportsPostFilesCsvRedshiftDestinationOptions(Response):
     diststyle: str
     distkey: str
-    sortkeys: List
+    sortkeys: List[str]
 
 class _ResponseImportsGetFilesCsv(Response):
     id: int
@@ -61702,21 +61702,21 @@ class _ResponseImportsGetFilesCsv(Response):
     my_permission_level: str
 
 class _ResponseImportsGetFilesCsvSource(Response):
-    file_ids: List
+    file_ids: List[int]
     storage_path: _ResponseImportsGetFilesCsvSourceStoragePath
 
 class _ResponseImportsGetFilesCsvSourceStoragePath(Response):
     storage_host_id: int
     credential_id: int
-    file_paths: List
+    file_paths: List[str]
 
 class _ResponseImportsGetFilesCsvDestination(Response):
     schema: str
     table: str
     remote_host_id: int
     credential_id: int
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
 
 class _ResponseImportsGetFilesCsvTableColumns(Response):
     name: str
@@ -61725,7 +61725,7 @@ class _ResponseImportsGetFilesCsvTableColumns(Response):
 class _ResponseImportsGetFilesCsvRedshiftDestinationOptions(Response):
     diststyle: str
     distkey: str
-    sortkeys: List
+    sortkeys: List[str]
 
 class _ResponseImportsPutFilesCsv(Response):
     id: int
@@ -61746,21 +61746,21 @@ class _ResponseImportsPutFilesCsv(Response):
     my_permission_level: str
 
 class _ResponseImportsPutFilesCsvSource(Response):
-    file_ids: List
+    file_ids: List[int]
     storage_path: _ResponseImportsPutFilesCsvSourceStoragePath
 
 class _ResponseImportsPutFilesCsvSourceStoragePath(Response):
     storage_host_id: int
     credential_id: int
-    file_paths: List
+    file_paths: List[str]
 
 class _ResponseImportsPutFilesCsvDestination(Response):
     schema: str
     table: str
     remote_host_id: int
     credential_id: int
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
 
 class _ResponseImportsPutFilesCsvTableColumns(Response):
     name: str
@@ -61769,7 +61769,7 @@ class _ResponseImportsPutFilesCsvTableColumns(Response):
 class _ResponseImportsPutFilesCsvRedshiftDestinationOptions(Response):
     diststyle: str
     distkey: str
-    sortkeys: List
+    sortkeys: List[str]
 
 class _ResponseImportsPatchFilesCsv(Response):
     id: int
@@ -61792,21 +61792,21 @@ class _ResponseImportsPatchFilesCsv(Response):
     my_permission_level: str
 
 class _ResponseImportsPatchFilesCsvSource(Response):
-    file_ids: List
+    file_ids: List[int]
     storage_path: _ResponseImportsPatchFilesCsvSourceStoragePath
 
 class _ResponseImportsPatchFilesCsvSourceStoragePath(Response):
     storage_host_id: int
     credential_id: int
-    file_paths: List
+    file_paths: List[str]
 
 class _ResponseImportsPatchFilesCsvDestination(Response):
     schema: str
     table: str
     remote_host_id: int
     credential_id: int
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
 
 class _ResponseImportsPatchFilesCsvTableColumns(Response):
     name: str
@@ -61815,7 +61815,7 @@ class _ResponseImportsPatchFilesCsvTableColumns(Response):
 class _ResponseImportsPatchFilesCsvRedshiftDestinationOptions(Response):
     diststyle: str
     distkey: str
-    sortkeys: List
+    sortkeys: List[str]
 
 class _ResponseImportsPutFilesCsvArchive(Response):
     id: int
@@ -61838,21 +61838,21 @@ class _ResponseImportsPutFilesCsvArchive(Response):
     my_permission_level: str
 
 class _ResponseImportsPutFilesCsvArchiveSource(Response):
-    file_ids: List
+    file_ids: List[int]
     storage_path: _ResponseImportsPutFilesCsvArchiveSourceStoragePath
 
 class _ResponseImportsPutFilesCsvArchiveSourceStoragePath(Response):
     storage_host_id: int
     credential_id: int
-    file_paths: List
+    file_paths: List[str]
 
 class _ResponseImportsPutFilesCsvArchiveDestination(Response):
     schema: str
     table: str
     remote_host_id: int
     credential_id: int
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
 
 class _ResponseImportsPutFilesCsvArchiveTableColumns(Response):
     name: str
@@ -61861,7 +61861,7 @@ class _ResponseImportsPutFilesCsvArchiveTableColumns(Response):
 class _ResponseImportsPutFilesCsvArchiveRedshiftDestinationOptions(Response):
     diststyle: str
     distkey: str
-    sortkeys: List
+    sortkeys: List[str]
 
 class _ResponseImportsPostFilesCsvRuns(Response):
     id: int
@@ -61958,31 +61958,31 @@ class _ResponseImportsGet(Response):
 class _ResponseImportsGetSource(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsGetDestination(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseImportsGetNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -62114,31 +62114,31 @@ class _ResponseImportsPut(Response):
 class _ResponseImportsPutSource(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPutDestination(Response):
     remote_host_id: int
     credential_id: int
-    additional_credentials: List
+    additional_credentials: List[int]
     name: str
 
 class _ResponseImportsPutSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseImportsPutNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -62367,11 +62367,11 @@ class _ResponseJobsListAuthor(Response):
 
 class _ResponseJobsListSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseJobsGet(Response):
     id: int
@@ -62418,11 +62418,11 @@ class _ResponseJobsGetAuthor(Response):
 
 class _ResponseJobsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseJobsPostTriggerEmail(Response):
     trigger_email: str
@@ -62472,11 +62472,11 @@ class _ResponseJobsListParentsAuthor(Response):
 
 class _ResponseJobsListParentsSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseJobsListChildren(Response):
     id: int
@@ -62560,11 +62560,11 @@ class _ResponseJobsListWorkflowsUser(Response):
 
 class _ResponseJobsListWorkflowsSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseJobsListShares(Response):
     readers: _ResponseJobsListSharesReaders
@@ -62786,11 +62786,11 @@ class _ResponseJobsPutArchiveAuthor(Response):
 
 class _ResponseJobsPutArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseJsonValuesPost(Response):
     id: int
@@ -63405,10 +63405,10 @@ class _ResponseMediaPutOptimizationsArchive(Response):
     archived: str
     report_link: str
     spot_order_link: str
-    file_links: List
+    file_links: List[str]
     runs: List[_ResponseMediaPutOptimizationsArchiveRuns]
-    programs: List
-    networks: List
+    programs: List[str]
+    networks: List[str]
     exclude_programs: bool
     exclude_networks: bool
     time_slot_percentages: dict
@@ -63426,12 +63426,12 @@ class _ResponseMediaPutOptimizationsArchiveRuns(Response):
     end_date: str
     force_cpm: bool
     reach_alpha: float
-    syscodes: List
-    rate_cards: List
+    syscodes: List[int]
+    rate_cards: List[str]
     constraints: List[_ResponseMediaPutOptimizationsArchiveRunsConstraints]
 
 class _ResponseMediaPutOptimizationsArchiveRunsConstraints(Response):
-    targets: List
+    targets: List[str]
     budget: float
     frequency: float
 
@@ -63604,10 +63604,10 @@ class _ResponseMediaPostOptimizations(Response):
     archived: str
     report_link: str
     spot_order_link: str
-    file_links: List
+    file_links: List[str]
     runs: List[_ResponseMediaPostOptimizationsRuns]
-    programs: List
-    networks: List
+    programs: List[str]
+    networks: List[str]
     exclude_programs: bool
     exclude_networks: bool
     time_slot_percentages: dict
@@ -63630,7 +63630,7 @@ class _ResponseMediaPostOptimizationsRuns(Response):
     error: str
 
 class _ResponseMediaPostOptimizationsRunsConstraints(Response):
-    targets: List
+    targets: List[str]
     budget: float
     frequency: float
 
@@ -63647,10 +63647,10 @@ class _ResponseMediaGetOptimizations(Response):
     archived: str
     report_link: str
     spot_order_link: str
-    file_links: List
+    file_links: List[str]
     runs: List[_ResponseMediaGetOptimizationsRuns]
-    programs: List
-    networks: List
+    programs: List[str]
+    networks: List[str]
     exclude_programs: bool
     exclude_networks: bool
     time_slot_percentages: dict
@@ -63673,7 +63673,7 @@ class _ResponseMediaGetOptimizationsRuns(Response):
     error: str
 
 class _ResponseMediaGetOptimizationsRunsConstraints(Response):
-    targets: List
+    targets: List[str]
     budget: float
     frequency: float
 
@@ -63690,10 +63690,10 @@ class _ResponseMediaPatchOptimizations(Response):
     archived: str
     report_link: str
     spot_order_link: str
-    file_links: List
+    file_links: List[str]
     runs: List[_ResponseMediaPatchOptimizationsRuns]
-    programs: List
-    networks: List
+    programs: List[str]
+    networks: List[str]
     exclude_programs: bool
     exclude_networks: bool
     time_slot_percentages: dict
@@ -63711,12 +63711,12 @@ class _ResponseMediaPatchOptimizationsRuns(Response):
     end_date: str
     force_cpm: bool
     reach_alpha: float
-    syscodes: List
-    rate_cards: List
+    syscodes: List[int]
+    rate_cards: List[str]
     constraints: List[_ResponseMediaPatchOptimizationsRunsConstraints]
 
 class _ResponseMediaPatchOptimizationsRunsConstraints(Response):
-    targets: List
+    targets: List[str]
     budget: float
     frequency: float
 
@@ -63733,10 +63733,10 @@ class _ResponseMediaPostOptimizationsClone(Response):
     archived: str
     report_link: str
     spot_order_link: str
-    file_links: List
+    file_links: List[str]
     runs: List[_ResponseMediaPostOptimizationsCloneRuns]
-    programs: List
-    networks: List
+    programs: List[str]
+    networks: List[str]
     exclude_programs: bool
     exclude_networks: bool
     time_slot_percentages: dict
@@ -63754,12 +63754,12 @@ class _ResponseMediaPostOptimizationsCloneRuns(Response):
     end_date: str
     force_cpm: bool
     reach_alpha: float
-    syscodes: List
-    rate_cards: List
+    syscodes: List[int]
+    rate_cards: List[str]
     constraints: List[_ResponseMediaPostOptimizationsCloneRunsConstraints]
 
 class _ResponseMediaPostOptimizationsCloneRunsConstraints(Response):
-    targets: List
+    targets: List[str]
     budget: float
     frequency: float
 
@@ -63874,8 +63874,8 @@ class _ResponseModelsList(Response):
     model_type_id: int
     primary_key: str
     dependent_variable: str
-    dependent_variable_order: List
-    excluded_columns: List
+    dependent_variable_order: List[str]
+    excluded_columns: List[str]
     limiting_sql: str
     cross_validation_parameters: dict
     number_of_folds: int
@@ -63895,11 +63895,11 @@ class _ResponseModelsList(Response):
 
 class _ResponseModelsListSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseModelsListLastRun(Response):
     id: int
@@ -63933,7 +63933,7 @@ class _ResponseModelsListBuilds(Response):
 class _ResponseModelsListPredictions(Response):
     id: int
     table_name: str
-    primary_key: List
+    primary_key: List[str]
     limiting_sql: str
     output_table: str
     state: str
@@ -63950,8 +63950,8 @@ class _ResponseModelsGet(Response):
     model_type_id: int
     primary_key: str
     dependent_variable: str
-    dependent_variable_order: List
-    excluded_columns: List
+    dependent_variable_order: List[str]
+    excluded_columns: List[str]
     limiting_sql: str
     active_build_id: int
     cross_validation_parameters: dict
@@ -63974,24 +63974,24 @@ class _ResponseModelsGet(Response):
     archived: str
 
 class _ResponseModelsGetNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
 
 class _ResponseModelsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseModelsGetRunningAs(Response):
     id: int
@@ -64032,7 +64032,7 @@ class _ResponseModelsGetBuilds(Response):
 class _ResponseModelsGetPredictions(Response):
     id: int
     table_name: str
-    primary_key: List
+    primary_key: List[str]
     limiting_sql: str
     output_table: str
     schedule: _ResponseModelsGetPredictionsSchedule
@@ -64040,11 +64040,11 @@ class _ResponseModelsGetPredictions(Response):
 
 class _ResponseModelsGetPredictionsSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseModelsListBuildsLogs(Response):
     id: int
@@ -64239,8 +64239,8 @@ class _ResponseModelsPutArchive(Response):
     model_type_id: int
     primary_key: str
     dependent_variable: str
-    dependent_variable_order: List
-    excluded_columns: List
+    dependent_variable_order: List[str]
+    excluded_columns: List[str]
     limiting_sql: str
     active_build_id: int
     cross_validation_parameters: dict
@@ -64263,24 +64263,24 @@ class _ResponseModelsPutArchive(Response):
     archived: str
 
 class _ResponseModelsPutArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
 
 class _ResponseModelsPutArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseModelsPutArchiveRunningAs(Response):
     id: int
@@ -64316,7 +64316,7 @@ class _ResponseModelsPutArchiveBuilds(Response):
 class _ResponseModelsPutArchivePredictions(Response):
     id: int
     table_name: str
-    primary_key: List
+    primary_key: List[str]
     limiting_sql: str
     output_table: str
     schedule: _ResponseModelsPutArchivePredictionsSchedule
@@ -64324,11 +64324,11 @@ class _ResponseModelsPutArchivePredictions(Response):
 
 class _ResponseModelsPutArchivePredictionsSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseModelsListSchedules(Response):
     id: int
@@ -64336,11 +64336,11 @@ class _ResponseModelsListSchedules(Response):
 
 class _ResponseModelsListSchedulesSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseNotebooksList(Response):
     id: int
@@ -64397,7 +64397,7 @@ class _ResponseNotebooksPost(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPostMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -64454,7 +64454,7 @@ class _ResponseNotebooksGet(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksGetMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -64511,7 +64511,7 @@ class _ResponseNotebooksPut(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPutMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -64568,7 +64568,7 @@ class _ResponseNotebooksPatch(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPatchMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -64629,7 +64629,7 @@ class _ResponseNotebooksPostClone(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPostCloneMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -64836,7 +64836,7 @@ class _ResponseNotebooksPutArchive(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPutArchiveMostRecentDeployment
-    credentials: List
+    credentials: List[int]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -65037,7 +65037,7 @@ class _ResponseOntologyList(Response):
     key: str
     title: str
     desc: str
-    aliases: List
+    aliases: List[str]
 
 class _ResponsePermissionSetsList(Response):
     id: int
@@ -65482,7 +65482,7 @@ class _ResponsePredictionsGet(Response):
     scored_tables: List[_ResponsePredictionsGetScoredTables]
     schedule: _ResponsePredictionsGetSchedule
     limiting_sql: str
-    primary_key: List
+    primary_key: List[str]
 
 class _ResponsePredictionsGetLastRun(Response):
     id: int
@@ -65501,18 +65501,18 @@ class _ResponsePredictionsGetScoredTables(Response):
 
 class _ResponsePredictionsGetScoredTablesScoreStats(Response):
     score_name: str
-    histogram: List
+    histogram: List[int]
     avg_score: float
     min_score: float
     max_score: float
 
 class _ResponsePredictionsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponsePredictionsListSchedules(Response):
     id: int
@@ -65521,11 +65521,11 @@ class _ResponsePredictionsListSchedules(Response):
 
 class _ResponsePredictionsListSchedulesSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseProjectsList(Response):
     id: int
@@ -66938,8 +66938,8 @@ class _ResponseQueriesList(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -66958,8 +66958,8 @@ class _ResponseQueriesPost(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -67022,8 +67022,8 @@ class _ResponseQueriesPutScripts(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -67051,8 +67051,8 @@ class _ResponseQueriesGet(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -67080,8 +67080,8 @@ class _ResponseQueriesDelete(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68182,8 +68182,8 @@ class _ResponseReportsPostSqlQuery(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68222,8 +68222,8 @@ class _ResponseReportsGetSqlQuery(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68262,8 +68262,8 @@ class _ResponseReportsPatchSqlQuery(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68302,8 +68302,8 @@ class _ResponseReportsPostSqlRefreshQuery(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68517,8 +68517,8 @@ class _ResponseReportsPutSqlArchiveQuery(Response):
     database: int
     sql: str
     credential: int
-    result_rows: List
-    result_columns: List
+    result_rows: List[List]
+    result_columns: List[str]
     error: str
     started_at: str
     finished_at: str
@@ -68615,20 +68615,20 @@ class _ResponseScriptsPostLinks(Response):
 
 class _ResponseScriptsPostSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -68752,20 +68752,20 @@ class _ResponseScriptsPatchLinks(Response):
 
 class _ResponseScriptsPatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -68847,20 +68847,20 @@ class _ResponseScriptsGetLinks(Response):
 
 class _ResponseScriptsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -68961,20 +68961,20 @@ class _ResponseScriptsPostContainersLinks(Response):
 
 class _ResponseScriptsPostContainersSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostContainersNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69075,20 +69075,20 @@ class _ResponseScriptsGetContainersLinks(Response):
 
 class _ResponseScriptsGetContainersSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetContainersNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69189,20 +69189,20 @@ class _ResponseScriptsPutContainersLinks(Response):
 
 class _ResponseScriptsPutContainersSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutContainersNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69303,20 +69303,20 @@ class _ResponseScriptsPatchContainersLinks(Response):
 
 class _ResponseScriptsPatchContainersSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchContainersNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69413,20 +69413,20 @@ class _ResponseScriptsPostSqlLinks(Response):
 
 class _ResponseScriptsPostSqlSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostSqlNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69521,20 +69521,20 @@ class _ResponseScriptsGetSqlLinks(Response):
 
 class _ResponseScriptsGetSqlSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetSqlNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69629,20 +69629,20 @@ class _ResponseScriptsPutSqlLinks(Response):
 
 class _ResponseScriptsPutSqlSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutSqlNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69737,20 +69737,20 @@ class _ResponseScriptsPatchSqlLinks(Response):
 
 class _ResponseScriptsPatchSqlSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchSqlNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69845,20 +69845,20 @@ class _ResponseScriptsPostPython3Links(Response):
 
 class _ResponseScriptsPostPython3Schedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostPython3Notifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -69949,20 +69949,20 @@ class _ResponseScriptsGetPython3Links(Response):
 
 class _ResponseScriptsGetPython3Schedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetPython3Notifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70053,20 +70053,20 @@ class _ResponseScriptsPutPython3Links(Response):
 
 class _ResponseScriptsPutPython3Schedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutPython3Notifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70157,20 +70157,20 @@ class _ResponseScriptsPatchPython3Links(Response):
 
 class _ResponseScriptsPatchPython3Schedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchPython3Notifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70261,20 +70261,20 @@ class _ResponseScriptsPostRLinks(Response):
 
 class _ResponseScriptsPostRSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostRNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70365,20 +70365,20 @@ class _ResponseScriptsGetRLinks(Response):
 
 class _ResponseScriptsGetRSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetRNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70469,20 +70469,20 @@ class _ResponseScriptsPutRLinks(Response):
 
 class _ResponseScriptsPutRSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutRNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70573,20 +70573,20 @@ class _ResponseScriptsPatchRLinks(Response):
 
 class _ResponseScriptsPatchRSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchRNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70674,20 +70674,20 @@ class _ResponseScriptsPostJavascriptLinks(Response):
 
 class _ResponseScriptsPostJavascriptSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostJavascriptNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70770,20 +70770,20 @@ class _ResponseScriptsGetJavascriptLinks(Response):
 
 class _ResponseScriptsGetJavascriptSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetJavascriptNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70866,20 +70866,20 @@ class _ResponseScriptsPutJavascriptLinks(Response):
 
 class _ResponseScriptsPutJavascriptSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutJavascriptNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -70962,20 +70962,20 @@ class _ResponseScriptsPatchJavascriptLinks(Response):
 
 class _ResponseScriptsPatchJavascriptSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchJavascriptNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -71116,20 +71116,20 @@ class _ResponseScriptsPostCustomParams(Response):
 
 class _ResponseScriptsPostCustomSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostCustomNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -71231,20 +71231,20 @@ class _ResponseScriptsGetCustomParams(Response):
 
 class _ResponseScriptsGetCustomSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsGetCustomNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -71346,20 +71346,20 @@ class _ResponseScriptsPutCustomParams(Response):
 
 class _ResponseScriptsPutCustomSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutCustomNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -71461,20 +71461,20 @@ class _ResponseScriptsPatchCustomParams(Response):
 
 class _ResponseScriptsPatchCustomSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPatchCustomNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -72374,20 +72374,20 @@ class _ResponseScriptsPutSqlArchiveLinks(Response):
 
 class _ResponseScriptsPutSqlArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutSqlArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -72667,20 +72667,20 @@ class _ResponseScriptsPutContainersArchiveLinks(Response):
 
 class _ResponseScriptsPutContainersArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutContainersArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -72946,20 +72946,20 @@ class _ResponseScriptsPutPython3ArchiveLinks(Response):
 
 class _ResponseScriptsPutPython3ArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutPython3ArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -73225,20 +73225,20 @@ class _ResponseScriptsPutRArchiveLinks(Response):
 
 class _ResponseScriptsPutRArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutRArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -73501,20 +73501,20 @@ class _ResponseScriptsPutJavascriptArchiveLinks(Response):
 
 class _ResponseScriptsPutJavascriptArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutJavascriptArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -73767,20 +73767,20 @@ class _ResponseScriptsPutCustomArchiveParams(Response):
 
 class _ResponseScriptsPutCustomArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPutCustomArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -73879,20 +73879,20 @@ class _ResponseScriptsPostSqlCloneLinks(Response):
 
 class _ResponseScriptsPostSqlCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostSqlCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -73984,20 +73984,20 @@ class _ResponseScriptsPostJavascriptCloneLinks(Response):
 
 class _ResponseScriptsPostJavascriptCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostJavascriptCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -74083,20 +74083,20 @@ class _ResponseScriptsPostPython3CloneLinks(Response):
 
 class _ResponseScriptsPostPython3CloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostPython3CloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -74187,20 +74187,20 @@ class _ResponseScriptsPostRCloneLinks(Response):
 
 class _ResponseScriptsPostRCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostRCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -74301,20 +74301,20 @@ class _ResponseScriptsPostContainersCloneLinks(Response):
 
 class _ResponseScriptsPostContainersCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostContainersCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -74408,20 +74408,20 @@ class _ResponseScriptsPostCustomCloneParams(Response):
 
 class _ResponseScriptsPostCustomCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseScriptsPostCustomCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
+    success_email_addresses: List[str]
     success_email_from_name: str
     success_email_reply_to: str
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -74553,7 +74553,7 @@ class _ResponseServicesPost(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -74580,8 +74580,8 @@ class _ResponseServicesPostSchedule(Response):
     recurrences: List[_ResponseServicesPostScheduleRecurrences]
 
 class _ResponseServicesPostScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesPostCurrentDeployment(Response):
     deployment_id: int
@@ -74603,7 +74603,7 @@ class _ResponseServicesPostCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesPostNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesGet(Response):
@@ -74623,7 +74623,7 @@ class _ResponseServicesGet(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -74650,8 +74650,8 @@ class _ResponseServicesGetSchedule(Response):
     recurrences: List[_ResponseServicesGetScheduleRecurrences]
 
 class _ResponseServicesGetScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesGetCurrentDeployment(Response):
     deployment_id: int
@@ -74673,7 +74673,7 @@ class _ResponseServicesGetCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesGetNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesPut(Response):
@@ -74693,7 +74693,7 @@ class _ResponseServicesPut(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -74720,8 +74720,8 @@ class _ResponseServicesPutSchedule(Response):
     recurrences: List[_ResponseServicesPutScheduleRecurrences]
 
 class _ResponseServicesPutScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesPutCurrentDeployment(Response):
     deployment_id: int
@@ -74743,7 +74743,7 @@ class _ResponseServicesPutCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesPutNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesPatch(Response):
@@ -74763,7 +74763,7 @@ class _ResponseServicesPatch(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -74790,8 +74790,8 @@ class _ResponseServicesPatchSchedule(Response):
     recurrences: List[_ResponseServicesPatchScheduleRecurrences]
 
 class _ResponseServicesPatchScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesPatchCurrentDeployment(Response):
     deployment_id: int
@@ -74813,7 +74813,7 @@ class _ResponseServicesPatchCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesPatchNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesListShares(Response):
@@ -74983,7 +74983,7 @@ class _ResponseServicesPutArchive(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -75010,8 +75010,8 @@ class _ResponseServicesPutArchiveSchedule(Response):
     recurrences: List[_ResponseServicesPutArchiveScheduleRecurrences]
 
 class _ResponseServicesPutArchiveScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesPutArchiveCurrentDeployment(Response):
     deployment_id: int
@@ -75033,7 +75033,7 @@ class _ResponseServicesPutArchiveCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesPutArchiveNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesListProjects(Response):
@@ -75159,7 +75159,7 @@ class _ResponseServicesPostClone(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List
+    credentials: List[int]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -75186,8 +75186,8 @@ class _ResponseServicesPostCloneSchedule(Response):
     recurrences: List[_ResponseServicesPostCloneScheduleRecurrences]
 
 class _ResponseServicesPostCloneScheduleRecurrences(Response):
-    scheduled_days: List
-    scheduled_hours: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
 
 class _ResponseServicesPostCloneCurrentDeployment(Response):
     deployment_id: int
@@ -75209,7 +75209,7 @@ class _ResponseServicesPostCloneCurrentDeployment(Response):
     service_id: int
 
 class _ResponseServicesPostCloneNotifications(Response):
-    failure_email_addresses: List
+    failure_email_addresses: List[str]
     failure_on: bool
 
 class _ResponseServicesPostTokens(Response):
@@ -75585,13 +75585,13 @@ class _ResponseTablesPostRefresh(Response):
     schema_updated_at: str
     refresh_id: str
     last_run: _ResponseTablesPostRefreshLastRun
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
     table_tags: List[_ResponseTablesPostRefreshTableTags]
     ontology_mapping: dict
     columns: List[_ResponseTablesPostRefreshColumns]
     joins: List[_ResponseTablesPostRefreshJoins]
-    multipart_key: List
+    multipart_key: List[str]
     enhancements: List[_ResponseTablesPostRefreshEnhancements]
     view_def: str
     table_def: str
@@ -75613,7 +75613,7 @@ class _ResponseTablesPostRefreshColumns(Response):
     name: str
     civis_data_type: str
     sql_type: str
-    sample_values: List
+    sample_values: List[str]
     encoding: str
     description: str
     order: int
@@ -75624,7 +75624,7 @@ class _ResponseTablesPostRefreshColumns(Response):
     value_distribution_percent: dict
     coverage_count: int
     null_count: int
-    possible_dependent_variable_types: List
+    possible_dependent_variable_types: List[str]
     useable_as_independent_variable: bool
     useable_as_primary_key: bool
     value_distribution: dict
@@ -75740,13 +75740,13 @@ class _ResponseTablesGet(Response):
     schema_updated_at: str
     refresh_id: str
     last_run: _ResponseTablesGetLastRun
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
     table_tags: List[_ResponseTablesGetTableTags]
     ontology_mapping: dict
     columns: List[_ResponseTablesGetColumns]
     joins: List[_ResponseTablesGetJoins]
-    multipart_key: List
+    multipart_key: List[str]
     enhancements: List[_ResponseTablesGetEnhancements]
     view_def: str
     table_def: str
@@ -75768,7 +75768,7 @@ class _ResponseTablesGetColumns(Response):
     name: str
     civis_data_type: str
     sql_type: str
-    sample_values: List
+    sample_values: List[str]
     encoding: str
     description: str
     order: int
@@ -75779,7 +75779,7 @@ class _ResponseTablesGetColumns(Response):
     value_distribution_percent: dict
     coverage_count: int
     null_count: int
-    possible_dependent_variable_types: List
+    possible_dependent_variable_types: List[str]
     useable_as_independent_variable: bool
     useable_as_primary_key: bool
     value_distribution: dict
@@ -75864,8 +75864,8 @@ class _ResponseTablesPatch(Response):
     schema_updated_at: str
     refresh_id: str
     last_run: _ResponseTablesPatchLastRun
-    primary_keys: List
-    last_modified_keys: List
+    primary_keys: List[str]
+    last_modified_keys: List[str]
     table_tags: List[_ResponseTablesPatchTableTags]
     ontology_mapping: dict
 
@@ -75885,7 +75885,7 @@ class _ResponseTablesListColumns(Response):
     name: str
     civis_data_type: str
     sql_type: str
-    sample_values: List
+    sample_values: List[str]
     encoding: str
     description: str
     order: int
@@ -75896,7 +75896,7 @@ class _ResponseTablesListColumns(Response):
     value_distribution_percent: dict
     coverage_count: int
     null_count: int
-    possible_dependent_variable_types: List
+    possible_dependent_variable_types: List[str]
     useable_as_independent_variable: bool
     useable_as_primary_key: bool
     value_distribution: dict
@@ -76574,7 +76574,7 @@ class _ResponseUsageLimitsListMatching(Response):
     created_at: str
     updated_at: str
     hard_limit: int
-    notification_emails: List
+    notification_emails: List[str]
     task: str
 
 class _ResponseUsageLimitsGetMatching(Response):
@@ -76583,7 +76583,7 @@ class _ResponseUsageLimitsGetMatching(Response):
     created_at: str
     updated_at: str
     hard_limit: int
-    notification_emails: List
+    notification_emails: List[str]
     task: str
 
 class _ResponseUsageLimitsListLlm(Response):
@@ -76675,7 +76675,7 @@ class _ResponseUsersListMe(Response):
     initials: str
     last_checked_announcements: str
     feature_flags: dict
-    roles: List
+    roles: List[str]
     preferences: dict
     custom_branding: str
     primary_group_id: int
@@ -76709,7 +76709,7 @@ class _ResponseUsersPatchMe(Response):
     initials: str
     last_checked_announcements: str
     feature_flags: dict
-    roles: List
+    roles: List[str]
     preferences: dict
     custom_branding: str
     primary_group_id: int
@@ -76764,7 +76764,7 @@ class _ResponseUsersListMeThemes(Response):
 class _ResponseUsersGetMeThemes(Response):
     id: int
     name: str
-    organization_ids: List
+    organization_ids: List[int]
     settings: str
     logo_file: _ResponseUsersGetMeThemesLogoFile
     created_at: str
@@ -76869,7 +76869,7 @@ class _ResponseUsersListApiKeys(Response):
     created_at: str
     revoked_at: str
     last_used_at: str
-    scopes: List
+    scopes: List[str]
     use_count: int
     expired: bool
     active: bool
@@ -76882,7 +76882,7 @@ class _ResponseUsersPostApiKeys(Response):
     created_at: str
     revoked_at: str
     last_used_at: str
-    scopes: List
+    scopes: List[str]
     use_count: int
     expired: bool
     active: bool
@@ -76906,7 +76906,7 @@ class _ResponseUsersGetApiKeys(Response):
     created_at: str
     revoked_at: str
     last_used_at: str
-    scopes: List
+    scopes: List[str]
     use_count: int
     expired: bool
     active: bool
@@ -76929,7 +76929,7 @@ class _ResponseUsersDeleteApiKeys(Response):
     created_at: str
     revoked_at: str
     last_used_at: str
-    scopes: List
+    scopes: List[str]
     use_count: int
     expired: bool
     active: bool
@@ -77096,11 +77096,11 @@ class _ResponseWorkflowsListUser(Response):
 
 class _ResponseWorkflowsListSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPost(Response):
     id: int
@@ -77132,18 +77132,18 @@ class _ResponseWorkflowsPostUser(Response):
 
 class _ResponseWorkflowsPostSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPostNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77178,18 +77178,18 @@ class _ResponseWorkflowsGetUser(Response):
 
 class _ResponseWorkflowsGetSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsGetNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77224,18 +77224,18 @@ class _ResponseWorkflowsPutUser(Response):
 
 class _ResponseWorkflowsPutSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPutNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77270,18 +77270,18 @@ class _ResponseWorkflowsPatchUser(Response):
 
 class _ResponseWorkflowsPatchSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPatchNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77466,18 +77466,18 @@ class _ResponseWorkflowsPutArchiveUser(Response):
 
 class _ResponseWorkflowsPutArchiveSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPutArchiveNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77609,18 +77609,18 @@ class _ResponseWorkflowsPostCloneUser(Response):
 
 class _ResponseWorkflowsPostCloneSchedule(Response):
     scheduled: bool
-    scheduled_days: List
-    scheduled_hours: List
-    scheduled_minutes: List
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
     scheduled_runs_per_hour: int
-    scheduled_days_of_month: List
+    scheduled_days_of_month: List[int]
 
 class _ResponseWorkflowsPostCloneNotifications(Response):
-    urls: List
+    urls: List[str]
     success_email_subject: str
     success_email_body: str
-    success_email_addresses: List
-    failure_email_addresses: List
+    success_email_addresses: List[str]
+    failure_email_addresses: List[str]
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
@@ -77651,7 +77651,7 @@ class _ResponseWorkflowsPostExecutions(Response):
     user: _ResponseWorkflowsPostExecutionsUser
     definition: str
     input: dict
-    included_tasks: List
+    included_tasks: List[str]
     tasks: List[_ResponseWorkflowsPostExecutionsTasks]
     started_at: str
     finished_at: str
@@ -77698,7 +77698,7 @@ class _ResponseWorkflowsGetExecutions(Response):
     user: _ResponseWorkflowsGetExecutionsUser
     definition: str
     input: dict
-    included_tasks: List
+    included_tasks: List[str]
     tasks: List[_ResponseWorkflowsGetExecutionsTasks]
     started_at: str
     finished_at: str
@@ -77745,7 +77745,7 @@ class _ResponseWorkflowsPostExecutionsCancel(Response):
     user: _ResponseWorkflowsPostExecutionsCancelUser
     definition: str
     input: dict
-    included_tasks: List
+    included_tasks: List[str]
     tasks: List[_ResponseWorkflowsPostExecutionsCancelTasks]
     started_at: str
     finished_at: str
@@ -77792,7 +77792,7 @@ class _ResponseWorkflowsPostExecutionsResume(Response):
     user: _ResponseWorkflowsPostExecutionsResumeUser
     definition: str
     input: dict
-    included_tasks: List
+    included_tasks: List[str]
     tasks: List[_ResponseWorkflowsPostExecutionsResumeTasks]
     started_at: str
     finished_at: str
@@ -77839,7 +77839,7 @@ class _ResponseWorkflowsPostExecutionsRetry(Response):
     user: _ResponseWorkflowsPostExecutionsRetryUser
     definition: str
     input: dict
-    included_tasks: List
+    included_tasks: List[str]
     tasks: List[_ResponseWorkflowsPostExecutionsRetryTasks]
     started_at: str
     finished_at: str
