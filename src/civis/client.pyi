@@ -56207,8 +56207,8 @@ class _ResponseAliasesListShares(Response):
     total_group_shares: int
 
 class _ResponseAliasesListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesListSharesReadersUsers]
+    groups: List[_ResponseAliasesListSharesReadersGroups]
 
 class _ResponseAliasesListSharesReadersUsers(Response):
     id: int
@@ -56219,8 +56219,8 @@ class _ResponseAliasesListSharesReadersGroups(Response):
     name: str
 
 class _ResponseAliasesListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesListSharesWritersUsers]
+    groups: List[_ResponseAliasesListSharesWritersGroups]
 
 class _ResponseAliasesListSharesWritersUsers(Response):
     id: int
@@ -56231,8 +56231,8 @@ class _ResponseAliasesListSharesWritersGroups(Response):
     name: str
 
 class _ResponseAliasesListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesListSharesOwnersUsers]
+    groups: List[_ResponseAliasesListSharesOwnersGroups]
 
 class _ResponseAliasesListSharesOwnersUsers(Response):
     id: int
@@ -56250,8 +56250,8 @@ class _ResponseAliasesPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseAliasesPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesUsersReadersUsers]
+    groups: List[_ResponseAliasesPutSharesUsersReadersGroups]
 
 class _ResponseAliasesPutSharesUsersReadersUsers(Response):
     id: int
@@ -56262,8 +56262,8 @@ class _ResponseAliasesPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseAliasesPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesUsersWritersUsers]
+    groups: List[_ResponseAliasesPutSharesUsersWritersGroups]
 
 class _ResponseAliasesPutSharesUsersWritersUsers(Response):
     id: int
@@ -56274,8 +56274,8 @@ class _ResponseAliasesPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseAliasesPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesUsersOwnersUsers]
+    groups: List[_ResponseAliasesPutSharesUsersOwnersGroups]
 
 class _ResponseAliasesPutSharesUsersOwnersUsers(Response):
     id: int
@@ -56293,8 +56293,8 @@ class _ResponseAliasesPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseAliasesPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesGroupsReadersUsers]
+    groups: List[_ResponseAliasesPutSharesGroupsReadersGroups]
 
 class _ResponseAliasesPutSharesGroupsReadersUsers(Response):
     id: int
@@ -56305,8 +56305,8 @@ class _ResponseAliasesPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseAliasesPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesGroupsWritersUsers]
+    groups: List[_ResponseAliasesPutSharesGroupsWritersGroups]
 
 class _ResponseAliasesPutSharesGroupsWritersUsers(Response):
     id: int
@@ -56317,8 +56317,8 @@ class _ResponseAliasesPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseAliasesPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseAliasesPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseAliasesPutSharesGroupsOwnersGroups]
 
 class _ResponseAliasesPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -56338,7 +56338,7 @@ class _ResponseAliasesListDependencies(Response):
     shareable: bool
 
 class _ResponseAliasesPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseAliasesPutTransferDependencies]
 
 class _ResponseAliasesPutTransferDependencies(Response):
     object_type: str
@@ -56396,7 +56396,7 @@ class _ResponseClustersGetKubernetes(Response):
     organization_slug: str
     raw_cluster_slug: str
     custom_partitions: bool
-    cluster_partitions: List
+    cluster_partitions: List[_ResponseClustersGetKubernetesClusterPartitions]
     is_nat_enabled: bool
     hours: float
 
@@ -56404,7 +56404,9 @@ class _ResponseClustersGetKubernetesClusterPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: List
+    instance_configs: (
+        List[_ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs]
+    )
     default_instance_config_id: int
 
 class _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs(Response):
@@ -56446,7 +56448,7 @@ class _ResponseClustersListKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: List
+    instance_configs: List[_ResponseClustersListKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
 class _ResponseClustersListKubernetesPartitionsInstanceConfigs(Response):
@@ -56471,7 +56473,7 @@ class _ResponseClustersPostKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: List
+    instance_configs: List[_ResponseClustersPostKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
 class _ResponseClustersPostKubernetesPartitionsInstanceConfigs(Response):
@@ -56496,7 +56498,7 @@ class _ResponseClustersPatchKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: List
+    instance_configs: List[_ResponseClustersPatchKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
 class _ResponseClustersPatchKubernetesPartitionsInstanceConfigs(Response):
@@ -56521,7 +56523,7 @@ class _ResponseClustersGetKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: List
+    instance_configs: List[_ResponseClustersGetKubernetesPartitionsInstanceConfigs]
     default_instance_config_id: int
 
 class _ResponseClustersGetKubernetesPartitionsInstanceConfigs(Response):
@@ -56730,8 +56732,8 @@ class _ResponseCredentialsListShares(Response):
     total_group_shares: int
 
 class _ResponseCredentialsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsListSharesReadersUsers]
+    groups: List[_ResponseCredentialsListSharesReadersGroups]
 
 class _ResponseCredentialsListSharesReadersUsers(Response):
     id: int
@@ -56742,8 +56744,8 @@ class _ResponseCredentialsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseCredentialsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsListSharesWritersUsers]
+    groups: List[_ResponseCredentialsListSharesWritersGroups]
 
 class _ResponseCredentialsListSharesWritersUsers(Response):
     id: int
@@ -56754,8 +56756,8 @@ class _ResponseCredentialsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseCredentialsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsListSharesOwnersUsers]
+    groups: List[_ResponseCredentialsListSharesOwnersGroups]
 
 class _ResponseCredentialsListSharesOwnersUsers(Response):
     id: int
@@ -56773,8 +56775,8 @@ class _ResponseCredentialsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseCredentialsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesUsersReadersUsers]
+    groups: List[_ResponseCredentialsPutSharesUsersReadersGroups]
 
 class _ResponseCredentialsPutSharesUsersReadersUsers(Response):
     id: int
@@ -56785,8 +56787,8 @@ class _ResponseCredentialsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseCredentialsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesUsersWritersUsers]
+    groups: List[_ResponseCredentialsPutSharesUsersWritersGroups]
 
 class _ResponseCredentialsPutSharesUsersWritersUsers(Response):
     id: int
@@ -56797,8 +56799,8 @@ class _ResponseCredentialsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseCredentialsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseCredentialsPutSharesUsersOwnersGroups]
 
 class _ResponseCredentialsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -56816,8 +56818,8 @@ class _ResponseCredentialsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseCredentialsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseCredentialsPutSharesGroupsReadersGroups]
 
 class _ResponseCredentialsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -56828,8 +56830,8 @@ class _ResponseCredentialsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseCredentialsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseCredentialsPutSharesGroupsWritersGroups]
 
 class _ResponseCredentialsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -56840,8 +56842,8 @@ class _ResponseCredentialsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseCredentialsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseCredentialsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseCredentialsPutSharesGroupsOwnersGroups]
 
 class _ResponseCredentialsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -56861,7 +56863,7 @@ class _ResponseCredentialsListDependencies(Response):
     shareable: bool
 
 class _ResponseCredentialsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseCredentialsPutTransferDependencies]
 
 class _ResponseCredentialsPutTransferDependencies(Response):
     object_type: str
@@ -56916,15 +56918,15 @@ class _ResponseDatabasesGetSchemasTables(Response):
     last_run: _ResponseDatabasesGetSchemasTablesLastRun
     primary_keys: List
     last_modified_keys: List
-    table_tags: List
+    table_tags: List[_ResponseDatabasesGetSchemasTablesTableTags]
     ontology_mapping: dict
-    columns: List
-    joins: List
+    columns: List[_ResponseDatabasesGetSchemasTablesColumns]
+    joins: List[_ResponseDatabasesGetSchemasTablesJoins]
     multipart_key: List
-    enhancements: List
+    enhancements: List[_ResponseDatabasesGetSchemasTablesEnhancements]
     view_def: str
     table_def: str
-    outgoing_table_matches: List
+    outgoing_table_matches: List[_ResponseDatabasesGetSchemasTablesOutgoingTableMatches]
 
 class _ResponseDatabasesGetSchemasTablesLastRun(Response):
     id: int
@@ -56994,7 +56996,7 @@ class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobRuns]
     last_run: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobLastRun
     hidden: bool
     match_options: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobMatchOptions
@@ -57040,15 +57042,17 @@ class _ResponseDatabasesPatchSchemasTables(Response):
     last_run: _ResponseDatabasesPatchSchemasTablesLastRun
     primary_keys: List
     last_modified_keys: List
-    table_tags: List
+    table_tags: List[_ResponseDatabasesPatchSchemasTablesTableTags]
     ontology_mapping: dict
-    columns: List
-    joins: List
+    columns: List[_ResponseDatabasesPatchSchemasTablesColumns]
+    joins: List[_ResponseDatabasesPatchSchemasTablesJoins]
     multipart_key: List
-    enhancements: List
+    enhancements: List[_ResponseDatabasesPatchSchemasTablesEnhancements]
     view_def: str
     table_def: str
-    outgoing_table_matches: List
+    outgoing_table_matches: (
+        List[_ResponseDatabasesPatchSchemasTablesOutgoingTableMatches]
+    )
 
 class _ResponseDatabasesPatchSchemasTablesLastRun(Response):
     id: int
@@ -57118,7 +57122,7 @@ class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobRuns]
     last_run: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobLastRun
     hidden: bool
     match_options: (
@@ -57613,8 +57617,8 @@ class _ResponseEnhancementsListCivisDataMatchShares(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsListCivisDataMatchSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCivisDataMatchSharesReadersUsers]
+    groups: List[_ResponseEnhancementsListCivisDataMatchSharesReadersGroups]
 
 class _ResponseEnhancementsListCivisDataMatchSharesReadersUsers(Response):
     id: int
@@ -57625,8 +57629,8 @@ class _ResponseEnhancementsListCivisDataMatchSharesReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListCivisDataMatchSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCivisDataMatchSharesWritersUsers]
+    groups: List[_ResponseEnhancementsListCivisDataMatchSharesWritersGroups]
 
 class _ResponseEnhancementsListCivisDataMatchSharesWritersUsers(Response):
     id: int
@@ -57637,8 +57641,8 @@ class _ResponseEnhancementsListCivisDataMatchSharesWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListCivisDataMatchSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCivisDataMatchSharesOwnersUsers]
+    groups: List[_ResponseEnhancementsListCivisDataMatchSharesOwnersGroups]
 
 class _ResponseEnhancementsListCivisDataMatchSharesOwnersUsers(Response):
     id: int
@@ -57656,8 +57660,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersReadersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersReadersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersReadersUsers(Response):
     id: int
@@ -57668,8 +57672,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersWritersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersWritersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersWritersUsers(Response):
     id: int
@@ -57680,8 +57684,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersOwnersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesUsersOwnersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwnersUsers(Response):
     id: int
@@ -57699,8 +57703,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersUsers(Response):
     id: int
@@ -57711,8 +57715,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersUsers(Response):
     id: int
@@ -57723,8 +57727,8 @@ class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsOwnersUsers]
+    groups: List[_ResponseEnhancementsPutCivisDataMatchSharesGroupsOwnersGroups]
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwnersUsers(Response):
     id: int
@@ -57744,7 +57748,7 @@ class _ResponseEnhancementsListCivisDataMatchDependencies(Response):
     shareable: bool
 
 class _ResponseEnhancementsPutCivisDataMatchTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseEnhancementsPutCivisDataMatchTransferDependencies]
 
 class _ResponseEnhancementsPutCivisDataMatchTransferDependencies(Response):
     object_type: str
@@ -57834,7 +57838,7 @@ class _ResponseEnhancementsListCivisDataMatchProjects(Response):
     author: _ResponseEnhancementsListCivisDataMatchProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseEnhancementsListCivisDataMatchProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -57868,9 +57872,9 @@ class _ResponseEnhancementsPostIdentityResolution(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsPostIdentityResolutionSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsPostIdentityResolutionEnforcedLinks]
     customer_graph: _ResponseEnhancementsPostIdentityResolutionCustomerGraph
     golden_table: _ResponseEnhancementsPostIdentityResolutionGoldenTable
     link_scores: _ResponseEnhancementsPostIdentityResolutionLinkScores
@@ -57934,12 +57938,14 @@ class _ResponseEnhancementsPostIdentityResolutionGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsPostIdentityResolutionGoldenTableFields]
 
 class _ResponseEnhancementsPostIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -57987,9 +57993,9 @@ class _ResponseEnhancementsPutIdentityResolution(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsPutIdentityResolutionSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsPutIdentityResolutionEnforcedLinks]
     customer_graph: _ResponseEnhancementsPutIdentityResolutionCustomerGraph
     golden_table: _ResponseEnhancementsPutIdentityResolutionGoldenTable
     link_scores: _ResponseEnhancementsPutIdentityResolutionLinkScores
@@ -58053,12 +58059,14 @@ class _ResponseEnhancementsPutIdentityResolutionGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsPutIdentityResolutionGoldenTableFields]
 
 class _ResponseEnhancementsPutIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58106,9 +58114,9 @@ class _ResponseEnhancementsPatchIdentityResolution(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsPatchIdentityResolutionSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsPatchIdentityResolutionEnforcedLinks]
     customer_graph: _ResponseEnhancementsPatchIdentityResolutionCustomerGraph
     golden_table: _ResponseEnhancementsPatchIdentityResolutionGoldenTable
     link_scores: _ResponseEnhancementsPatchIdentityResolutionLinkScores
@@ -58172,12 +58180,14 @@ class _ResponseEnhancementsPatchIdentityResolutionGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsPatchIdentityResolutionGoldenTableFields]
 
 class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58225,9 +58235,9 @@ class _ResponseEnhancementsGetIdentityResolution(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsGetIdentityResolutionSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsGetIdentityResolutionEnforcedLinks]
     customer_graph: _ResponseEnhancementsGetIdentityResolutionCustomerGraph
     golden_table: _ResponseEnhancementsGetIdentityResolutionGoldenTable
     link_scores: _ResponseEnhancementsGetIdentityResolutionLinkScores
@@ -58291,12 +58301,14 @@ class _ResponseEnhancementsGetIdentityResolutionGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsGetIdentityResolutionGoldenTableFields]
 
 class _ResponseEnhancementsGetIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58344,9 +58356,9 @@ class _ResponseEnhancementsPostIdentityResolutionClone(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsPostIdentityResolutionCloneSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsPostIdentityResolutionCloneEnforcedLinks]
     customer_graph: _ResponseEnhancementsPostIdentityResolutionCloneCustomerGraph
     golden_table: _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable
     link_scores: _ResponseEnhancementsPostIdentityResolutionCloneLinkScores
@@ -58410,12 +58422,14 @@ class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFields]
 
 class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences(  # noqa: E501
     Response
@@ -59155,8 +59169,8 @@ class _ResponseEnhancementsListCassNcoaShares(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsListCassNcoaSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCassNcoaSharesReadersUsers]
+    groups: List[_ResponseEnhancementsListCassNcoaSharesReadersGroups]
 
 class _ResponseEnhancementsListCassNcoaSharesReadersUsers(Response):
     id: int
@@ -59167,8 +59181,8 @@ class _ResponseEnhancementsListCassNcoaSharesReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListCassNcoaSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCassNcoaSharesWritersUsers]
+    groups: List[_ResponseEnhancementsListCassNcoaSharesWritersGroups]
 
 class _ResponseEnhancementsListCassNcoaSharesWritersUsers(Response):
     id: int
@@ -59179,8 +59193,8 @@ class _ResponseEnhancementsListCassNcoaSharesWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListCassNcoaSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListCassNcoaSharesOwnersUsers]
+    groups: List[_ResponseEnhancementsListCassNcoaSharesOwnersGroups]
 
 class _ResponseEnhancementsListCassNcoaSharesOwnersUsers(Response):
     id: int
@@ -59198,8 +59212,8 @@ class _ResponseEnhancementsPutCassNcoaSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesUsersReadersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesUsersReadersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersReadersUsers(Response):
     id: int
@@ -59210,8 +59224,8 @@ class _ResponseEnhancementsPutCassNcoaSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesUsersWritersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesUsersWritersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersWritersUsers(Response):
     id: int
@@ -59222,8 +59236,8 @@ class _ResponseEnhancementsPutCassNcoaSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesUsersOwnersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesUsersOwnersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesUsersOwnersUsers(Response):
     id: int
@@ -59241,8 +59255,8 @@ class _ResponseEnhancementsPutCassNcoaSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesGroupsReadersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesGroupsReadersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsReadersUsers(Response):
     id: int
@@ -59253,8 +59267,8 @@ class _ResponseEnhancementsPutCassNcoaSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesGroupsWritersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesGroupsWritersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsWritersUsers(Response):
     id: int
@@ -59265,8 +59279,8 @@ class _ResponseEnhancementsPutCassNcoaSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutCassNcoaSharesGroupsOwnersUsers]
+    groups: List[_ResponseEnhancementsPutCassNcoaSharesGroupsOwnersGroups]
 
 class _ResponseEnhancementsPutCassNcoaSharesGroupsOwnersUsers(Response):
     id: int
@@ -59286,7 +59300,7 @@ class _ResponseEnhancementsListCassNcoaDependencies(Response):
     shareable: bool
 
 class _ResponseEnhancementsPutCassNcoaTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseEnhancementsPutCassNcoaTransferDependencies]
 
 class _ResponseEnhancementsPutCassNcoaTransferDependencies(Response):
     object_type: str
@@ -59302,7 +59316,7 @@ class _ResponseEnhancementsListCassNcoaProjects(Response):
     author: _ResponseEnhancementsListCassNcoaProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseEnhancementsListCassNcoaProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -59414,8 +59428,8 @@ class _ResponseEnhancementsListGeocodeShares(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsListGeocodeSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListGeocodeSharesReadersUsers]
+    groups: List[_ResponseEnhancementsListGeocodeSharesReadersGroups]
 
 class _ResponseEnhancementsListGeocodeSharesReadersUsers(Response):
     id: int
@@ -59426,8 +59440,8 @@ class _ResponseEnhancementsListGeocodeSharesReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListGeocodeSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListGeocodeSharesWritersUsers]
+    groups: List[_ResponseEnhancementsListGeocodeSharesWritersGroups]
 
 class _ResponseEnhancementsListGeocodeSharesWritersUsers(Response):
     id: int
@@ -59438,8 +59452,8 @@ class _ResponseEnhancementsListGeocodeSharesWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListGeocodeSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListGeocodeSharesOwnersUsers]
+    groups: List[_ResponseEnhancementsListGeocodeSharesOwnersGroups]
 
 class _ResponseEnhancementsListGeocodeSharesOwnersUsers(Response):
     id: int
@@ -59457,8 +59471,8 @@ class _ResponseEnhancementsPutGeocodeSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutGeocodeSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesUsersReadersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesUsersReadersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesUsersReadersUsers(Response):
     id: int
@@ -59469,8 +59483,8 @@ class _ResponseEnhancementsPutGeocodeSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutGeocodeSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesUsersWritersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesUsersWritersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesUsersWritersUsers(Response):
     id: int
@@ -59481,8 +59495,8 @@ class _ResponseEnhancementsPutGeocodeSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutGeocodeSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesUsersOwnersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesUsersOwnersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesUsersOwnersUsers(Response):
     id: int
@@ -59500,8 +59514,8 @@ class _ResponseEnhancementsPutGeocodeSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesGroupsReadersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesGroupsReadersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsReadersUsers(Response):
     id: int
@@ -59512,8 +59526,8 @@ class _ResponseEnhancementsPutGeocodeSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesGroupsWritersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesGroupsWritersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsWritersUsers(Response):
     id: int
@@ -59524,8 +59538,8 @@ class _ResponseEnhancementsPutGeocodeSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutGeocodeSharesGroupsOwnersUsers]
+    groups: List[_ResponseEnhancementsPutGeocodeSharesGroupsOwnersGroups]
 
 class _ResponseEnhancementsPutGeocodeSharesGroupsOwnersUsers(Response):
     id: int
@@ -59545,7 +59559,7 @@ class _ResponseEnhancementsListGeocodeDependencies(Response):
     shareable: bool
 
 class _ResponseEnhancementsPutGeocodeTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseEnhancementsPutGeocodeTransferDependencies]
 
 class _ResponseEnhancementsPutGeocodeTransferDependencies(Response):
     object_type: str
@@ -59561,7 +59575,7 @@ class _ResponseEnhancementsListGeocodeProjects(Response):
     author: _ResponseEnhancementsListGeocodeProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseEnhancementsListGeocodeProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -59648,8 +59662,8 @@ class _ResponseEnhancementsListIdentityResolutionShares(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsListIdentityResolutionSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListIdentityResolutionSharesReadersUsers]
+    groups: List[_ResponseEnhancementsListIdentityResolutionSharesReadersGroups]
 
 class _ResponseEnhancementsListIdentityResolutionSharesReadersUsers(Response):
     id: int
@@ -59660,8 +59674,8 @@ class _ResponseEnhancementsListIdentityResolutionSharesReadersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListIdentityResolutionSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListIdentityResolutionSharesWritersUsers]
+    groups: List[_ResponseEnhancementsListIdentityResolutionSharesWritersGroups]
 
 class _ResponseEnhancementsListIdentityResolutionSharesWritersUsers(Response):
     id: int
@@ -59672,8 +59686,8 @@ class _ResponseEnhancementsListIdentityResolutionSharesWritersGroups(Response):
     name: str
 
 class _ResponseEnhancementsListIdentityResolutionSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsListIdentityResolutionSharesOwnersUsers]
+    groups: List[_ResponseEnhancementsListIdentityResolutionSharesOwnersGroups]
 
 class _ResponseEnhancementsListIdentityResolutionSharesOwnersUsers(Response):
     id: int
@@ -59691,8 +59705,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersReadersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersReadersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersReadersUsers(Response):
     id: int
@@ -59703,8 +59717,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesUsersReadersGroups(Respons
     name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersWritersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersWritersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersWritersUsers(Response):
     id: int
@@ -59715,8 +59729,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesUsersWritersGroups(Respons
     name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersOwnersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesUsersOwnersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwnersUsers(Response):
     id: int
@@ -59734,8 +59748,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersUsers(Response):
     id: int
@@ -59746,8 +59760,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersGroups(Respon
     name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersUsers(Response):
     id: int
@@ -59758,8 +59772,8 @@ class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersGroups(Respon
     name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsOwnersUsers]
+    groups: List[_ResponseEnhancementsPutIdentityResolutionSharesGroupsOwnersGroups]
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwnersUsers(Response):
     id: int
@@ -59779,7 +59793,7 @@ class _ResponseEnhancementsListIdentityResolutionDependencies(Response):
     shareable: bool
 
 class _ResponseEnhancementsPutIdentityResolutionTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseEnhancementsPutIdentityResolutionTransferDependencies]
 
 class _ResponseEnhancementsPutIdentityResolutionTransferDependencies(Response):
     object_type: str
@@ -59795,7 +59809,7 @@ class _ResponseEnhancementsListIdentityResolutionProjects(Response):
     author: _ResponseEnhancementsListIdentityResolutionProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseEnhancementsListIdentityResolutionProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -59829,9 +59843,9 @@ class _ResponseEnhancementsPutIdentityResolutionArchive(Response):
     my_permission_level: str
     archived: str
     threshold: float
-    sources: List
+    sources: List[_ResponseEnhancementsPutIdentityResolutionArchiveSources]
     match_target_id: int
-    enforced_links: List
+    enforced_links: List[_ResponseEnhancementsPutIdentityResolutionArchiveEnforcedLinks]
     customer_graph: _ResponseEnhancementsPutIdentityResolutionArchiveCustomerGraph
     golden_table: _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable
     link_scores: _ResponseEnhancementsPutIdentityResolutionArchiveLinkScores
@@ -59895,12 +59909,14 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable(Response):
     database_name: str
     schema_name: str
     table_name: str
-    fields: List
+    fields: List[_ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFields]
 
 class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: List
+    source_preferences: (
+        List[_ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences]
+    )
 
 class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences(  # noqa: E501
     Response
@@ -60103,7 +60119,7 @@ class _ResponseFilesListProjects(Response):
     author: _ResponseFilesListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseFilesListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -60131,8 +60147,8 @@ class _ResponseFilesListShares(Response):
     total_group_shares: int
 
 class _ResponseFilesListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesListSharesReadersUsers]
+    groups: List[_ResponseFilesListSharesReadersGroups]
 
 class _ResponseFilesListSharesReadersUsers(Response):
     id: int
@@ -60143,8 +60159,8 @@ class _ResponseFilesListSharesReadersGroups(Response):
     name: str
 
 class _ResponseFilesListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesListSharesWritersUsers]
+    groups: List[_ResponseFilesListSharesWritersGroups]
 
 class _ResponseFilesListSharesWritersUsers(Response):
     id: int
@@ -60155,8 +60171,8 @@ class _ResponseFilesListSharesWritersGroups(Response):
     name: str
 
 class _ResponseFilesListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesListSharesOwnersUsers]
+    groups: List[_ResponseFilesListSharesOwnersGroups]
 
 class _ResponseFilesListSharesOwnersUsers(Response):
     id: int
@@ -60174,8 +60190,8 @@ class _ResponseFilesPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseFilesPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesUsersReadersUsers]
+    groups: List[_ResponseFilesPutSharesUsersReadersGroups]
 
 class _ResponseFilesPutSharesUsersReadersUsers(Response):
     id: int
@@ -60186,8 +60202,8 @@ class _ResponseFilesPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseFilesPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesUsersWritersUsers]
+    groups: List[_ResponseFilesPutSharesUsersWritersGroups]
 
 class _ResponseFilesPutSharesUsersWritersUsers(Response):
     id: int
@@ -60198,8 +60214,8 @@ class _ResponseFilesPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseFilesPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesUsersOwnersUsers]
+    groups: List[_ResponseFilesPutSharesUsersOwnersGroups]
 
 class _ResponseFilesPutSharesUsersOwnersUsers(Response):
     id: int
@@ -60217,8 +60233,8 @@ class _ResponseFilesPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseFilesPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesGroupsReadersUsers]
+    groups: List[_ResponseFilesPutSharesGroupsReadersGroups]
 
 class _ResponseFilesPutSharesGroupsReadersUsers(Response):
     id: int
@@ -60229,8 +60245,8 @@ class _ResponseFilesPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseFilesPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesGroupsWritersUsers]
+    groups: List[_ResponseFilesPutSharesGroupsWritersGroups]
 
 class _ResponseFilesPutSharesGroupsWritersUsers(Response):
     id: int
@@ -60241,8 +60257,8 @@ class _ResponseFilesPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseFilesPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseFilesPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseFilesPutSharesGroupsOwnersGroups]
 
 class _ResponseFilesPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -60262,7 +60278,7 @@ class _ResponseFilesListDependencies(Response):
     shareable: bool
 
 class _ResponseFilesPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseFilesPutTransferDependencies]
 
 class _ResponseFilesPutTransferDependencies(Response):
     object_type: str
@@ -60314,7 +60330,7 @@ class _ResponseFilesGetDetectedInfo(Response):
     include_header: bool
     column_delimiter: str
     compression: str
-    table_columns: List
+    table_columns: List[_ResponseFilesGetDetectedInfoTableColumns]
 
 class _ResponseFilesGetDetectedInfoTableColumns(Response):
     name: str
@@ -60343,7 +60359,7 @@ class _ResponseFilesPutDetectedInfo(Response):
     include_header: bool
     column_delimiter: str
     compression: str
-    table_columns: List
+    table_columns: List[_ResponseFilesPutDetectedInfoTableColumns]
 
 class _ResponseFilesPutDetectedInfoTableColumns(Response):
     name: str
@@ -60372,7 +60388,7 @@ class _ResponseFilesPatchDetectedInfo(Response):
     include_header: bool
     column_delimiter: str
     compression: str
-    table_columns: List
+    table_columns: List[_ResponseFilesPatchDetectedInfoTableColumns]
 
 class _ResponseFilesPatchDetectedInfoTableColumns(Response):
     name: str
@@ -60463,7 +60479,7 @@ class _ResponseGroupsPost(Response):
     default_services_label: str
     last_updated_by_id: int
     created_by_id: int
-    members: List
+    members: List[_ResponseGroupsPostMembers]
 
 class _ResponseGroupsPostMembers(Response):
     id: int
@@ -60494,7 +60510,7 @@ class _ResponseGroupsGet(Response):
     default_services_label: str
     last_updated_by_id: int
     created_by_id: int
-    members: List
+    members: List[_ResponseGroupsGetMembers]
 
 class _ResponseGroupsGetMembers(Response):
     id: int
@@ -60525,7 +60541,7 @@ class _ResponseGroupsPut(Response):
     default_services_label: str
     last_updated_by_id: int
     created_by_id: int
-    members: List
+    members: List[_ResponseGroupsPutMembers]
 
 class _ResponseGroupsPutMembers(Response):
     id: int
@@ -60546,7 +60562,7 @@ class _ResponseGroupsPutMembers(Response):
     default_services_label: str
     last_updated_by_id: int
     created_by_id: int
-    members: List
+    members: List[_ResponseGroupsPutMembersMembers]
 
 class _ResponseGroupsPatch(Response):
     id: int
@@ -60567,7 +60583,7 @@ class _ResponseGroupsPatch(Response):
     default_services_label: str
     last_updated_by_id: int
     created_by_id: int
-    members: List
+    members: List[_ResponseGroupsPatchMembers]
 
 class _ResponseGroupsPatchMembers(Response):
     id: int
@@ -60587,8 +60603,8 @@ class _ResponseGroupsListShares(Response):
     total_group_shares: int
 
 class _ResponseGroupsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsListSharesReadersUsers]
+    groups: List[_ResponseGroupsListSharesReadersGroups]
 
 class _ResponseGroupsListSharesReadersUsers(Response):
     id: int
@@ -60599,8 +60615,8 @@ class _ResponseGroupsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseGroupsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsListSharesWritersUsers]
+    groups: List[_ResponseGroupsListSharesWritersGroups]
 
 class _ResponseGroupsListSharesWritersUsers(Response):
     id: int
@@ -60611,8 +60627,8 @@ class _ResponseGroupsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseGroupsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsListSharesOwnersUsers]
+    groups: List[_ResponseGroupsListSharesOwnersGroups]
 
 class _ResponseGroupsListSharesOwnersUsers(Response):
     id: int
@@ -60630,8 +60646,8 @@ class _ResponseGroupsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseGroupsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesUsersReadersUsers]
+    groups: List[_ResponseGroupsPutSharesUsersReadersGroups]
 
 class _ResponseGroupsPutSharesUsersReadersUsers(Response):
     id: int
@@ -60642,8 +60658,8 @@ class _ResponseGroupsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseGroupsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesUsersWritersUsers]
+    groups: List[_ResponseGroupsPutSharesUsersWritersGroups]
 
 class _ResponseGroupsPutSharesUsersWritersUsers(Response):
     id: int
@@ -60654,8 +60670,8 @@ class _ResponseGroupsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseGroupsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseGroupsPutSharesUsersOwnersGroups]
 
 class _ResponseGroupsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -60673,8 +60689,8 @@ class _ResponseGroupsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseGroupsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseGroupsPutSharesGroupsReadersGroups]
 
 class _ResponseGroupsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -60685,8 +60701,8 @@ class _ResponseGroupsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseGroupsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseGroupsPutSharesGroupsWritersGroups]
 
 class _ResponseGroupsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -60697,8 +60713,8 @@ class _ResponseGroupsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseGroupsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseGroupsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseGroupsPutSharesGroupsOwnersGroups]
 
 class _ResponseGroupsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -60719,9 +60735,9 @@ class _ResponseGroupsPutMembersMembers(Response):
     active: bool
 
 class _ResponseGroupsListChildGroups(Response):
-    manageable: List
-    writeable: List
-    readable: List
+    manageable: List[_ResponseGroupsListChildGroupsManageable]
+    writeable: List[_ResponseGroupsListChildGroupsWriteable]
+    readable: List[_ResponseGroupsListChildGroupsReadable]
 
 class _ResponseGroupsListChildGroupsManageable(Response):
     id: int
@@ -60743,8 +60759,8 @@ class _ResponseImportsListShares(Response):
     total_group_shares: int
 
 class _ResponseImportsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsListSharesReadersUsers]
+    groups: List[_ResponseImportsListSharesReadersGroups]
 
 class _ResponseImportsListSharesReadersUsers(Response):
     id: int
@@ -60755,8 +60771,8 @@ class _ResponseImportsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseImportsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsListSharesWritersUsers]
+    groups: List[_ResponseImportsListSharesWritersGroups]
 
 class _ResponseImportsListSharesWritersUsers(Response):
     id: int
@@ -60767,8 +60783,8 @@ class _ResponseImportsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseImportsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsListSharesOwnersUsers]
+    groups: List[_ResponseImportsListSharesOwnersGroups]
 
 class _ResponseImportsListSharesOwnersUsers(Response):
     id: int
@@ -60786,8 +60802,8 @@ class _ResponseImportsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseImportsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesUsersReadersUsers]
+    groups: List[_ResponseImportsPutSharesUsersReadersGroups]
 
 class _ResponseImportsPutSharesUsersReadersUsers(Response):
     id: int
@@ -60798,8 +60814,8 @@ class _ResponseImportsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseImportsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesUsersWritersUsers]
+    groups: List[_ResponseImportsPutSharesUsersWritersGroups]
 
 class _ResponseImportsPutSharesUsersWritersUsers(Response):
     id: int
@@ -60810,8 +60826,8 @@ class _ResponseImportsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseImportsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseImportsPutSharesUsersOwnersGroups]
 
 class _ResponseImportsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -60829,8 +60845,8 @@ class _ResponseImportsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseImportsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseImportsPutSharesGroupsReadersGroups]
 
 class _ResponseImportsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -60841,8 +60857,8 @@ class _ResponseImportsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseImportsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseImportsPutSharesGroupsWritersGroups]
 
 class _ResponseImportsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -60853,8 +60869,8 @@ class _ResponseImportsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseImportsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseImportsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseImportsPutSharesGroupsOwnersGroups]
 
 class _ResponseImportsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -60874,7 +60890,7 @@ class _ResponseImportsListDependencies(Response):
     shareable: bool
 
 class _ResponseImportsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseImportsPutTransferDependencies]
 
 class _ResponseImportsPutTransferDependencies(Response):
     object_type: str
@@ -60890,7 +60906,7 @@ class _ResponseImportsListProjects(Response):
     author: _ResponseImportsListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseImportsListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -60921,7 +60937,7 @@ class _ResponseImportsPutArchive(Response):
     id: int
     is_outbound: bool
     job_type: str
-    syncs: List
+    syncs: List[_ResponseImportsPutArchiveSyncs]
     state: str
     created_at: str
     updated_at: str
@@ -61077,7 +61093,7 @@ class _ResponseImportsPost(Response):
     id: int
     is_outbound: bool
     job_type: str
-    syncs: List
+    syncs: List[_ResponseImportsPostSyncs]
     state: str
     created_at: str
     updated_at: str
@@ -61271,7 +61287,7 @@ class _ResponseImportsPostFilesCsv(Response):
     compression: str
     existing_table_rows: str
     max_errors: int
-    table_columns: List
+    table_columns: List[_ResponseImportsPostFilesCsvTableColumns]
     loosen_types: bool
     execution: str
     redshift_destination_options: _ResponseImportsPostFilesCsvRedshiftDestinationOptions
@@ -61315,7 +61331,7 @@ class _ResponseImportsGetFilesCsv(Response):
     compression: str
     existing_table_rows: str
     max_errors: int
-    table_columns: List
+    table_columns: List[_ResponseImportsGetFilesCsvTableColumns]
     loosen_types: bool
     execution: str
     redshift_destination_options: _ResponseImportsGetFilesCsvRedshiftDestinationOptions
@@ -61359,7 +61375,7 @@ class _ResponseImportsPutFilesCsv(Response):
     compression: str
     existing_table_rows: str
     max_errors: int
-    table_columns: List
+    table_columns: List[_ResponseImportsPutFilesCsvTableColumns]
     loosen_types: bool
     execution: str
     redshift_destination_options: _ResponseImportsPutFilesCsvRedshiftDestinationOptions
@@ -61403,7 +61419,7 @@ class _ResponseImportsPatchFilesCsv(Response):
     compression: str
     existing_table_rows: str
     max_errors: int
-    table_columns: List
+    table_columns: List[_ResponseImportsPatchFilesCsvTableColumns]
     loosen_types: bool
     execution: str
     redshift_destination_options: (
@@ -61449,7 +61465,7 @@ class _ResponseImportsPutFilesCsvArchive(Response):
     compression: str
     existing_table_rows: str
     max_errors: int
-    table_columns: List
+    table_columns: List[_ResponseImportsPutFilesCsvArchiveTableColumns]
     loosen_types: bool
     execution: str
     redshift_destination_options: (
@@ -61543,7 +61559,7 @@ class _ResponseImportsGet(Response):
     id: int
     is_outbound: bool
     job_type: str
-    syncs: List
+    syncs: List[_ResponseImportsGetSyncs]
     state: str
     created_at: str
     updated_at: str
@@ -61699,7 +61715,7 @@ class _ResponseImportsPut(Response):
     id: int
     is_outbound: bool
     job_type: str
-    syncs: List
+    syncs: List[_ResponseImportsPutSyncs]
     state: str
     created_at: str
     updated_at: str
@@ -61946,7 +61962,7 @@ class _ResponseJobsGet(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseJobsGetRuns]
     last_run: _ResponseJobsGetLastRun
     hidden: bool
     archived: str
@@ -62000,7 +62016,7 @@ class _ResponseJobsListParents(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseJobsListParentsRuns]
     last_run: _ResponseJobsListParentsLastRun
     hidden: bool
     archived: str
@@ -62051,7 +62067,7 @@ class _ResponseJobsListChildren(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseJobsListChildrenRuns]
     last_run: _ResponseJobsListChildrenLastRun
     children: List
 
@@ -62124,8 +62140,8 @@ class _ResponseJobsListShares(Response):
     total_group_shares: int
 
 class _ResponseJobsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsListSharesReadersUsers]
+    groups: List[_ResponseJobsListSharesReadersGroups]
 
 class _ResponseJobsListSharesReadersUsers(Response):
     id: int
@@ -62136,8 +62152,8 @@ class _ResponseJobsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseJobsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsListSharesWritersUsers]
+    groups: List[_ResponseJobsListSharesWritersGroups]
 
 class _ResponseJobsListSharesWritersUsers(Response):
     id: int
@@ -62148,8 +62164,8 @@ class _ResponseJobsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseJobsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsListSharesOwnersUsers]
+    groups: List[_ResponseJobsListSharesOwnersGroups]
 
 class _ResponseJobsListSharesOwnersUsers(Response):
     id: int
@@ -62167,8 +62183,8 @@ class _ResponseJobsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseJobsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesUsersReadersUsers]
+    groups: List[_ResponseJobsPutSharesUsersReadersGroups]
 
 class _ResponseJobsPutSharesUsersReadersUsers(Response):
     id: int
@@ -62179,8 +62195,8 @@ class _ResponseJobsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseJobsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesUsersWritersUsers]
+    groups: List[_ResponseJobsPutSharesUsersWritersGroups]
 
 class _ResponseJobsPutSharesUsersWritersUsers(Response):
     id: int
@@ -62191,8 +62207,8 @@ class _ResponseJobsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseJobsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseJobsPutSharesUsersOwnersGroups]
 
 class _ResponseJobsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -62210,8 +62226,8 @@ class _ResponseJobsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseJobsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseJobsPutSharesGroupsReadersGroups]
 
 class _ResponseJobsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -62222,8 +62238,8 @@ class _ResponseJobsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseJobsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseJobsPutSharesGroupsWritersGroups]
 
 class _ResponseJobsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -62234,8 +62250,8 @@ class _ResponseJobsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseJobsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJobsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseJobsPutSharesGroupsOwnersGroups]
 
 class _ResponseJobsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -62255,7 +62271,7 @@ class _ResponseJobsListDependencies(Response):
     shareable: bool
 
 class _ResponseJobsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseJobsPutTransferDependencies]
 
 class _ResponseJobsPutTransferDependencies(Response):
     object_type: str
@@ -62271,7 +62287,7 @@ class _ResponseJobsListProjects(Response):
     author: _ResponseJobsListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseJobsListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -62299,7 +62315,7 @@ class _ResponseJobsPutArchive(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseJobsPutArchiveRuns]
     last_run: _ResponseJobsPutArchiveLastRun
     hidden: bool
     archived: str
@@ -62365,8 +62381,8 @@ class _ResponseJsonValuesListShares(Response):
     total_group_shares: int
 
 class _ResponseJsonValuesListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesListSharesReadersUsers]
+    groups: List[_ResponseJsonValuesListSharesReadersGroups]
 
 class _ResponseJsonValuesListSharesReadersUsers(Response):
     id: int
@@ -62377,8 +62393,8 @@ class _ResponseJsonValuesListSharesReadersGroups(Response):
     name: str
 
 class _ResponseJsonValuesListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesListSharesWritersUsers]
+    groups: List[_ResponseJsonValuesListSharesWritersGroups]
 
 class _ResponseJsonValuesListSharesWritersUsers(Response):
     id: int
@@ -62389,8 +62405,8 @@ class _ResponseJsonValuesListSharesWritersGroups(Response):
     name: str
 
 class _ResponseJsonValuesListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesListSharesOwnersUsers]
+    groups: List[_ResponseJsonValuesListSharesOwnersGroups]
 
 class _ResponseJsonValuesListSharesOwnersUsers(Response):
     id: int
@@ -62408,8 +62424,8 @@ class _ResponseJsonValuesPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseJsonValuesPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesUsersReadersUsers]
+    groups: List[_ResponseJsonValuesPutSharesUsersReadersGroups]
 
 class _ResponseJsonValuesPutSharesUsersReadersUsers(Response):
     id: int
@@ -62420,8 +62436,8 @@ class _ResponseJsonValuesPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseJsonValuesPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesUsersWritersUsers]
+    groups: List[_ResponseJsonValuesPutSharesUsersWritersGroups]
 
 class _ResponseJsonValuesPutSharesUsersWritersUsers(Response):
     id: int
@@ -62432,8 +62448,8 @@ class _ResponseJsonValuesPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseJsonValuesPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesUsersOwnersUsers]
+    groups: List[_ResponseJsonValuesPutSharesUsersOwnersGroups]
 
 class _ResponseJsonValuesPutSharesUsersOwnersUsers(Response):
     id: int
@@ -62451,8 +62467,8 @@ class _ResponseJsonValuesPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseJsonValuesPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesGroupsReadersUsers]
+    groups: List[_ResponseJsonValuesPutSharesGroupsReadersGroups]
 
 class _ResponseJsonValuesPutSharesGroupsReadersUsers(Response):
     id: int
@@ -62463,8 +62479,8 @@ class _ResponseJsonValuesPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseJsonValuesPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesGroupsWritersUsers]
+    groups: List[_ResponseJsonValuesPutSharesGroupsWritersGroups]
 
 class _ResponseJsonValuesPutSharesGroupsWritersUsers(Response):
     id: int
@@ -62475,8 +62491,8 @@ class _ResponseJsonValuesPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseJsonValuesPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseJsonValuesPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseJsonValuesPutSharesGroupsOwnersGroups]
 
 class _ResponseJsonValuesPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -62496,7 +62512,7 @@ class _ResponseJsonValuesListDependencies(Response):
     shareable: bool
 
 class _ResponseJsonValuesPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseJsonValuesPutTransferDependencies]
 
 class _ResponseJsonValuesPutTransferDependencies(Response):
     object_type: str
@@ -62515,8 +62531,8 @@ class _ResponseMatchTargetsListShares(Response):
     total_group_shares: int
 
 class _ResponseMatchTargetsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsListSharesReadersUsers]
+    groups: List[_ResponseMatchTargetsListSharesReadersGroups]
 
 class _ResponseMatchTargetsListSharesReadersUsers(Response):
     id: int
@@ -62527,8 +62543,8 @@ class _ResponseMatchTargetsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsListSharesWritersUsers]
+    groups: List[_ResponseMatchTargetsListSharesWritersGroups]
 
 class _ResponseMatchTargetsListSharesWritersUsers(Response):
     id: int
@@ -62539,8 +62555,8 @@ class _ResponseMatchTargetsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsListSharesOwnersUsers]
+    groups: List[_ResponseMatchTargetsListSharesOwnersGroups]
 
 class _ResponseMatchTargetsListSharesOwnersUsers(Response):
     id: int
@@ -62558,8 +62574,8 @@ class _ResponseMatchTargetsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseMatchTargetsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesUsersReadersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesUsersReadersGroups]
 
 class _ResponseMatchTargetsPutSharesUsersReadersUsers(Response):
     id: int
@@ -62570,8 +62586,8 @@ class _ResponseMatchTargetsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesUsersWritersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesUsersWritersGroups]
 
 class _ResponseMatchTargetsPutSharesUsersWritersUsers(Response):
     id: int
@@ -62582,8 +62598,8 @@ class _ResponseMatchTargetsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesUsersOwnersGroups]
 
 class _ResponseMatchTargetsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -62601,8 +62617,8 @@ class _ResponseMatchTargetsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseMatchTargetsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesGroupsReadersGroups]
 
 class _ResponseMatchTargetsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -62613,8 +62629,8 @@ class _ResponseMatchTargetsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesGroupsWritersGroups]
 
 class _ResponseMatchTargetsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -62625,8 +62641,8 @@ class _ResponseMatchTargetsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseMatchTargetsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMatchTargetsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseMatchTargetsPutSharesGroupsOwnersGroups]
 
 class _ResponseMatchTargetsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -62684,8 +62700,8 @@ class _ResponseMediaListSpotOrdersShares(Response):
     total_group_shares: int
 
 class _ResponseMediaListSpotOrdersSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListSpotOrdersSharesReadersUsers]
+    groups: List[_ResponseMediaListSpotOrdersSharesReadersGroups]
 
 class _ResponseMediaListSpotOrdersSharesReadersUsers(Response):
     id: int
@@ -62696,8 +62712,8 @@ class _ResponseMediaListSpotOrdersSharesReadersGroups(Response):
     name: str
 
 class _ResponseMediaListSpotOrdersSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListSpotOrdersSharesWritersUsers]
+    groups: List[_ResponseMediaListSpotOrdersSharesWritersGroups]
 
 class _ResponseMediaListSpotOrdersSharesWritersUsers(Response):
     id: int
@@ -62708,8 +62724,8 @@ class _ResponseMediaListSpotOrdersSharesWritersGroups(Response):
     name: str
 
 class _ResponseMediaListSpotOrdersSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListSpotOrdersSharesOwnersUsers]
+    groups: List[_ResponseMediaListSpotOrdersSharesOwnersGroups]
 
 class _ResponseMediaListSpotOrdersSharesOwnersUsers(Response):
     id: int
@@ -62727,8 +62743,8 @@ class _ResponseMediaPutSpotOrdersSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseMediaPutSpotOrdersSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesUsersReadersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesUsersReadersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesUsersReadersUsers(Response):
     id: int
@@ -62739,8 +62755,8 @@ class _ResponseMediaPutSpotOrdersSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutSpotOrdersSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesUsersWritersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesUsersWritersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesUsersWritersUsers(Response):
     id: int
@@ -62751,8 +62767,8 @@ class _ResponseMediaPutSpotOrdersSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutSpotOrdersSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesUsersOwnersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesUsersOwnersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesUsersOwnersUsers(Response):
     id: int
@@ -62770,8 +62786,8 @@ class _ResponseMediaPutSpotOrdersSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseMediaPutSpotOrdersSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesGroupsReadersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesGroupsReadersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesGroupsReadersUsers(Response):
     id: int
@@ -62782,8 +62798,8 @@ class _ResponseMediaPutSpotOrdersSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutSpotOrdersSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesGroupsWritersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesGroupsWritersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesGroupsWritersUsers(Response):
     id: int
@@ -62794,8 +62810,8 @@ class _ResponseMediaPutSpotOrdersSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutSpotOrdersSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutSpotOrdersSharesGroupsOwnersUsers]
+    groups: List[_ResponseMediaPutSpotOrdersSharesGroupsOwnersGroups]
 
 class _ResponseMediaPutSpotOrdersSharesGroupsOwnersUsers(Response):
     id: int
@@ -62821,8 +62837,8 @@ class _ResponseMediaListOptimizationsShares(Response):
     total_group_shares: int
 
 class _ResponseMediaListOptimizationsSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListOptimizationsSharesReadersUsers]
+    groups: List[_ResponseMediaListOptimizationsSharesReadersGroups]
 
 class _ResponseMediaListOptimizationsSharesReadersUsers(Response):
     id: int
@@ -62833,8 +62849,8 @@ class _ResponseMediaListOptimizationsSharesReadersGroups(Response):
     name: str
 
 class _ResponseMediaListOptimizationsSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListOptimizationsSharesWritersUsers]
+    groups: List[_ResponseMediaListOptimizationsSharesWritersGroups]
 
 class _ResponseMediaListOptimizationsSharesWritersUsers(Response):
     id: int
@@ -62845,8 +62861,8 @@ class _ResponseMediaListOptimizationsSharesWritersGroups(Response):
     name: str
 
 class _ResponseMediaListOptimizationsSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListOptimizationsSharesOwnersUsers]
+    groups: List[_ResponseMediaListOptimizationsSharesOwnersGroups]
 
 class _ResponseMediaListOptimizationsSharesOwnersUsers(Response):
     id: int
@@ -62864,8 +62880,8 @@ class _ResponseMediaPutOptimizationsSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseMediaPutOptimizationsSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesUsersReadersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesUsersReadersGroups]
 
 class _ResponseMediaPutOptimizationsSharesUsersReadersUsers(Response):
     id: int
@@ -62876,8 +62892,8 @@ class _ResponseMediaPutOptimizationsSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutOptimizationsSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesUsersWritersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesUsersWritersGroups]
 
 class _ResponseMediaPutOptimizationsSharesUsersWritersUsers(Response):
     id: int
@@ -62888,8 +62904,8 @@ class _ResponseMediaPutOptimizationsSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutOptimizationsSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesUsersOwnersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesUsersOwnersGroups]
 
 class _ResponseMediaPutOptimizationsSharesUsersOwnersUsers(Response):
     id: int
@@ -62907,8 +62923,8 @@ class _ResponseMediaPutOptimizationsSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseMediaPutOptimizationsSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesGroupsReadersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesGroupsReadersGroups]
 
 class _ResponseMediaPutOptimizationsSharesGroupsReadersUsers(Response):
     id: int
@@ -62919,8 +62935,8 @@ class _ResponseMediaPutOptimizationsSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutOptimizationsSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesGroupsWritersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesGroupsWritersGroups]
 
 class _ResponseMediaPutOptimizationsSharesGroupsWritersUsers(Response):
     id: int
@@ -62931,8 +62947,8 @@ class _ResponseMediaPutOptimizationsSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutOptimizationsSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutOptimizationsSharesGroupsOwnersUsers]
+    groups: List[_ResponseMediaPutOptimizationsSharesGroupsOwnersGroups]
 
 class _ResponseMediaPutOptimizationsSharesGroupsOwnersUsers(Response):
     id: int
@@ -62956,7 +62972,7 @@ class _ResponseMediaPutOptimizationsArchive(Response):
     report_link: str
     spot_order_link: str
     file_links: List
-    runs: List
+    runs: List[_ResponseMediaPutOptimizationsArchiveRuns]
     programs: List
     networks: List
     exclude_programs: bool
@@ -62978,7 +62994,7 @@ class _ResponseMediaPutOptimizationsArchiveRuns(Response):
     reach_alpha: float
     syscodes: List
     rate_cards: List
-    constraints: List
+    constraints: List[_ResponseMediaPutOptimizationsArchiveRunsConstraints]
 
 class _ResponseMediaPutOptimizationsArchiveRunsConstraints(Response):
     targets: List
@@ -62993,8 +63009,8 @@ class _ResponseMediaListRatecardsShares(Response):
     total_group_shares: int
 
 class _ResponseMediaListRatecardsSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListRatecardsSharesReadersUsers]
+    groups: List[_ResponseMediaListRatecardsSharesReadersGroups]
 
 class _ResponseMediaListRatecardsSharesReadersUsers(Response):
     id: int
@@ -63005,8 +63021,8 @@ class _ResponseMediaListRatecardsSharesReadersGroups(Response):
     name: str
 
 class _ResponseMediaListRatecardsSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListRatecardsSharesWritersUsers]
+    groups: List[_ResponseMediaListRatecardsSharesWritersGroups]
 
 class _ResponseMediaListRatecardsSharesWritersUsers(Response):
     id: int
@@ -63017,8 +63033,8 @@ class _ResponseMediaListRatecardsSharesWritersGroups(Response):
     name: str
 
 class _ResponseMediaListRatecardsSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaListRatecardsSharesOwnersUsers]
+    groups: List[_ResponseMediaListRatecardsSharesOwnersGroups]
 
 class _ResponseMediaListRatecardsSharesOwnersUsers(Response):
     id: int
@@ -63036,8 +63052,8 @@ class _ResponseMediaPutRatecardsSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseMediaPutRatecardsSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesUsersReadersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesUsersReadersGroups]
 
 class _ResponseMediaPutRatecardsSharesUsersReadersUsers(Response):
     id: int
@@ -63048,8 +63064,8 @@ class _ResponseMediaPutRatecardsSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutRatecardsSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesUsersWritersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesUsersWritersGroups]
 
 class _ResponseMediaPutRatecardsSharesUsersWritersUsers(Response):
     id: int
@@ -63060,8 +63076,8 @@ class _ResponseMediaPutRatecardsSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutRatecardsSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesUsersOwnersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesUsersOwnersGroups]
 
 class _ResponseMediaPutRatecardsSharesUsersOwnersUsers(Response):
     id: int
@@ -63079,8 +63095,8 @@ class _ResponseMediaPutRatecardsSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseMediaPutRatecardsSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesGroupsReadersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesGroupsReadersGroups]
 
 class _ResponseMediaPutRatecardsSharesGroupsReadersUsers(Response):
     id: int
@@ -63091,8 +63107,8 @@ class _ResponseMediaPutRatecardsSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseMediaPutRatecardsSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesGroupsWritersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesGroupsWritersGroups]
 
 class _ResponseMediaPutRatecardsSharesGroupsWritersUsers(Response):
     id: int
@@ -63103,8 +63119,8 @@ class _ResponseMediaPutRatecardsSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseMediaPutRatecardsSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseMediaPutRatecardsSharesGroupsOwnersUsers]
+    groups: List[_ResponseMediaPutRatecardsSharesGroupsOwnersGroups]
 
 class _ResponseMediaPutRatecardsSharesGroupsOwnersUsers(Response):
     id: int
@@ -63136,7 +63152,7 @@ class _ResponseMediaPostOptimizations(Response):
     report_link: str
     spot_order_link: str
     file_links: List
-    runs: List
+    runs: List[_ResponseMediaPostOptimizationsRuns]
     programs: List
     networks: List
     exclude_programs: bool
@@ -63179,7 +63195,7 @@ class _ResponseMediaGetOptimizations(Response):
     report_link: str
     spot_order_link: str
     file_links: List
-    runs: List
+    runs: List[_ResponseMediaGetOptimizationsRuns]
     programs: List
     networks: List
     exclude_programs: bool
@@ -63222,7 +63238,7 @@ class _ResponseMediaPatchOptimizations(Response):
     report_link: str
     spot_order_link: str
     file_links: List
-    runs: List
+    runs: List[_ResponseMediaPatchOptimizationsRuns]
     programs: List
     networks: List
     exclude_programs: bool
@@ -63244,7 +63260,7 @@ class _ResponseMediaPatchOptimizationsRuns(Response):
     reach_alpha: float
     syscodes: List
     rate_cards: List
-    constraints: List
+    constraints: List[_ResponseMediaPatchOptimizationsRunsConstraints]
 
 class _ResponseMediaPatchOptimizationsRunsConstraints(Response):
     targets: List
@@ -63265,7 +63281,7 @@ class _ResponseMediaPostOptimizationsClone(Response):
     report_link: str
     spot_order_link: str
     file_links: List
-    runs: List
+    runs: List[_ResponseMediaPostOptimizationsCloneRuns]
     programs: List
     networks: List
     exclude_programs: bool
@@ -63287,7 +63303,7 @@ class _ResponseMediaPostOptimizationsCloneRuns(Response):
     reach_alpha: float
     syscodes: List
     rate_cards: List
-    constraints: List
+    constraints: List[_ResponseMediaPostOptimizationsCloneRunsConstraints]
 
 class _ResponseMediaPostOptimizationsCloneRunsConstraints(Response):
     targets: List
@@ -63413,8 +63429,8 @@ class _ResponseModelsGet(Response):
     updated_at: str
     current_build_state: str
     current_build_exception: str
-    builds: List
-    predictions: List
+    builds: List[_ResponseModelsGetBuilds]
+    predictions: List[_ResponseModelsGetPredictions]
     last_output_location: str
     archived: str
 
@@ -63505,8 +63521,8 @@ class _ResponseModelsListShares(Response):
     total_group_shares: int
 
 class _ResponseModelsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsListSharesReadersUsers]
+    groups: List[_ResponseModelsListSharesReadersGroups]
 
 class _ResponseModelsListSharesReadersUsers(Response):
     id: int
@@ -63517,8 +63533,8 @@ class _ResponseModelsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseModelsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsListSharesWritersUsers]
+    groups: List[_ResponseModelsListSharesWritersGroups]
 
 class _ResponseModelsListSharesWritersUsers(Response):
     id: int
@@ -63529,8 +63545,8 @@ class _ResponseModelsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseModelsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsListSharesOwnersUsers]
+    groups: List[_ResponseModelsListSharesOwnersGroups]
 
 class _ResponseModelsListSharesOwnersUsers(Response):
     id: int
@@ -63548,8 +63564,8 @@ class _ResponseModelsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseModelsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesUsersReadersUsers]
+    groups: List[_ResponseModelsPutSharesUsersReadersGroups]
 
 class _ResponseModelsPutSharesUsersReadersUsers(Response):
     id: int
@@ -63560,8 +63576,8 @@ class _ResponseModelsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseModelsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesUsersWritersUsers]
+    groups: List[_ResponseModelsPutSharesUsersWritersGroups]
 
 class _ResponseModelsPutSharesUsersWritersUsers(Response):
     id: int
@@ -63572,8 +63588,8 @@ class _ResponseModelsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseModelsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseModelsPutSharesUsersOwnersGroups]
 
 class _ResponseModelsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -63591,8 +63607,8 @@ class _ResponseModelsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseModelsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseModelsPutSharesGroupsReadersGroups]
 
 class _ResponseModelsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -63603,8 +63619,8 @@ class _ResponseModelsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseModelsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseModelsPutSharesGroupsWritersGroups]
 
 class _ResponseModelsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -63615,8 +63631,8 @@ class _ResponseModelsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseModelsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseModelsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseModelsPutSharesGroupsOwnersGroups]
 
 class _ResponseModelsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -63636,7 +63652,7 @@ class _ResponseModelsListDependencies(Response):
     shareable: bool
 
 class _ResponseModelsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseModelsPutTransferDependencies]
 
 class _ResponseModelsPutTransferDependencies(Response):
     object_type: str
@@ -63652,7 +63668,7 @@ class _ResponseModelsListProjects(Response):
     author: _ResponseModelsListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseModelsListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -63702,8 +63718,8 @@ class _ResponseModelsPutArchive(Response):
     updated_at: str
     current_build_state: str
     current_build_exception: str
-    builds: List
-    predictions: List
+    builds: List[_ResponseModelsPutArchiveBuilds]
+    predictions: List[_ResponseModelsPutArchivePredictions]
     last_output_location: str
     archived: str
 
@@ -64084,8 +64100,8 @@ class _ResponseNotebooksListShares(Response):
     total_group_shares: int
 
 class _ResponseNotebooksListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksListSharesReadersUsers]
+    groups: List[_ResponseNotebooksListSharesReadersGroups]
 
 class _ResponseNotebooksListSharesReadersUsers(Response):
     id: int
@@ -64096,8 +64112,8 @@ class _ResponseNotebooksListSharesReadersGroups(Response):
     name: str
 
 class _ResponseNotebooksListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksListSharesWritersUsers]
+    groups: List[_ResponseNotebooksListSharesWritersGroups]
 
 class _ResponseNotebooksListSharesWritersUsers(Response):
     id: int
@@ -64108,8 +64124,8 @@ class _ResponseNotebooksListSharesWritersGroups(Response):
     name: str
 
 class _ResponseNotebooksListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksListSharesOwnersUsers]
+    groups: List[_ResponseNotebooksListSharesOwnersGroups]
 
 class _ResponseNotebooksListSharesOwnersUsers(Response):
     id: int
@@ -64127,8 +64143,8 @@ class _ResponseNotebooksPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseNotebooksPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesUsersReadersUsers]
+    groups: List[_ResponseNotebooksPutSharesUsersReadersGroups]
 
 class _ResponseNotebooksPutSharesUsersReadersUsers(Response):
     id: int
@@ -64139,8 +64155,8 @@ class _ResponseNotebooksPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseNotebooksPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesUsersWritersUsers]
+    groups: List[_ResponseNotebooksPutSharesUsersWritersGroups]
 
 class _ResponseNotebooksPutSharesUsersWritersUsers(Response):
     id: int
@@ -64151,8 +64167,8 @@ class _ResponseNotebooksPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseNotebooksPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesUsersOwnersUsers]
+    groups: List[_ResponseNotebooksPutSharesUsersOwnersGroups]
 
 class _ResponseNotebooksPutSharesUsersOwnersUsers(Response):
     id: int
@@ -64170,8 +64186,8 @@ class _ResponseNotebooksPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseNotebooksPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesGroupsReadersUsers]
+    groups: List[_ResponseNotebooksPutSharesGroupsReadersGroups]
 
 class _ResponseNotebooksPutSharesGroupsReadersUsers(Response):
     id: int
@@ -64182,8 +64198,8 @@ class _ResponseNotebooksPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseNotebooksPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesGroupsWritersUsers]
+    groups: List[_ResponseNotebooksPutSharesGroupsWritersGroups]
 
 class _ResponseNotebooksPutSharesGroupsWritersUsers(Response):
     id: int
@@ -64194,8 +64210,8 @@ class _ResponseNotebooksPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseNotebooksPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseNotebooksPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseNotebooksPutSharesGroupsOwnersGroups]
 
 class _ResponseNotebooksPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -64215,7 +64231,7 @@ class _ResponseNotebooksListDependencies(Response):
     shareable: bool
 
 class _ResponseNotebooksPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseNotebooksPutTransferDependencies]
 
 class _ResponseNotebooksPutTransferDependencies(Response):
     object_type: str
@@ -64288,7 +64304,7 @@ class _ResponseNotebooksListProjects(Response):
     author: _ResponseNotebooksListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseNotebooksListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -64502,8 +64518,8 @@ class _ResponsePermissionSetsListShares(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListSharesReadersUsers]
+    groups: List[_ResponsePermissionSetsListSharesReadersGroups]
 
 class _ResponsePermissionSetsListSharesReadersUsers(Response):
     id: int
@@ -64514,8 +64530,8 @@ class _ResponsePermissionSetsListSharesReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListSharesWritersUsers]
+    groups: List[_ResponsePermissionSetsListSharesWritersGroups]
 
 class _ResponsePermissionSetsListSharesWritersUsers(Response):
     id: int
@@ -64526,8 +64542,8 @@ class _ResponsePermissionSetsListSharesWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListSharesOwnersUsers]
+    groups: List[_ResponsePermissionSetsListSharesOwnersGroups]
 
 class _ResponsePermissionSetsListSharesOwnersUsers(Response):
     id: int
@@ -64545,8 +64561,8 @@ class _ResponsePermissionSetsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesUsersReadersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesUsersReadersGroups]
 
 class _ResponsePermissionSetsPutSharesUsersReadersUsers(Response):
     id: int
@@ -64557,8 +64573,8 @@ class _ResponsePermissionSetsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesUsersWritersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesUsersWritersGroups]
 
 class _ResponsePermissionSetsPutSharesUsersWritersUsers(Response):
     id: int
@@ -64569,8 +64585,8 @@ class _ResponsePermissionSetsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesUsersOwnersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesUsersOwnersGroups]
 
 class _ResponsePermissionSetsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -64588,8 +64604,8 @@ class _ResponsePermissionSetsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesGroupsReadersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesGroupsReadersGroups]
 
 class _ResponsePermissionSetsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -64600,8 +64616,8 @@ class _ResponsePermissionSetsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesGroupsWritersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesGroupsWritersGroups]
 
 class _ResponsePermissionSetsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -64612,8 +64628,8 @@ class _ResponsePermissionSetsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponsePermissionSetsPutSharesGroupsOwnersGroups]
 
 class _ResponsePermissionSetsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -64633,7 +64649,7 @@ class _ResponsePermissionSetsListDependencies(Response):
     shareable: bool
 
 class _ResponsePermissionSetsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponsePermissionSetsPutTransferDependencies]
 
 class _ResponsePermissionSetsPutTransferDependencies(Response):
     object_type: str
@@ -64695,8 +64711,8 @@ class _ResponsePermissionSetsListResourcesShares(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsListResourcesSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListResourcesSharesReadersUsers]
+    groups: List[_ResponsePermissionSetsListResourcesSharesReadersGroups]
 
 class _ResponsePermissionSetsListResourcesSharesReadersUsers(Response):
     id: int
@@ -64707,8 +64723,8 @@ class _ResponsePermissionSetsListResourcesSharesReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsListResourcesSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListResourcesSharesWritersUsers]
+    groups: List[_ResponsePermissionSetsListResourcesSharesWritersGroups]
 
 class _ResponsePermissionSetsListResourcesSharesWritersUsers(Response):
     id: int
@@ -64719,8 +64735,8 @@ class _ResponsePermissionSetsListResourcesSharesWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsListResourcesSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsListResourcesSharesOwnersUsers]
+    groups: List[_ResponsePermissionSetsListResourcesSharesOwnersGroups]
 
 class _ResponsePermissionSetsListResourcesSharesOwnersUsers(Response):
     id: int
@@ -64738,8 +64754,8 @@ class _ResponsePermissionSetsPutResourcesSharesUsers(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsPutResourcesSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesUsersReadersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesUsersReadersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesUsersReadersUsers(Response):
     id: int
@@ -64750,8 +64766,8 @@ class _ResponsePermissionSetsPutResourcesSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutResourcesSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesUsersWritersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesUsersWritersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesUsersWritersUsers(Response):
     id: int
@@ -64762,8 +64778,8 @@ class _ResponsePermissionSetsPutResourcesSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutResourcesSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesUsersOwnersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesUsersOwnersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesUsersOwnersUsers(Response):
     id: int
@@ -64781,8 +64797,8 @@ class _ResponsePermissionSetsPutResourcesSharesGroups(Response):
     total_group_shares: int
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesGroupsReadersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesGroupsReadersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsReadersUsers(Response):
     id: int
@@ -64793,8 +64809,8 @@ class _ResponsePermissionSetsPutResourcesSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesGroupsWritersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesGroupsWritersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsWritersUsers(Response):
     id: int
@@ -64805,8 +64821,8 @@ class _ResponsePermissionSetsPutResourcesSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponsePermissionSetsPutResourcesSharesGroupsOwnersUsers]
+    groups: List[_ResponsePermissionSetsPutResourcesSharesGroupsOwnersGroups]
 
 class _ResponsePermissionSetsPutResourcesSharesGroupsOwnersUsers(Response):
     id: int
@@ -64847,7 +64863,7 @@ class _ResponsePredictionsGet(Response):
     started_at: str
     finished_at: str
     last_run: _ResponsePredictionsGetLastRun
-    scored_tables: List
+    scored_tables: List[_ResponsePredictionsGetScoredTables]
     schedule: _ResponsePredictionsGetSchedule
     limiting_sql: str
     primary_key: List
@@ -64865,7 +64881,7 @@ class _ResponsePredictionsGetScoredTables(Response):
     schema: str
     name: str
     created_at: str
-    score_stats: List
+    score_stats: List[_ResponsePredictionsGetScoredTablesScoreStats]
 
 class _ResponsePredictionsGetScoredTablesScoreStats(Response):
     score_name: str
@@ -64900,25 +64916,25 @@ class _ResponseProjectsPost(Response):
     author: _ResponseProjectsPostAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsPostUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsPostTables]
+    surveys: List[_ResponseProjectsPostSurveys]
+    scripts: List[_ResponseProjectsPostScripts]
+    imports: List[_ResponseProjectsPostImports]
+    exports: List[_ResponseProjectsPostExports]
+    models: List[_ResponseProjectsPostModels]
+    notebooks: List[_ResponseProjectsPostNotebooks]
+    services: List[_ResponseProjectsPostServices]
+    workflows: List[_ResponseProjectsPostWorkflows]
+    reports: List[_ResponseProjectsPostReports]
+    script_templates: List[_ResponseProjectsPostScriptTemplates]
+    files: List[_ResponseProjectsPostFiles]
+    enhancements: List[_ResponseProjectsPostEnhancements]
+    projects: List[_ResponseProjectsPostProjects]
+    all_objects: List[_ResponseProjectsPostAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -65101,25 +65117,25 @@ class _ResponseProjectsPostClone(Response):
     author: _ResponseProjectsPostCloneAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsPostCloneUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsPostCloneTables]
+    surveys: List[_ResponseProjectsPostCloneSurveys]
+    scripts: List[_ResponseProjectsPostCloneScripts]
+    imports: List[_ResponseProjectsPostCloneImports]
+    exports: List[_ResponseProjectsPostCloneExports]
+    models: List[_ResponseProjectsPostCloneModels]
+    notebooks: List[_ResponseProjectsPostCloneNotebooks]
+    services: List[_ResponseProjectsPostCloneServices]
+    workflows: List[_ResponseProjectsPostCloneWorkflows]
+    reports: List[_ResponseProjectsPostCloneReports]
+    script_templates: List[_ResponseProjectsPostCloneScriptTemplates]
+    files: List[_ResponseProjectsPostCloneFiles]
+    enhancements: List[_ResponseProjectsPostCloneEnhancements]
+    projects: List[_ResponseProjectsPostCloneProjects]
+    all_objects: List[_ResponseProjectsPostCloneAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -65302,25 +65318,25 @@ class _ResponseProjectsGet(Response):
     author: _ResponseProjectsGetAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsGetUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsGetTables]
+    surveys: List[_ResponseProjectsGetSurveys]
+    scripts: List[_ResponseProjectsGetScripts]
+    imports: List[_ResponseProjectsGetImports]
+    exports: List[_ResponseProjectsGetExports]
+    models: List[_ResponseProjectsGetModels]
+    notebooks: List[_ResponseProjectsGetNotebooks]
+    services: List[_ResponseProjectsGetServices]
+    workflows: List[_ResponseProjectsGetWorkflows]
+    reports: List[_ResponseProjectsGetReports]
+    script_templates: List[_ResponseProjectsGetScriptTemplates]
+    files: List[_ResponseProjectsGetFiles]
+    enhancements: List[_ResponseProjectsGetEnhancements]
+    projects: List[_ResponseProjectsGetProjects]
+    all_objects: List[_ResponseProjectsGetAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -65503,25 +65519,25 @@ class _ResponseProjectsPut(Response):
     author: _ResponseProjectsPutAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsPutUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsPutTables]
+    surveys: List[_ResponseProjectsPutSurveys]
+    scripts: List[_ResponseProjectsPutScripts]
+    imports: List[_ResponseProjectsPutImports]
+    exports: List[_ResponseProjectsPutExports]
+    models: List[_ResponseProjectsPutModels]
+    notebooks: List[_ResponseProjectsPutNotebooks]
+    services: List[_ResponseProjectsPutServices]
+    workflows: List[_ResponseProjectsPutWorkflows]
+    reports: List[_ResponseProjectsPutReports]
+    script_templates: List[_ResponseProjectsPutScriptTemplates]
+    files: List[_ResponseProjectsPutFiles]
+    enhancements: List[_ResponseProjectsPutEnhancements]
+    projects: List[_ResponseProjectsPutProjects]
+    all_objects: List[_ResponseProjectsPutAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -65704,25 +65720,25 @@ class _ResponseProjectsPutAutoShare(Response):
     author: _ResponseProjectsPutAutoShareAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsPutAutoShareUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsPutAutoShareTables]
+    surveys: List[_ResponseProjectsPutAutoShareSurveys]
+    scripts: List[_ResponseProjectsPutAutoShareScripts]
+    imports: List[_ResponseProjectsPutAutoShareImports]
+    exports: List[_ResponseProjectsPutAutoShareExports]
+    models: List[_ResponseProjectsPutAutoShareModels]
+    notebooks: List[_ResponseProjectsPutAutoShareNotebooks]
+    services: List[_ResponseProjectsPutAutoShareServices]
+    workflows: List[_ResponseProjectsPutAutoShareWorkflows]
+    reports: List[_ResponseProjectsPutAutoShareReports]
+    script_templates: List[_ResponseProjectsPutAutoShareScriptTemplates]
+    files: List[_ResponseProjectsPutAutoShareFiles]
+    enhancements: List[_ResponseProjectsPutAutoShareEnhancements]
+    projects: List[_ResponseProjectsPutAutoShareProjects]
+    all_objects: List[_ResponseProjectsPutAutoShareAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -65908,8 +65924,8 @@ class _ResponseProjectsListShares(Response):
     total_group_shares: int
 
 class _ResponseProjectsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsListSharesReadersUsers]
+    groups: List[_ResponseProjectsListSharesReadersGroups]
 
 class _ResponseProjectsListSharesReadersUsers(Response):
     id: int
@@ -65920,8 +65936,8 @@ class _ResponseProjectsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseProjectsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsListSharesWritersUsers]
+    groups: List[_ResponseProjectsListSharesWritersGroups]
 
 class _ResponseProjectsListSharesWritersUsers(Response):
     id: int
@@ -65932,8 +65948,8 @@ class _ResponseProjectsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseProjectsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsListSharesOwnersUsers]
+    groups: List[_ResponseProjectsListSharesOwnersGroups]
 
 class _ResponseProjectsListSharesOwnersUsers(Response):
     id: int
@@ -65951,8 +65967,8 @@ class _ResponseProjectsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseProjectsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesUsersReadersUsers]
+    groups: List[_ResponseProjectsPutSharesUsersReadersGroups]
 
 class _ResponseProjectsPutSharesUsersReadersUsers(Response):
     id: int
@@ -65963,8 +65979,8 @@ class _ResponseProjectsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseProjectsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesUsersWritersUsers]
+    groups: List[_ResponseProjectsPutSharesUsersWritersGroups]
 
 class _ResponseProjectsPutSharesUsersWritersUsers(Response):
     id: int
@@ -65975,8 +65991,8 @@ class _ResponseProjectsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseProjectsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseProjectsPutSharesUsersOwnersGroups]
 
 class _ResponseProjectsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -65994,8 +66010,8 @@ class _ResponseProjectsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseProjectsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseProjectsPutSharesGroupsReadersGroups]
 
 class _ResponseProjectsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -66006,8 +66022,8 @@ class _ResponseProjectsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseProjectsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseProjectsPutSharesGroupsWritersGroups]
 
 class _ResponseProjectsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -66018,8 +66034,8 @@ class _ResponseProjectsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseProjectsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseProjectsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseProjectsPutSharesGroupsOwnersGroups]
 
 class _ResponseProjectsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -66039,7 +66055,7 @@ class _ResponseProjectsListDependencies(Response):
     shareable: bool
 
 class _ResponseProjectsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseProjectsPutTransferDependencies]
 
 class _ResponseProjectsPutTransferDependencies(Response):
     object_type: str
@@ -66055,25 +66071,25 @@ class _ResponseProjectsPutArchive(Response):
     author: _ResponseProjectsPutArchiveAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsPutArchiveUsers]
     auto_share: bool
     created_at: str
     updated_at: str
-    tables: List
-    surveys: List
-    scripts: List
-    imports: List
-    exports: List
-    models: List
-    notebooks: List
-    services: List
-    workflows: List
-    reports: List
-    script_templates: List
-    files: List
-    enhancements: List
-    projects: List
-    all_objects: List
+    tables: List[_ResponseProjectsPutArchiveTables]
+    surveys: List[_ResponseProjectsPutArchiveSurveys]
+    scripts: List[_ResponseProjectsPutArchiveScripts]
+    imports: List[_ResponseProjectsPutArchiveImports]
+    exports: List[_ResponseProjectsPutArchiveExports]
+    models: List[_ResponseProjectsPutArchiveModels]
+    notebooks: List[_ResponseProjectsPutArchiveNotebooks]
+    services: List[_ResponseProjectsPutArchiveServices]
+    workflows: List[_ResponseProjectsPutArchiveWorkflows]
+    reports: List[_ResponseProjectsPutArchiveReports]
+    script_templates: List[_ResponseProjectsPutArchiveScriptTemplates]
+    files: List[_ResponseProjectsPutArchiveFiles]
+    enhancements: List[_ResponseProjectsPutArchiveEnhancements]
+    projects: List[_ResponseProjectsPutArchiveProjects]
+    all_objects: List[_ResponseProjectsPutArchiveAllObjects]
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
@@ -66256,7 +66272,7 @@ class _ResponseProjectsListParentProjects(Response):
     author: _ResponseProjectsListParentProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseProjectsListParentProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -66503,8 +66519,8 @@ class _ResponseRemoteHostsListShares(Response):
     total_group_shares: int
 
 class _ResponseRemoteHostsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsListSharesReadersUsers]
+    groups: List[_ResponseRemoteHostsListSharesReadersGroups]
 
 class _ResponseRemoteHostsListSharesReadersUsers(Response):
     id: int
@@ -66515,8 +66531,8 @@ class _ResponseRemoteHostsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsListSharesWritersUsers]
+    groups: List[_ResponseRemoteHostsListSharesWritersGroups]
 
 class _ResponseRemoteHostsListSharesWritersUsers(Response):
     id: int
@@ -66527,8 +66543,8 @@ class _ResponseRemoteHostsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsListSharesOwnersUsers]
+    groups: List[_ResponseRemoteHostsListSharesOwnersGroups]
 
 class _ResponseRemoteHostsListSharesOwnersUsers(Response):
     id: int
@@ -66546,8 +66562,8 @@ class _ResponseRemoteHostsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseRemoteHostsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesUsersReadersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesUsersReadersGroups]
 
 class _ResponseRemoteHostsPutSharesUsersReadersUsers(Response):
     id: int
@@ -66558,8 +66574,8 @@ class _ResponseRemoteHostsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesUsersWritersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesUsersWritersGroups]
 
 class _ResponseRemoteHostsPutSharesUsersWritersUsers(Response):
     id: int
@@ -66570,8 +66586,8 @@ class _ResponseRemoteHostsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesUsersOwnersGroups]
 
 class _ResponseRemoteHostsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -66589,8 +66605,8 @@ class _ResponseRemoteHostsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseRemoteHostsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesGroupsReadersGroups]
 
 class _ResponseRemoteHostsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -66601,8 +66617,8 @@ class _ResponseRemoteHostsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesGroupsWritersGroups]
 
 class _ResponseRemoteHostsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -66613,8 +66629,8 @@ class _ResponseRemoteHostsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseRemoteHostsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseRemoteHostsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseRemoteHostsPutSharesGroupsOwnersGroups]
 
 class _ResponseRemoteHostsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -66638,7 +66654,7 @@ class _ResponseReportsPost(Response):
     description: str
     my_permission_level: str
     archived: str
-    projects: List
+    projects: List[_ResponseReportsPostProjects]
     state: str
     finished_at: str
     viz_updated_at: str
@@ -66765,7 +66781,7 @@ class _ResponseReportsGet(Response):
     description: str
     my_permission_level: str
     archived: str
-    projects: List
+    projects: List[_ResponseReportsGetProjects]
     state: str
     finished_at: str
     viz_updated_at: str
@@ -66820,7 +66836,7 @@ class _ResponseReportsPatch(Response):
     description: str
     my_permission_level: str
     archived: str
-    projects: List
+    projects: List[_ResponseReportsPatchProjects]
     state: str
     finished_at: str
     viz_updated_at: str
@@ -66875,7 +66891,7 @@ class _ResponseReportsPostGrants(Response):
     description: str
     my_permission_level: str
     archived: str
-    projects: List
+    projects: List[_ResponseReportsPostGrantsProjects]
     state: str
     finished_at: str
     viz_updated_at: str
@@ -66928,8 +66944,8 @@ class _ResponseReportsListShares(Response):
     total_group_shares: int
 
 class _ResponseReportsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSharesReadersUsers]
+    groups: List[_ResponseReportsListSharesReadersGroups]
 
 class _ResponseReportsListSharesReadersUsers(Response):
     id: int
@@ -66940,8 +66956,8 @@ class _ResponseReportsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseReportsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSharesWritersUsers]
+    groups: List[_ResponseReportsListSharesWritersGroups]
 
 class _ResponseReportsListSharesWritersUsers(Response):
     id: int
@@ -66952,8 +66968,8 @@ class _ResponseReportsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseReportsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSharesOwnersUsers]
+    groups: List[_ResponseReportsListSharesOwnersGroups]
 
 class _ResponseReportsListSharesOwnersUsers(Response):
     id: int
@@ -66971,8 +66987,8 @@ class _ResponseReportsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseReportsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesUsersReadersUsers]
+    groups: List[_ResponseReportsPutSharesUsersReadersGroups]
 
 class _ResponseReportsPutSharesUsersReadersUsers(Response):
     id: int
@@ -66983,8 +66999,8 @@ class _ResponseReportsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesUsersWritersUsers]
+    groups: List[_ResponseReportsPutSharesUsersWritersGroups]
 
 class _ResponseReportsPutSharesUsersWritersUsers(Response):
     id: int
@@ -66995,8 +67011,8 @@ class _ResponseReportsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseReportsPutSharesUsersOwnersGroups]
 
 class _ResponseReportsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -67014,8 +67030,8 @@ class _ResponseReportsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseReportsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseReportsPutSharesGroupsReadersGroups]
 
 class _ResponseReportsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -67026,8 +67042,8 @@ class _ResponseReportsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseReportsPutSharesGroupsWritersGroups]
 
 class _ResponseReportsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -67038,8 +67054,8 @@ class _ResponseReportsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseReportsPutSharesGroupsOwnersGroups]
 
 class _ResponseReportsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -67059,7 +67075,7 @@ class _ResponseReportsListDependencies(Response):
     shareable: bool
 
 class _ResponseReportsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseReportsPutTransferDependencies]
 
 class _ResponseReportsPutTransferDependencies(Response):
     object_type: str
@@ -67075,7 +67091,7 @@ class _ResponseReportsListProjects(Response):
     author: _ResponseReportsListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseReportsListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -67105,7 +67121,7 @@ class _ResponseReportsPutArchive(Response):
     description: str
     my_permission_level: str
     archived: str
-    projects: List
+    projects: List[_ResponseReportsPutArchiveProjects]
     state: str
     finished_at: str
     viz_updated_at: str
@@ -67230,8 +67246,8 @@ class _ResponseReportsListServicesShares(Response):
     total_group_shares: int
 
 class _ResponseReportsListServicesSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListServicesSharesReadersUsers]
+    groups: List[_ResponseReportsListServicesSharesReadersGroups]
 
 class _ResponseReportsListServicesSharesReadersUsers(Response):
     id: int
@@ -67242,8 +67258,8 @@ class _ResponseReportsListServicesSharesReadersGroups(Response):
     name: str
 
 class _ResponseReportsListServicesSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListServicesSharesWritersUsers]
+    groups: List[_ResponseReportsListServicesSharesWritersGroups]
 
 class _ResponseReportsListServicesSharesWritersUsers(Response):
     id: int
@@ -67254,8 +67270,8 @@ class _ResponseReportsListServicesSharesWritersGroups(Response):
     name: str
 
 class _ResponseReportsListServicesSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListServicesSharesOwnersUsers]
+    groups: List[_ResponseReportsListServicesSharesOwnersGroups]
 
 class _ResponseReportsListServicesSharesOwnersUsers(Response):
     id: int
@@ -67273,8 +67289,8 @@ class _ResponseReportsPutServicesSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseReportsPutServicesSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesUsersReadersUsers]
+    groups: List[_ResponseReportsPutServicesSharesUsersReadersGroups]
 
 class _ResponseReportsPutServicesSharesUsersReadersUsers(Response):
     id: int
@@ -67285,8 +67301,8 @@ class _ResponseReportsPutServicesSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutServicesSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesUsersWritersUsers]
+    groups: List[_ResponseReportsPutServicesSharesUsersWritersGroups]
 
 class _ResponseReportsPutServicesSharesUsersWritersUsers(Response):
     id: int
@@ -67297,8 +67313,8 @@ class _ResponseReportsPutServicesSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutServicesSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesUsersOwnersUsers]
+    groups: List[_ResponseReportsPutServicesSharesUsersOwnersGroups]
 
 class _ResponseReportsPutServicesSharesUsersOwnersUsers(Response):
     id: int
@@ -67316,8 +67332,8 @@ class _ResponseReportsPutServicesSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseReportsPutServicesSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesGroupsReadersUsers]
+    groups: List[_ResponseReportsPutServicesSharesGroupsReadersGroups]
 
 class _ResponseReportsPutServicesSharesGroupsReadersUsers(Response):
     id: int
@@ -67328,8 +67344,8 @@ class _ResponseReportsPutServicesSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutServicesSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesGroupsWritersUsers]
+    groups: List[_ResponseReportsPutServicesSharesGroupsWritersGroups]
 
 class _ResponseReportsPutServicesSharesGroupsWritersUsers(Response):
     id: int
@@ -67340,8 +67356,8 @@ class _ResponseReportsPutServicesSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutServicesSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutServicesSharesGroupsOwnersUsers]
+    groups: List[_ResponseReportsPutServicesSharesGroupsOwnersGroups]
 
 class _ResponseReportsPutServicesSharesGroupsOwnersUsers(Response):
     id: int
@@ -67361,7 +67377,7 @@ class _ResponseReportsListServicesDependencies(Response):
     shareable: bool
 
 class _ResponseReportsPutServicesTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseReportsPutServicesTransferDependencies]
 
 class _ResponseReportsPutServicesTransferDependencies(Response):
     object_type: str
@@ -67377,7 +67393,7 @@ class _ResponseReportsListServicesProjects(Response):
     author: _ResponseReportsListServicesProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseReportsListServicesProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -67599,8 +67615,8 @@ class _ResponseReportsListSqlShares(Response):
     total_group_shares: int
 
 class _ResponseReportsListSqlSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSqlSharesReadersUsers]
+    groups: List[_ResponseReportsListSqlSharesReadersGroups]
 
 class _ResponseReportsListSqlSharesReadersUsers(Response):
     id: int
@@ -67611,8 +67627,8 @@ class _ResponseReportsListSqlSharesReadersGroups(Response):
     name: str
 
 class _ResponseReportsListSqlSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSqlSharesWritersUsers]
+    groups: List[_ResponseReportsListSqlSharesWritersGroups]
 
 class _ResponseReportsListSqlSharesWritersUsers(Response):
     id: int
@@ -67623,8 +67639,8 @@ class _ResponseReportsListSqlSharesWritersGroups(Response):
     name: str
 
 class _ResponseReportsListSqlSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsListSqlSharesOwnersUsers]
+    groups: List[_ResponseReportsListSqlSharesOwnersGroups]
 
 class _ResponseReportsListSqlSharesOwnersUsers(Response):
     id: int
@@ -67642,8 +67658,8 @@ class _ResponseReportsPutSqlSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseReportsPutSqlSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesUsersReadersUsers]
+    groups: List[_ResponseReportsPutSqlSharesUsersReadersGroups]
 
 class _ResponseReportsPutSqlSharesUsersReadersUsers(Response):
     id: int
@@ -67654,8 +67670,8 @@ class _ResponseReportsPutSqlSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutSqlSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesUsersWritersUsers]
+    groups: List[_ResponseReportsPutSqlSharesUsersWritersGroups]
 
 class _ResponseReportsPutSqlSharesUsersWritersUsers(Response):
     id: int
@@ -67666,8 +67682,8 @@ class _ResponseReportsPutSqlSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutSqlSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesUsersOwnersUsers]
+    groups: List[_ResponseReportsPutSqlSharesUsersOwnersGroups]
 
 class _ResponseReportsPutSqlSharesUsersOwnersUsers(Response):
     id: int
@@ -67685,8 +67701,8 @@ class _ResponseReportsPutSqlSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseReportsPutSqlSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesGroupsReadersUsers]
+    groups: List[_ResponseReportsPutSqlSharesGroupsReadersGroups]
 
 class _ResponseReportsPutSqlSharesGroupsReadersUsers(Response):
     id: int
@@ -67697,8 +67713,8 @@ class _ResponseReportsPutSqlSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseReportsPutSqlSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesGroupsWritersUsers]
+    groups: List[_ResponseReportsPutSqlSharesGroupsWritersGroups]
 
 class _ResponseReportsPutSqlSharesGroupsWritersUsers(Response):
     id: int
@@ -67709,8 +67725,8 @@ class _ResponseReportsPutSqlSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseReportsPutSqlSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseReportsPutSqlSharesGroupsOwnersUsers]
+    groups: List[_ResponseReportsPutSqlSharesGroupsOwnersGroups]
 
 class _ResponseReportsPutSqlSharesGroupsOwnersUsers(Response):
     id: int
@@ -67730,7 +67746,7 @@ class _ResponseReportsListSqlDependencies(Response):
     shareable: bool
 
 class _ResponseReportsPutSqlTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseReportsPutSqlTransferDependencies]
 
 class _ResponseReportsPutSqlTransferDependencies(Response):
     object_type: str
@@ -67746,7 +67762,7 @@ class _ResponseReportsListSqlProjects(Response):
     author: _ResponseReportsListSqlProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseReportsListSqlProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -67816,7 +67832,7 @@ class _ResponseScriptsListHistory(Response):
     is_cancel_requested: bool
     finished_at: str
     error: str
-    output: List
+    output: List[_ResponseScriptsListHistoryOutput]
 
 class _ResponseScriptsListHistoryOutput(Response):
     output_name: str
@@ -67833,10 +67849,10 @@ class _ResponseScriptsPost(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -67926,10 +67942,10 @@ class _ResponseScriptsPatch(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -68021,10 +68037,10 @@ class _ResponseScriptsGet(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -68113,7 +68129,7 @@ class _ResponseScriptsPostCancel(Response):
 
 class _ResponseScriptsPostContainers(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPostContainersFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -68122,10 +68138,10 @@ class _ResponseScriptsPostContainers(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostContainersProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostContainersParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -68227,7 +68243,7 @@ class _ResponseScriptsPostContainersLastRun(Response):
 
 class _ResponseScriptsGetContainers(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsGetContainersFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -68236,10 +68252,10 @@ class _ResponseScriptsGetContainers(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetContainersProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetContainersParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -68341,7 +68357,7 @@ class _ResponseScriptsGetContainersLastRun(Response):
 
 class _ResponseScriptsPutContainers(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPutContainersFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -68350,10 +68366,10 @@ class _ResponseScriptsPutContainers(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutContainersProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutContainersParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -68455,7 +68471,7 @@ class _ResponseScriptsPutContainersLastRun(Response):
 
 class _ResponseScriptsPatchContainers(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPatchContainersFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -68464,10 +68480,10 @@ class _ResponseScriptsPatchContainers(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchContainersProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchContainersParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -68583,10 +68599,10 @@ class _ResponseScriptsPostSql(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostSqlProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostSqlParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -68691,10 +68707,10 @@ class _ResponseScriptsGetSql(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetSqlProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetSqlParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -68799,10 +68815,10 @@ class _ResponseScriptsPutSql(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutSqlProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutSqlParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -68907,10 +68923,10 @@ class _ResponseScriptsPatchSql(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchSqlProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchSqlParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69015,10 +69031,10 @@ class _ResponseScriptsPostPython3(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostPython3Projects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostPython3Params]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69119,10 +69135,10 @@ class _ResponseScriptsGetPython3(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetPython3Projects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetPython3Params]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69223,10 +69239,10 @@ class _ResponseScriptsPutPython3(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutPython3Projects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutPython3Params]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69327,10 +69343,10 @@ class _ResponseScriptsPatchPython3(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchPython3Projects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchPython3Params]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69431,10 +69447,10 @@ class _ResponseScriptsPostR(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostRProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostRParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69535,10 +69551,10 @@ class _ResponseScriptsGetR(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetRProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetRParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69639,10 +69655,10 @@ class _ResponseScriptsPutR(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutRProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutRParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69743,10 +69759,10 @@ class _ResponseScriptsPatchR(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchRProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchRParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69847,10 +69863,10 @@ class _ResponseScriptsPostJavascript(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostJavascriptProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostJavascriptParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -69943,10 +69959,10 @@ class _ResponseScriptsGetJavascript(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetJavascriptProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsGetJavascriptParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70039,10 +70055,10 @@ class _ResponseScriptsPutJavascript(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutJavascriptProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutJavascriptParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70135,10 +70151,10 @@ class _ResponseScriptsPatchJavascript(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchJavascriptProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPatchJavascriptParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70223,7 +70239,7 @@ class _ResponseScriptsPatchJavascriptLastRun(Response):
 
 class _ResponseScriptsPostCustom(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPostCustomFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -70233,9 +70249,9 @@ class _ResponseScriptsPostCustom(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostCustomProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsPostCustomParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70338,7 +70354,7 @@ class _ResponseScriptsPostCustomRequiredResources(Response):
 
 class _ResponseScriptsGetCustom(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsGetCustomFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -70348,9 +70364,9 @@ class _ResponseScriptsGetCustom(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsGetCustomProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsGetCustomParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70453,7 +70469,7 @@ class _ResponseScriptsGetCustomRequiredResources(Response):
 
 class _ResponseScriptsPutCustom(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPutCustomFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -70463,9 +70479,9 @@ class _ResponseScriptsPutCustom(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutCustomProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsPutCustomParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70568,7 +70584,7 @@ class _ResponseScriptsPutCustomRequiredResources(Response):
 
 class _ResponseScriptsPatchCustom(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPatchCustomFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -70578,9 +70594,9 @@ class _ResponseScriptsPatchCustom(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPatchCustomProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsPatchCustomParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -70690,7 +70706,7 @@ class _ResponseScriptsPostSqlRuns(Response):
     started_at: str
     finished_at: str
     error: str
-    output: List
+    output: List[_ResponseScriptsPostSqlRunsOutput]
     output_cached_on: str
 
 class _ResponseScriptsPostSqlRunsOutput(Response):
@@ -70707,7 +70723,7 @@ class _ResponseScriptsGetSqlRuns(Response):
     started_at: str
     finished_at: str
     error: str
-    output: List
+    output: List[_ResponseScriptsGetSqlRunsOutput]
     output_cached_on: str
 
 class _ResponseScriptsGetSqlRunsOutput(Response):
@@ -71198,8 +71214,8 @@ class _ResponseScriptsListSqlShares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListSqlSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListSqlSharesReadersUsers]
+    groups: List[_ResponseScriptsListSqlSharesReadersGroups]
 
 class _ResponseScriptsListSqlSharesReadersUsers(Response):
     id: int
@@ -71210,8 +71226,8 @@ class _ResponseScriptsListSqlSharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListSqlSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListSqlSharesWritersUsers]
+    groups: List[_ResponseScriptsListSqlSharesWritersGroups]
 
 class _ResponseScriptsListSqlSharesWritersUsers(Response):
     id: int
@@ -71222,8 +71238,8 @@ class _ResponseScriptsListSqlSharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListSqlSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListSqlSharesOwnersUsers]
+    groups: List[_ResponseScriptsListSqlSharesOwnersGroups]
 
 class _ResponseScriptsListSqlSharesOwnersUsers(Response):
     id: int
@@ -71241,8 +71257,8 @@ class _ResponseScriptsPutSqlSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutSqlSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesUsersReadersGroups]
 
 class _ResponseScriptsPutSqlSharesUsersReadersUsers(Response):
     id: int
@@ -71253,8 +71269,8 @@ class _ResponseScriptsPutSqlSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutSqlSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesUsersWritersGroups]
 
 class _ResponseScriptsPutSqlSharesUsersWritersUsers(Response):
     id: int
@@ -71265,8 +71281,8 @@ class _ResponseScriptsPutSqlSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutSqlSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesUsersOwnersGroups]
 
 class _ResponseScriptsPutSqlSharesUsersOwnersUsers(Response):
     id: int
@@ -71284,8 +71300,8 @@ class _ResponseScriptsPutSqlSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutSqlSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesGroupsReadersGroups]
 
 class _ResponseScriptsPutSqlSharesGroupsReadersUsers(Response):
     id: int
@@ -71296,8 +71312,8 @@ class _ResponseScriptsPutSqlSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutSqlSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesGroupsWritersGroups]
 
 class _ResponseScriptsPutSqlSharesGroupsWritersUsers(Response):
     id: int
@@ -71308,8 +71324,8 @@ class _ResponseScriptsPutSqlSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutSqlSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutSqlSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutSqlSharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutSqlSharesGroupsOwnersUsers(Response):
     id: int
@@ -71329,7 +71345,7 @@ class _ResponseScriptsListSqlDependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutSqlTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutSqlTransferDependencies]
 
 class _ResponseScriptsPutSqlTransferDependencies(Response):
     object_type: str
@@ -71345,7 +71361,7 @@ class _ResponseScriptsListSqlProjects(Response):
     author: _ResponseScriptsListSqlProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListSqlProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -71375,10 +71391,10 @@ class _ResponseScriptsPutSqlArchive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutSqlArchiveProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutSqlArchiveParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -71481,8 +71497,8 @@ class _ResponseScriptsListContainersShares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListContainersSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListContainersSharesReadersUsers]
+    groups: List[_ResponseScriptsListContainersSharesReadersGroups]
 
 class _ResponseScriptsListContainersSharesReadersUsers(Response):
     id: int
@@ -71493,8 +71509,8 @@ class _ResponseScriptsListContainersSharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListContainersSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListContainersSharesWritersUsers]
+    groups: List[_ResponseScriptsListContainersSharesWritersGroups]
 
 class _ResponseScriptsListContainersSharesWritersUsers(Response):
     id: int
@@ -71505,8 +71521,8 @@ class _ResponseScriptsListContainersSharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListContainersSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListContainersSharesOwnersUsers]
+    groups: List[_ResponseScriptsListContainersSharesOwnersGroups]
 
 class _ResponseScriptsListContainersSharesOwnersUsers(Response):
     id: int
@@ -71524,8 +71540,8 @@ class _ResponseScriptsPutContainersSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutContainersSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesUsersReadersGroups]
 
 class _ResponseScriptsPutContainersSharesUsersReadersUsers(Response):
     id: int
@@ -71536,8 +71552,8 @@ class _ResponseScriptsPutContainersSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutContainersSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesUsersWritersGroups]
 
 class _ResponseScriptsPutContainersSharesUsersWritersUsers(Response):
     id: int
@@ -71548,8 +71564,8 @@ class _ResponseScriptsPutContainersSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutContainersSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesUsersOwnersGroups]
 
 class _ResponseScriptsPutContainersSharesUsersOwnersUsers(Response):
     id: int
@@ -71567,8 +71583,8 @@ class _ResponseScriptsPutContainersSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutContainersSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesGroupsReadersGroups]
 
 class _ResponseScriptsPutContainersSharesGroupsReadersUsers(Response):
     id: int
@@ -71579,8 +71595,8 @@ class _ResponseScriptsPutContainersSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutContainersSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesGroupsWritersGroups]
 
 class _ResponseScriptsPutContainersSharesGroupsWritersUsers(Response):
     id: int
@@ -71591,8 +71607,8 @@ class _ResponseScriptsPutContainersSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutContainersSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutContainersSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutContainersSharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutContainersSharesGroupsOwnersUsers(Response):
     id: int
@@ -71612,7 +71628,7 @@ class _ResponseScriptsListContainersDependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutContainersTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutContainersTransferDependencies]
 
 class _ResponseScriptsPutContainersTransferDependencies(Response):
     object_type: str
@@ -71628,7 +71644,7 @@ class _ResponseScriptsListContainersProjects(Response):
     author: _ResponseScriptsListContainersProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListContainersProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -71650,7 +71666,7 @@ class _ResponseScriptsListContainersProjectsUsers(Response):
 
 class _ResponseScriptsPutContainersArchive(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPutContainersArchiveFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -71659,10 +71675,10 @@ class _ResponseScriptsPutContainersArchive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutContainersArchiveProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutContainersArchiveParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -71770,8 +71786,8 @@ class _ResponseScriptsListPython3Shares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListPython3SharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListPython3SharesReadersUsers]
+    groups: List[_ResponseScriptsListPython3SharesReadersGroups]
 
 class _ResponseScriptsListPython3SharesReadersUsers(Response):
     id: int
@@ -71782,8 +71798,8 @@ class _ResponseScriptsListPython3SharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListPython3SharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListPython3SharesWritersUsers]
+    groups: List[_ResponseScriptsListPython3SharesWritersGroups]
 
 class _ResponseScriptsListPython3SharesWritersUsers(Response):
     id: int
@@ -71794,8 +71810,8 @@ class _ResponseScriptsListPython3SharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListPython3SharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListPython3SharesOwnersUsers]
+    groups: List[_ResponseScriptsListPython3SharesOwnersGroups]
 
 class _ResponseScriptsListPython3SharesOwnersUsers(Response):
     id: int
@@ -71813,8 +71829,8 @@ class _ResponseScriptsPutPython3SharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutPython3SharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesUsersReadersGroups]
 
 class _ResponseScriptsPutPython3SharesUsersReadersUsers(Response):
     id: int
@@ -71825,8 +71841,8 @@ class _ResponseScriptsPutPython3SharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutPython3SharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesUsersWritersGroups]
 
 class _ResponseScriptsPutPython3SharesUsersWritersUsers(Response):
     id: int
@@ -71837,8 +71853,8 @@ class _ResponseScriptsPutPython3SharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutPython3SharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesUsersOwnersGroups]
 
 class _ResponseScriptsPutPython3SharesUsersOwnersUsers(Response):
     id: int
@@ -71856,8 +71872,8 @@ class _ResponseScriptsPutPython3SharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutPython3SharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesGroupsReadersGroups]
 
 class _ResponseScriptsPutPython3SharesGroupsReadersUsers(Response):
     id: int
@@ -71868,8 +71884,8 @@ class _ResponseScriptsPutPython3SharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutPython3SharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesGroupsWritersGroups]
 
 class _ResponseScriptsPutPython3SharesGroupsWritersUsers(Response):
     id: int
@@ -71880,8 +71896,8 @@ class _ResponseScriptsPutPython3SharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutPython3SharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutPython3SharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutPython3SharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutPython3SharesGroupsOwnersUsers(Response):
     id: int
@@ -71901,7 +71917,7 @@ class _ResponseScriptsListPython3Dependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutPython3Transfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutPython3TransferDependencies]
 
 class _ResponseScriptsPutPython3TransferDependencies(Response):
     object_type: str
@@ -71917,7 +71933,7 @@ class _ResponseScriptsListPython3Projects(Response):
     author: _ResponseScriptsListPython3ProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListPython3ProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -71947,10 +71963,10 @@ class _ResponseScriptsPutPython3Archive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutPython3ArchiveProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutPython3ArchiveParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -72049,8 +72065,8 @@ class _ResponseScriptsListRShares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListRSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListRSharesReadersUsers]
+    groups: List[_ResponseScriptsListRSharesReadersGroups]
 
 class _ResponseScriptsListRSharesReadersUsers(Response):
     id: int
@@ -72061,8 +72077,8 @@ class _ResponseScriptsListRSharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListRSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListRSharesWritersUsers]
+    groups: List[_ResponseScriptsListRSharesWritersGroups]
 
 class _ResponseScriptsListRSharesWritersUsers(Response):
     id: int
@@ -72073,8 +72089,8 @@ class _ResponseScriptsListRSharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListRSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListRSharesOwnersUsers]
+    groups: List[_ResponseScriptsListRSharesOwnersGroups]
 
 class _ResponseScriptsListRSharesOwnersUsers(Response):
     id: int
@@ -72092,8 +72108,8 @@ class _ResponseScriptsPutRSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutRSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutRSharesUsersReadersGroups]
 
 class _ResponseScriptsPutRSharesUsersReadersUsers(Response):
     id: int
@@ -72104,8 +72120,8 @@ class _ResponseScriptsPutRSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutRSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutRSharesUsersWritersGroups]
 
 class _ResponseScriptsPutRSharesUsersWritersUsers(Response):
     id: int
@@ -72116,8 +72132,8 @@ class _ResponseScriptsPutRSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutRSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutRSharesUsersOwnersGroups]
 
 class _ResponseScriptsPutRSharesUsersOwnersUsers(Response):
     id: int
@@ -72135,8 +72151,8 @@ class _ResponseScriptsPutRSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutRSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutRSharesGroupsReadersGroups]
 
 class _ResponseScriptsPutRSharesGroupsReadersUsers(Response):
     id: int
@@ -72147,8 +72163,8 @@ class _ResponseScriptsPutRSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutRSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutRSharesGroupsWritersGroups]
 
 class _ResponseScriptsPutRSharesGroupsWritersUsers(Response):
     id: int
@@ -72159,8 +72175,8 @@ class _ResponseScriptsPutRSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutRSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutRSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutRSharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutRSharesGroupsOwnersUsers(Response):
     id: int
@@ -72180,7 +72196,7 @@ class _ResponseScriptsListRDependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutRTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutRTransferDependencies]
 
 class _ResponseScriptsPutRTransferDependencies(Response):
     object_type: str
@@ -72196,7 +72212,7 @@ class _ResponseScriptsListRProjects(Response):
     author: _ResponseScriptsListRProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListRProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -72226,10 +72242,10 @@ class _ResponseScriptsPutRArchive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutRArchiveProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutRArchiveParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -72328,8 +72344,8 @@ class _ResponseScriptsListJavascriptShares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListJavascriptSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListJavascriptSharesReadersUsers]
+    groups: List[_ResponseScriptsListJavascriptSharesReadersGroups]
 
 class _ResponseScriptsListJavascriptSharesReadersUsers(Response):
     id: int
@@ -72340,8 +72356,8 @@ class _ResponseScriptsListJavascriptSharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListJavascriptSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListJavascriptSharesWritersUsers]
+    groups: List[_ResponseScriptsListJavascriptSharesWritersGroups]
 
 class _ResponseScriptsListJavascriptSharesWritersUsers(Response):
     id: int
@@ -72352,8 +72368,8 @@ class _ResponseScriptsListJavascriptSharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListJavascriptSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListJavascriptSharesOwnersUsers]
+    groups: List[_ResponseScriptsListJavascriptSharesOwnersGroups]
 
 class _ResponseScriptsListJavascriptSharesOwnersUsers(Response):
     id: int
@@ -72371,8 +72387,8 @@ class _ResponseScriptsPutJavascriptSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutJavascriptSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesUsersReadersGroups]
 
 class _ResponseScriptsPutJavascriptSharesUsersReadersUsers(Response):
     id: int
@@ -72383,8 +72399,8 @@ class _ResponseScriptsPutJavascriptSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutJavascriptSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesUsersWritersGroups]
 
 class _ResponseScriptsPutJavascriptSharesUsersWritersUsers(Response):
     id: int
@@ -72395,8 +72411,8 @@ class _ResponseScriptsPutJavascriptSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutJavascriptSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesUsersOwnersGroups]
 
 class _ResponseScriptsPutJavascriptSharesUsersOwnersUsers(Response):
     id: int
@@ -72414,8 +72430,8 @@ class _ResponseScriptsPutJavascriptSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutJavascriptSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesGroupsReadersGroups]
 
 class _ResponseScriptsPutJavascriptSharesGroupsReadersUsers(Response):
     id: int
@@ -72426,8 +72442,8 @@ class _ResponseScriptsPutJavascriptSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutJavascriptSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesGroupsWritersGroups]
 
 class _ResponseScriptsPutJavascriptSharesGroupsWritersUsers(Response):
     id: int
@@ -72438,8 +72454,8 @@ class _ResponseScriptsPutJavascriptSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutJavascriptSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutJavascriptSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutJavascriptSharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutJavascriptSharesGroupsOwnersUsers(Response):
     id: int
@@ -72459,7 +72475,7 @@ class _ResponseScriptsListJavascriptDependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutJavascriptTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutJavascriptTransferDependencies]
 
 class _ResponseScriptsPutJavascriptTransferDependencies(Response):
     object_type: str
@@ -72475,7 +72491,7 @@ class _ResponseScriptsListJavascriptProjects(Response):
     author: _ResponseScriptsListJavascriptProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListJavascriptProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -72505,10 +72521,10 @@ class _ResponseScriptsPutJavascriptArchive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutJavascriptArchiveProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPutJavascriptArchiveParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -72599,8 +72615,8 @@ class _ResponseScriptsListCustomShares(Response):
     total_group_shares: int
 
 class _ResponseScriptsListCustomSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListCustomSharesReadersUsers]
+    groups: List[_ResponseScriptsListCustomSharesReadersGroups]
 
 class _ResponseScriptsListCustomSharesReadersUsers(Response):
     id: int
@@ -72611,8 +72627,8 @@ class _ResponseScriptsListCustomSharesReadersGroups(Response):
     name: str
 
 class _ResponseScriptsListCustomSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListCustomSharesWritersUsers]
+    groups: List[_ResponseScriptsListCustomSharesWritersGroups]
 
 class _ResponseScriptsListCustomSharesWritersUsers(Response):
     id: int
@@ -72623,8 +72639,8 @@ class _ResponseScriptsListCustomSharesWritersGroups(Response):
     name: str
 
 class _ResponseScriptsListCustomSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsListCustomSharesOwnersUsers]
+    groups: List[_ResponseScriptsListCustomSharesOwnersGroups]
 
 class _ResponseScriptsListCustomSharesOwnersUsers(Response):
     id: int
@@ -72642,8 +72658,8 @@ class _ResponseScriptsPutCustomSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutCustomSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesUsersReadersGroups]
 
 class _ResponseScriptsPutCustomSharesUsersReadersUsers(Response):
     id: int
@@ -72654,8 +72670,8 @@ class _ResponseScriptsPutCustomSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutCustomSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesUsersWritersGroups]
 
 class _ResponseScriptsPutCustomSharesUsersWritersUsers(Response):
     id: int
@@ -72666,8 +72682,8 @@ class _ResponseScriptsPutCustomSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutCustomSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesUsersOwnersGroups]
 
 class _ResponseScriptsPutCustomSharesUsersOwnersUsers(Response):
     id: int
@@ -72685,8 +72701,8 @@ class _ResponseScriptsPutCustomSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseScriptsPutCustomSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesGroupsReadersGroups]
 
 class _ResponseScriptsPutCustomSharesGroupsReadersUsers(Response):
     id: int
@@ -72697,8 +72713,8 @@ class _ResponseScriptsPutCustomSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseScriptsPutCustomSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesGroupsWritersGroups]
 
 class _ResponseScriptsPutCustomSharesGroupsWritersUsers(Response):
     id: int
@@ -72709,8 +72725,8 @@ class _ResponseScriptsPutCustomSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseScriptsPutCustomSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseScriptsPutCustomSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutCustomSharesGroupsOwnersGroups]
 
 class _ResponseScriptsPutCustomSharesGroupsOwnersUsers(Response):
     id: int
@@ -72730,7 +72746,7 @@ class _ResponseScriptsListCustomDependencies(Response):
     shareable: bool
 
 class _ResponseScriptsPutCustomTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseScriptsPutCustomTransferDependencies]
 
 class _ResponseScriptsPutCustomTransferDependencies(Response):
     object_type: str
@@ -72746,7 +72762,7 @@ class _ResponseScriptsListCustomProjects(Response):
     author: _ResponseScriptsListCustomProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseScriptsListCustomProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -72768,7 +72784,7 @@ class _ResponseScriptsListCustomProjectsUsers(Response):
 
 class _ResponseScriptsPutCustomArchive(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPutCustomArchiveFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -72778,9 +72794,9 @@ class _ResponseScriptsPutCustomArchive(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPutCustomArchiveProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsPutCustomArchiveParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -72891,10 +72907,10 @@ class _ResponseScriptsPostSqlClone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostSqlCloneProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostSqlCloneParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -72999,10 +73015,10 @@ class _ResponseScriptsPostJavascriptClone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostJavascriptCloneProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostJavascriptCloneParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -73095,10 +73111,10 @@ class _ResponseScriptsPostPython3Clone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostPython3CloneProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostPython3CloneParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -73199,10 +73215,10 @@ class _ResponseScriptsPostRClone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostRCloneProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostRCloneParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -73295,7 +73311,7 @@ class _ResponseScriptsPostRCloneRequiredResources(Response):
 
 class _ResponseScriptsPostContainersClone(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPostContainersCloneFromTemplateAliases]
     name: str
     type: str
     created_at: str
@@ -73304,10 +73320,10 @@ class _ResponseScriptsPostContainersClone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostContainersCloneProjects]
     parent_id: int
     user_context: str
-    params: List
+    params: List[_ResponseScriptsPostContainersCloneParams]
     arguments: dict
     is_template: bool
     template_dependents_count: int
@@ -73409,7 +73425,7 @@ class _ResponseScriptsPostContainersCloneLastRun(Response):
 
 class _ResponseScriptsPostCustomClone(Response):
     id: int
-    from_template_aliases: List
+    from_template_aliases: List[_ResponseScriptsPostCustomCloneFromTemplateAliases]
     name: str
     type: str
     backing_script_type: str
@@ -73419,9 +73435,9 @@ class _ResponseScriptsPostCustomClone(Response):
     state: str
     finished_at: str
     category: str
-    projects: List
+    projects: List[_ResponseScriptsPostCustomCloneProjects]
     parent_id: int
-    params: List
+    params: List[_ResponseScriptsPostCustomCloneParams]
     arguments: dict
     is_template: bool
     published_as_template_id: int
@@ -73525,7 +73541,7 @@ class _ResponseScriptsPostCustomCloneRequiredResources(Response):
 class _ResponseSearchList(Response):
     total_results: int
     aggregations: dict
-    results: List
+    results: List[_ResponseSearchListResults]
 
 class _ResponseSearchListResults(Response):
     score: float
@@ -73588,7 +73604,7 @@ class _ResponseServicesPostUser(Response):
 
 class _ResponseServicesPostSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesPostScheduleRecurrences]
 
 class _ResponseServicesPostScheduleRecurrences(Response):
     scheduled_days: List
@@ -73658,7 +73674,7 @@ class _ResponseServicesGetUser(Response):
 
 class _ResponseServicesGetSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesGetScheduleRecurrences]
 
 class _ResponseServicesGetScheduleRecurrences(Response):
     scheduled_days: List
@@ -73728,7 +73744,7 @@ class _ResponseServicesPutUser(Response):
 
 class _ResponseServicesPutSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesPutScheduleRecurrences]
 
 class _ResponseServicesPutScheduleRecurrences(Response):
     scheduled_days: List
@@ -73798,7 +73814,7 @@ class _ResponseServicesPatchUser(Response):
 
 class _ResponseServicesPatchSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesPatchScheduleRecurrences]
 
 class _ResponseServicesPatchScheduleRecurrences(Response):
     scheduled_days: List
@@ -73835,8 +73851,8 @@ class _ResponseServicesListShares(Response):
     total_group_shares: int
 
 class _ResponseServicesListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesListSharesReadersUsers]
+    groups: List[_ResponseServicesListSharesReadersGroups]
 
 class _ResponseServicesListSharesReadersUsers(Response):
     id: int
@@ -73847,8 +73863,8 @@ class _ResponseServicesListSharesReadersGroups(Response):
     name: str
 
 class _ResponseServicesListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesListSharesWritersUsers]
+    groups: List[_ResponseServicesListSharesWritersGroups]
 
 class _ResponseServicesListSharesWritersUsers(Response):
     id: int
@@ -73859,8 +73875,8 @@ class _ResponseServicesListSharesWritersGroups(Response):
     name: str
 
 class _ResponseServicesListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesListSharesOwnersUsers]
+    groups: List[_ResponseServicesListSharesOwnersGroups]
 
 class _ResponseServicesListSharesOwnersUsers(Response):
     id: int
@@ -73878,8 +73894,8 @@ class _ResponseServicesPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseServicesPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesUsersReadersUsers]
+    groups: List[_ResponseServicesPutSharesUsersReadersGroups]
 
 class _ResponseServicesPutSharesUsersReadersUsers(Response):
     id: int
@@ -73890,8 +73906,8 @@ class _ResponseServicesPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseServicesPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesUsersWritersUsers]
+    groups: List[_ResponseServicesPutSharesUsersWritersGroups]
 
 class _ResponseServicesPutSharesUsersWritersUsers(Response):
     id: int
@@ -73902,8 +73918,8 @@ class _ResponseServicesPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseServicesPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesUsersOwnersUsers]
+    groups: List[_ResponseServicesPutSharesUsersOwnersGroups]
 
 class _ResponseServicesPutSharesUsersOwnersUsers(Response):
     id: int
@@ -73921,8 +73937,8 @@ class _ResponseServicesPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseServicesPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesGroupsReadersUsers]
+    groups: List[_ResponseServicesPutSharesGroupsReadersGroups]
 
 class _ResponseServicesPutSharesGroupsReadersUsers(Response):
     id: int
@@ -73933,8 +73949,8 @@ class _ResponseServicesPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseServicesPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesGroupsWritersUsers]
+    groups: List[_ResponseServicesPutSharesGroupsWritersGroups]
 
 class _ResponseServicesPutSharesGroupsWritersUsers(Response):
     id: int
@@ -73945,8 +73961,8 @@ class _ResponseServicesPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseServicesPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseServicesPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseServicesPutSharesGroupsOwnersGroups]
 
 class _ResponseServicesPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -73966,7 +73982,7 @@ class _ResponseServicesListDependencies(Response):
     shareable: bool
 
 class _ResponseServicesPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseServicesPutTransferDependencies]
 
 class _ResponseServicesPutTransferDependencies(Response):
     object_type: str
@@ -74018,7 +74034,7 @@ class _ResponseServicesPutArchiveUser(Response):
 
 class _ResponseServicesPutArchiveSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesPutArchiveScheduleRecurrences]
 
 class _ResponseServicesPutArchiveScheduleRecurrences(Response):
     scheduled_days: List
@@ -74052,7 +74068,7 @@ class _ResponseServicesListProjects(Response):
     author: _ResponseServicesListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseServicesListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -74176,7 +74192,7 @@ class _ResponseServicesPostCloneUser(Response):
 
 class _ResponseServicesPostCloneSchedule(Response):
     runtime_plan: str
-    recurrences: List
+    recurrences: List[_ResponseServicesPostCloneScheduleRecurrences]
 
 class _ResponseServicesPostCloneScheduleRecurrences(Response):
     scheduled_days: List
@@ -74334,8 +74350,8 @@ class _ResponseStorageHostsListShares(Response):
     total_group_shares: int
 
 class _ResponseStorageHostsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsListSharesReadersUsers]
+    groups: List[_ResponseStorageHostsListSharesReadersGroups]
 
 class _ResponseStorageHostsListSharesReadersUsers(Response):
     id: int
@@ -74346,8 +74362,8 @@ class _ResponseStorageHostsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseStorageHostsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsListSharesWritersUsers]
+    groups: List[_ResponseStorageHostsListSharesWritersGroups]
 
 class _ResponseStorageHostsListSharesWritersUsers(Response):
     id: int
@@ -74358,8 +74374,8 @@ class _ResponseStorageHostsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseStorageHostsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsListSharesOwnersUsers]
+    groups: List[_ResponseStorageHostsListSharesOwnersGroups]
 
 class _ResponseStorageHostsListSharesOwnersUsers(Response):
     id: int
@@ -74377,8 +74393,8 @@ class _ResponseStorageHostsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseStorageHostsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesUsersReadersUsers]
+    groups: List[_ResponseStorageHostsPutSharesUsersReadersGroups]
 
 class _ResponseStorageHostsPutSharesUsersReadersUsers(Response):
     id: int
@@ -74389,8 +74405,8 @@ class _ResponseStorageHostsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseStorageHostsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesUsersWritersUsers]
+    groups: List[_ResponseStorageHostsPutSharesUsersWritersGroups]
 
 class _ResponseStorageHostsPutSharesUsersWritersUsers(Response):
     id: int
@@ -74401,8 +74417,8 @@ class _ResponseStorageHostsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseStorageHostsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseStorageHostsPutSharesUsersOwnersGroups]
 
 class _ResponseStorageHostsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -74420,8 +74436,8 @@ class _ResponseStorageHostsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseStorageHostsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseStorageHostsPutSharesGroupsReadersGroups]
 
 class _ResponseStorageHostsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -74432,8 +74448,8 @@ class _ResponseStorageHostsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseStorageHostsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseStorageHostsPutSharesGroupsWritersGroups]
 
 class _ResponseStorageHostsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -74444,8 +74460,8 @@ class _ResponseStorageHostsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseStorageHostsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseStorageHostsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseStorageHostsPutSharesGroupsOwnersGroups]
 
 class _ResponseStorageHostsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -74465,7 +74481,7 @@ class _ResponseStorageHostsListDependencies(Response):
     shareable: bool
 
 class _ResponseStorageHostsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseStorageHostsPutTransferDependencies]
 
 class _ResponseStorageHostsPutTransferDependencies(Response):
     object_type: str
@@ -74567,15 +74583,15 @@ class _ResponseTablesPostRefresh(Response):
     last_run: _ResponseTablesPostRefreshLastRun
     primary_keys: List
     last_modified_keys: List
-    table_tags: List
+    table_tags: List[_ResponseTablesPostRefreshTableTags]
     ontology_mapping: dict
-    columns: List
-    joins: List
+    columns: List[_ResponseTablesPostRefreshColumns]
+    joins: List[_ResponseTablesPostRefreshJoins]
     multipart_key: List
-    enhancements: List
+    enhancements: List[_ResponseTablesPostRefreshEnhancements]
     view_def: str
     table_def: str
-    outgoing_table_matches: List
+    outgoing_table_matches: List[_ResponseTablesPostRefreshOutgoingTableMatches]
 
 class _ResponseTablesPostRefreshLastRun(Response):
     id: int
@@ -74645,7 +74661,7 @@ class _ResponseTablesPostRefreshOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseTablesPostRefreshOutgoingTableMatchesJobRuns]
     last_run: _ResponseTablesPostRefreshOutgoingTableMatchesJobLastRun
     hidden: bool
     match_options: _ResponseTablesPostRefreshOutgoingTableMatchesJobMatchOptions
@@ -74691,15 +74707,15 @@ class _ResponseTablesGet(Response):
     last_run: _ResponseTablesGetLastRun
     primary_keys: List
     last_modified_keys: List
-    table_tags: List
+    table_tags: List[_ResponseTablesGetTableTags]
     ontology_mapping: dict
-    columns: List
-    joins: List
+    columns: List[_ResponseTablesGetColumns]
+    joins: List[_ResponseTablesGetJoins]
     multipart_key: List
-    enhancements: List
+    enhancements: List[_ResponseTablesGetEnhancements]
     view_def: str
     table_def: str
-    outgoing_table_matches: List
+    outgoing_table_matches: List[_ResponseTablesGetOutgoingTableMatches]
 
 class _ResponseTablesGetLastRun(Response):
     id: int
@@ -74769,7 +74785,7 @@ class _ResponseTablesGetOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
-    runs: List
+    runs: List[_ResponseTablesGetOutgoingTableMatchesJobRuns]
     last_run: _ResponseTablesGetOutgoingTableMatchesJobLastRun
     hidden: bool
     match_options: _ResponseTablesGetOutgoingTableMatchesJobMatchOptions
@@ -74815,7 +74831,7 @@ class _ResponseTablesPatch(Response):
     last_run: _ResponseTablesPatchLastRun
     primary_keys: List
     last_modified_keys: List
-    table_tags: List
+    table_tags: List[_ResponseTablesPatchTableTags]
     ontology_mapping: dict
 
 class _ResponseTablesPatchLastRun(Response):
@@ -74839,7 +74855,7 @@ class _ResponseTablesListProjects(Response):
     author: _ResponseTablesListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseTablesListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -74867,8 +74883,8 @@ class _ResponseTemplatesListReportsShares(Response):
     total_group_shares: int
 
 class _ResponseTemplatesListReportsSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListReportsSharesReadersUsers]
+    groups: List[_ResponseTemplatesListReportsSharesReadersGroups]
 
 class _ResponseTemplatesListReportsSharesReadersUsers(Response):
     id: int
@@ -74879,8 +74895,8 @@ class _ResponseTemplatesListReportsSharesReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesListReportsSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListReportsSharesWritersUsers]
+    groups: List[_ResponseTemplatesListReportsSharesWritersGroups]
 
 class _ResponseTemplatesListReportsSharesWritersUsers(Response):
     id: int
@@ -74891,8 +74907,8 @@ class _ResponseTemplatesListReportsSharesWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesListReportsSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListReportsSharesOwnersUsers]
+    groups: List[_ResponseTemplatesListReportsSharesOwnersGroups]
 
 class _ResponseTemplatesListReportsSharesOwnersUsers(Response):
     id: int
@@ -74910,8 +74926,8 @@ class _ResponseTemplatesPutReportsSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseTemplatesPutReportsSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesUsersReadersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesUsersReadersGroups]
 
 class _ResponseTemplatesPutReportsSharesUsersReadersUsers(Response):
     id: int
@@ -74922,8 +74938,8 @@ class _ResponseTemplatesPutReportsSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutReportsSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesUsersWritersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesUsersWritersGroups]
 
 class _ResponseTemplatesPutReportsSharesUsersWritersUsers(Response):
     id: int
@@ -74934,8 +74950,8 @@ class _ResponseTemplatesPutReportsSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutReportsSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesUsersOwnersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesUsersOwnersGroups]
 
 class _ResponseTemplatesPutReportsSharesUsersOwnersUsers(Response):
     id: int
@@ -74953,8 +74969,8 @@ class _ResponseTemplatesPutReportsSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseTemplatesPutReportsSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesGroupsReadersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesGroupsReadersGroups]
 
 class _ResponseTemplatesPutReportsSharesGroupsReadersUsers(Response):
     id: int
@@ -74965,8 +74981,8 @@ class _ResponseTemplatesPutReportsSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutReportsSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesGroupsWritersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesGroupsWritersGroups]
 
 class _ResponseTemplatesPutReportsSharesGroupsWritersUsers(Response):
     id: int
@@ -74977,8 +74993,8 @@ class _ResponseTemplatesPutReportsSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutReportsSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutReportsSharesGroupsOwnersUsers]
+    groups: List[_ResponseTemplatesPutReportsSharesGroupsOwnersGroups]
 
 class _ResponseTemplatesPutReportsSharesGroupsOwnersUsers(Response):
     id: int
@@ -74998,7 +75014,7 @@ class _ResponseTemplatesListReportsDependencies(Response):
     shareable: bool
 
 class _ResponseTemplatesPutReportsTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseTemplatesPutReportsTransferDependencies]
 
 class _ResponseTemplatesPutReportsTransferDependencies(Response):
     object_type: str
@@ -75101,8 +75117,8 @@ class _ResponseTemplatesListScriptsShares(Response):
     total_group_shares: int
 
 class _ResponseTemplatesListScriptsSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListScriptsSharesReadersUsers]
+    groups: List[_ResponseTemplatesListScriptsSharesReadersGroups]
 
 class _ResponseTemplatesListScriptsSharesReadersUsers(Response):
     id: int
@@ -75113,8 +75129,8 @@ class _ResponseTemplatesListScriptsSharesReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesListScriptsSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListScriptsSharesWritersUsers]
+    groups: List[_ResponseTemplatesListScriptsSharesWritersGroups]
 
 class _ResponseTemplatesListScriptsSharesWritersUsers(Response):
     id: int
@@ -75125,8 +75141,8 @@ class _ResponseTemplatesListScriptsSharesWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesListScriptsSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesListScriptsSharesOwnersUsers]
+    groups: List[_ResponseTemplatesListScriptsSharesOwnersGroups]
 
 class _ResponseTemplatesListScriptsSharesOwnersUsers(Response):
     id: int
@@ -75144,8 +75160,8 @@ class _ResponseTemplatesPutScriptsSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseTemplatesPutScriptsSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesUsersReadersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesUsersReadersGroups]
 
 class _ResponseTemplatesPutScriptsSharesUsersReadersUsers(Response):
     id: int
@@ -75156,8 +75172,8 @@ class _ResponseTemplatesPutScriptsSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutScriptsSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesUsersWritersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesUsersWritersGroups]
 
 class _ResponseTemplatesPutScriptsSharesUsersWritersUsers(Response):
     id: int
@@ -75168,8 +75184,8 @@ class _ResponseTemplatesPutScriptsSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutScriptsSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesUsersOwnersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesUsersOwnersGroups]
 
 class _ResponseTemplatesPutScriptsSharesUsersOwnersUsers(Response):
     id: int
@@ -75187,8 +75203,8 @@ class _ResponseTemplatesPutScriptsSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseTemplatesPutScriptsSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesGroupsReadersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesGroupsReadersGroups]
 
 class _ResponseTemplatesPutScriptsSharesGroupsReadersUsers(Response):
     id: int
@@ -75199,8 +75215,8 @@ class _ResponseTemplatesPutScriptsSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutScriptsSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesGroupsWritersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesGroupsWritersGroups]
 
 class _ResponseTemplatesPutScriptsSharesGroupsWritersUsers(Response):
     id: int
@@ -75211,8 +75227,8 @@ class _ResponseTemplatesPutScriptsSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseTemplatesPutScriptsSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseTemplatesPutScriptsSharesGroupsOwnersUsers]
+    groups: List[_ResponseTemplatesPutScriptsSharesGroupsOwnersGroups]
 
 class _ResponseTemplatesPutScriptsSharesGroupsOwnersUsers(Response):
     id: int
@@ -75232,7 +75248,7 @@ class _ResponseTemplatesListScriptsDependencies(Response):
     shareable: bool
 
 class _ResponseTemplatesPutScriptsTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseTemplatesPutScriptsTransferDependencies]
 
 class _ResponseTemplatesPutScriptsTransferDependencies(Response):
     object_type: str
@@ -75248,7 +75264,7 @@ class _ResponseTemplatesListScriptsProjects(Response):
     author: _ResponseTemplatesListScriptsProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseTemplatesListScriptsProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -75274,7 +75290,7 @@ class _ResponseTemplatesPostScripts(Response):
     script_id: int
     script_type: str
     user_context: str
-    params: List
+    params: List[_ResponseTemplatesPostScriptsParams]
     name: str
     category: str
     note: str
@@ -75311,7 +75327,7 @@ class _ResponseTemplatesGetScripts(Response):
     script_id: int
     script_type: str
     user_context: str
-    params: List
+    params: List[_ResponseTemplatesGetScriptsParams]
     name: str
     category: str
     note: str
@@ -75348,7 +75364,7 @@ class _ResponseTemplatesPutScripts(Response):
     script_id: int
     script_type: str
     user_context: str
-    params: List
+    params: List[_ResponseTemplatesPutScriptsParams]
     name: str
     category: str
     note: str
@@ -75385,7 +75401,7 @@ class _ResponseTemplatesPatchScripts(Response):
     script_id: int
     script_type: str
     user_context: str
-    params: List
+    params: List[_ResponseTemplatesPatchScriptsParams]
     name: str
     category: str
     note: str
@@ -75495,7 +75511,7 @@ class _ResponseUsersPost(Response):
     email: str
     active: bool
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersPostGroups]
     city: str
     state: str
     time_zone: str
@@ -75544,7 +75560,7 @@ class _ResponseUsersListMe(Response):
     preferences: dict
     custom_branding: str
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersListMeGroups]
     organization_name: str
     organization_slug: str
     organization_default_theme_id: int
@@ -75578,7 +75594,7 @@ class _ResponseUsersPatchMe(Response):
     preferences: dict
     custom_branding: str
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersPatchMeGroups]
     organization_name: str
     organization_slug: str
     organization_default_theme_id: int
@@ -75646,7 +75662,7 @@ class _ResponseUsersGet(Response):
     email: str
     active: bool
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersGetGroups]
     city: str
     state: str
     time_zone: str
@@ -75690,7 +75706,7 @@ class _ResponseUsersPatch(Response):
     email: str
     active: bool
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersPatchGroups]
     city: str
     state: str
     time_zone: str
@@ -75738,7 +75754,7 @@ class _ResponseUsersPostApiKeys(Response):
     use_count: int
     expired: bool
     active: bool
-    constraints: List
+    constraints: List[_ResponseUsersPostApiKeysConstraints]
     token: str
 
 class _ResponseUsersPostApiKeysConstraints(Response):
@@ -75762,7 +75778,7 @@ class _ResponseUsersGetApiKeys(Response):
     use_count: int
     expired: bool
     active: bool
-    constraints: List
+    constraints: List[_ResponseUsersGetApiKeysConstraints]
 
 class _ResponseUsersGetApiKeysConstraints(Response):
     constraint: str
@@ -75785,7 +75801,7 @@ class _ResponseUsersDeleteApiKeys(Response):
     use_count: int
     expired: bool
     active: bool
-    constraints: List
+    constraints: List[_ResponseUsersDeleteApiKeysConstraints]
 
 class _ResponseUsersDeleteApiKeysConstraints(Response):
     constraint: str
@@ -75804,7 +75820,7 @@ class _ResponseUsersDeleteSessions(Response):
     email: str
     active: bool
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersDeleteSessionsGroups]
     city: str
     state: str
     time_zone: str
@@ -75869,7 +75885,7 @@ class _ResponseUsersDelete2Fa(Response):
     email: str
     active: bool
     primary_group_id: int
-    groups: List
+    groups: List[_ResponseUsersDelete2FaGroups]
     city: str
     state: str
     time_zone: str
@@ -76098,8 +76114,8 @@ class _ResponseWorkflowsListShares(Response):
     total_group_shares: int
 
 class _ResponseWorkflowsListSharesReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsListSharesReadersUsers]
+    groups: List[_ResponseWorkflowsListSharesReadersGroups]
 
 class _ResponseWorkflowsListSharesReadersUsers(Response):
     id: int
@@ -76110,8 +76126,8 @@ class _ResponseWorkflowsListSharesReadersGroups(Response):
     name: str
 
 class _ResponseWorkflowsListSharesWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsListSharesWritersUsers]
+    groups: List[_ResponseWorkflowsListSharesWritersGroups]
 
 class _ResponseWorkflowsListSharesWritersUsers(Response):
     id: int
@@ -76122,8 +76138,8 @@ class _ResponseWorkflowsListSharesWritersGroups(Response):
     name: str
 
 class _ResponseWorkflowsListSharesOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsListSharesOwnersUsers]
+    groups: List[_ResponseWorkflowsListSharesOwnersGroups]
 
 class _ResponseWorkflowsListSharesOwnersUsers(Response):
     id: int
@@ -76141,8 +76157,8 @@ class _ResponseWorkflowsPutSharesUsers(Response):
     total_group_shares: int
 
 class _ResponseWorkflowsPutSharesUsersReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesUsersReadersUsers]
+    groups: List[_ResponseWorkflowsPutSharesUsersReadersGroups]
 
 class _ResponseWorkflowsPutSharesUsersReadersUsers(Response):
     id: int
@@ -76153,8 +76169,8 @@ class _ResponseWorkflowsPutSharesUsersReadersGroups(Response):
     name: str
 
 class _ResponseWorkflowsPutSharesUsersWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesUsersWritersUsers]
+    groups: List[_ResponseWorkflowsPutSharesUsersWritersGroups]
 
 class _ResponseWorkflowsPutSharesUsersWritersUsers(Response):
     id: int
@@ -76165,8 +76181,8 @@ class _ResponseWorkflowsPutSharesUsersWritersGroups(Response):
     name: str
 
 class _ResponseWorkflowsPutSharesUsersOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesUsersOwnersUsers]
+    groups: List[_ResponseWorkflowsPutSharesUsersOwnersGroups]
 
 class _ResponseWorkflowsPutSharesUsersOwnersUsers(Response):
     id: int
@@ -76184,8 +76200,8 @@ class _ResponseWorkflowsPutSharesGroups(Response):
     total_group_shares: int
 
 class _ResponseWorkflowsPutSharesGroupsReaders(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesGroupsReadersUsers]
+    groups: List[_ResponseWorkflowsPutSharesGroupsReadersGroups]
 
 class _ResponseWorkflowsPutSharesGroupsReadersUsers(Response):
     id: int
@@ -76196,8 +76212,8 @@ class _ResponseWorkflowsPutSharesGroupsReadersGroups(Response):
     name: str
 
 class _ResponseWorkflowsPutSharesGroupsWriters(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesGroupsWritersUsers]
+    groups: List[_ResponseWorkflowsPutSharesGroupsWritersGroups]
 
 class _ResponseWorkflowsPutSharesGroupsWritersUsers(Response):
     id: int
@@ -76208,8 +76224,8 @@ class _ResponseWorkflowsPutSharesGroupsWritersGroups(Response):
     name: str
 
 class _ResponseWorkflowsPutSharesGroupsOwners(Response):
-    users: List
-    groups: List
+    users: List[_ResponseWorkflowsPutSharesGroupsOwnersUsers]
+    groups: List[_ResponseWorkflowsPutSharesGroupsOwnersGroups]
 
 class _ResponseWorkflowsPutSharesGroupsOwnersUsers(Response):
     id: int
@@ -76229,7 +76245,7 @@ class _ResponseWorkflowsListDependencies(Response):
     shareable: bool
 
 class _ResponseWorkflowsPutTransfer(Response):
-    dependencies: List
+    dependencies: List[_ResponseWorkflowsPutTransferDependencies]
 
 class _ResponseWorkflowsPutTransferDependencies(Response):
     object_type: str
@@ -76291,7 +76307,7 @@ class _ResponseWorkflowsListProjects(Response):
     author: _ResponseWorkflowsListProjectsAuthor
     name: str
     description: str
-    users: List
+    users: List[_ResponseWorkflowsListProjectsUsers]
     auto_share: bool
     created_at: str
     updated_at: str
@@ -76438,7 +76454,7 @@ class _ResponseWorkflowsPostExecutions(Response):
     definition: str
     input: dict
     included_tasks: List
-    tasks: List
+    tasks: List[_ResponseWorkflowsPostExecutionsTasks]
     started_at: str
     finished_at: str
     created_at: str
@@ -76455,8 +76471,8 @@ class _ResponseWorkflowsPostExecutionsTasks(Response):
     name: str
     mistral_state: str
     mistral_state_info: str
-    runs: List
-    executions: List
+    runs: List[_ResponseWorkflowsPostExecutionsTasksRuns]
+    executions: List[_ResponseWorkflowsPostExecutionsTasksExecutions]
 
 class _ResponseWorkflowsPostExecutionsTasksRuns(Response):
     id: int
@@ -76485,7 +76501,7 @@ class _ResponseWorkflowsGetExecutions(Response):
     definition: str
     input: dict
     included_tasks: List
-    tasks: List
+    tasks: List[_ResponseWorkflowsGetExecutionsTasks]
     started_at: str
     finished_at: str
     created_at: str
@@ -76502,8 +76518,8 @@ class _ResponseWorkflowsGetExecutionsTasks(Response):
     name: str
     mistral_state: str
     mistral_state_info: str
-    runs: List
-    executions: List
+    runs: List[_ResponseWorkflowsGetExecutionsTasksRuns]
+    executions: List[_ResponseWorkflowsGetExecutionsTasksExecutions]
 
 class _ResponseWorkflowsGetExecutionsTasksRuns(Response):
     id: int
@@ -76532,7 +76548,7 @@ class _ResponseWorkflowsPostExecutionsCancel(Response):
     definition: str
     input: dict
     included_tasks: List
-    tasks: List
+    tasks: List[_ResponseWorkflowsPostExecutionsCancelTasks]
     started_at: str
     finished_at: str
     created_at: str
@@ -76549,8 +76565,8 @@ class _ResponseWorkflowsPostExecutionsCancelTasks(Response):
     name: str
     mistral_state: str
     mistral_state_info: str
-    runs: List
-    executions: List
+    runs: List[_ResponseWorkflowsPostExecutionsCancelTasksRuns]
+    executions: List[_ResponseWorkflowsPostExecutionsCancelTasksExecutions]
 
 class _ResponseWorkflowsPostExecutionsCancelTasksRuns(Response):
     id: int
@@ -76579,7 +76595,7 @@ class _ResponseWorkflowsPostExecutionsResume(Response):
     definition: str
     input: dict
     included_tasks: List
-    tasks: List
+    tasks: List[_ResponseWorkflowsPostExecutionsResumeTasks]
     started_at: str
     finished_at: str
     created_at: str
@@ -76596,8 +76612,8 @@ class _ResponseWorkflowsPostExecutionsResumeTasks(Response):
     name: str
     mistral_state: str
     mistral_state_info: str
-    runs: List
-    executions: List
+    runs: List[_ResponseWorkflowsPostExecutionsResumeTasksRuns]
+    executions: List[_ResponseWorkflowsPostExecutionsResumeTasksExecutions]
 
 class _ResponseWorkflowsPostExecutionsResumeTasksRuns(Response):
     id: int
@@ -76626,7 +76642,7 @@ class _ResponseWorkflowsPostExecutionsRetry(Response):
     definition: str
     input: dict
     included_tasks: List
-    tasks: List
+    tasks: List[_ResponseWorkflowsPostExecutionsRetryTasks]
     started_at: str
     finished_at: str
     created_at: str
@@ -76643,8 +76659,8 @@ class _ResponseWorkflowsPostExecutionsRetryTasks(Response):
     name: str
     mistral_state: str
     mistral_state_info: str
-    runs: List
-    executions: List
+    runs: List[_ResponseWorkflowsPostExecutionsRetryTasksRuns]
+    executions: List[_ResponseWorkflowsPostExecutionsRetryTasksExecutions]
 
 class _ResponseWorkflowsPostExecutionsRetryTasksRuns(Response):
     id: int
