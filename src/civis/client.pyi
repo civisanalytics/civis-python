@@ -56407,6 +56407,28 @@ class _ResponseClustersGetKubernetesClusterPartitions(Response):
     instance_configs: List
     default_instance_config_id: int
 
+class _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: (
+        _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigsUsageStats
+    )
+
+class _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigsUsageStats(
+    Response
+):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
+
 class _ResponseClustersListKubernetesComputeHours(Response):
     total_normalized_hours: int
     normalized_hours_by_instance_type: str
@@ -56437,6 +56459,14 @@ class _ResponseClustersListKubernetesPartitionsInstanceConfigs(Response):
     instance_max_disk: int
     usage_stats: _ResponseClustersListKubernetesPartitionsInstanceConfigsUsageStats
 
+class _ResponseClustersListKubernetesPartitionsInstanceConfigsUsageStats(Response):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
+
 class _ResponseClustersPostKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
@@ -56453,6 +56483,14 @@ class _ResponseClustersPostKubernetesPartitionsInstanceConfigs(Response):
     instance_max_cpu: int
     instance_max_disk: int
     usage_stats: _ResponseClustersPostKubernetesPartitionsInstanceConfigsUsageStats
+
+class _ResponseClustersPostKubernetesPartitionsInstanceConfigsUsageStats(Response):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
 
 class _ResponseClustersPatchKubernetesPartitions(Response):
     cluster_partition_id: int
@@ -56471,6 +56509,14 @@ class _ResponseClustersPatchKubernetesPartitionsInstanceConfigs(Response):
     instance_max_disk: int
     usage_stats: _ResponseClustersPatchKubernetesPartitionsInstanceConfigsUsageStats
 
+class _ResponseClustersPatchKubernetesPartitionsInstanceConfigsUsageStats(Response):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
+
 class _ResponseClustersGetKubernetesPartitions(Response):
     cluster_partition_id: int
     name: str
@@ -56487,6 +56533,14 @@ class _ResponseClustersGetKubernetesPartitionsInstanceConfigs(Response):
     instance_max_cpu: int
     instance_max_disk: int
     usage_stats: _ResponseClustersGetKubernetesPartitionsInstanceConfigsUsageStats
+
+class _ResponseClustersGetKubernetesPartitionsInstanceConfigsUsageStats(Response):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
 
 class _ResponseClustersGetKubernetesInstanceConfigs(Response):
     instance_config_id: int
@@ -56929,6 +56983,42 @@ class _ResponseDatabasesGetSchemasTablesOutgoingTableMatches(Response):
     target: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesTarget
     job: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJob
 
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesTarget(Response):
+    name: str
+
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJob(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobLastRun
+    hidden: bool
+    match_options: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobMatchOptions
+
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobMatchOptions(Response):
+    max_matches: int
+    threshold: str
+
 class _ResponseDatabasesPatchSchemasTables(Response):
     id: int
     database_id: int
@@ -57016,6 +57106,44 @@ class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatches(Response):
     target_id: int
     target: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesTarget
     job: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJob
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesTarget(Response):
+    name: str
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJob(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobLastRun
+    hidden: bool
+    match_options: (
+        _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobMatchOptions
+    )
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobMatchOptions(Response):
+    max_matches: int
+    threshold: str
 
 class _ResponseDatabasesPostSchemasScan(Response):
     job_id: int
@@ -57813,6 +57941,12 @@ class _ResponseEnhancementsPostIdentityResolutionGoldenTableFields(Response):
     rule_type: str
     source_preferences: List
 
+class _ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences(
+    Response
+):
+    source_name: str
+    ranking: int
+
 class _ResponseEnhancementsPostIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -57925,6 +58059,12 @@ class _ResponseEnhancementsPutIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
     source_preferences: List
+
+class _ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences(
+    Response
+):
+    source_name: str
+    ranking: int
 
 class _ResponseEnhancementsPutIdentityResolutionLinkScores(Response):
     database_name: str
@@ -58039,6 +58179,12 @@ class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFields(Response):
     rule_type: str
     source_preferences: List
 
+class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences(
+    Response
+):
+    source_name: str
+    ranking: int
+
 class _ResponseEnhancementsPatchIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -58152,6 +58298,12 @@ class _ResponseEnhancementsGetIdentityResolutionGoldenTableFields(Response):
     rule_type: str
     source_preferences: List
 
+class _ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences(
+    Response
+):
+    source_name: str
+    ranking: int
+
 class _ResponseEnhancementsGetIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -58264,6 +58416,12 @@ class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFields(Response
     field_name: str
     rule_type: str
     source_preferences: List
+
+class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences(  # noqa: E501
+    Response
+):
+    source_name: str
+    ranking: int
 
 class _ResponseEnhancementsPostIdentityResolutionCloneLinkScores(Response):
     database_name: str
@@ -59744,6 +59902,12 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFields(Respons
     rule_type: str
     source_preferences: List
 
+class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences(  # noqa: E501
+    Response
+):
+    source_name: str
+    ranking: int
+
 class _ResponseEnhancementsPutIdentityResolutionArchiveLinkScores(Response):
     database_name: str
     schema_name: str
@@ -60366,12 +60530,23 @@ class _ResponseGroupsPut(Response):
 class _ResponseGroupsPutMembers(Response):
     id: int
     name: str
-    username: str
-    initials: str
-    online: bool
-    email: str
-    primary_group_id: int
-    active: bool
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    default_otp_required_for_login: bool
+    role_ids: List
+    default_time_zone: str
+    default_jobs_label: str
+    default_notebooks_label: str
+    default_services_label: str
+    last_updated_by_id: int
+    created_by_id: int
+    members: List
 
 class _ResponseGroupsPatch(Response):
     id: int
@@ -60532,27 +60707,6 @@ class _ResponseGroupsPutSharesGroupsOwnersUsers(Response):
 class _ResponseGroupsPutSharesGroupsOwnersGroups(Response):
     id: int
     name: str
-
-class _ResponseGroupsPutMembers(Response):
-    id: int
-    name: str
-    created_at: str
-    updated_at: str
-    description: str
-    slug: str
-    organization_id: int
-    organization_name: str
-    member_count: int
-    total_member_count: int
-    default_otp_required_for_login: bool
-    role_ids: List
-    default_time_zone: str
-    default_jobs_label: str
-    default_notebooks_label: str
-    default_services_label: str
-    last_updated_by_id: int
-    created_by_id: int
-    members: List
 
 class _ResponseGroupsPutMembersMembers(Response):
     id: int
@@ -60818,6 +60972,78 @@ class _ResponseImportsPutArchiveSyncs(Response):
     destination: _ResponseImportsPutArchiveSyncsDestination
     advanced_options: _ResponseImportsPutArchiveSyncsAdvancedOptions
 
+class _ResponseImportsPutArchiveSyncsSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsPutArchiveSyncsSourceDatabaseTable
+    file: _ResponseImportsPutArchiveSyncsSourceFile
+    google_worksheet: _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet
+    salesforce: _ResponseImportsPutArchiveSyncsSourceSalesforce
+
+class _ResponseImportsPutArchiveSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutArchiveSyncsSourceFile(Response):
+    id: int
+
+class _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPutArchiveSyncsSourceSalesforce(Response):
+    object_name: str
+
+class _ResponseImportsPutArchiveSyncsDestination(Response):
+    path: str
+    database_table: _ResponseImportsPutArchiveSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPutArchiveSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsPutArchiveSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutArchiveSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPutArchiveSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
 class _ResponseImportsPutArchiveLastRun(Response):
     id: int
     state: str
@@ -60901,6 +61127,78 @@ class _ResponseImportsPostSyncs(Response):
     source: _ResponseImportsPostSyncsSource
     destination: _ResponseImportsPostSyncsDestination
     advanced_options: _ResponseImportsPostSyncsAdvancedOptions
+
+class _ResponseImportsPostSyncsSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsPostSyncsSourceDatabaseTable
+    file: _ResponseImportsPostSyncsSourceFile
+    google_worksheet: _ResponseImportsPostSyncsSourceGoogleWorksheet
+    salesforce: _ResponseImportsPostSyncsSourceSalesforce
+
+class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostSyncsSourceFile(Response):
+    id: int
+
+class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPostSyncsSourceSalesforce(Response):
+    object_name: str
+
+class _ResponseImportsPostSyncsDestination(Response):
+    path: str
+    database_table: _ResponseImportsPostSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPostSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsPostSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPostSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
 
 class _ResponseImportsPostLastRun(Response):
     id: int
@@ -61296,6 +61594,78 @@ class _ResponseImportsGetSyncs(Response):
     destination: _ResponseImportsGetSyncsDestination
     advanced_options: _ResponseImportsGetSyncsAdvancedOptions
 
+class _ResponseImportsGetSyncsSource(Response):
+    id: int
+    path: str
+    database_table: _ResponseImportsGetSyncsSourceDatabaseTable
+    file: _ResponseImportsGetSyncsSourceFile
+    google_worksheet: _ResponseImportsGetSyncsSourceGoogleWorksheet
+    salesforce: _ResponseImportsGetSyncsSourceSalesforce
+
+class _ResponseImportsGetSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsGetSyncsSourceFile(Response):
+    id: int
+
+class _ResponseImportsGetSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsGetSyncsSourceSalesforce(Response):
+    object_name: str
+
+class _ResponseImportsGetSyncsDestination(Response):
+    path: str
+    database_table: _ResponseImportsGetSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsGetSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsGetSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsGetSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsGetSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    last_modified_column: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    first_row_is_header: bool
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
 class _ResponseImportsGetLastRun(Response):
     id: int
     state: str
@@ -61380,128 +61750,6 @@ class _ResponseImportsPutSyncs(Response):
     destination: _ResponseImportsPutSyncsDestination
     advanced_options: _ResponseImportsPutSyncsAdvancedOptions
 
-class _ResponseImportsPutLastRun(Response):
-    id: int
-    state: str
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
-
-class _ResponseImportsPutUser(Response):
-    id: int
-    name: str
-    username: str
-    initials: str
-    online: bool
-
-class _ResponseImportsPutRunningAs(Response):
-    id: int
-    name: str
-    username: str
-    initials: str
-    online: bool
-
-class _ResponseImportsListRuns(Response):
-    id: int
-    state: str
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
-
-class _ResponseImportsPostRuns(Response):
-    run_id: int
-
-class _ResponseImportsPostCancel(Response):
-    id: int
-    state: str
-    is_cancel_requested: bool
-
-class _ResponseImportsPostSyncs(Response):
-    id: int
-    source: _ResponseImportsPostSyncsSource
-    destination: _ResponseImportsPostSyncsDestination
-    advanced_options: _ResponseImportsPostSyncsAdvancedOptions
-
-class _ResponseImportsPostSyncsSource(Response):
-    id: int
-    path: str
-    database_table: _ResponseImportsPostSyncsSourceDatabaseTable
-    file: _ResponseImportsPostSyncsSourceFile
-    google_worksheet: _ResponseImportsPostSyncsSourceGoogleWorksheet
-    salesforce: _ResponseImportsPostSyncsSourceSalesforce
-
-class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
-    schema: str
-    table: str
-    use_without_schema: bool
-
-class _ResponseImportsPostSyncsSourceFile(Response):
-    id: int
-
-class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
-    spreadsheet: str
-    spreadsheet_id: str
-    worksheet: str
-    worksheet_id: int
-
-class _ResponseImportsPostSyncsSourceSalesforce(Response):
-    object_name: str
-
-class _ResponseImportsPostSyncsDestination(Response):
-    path: str
-    database_table: _ResponseImportsPostSyncsDestinationDatabaseTable
-    google_worksheet: _ResponseImportsPostSyncsDestinationGoogleWorksheet
-
-class _ResponseImportsPostSyncsDestinationDatabaseTable(Response):
-    schema: str
-    table: str
-    use_without_schema: bool
-
-class _ResponseImportsPostSyncsDestinationGoogleWorksheet(Response):
-    spreadsheet: str
-    spreadsheet_id: str
-    worksheet: str
-    worksheet_id: int
-
-class _ResponseImportsPostSyncsAdvancedOptions(Response):
-    max_errors: int
-    existing_table_rows: str
-    diststyle: str
-    distkey: str
-    sortkey1: str
-    sortkey2: str
-    column_delimiter: str
-    column_overrides: dict
-    escaped: bool
-    identity_column: str
-    row_chunk_size: int
-    wipe_destination_table: bool
-    truncate_long_lines: bool
-    invalid_char_replacement: str
-    verify_table_row_counts: bool
-    partition_column_name: str
-    partition_schema_name: str
-    partition_table_name: str
-    partition_table_partition_column_min_name: str
-    partition_table_partition_column_max_name: str
-    last_modified_column: str
-    mysql_catalog_matches_schema: bool
-    chunking_method: str
-    first_row_is_header: bool
-    export_action: str
-    sql_query: str
-    contact_lists: str
-    soql_query: str
-    include_deleted_records: bool
-
-class _ResponseImportsPutSyncs(Response):
-    id: int
-    source: _ResponseImportsPutSyncsSource
-    destination: _ResponseImportsPutSyncsDestination
-    advanced_options: _ResponseImportsPutSyncsAdvancedOptions
-
 class _ResponseImportsPutSyncsSource(Response):
     id: int
     path: str
@@ -61573,6 +61821,44 @@ class _ResponseImportsPutSyncsAdvancedOptions(Response):
     contact_lists: str
     soql_query: str
     include_deleted_records: bool
+
+class _ResponseImportsPutLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPutUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPutRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsListRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPostRuns(Response):
+    run_id: int
+
+class _ResponseImportsPostCancel(Response):
+    id: int
+    state: str
+    is_cancel_requested: bool
 
 class _ResponseImportsPutSyncsArchive(Response):
     id: int
@@ -61786,14 +62072,6 @@ class _ResponseJobsListChildrenLastRun(Response):
     error: str
 
 class _ResponseJobsPostRuns(Response):
-    id: int
-    state: str
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
-
-class _ResponseJobsGetRuns(Response):
     id: int
     state: str
     created_at: str
@@ -62702,6 +62980,11 @@ class _ResponseMediaPutOptimizationsArchiveRuns(Response):
     rate_cards: List
     constraints: List
 
+class _ResponseMediaPutOptimizationsArchiveRunsConstraints(Response):
+    targets: List
+    budget: float
+    frequency: float
+
 class _ResponseMediaListRatecardsShares(Response):
     readers: _ResponseMediaListRatecardsSharesReaders
     writers: _ResponseMediaListRatecardsSharesWriters
@@ -62868,14 +63151,19 @@ class _ResponseMediaPostOptimizationsAuthor(Response):
     online: bool
 
 class _ResponseMediaPostOptimizationsRuns(Response):
-    market_id: int
-    start_date: str
-    end_date: str
-    force_cpm: bool
-    reach_alpha: float
-    syscodes: List
-    rate_cards: List
-    constraints: List
+    id: int
+    optimization_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseMediaPostOptimizationsRunsConstraints(Response):
+    targets: List
+    budget: float
+    frequency: float
 
 class _ResponseMediaGetOptimizations(Response):
     id: int
@@ -62906,14 +63194,19 @@ class _ResponseMediaGetOptimizationsAuthor(Response):
     online: bool
 
 class _ResponseMediaGetOptimizationsRuns(Response):
-    market_id: int
-    start_date: str
-    end_date: str
-    force_cpm: bool
-    reach_alpha: float
-    syscodes: List
-    rate_cards: List
-    constraints: List
+    id: int
+    optimization_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseMediaGetOptimizationsRunsConstraints(Response):
+    targets: List
+    budget: float
+    frequency: float
 
 class _ResponseMediaPatchOptimizations(Response):
     id: int
@@ -62953,6 +63246,11 @@ class _ResponseMediaPatchOptimizationsRuns(Response):
     rate_cards: List
     constraints: List
 
+class _ResponseMediaPatchOptimizationsRunsConstraints(Response):
+    targets: List
+    budget: float
+    frequency: float
+
 class _ResponseMediaPostOptimizationsClone(Response):
     id: int
     author: _ResponseMediaPostOptimizationsCloneAuthor
@@ -62991,25 +63289,10 @@ class _ResponseMediaPostOptimizationsCloneRuns(Response):
     rate_cards: List
     constraints: List
 
-class _ResponseMediaPostOptimizationsRuns(Response):
-    id: int
-    optimization_id: int
-    state: str
-    is_cancel_requested: bool
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
-
-class _ResponseMediaGetOptimizationsRuns(Response):
-    id: int
-    optimization_id: int
-    state: str
-    is_cancel_requested: bool
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
+class _ResponseMediaPostOptimizationsCloneRunsConstraints(Response):
+    targets: List
+    budget: float
+    frequency: float
 
 class _ResponseMediaListOptimizationsRunsLogs(Response):
     id: int
@@ -63179,24 +63462,6 @@ class _ResponseModelsGetUser(Response):
 
 class _ResponseModelsGetBuilds(Response):
     id: int
-    name: str
-    created_at: str
-    description: str
-    root_mean_squared_error: float
-    r_squared_error: float
-    roc_auc: float
-
-class _ResponseModelsGetPredictions(Response):
-    id: int
-    table_name: str
-    primary_key: List
-    limiting_sql: str
-    output_table: str
-    schedule: _ResponseModelsGetPredictionsSchedule
-    state: str
-
-class _ResponseModelsGetBuilds(Response):
-    id: int
     state: str
     error: str
     name: str
@@ -63208,6 +63473,23 @@ class _ResponseModelsGetBuilds(Response):
     transformation_metadata: str
     output: str
     output_location: str
+
+class _ResponseModelsGetPredictions(Response):
+    id: int
+    table_name: str
+    primary_key: List
+    limiting_sql: str
+    output_table: str
+    schedule: _ResponseModelsGetPredictionsSchedule
+    state: str
+
+class _ResponseModelsGetPredictionsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
 
 class _ResponseModelsListBuildsLogs(Response):
     id: int
@@ -63484,6 +63766,14 @@ class _ResponseModelsPutArchivePredictions(Response):
     output_table: str
     schedule: _ResponseModelsPutArchivePredictionsSchedule
     state: str
+
+class _ResponseModelsPutArchivePredictionsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
 
 class _ResponseModelsListSchedules(Response):
     id: int
@@ -64577,6 +64867,13 @@ class _ResponsePredictionsGetScoredTables(Response):
     created_at: str
     score_stats: List
 
+class _ResponsePredictionsGetScoredTablesScoreStats(Response):
+    score_name: str
+    histogram: List
+    avg_score: float
+    min_score: float
+    max_score: float
+
 class _ResponsePredictionsGetSchedule(Response):
     scheduled: bool
     scheduled_days: List
@@ -64666,6 +64963,10 @@ class _ResponseProjectsPostScripts(Response):
     state: str
     last_run: _ResponseProjectsPostScriptsLastRun
 
+class _ResponseProjectsPostScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostImports(Response):
     id: int
     created_at: str
@@ -64676,6 +64977,10 @@ class _ResponseProjectsPostImports(Response):
     state: str
     last_run: _ResponseProjectsPostImportsLastRun
 
+class _ResponseProjectsPostImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostExports(Response):
     id: int
     created_at: str
@@ -64685,6 +64990,10 @@ class _ResponseProjectsPostExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsPostExportsLastRun
+
+class _ResponseProjectsPostExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostModels(Response):
     id: int
@@ -64701,6 +65010,10 @@ class _ResponseProjectsPostNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPostNotebooksLastDeploy
 
+class _ResponseProjectsPostNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostServices(Response):
     id: int
     created_at: str
@@ -64709,6 +65022,10 @@ class _ResponseProjectsPostServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPostServicesLastDeploy
 
+class _ResponseProjectsPostServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostWorkflows(Response):
     id: int
     created_at: str
@@ -64716,6 +65033,10 @@ class _ResponseProjectsPostWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsPostWorkflowsLastExecution
+
+class _ResponseProjectsPostWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostReports(Response):
     id: int
@@ -64744,6 +65065,10 @@ class _ResponseProjectsPostEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsPostEnhancementsLastRun
+
+class _ResponseProjectsPostEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostProjects(Response):
     id: int
@@ -64839,6 +65164,10 @@ class _ResponseProjectsPostCloneScripts(Response):
     state: str
     last_run: _ResponseProjectsPostCloneScriptsLastRun
 
+class _ResponseProjectsPostCloneScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostCloneImports(Response):
     id: int
     created_at: str
@@ -64849,6 +65178,10 @@ class _ResponseProjectsPostCloneImports(Response):
     state: str
     last_run: _ResponseProjectsPostCloneImportsLastRun
 
+class _ResponseProjectsPostCloneImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostCloneExports(Response):
     id: int
     created_at: str
@@ -64858,6 +65191,10 @@ class _ResponseProjectsPostCloneExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsPostCloneExportsLastRun
+
+class _ResponseProjectsPostCloneExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostCloneModels(Response):
     id: int
@@ -64874,6 +65211,10 @@ class _ResponseProjectsPostCloneNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPostCloneNotebooksLastDeploy
 
+class _ResponseProjectsPostCloneNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostCloneServices(Response):
     id: int
     created_at: str
@@ -64882,6 +65223,10 @@ class _ResponseProjectsPostCloneServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPostCloneServicesLastDeploy
 
+class _ResponseProjectsPostCloneServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPostCloneWorkflows(Response):
     id: int
     created_at: str
@@ -64889,6 +65234,10 @@ class _ResponseProjectsPostCloneWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsPostCloneWorkflowsLastExecution
+
+class _ResponseProjectsPostCloneWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostCloneReports(Response):
     id: int
@@ -64917,6 +65266,10 @@ class _ResponseProjectsPostCloneEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsPostCloneEnhancementsLastRun
+
+class _ResponseProjectsPostCloneEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPostCloneProjects(Response):
     id: int
@@ -65012,6 +65365,10 @@ class _ResponseProjectsGetScripts(Response):
     state: str
     last_run: _ResponseProjectsGetScriptsLastRun
 
+class _ResponseProjectsGetScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsGetImports(Response):
     id: int
     created_at: str
@@ -65022,6 +65379,10 @@ class _ResponseProjectsGetImports(Response):
     state: str
     last_run: _ResponseProjectsGetImportsLastRun
 
+class _ResponseProjectsGetImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsGetExports(Response):
     id: int
     created_at: str
@@ -65031,6 +65392,10 @@ class _ResponseProjectsGetExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsGetExportsLastRun
+
+class _ResponseProjectsGetExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsGetModels(Response):
     id: int
@@ -65047,6 +65412,10 @@ class _ResponseProjectsGetNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsGetNotebooksLastDeploy
 
+class _ResponseProjectsGetNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsGetServices(Response):
     id: int
     created_at: str
@@ -65055,6 +65424,10 @@ class _ResponseProjectsGetServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsGetServicesLastDeploy
 
+class _ResponseProjectsGetServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsGetWorkflows(Response):
     id: int
     created_at: str
@@ -65062,6 +65435,10 @@ class _ResponseProjectsGetWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsGetWorkflowsLastExecution
+
+class _ResponseProjectsGetWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsGetReports(Response):
     id: int
@@ -65090,6 +65467,10 @@ class _ResponseProjectsGetEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsGetEnhancementsLastRun
+
+class _ResponseProjectsGetEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsGetProjects(Response):
     id: int
@@ -65185,6 +65566,10 @@ class _ResponseProjectsPutScripts(Response):
     state: str
     last_run: _ResponseProjectsPutScriptsLastRun
 
+class _ResponseProjectsPutScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutImports(Response):
     id: int
     created_at: str
@@ -65195,6 +65580,10 @@ class _ResponseProjectsPutImports(Response):
     state: str
     last_run: _ResponseProjectsPutImportsLastRun
 
+class _ResponseProjectsPutImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutExports(Response):
     id: int
     created_at: str
@@ -65204,6 +65593,10 @@ class _ResponseProjectsPutExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsPutExportsLastRun
+
+class _ResponseProjectsPutExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutModels(Response):
     id: int
@@ -65220,6 +65613,10 @@ class _ResponseProjectsPutNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutNotebooksLastDeploy
 
+class _ResponseProjectsPutNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutServices(Response):
     id: int
     created_at: str
@@ -65228,6 +65625,10 @@ class _ResponseProjectsPutServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutServicesLastDeploy
 
+class _ResponseProjectsPutServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutWorkflows(Response):
     id: int
     created_at: str
@@ -65235,6 +65636,10 @@ class _ResponseProjectsPutWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsPutWorkflowsLastExecution
+
+class _ResponseProjectsPutWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutReports(Response):
     id: int
@@ -65263,6 +65668,10 @@ class _ResponseProjectsPutEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsPutEnhancementsLastRun
+
+class _ResponseProjectsPutEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutProjects(Response):
     id: int
@@ -65358,6 +65767,10 @@ class _ResponseProjectsPutAutoShareScripts(Response):
     state: str
     last_run: _ResponseProjectsPutAutoShareScriptsLastRun
 
+class _ResponseProjectsPutAutoShareScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutAutoShareImports(Response):
     id: int
     created_at: str
@@ -65368,6 +65781,10 @@ class _ResponseProjectsPutAutoShareImports(Response):
     state: str
     last_run: _ResponseProjectsPutAutoShareImportsLastRun
 
+class _ResponseProjectsPutAutoShareImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutAutoShareExports(Response):
     id: int
     created_at: str
@@ -65377,6 +65794,10 @@ class _ResponseProjectsPutAutoShareExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsPutAutoShareExportsLastRun
+
+class _ResponseProjectsPutAutoShareExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutAutoShareModels(Response):
     id: int
@@ -65393,6 +65814,10 @@ class _ResponseProjectsPutAutoShareNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutAutoShareNotebooksLastDeploy
 
+class _ResponseProjectsPutAutoShareNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutAutoShareServices(Response):
     id: int
     created_at: str
@@ -65401,6 +65826,10 @@ class _ResponseProjectsPutAutoShareServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutAutoShareServicesLastDeploy
 
+class _ResponseProjectsPutAutoShareServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutAutoShareWorkflows(Response):
     id: int
     created_at: str
@@ -65408,6 +65837,10 @@ class _ResponseProjectsPutAutoShareWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsPutAutoShareWorkflowsLastExecution
+
+class _ResponseProjectsPutAutoShareWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutAutoShareReports(Response):
     id: int
@@ -65436,6 +65869,10 @@ class _ResponseProjectsPutAutoShareEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsPutAutoShareEnhancementsLastRun
+
+class _ResponseProjectsPutAutoShareEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutAutoShareProjects(Response):
     id: int
@@ -65681,6 +66118,10 @@ class _ResponseProjectsPutArchiveScripts(Response):
     state: str
     last_run: _ResponseProjectsPutArchiveScriptsLastRun
 
+class _ResponseProjectsPutArchiveScriptsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutArchiveImports(Response):
     id: int
     created_at: str
@@ -65691,6 +66132,10 @@ class _ResponseProjectsPutArchiveImports(Response):
     state: str
     last_run: _ResponseProjectsPutArchiveImportsLastRun
 
+class _ResponseProjectsPutArchiveImportsLastRun(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutArchiveExports(Response):
     id: int
     created_at: str
@@ -65700,6 +66145,10 @@ class _ResponseProjectsPutArchiveExports(Response):
     finished_at: str
     state: str
     last_run: _ResponseProjectsPutArchiveExportsLastRun
+
+class _ResponseProjectsPutArchiveExportsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutArchiveModels(Response):
     id: int
@@ -65716,6 +66165,10 @@ class _ResponseProjectsPutArchiveNotebooks(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutArchiveNotebooksLastDeploy
 
+class _ResponseProjectsPutArchiveNotebooksLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutArchiveServices(Response):
     id: int
     created_at: str
@@ -65724,6 +66177,10 @@ class _ResponseProjectsPutArchiveServices(Response):
     current_deployment_id: int
     last_deploy: _ResponseProjectsPutArchiveServicesLastDeploy
 
+class _ResponseProjectsPutArchiveServicesLastDeploy(Response):
+    state: str
+    updated_at: str
+
 class _ResponseProjectsPutArchiveWorkflows(Response):
     id: int
     created_at: str
@@ -65731,6 +66188,10 @@ class _ResponseProjectsPutArchiveWorkflows(Response):
     name: str
     state: str
     last_execution: _ResponseProjectsPutArchiveWorkflowsLastExecution
+
+class _ResponseProjectsPutArchiveWorkflowsLastExecution(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutArchiveReports(Response):
     id: int
@@ -65759,6 +66220,10 @@ class _ResponseProjectsPutArchiveEnhancements(Response):
     updated_at: str
     name: str
     last_run: _ResponseProjectsPutArchiveEnhancementsLastRun
+
+class _ResponseProjectsPutArchiveEnhancementsLastRun(Response):
+    state: str
+    updated_at: str
 
 class _ResponseProjectsPutArchiveProjects(Response):
     id: int
@@ -74169,6 +74634,42 @@ class _ResponseTablesPostRefreshOutgoingTableMatches(Response):
     target: _ResponseTablesPostRefreshOutgoingTableMatchesTarget
     job: _ResponseTablesPostRefreshOutgoingTableMatchesJob
 
+class _ResponseTablesPostRefreshOutgoingTableMatchesTarget(Response):
+    name: str
+
+class _ResponseTablesPostRefreshOutgoingTableMatchesJob(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseTablesPostRefreshOutgoingTableMatchesJobLastRun
+    hidden: bool
+    match_options: _ResponseTablesPostRefreshOutgoingTableMatchesJobMatchOptions
+
+class _ResponseTablesPostRefreshOutgoingTableMatchesJobRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesPostRefreshOutgoingTableMatchesJobLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesPostRefreshOutgoingTableMatchesJobMatchOptions(Response):
+    max_matches: int
+    threshold: str
+
 class _ResponseTablesGet(Response):
     id: int
     database_id: int
@@ -74256,6 +74757,42 @@ class _ResponseTablesGetOutgoingTableMatches(Response):
     target_id: int
     target: _ResponseTablesGetOutgoingTableMatchesTarget
     job: _ResponseTablesGetOutgoingTableMatchesJob
+
+class _ResponseTablesGetOutgoingTableMatchesTarget(Response):
+    name: str
+
+class _ResponseTablesGetOutgoingTableMatchesJob(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    runs: List
+    last_run: _ResponseTablesGetOutgoingTableMatchesJobLastRun
+    hidden: bool
+    match_options: _ResponseTablesGetOutgoingTableMatchesJobMatchOptions
+
+class _ResponseTablesGetOutgoingTableMatchesJobRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesGetOutgoingTableMatchesJobLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesGetOutgoingTableMatchesJobMatchOptions(Response):
+    max_matches: int
+    threshold: str
 
 class _ResponseTablesPatch(Response):
     id: int
@@ -75921,6 +76458,24 @@ class _ResponseWorkflowsPostExecutionsTasks(Response):
     runs: List
     executions: List
 
+class _ResponseWorkflowsPostExecutionsTasksRuns(Response):
+    id: int
+    job_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
+class _ResponseWorkflowsPostExecutionsTasksExecutions(Response):
+    id: int
+    workflow_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
 class _ResponseWorkflowsGetExecutions(Response):
     id: int
     state: str
@@ -75949,6 +76504,24 @@ class _ResponseWorkflowsGetExecutionsTasks(Response):
     mistral_state_info: str
     runs: List
     executions: List
+
+class _ResponseWorkflowsGetExecutionsTasksRuns(Response):
+    id: int
+    job_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
+class _ResponseWorkflowsGetExecutionsTasksExecutions(Response):
+    id: int
+    workflow_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
 
 class _ResponseWorkflowsPostExecutionsCancel(Response):
     id: int
@@ -75979,6 +76552,24 @@ class _ResponseWorkflowsPostExecutionsCancelTasks(Response):
     runs: List
     executions: List
 
+class _ResponseWorkflowsPostExecutionsCancelTasksRuns(Response):
+    id: int
+    job_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
+class _ResponseWorkflowsPostExecutionsCancelTasksExecutions(Response):
+    id: int
+    workflow_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
 class _ResponseWorkflowsPostExecutionsResume(Response):
     id: int
     state: str
@@ -76007,6 +76598,24 @@ class _ResponseWorkflowsPostExecutionsResumeTasks(Response):
     mistral_state_info: str
     runs: List
     executions: List
+
+class _ResponseWorkflowsPostExecutionsResumeTasksRuns(Response):
+    id: int
+    job_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+
+class _ResponseWorkflowsPostExecutionsResumeTasksExecutions(Response):
+    id: int
+    workflow_id: int
+    my_permission_level: str
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
 
 class _ResponseWorkflowsPostExecutionsRetry(Response):
     id: int
@@ -76037,14 +76646,7 @@ class _ResponseWorkflowsPostExecutionsRetryTasks(Response):
     runs: List
     executions: List
 
-class _ResponseWorkflowsGetExecutionsTasks(Response):
-    name: str
-    mistral_state: str
-    mistral_state_info: str
-    runs: List
-    executions: List
-
-class _ResponseWorkflowsGetExecutionsTasksRuns(Response):
+class _ResponseWorkflowsPostExecutionsRetryTasksRuns(Response):
     id: int
     job_id: int
     my_permission_level: str
@@ -76053,7 +76655,7 @@ class _ResponseWorkflowsGetExecutionsTasksRuns(Response):
     started_at: str
     finished_at: str
 
-class _ResponseWorkflowsGetExecutionsTasksExecutions(Response):
+class _ResponseWorkflowsPostExecutionsRetryTasksExecutions(Response):
     id: int
     workflow_id: int
     my_permission_level: str

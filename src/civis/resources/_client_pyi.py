@@ -28,14 +28,13 @@ def _get_annotation(param):
 
 
 def _extract_nested_response_classes(response_classes, return_type):
-    response_classes.append(return_type)
+    response_classes[return_type.__name__] = return_type
     for typ in return_type.__annotations__.values():
         if isinstance(typ, str):
             continue
         if isinstance(typ, typing._GenericAlias):
-            response_classes.append(typing.get_args(typ)[0])
-        else:
-            response_classes = _extract_nested_response_classes(response_classes, typ)
+            typ = typing.get_args(typ)[0]
+        response_classes = _extract_nested_response_classes(response_classes, typ)
     return response_classes
 
 
@@ -58,7 +57,7 @@ from civis.response import Response
 """
         )
 
-        response_classes = []
+        response_classes = {}
 
         for endpoint_name, endpoint_class in classes.items():
             f.write(f"class {_get_endpoint_class_name(endpoint_name)}:\n")
@@ -95,8 +94,16 @@ from civis.response import Response
             f.write("\n".join(method_defs))
             f.write("\n")
 
-        for response_class in response_classes:
-            f.write(f"class {response_class.__name__}(Response):\n")
+        for response_class in response_classes.values():
+            if len(line1 := f"class {response_class.__name__}(Response):") <= 88:
+                f.write(f"{line1}\n")
+            elif len(line2 := f"class {response_class.__name__}(") <= 88:
+                f.write(f"{line2}\n    Response\n):\n")
+            else:
+                f.write(
+                    f"class {response_class.__name__}(  # noqa: E501\n"
+                    "    Response\n):\n"
+                )
             for name, anno in response_class.__annotations__.items():
                 anno_str = anno if isinstance(anno, str) else anno.__name__
                 if len(line := f"    {name}: {anno_str}") <= 88:
