@@ -365,7 +365,7 @@ class _Aliases:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseAliasesList]:
         """List Aliases
 
         Parameters
@@ -665,7 +665,7 @@ class _Announcements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseAnnouncementsList]:
         """List announcements
 
         Parameters
@@ -713,7 +713,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseClustersListKubernetes]:
         """List Kubernetes Clusters
 
         Parameters
@@ -939,7 +939,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseClustersListKubernetesDeployments]:
         """List the deployments associated with a Kubernetes Cluster
 
         Parameters
@@ -1582,7 +1582,7 @@ class _Credentials:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseCredentialsList]:
         """List credentials
 
         Parameters
@@ -4236,7 +4236,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRuns]:
         """List runs for the given Civis Data Match job
 
         Parameters
@@ -4407,7 +4407,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -4979,7 +4979,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListIdentityResolution]:
         """List Identity Resolution Enhancements
 
         Parameters
@@ -6650,7 +6650,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListIdentityResolutionRuns]:
         """List runs for the given Identity Resolution job
 
         Parameters
@@ -6902,7 +6902,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsList]:
         """List Enhancements
 
         Parameters
@@ -7934,7 +7934,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListCassNcoaRuns]:
         """List runs for the given CASS NCOA job
 
         Parameters
@@ -8105,7 +8105,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListCassNcoaRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -8890,7 +8890,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListGeocodeRuns]:
         """List runs for the given Geocode job
 
         Parameters
@@ -9061,7 +9061,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseEnhancementsListGeocodeRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -10760,7 +10760,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseExportsList]:
         """List
 
         Parameters
@@ -10872,7 +10872,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseExportsListFilesCsvRuns]:
         """List runs for the given CSV Export job
 
         Parameters
@@ -11009,7 +11009,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseExportsListFilesCsvRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -12548,7 +12548,7 @@ class _Git_Repos:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseGitReposList]:
         """List bookmarked git repositories
 
         Parameters
@@ -12678,7 +12678,7 @@ class _Groups:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseGroupsList]:
         """List Groups
 
         Parameters
@@ -14092,7 +14092,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseImportsList]:
         """List Imports
 
         Parameters
@@ -14653,7 +14653,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseImportsListFilesRuns]:
         """List runs for the given Import job
 
         Parameters
@@ -15721,7 +15721,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseImportsListFilesCsvRuns]:
         """List runs for the given CSV Import job
 
         Parameters
@@ -15868,7 +15868,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseImportsListBatches]:
         """List batch imports
 
         Parameters
@@ -17260,7 +17260,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseJobsList]:
         """List Jobs
 
         Parameters
@@ -17600,7 +17600,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseJobsListRuns]:
         """List runs for the given job
 
         Parameters
@@ -17725,7 +17725,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseJobsListRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -19817,7 +19817,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseMediaListOptimizations]:
         """List all optimizations
 
         Parameters
@@ -20405,7 +20405,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseMediaListOptimizationsRuns]:
         """List runs for the given Optimization job
 
         Parameters
@@ -20932,7 +20932,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseModelsList]:
         """List
 
         Parameters
@@ -21393,7 +21393,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseModelsListBuilds]:
         """List builds for the given Model job
 
         Parameters
@@ -22119,7 +22119,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseNotebooksList]:
         """List Notebooks
 
         Parameters
@@ -23500,7 +23500,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseNotebooksListDeployments]:
         """List deployments for a Notebook
 
         Parameters
@@ -24069,7 +24069,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponsePermissionSetsList]:
         """List Permission Sets
 
         Parameters
@@ -24648,7 +24648,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponsePermissionSetsListResources]:
         """List resources in a permission set
 
         Parameters
@@ -25194,7 +25194,7 @@ class _Projects:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseProjectsList]:
         """List projects
 
         Parameters
@@ -26939,7 +26939,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseQueriesList]:
         """List queries
 
         Parameters
@@ -27170,7 +27170,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseQueriesListRuns]:
         """List runs for the given Query job
 
         Parameters
@@ -28052,7 +28052,7 @@ class _Reports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseReportsList]:
         """List Reports
 
         Parameters
@@ -30879,7 +30879,7 @@ class _Roles:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseRolesList]:
         """List Roles
 
         Parameters
@@ -31230,7 +31230,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsList]:
         """List Scripts
 
         Parameters
@@ -37884,7 +37884,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListCustom]:
         """List Custom Scripts
 
         Parameters
@@ -39150,7 +39150,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListSqlRuns]:
         """List runs for the given SQL job
 
         Parameters
@@ -39387,7 +39387,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListContainersRuns]:
         """List runs for the given Container job
 
         Parameters
@@ -39550,7 +39550,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListPython3Runs]:
         """List runs for the given Python job
 
         Parameters
@@ -39773,7 +39773,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListRRuns]:
         """List runs for the given R job
 
         Parameters
@@ -40026,7 +40026,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListJavascriptRuns]:
         """List runs for the given Javascript job
 
         Parameters
@@ -40239,7 +40239,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListCustomRuns]:
         """List runs for the given Custom job
 
         Parameters
@@ -40403,7 +40403,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListSqlRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -40452,7 +40452,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListContainersRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -40538,7 +40538,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListPython3RunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -40624,7 +40624,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListRRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -40710,7 +40710,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListJavascriptRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -40796,7 +40796,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseScriptsListCustomRunsOutputs]:
         """List the outputs for a run
 
         Parameters
@@ -46996,7 +46996,7 @@ class _Search:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseSearchListQueries]:
         """Search queries that are not hidden
 
         Parameters
@@ -47078,7 +47078,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseServicesList]:
         """List Services
 
         Parameters
@@ -48479,7 +48479,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseServicesListDeployments]:
         """List deployments for a Service
 
         Parameters
@@ -49524,7 +49524,7 @@ class _Table_Tags:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseTableTagsList]:
         """List Table Tags
 
         Parameters
@@ -50088,7 +50088,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseTablesList]:
         """List tables
 
         Parameters
@@ -50488,7 +50488,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseTablesListColumns]:
         """List columns in the specified table
 
         Parameters
@@ -51002,7 +51002,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseTemplatesListReports]:
         """List Report Templates
 
         Parameters
@@ -51702,7 +51702,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseTemplatesListScripts]:
         """List Script Templates
 
         Parameters
@@ -52468,7 +52468,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseUsersList]:
         """List users
 
         Parameters
@@ -53405,7 +53405,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseUsersListApiKeys]:
         """Show API keys belonging to the specified user
 
         Parameters
@@ -53768,7 +53768,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseUsersListMeFavorites]:
         """List Favorites
 
         Parameters
@@ -54059,7 +54059,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseWorkflowsList]:
         """List Workflows
 
         Parameters
@@ -55540,7 +55540,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator:
+    ) -> Iterator[_ResponseWorkflowsListExecutions]:
         """List workflow executions
 
         Parameters
@@ -56349,6 +56349,14 @@ class _ResponseAliasesPutTransferDependencies(Response):
     description: str
     shared: bool
 
+class _ResponseAliasesList(Response):
+    id: int
+    object_id: int
+    object_type: str
+    alias: str
+    user_id: int
+    display_name: str
+
 class _ResponseAliasesPost(Response):
     id: int
     object_id: int
@@ -56388,6 +56396,55 @@ class _ResponseAliasesGetObjectType(Response):
     alias: str
     user_id: int
     display_name: str
+
+class _ResponseAnnouncementsList(Response):
+    id: int
+    subject: str
+    body: str
+    released_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseClustersListKubernetes(Response):
+    id: int
+    organization_id: str
+    organization_name: str
+    organization_slug: str
+    raw_cluster_slug: str
+    custom_partitions: bool
+    cluster_partitions: List[_ResponseClustersListKubernetesClusterPartitions]
+    is_nat_enabled: bool
+
+class _ResponseClustersListKubernetesClusterPartitions(Response):
+    cluster_partition_id: int
+    name: str
+    labels: List
+    instance_configs: (
+        List[_ResponseClustersListKubernetesClusterPartitionsInstanceConfigs]
+    )
+    default_instance_config_id: int
+
+class _ResponseClustersListKubernetesClusterPartitionsInstanceConfigs(Response):
+    instance_config_id: int
+    instance_type: str
+    min_instances: int
+    max_instances: int
+    instance_max_memory: int
+    instance_max_cpu: int
+    instance_max_disk: int
+    usage_stats: (
+        _ResponseClustersListKubernetesClusterPartitionsInstanceConfigsUsageStats
+    )
+
+class _ResponseClustersListKubernetesClusterPartitionsInstanceConfigsUsageStats(
+    Response
+):
+    pending_memory_requested: int
+    pending_cpu_requested: int
+    running_memory_requested: int
+    running_cpu_requested: int
+    pending_deployments: int
+    running_deployments: int
 
 class _ResponseClustersGetKubernetes(Response):
     id: int
@@ -56436,6 +56493,29 @@ class _ResponseClustersListKubernetesComputeHours(Response):
     normalized_hours_by_instance_type: str
     updated_at: str
     month_and_year: str
+
+class _ResponseClustersListKubernetesDeployments(Response):
+    id: int
+    name: str
+    base_id: int
+    base_type: str
+    state: str
+    cpu: int
+    memory: int
+    disk_space: int
+    instance_type: str
+    author: _ResponseClustersListKubernetesDeploymentsAuthor
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+
+class _ResponseClustersListKubernetesDeploymentsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseClustersListKubernetesDeploymentStats(Response):
     base_type: str
@@ -56603,6 +56683,29 @@ class _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs(Response):
 
 class _ResponseCredentialsListTypes(Response):
     types: List
+
+class _ResponseCredentialsList(Response):
+    id: int
+    name: str
+    type: str
+    username: str
+    description: str
+    owner: str
+    user: _ResponseCredentialsListUser
+    remote_host_id: int
+    remote_host_name: str
+    state: str
+    created_at: str
+    updated_at: str
+    default: bool
+    oauth: bool
+
+class _ResponseCredentialsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseCredentialsPost(Response):
     id: int
@@ -57588,6 +57691,16 @@ class _ResponseEnhancementsPostCivisDataMatchRuns(Response):
     finished_at: str
     error: str
 
+class _ResponseEnhancementsListCivisDataMatchRuns(Response):
+    id: int
+    civis_data_match_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseEnhancementsGetCivisDataMatchRuns(Response):
     id: int
     civis_data_match_id: int
@@ -57608,6 +57721,13 @@ class _ResponseEnhancementsPostCivisDataMatchCancel(Response):
     id: int
     state: str
     is_cancel_requested: bool
+
+class _ResponseEnhancementsListCivisDataMatchRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
 
 class _ResponseEnhancementsListCivisDataMatchShares(Response):
     readers: _ResponseEnhancementsListCivisDataMatchSharesReaders
@@ -57857,6 +57977,47 @@ class _ResponseEnhancementsListCivisDataMatchProjectsUsers(Response):
     username: str
     initials: str
     online: bool
+
+class _ResponseEnhancementsListIdentityResolution(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsListIdentityResolutionAuthor
+    state: str
+    archived: str
+    sources: List[_ResponseEnhancementsListIdentityResolutionSources]
+    last_run: _ResponseEnhancementsListIdentityResolutionLastRun
+
+class _ResponseEnhancementsListIdentityResolutionAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsListIdentityResolutionSources(Response):
+    name: str
+
+class _ResponseEnhancementsListIdentityResolutionLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsListIdentityResolutionLastRunRunMetrics
+
+class _ResponseEnhancementsListIdentityResolutionLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsPostIdentityResolution(Response):
     id: int
@@ -58486,6 +58647,27 @@ class _ResponseEnhancementsPostIdentityResolutionRunsRunMetrics(Response):
     avg_cluster_size: float
     cluster_size_frequencies: dict
 
+class _ResponseEnhancementsListIdentityResolutionRuns(Response):
+    id: int
+    identity_resolution_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    sample_records_query: str
+    expand_cluster_query: str
+    run_metrics: _ResponseEnhancementsListIdentityResolutionRunsRunMetrics
+
+class _ResponseEnhancementsListIdentityResolutionRunsRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
+
 class _ResponseEnhancementsGetIdentityResolutionRuns(Response):
     id: int
     identity_resolution_id: int
@@ -58526,6 +58708,23 @@ class _ResponseEnhancementsListTypes(Response):
 class _ResponseEnhancementsListFieldMapping(Response):
     field: str
     description: str
+
+class _ResponseEnhancementsList(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsListAuthor
+    state: str
+    archived: str
+
+class _ResponseEnhancementsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseEnhancementsPostCassNcoa(Response):
     id: int
@@ -58873,6 +59072,16 @@ class _ResponseEnhancementsPostCassNcoaRuns(Response):
     finished_at: str
     error: str
 
+class _ResponseEnhancementsListCassNcoaRuns(Response):
+    id: int
+    cass_ncoa_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseEnhancementsGetCassNcoaRuns(Response):
     id: int
     cass_ncoa_id: int
@@ -58893,6 +59102,13 @@ class _ResponseEnhancementsPostCassNcoaCancel(Response):
     id: int
     state: str
     is_cancel_requested: bool
+
+class _ResponseEnhancementsListCassNcoaRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
 
 class _ResponseEnhancementsPostGeocode(Response):
     id: int
@@ -59140,6 +59356,16 @@ class _ResponseEnhancementsPostGeocodeRuns(Response):
     finished_at: str
     error: str
 
+class _ResponseEnhancementsListGeocodeRuns(Response):
+    id: int
+    geocode_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseEnhancementsGetGeocodeRuns(Response):
     id: int
     geocode_id: int
@@ -59160,6 +59386,13 @@ class _ResponseEnhancementsPostGeocodeCancel(Response):
     id: int
     state: str
     is_cancel_requested: bool
+
+class _ResponseEnhancementsListGeocodeRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
 
 class _ResponseEnhancementsListCassNcoaShares(Response):
     readers: _ResponseEnhancementsListCassNcoaSharesReaders
@@ -59950,6 +60183,31 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveLastRunRunMetrics(Respons
     avg_cluster_size: float
     cluster_size_frequencies: dict
 
+class _ResponseExportsList(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    state: str
+    last_run: _ResponseExportsListLastRun
+    author: _ResponseExportsListAuthor
+
+class _ResponseExportsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseExportsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseExportsPostFilesCsvRuns(Response):
     id: int
     state: str
@@ -59958,6 +60216,14 @@ class _ResponseExportsPostFilesCsvRuns(Response):
     finished_at: str
     error: str
     output_cached_on: str
+
+class _ResponseExportsListFilesCsvRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
 
 class _ResponseExportsGetFilesCsvRuns(Response):
     id: int
@@ -59973,6 +60239,13 @@ class _ResponseExportsListFilesCsvRunsLogs(Response):
     created_at: str
     message: str
     level: str
+
+class _ResponseExportsListFilesCsvRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
 
 class _ResponseExportsPostFilesCsv(Response):
     id: int
@@ -60444,6 +60717,12 @@ class _ResponseFilesPutPreprocessCsvArchive(Response):
     column_delimiter: str
     hidden: bool
 
+class _ResponseGitReposList(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseGitReposPost(Response):
     id: int
     repo_url: str
@@ -60459,6 +60738,28 @@ class _ResponseGitReposGet(Response):
 class _ResponseGitReposListRefs(Response):
     branches: List
     tags: List
+
+class _ResponseGroupsList(Response):
+    id: int
+    name: str
+    created_at: str
+    updated_at: str
+    description: str
+    slug: str
+    organization_id: int
+    organization_name: str
+    member_count: int
+    total_member_count: int
+    last_updated_by_id: int
+    created_by_id: int
+    members: List[_ResponseGroupsListMembers]
+
+class _ResponseGroupsListMembers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseGroupsPost(Response):
     id: int
@@ -61082,6 +61383,58 @@ class _ResponseImportsPutArchiveRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseImportsList(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsListSource
+    destination: _ResponseImportsListDestination
+    schedule: _ResponseImportsListSchedule
+    id: int
+    is_outbound: bool
+    job_type: str
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsListLastRun
+    user: _ResponseImportsListUser
+    time_zone: str
+    archived: str
+
+class _ResponseImportsListSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsListDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List
+    name: str
+
+class _ResponseImportsListSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseImportsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseImportsPost(Response):
     name: str
     sync_type: str
@@ -61245,6 +61598,16 @@ class _ResponseImportsPostFiles(Response):
     upload_fields: dict
 
 class _ResponseImportsPostFilesRuns(Response):
+    id: int
+    import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsListFilesRuns(Response):
     id: int
     import_id: int
     state: str
@@ -61510,6 +61873,16 @@ class _ResponseImportsPostFilesCsvRuns(Response):
     finished_at: str
     error: str
 
+class _ResponseImportsListFilesCsvRuns(Response):
+    id: int
+    csv_import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseImportsGetFilesCsvRuns(Response):
     id: int
     csv_import_id: int
@@ -61525,6 +61898,16 @@ class _ResponseImportsListFilesCsvRunsLogs(Response):
     created_at: str
     message: str
     level: str
+
+class _ResponseImportsListBatches(Response):
+    id: int
+    schema: str
+    table: str
+    remote_host_id: int
+    state: str
+    started_at: str
+    finished_at: str
+    error: str
 
 class _ResponseImportsPostBatches(Response):
     id: int
@@ -61954,6 +62337,42 @@ class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     soql_query: str
     include_deleted_records: bool
 
+class _ResponseJobsList(Response):
+    id: int
+    name: str
+    type: str
+    from_template_id: int
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseJobsListLastRun
+    archived: str
+    author: _ResponseJobsListAuthor
+    schedule: _ResponseJobsListSchedule
+
+class _ResponseJobsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseJobsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseJobsListSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
 class _ResponseJobsGet(Response):
     id: int
     name: str
@@ -62087,6 +62506,14 @@ class _ResponseJobsListChildrenLastRun(Response):
     finished_at: str
     error: str
 
+class _ResponseJobsListRuns(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseJobsPostRuns(Response):
     id: int
     state: str
@@ -62094,6 +62521,13 @@ class _ResponseJobsPostRuns(Response):
     started_at: str
     finished_at: str
     error: str
+
+class _ResponseJobsListRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
 
 class _ResponseJobsListRunsLogs(Response):
     id: int
@@ -63138,6 +63572,25 @@ class _ResponseMediaPutRatecardsArchive(Response):
     dma_number: int
     archived: str
 
+class _ResponseMediaListOptimizations(Response):
+    id: int
+    author: _ResponseMediaListOptimizationsAuthor
+    name: str
+    created_at: str
+    updated_at: str
+    finished_at: str
+    state: str
+    last_run_id: int
+    spot_order_id: int
+    archived: str
+
+class _ResponseMediaListOptimizationsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseMediaPostOptimizations(Response):
     id: int
     author: _ResponseMediaPostOptimizationsAuthor
@@ -63310,6 +63763,16 @@ class _ResponseMediaPostOptimizationsCloneRunsConstraints(Response):
     budget: float
     frequency: float
 
+class _ResponseMediaListOptimizationsRuns(Response):
+    id: int
+    optimization_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseMediaListOptimizationsRunsLogs(Response):
     id: int
     created_at: str
@@ -63398,6 +63861,82 @@ class _ResponseModelsListTypes(Response):
     algorithm: str
     dv_type: str
     fint_allowed: bool
+
+class _ResponseModelsList(Response):
+    id: int
+    table_name: str
+    database_id: int
+    credential_id: int
+    model_name: str
+    description: str
+    interaction_terms: bool
+    box_cox_transformation: bool
+    model_type_id: int
+    primary_key: str
+    dependent_variable: str
+    dependent_variable_order: List
+    excluded_columns: List
+    limiting_sql: str
+    cross_validation_parameters: dict
+    number_of_folds: int
+    schedule: _ResponseModelsListSchedule
+    parent_id: int
+    time_zone: str
+    last_run: _ResponseModelsListLastRun
+    user: _ResponseModelsListUser
+    created_at: str
+    updated_at: str
+    current_build_state: str
+    current_build_exception: str
+    builds: List[_ResponseModelsListBuilds]
+    predictions: List[_ResponseModelsListPredictions]
+    last_output_location: str
+    archived: str
+
+class _ResponseModelsListSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
+
+class _ResponseModelsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseModelsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseModelsListBuilds(Response):
+    id: int
+    state: str
+    error: str
+    name: str
+    created_at: str
+    description: str
+    root_mean_squared_error: float
+    r_squared_error: float
+    roc_auc: float
+    transformation_metadata: str
+    output: str
+    output_location: str
+
+class _ResponseModelsListPredictions(Response):
+    id: int
+    table_name: str
+    primary_key: List
+    limiting_sql: str
+    output_table: str
+    state: str
 
 class _ResponseModelsGet(Response):
     id: int
@@ -63802,6 +64341,42 @@ class _ResponseModelsListSchedulesSchedule(Response):
     scheduled_minutes: List
     scheduled_runs_per_hour: int
     scheduled_days_of_month: List
+
+class _ResponseNotebooksList(Response):
+    id: int
+    name: str
+    language: str
+    description: str
+    user: _ResponseNotebooksListUser
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseNotebooksListMostRecentDeployment
+    archived: str
+
+class _ResponseNotebooksListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseNotebooksListMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
 
 class _ResponseNotebooksPost(Response):
     id: int
@@ -64324,6 +64899,24 @@ class _ResponseNotebooksListProjectsUsers(Response):
     initials: str
     online: bool
 
+class _ResponseNotebooksListDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    notebook_id: int
+
 class _ResponseNotebooksPostDeployments(Response):
     deployment_id: int
     user_id: int
@@ -64445,6 +65038,22 @@ class _ResponseOntologyList(Response):
     title: str
     desc: str
     aliases: List
+
+class _ResponsePermissionSetsList(Response):
+    id: int
+    name: str
+    description: str
+    author: _ResponsePermissionSetsListAuthor
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponsePermissionSetsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponsePermissionSetsPost(Response):
     id: int
@@ -64682,6 +65291,13 @@ class _ResponsePermissionSetsListUsersPermissions(Response):
     write: bool
     manage: bool
 
+class _ResponsePermissionSetsListResources(Response):
+    permission_set_id: int
+    name: str
+    description: str
+    created_at: str
+    updated_at: str
+
 class _ResponsePermissionSetsPostResources(Response):
     permission_set_id: int
     name: str
@@ -64910,6 +65526,31 @@ class _ResponsePredictionsListSchedulesSchedule(Response):
     scheduled_minutes: List
     scheduled_runs_per_hour: int
     scheduled_days_of_month: List
+
+class _ResponseProjectsList(Response):
+    id: int
+    author: _ResponseProjectsListAuthor
+    name: str
+    description: str
+    users: List[_ResponseProjectsListUsers]
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseProjectsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseProjectsListUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseProjectsPost(Response):
     id: int
@@ -66292,6 +66933,26 @@ class _ResponseProjectsListParentProjectsUsers(Response):
     initials: str
     online: bool
 
+class _ResponseQueriesList(Response):
+    id: int
+    database: int
+    sql: str
+    credential: int
+    result_rows: List
+    result_columns: List
+    error: str
+    started_at: str
+    finished_at: str
+    state: str
+    script_id: int
+    exception: str
+    created_at: str
+    updated_at: str
+    last_run_id: int
+    archived: str
+    preview_rows: int
+    report_id: int
+
 class _ResponseQueriesPost(Response):
     id: int
     database: int
@@ -66321,6 +66982,16 @@ class _ResponseQueriesPost(Response):
     report_id: int
 
 class _ResponseQueriesPostRuns(Response):
+    id: int
+    query_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseQueriesListRuns(Response):
     id: int
     query_id: int
     state: str
@@ -66643,6 +67314,56 @@ class _ResponseRemoteHostsPutSharesGroupsOwnersGroups(Response):
 class _ResponseRemoteHostsListDataSets(Response):
     name: str
     full_path: bool
+
+class _ResponseReportsList(Response):
+    id: int
+    name: str
+    user: _ResponseReportsListUser
+    created_at: str
+    updated_at: str
+    type: str
+    archived: str
+    projects: List[_ResponseReportsListProjects]
+    state: str
+    finished_at: str
+    viz_updated_at: str
+    script: _ResponseReportsListScript
+    job_path: str
+    tableau_id: int
+    template_id: int
+    auth_thumbnail_url: str
+    last_run: _ResponseReportsListLastRun
+
+class _ResponseReportsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseReportsListProjects(Response):
+    id: int
+    author: _ResponseReportsListProjectsAuthor
+    name: str
+    description: str
+    users: List[_ResponseReportsListProjectsUsers]
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseReportsListScript(Response):
+    id: int
+    name: str
+    sql: str
+
+class _ResponseReportsListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
 
 class _ResponseReportsPost(Response):
     id: int
@@ -67085,17 +67806,6 @@ class _ResponseReportsPutTransferDependencies(Response):
     permission_level: str
     description: str
     shared: bool
-
-class _ResponseReportsListProjects(Response):
-    id: int
-    author: _ResponseReportsListProjectsAuthor
-    name: str
-    description: str
-    users: List[_ResponseReportsListProjectsUsers]
-    auto_share: bool
-    created_at: str
-    updated_at: str
-    archived: str
 
 class _ResponseReportsListProjectsAuthor(Response):
     id: int
@@ -67822,6 +68532,12 @@ class _ResponseReportsPutSqlArchiveQueryRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseRolesList(Response):
+    id: int
+    name: str
+    slug: str
+    description: str
+
 class _ResponseScriptsListTypes(Response):
     name: str
 
@@ -67925,6 +68641,48 @@ class _ResponseScriptsPostRunningAs(Response):
     online: bool
 
 class _ResponseScriptsPostLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsList(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsListAuthor
+    state: str
+    finished_at: str
+    projects: List[_ResponseScriptsListProjects]
+    parent_id: int
+    is_template: bool
+    from_template_id: int
+    links: _ResponseScriptsListLinks
+    time_zone: str
+    last_run: _ResponseScriptsListLastRun
+    archived: str
+    template_script_id: int
+
+class _ResponseScriptsListAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsListLastRun(Response):
     id: int
     state: str
     created_at: str
@@ -70237,6 +70995,58 @@ class _ResponseScriptsPatchJavascriptLastRun(Response):
     finished_at: str
     error: str
 
+class _ResponseScriptsListCustom(Response):
+    id: int
+    name: str
+    type: str
+    backing_script_type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsListCustomAuthor
+    state: str
+    finished_at: str
+    projects: List[_ResponseScriptsListCustomProjects]
+    parent_id: int
+    from_template_id: int
+    time_zone: str
+    last_run: _ResponseScriptsListCustomLastRun
+    archived: str
+    last_successful_run: _ResponseScriptsListCustomLastSuccessfulRun
+
+class _ResponseScriptsListCustomAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListCustomProjects(Response):
+    id: int
+    author: _ResponseScriptsListCustomProjectsAuthor
+    name: str
+    description: str
+    users: List[_ResponseScriptsListCustomProjectsUsers]
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListCustomLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsListCustomLastSuccessfulRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseScriptsPostCustom(Response):
     id: int
     from_template_aliases: List[_ResponseScriptsPostCustomFromTemplateAliases]
@@ -70714,6 +71524,23 @@ class _ResponseScriptsPostSqlRunsOutput(Response):
     file_id: int
     path: str
 
+class _ResponseScriptsListSqlRuns(Response):
+    id: int
+    sql_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    output: List[_ResponseScriptsListSqlRunsOutput]
+    output_cached_on: str
+
+class _ResponseScriptsListSqlRunsOutput(Response):
+    output_name: str
+    file_id: int
+    path: str
+
 class _ResponseScriptsGetSqlRuns(Response):
     id: int
     sql_id: int
@@ -70749,6 +71576,18 @@ class _ResponseScriptsPostContainersRuns(Response):
     max_memory_usage: float
     max_cpu_usage: float
 
+class _ResponseScriptsListContainersRuns(Response):
+    id: int
+    container_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
 class _ResponseScriptsGetContainersRuns(Response):
     id: int
     container_id: int
@@ -70762,6 +71601,18 @@ class _ResponseScriptsGetContainersRuns(Response):
     max_cpu_usage: float
 
 class _ResponseScriptsPostPython3Runs(Response):
+    id: int
+    python_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListPython3Runs(Response):
     id: int
     python_id: int
     state: str
@@ -70792,6 +71643,18 @@ class _ResponseScriptsListPython3RunsLogs(Response):
     level: str
 
 class _ResponseScriptsPostRRuns(Response):
+    id: int
+    r_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListRRuns(Response):
     id: int
     r_id: int
     state: str
@@ -70837,6 +71700,16 @@ class _ResponseScriptsPostJavascriptRuns(Response):
     finished_at: str
     error: str
 
+class _ResponseScriptsListJavascriptRuns(Response):
+    id: int
+    javascript_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
 class _ResponseScriptsGetJavascriptRuns(Response):
     id: int
     javascript_id: int
@@ -70854,6 +71727,18 @@ class _ResponseScriptsListJavascriptRunsLogs(Response):
     level: str
 
 class _ResponseScriptsPostCustomRuns(Response):
+    id: int
+    custom_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListCustomRuns(Response):
     id: int
     custom_id: int
     state: str
@@ -70883,7 +71768,28 @@ class _ResponseScriptsListCustomRunsLogs(Response):
     message: str
     level: str
 
+class _ResponseScriptsListSqlRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsListContainersRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
 class _ResponseScriptsPostContainersRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsListPython3RunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
@@ -70897,6 +71803,13 @@ class _ResponseScriptsPostPython3RunsOutputs(Response):
     link: str
     value: str
 
+class _ResponseScriptsListRRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
 class _ResponseScriptsPostRRunsOutputs(Response):
     object_type: str
     object_id: int
@@ -70904,7 +71817,21 @@ class _ResponseScriptsPostRRunsOutputs(Response):
     link: str
     value: str
 
+class _ResponseScriptsListJavascriptRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
 class _ResponseScriptsPostJavascriptRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsListCustomRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
@@ -72757,17 +73684,6 @@ class _ResponseScriptsPutCustomTransferDependencies(Response):
     description: str
     shared: bool
 
-class _ResponseScriptsListCustomProjects(Response):
-    id: int
-    author: _ResponseScriptsListCustomProjectsAuthor
-    name: str
-    description: str
-    users: List[_ResponseScriptsListCustomProjectsUsers]
-    auto_share: bool
-    created_at: str
-    updated_at: str
-    archived: str
-
 class _ResponseScriptsListCustomProjectsAuthor(Response):
     id: int
     name: str
@@ -73563,6 +74479,63 @@ class _ResponseSearchListResults(Response):
 class _ResponseSearchListTypes(Response):
     type: str
 
+class _ResponseSearchListQueries(Response):
+    id: int
+    database: int
+    credential: int
+    sql: str
+    author_id: int
+    archived: bool
+    created_at: str
+    updated_at: str
+    last_run: _ResponseSearchListQueriesLastRun
+
+class _ResponseSearchListQueriesLastRun(Response):
+    id: int
+    state: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseServicesList(Response):
+    id: int
+    name: str
+    description: str
+    user: _ResponseServicesListUser
+    type: str
+    created_at: str
+    updated_at: str
+    git_repo_url: str
+    git_repo_ref: str
+    git_path_dir: str
+    current_deployment: _ResponseServicesListCurrentDeployment
+    archived: str
+
+class _ResponseServicesListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseServicesListCurrentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
 class _ResponseServicesPost(Response):
     id: int
     name: str
@@ -74088,6 +75061,24 @@ class _ResponseServicesListProjectsUsers(Response):
     initials: str
     online: bool
 
+class _ResponseServicesListDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    service_id: int
+
 class _ResponseServicesPostDeployments(Response):
     deployment_id: int
     user_id: int
@@ -74492,6 +75483,19 @@ class _ResponseStorageHostsPutTransferDependencies(Response):
     description: str
     shared: bool
 
+class _ResponseTableTagsList(Response):
+    id: int
+    name: str
+    table_count: int
+    user: _ResponseTableTagsListUser
+
+class _ResponseTableTagsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseTableTagsPost(Response):
     id: int
     name: str
@@ -74686,6 +75690,37 @@ class _ResponseTablesPostRefreshOutgoingTableMatchesJobMatchOptions(Response):
     max_matches: int
     threshold: str
 
+class _ResponseTablesList(Response):
+    id: int
+    database_id: int
+    schema: str
+    name: str
+    description: str
+    is_view: bool
+    row_count: int
+    column_count: int
+    size_mb: float
+    owner: str
+    distkey: str
+    sortkeys: str
+    refresh_status: str
+    last_refresh: str
+    refresh_id: str
+    last_run: _ResponseTablesListLastRun
+    table_tags: List[_ResponseTablesListTableTags]
+
+class _ResponseTablesListLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseTablesListTableTags(Response):
+    id: int
+    name: str
+
 class _ResponseTablesGet(Response):
     id: int
     database_id: int
@@ -74845,6 +75880,27 @@ class _ResponseTablesPatchLastRun(Response):
 class _ResponseTablesPatchTableTags(Response):
     id: int
     name: str
+
+class _ResponseTablesListColumns(Response):
+    name: str
+    civis_data_type: str
+    sql_type: str
+    sample_values: List
+    encoding: str
+    description: str
+    order: int
+    min_value: str
+    max_value: str
+    avg_value: float
+    stddev: float
+    value_distribution_percent: dict
+    coverage_count: int
+    null_count: int
+    possible_dependent_variable_types: List
+    useable_as_independent_variable: bool
+    useable_as_primary_key: bool
+    value_distribution: dict
+    distinct_count: int
 
 class _ResponseTablesPutTags(Response):
     id: int
@@ -75024,6 +76080,24 @@ class _ResponseTemplatesPutReportsTransferDependencies(Response):
     permission_level: str
     description: str
     shared: bool
+
+class _ResponseTemplatesListReports(Response):
+    id: int
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    archived: bool
+    tech_reviewed: bool
+    author: _ResponseTemplatesListReportsAuthor
+
+class _ResponseTemplatesListReportsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseTemplatesPostReports(Response):
     id: int
@@ -75284,6 +76358,28 @@ class _ResponseTemplatesListScriptsProjectsUsers(Response):
     initials: str
     online: bool
 
+class _ResponseTemplatesListScripts(Response):
+    id: int
+    public: bool
+    script_id: int
+    user_context: str
+    name: str
+    category: str
+    created_at: str
+    updated_at: str
+    use_count: int
+    ui_report_id: int
+    tech_reviewed: bool
+    archived: bool
+    author: _ResponseTemplatesListScriptsAuthor
+
+class _ResponseTemplatesListScriptsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseTemplatesPostScripts(Response):
     id: int
     public: bool
@@ -75503,6 +76599,29 @@ class _ResponseUsageLimitsGetLlm(Response):
     created_at: str
     updated_at: str
     hard_limit: int
+
+class _ResponseUsersList(Response):
+    id: int
+    user: str
+    name: str
+    email: str
+    active: bool
+    primary_group_id: int
+    groups: List[_ResponseUsersListGroups]
+    created_at: str
+    current_sign_in_at: str
+    updated_at: str
+    last_seen_at: str
+    suspended: bool
+    created_by_id: int
+    last_updated_by_id: int
+
+class _ResponseUsersListGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
 
 class _ResponseUsersPost(Response):
     id: int
@@ -75743,6 +76862,19 @@ class _ResponseUsersPatchGroups(Response):
     organization_id: int
     organization_name: str
 
+class _ResponseUsersListApiKeys(Response):
+    id: int
+    name: str
+    expires_at: str
+    created_at: str
+    revoked_at: str
+    last_used_at: str
+    scopes: List
+    use_count: int
+    expired: bool
+    active: bool
+    constraint_count: int
+
 class _ResponseUsersPostApiKeys(Response):
     id: int
     name: str
@@ -75857,6 +76989,23 @@ class _ResponseUsersDeleteSessionsGroups(Response):
     organization_id: int
     organization_name: str
 
+class _ResponseUsersListMeFavorites(Response):
+    id: int
+    object_id: int
+    object_type: str
+    object_name: str
+    created_at: str
+    object_updated_at: str
+    object_author: _ResponseUsersListMeFavoritesObjectAuthor
+    position: int
+
+class _ResponseUsersListMeFavoritesObjectAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
 class _ResponseUsersPostMeFavorites(Response):
     id: int
     object_id: int
@@ -75921,6 +77070,37 @@ class _ResponseUsersDelete2FaGroups(Response):
     slug: str
     organization_id: int
     organization_name: str
+
+class _ResponseWorkflowsList(Response):
+    id: int
+    name: str
+    description: str
+    valid: bool
+    file_id: str
+    user: _ResponseWorkflowsListUser
+    state: str
+    schedule: _ResponseWorkflowsListSchedule
+    allow_concurrent_executions: bool
+    time_zone: str
+    next_execution_at: str
+    archived: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsListUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseWorkflowsListSchedule(Response):
+    scheduled: bool
+    scheduled_days: List
+    scheduled_hours: List
+    scheduled_minutes: List
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List
 
 class _ResponseWorkflowsPost(Response):
     id: int
@@ -76444,6 +77624,24 @@ class _ResponseWorkflowsPostCloneNotifications(Response):
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
+
+class _ResponseWorkflowsListExecutions(Response):
+    id: int
+    state: str
+    mistral_state: str
+    mistral_state_info: str
+    user: _ResponseWorkflowsListExecutionsUser
+    started_at: str
+    finished_at: str
+    created_at: str
+    updated_at: str
+
+class _ResponseWorkflowsListExecutionsUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseWorkflowsPostExecutions(Response):
     id: int

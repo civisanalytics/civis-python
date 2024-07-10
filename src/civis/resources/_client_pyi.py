@@ -68,13 +68,15 @@ from civis.response import Response
                     continue
                 signature = inspect.signature(method)
                 return_type = signature.return_annotation
-                if return_type is not Response and not isinstance(
-                    return_type,
-                    (str, typing._SpecialGenericAlias, typing._GenericAlias),
-                ):
-                    response_classes = _extract_nested_response_classes(
-                        response_classes, return_type
-                    )
+                if return_type is not Response:
+                    if return_type.__name__ == "Iterator":
+                        response_classes = _extract_nested_response_classes(
+                            response_classes, typing.get_args(return_type)[0]
+                        )
+                    else:
+                        response_classes = _extract_nested_response_classes(
+                            response_classes, return_type
+                        )
                 params = inspect.signature(method).parameters
                 method_def += f"    def {method_name}(\n"
                 for param_name, param in params.items():
@@ -85,8 +87,10 @@ from civis.response import Response
                         method_def += f"        {param_name}: {annotation},\n"
                     else:
                         method_def += f"        {param_name}: {annotation} = ...,\n"
-                # TODO: when return_str is 'Iterator', add the subscript response class.
-                return_str = rt if isinstance(rt := return_type, str) else rt.__name__
+                if return_type.__name__ == "Iterator":
+                    return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                else:
+                    return_str = return_type.__name__
                 method_def += f"    ) -> {return_str}:\n"
                 method_doc = textwrap.indent(method.__doc__, " " * 8).lstrip()
                 method_def += f'        """{method_doc}\n        """\n        ...\n'
