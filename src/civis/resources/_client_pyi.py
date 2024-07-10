@@ -109,14 +109,18 @@ from civis.response import Response
                     "    Response\n):\n"
                 )
             for name, anno in response_class.__annotations__.items():
+                inner_anno_str = None
                 if isinstance(anno, str):
                     anno_str = anno
                 elif isinstance(anno, typing._GenericAlias):
-                    anno_str = f"{anno.__name__}[{typing.get_args(anno)[0].__name__}]"
+                    inner_anno_str = typing.get_args(anno)[0].__name__
+                    anno_str = f"{anno.__name__}[{inner_anno_str}]"
                 else:
                     anno_str = anno.__name__
                 if len(line := f"    {name}: {anno_str}") <= 88:
                     f.write(f"{line}\n")
+                elif anno_str.startswith("List"):
+                    f.write(f"    {name}: List[\n        {inner_anno_str}\n    ]\n")
                 else:
                     f.write(f"    {name}: (\n        {anno_str}\n    )\n")
             f.write("\n")

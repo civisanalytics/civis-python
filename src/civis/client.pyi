@@ -56419,9 +56419,9 @@ class _ResponseClustersListKubernetesClusterPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: (
-        List[_ResponseClustersListKubernetesClusterPartitionsInstanceConfigs]
-    )
+    instance_configs: List[
+        _ResponseClustersListKubernetesClusterPartitionsInstanceConfigs
+    ]
     default_instance_config_id: int
 
 class _ResponseClustersListKubernetesClusterPartitionsInstanceConfigs(Response):
@@ -56461,9 +56461,9 @@ class _ResponseClustersGetKubernetesClusterPartitions(Response):
     cluster_partition_id: int
     name: str
     labels: List
-    instance_configs: (
-        List[_ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs]
-    )
+    instance_configs: List[
+        _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs
+    ]
     default_instance_config_id: int
 
 class _ResponseClustersGetKubernetesClusterPartitionsInstanceConfigs(Response):
@@ -57153,9 +57153,9 @@ class _ResponseDatabasesPatchSchemasTables(Response):
     enhancements: List[_ResponseDatabasesPatchSchemasTablesEnhancements]
     view_def: str
     table_def: str
-    outgoing_table_matches: (
-        List[_ResponseDatabasesPatchSchemasTablesOutgoingTableMatches]
-    )
+    outgoing_table_matches: List[
+        _ResponseDatabasesPatchSchemasTablesOutgoingTableMatches
+    ]
 
 class _ResponseDatabasesPatchSchemasTablesLastRun(Response):
     id: int
@@ -58104,9 +58104,9 @@ class _ResponseEnhancementsPostIdentityResolutionGoldenTable(Response):
 class _ResponseEnhancementsPostIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsPostIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58225,9 +58225,9 @@ class _ResponseEnhancementsPutIdentityResolutionGoldenTable(Response):
 class _ResponseEnhancementsPutIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsPutIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58346,9 +58346,9 @@ class _ResponseEnhancementsPatchIdentityResolutionGoldenTable(Response):
 class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58467,9 +58467,9 @@ class _ResponseEnhancementsGetIdentityResolutionGoldenTable(Response):
 class _ResponseEnhancementsGetIdentityResolutionGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsGetIdentityResolutionGoldenTableFieldsSourcePreferences(
     Response
@@ -58588,9 +58588,9 @@ class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable(Response):
 class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFieldsSourcePreferences(  # noqa: E501
     Response
@@ -60147,9 +60147,9 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable(Response):
 class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFields(Response):
     field_name: str
     rule_type: str
-    source_preferences: (
-        List[_ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences]
-    )
+    source_preferences: List[
+        _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences
+    ]
 
 class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFieldsSourcePreferences(  # noqa: E501
     Response
