@@ -184,7 +184,7 @@ def return_annotation_from_properties(
     for name, prop in properties.items():
         name = camel_to_snake(name)
         klass.__annotations__[name] = return_annotation_from_property(
-            endpoint_name, method_name, name, prop, properties
+            endpoint_name, f"{method_name}_{param_name}", name, prop, properties
         )
     return klass
 

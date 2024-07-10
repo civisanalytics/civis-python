@@ -27,6 +27,18 @@ def _get_annotation(param):
         return f"{param.annotation} | None"
 
 
+def _extract_nested_response_classes(response_classes, return_type):
+    response_classes.append(return_type)
+    for typ in return_type.__annotations__.values():
+        if isinstance(typ, str):
+            continue
+        if isinstance(typ, typing._GenericAlias):
+            response_classes.append(typing.get_args(typ)[0])
+        else:
+            response_classes = _extract_nested_response_classes(response_classes, typ)
+    return response_classes
+
+
 def generate_client_pyi(client_pyi_path, api_spec_path):
     classes = generate_classes_maybe_cached(
         api_spec_path, api_key="not_needed", api_version="1.0"
@@ -61,14 +73,9 @@ from civis.response import Response
                     return_type,
                     (str, typing._SpecialGenericAlias, typing._GenericAlias),
                 ):
-                    response_classes.append(return_type)
-                    for typ in return_type.__annotations__.values():
-                        if isinstance(typ, str):
-                            continue
-                        if isinstance(typ, typing._GenericAlias):
-                            response_classes.append(typing.get_args(typ)[0])
-                        else:
-                            response_classes.append(typ)
+                    response_classes = _extract_nested_response_classes(
+                        response_classes, return_type
+                    )
                 params = inspect.signature(method).parameters
                 method_def += f"    def {method_name}(\n"
                 for param_name, param in params.items():

@@ -56210,13 +56210,37 @@ class _ResponseAliasesListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseAliasesListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseAliasesListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseAliasesListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseAliasesPutSharesUsers(Response):
     readers: _ResponseAliasesPutSharesUsersReaders
@@ -56229,13 +56253,37 @@ class _ResponseAliasesPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseAliasesPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseAliasesPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseAliasesPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseAliasesPutSharesGroups(Response):
     readers: _ResponseAliasesPutSharesGroupsReaders
@@ -56248,13 +56296,37 @@ class _ResponseAliasesPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseAliasesPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseAliasesPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseAliasesPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseAliasesPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseAliasesPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseAliasesListDependencies(Response):
     object_type: str
@@ -56363,7 +56435,7 @@ class _ResponseClustersListKubernetesPartitionsInstanceConfigs(Response):
     instance_max_memory: int
     instance_max_cpu: int
     instance_max_disk: int
-    usage_stats: _ResponseClustersListKubernetesPartitionsUsageStats
+    usage_stats: _ResponseClustersListKubernetesPartitionsInstanceConfigsUsageStats
 
 class _ResponseClustersPostKubernetesPartitions(Response):
     cluster_partition_id: int
@@ -56380,7 +56452,7 @@ class _ResponseClustersPostKubernetesPartitionsInstanceConfigs(Response):
     instance_max_memory: int
     instance_max_cpu: int
     instance_max_disk: int
-    usage_stats: _ResponseClustersPostKubernetesPartitionsUsageStats
+    usage_stats: _ResponseClustersPostKubernetesPartitionsInstanceConfigsUsageStats
 
 class _ResponseClustersPatchKubernetesPartitions(Response):
     cluster_partition_id: int
@@ -56397,7 +56469,7 @@ class _ResponseClustersPatchKubernetesPartitionsInstanceConfigs(Response):
     instance_max_memory: int
     instance_max_cpu: int
     instance_max_disk: int
-    usage_stats: _ResponseClustersPatchKubernetesPartitionsUsageStats
+    usage_stats: _ResponseClustersPatchKubernetesPartitionsInstanceConfigsUsageStats
 
 class _ResponseClustersGetKubernetesPartitions(Response):
     cluster_partition_id: int
@@ -56414,7 +56486,7 @@ class _ResponseClustersGetKubernetesPartitionsInstanceConfigs(Response):
     instance_max_memory: int
     instance_max_cpu: int
     instance_max_disk: int
-    usage_stats: _ResponseClustersGetKubernetesPartitionsUsageStats
+    usage_stats: _ResponseClustersGetKubernetesPartitionsInstanceConfigsUsageStats
 
 class _ResponseClustersGetKubernetesInstanceConfigs(Response):
     instance_config_id: int
@@ -56607,13 +56679,37 @@ class _ResponseCredentialsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseCredentialsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseCredentialsPutSharesUsers(Response):
     readers: _ResponseCredentialsPutSharesUsersReaders
@@ -56626,13 +56722,37 @@ class _ResponseCredentialsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseCredentialsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseCredentialsPutSharesGroups(Response):
     readers: _ResponseCredentialsPutSharesGroupsReaders
@@ -56645,13 +56765,37 @@ class _ResponseCredentialsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseCredentialsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseCredentialsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseCredentialsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseCredentialsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseCredentialsListDependencies(Response):
     object_type: str
@@ -56782,8 +56926,8 @@ class _ResponseDatabasesGetSchemasTablesOutgoingTableMatches(Response):
     source_table_id: int
     target_type: str
     target_id: int
-    target: _ResponseDatabasesGetSchemasTablesTarget
-    job: _ResponseDatabasesGetSchemasTablesJob
+    target: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesTarget
+    job: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJob
 
 class _ResponseDatabasesPatchSchemasTables(Response):
     id: int
@@ -56870,8 +57014,8 @@ class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatches(Response):
     source_table_id: int
     target_type: str
     target_id: int
-    target: _ResponseDatabasesPatchSchemasTablesTarget
-    job: _ResponseDatabasesPatchSchemasTablesJob
+    target: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesTarget
+    job: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJob
 
 class _ResponseDatabasesPostSchemasScan(Response):
     job_id: int
@@ -57344,13 +57488,37 @@ class _ResponseEnhancementsListCivisDataMatchSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListCivisDataMatchSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCivisDataMatchSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListCivisDataMatchSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListCivisDataMatchSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCivisDataMatchSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListCivisDataMatchSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsListCivisDataMatchSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCivisDataMatchSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesUsers(Response):
     readers: _ResponseEnhancementsPutCivisDataMatchSharesUsersReaders
@@ -57363,13 +57531,37 @@ class _ResponseEnhancementsPutCivisDataMatchSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutCivisDataMatchSharesGroups(Response):
     readers: _ResponseEnhancementsPutCivisDataMatchSharesGroupsReaders
@@ -57382,13 +57574,37 @@ class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCivisDataMatchSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsListCivisDataMatchDependencies(Response):
     object_type: str
@@ -57592,6 +57808,11 @@ class _ResponseEnhancementsPostIdentityResolutionGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsPostIdentityResolutionGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsPostIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -57607,8 +57828,16 @@ class _ResponseEnhancementsPostIdentityResolutionLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsPostIdentityResolutionRunMetrics
+    run_metrics: _ResponseEnhancementsPostIdentityResolutionLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsPostIdentityResolutionLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsPutIdentityResolution(Response):
     id: int
@@ -57692,6 +57921,11 @@ class _ResponseEnhancementsPutIdentityResolutionGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsPutIdentityResolutionGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsPutIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -57707,8 +57941,16 @@ class _ResponseEnhancementsPutIdentityResolutionLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsPutIdentityResolutionRunMetrics
+    run_metrics: _ResponseEnhancementsPutIdentityResolutionLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsPutIdentityResolutionLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsPatchIdentityResolution(Response):
     id: int
@@ -57792,6 +58034,11 @@ class _ResponseEnhancementsPatchIdentityResolutionGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsPatchIdentityResolutionGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsPatchIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -57807,8 +58054,16 @@ class _ResponseEnhancementsPatchIdentityResolutionLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsPatchIdentityResolutionRunMetrics
+    run_metrics: _ResponseEnhancementsPatchIdentityResolutionLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsPatchIdentityResolutionLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsGetIdentityResolution(Response):
     id: int
@@ -57892,6 +58147,11 @@ class _ResponseEnhancementsGetIdentityResolutionGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsGetIdentityResolutionGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsGetIdentityResolutionLinkScores(Response):
     database_name: str
     schema_name: str
@@ -57907,8 +58167,16 @@ class _ResponseEnhancementsGetIdentityResolutionLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsGetIdentityResolutionRunMetrics
+    run_metrics: _ResponseEnhancementsGetIdentityResolutionLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsGetIdentityResolutionLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsPostIdentityResolutionClone(Response):
     id: int
@@ -57992,6 +58260,11 @@ class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsPostIdentityResolutionCloneGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsPostIdentityResolutionCloneLinkScores(Response):
     database_name: str
     schema_name: str
@@ -58007,8 +58280,16 @@ class _ResponseEnhancementsPostIdentityResolutionCloneLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsPostIdentityResolutionCloneRunMetrics
+    run_metrics: _ResponseEnhancementsPostIdentityResolutionCloneLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsPostIdentityResolutionCloneLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseEnhancementsPostIdentityResolutionRuns(Response):
     id: int
@@ -58133,10 +58414,21 @@ class _ResponseEnhancementsPostCassNcoaRunningAs(Response):
     online: bool
 
 class _ResponseEnhancementsPostCassNcoaSource(Response):
-    database_table: _ResponseEnhancementsPostCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPostCassNcoaSourceDatabaseTable
+
+class _ResponseEnhancementsPostCassNcoaSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List
 
 class _ResponseEnhancementsPostCassNcoaDestination(Response):
-    database_table: _ResponseEnhancementsPostCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPostCassNcoaDestinationDatabaseTable
+
+class _ResponseEnhancementsPostCassNcoaDestinationDatabaseTable(Response):
+    schema: str
+    table: str
 
 class _ResponseEnhancementsPostCassNcoaColumnMapping(Response):
     address1: str
@@ -58206,10 +58498,21 @@ class _ResponseEnhancementsGetCassNcoaRunningAs(Response):
     online: bool
 
 class _ResponseEnhancementsGetCassNcoaSource(Response):
-    database_table: _ResponseEnhancementsGetCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsGetCassNcoaSourceDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List
 
 class _ResponseEnhancementsGetCassNcoaDestination(Response):
-    database_table: _ResponseEnhancementsGetCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsGetCassNcoaDestinationDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaDestinationDatabaseTable(Response):
+    schema: str
+    table: str
 
 class _ResponseEnhancementsGetCassNcoaColumnMapping(Response):
     address1: str
@@ -58279,10 +58582,21 @@ class _ResponseEnhancementsPutCassNcoaRunningAs(Response):
     online: bool
 
 class _ResponseEnhancementsPutCassNcoaSource(Response):
-    database_table: _ResponseEnhancementsPutCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPutCassNcoaSourceDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List
 
 class _ResponseEnhancementsPutCassNcoaDestination(Response):
-    database_table: _ResponseEnhancementsPutCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPutCassNcoaDestinationDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaDestinationDatabaseTable(Response):
+    schema: str
+    table: str
 
 class _ResponseEnhancementsPutCassNcoaColumnMapping(Response):
     address1: str
@@ -58352,10 +58666,21 @@ class _ResponseEnhancementsPatchCassNcoaRunningAs(Response):
     online: bool
 
 class _ResponseEnhancementsPatchCassNcoaSource(Response):
-    database_table: _ResponseEnhancementsPatchCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPatchCassNcoaSourceDatabaseTable
+
+class _ResponseEnhancementsPatchCassNcoaSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List
 
 class _ResponseEnhancementsPatchCassNcoaDestination(Response):
-    database_table: _ResponseEnhancementsPatchCassNcoaDatabaseTable
+    database_table: _ResponseEnhancementsPatchCassNcoaDestinationDatabaseTable
+
+class _ResponseEnhancementsPatchCassNcoaDestinationDatabaseTable(Response):
+    schema: str
+    table: str
 
 class _ResponseEnhancementsPatchCassNcoaColumnMapping(Response):
     address1: str
@@ -58675,13 +59000,37 @@ class _ResponseEnhancementsListCassNcoaSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListCassNcoaSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCassNcoaSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListCassNcoaSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListCassNcoaSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCassNcoaSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListCassNcoaSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsListCassNcoaSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListCassNcoaSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesUsers(Response):
     readers: _ResponseEnhancementsPutCassNcoaSharesUsersReaders
@@ -58694,13 +59043,37 @@ class _ResponseEnhancementsPutCassNcoaSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCassNcoaSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCassNcoaSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCassNcoaSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCassNcoaSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutCassNcoaSharesGroups(Response):
     readers: _ResponseEnhancementsPutCassNcoaSharesGroupsReaders
@@ -58713,13 +59086,37 @@ class _ResponseEnhancementsPutCassNcoaSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCassNcoaSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCassNcoaSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutCassNcoaSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutCassNcoaSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutCassNcoaSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsListCassNcoaDependencies(Response):
     object_type: str
@@ -58826,10 +59223,21 @@ class _ResponseEnhancementsPutCassNcoaArchiveRunningAs(Response):
     online: bool
 
 class _ResponseEnhancementsPutCassNcoaArchiveSource(Response):
-    database_table: _ResponseEnhancementsPutCassNcoaArchiveDatabaseTable
+    database_table: _ResponseEnhancementsPutCassNcoaArchiveSourceDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaArchiveSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List
 
 class _ResponseEnhancementsPutCassNcoaArchiveDestination(Response):
-    database_table: _ResponseEnhancementsPutCassNcoaArchiveDatabaseTable
+    database_table: _ResponseEnhancementsPutCassNcoaArchiveDestinationDatabaseTable
+
+class _ResponseEnhancementsPutCassNcoaArchiveDestinationDatabaseTable(Response):
+    schema: str
+    table: str
 
 class _ResponseEnhancementsPutCassNcoaArchiveColumnMapping(Response):
     address1: str
@@ -58851,13 +59259,37 @@ class _ResponseEnhancementsListGeocodeSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListGeocodeSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListGeocodeSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListGeocodeSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListGeocodeSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListGeocodeSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListGeocodeSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsListGeocodeSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListGeocodeSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutGeocodeSharesUsers(Response):
     readers: _ResponseEnhancementsPutGeocodeSharesUsersReaders
@@ -58870,13 +59302,37 @@ class _ResponseEnhancementsPutGeocodeSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutGeocodeSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutGeocodeSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutGeocodeSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutGeocodeSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutGeocodeSharesGroups(Response):
     readers: _ResponseEnhancementsPutGeocodeSharesGroupsReaders
@@ -58889,13 +59345,37 @@ class _ResponseEnhancementsPutGeocodeSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutGeocodeSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutGeocodeSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutGeocodeSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutGeocodeSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutGeocodeSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsListGeocodeDependencies(Response):
     object_type: str
@@ -59013,13 +59493,37 @@ class _ResponseEnhancementsListIdentityResolutionSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListIdentityResolutionSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListIdentityResolutionSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListIdentityResolutionSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsListIdentityResolutionSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListIdentityResolutionSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsListIdentityResolutionSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsListIdentityResolutionSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsListIdentityResolutionSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesUsers(Response):
     readers: _ResponseEnhancementsPutIdentityResolutionSharesUsersReaders
@@ -59032,13 +59536,37 @@ class _ResponseEnhancementsPutIdentityResolutionSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsPutIdentityResolutionSharesGroups(Response):
     readers: _ResponseEnhancementsPutIdentityResolutionSharesGroupsReaders
@@ -59051,13 +59579,37 @@ class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseEnhancementsPutIdentityResolutionSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseEnhancementsListIdentityResolutionDependencies(Response):
     object_type: str
@@ -59187,6 +59739,11 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTable(Response):
     table_name: str
     fields: List
 
+class _ResponseEnhancementsPutIdentityResolutionArchiveGoldenTableFields(Response):
+    field_name: str
+    rule_type: str
+    source_preferences: List
+
 class _ResponseEnhancementsPutIdentityResolutionArchiveLinkScores(Response):
     database_name: str
     schema_name: str
@@ -59202,8 +59759,16 @@ class _ResponseEnhancementsPutIdentityResolutionArchiveLastRun(Response):
     config: str
     sample_records_query: str
     expand_cluster_query: str
-    run_metrics: _ResponseEnhancementsPutIdentityResolutionArchiveRunMetrics
+    run_metrics: _ResponseEnhancementsPutIdentityResolutionArchiveLastRunRunMetrics
     error_section: str
+
+class _ResponseEnhancementsPutIdentityResolutionArchiveLastRunRunMetrics(Response):
+    num_records: int
+    unique_ids: int
+    unique_deduplicated_ids: int
+    max_cluster_size: int
+    avg_cluster_size: float
+    cluster_size_frequencies: dict
 
 class _ResponseExportsPostFilesCsvRuns(Response):
     id: int
@@ -59249,7 +59814,13 @@ class _ResponseExportsPostFilesCsvSource(Response):
 
 class _ResponseExportsPostFilesCsvDestination(Response):
     filename_prefix: str
-    storage_path: _ResponseExportsPostFilesCsvStoragePath
+    storage_path: _ResponseExportsPostFilesCsvDestinationStoragePath
+
+class _ResponseExportsPostFilesCsvDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseExportsGetFilesCsv(Response):
     id: int
@@ -59271,7 +59842,13 @@ class _ResponseExportsGetFilesCsvSource(Response):
 
 class _ResponseExportsGetFilesCsvDestination(Response):
     filename_prefix: str
-    storage_path: _ResponseExportsGetFilesCsvStoragePath
+    storage_path: _ResponseExportsGetFilesCsvDestinationStoragePath
+
+class _ResponseExportsGetFilesCsvDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseExportsPutFilesCsv(Response):
     id: int
@@ -59293,7 +59870,13 @@ class _ResponseExportsPutFilesCsvSource(Response):
 
 class _ResponseExportsPutFilesCsvDestination(Response):
     filename_prefix: str
-    storage_path: _ResponseExportsPutFilesCsvStoragePath
+    storage_path: _ResponseExportsPutFilesCsvDestinationStoragePath
+
+class _ResponseExportsPutFilesCsvDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseExportsPatchFilesCsv(Response):
     id: int
@@ -59315,7 +59898,13 @@ class _ResponseExportsPatchFilesCsvSource(Response):
 
 class _ResponseExportsPatchFilesCsvDestination(Response):
     filename_prefix: str
-    storage_path: _ResponseExportsPatchFilesCsvStoragePath
+    storage_path: _ResponseExportsPatchFilesCsvDestinationStoragePath
+
+class _ResponseExportsPatchFilesCsvDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseExportsPutFilesCsvArchive(Response):
     id: int
@@ -59337,7 +59926,13 @@ class _ResponseExportsPutFilesCsvArchiveSource(Response):
 
 class _ResponseExportsPutFilesCsvArchiveDestination(Response):
     filename_prefix: str
-    storage_path: _ResponseExportsPutFilesCsvArchiveStoragePath
+    storage_path: _ResponseExportsPutFilesCsvArchiveDestinationStoragePath
+
+class _ResponseExportsPutFilesCsvArchiveDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseFilesListProjects(Response):
     id: int
@@ -59375,13 +59970,37 @@ class _ResponseFilesListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseFilesListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseFilesListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseFilesListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseFilesPutSharesUsers(Response):
     readers: _ResponseFilesPutSharesUsersReaders
@@ -59394,13 +60013,37 @@ class _ResponseFilesPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseFilesPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseFilesPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseFilesPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseFilesPutSharesGroups(Response):
     readers: _ResponseFilesPutSharesGroupsReaders
@@ -59413,13 +60056,37 @@ class _ResponseFilesPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseFilesPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseFilesPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseFilesPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseFilesPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseFilesPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseFilesListDependencies(Response):
     object_type: str
@@ -59485,6 +60152,10 @@ class _ResponseFilesGetDetectedInfo(Response):
     compression: str
     table_columns: List
 
+class _ResponseFilesGetDetectedInfoTableColumns(Response):
+    name: str
+    sql_type: str
+
 class _ResponseFilesPut(Response):
     id: int
     name: str
@@ -59510,6 +60181,10 @@ class _ResponseFilesPutDetectedInfo(Response):
     compression: str
     table_columns: List
 
+class _ResponseFilesPutDetectedInfoTableColumns(Response):
+    name: str
+    sql_type: str
+
 class _ResponseFilesPatch(Response):
     id: int
     name: str
@@ -59534,6 +60209,10 @@ class _ResponseFilesPatchDetectedInfo(Response):
     column_delimiter: str
     compression: str
     table_columns: List
+
+class _ResponseFilesPatchDetectedInfoTableColumns(Response):
+    name: str
+    sql_type: str
 
 class _ResponseFilesPostPreprocessCsv(Response):
     id: int
@@ -59736,13 +60415,37 @@ class _ResponseGroupsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseGroupsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseGroupsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseGroupsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseGroupsPutSharesUsers(Response):
     readers: _ResponseGroupsPutSharesUsersReaders
@@ -59755,13 +60458,37 @@ class _ResponseGroupsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseGroupsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseGroupsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseGroupsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseGroupsPutSharesGroups(Response):
     readers: _ResponseGroupsPutSharesGroupsReaders
@@ -59774,13 +60501,37 @@ class _ResponseGroupsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseGroupsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseGroupsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseGroupsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseGroupsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseGroupsPutMembers(Response):
     id: int
@@ -59841,13 +60592,37 @@ class _ResponseImportsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseImportsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseImportsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseImportsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseImportsPutSharesUsers(Response):
     readers: _ResponseImportsPutSharesUsersReaders
@@ -59860,13 +60635,37 @@ class _ResponseImportsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseImportsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseImportsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseImportsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseImportsPutSharesGroups(Response):
     readers: _ResponseImportsPutSharesGroupsReaders
@@ -59879,13 +60678,37 @@ class _ResponseImportsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseImportsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseImportsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseImportsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseImportsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseImportsListDependencies(Response):
     object_type: str
@@ -59991,9 +60814,9 @@ class _ResponseImportsPutArchiveNotifications(Response):
 
 class _ResponseImportsPutArchiveSyncs(Response):
     id: int
-    source: _ResponseImportsPutArchiveSource
-    destination: _ResponseImportsPutArchiveDestination
-    advanced_options: _ResponseImportsPutArchiveAdvancedOptions
+    source: _ResponseImportsPutArchiveSyncsSource
+    destination: _ResponseImportsPutArchiveSyncsDestination
+    advanced_options: _ResponseImportsPutArchiveSyncsAdvancedOptions
 
 class _ResponseImportsPutArchiveLastRun(Response):
     id: int
@@ -60075,9 +60898,9 @@ class _ResponseImportsPostNotifications(Response):
 
 class _ResponseImportsPostSyncs(Response):
     id: int
-    source: _ResponseImportsPostSource
-    destination: _ResponseImportsPostDestination
-    advanced_options: _ResponseImportsPostAdvancedOptions
+    source: _ResponseImportsPostSyncsSource
+    destination: _ResponseImportsPostSyncsDestination
+    advanced_options: _ResponseImportsPostSyncsAdvancedOptions
 
 class _ResponseImportsPostLastRun(Response):
     id: int
@@ -60159,7 +60982,12 @@ class _ResponseImportsPostFilesCsv(Response):
 
 class _ResponseImportsPostFilesCsvSource(Response):
     file_ids: List
-    storage_path: _ResponseImportsPostFilesCsvStoragePath
+    storage_path: _ResponseImportsPostFilesCsvSourceStoragePath
+
+class _ResponseImportsPostFilesCsvSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List
 
 class _ResponseImportsPostFilesCsvDestination(Response):
     schema: str
@@ -60198,7 +61026,12 @@ class _ResponseImportsGetFilesCsv(Response):
 
 class _ResponseImportsGetFilesCsvSource(Response):
     file_ids: List
-    storage_path: _ResponseImportsGetFilesCsvStoragePath
+    storage_path: _ResponseImportsGetFilesCsvSourceStoragePath
+
+class _ResponseImportsGetFilesCsvSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List
 
 class _ResponseImportsGetFilesCsvDestination(Response):
     schema: str
@@ -60237,7 +61070,12 @@ class _ResponseImportsPutFilesCsv(Response):
 
 class _ResponseImportsPutFilesCsvSource(Response):
     file_ids: List
-    storage_path: _ResponseImportsPutFilesCsvStoragePath
+    storage_path: _ResponseImportsPutFilesCsvSourceStoragePath
+
+class _ResponseImportsPutFilesCsvSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List
 
 class _ResponseImportsPutFilesCsvDestination(Response):
     schema: str
@@ -60278,7 +61116,12 @@ class _ResponseImportsPatchFilesCsv(Response):
 
 class _ResponseImportsPatchFilesCsvSource(Response):
     file_ids: List
-    storage_path: _ResponseImportsPatchFilesCsvStoragePath
+    storage_path: _ResponseImportsPatchFilesCsvSourceStoragePath
+
+class _ResponseImportsPatchFilesCsvSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List
 
 class _ResponseImportsPatchFilesCsvDestination(Response):
     schema: str
@@ -60319,7 +61162,12 @@ class _ResponseImportsPutFilesCsvArchive(Response):
 
 class _ResponseImportsPutFilesCsvArchiveSource(Response):
     file_ids: List
-    storage_path: _ResponseImportsPutFilesCsvArchiveStoragePath
+    storage_path: _ResponseImportsPutFilesCsvArchiveSourceStoragePath
+
+class _ResponseImportsPutFilesCsvArchiveSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List
 
 class _ResponseImportsPutFilesCsvArchiveDestination(Response):
     schema: str
@@ -60444,9 +61292,9 @@ class _ResponseImportsGetNotifications(Response):
 
 class _ResponseImportsGetSyncs(Response):
     id: int
-    source: _ResponseImportsGetSource
-    destination: _ResponseImportsGetDestination
-    advanced_options: _ResponseImportsGetAdvancedOptions
+    source: _ResponseImportsGetSyncsSource
+    destination: _ResponseImportsGetSyncsDestination
+    advanced_options: _ResponseImportsGetSyncsAdvancedOptions
 
 class _ResponseImportsGetLastRun(Response):
     id: int
@@ -60528,9 +61376,9 @@ class _ResponseImportsPutNotifications(Response):
 
 class _ResponseImportsPutSyncs(Response):
     id: int
-    source: _ResponseImportsPutSource
-    destination: _ResponseImportsPutDestination
-    advanced_options: _ResponseImportsPutAdvancedOptions
+    source: _ResponseImportsPutSyncsSource
+    destination: _ResponseImportsPutSyncsDestination
+    advanced_options: _ResponseImportsPutSyncsAdvancedOptions
 
 class _ResponseImportsPutLastRun(Response):
     id: int
@@ -60579,15 +61427,43 @@ class _ResponseImportsPostSyncs(Response):
 class _ResponseImportsPostSyncsSource(Response):
     id: int
     path: str
-    database_table: _ResponseImportsPostSyncsDatabaseTable
-    file: _ResponseImportsPostSyncsFile
-    google_worksheet: _ResponseImportsPostSyncsGoogleWorksheet
-    salesforce: _ResponseImportsPostSyncsSalesforce
+    database_table: _ResponseImportsPostSyncsSourceDatabaseTable
+    file: _ResponseImportsPostSyncsSourceFile
+    google_worksheet: _ResponseImportsPostSyncsSourceGoogleWorksheet
+    salesforce: _ResponseImportsPostSyncsSourceSalesforce
+
+class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostSyncsSourceFile(Response):
+    id: int
+
+class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPostSyncsSourceSalesforce(Response):
+    object_name: str
 
 class _ResponseImportsPostSyncsDestination(Response):
     path: str
-    database_table: _ResponseImportsPostSyncsDatabaseTable
-    google_worksheet: _ResponseImportsPostSyncsGoogleWorksheet
+    database_table: _ResponseImportsPostSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPostSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsPostSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
 
 class _ResponseImportsPostSyncsAdvancedOptions(Response):
     max_errors: int
@@ -60629,15 +61505,43 @@ class _ResponseImportsPutSyncs(Response):
 class _ResponseImportsPutSyncsSource(Response):
     id: int
     path: str
-    database_table: _ResponseImportsPutSyncsDatabaseTable
-    file: _ResponseImportsPutSyncsFile
-    google_worksheet: _ResponseImportsPutSyncsGoogleWorksheet
-    salesforce: _ResponseImportsPutSyncsSalesforce
+    database_table: _ResponseImportsPutSyncsSourceDatabaseTable
+    file: _ResponseImportsPutSyncsSourceFile
+    google_worksheet: _ResponseImportsPutSyncsSourceGoogleWorksheet
+    salesforce: _ResponseImportsPutSyncsSourceSalesforce
+
+class _ResponseImportsPutSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutSyncsSourceFile(Response):
+    id: int
+
+class _ResponseImportsPutSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPutSyncsSourceSalesforce(Response):
+    object_name: str
 
 class _ResponseImportsPutSyncsDestination(Response):
     path: str
-    database_table: _ResponseImportsPutSyncsDatabaseTable
-    google_worksheet: _ResponseImportsPutSyncsGoogleWorksheet
+    database_table: _ResponseImportsPutSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPutSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsPutSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
 
 class _ResponseImportsPutSyncsAdvancedOptions(Response):
     max_errors: int
@@ -60679,15 +61583,43 @@ class _ResponseImportsPutSyncsArchive(Response):
 class _ResponseImportsPutSyncsArchiveSource(Response):
     id: int
     path: str
-    database_table: _ResponseImportsPutSyncsArchiveDatabaseTable
-    file: _ResponseImportsPutSyncsArchiveFile
-    google_worksheet: _ResponseImportsPutSyncsArchiveGoogleWorksheet
-    salesforce: _ResponseImportsPutSyncsArchiveSalesforce
+    database_table: _ResponseImportsPutSyncsArchiveSourceDatabaseTable
+    file: _ResponseImportsPutSyncsArchiveSourceFile
+    google_worksheet: _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet
+    salesforce: _ResponseImportsPutSyncsArchiveSourceSalesforce
+
+class _ResponseImportsPutSyncsArchiveSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutSyncsArchiveSourceFile(Response):
+    id: int
+
+class _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPutSyncsArchiveSourceSalesforce(Response):
+    object_name: str
 
 class _ResponseImportsPutSyncsArchiveDestination(Response):
     path: str
-    database_table: _ResponseImportsPutSyncsArchiveDatabaseTable
-    google_worksheet: _ResponseImportsPutSyncsArchiveGoogleWorksheet
+    database_table: _ResponseImportsPutSyncsArchiveDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPutSyncsArchiveDestinationGoogleWorksheet
+
+class _ResponseImportsPutSyncsArchiveDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPutSyncsArchiveDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
 
 class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     max_errors: int
@@ -60917,13 +61849,37 @@ class _ResponseJobsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseJobsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseJobsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseJobsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJobsPutSharesUsers(Response):
     readers: _ResponseJobsPutSharesUsersReaders
@@ -60936,13 +61892,37 @@ class _ResponseJobsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseJobsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseJobsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseJobsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJobsPutSharesGroups(Response):
     readers: _ResponseJobsPutSharesGroupsReaders
@@ -60955,13 +61935,37 @@ class _ResponseJobsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseJobsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseJobsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJobsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseJobsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJobsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJobsListDependencies(Response):
     object_type: str
@@ -61086,13 +62090,37 @@ class _ResponseJsonValuesListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseJsonValuesListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJsonValuesPutSharesUsers(Response):
     readers: _ResponseJsonValuesPutSharesUsersReaders
@@ -61105,13 +62133,37 @@ class _ResponseJsonValuesPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseJsonValuesPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJsonValuesPutSharesGroups(Response):
     readers: _ResponseJsonValuesPutSharesGroupsReaders
@@ -61124,13 +62176,37 @@ class _ResponseJsonValuesPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseJsonValuesPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseJsonValuesPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseJsonValuesPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseJsonValuesPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseJsonValuesListDependencies(Response):
     object_type: str
@@ -61164,13 +62240,37 @@ class _ResponseMatchTargetsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseMatchTargetsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMatchTargetsPutSharesUsers(Response):
     readers: _ResponseMatchTargetsPutSharesUsersReaders
@@ -61183,13 +62283,37 @@ class _ResponseMatchTargetsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseMatchTargetsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMatchTargetsPutSharesGroups(Response):
     readers: _ResponseMatchTargetsPutSharesGroupsReaders
@@ -61202,13 +62326,37 @@ class _ResponseMatchTargetsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseMatchTargetsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMatchTargetsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseMatchTargetsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMatchTargetsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMatchTargetsPutArchive(Response):
     id: int
@@ -61261,13 +62409,37 @@ class _ResponseMediaListSpotOrdersSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaListSpotOrdersSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListSpotOrdersSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListSpotOrdersSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaListSpotOrdersSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListSpotOrdersSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListSpotOrdersSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaListSpotOrdersSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListSpotOrdersSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutSpotOrdersSharesUsers(Response):
     readers: _ResponseMediaPutSpotOrdersSharesUsersReaders
@@ -61280,13 +62452,37 @@ class _ResponseMediaPutSpotOrdersSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutSpotOrdersSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutSpotOrdersSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutSpotOrdersSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutSpotOrdersSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutSpotOrdersSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutSpotOrdersSharesGroups(Response):
     readers: _ResponseMediaPutSpotOrdersSharesGroupsReaders
@@ -61299,13 +62495,37 @@ class _ResponseMediaPutSpotOrdersSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutSpotOrdersSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutSpotOrdersSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutSpotOrdersSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutSpotOrdersSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutSpotOrdersSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutSpotOrdersSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutSpotOrdersArchive(Response):
     id: int
@@ -61326,13 +62546,37 @@ class _ResponseMediaListOptimizationsSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaListOptimizationsSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListOptimizationsSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListOptimizationsSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaListOptimizationsSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListOptimizationsSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListOptimizationsSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaListOptimizationsSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListOptimizationsSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutOptimizationsSharesUsers(Response):
     readers: _ResponseMediaPutOptimizationsSharesUsersReaders
@@ -61345,13 +62589,37 @@ class _ResponseMediaPutOptimizationsSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutOptimizationsSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutOptimizationsSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutOptimizationsSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutOptimizationsSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutOptimizationsSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutOptimizationsSharesGroups(Response):
     readers: _ResponseMediaPutOptimizationsSharesGroupsReaders
@@ -61364,13 +62632,37 @@ class _ResponseMediaPutOptimizationsSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutOptimizationsSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutOptimizationsSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutOptimizationsSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutOptimizationsSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutOptimizationsSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutOptimizationsSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutOptimizationsArchive(Response):
     id: int
@@ -61421,13 +62713,37 @@ class _ResponseMediaListRatecardsSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaListRatecardsSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListRatecardsSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListRatecardsSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaListRatecardsSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListRatecardsSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaListRatecardsSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaListRatecardsSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaListRatecardsSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutRatecardsSharesUsers(Response):
     readers: _ResponseMediaPutRatecardsSharesUsersReaders
@@ -61440,13 +62756,37 @@ class _ResponseMediaPutRatecardsSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutRatecardsSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutRatecardsSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutRatecardsSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutRatecardsSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutRatecardsSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutRatecardsSharesGroups(Response):
     readers: _ResponseMediaPutRatecardsSharesGroupsReaders
@@ -61459,13 +62799,37 @@ class _ResponseMediaPutRatecardsSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutRatecardsSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutRatecardsSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseMediaPutRatecardsSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseMediaPutRatecardsSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseMediaPutRatecardsSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseMediaPutRatecardsSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseMediaPutRatecardsArchive(Response):
     id: int
@@ -61828,7 +63192,7 @@ class _ResponseModelsGetPredictions(Response):
     primary_key: List
     limiting_sql: str
     output_table: str
-    schedule: _ResponseModelsGetSchedule
+    schedule: _ResponseModelsGetPredictionsSchedule
     state: str
 
 class _ResponseModelsGetBuilds(Response):
@@ -61862,13 +63226,37 @@ class _ResponseModelsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseModelsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseModelsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseModelsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseModelsPutSharesUsers(Response):
     readers: _ResponseModelsPutSharesUsersReaders
@@ -61881,13 +63269,37 @@ class _ResponseModelsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseModelsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseModelsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseModelsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseModelsPutSharesGroups(Response):
     readers: _ResponseModelsPutSharesGroupsReaders
@@ -61900,13 +63312,37 @@ class _ResponseModelsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseModelsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseModelsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseModelsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseModelsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseModelsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseModelsListDependencies(Response):
     object_type: str
@@ -62046,7 +63482,7 @@ class _ResponseModelsPutArchivePredictions(Response):
     primary_key: List
     limiting_sql: str
     output_table: str
-    schedule: _ResponseModelsPutArchiveSchedule
+    schedule: _ResponseModelsPutArchivePredictionsSchedule
     state: str
 
 class _ResponseModelsListSchedules(Response):
@@ -62361,13 +63797,37 @@ class _ResponseNotebooksListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseNotebooksListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseNotebooksPutSharesUsers(Response):
     readers: _ResponseNotebooksPutSharesUsersReaders
@@ -62380,13 +63840,37 @@ class _ResponseNotebooksPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseNotebooksPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseNotebooksPutSharesGroups(Response):
     readers: _ResponseNotebooksPutSharesGroupsReaders
@@ -62399,13 +63883,37 @@ class _ResponseNotebooksPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseNotebooksPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseNotebooksPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseNotebooksPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseNotebooksListDependencies(Response):
     object_type: str
@@ -62707,13 +64215,37 @@ class _ResponsePermissionSetsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePermissionSetsPutSharesUsers(Response):
     readers: _ResponsePermissionSetsPutSharesUsersReaders
@@ -62726,13 +64258,37 @@ class _ResponsePermissionSetsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePermissionSetsPutSharesGroups(Response):
     readers: _ResponsePermissionSetsPutSharesGroupsReaders
@@ -62745,13 +64301,37 @@ class _ResponsePermissionSetsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePermissionSetsListDependencies(Response):
     object_type: str
@@ -62828,13 +64408,37 @@ class _ResponsePermissionSetsListResourcesSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsListResourcesSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListResourcesSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsListResourcesSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsListResourcesSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListResourcesSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsListResourcesSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsListResourcesSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsListResourcesSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePermissionSetsPutResourcesSharesUsers(Response):
     readers: _ResponsePermissionSetsPutResourcesSharesUsersReaders
@@ -62847,13 +64451,37 @@ class _ResponsePermissionSetsPutResourcesSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutResourcesSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutResourcesSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutResourcesSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutResourcesSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePermissionSetsPutResourcesSharesGroups(Response):
     readers: _ResponsePermissionSetsPutResourcesSharesGroupsReaders
@@ -62866,13 +64494,37 @@ class _ResponsePermissionSetsPutResourcesSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutResourcesSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutResourcesSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponsePermissionSetsPutResourcesSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponsePermissionSetsPutResourcesSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponsePermissionSetsPutResourcesSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponsePredictionsList(Response):
     id: int
@@ -63012,7 +64664,7 @@ class _ResponseProjectsPostScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostLastRun
+    last_run: _ResponseProjectsPostScriptsLastRun
 
 class _ResponseProjectsPostImports(Response):
     id: int
@@ -63022,7 +64674,7 @@ class _ResponseProjectsPostImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostLastRun
+    last_run: _ResponseProjectsPostImportsLastRun
 
 class _ResponseProjectsPostExports(Response):
     id: int
@@ -63032,7 +64684,7 @@ class _ResponseProjectsPostExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostLastRun
+    last_run: _ResponseProjectsPostExportsLastRun
 
 class _ResponseProjectsPostModels(Response):
     id: int
@@ -63047,7 +64699,7 @@ class _ResponseProjectsPostNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPostLastDeploy
+    last_deploy: _ResponseProjectsPostNotebooksLastDeploy
 
 class _ResponseProjectsPostServices(Response):
     id: int
@@ -63055,7 +64707,7 @@ class _ResponseProjectsPostServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPostLastDeploy
+    last_deploy: _ResponseProjectsPostServicesLastDeploy
 
 class _ResponseProjectsPostWorkflows(Response):
     id: int
@@ -63063,7 +64715,7 @@ class _ResponseProjectsPostWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsPostLastExecution
+    last_execution: _ResponseProjectsPostWorkflowsLastExecution
 
 class _ResponseProjectsPostReports(Response):
     id: int
@@ -63091,7 +64743,7 @@ class _ResponseProjectsPostEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsPostLastRun
+    last_run: _ResponseProjectsPostEnhancementsLastRun
 
 class _ResponseProjectsPostProjects(Response):
     id: int
@@ -63185,7 +64837,7 @@ class _ResponseProjectsPostCloneScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostCloneLastRun
+    last_run: _ResponseProjectsPostCloneScriptsLastRun
 
 class _ResponseProjectsPostCloneImports(Response):
     id: int
@@ -63195,7 +64847,7 @@ class _ResponseProjectsPostCloneImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostCloneLastRun
+    last_run: _ResponseProjectsPostCloneImportsLastRun
 
 class _ResponseProjectsPostCloneExports(Response):
     id: int
@@ -63205,7 +64857,7 @@ class _ResponseProjectsPostCloneExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPostCloneLastRun
+    last_run: _ResponseProjectsPostCloneExportsLastRun
 
 class _ResponseProjectsPostCloneModels(Response):
     id: int
@@ -63220,7 +64872,7 @@ class _ResponseProjectsPostCloneNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPostCloneLastDeploy
+    last_deploy: _ResponseProjectsPostCloneNotebooksLastDeploy
 
 class _ResponseProjectsPostCloneServices(Response):
     id: int
@@ -63228,7 +64880,7 @@ class _ResponseProjectsPostCloneServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPostCloneLastDeploy
+    last_deploy: _ResponseProjectsPostCloneServicesLastDeploy
 
 class _ResponseProjectsPostCloneWorkflows(Response):
     id: int
@@ -63236,7 +64888,7 @@ class _ResponseProjectsPostCloneWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsPostCloneLastExecution
+    last_execution: _ResponseProjectsPostCloneWorkflowsLastExecution
 
 class _ResponseProjectsPostCloneReports(Response):
     id: int
@@ -63264,7 +64916,7 @@ class _ResponseProjectsPostCloneEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsPostCloneLastRun
+    last_run: _ResponseProjectsPostCloneEnhancementsLastRun
 
 class _ResponseProjectsPostCloneProjects(Response):
     id: int
@@ -63358,7 +65010,7 @@ class _ResponseProjectsGetScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsGetLastRun
+    last_run: _ResponseProjectsGetScriptsLastRun
 
 class _ResponseProjectsGetImports(Response):
     id: int
@@ -63368,7 +65020,7 @@ class _ResponseProjectsGetImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsGetLastRun
+    last_run: _ResponseProjectsGetImportsLastRun
 
 class _ResponseProjectsGetExports(Response):
     id: int
@@ -63378,7 +65030,7 @@ class _ResponseProjectsGetExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsGetLastRun
+    last_run: _ResponseProjectsGetExportsLastRun
 
 class _ResponseProjectsGetModels(Response):
     id: int
@@ -63393,7 +65045,7 @@ class _ResponseProjectsGetNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsGetLastDeploy
+    last_deploy: _ResponseProjectsGetNotebooksLastDeploy
 
 class _ResponseProjectsGetServices(Response):
     id: int
@@ -63401,7 +65053,7 @@ class _ResponseProjectsGetServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsGetLastDeploy
+    last_deploy: _ResponseProjectsGetServicesLastDeploy
 
 class _ResponseProjectsGetWorkflows(Response):
     id: int
@@ -63409,7 +65061,7 @@ class _ResponseProjectsGetWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsGetLastExecution
+    last_execution: _ResponseProjectsGetWorkflowsLastExecution
 
 class _ResponseProjectsGetReports(Response):
     id: int
@@ -63437,7 +65089,7 @@ class _ResponseProjectsGetEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsGetLastRun
+    last_run: _ResponseProjectsGetEnhancementsLastRun
 
 class _ResponseProjectsGetProjects(Response):
     id: int
@@ -63531,7 +65183,7 @@ class _ResponseProjectsPutScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutLastRun
+    last_run: _ResponseProjectsPutScriptsLastRun
 
 class _ResponseProjectsPutImports(Response):
     id: int
@@ -63541,7 +65193,7 @@ class _ResponseProjectsPutImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutLastRun
+    last_run: _ResponseProjectsPutImportsLastRun
 
 class _ResponseProjectsPutExports(Response):
     id: int
@@ -63551,7 +65203,7 @@ class _ResponseProjectsPutExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutLastRun
+    last_run: _ResponseProjectsPutExportsLastRun
 
 class _ResponseProjectsPutModels(Response):
     id: int
@@ -63566,7 +65218,7 @@ class _ResponseProjectsPutNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutLastDeploy
+    last_deploy: _ResponseProjectsPutNotebooksLastDeploy
 
 class _ResponseProjectsPutServices(Response):
     id: int
@@ -63574,7 +65226,7 @@ class _ResponseProjectsPutServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutLastDeploy
+    last_deploy: _ResponseProjectsPutServicesLastDeploy
 
 class _ResponseProjectsPutWorkflows(Response):
     id: int
@@ -63582,7 +65234,7 @@ class _ResponseProjectsPutWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsPutLastExecution
+    last_execution: _ResponseProjectsPutWorkflowsLastExecution
 
 class _ResponseProjectsPutReports(Response):
     id: int
@@ -63610,7 +65262,7 @@ class _ResponseProjectsPutEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsPutLastRun
+    last_run: _ResponseProjectsPutEnhancementsLastRun
 
 class _ResponseProjectsPutProjects(Response):
     id: int
@@ -63704,7 +65356,7 @@ class _ResponseProjectsPutAutoShareScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutAutoShareLastRun
+    last_run: _ResponseProjectsPutAutoShareScriptsLastRun
 
 class _ResponseProjectsPutAutoShareImports(Response):
     id: int
@@ -63714,7 +65366,7 @@ class _ResponseProjectsPutAutoShareImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutAutoShareLastRun
+    last_run: _ResponseProjectsPutAutoShareImportsLastRun
 
 class _ResponseProjectsPutAutoShareExports(Response):
     id: int
@@ -63724,7 +65376,7 @@ class _ResponseProjectsPutAutoShareExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutAutoShareLastRun
+    last_run: _ResponseProjectsPutAutoShareExportsLastRun
 
 class _ResponseProjectsPutAutoShareModels(Response):
     id: int
@@ -63739,7 +65391,7 @@ class _ResponseProjectsPutAutoShareNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutAutoShareLastDeploy
+    last_deploy: _ResponseProjectsPutAutoShareNotebooksLastDeploy
 
 class _ResponseProjectsPutAutoShareServices(Response):
     id: int
@@ -63747,7 +65399,7 @@ class _ResponseProjectsPutAutoShareServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutAutoShareLastDeploy
+    last_deploy: _ResponseProjectsPutAutoShareServicesLastDeploy
 
 class _ResponseProjectsPutAutoShareWorkflows(Response):
     id: int
@@ -63755,7 +65407,7 @@ class _ResponseProjectsPutAutoShareWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsPutAutoShareLastExecution
+    last_execution: _ResponseProjectsPutAutoShareWorkflowsLastExecution
 
 class _ResponseProjectsPutAutoShareReports(Response):
     id: int
@@ -63783,7 +65435,7 @@ class _ResponseProjectsPutAutoShareEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsPutAutoShareLastRun
+    last_run: _ResponseProjectsPutAutoShareEnhancementsLastRun
 
 class _ResponseProjectsPutAutoShareProjects(Response):
     id: int
@@ -63822,13 +65474,37 @@ class _ResponseProjectsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseProjectsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseProjectsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseProjectsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseProjectsPutSharesUsers(Response):
     readers: _ResponseProjectsPutSharesUsersReaders
@@ -63841,13 +65517,37 @@ class _ResponseProjectsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseProjectsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseProjectsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseProjectsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseProjectsPutSharesGroups(Response):
     readers: _ResponseProjectsPutSharesGroupsReaders
@@ -63860,13 +65560,37 @@ class _ResponseProjectsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseProjectsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseProjectsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseProjectsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseProjectsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseProjectsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseProjectsListDependencies(Response):
     object_type: str
@@ -63955,7 +65679,7 @@ class _ResponseProjectsPutArchiveScripts(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutArchiveLastRun
+    last_run: _ResponseProjectsPutArchiveScriptsLastRun
 
 class _ResponseProjectsPutArchiveImports(Response):
     id: int
@@ -63965,7 +65689,7 @@ class _ResponseProjectsPutArchiveImports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutArchiveLastRun
+    last_run: _ResponseProjectsPutArchiveImportsLastRun
 
 class _ResponseProjectsPutArchiveExports(Response):
     id: int
@@ -63975,7 +65699,7 @@ class _ResponseProjectsPutArchiveExports(Response):
     type: str
     finished_at: str
     state: str
-    last_run: _ResponseProjectsPutArchiveLastRun
+    last_run: _ResponseProjectsPutArchiveExportsLastRun
 
 class _ResponseProjectsPutArchiveModels(Response):
     id: int
@@ -63990,7 +65714,7 @@ class _ResponseProjectsPutArchiveNotebooks(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutArchiveLastDeploy
+    last_deploy: _ResponseProjectsPutArchiveNotebooksLastDeploy
 
 class _ResponseProjectsPutArchiveServices(Response):
     id: int
@@ -63998,7 +65722,7 @@ class _ResponseProjectsPutArchiveServices(Response):
     updated_at: str
     name: str
     current_deployment_id: int
-    last_deploy: _ResponseProjectsPutArchiveLastDeploy
+    last_deploy: _ResponseProjectsPutArchiveServicesLastDeploy
 
 class _ResponseProjectsPutArchiveWorkflows(Response):
     id: int
@@ -64006,7 +65730,7 @@ class _ResponseProjectsPutArchiveWorkflows(Response):
     updated_at: str
     name: str
     state: str
-    last_execution: _ResponseProjectsPutArchiveLastExecution
+    last_execution: _ResponseProjectsPutArchiveWorkflowsLastExecution
 
 class _ResponseProjectsPutArchiveReports(Response):
     id: int
@@ -64034,7 +65758,7 @@ class _ResponseProjectsPutArchiveEnhancements(Response):
     created_at: str
     updated_at: str
     name: str
-    last_run: _ResponseProjectsPutArchiveLastRun
+    last_run: _ResponseProjectsPutArchiveEnhancementsLastRun
 
 class _ResponseProjectsPutArchiveProjects(Response):
     id: int
@@ -64317,13 +66041,37 @@ class _ResponseRemoteHostsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseRemoteHostsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseRemoteHostsPutSharesUsers(Response):
     readers: _ResponseRemoteHostsPutSharesUsersReaders
@@ -64336,13 +66084,37 @@ class _ResponseRemoteHostsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseRemoteHostsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseRemoteHostsPutSharesGroups(Response):
     readers: _ResponseRemoteHostsPutSharesGroupsReaders
@@ -64355,13 +66127,37 @@ class _ResponseRemoteHostsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseRemoteHostsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseRemoteHostsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseRemoteHostsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseRemoteHostsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseRemoteHostsListDataSets(Response):
     name: str
@@ -64670,13 +66466,37 @@ class _ResponseReportsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutSharesUsers(Response):
     readers: _ResponseReportsPutSharesUsersReaders
@@ -64689,13 +66509,37 @@ class _ResponseReportsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutSharesGroups(Response):
     readers: _ResponseReportsPutSharesGroupsReaders
@@ -64708,13 +66552,37 @@ class _ResponseReportsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsListDependencies(Response):
     object_type: str
@@ -64900,13 +66768,37 @@ class _ResponseReportsListServicesSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsListServicesSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListServicesSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListServicesSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsListServicesSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListServicesSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListServicesSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsListServicesSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListServicesSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutServicesSharesUsers(Response):
     readers: _ResponseReportsPutServicesSharesUsersReaders
@@ -64919,13 +66811,37 @@ class _ResponseReportsPutServicesSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutServicesSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutServicesSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutServicesSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutServicesSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutServicesSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutServicesSharesGroups(Response):
     readers: _ResponseReportsPutServicesSharesGroupsReaders
@@ -64938,13 +66854,37 @@ class _ResponseReportsPutServicesSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutServicesSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutServicesSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutServicesSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutServicesSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutServicesSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutServicesSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsListServicesDependencies(Response):
     object_type: str
@@ -65057,7 +66997,14 @@ class _ResponseReportsPostSqlQuery(Response):
     started_at: str
     finished_at: str
     state: str
-    running_as: _ResponseReportsPostSqlRunningAs
+    running_as: _ResponseReportsPostSqlQueryRunningAs
+
+class _ResponseReportsPostSqlQueryRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseReportsGetSql(Response):
     id: int
@@ -65090,7 +67037,14 @@ class _ResponseReportsGetSqlQuery(Response):
     started_at: str
     finished_at: str
     state: str
-    running_as: _ResponseReportsGetSqlRunningAs
+    running_as: _ResponseReportsGetSqlQueryRunningAs
+
+class _ResponseReportsGetSqlQueryRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseReportsPatchSql(Response):
     id: int
@@ -65123,7 +67077,14 @@ class _ResponseReportsPatchSqlQuery(Response):
     started_at: str
     finished_at: str
     state: str
-    running_as: _ResponseReportsPatchSqlRunningAs
+    running_as: _ResponseReportsPatchSqlQueryRunningAs
+
+class _ResponseReportsPatchSqlQueryRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseReportsPostSqlRefresh(Response):
     id: int
@@ -65156,7 +67117,14 @@ class _ResponseReportsPostSqlRefreshQuery(Response):
     started_at: str
     finished_at: str
     state: str
-    running_as: _ResponseReportsPostSqlRefreshRunningAs
+    running_as: _ResponseReportsPostSqlRefreshQueryRunningAs
+
+class _ResponseReportsPostSqlRefreshQueryRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseReportsListSqlShares(Response):
     readers: _ResponseReportsListSqlSharesReaders
@@ -65169,13 +67137,37 @@ class _ResponseReportsListSqlSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsListSqlSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSqlSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListSqlSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsListSqlSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSqlSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsListSqlSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsListSqlSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsListSqlSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutSqlSharesUsers(Response):
     readers: _ResponseReportsPutSqlSharesUsersReaders
@@ -65188,13 +67180,37 @@ class _ResponseReportsPutSqlSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSqlSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSqlSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSqlSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSqlSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutSqlSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsPutSqlSharesGroups(Response):
     readers: _ResponseReportsPutSqlSharesGroupsReaders
@@ -65207,13 +67223,37 @@ class _ResponseReportsPutSqlSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSqlSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSqlSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseReportsPutSqlSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseReportsPutSqlSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseReportsPutSqlSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseReportsPutSqlSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseReportsListSqlDependencies(Response):
     object_type: str
@@ -65292,7 +67332,14 @@ class _ResponseReportsPutSqlArchiveQuery(Response):
     started_at: str
     finished_at: str
     state: str
-    running_as: _ResponseReportsPutSqlArchiveRunningAs
+    running_as: _ResponseReportsPutSqlArchiveQueryRunningAs
+
+class _ResponseReportsPutSqlArchiveQueryRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseScriptsListTypes(Response):
     name: str
@@ -68689,13 +70736,37 @@ class _ResponseScriptsListSqlSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListSqlSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListSqlSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListSqlSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListSqlSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListSqlSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListSqlSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListSqlSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListSqlSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutSqlSharesUsers(Response):
     readers: _ResponseScriptsPutSqlSharesUsersReaders
@@ -68708,13 +70779,37 @@ class _ResponseScriptsPutSqlSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutSqlSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutSqlSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutSqlSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutSqlSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutSqlSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutSqlSharesGroups(Response):
     readers: _ResponseScriptsPutSqlSharesGroupsReaders
@@ -68727,13 +70822,37 @@ class _ResponseScriptsPutSqlSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutSqlSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutSqlSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutSqlSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutSqlSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutSqlSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutSqlSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListSqlDependencies(Response):
     object_type: str
@@ -68900,13 +71019,37 @@ class _ResponseScriptsListContainersSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListContainersSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListContainersSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListContainersSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListContainersSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListContainersSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListContainersSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListContainersSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListContainersSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutContainersSharesUsers(Response):
     readers: _ResponseScriptsPutContainersSharesUsersReaders
@@ -68919,13 +71062,37 @@ class _ResponseScriptsPutContainersSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutContainersSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutContainersSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutContainersSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutContainersSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutContainersSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutContainersSharesGroups(Response):
     readers: _ResponseScriptsPutContainersSharesGroupsReaders
@@ -68938,13 +71105,37 @@ class _ResponseScriptsPutContainersSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutContainersSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutContainersSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutContainersSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutContainersSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutContainersSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutContainersSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListContainersDependencies(Response):
     object_type: str
@@ -69117,13 +71308,37 @@ class _ResponseScriptsListPython3SharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListPython3SharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListPython3SharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListPython3SharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListPython3SharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListPython3SharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListPython3SharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListPython3SharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListPython3SharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutPython3SharesUsers(Response):
     readers: _ResponseScriptsPutPython3SharesUsersReaders
@@ -69136,13 +71351,37 @@ class _ResponseScriptsPutPython3SharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutPython3SharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutPython3SharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutPython3SharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutPython3SharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutPython3SharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutPython3SharesGroups(Response):
     readers: _ResponseScriptsPutPython3SharesGroupsReaders
@@ -69155,13 +71394,37 @@ class _ResponseScriptsPutPython3SharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutPython3SharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutPython3SharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutPython3SharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutPython3SharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutPython3SharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutPython3SharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListPython3Dependencies(Response):
     object_type: str
@@ -69324,13 +71587,37 @@ class _ResponseScriptsListRSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListRSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListRSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListRSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListRSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListRSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListRSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListRSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListRSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutRSharesUsers(Response):
     readers: _ResponseScriptsPutRSharesUsersReaders
@@ -69343,13 +71630,37 @@ class _ResponseScriptsPutRSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutRSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutRSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutRSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutRSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutRSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutRSharesGroups(Response):
     readers: _ResponseScriptsPutRSharesGroupsReaders
@@ -69362,13 +71673,37 @@ class _ResponseScriptsPutRSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutRSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutRSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutRSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutRSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutRSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutRSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListRDependencies(Response):
     object_type: str
@@ -69531,13 +71866,37 @@ class _ResponseScriptsListJavascriptSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListJavascriptSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListJavascriptSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListJavascriptSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListJavascriptSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListJavascriptSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListJavascriptSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListJavascriptSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListJavascriptSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutJavascriptSharesUsers(Response):
     readers: _ResponseScriptsPutJavascriptSharesUsersReaders
@@ -69550,13 +71909,37 @@ class _ResponseScriptsPutJavascriptSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutJavascriptSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutJavascriptSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutJavascriptSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutJavascriptSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutJavascriptSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutJavascriptSharesGroups(Response):
     readers: _ResponseScriptsPutJavascriptSharesGroupsReaders
@@ -69569,13 +71952,37 @@ class _ResponseScriptsPutJavascriptSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutJavascriptSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutJavascriptSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutJavascriptSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutJavascriptSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutJavascriptSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutJavascriptSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListJavascriptDependencies(Response):
     object_type: str
@@ -69730,13 +72137,37 @@ class _ResponseScriptsListCustomSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListCustomSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListCustomSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListCustomSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsListCustomSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListCustomSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsListCustomSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsListCustomSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListCustomSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutCustomSharesUsers(Response):
     readers: _ResponseScriptsPutCustomSharesUsersReaders
@@ -69749,13 +72180,37 @@ class _ResponseScriptsPutCustomSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutCustomSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutCustomSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutCustomSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutCustomSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutCustomSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsPutCustomSharesGroups(Response):
     readers: _ResponseScriptsPutCustomSharesGroupsReaders
@@ -69768,13 +72223,37 @@ class _ResponseScriptsPutCustomSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutCustomSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutCustomSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseScriptsPutCustomSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseScriptsPutCustomSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseScriptsPutCustomSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutCustomSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseScriptsListCustomDependencies(Response):
     object_type: str
@@ -70646,6 +73125,10 @@ class _ResponseServicesPostSchedule(Response):
     runtime_plan: str
     recurrences: List
 
+class _ResponseServicesPostScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
+
 class _ResponseServicesPostCurrentDeployment(Response):
     deployment_id: int
     user_id: int
@@ -70711,6 +73194,10 @@ class _ResponseServicesGetUser(Response):
 class _ResponseServicesGetSchedule(Response):
     runtime_plan: str
     recurrences: List
+
+class _ResponseServicesGetScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
 
 class _ResponseServicesGetCurrentDeployment(Response):
     deployment_id: int
@@ -70778,6 +73265,10 @@ class _ResponseServicesPutSchedule(Response):
     runtime_plan: str
     recurrences: List
 
+class _ResponseServicesPutScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
+
 class _ResponseServicesPutCurrentDeployment(Response):
     deployment_id: int
     user_id: int
@@ -70844,6 +73335,10 @@ class _ResponseServicesPatchSchedule(Response):
     runtime_plan: str
     recurrences: List
 
+class _ResponseServicesPatchScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
+
 class _ResponseServicesPatchCurrentDeployment(Response):
     deployment_id: int
     user_id: int
@@ -70878,13 +73373,37 @@ class _ResponseServicesListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseServicesListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseServicesListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseServicesListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPutSharesUsers(Response):
     readers: _ResponseServicesPutSharesUsersReaders
@@ -70897,13 +73416,37 @@ class _ResponseServicesPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseServicesPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseServicesPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseServicesPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPutSharesGroups(Response):
     readers: _ResponseServicesPutSharesGroupsReaders
@@ -70916,13 +73459,37 @@ class _ResponseServicesPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseServicesPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseServicesPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseServicesPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseServicesPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseServicesPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseServicesListDependencies(Response):
     object_type: str
@@ -70987,6 +73554,10 @@ class _ResponseServicesPutArchiveUser(Response):
 class _ResponseServicesPutArchiveSchedule(Response):
     runtime_plan: str
     recurrences: List
+
+class _ResponseServicesPutArchiveScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
 
 class _ResponseServicesPutArchiveCurrentDeployment(Response):
     deployment_id: int
@@ -71141,6 +73712,10 @@ class _ResponseServicesPostCloneUser(Response):
 class _ResponseServicesPostCloneSchedule(Response):
     runtime_plan: str
     recurrences: List
+
+class _ResponseServicesPostCloneScheduleRecurrences(Response):
+    scheduled_days: List
+    scheduled_hours: List
 
 class _ResponseServicesPostCloneCurrentDeployment(Response):
     deployment_id: int
@@ -71297,13 +73872,37 @@ class _ResponseStorageHostsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseStorageHostsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseStorageHostsPutSharesUsers(Response):
     readers: _ResponseStorageHostsPutSharesUsersReaders
@@ -71316,13 +73915,37 @@ class _ResponseStorageHostsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseStorageHostsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseStorageHostsPutSharesGroups(Response):
     readers: _ResponseStorageHostsPutSharesGroupsReaders
@@ -71335,13 +73958,37 @@ class _ResponseStorageHostsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseStorageHostsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseStorageHostsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseStorageHostsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseStorageHostsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseStorageHostsListDependencies(Response):
     object_type: str
@@ -71519,8 +74166,8 @@ class _ResponseTablesPostRefreshOutgoingTableMatches(Response):
     source_table_id: int
     target_type: str
     target_id: int
-    target: _ResponseTablesPostRefreshTarget
-    job: _ResponseTablesPostRefreshJob
+    target: _ResponseTablesPostRefreshOutgoingTableMatchesTarget
+    job: _ResponseTablesPostRefreshOutgoingTableMatchesJob
 
 class _ResponseTablesGet(Response):
     id: int
@@ -71607,8 +74254,8 @@ class _ResponseTablesGetOutgoingTableMatches(Response):
     source_table_id: int
     target_type: str
     target_id: int
-    target: _ResponseTablesGetTarget
-    job: _ResponseTablesGetJob
+    target: _ResponseTablesGetOutgoingTableMatchesTarget
+    job: _ResponseTablesGetOutgoingTableMatchesJob
 
 class _ResponseTablesPatch(Response):
     id: int
@@ -71686,13 +74333,37 @@ class _ResponseTemplatesListReportsSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesListReportsSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListReportsSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesListReportsSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesListReportsSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListReportsSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesListReportsSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesListReportsSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListReportsSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesPutReportsSharesUsers(Response):
     readers: _ResponseTemplatesPutReportsSharesUsersReaders
@@ -71705,13 +74376,37 @@ class _ResponseTemplatesPutReportsSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutReportsSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutReportsSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutReportsSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutReportsSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesPutReportsSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesPutReportsSharesGroups(Response):
     readers: _ResponseTemplatesPutReportsSharesGroupsReaders
@@ -71724,13 +74419,37 @@ class _ResponseTemplatesPutReportsSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutReportsSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutReportsSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutReportsSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutReportsSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesPutReportsSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutReportsSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesListReportsDependencies(Response):
     object_type: str
@@ -71848,13 +74567,37 @@ class _ResponseTemplatesListScriptsSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesListScriptsSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListScriptsSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesListScriptsSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesListScriptsSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListScriptsSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesListScriptsSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesListScriptsSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesListScriptsSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesPutScriptsSharesUsers(Response):
     readers: _ResponseTemplatesPutScriptsSharesUsersReaders
@@ -71867,13 +74610,37 @@ class _ResponseTemplatesPutScriptsSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutScriptsSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutScriptsSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutScriptsSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutScriptsSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesPutScriptsSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesPutScriptsSharesGroups(Response):
     readers: _ResponseTemplatesPutScriptsSharesGroupsReaders
@@ -71886,13 +74653,37 @@ class _ResponseTemplatesPutScriptsSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutScriptsSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutScriptsSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseTemplatesPutScriptsSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseTemplatesPutScriptsSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseTemplatesPutScriptsSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseTemplatesPutScriptsSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseTemplatesListScriptsDependencies(Response):
     object_type: str
@@ -72773,13 +75564,37 @@ class _ResponseWorkflowsListSharesReaders(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsListSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsListSharesReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsListSharesWriters(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsListSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsListSharesWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsListSharesOwners(Response):
     users: List
     groups: List
+
+class _ResponseWorkflowsListSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsListSharesOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseWorkflowsPutSharesUsers(Response):
     readers: _ResponseWorkflowsPutSharesUsersReaders
@@ -72792,13 +75607,37 @@ class _ResponseWorkflowsPutSharesUsersReaders(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsPutSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsPutSharesUsersWriters(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsPutSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsPutSharesUsersOwners(Response):
     users: List
     groups: List
+
+class _ResponseWorkflowsPutSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseWorkflowsPutSharesGroups(Response):
     readers: _ResponseWorkflowsPutSharesGroupsReaders
@@ -72811,13 +75650,37 @@ class _ResponseWorkflowsPutSharesGroupsReaders(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsPutSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsPutSharesGroupsWriters(Response):
     users: List
     groups: List
 
+class _ResponseWorkflowsPutSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
 class _ResponseWorkflowsPutSharesGroupsOwners(Response):
     users: List
     groups: List
+
+class _ResponseWorkflowsPutSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseWorkflowsPutSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
 
 class _ResponseWorkflowsListDependencies(Response):
     object_type: str
