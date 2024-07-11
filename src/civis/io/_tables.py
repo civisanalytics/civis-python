@@ -743,7 +743,7 @@ def dataframe_to_civis(
 
     Parameters
     ----------
-    df : :class:`pandas:pandas.DataFrame`
+    df : :class:`pandas:pandas.DataFrame` | :class:`polars.DataFrame`
         The `DataFrame` to upload to Civis.
     database : str or int
         Upload data into this database. Can be the database name or ID.
@@ -807,7 +807,7 @@ def dataframe_to_civis(
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments will be passed to
-        :meth:`pandas:pandas.DataFrame.to_csv`.
+        :func:`pandas:pandas.DataFrame.to_csv` or :func:`polars.DataFrame.write_csv`.
 
     Returns
     -------
@@ -833,9 +833,14 @@ def dataframe_to_civis(
     headers = False if kwargs.get("header") is False else True
     with TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, "dataframe_to_civis.csv")
-        to_csv_kwargs = {"encoding": "utf-8", "index": False}
-        to_csv_kwargs.update(kwargs)
-        df.to_csv(tmp_path, **to_csv_kwargs)
+        if (df_lib := type(df).split(".")[0]) == "pandas":
+            to_csv_kwargs = {"encoding": "utf-8", "index": False}
+            to_csv_kwargs.update(kwargs)
+            df.to_csv(tmp_path, **to_csv_kwargs)
+        elif df_lib == "polars":
+            df.write_csv(tmp_path, **kwargs)
+        else:
+            TypeError(f"only pandas or polars dataframes are supported: {df_lib}")
         _, name = split_schema_tablename(table)
         file_id = file_to_civis(tmp_path, name, client=client)
 
