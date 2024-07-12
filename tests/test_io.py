@@ -1454,7 +1454,7 @@ def test_read_civis_sql_no_pandas_special_encoding_sad_path(m_requests):
     # which should raise UnicodeDecodeError.
     with pytest.raises(UnicodeDecodeError):
         civis.io.read_civis_sql(
-            "select 1", "db", use_pandas=False, client=m_client, polling_interval=1
+            "select 1", "db", return_as="list", client=m_client, polling_interval=1
         )
 
 
@@ -1490,7 +1490,7 @@ def test_read_civis_sql_no_pandas_special_encoding_happy_path(m_requests):
     actual_data = civis.io.read_civis_sql(
         "select 1",
         "db",
-        use_pandas=False,
+        return_as="list",
         client=m_client,
         polling_interval=1,
         encoding=encoding,
@@ -1527,7 +1527,7 @@ def test_read_civis_sql_no_pandas(m_requests):
     actual_data = civis.io.read_civis_sql(
         "select 1",
         "db",
-        use_pandas=False,
+        return_as="list",
         client=m_client,
         polling_interval=1,
     )
@@ -1555,7 +1555,7 @@ def test_read_civis_sql_pandas():
         actual_data = civis.io.read_civis_sql(
             "select 1",
             "db",
-            use_pandas=True,
+            return_as="pandas",
             client=m_client,
             polling_interval=1,
         )

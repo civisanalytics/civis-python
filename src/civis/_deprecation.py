@@ -3,6 +3,14 @@ from inspect import signature
 import warnings
 
 
+class DeprecatedParameter:
+    def __bool__(self):
+        raise NotImplementedError("No truth value for a deprecated parameter")
+
+    def __repr__(self):
+        return "DEPRECATED"
+
+
 def deprecate_param(version_removed, parameter_name, *additional_names):
     """Create a decorator which warns of parameter deprecation
 
