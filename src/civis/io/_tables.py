@@ -79,21 +79,25 @@ def _validate_return_as(return_as):
 
 def _warn_deprecated_use_pandas(use_pandas, return_as):
     if not isinstance(use_pandas, DeprecatedParameter):
+        warnings_stack_level = 3  # so that warnings point to the user's code
         warnings.warn(
             "use_pandas is deprecated and will be removed in civis-python v3.0.0. "
-            "Use return_as instead.",
+            "Use return_as instead and do not set use_pandas.",
             FutureWarning,
-            stacklevel=3,
+            stacklevel=warnings_stack_level,
         )
         if use_pandas and return_as != "pandas":
-            raise ValueError(
+            msg = (
                 "Conflicting argument values: "
                 "use_pandas is True but return_as isn't 'pandas'. "
-                "If you'd like to return a pandas dataframe, set return_as as 'pandas' "
-                "and do not set use_pandas."
+                "Setting return_as to 'pandas' to align with use_pandas=True."
+                "Moving forward, if you'd like to return a pandas dataframe, "
+                "set return_as as 'pandas' and do not set use_pandas."
             )
+            return_as = "pandas"
+            warnings.warn(msg, FutureWarning, stacklevel=warnings_stack_level)
         use_pandas = DeprecatedParameter()
-    return use_pandas
+    return use_pandas, return_as
 
 
 def read_civis(
@@ -197,7 +201,7 @@ def read_civis(
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
     _validate_return_as(return_as)
-    use_pandas = _warn_deprecated_use_pandas(use_pandas, return_as)
+    use_pandas, return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
@@ -410,7 +414,7 @@ def read_civis_sql(
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
     _validate_return_as(return_as)
-    _warn_deprecated_use_pandas(use_pandas, return_as)
+    _, return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
