@@ -29,16 +29,16 @@ import requests
 try:
     import pandas as pd
 
-    NO_PANDAS = False
+    HAS_PANDAS = True
 except ImportError:
-    NO_PANDAS = True
+    HAS_PANDAS = False
 
 try:
     import polars as pl
 
-    NO_POLARS = False
+    HAS_POLARS = True
 except ImportError:
-    NO_POLARS = True
+    HAS_POLARS = False
 
 CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
@@ -71,9 +71,9 @@ def _validate_return_as(return_as):
     if return_as not in _RETURN_AS_OPTIONS:
         raise ValueError(f"unsupported return_as option: {return_as}")
 
-    if return_as == "pandas" and NO_PANDAS:
+    if return_as == "pandas" and not HAS_PANDAS:
         raise ImportError("return_as is 'pandas' but pandas is not installed.")
-    elif return_as == "polars" and NO_POLARS:
+    elif return_as == "polars" and not HAS_POLARS:
         raise ImportError("return_as is 'polars' but polars is not installed.")
 
 
