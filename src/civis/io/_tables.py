@@ -88,9 +88,12 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
         if use_pandas and return_as != "pandas":
             raise ValueError(
                 "Conflicting argument values: "
-                "use_pandas is True but return_as isn't 'pandas'"
+                "use_pandas is True but return_as isn't 'pandas'. "
+                "If you'd like to return a pandas dataframe, set return_as as 'pandas' "
+                "and do not set use_pandas."
             )
         use_pandas = DeprecatedParameter()
+    return use_pandas
 
 
 def read_civis(
@@ -121,12 +124,12 @@ def read_civis(
         A list of column names. Column SQL transformations are possible.
         If omitted, all columns are exported.
     return_as : str, {"list", "pandas", "polars"}
-        Return a list if ``"list""`` is provided, or a :class:`pandas.DataFrame`
-        instance for ``"pandas"``, or a :class:`polars.DataFrame` instance for
-        ``"polars"``. Default: ``"list"``.
+        If ``"list"`` (the default), return a list.
+        If ``"pandas"``, return a :class:`pandas.DataFrame`.
+        If ``"polars"``, return a :class:`polars.DataFrame`.
     use_pandas : bool, optional [DEPRECATED]
         ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
-        Use ``return_as` instead.
+        Use ``return_as`` instead.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas.read_csv` or
@@ -194,7 +197,7 @@ def read_civis(
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
     _validate_return_as(return_as)
-    _warn_deprecated_use_pandas(use_pandas, return_as)
+    use_pandas = _warn_deprecated_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
@@ -328,12 +331,12 @@ def read_civis_sql(
         Execute the query against this database. Can be the database name
         or ID.
     return_as : str, {"list", "pandas", "polars"}
-        Return a list if ``"list""`` is provided, or a :class:`pandas.DataFrame`
-        instance for ``"pandas"``, or a :class:`polars.DataFrame` instance for
-        ``"polars"``. Default: ``"list"``.
+        If ``"list"`` (the default), return a list.
+        If ``"pandas"``, return a :class:`pandas.DataFrame`.
+        If ``"polars"``, return a :class:`polars.DataFrame`.
     use_pandas : bool, optional [DEPRECATED]
         ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
-        Use ``return_as` instead.
+        Use ``return_as`` instead.
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
