@@ -129,7 +129,7 @@ def read_civis(
         Use ``return_as` instead.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
-        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv` or
+        the ``encoding`` kwarg of :func:`pandas.read_csv` or
         :func:`polars.read_csv`, respectively.
         If ``return_as`` is ``"list"``, and if this parameter isn't provided,
         then the UTF-8 encoding is assumed. In case you encounter
@@ -151,7 +151,7 @@ def read_civis(
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if ``return_as`` is ``"pandas"``, or
+        :func:`pandas.read_csv` if ``return_as`` is ``"pandas"``, or
         passed into :func:`python:csv.reader` if ``return_as`` is
         ``"list"``,
         or passed into :func:`polars.read_csv` if ``return_as`` is ``"polars"``.
@@ -342,7 +342,7 @@ def read_civis_sql(
         documentation for how to format these two keys' values.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
-        the ``encoding`` kwarg of :func:`pandas:pandas.read_csv` or
+        the ``encoding`` kwarg of :func:`pandas.read_csv` or
         :func:`polars.read_csv`, respectively.
         If ``return_as`` is ``"list"``, and if this parameter isn't provided,
         then the UTF-8 encoding is assumed. In case you encounter
@@ -364,7 +364,7 @@ def read_civis_sql(
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments are passed into
-        :func:`pandas:pandas.read_csv` if ``return_as`` is ``"pandas"``, or
+        :func:`pandas.read_csv` if ``return_as`` is ``"pandas"``, or
         passed into :func:`python:csv.reader` if ``return_as`` is ``"list"``,
         or passed into :func:`polars.read_csv` if ``return_as`` is ``"polars"``.
 
@@ -794,16 +794,17 @@ def dataframe_to_civis(
     hidden=True,
     **kwargs,
 ):
-    """Upload a pandas dataframe into a Civis table.
+    """Upload a dataframe into a Civis table.
 
-    The dataframe's index will not be included. To store the index
+    For a pandas dataframe,
+    the dataframe's index will not be included. To store the index
     along with the other values, use ``df.reset_index()`` instead
     of ``df`` as the first argument to this function.
 
     Parameters
     ----------
-    df : :class:`pandas:pandas.DataFrame` | :class:`polars.DataFrame`
-        The `DataFrame` to upload to Civis.
+    df : :class:`pandas.DataFrame` | :class:`polars.DataFrame`
+        The dataframe to upload to Civis.
     database : str or int
         Upload data into this database. Can be the database name or ID.
     table : str
@@ -866,7 +867,8 @@ def dataframe_to_civis(
         If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
         Extra keyword arguments will be passed to
-        :func:`pandas:pandas.DataFrame.to_csv` or :func:`polars.DataFrame.write_csv`.
+        :func:`pandas.DataFrame.to_csv`
+        or :func:`polars.DataFrame.write_csv`.
 
     Returns
     -------
@@ -884,7 +886,7 @@ def dataframe_to_civis(
 
     See Also
     --------
-    :func:`~pandas.DataFrame.to_csv`
+    :func:`pandas.DataFrame.to_csv`
     :func:`polars.DataFrame.write_csv`
     """  # noqa: E501
     if client is None:

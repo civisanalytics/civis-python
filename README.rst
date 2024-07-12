@@ -97,15 +97,21 @@ You can test your installation by running
 If ``civis`` was installed correctly, this will print your Civis
 Platform username.
 
-The client has a soft dependency on ``pandas`` to support features such as
-data type parsing.  If you are using the ``io`` namespace to read or write
-data from Civis, it is highly recommended that you install ``pandas`` and
-set ``use_pandas=True`` in functions that accept that parameter.  To install
-``pandas``:
+The client has a soft dependency on ``pandas`` or ``polars`` to support features such as
+data type parsing.  If you are using the ``civis.io`` namespace to read or write
+data from Civis, it is highly recommended that you install ``pandas`` or ``polars`` and
+set the argument ``return_as`` to ``"pandas"`` or ``"polars"``, respectively in functions
+that accept that parameter.  To install ``pandas``:
 
 .. code-block:: bash
 
    pip install pandas
+
+To install ``polars``:
+
+.. code-block:: bash
+
+   pip install polars
 
 Machine learning features in the ``ml`` namespace have a soft dependency on
 ``scikit-learn`` and ``pandas``. Install ``scikit-learn`` to

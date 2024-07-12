@@ -44,7 +44,7 @@ intersphinx_mapping = {
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
     "tenacity": ("https://tenacity.readthedocs.io/en/latest/", None),
-    "polars": ("https://docs.pola.rs/api/python/stable", None),
+    "polars": ("https://docs.pola.rs/api/python/stable/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
