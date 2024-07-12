@@ -154,7 +154,7 @@ common workflows.
     import civis
     df = civis.io.read_civis(table="my_schema.my_table",
                              database="database",
-                             use_pandas=True)
+                             return_as="pandas")
 
 The Civis API may also be directly accessed via the ``APIClient`` class.
 
