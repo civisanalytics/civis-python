@@ -74,7 +74,7 @@ def _validate_return_as(return_as):
     if return_as == "pandas" and NO_PANDAS:
         raise ImportError("return_as is 'pandas' but pandas is not installed.")
     elif return_as == "polars" and NO_POLARS:
-        raise ImportError("return_as is 'polars' but pandas is not installed.")
+        raise ImportError("return_as is 'polars' but polars is not installed.")
 
 
 def _warn_deprecated_use_pandas(use_pandas, return_as):
