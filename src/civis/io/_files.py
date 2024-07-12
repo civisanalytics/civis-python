@@ -553,12 +553,12 @@ def file_to_dataframe(
 def dataframe_to_file(
     df, name="data.csv", expires_at="DEFAULT", client=None, **to_csv_kws
 ):
-    """Store a :class:`~pandas.DataFrame` as a CSV in Civis Platform
+    """Store a dataframe as a CSV in Civis Platform.
 
     Parameters
     ----------
-    df : :class:`~pandas.DataFrame`
-        The table to upload.
+    df : :class:`~pandas.DataFrame` | :class:`polars.DataFrame`
+        The dataframe to upload.
     name : str, optional
         The name of the Civis File
     expires_at : str, optional
@@ -574,7 +574,7 @@ def dataframe_to_file(
         created from the :envvar:`CIVIS_API_KEY`.
     **to_csv_kws
         Additional keyword parameters will be passed directly to
-        :func:`~pandas.DataFrame.to_csv`.
+        :func:`~pandas.DataFrame.to_csv` or :func:`polars.DataFrame.write_csv`.
 
     Returns
     -------
@@ -585,10 +585,19 @@ def dataframe_to_file(
     --------
     :func:`file_to_civis`
     :func:`~pandas.DataFrame.to_csv`
+    :func:`polars.DataFrame.write_csv`
     """
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
-        df.to_csv(path, **to_csv_kws)
+        if (df_lib := df.__module__.split(".")[0]) == "pandas":
+            df.to_csv(path, **to_csv_kws)
+        elif df_lib == "polars":
+            df.write_csv(path, **to_csv_kws)
+        else:
+            raise ValueError(
+                f"unsuppported dataframe library {df_lib!r} "
+                "-- only pandas and polars are supported"
+            )
         file_kwargs = {"name": name}
         if expires_at != "DEFAULT":
             # A missing parameter signifies the default value here.
