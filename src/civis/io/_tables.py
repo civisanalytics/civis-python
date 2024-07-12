@@ -317,29 +317,29 @@ def read_civis_sql(
 ):
     """Read data from Civis using a custom SQL string.
 
-     If no data is expected to return from the query,
-     consider :func:`~civis.io.query_civis` instead.
+    If no data is expected to return from the query,
+    consider :func:`~civis.io.query_civis` instead.
 
-     Parameters
-     ----------
-     sql : str
-         The SQL select string to be executed.
-     database : str or int
-         Execute the query against this database. Can be the database name
-         or ID.
-     return_as : str, {"list", "pandas", "polars"}
-         Return a list if ``"list""`` is provided, or a :class:`pandas.DataFrame`
-         instance for ``"pandas"``, or a :class:`polars.DataFrame` instance for
-         ``"polars"``. Default: ``"list"``.
-     use_pandas : bool, optional [DEPRECATED]
-         ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
-         Use ``return_as` instead.
-     sql_params_arguments : dict, optional
-         A dictionary of SQL query parameters to pass directly to
-         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
-         The only allowed keys are ``"params"`` (whose value is a list[dict]) and
-         ``"arguments"`` (whose value is a dict). Please refer to the linked API
-         documentation for how to format these two keys' values.
+    Parameters
+    ----------
+    sql : str
+        The SQL select string to be executed.
+    database : str or int
+        Execute the query against this database. Can be the database name
+        or ID.
+    return_as : str, {"list", "pandas", "polars"}
+        Return a list if ``"list""`` is provided, or a :class:`pandas.DataFrame`
+        instance for ``"pandas"``, or a :class:`polars.DataFrame` instance for
+        ``"polars"``. Default: ``"list"``.
+    use_pandas : bool, optional [DEPRECATED]
+        ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
+        Use ``return_as` instead.
+    sql_params_arguments : dict, optional
+        A dictionary of SQL query parameters to pass directly to
+        :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
+        The only allowed keys are ``"params"`` (whose value is a list[dict]) and
+        ``"arguments"`` (whose value is a dict). Please refer to the linked API
+        documentation for how to format these two keys' values.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas:pandas.read_csv` or
@@ -349,63 +349,62 @@ def read_civis_sql(
         a ``UnicodeDecodeError``, consider choosing an encoding suitable
         for your data; see the `list of standard encodings
         <https://docs.python.org/3/library/codecs.html#standard-encodings>`_.
-     job_name : str, optional
-         A name to give the job. If omitted, a random job name will be
-         used.
-     client : :class:`civis.APIClient`, optional
-         If not provided, an :class:`civis.APIClient` object will be
-         created from the :envvar:`CIVIS_API_KEY`.
-     credential_id : str or int, optional
-         The database credential ID.  If ``None``, the default credential
-         will be used.
-     polling_interval : int or float, optional
-         Number of seconds to wait between checks for query completion.
-     hidden : bool, optional
-         If ``True`` (the default), this job will not appear in the Civis UI.
+    job_name : str, optional
+        A name to give the job. If omitted, a random job name will be
+        used.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+    credential_id : str or int, optional
+        The database credential ID.  If ``None``, the default credential
+        will be used.
+    polling_interval : int or float, optional
+        Number of seconds to wait between checks for query completion.
+    hidden : bool, optional
+        If ``True`` (the default), this job will not appear in the Civis UI.
     **kwargs : kwargs
-         Extra keyword arguments are passed into
-         :func:`pandas:pandas.read_csv` if ``return_as`` is ``"pandas"``, or
-         passed into :func:`python:csv.reader` if ``return_as`` is
-         ``"list"``,
-         or passed into :func:`polars.read_csv` if ``return_as`` is ``"polars"``.
+        Extra keyword arguments are passed into
+        :func:`pandas:pandas.read_csv` if ``return_as`` is ``"pandas"``, or
+        passed into :func:`python:csv.reader` if ``return_as`` is ``"list"``,
+        or passed into :func:`polars.read_csv` if ``return_as`` is ``"polars"``.
 
-     Returns
-     -------
-     data : list | :class:`pandas.DataFrame` | :class:`polars.DataFrame`
-         A list of rows (with header as first row) if ``return_as`` is
-         ``"list"``, or :class:`pandas.DataFrame` if ``return_as`` is ``"pandas"``,
-         or :class:`polars.DataFrame` if ``return_as`` is ``"polars"``.
-         Note that if ``return_as`` is ``"list"``, no parsing of types is performed and
-         each row will be a list of strings.
+    Returns
+    -------
+    data : list | :class:`pandas.DataFrame` | :class:`polars.DataFrame`
+        A list of rows (with header as first row) if ``return_as`` is
+        ``"list"``, or :class:`pandas.DataFrame` if ``return_as`` is ``"pandas"``,
+        or :class:`polars.DataFrame` if ``return_as`` is ``"polars"``.
+        Note that if ``return_as`` is ``"list"``, no parsing of types is performed and
+        each row will be a list of strings.
 
-     Raises
-     ------
-     ImportError
-         If ``return_as`` is ``"pandas"`` and pandas is not installed.
-         If ``return_as`` is ``"polars"`` and polars is not installed.
-     EmptyResultError
-         If no rows were returned as a result of the query.
+    Raises
+    ------
+    ImportError
+        If ``return_as`` is ``"pandas"`` and pandas is not installed.
+        If ``return_as`` is ``"polars"`` and polars is not installed.
+    EmptyResultError
+        If no rows were returned as a result of the query.
 
-     Examples
-     --------
-     >>> import civis
-     >>> sql = "SELECT * FROM schema.table"
-     >>> df = civis.io.read_civis_sql(sql, "my_database", return_as="pandas")
-     >>> col_a = df["column_a"]
+    Examples
+    --------
+    >>> import civis
+    >>> sql = "SELECT * FROM schema.table"
+    >>> df = civis.io.read_civis_sql(sql, "my_database", return_as="pandas")
+    >>> col_a = df["column_a"]
 
-     >>> data = civis.io.read_civis_sql(sql, "my_database")
-     >>> columns = data.pop(0)
-     >>> col_a_index = columns.index("column_a")
-     >>> col_a = [row[col_a_index] for row in data]
+    >>> data = civis.io.read_civis_sql(sql, "my_database")
+    >>> columns = data.pop(0)
+    >>> col_a_index = columns.index("column_a")
+    >>> col_a = [row[col_a_index] for row in data]
 
-     Notes
-     -----
-     This reads the data into memory.
+    Notes
+    -----
+    This reads the data into memory.
 
-     See Also
-     --------
-     civis.io.read_civis : Read directly into memory without SQL.
-     civis.io.civis_to_csv : Write directly to a CSV file.
+    See Also
+    --------
+    civis.io.read_civis : Read directly into memory without SQL.
+    civis.io.civis_to_csv : Write directly to a CSV file.
     """
     _validate_return_as(return_as)
     _warn_deprecated_use_pandas(use_pandas, return_as)
