@@ -79,23 +79,20 @@ def _validate_return_as(return_as):
 
 def _warn_deprecated_use_pandas(use_pandas, return_as):
     if not isinstance(use_pandas, DeprecatedParameter):
-        warnings_stack_level = 3  # so that warnings point to the user's code
-        warnings.warn(
+        message = (
             "use_pandas is deprecated and will be removed in civis-python v3.0.0. "
-            "Use return_as instead and do not set use_pandas.",
-            FutureWarning,
-            stacklevel=warnings_stack_level,
+            "Use return_as instead and do not set use_pandas. "
         )
         if use_pandas and return_as != "pandas":
-            msg = (
-                "Conflicting argument values: "
+            message += (
+                "In this case, there are conflicting argument values: "
                 "use_pandas is True but return_as isn't 'pandas'. "
-                "Setting return_as to 'pandas' to align with use_pandas=True."
-                "Moving forward, if you'd like to return a pandas dataframe, "
-                "set return_as as 'pandas' and do not set use_pandas."
+                "If you'd like to return a pandas dataframe, "
+                "set return_as to 'pandas' and do not set use_pandas."
             )
             return_as = "pandas"
-            warnings.warn(msg, FutureWarning, stacklevel=warnings_stack_level)
+        # stacklevel=3 to point the warning to the user's code
+        warnings.warn(message, FutureWarning, stacklevel=3)
         use_pandas = DeprecatedParameter()
     return use_pandas, return_as
 
