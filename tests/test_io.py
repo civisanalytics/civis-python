@@ -1,9 +1,11 @@
 import tempfile
 import csv
 import gzip
+import itertools
 import io
 import json
 import os
+import warnings
 from io import StringIO, BytesIO
 from unittest import mock
 from tempfile import TemporaryDirectory
@@ -29,6 +31,7 @@ except ImportError:
 
 import civis
 from civis.io import _files
+from civis._deprecation import DeprecatedKwargDefault
 from civis.io._files import _retry
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name
@@ -1748,3 +1751,79 @@ def test_maybe_random_name_random(mock_uuid):
 def test_maybe_random_name_not_random():
     given_name = "22222"
     assert maybe_get_random_name(given_name) == given_name
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not has_polars, reason="polars not installed")
+@pytest.mark.parametrize(
+    "func_name, use_pandas, return_as",
+    itertools.product(
+        ("read_civis_sql", "read_civis"),
+        (True, False, DeprecatedKwargDefault()),
+        ("list", "pandas", "polars"),
+    ),
+)
+@mock.patch.object(civis.io._tables, "requests")
+def test_warns_or_raise_exception_for_deprecated_use_pandas(
+    m_requests, func_name, use_pandas, return_as
+):
+    if isinstance(use_pandas, DeprecatedKwargDefault):
+        warn_or_raise = None
+    elif use_pandas is True and return_as == "polars":
+        warn_or_raise = ValueError
+    else:
+        warn_or_raise = FutureWarning
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_csv_path = os.path.join(tmp_dir, "data.csv")
+        expected_data = "foo,bar\n123,very good\n"
+        with open(tmp_csv_path, "wb") as f:
+            f.write(gzip.compress(expected_data.encode("utf-8")))
+
+        # Set up a mock client object for what civis.io.read_civis(_sql) needs.
+        m_client = create_client_mock()
+        m_client.scripts.get_sql_runs.return_value = Response(
+            {
+                "output": [
+                    {"path": tmp_csv_path, "file_id": 123, "output_name": "blah"}
+                ],
+                "state": "success",
+            }
+        )
+        m_response = mock.Mock()
+        # The helper function _decompress_stream() calls
+        # response.raw.read(CHUNK_SIZE) in a while loop.
+        # In the mock `m_response.raw.read` here, we use side_effect so that
+        # we get the data back from the first call and no data in the second call
+        # inside the while loop (because the data has all been consumed in the
+        # first call).
+        m_response.raw.read.side_effect = [
+            gzip.compress(expected_data.encode("utf-8")),
+            b"",
+        ]
+        m_requests.get.return_value = m_response
+
+        func = getattr(civis.io, func_name)
+        shared_args = dict(
+            database="db",
+            use_pandas=use_pandas,
+            return_as=return_as,
+            client=m_client,
+            polling_interval=0.001,
+        )
+        if func_name == "read_civis":
+            args = {"table": "schema.tablename", **shared_args}
+        else:
+            args = {"sql": "select * from schema.tablename", **shared_args}
+
+        if warn_or_raise and warn_or_raise.__base__.__name__ == "Warning":
+            with pytest.warns(warn_or_raise):
+                func(**args)
+        elif warn_or_raise and warn_or_raise.__base__.__name__ == "Exception":
+            with pytest.raises(warn_or_raise):
+                func(**args)
+        else:
+            # Check that no warning is emitted.
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                func(**args)

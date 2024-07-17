@@ -3,11 +3,41 @@ from inspect import signature
 import warnings
 
 
-class DeprecatedParameter:
+class DeprecatedKwargDefault:
+    """A stand-in default value of a deprecated keyword argument.
+
+    As its name suggests, ``DeprecatedKwargDefault`` only works for a keyword argument.
+    Compared to the decorator approach using ``civis._deprecation.deprecate_param``,
+    ``DeprecatedKwargDefault`` allows a more flexible treatment beyond emitting
+    a generic deprecation warning. Intended usage: If you have a function ``func``
+    with a kwarg ``bar`` that has a default value:
+
+    .. code-block: python
+
+        def func(foo, bar="something"):
+            ...
+
+    Let's say ``bar`` is now deprecated. Now set its default value to an instance of
+    ``DeprecatedKwargDefault``, and you're able to detect whether the user has set
+    the value of ``bar``:
+
+    .. code-block: python
+
+        def func(foo, bar=DeprecatedKwargDefault()):
+            if not isinstance(bar, DeprecatedKwargDefault):
+                # The user has supplied a value to ``bar``.
+                # Raise a FutureWarning as apropriate.
+                # Customize the warning message as needed.
+                # Make any other changes as needed.
+                ...
+            ...
+    """
+
     def __bool__(self):
         raise NotImplementedError("No truth value for a deprecated parameter")
 
     def __repr__(self):
+        """Show this as the default value in the Sphinx docs."""
         return "DEPRECATED"
 
 

@@ -22,7 +22,7 @@ from civis.base import EmptyResultError, CivisImportError, CivisAPIError
 from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis
 from civis.utils import run_job
-from civis._deprecation import DeprecatedParameter
+from civis._deprecation import DeprecatedKwargDefault
 
 import requests
 
@@ -78,22 +78,29 @@ def _validate_return_as(return_as):
 
 
 def _warn_deprecated_use_pandas(use_pandas, return_as):
-    if not isinstance(use_pandas, DeprecatedParameter):
-        message = (
+    if not isinstance(use_pandas, DeprecatedKwargDefault):
+        warn_msg = (
             "use_pandas is deprecated and will be removed in civis-python v3.0.0. "
-            "Use return_as instead and do not set use_pandas. "
+            "Do not set the use_pandas argument and instead use the return_as argument."
         )
-        if use_pandas and return_as != "pandas":
-            message += (
-                "In this case, there are conflicting argument values: "
-                "use_pandas is True but return_as isn't 'pandas'. "
-                "If you'd like to return a pandas dataframe, "
-                "set return_as to 'pandas' and do not set use_pandas."
-            )
+        if use_pandas and return_as in ("list", "pandas"):
+            # return_as has a default value of "list". If return_as is "list",
+            # there's no way to tell if the user sets it explicitly or if it's
+            # from the default value (unless we either rewrite the function signature
+            # or use a decorator, which we can't or don't want to).
+            # So when use_pandas=True and return_as="list", assume the user's intent
+            # is to return a pandas dataframe.
             return_as = "pandas"
+            warn_msg += " To return a pandas dataframe, set return_as to 'pandas'."
+        elif use_pandas and return_as == "polars":
+            raise ValueError(
+                "Conflicting argument values: use_pandas=True but return_as='polars'. "
+                "Update your code so that the use_pandas argument is no longer set, "
+                "and set return_as to either 'pandas' or 'polars' for a dataframe."
+            )
         # stacklevel=3 to point the warning to the user's code
-        warnings.warn(message, FutureWarning, stacklevel=3)
-        use_pandas = DeprecatedParameter()
+        warnings.warn(warn_msg, FutureWarning, stacklevel=3)
+        use_pandas = DeprecatedKwargDefault()
     return use_pandas, return_as
 
 
@@ -102,7 +109,7 @@ def read_civis(
     database,
     columns=None,
     return_as="list",
-    use_pandas=DeprecatedParameter(),
+    use_pandas=DeprecatedKwargDefault(),
     encoding=None,
     job_name=None,
     client=None,
@@ -309,7 +316,7 @@ def read_civis_sql(
     sql,
     database,
     return_as="list",
-    use_pandas=DeprecatedParameter(),
+    use_pandas=DeprecatedKwargDefault(),
     sql_params_arguments=None,
     encoding=None,
     job_name=None,
