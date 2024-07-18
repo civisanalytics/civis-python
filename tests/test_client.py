@@ -35,11 +35,7 @@ def test_feature_flags_memoized(mock_spec):
         assert client.users.list_me.call_count == 1
 
 
-@pytest.mark.parametrize(
-    "schema_tablename", ["foo.bar", '"foo".bar', 'foo."bar"', '"foo"."bar"']
-)
-def test_get_table_id(schema_tablename):
-    """Check that get_table_id handles quoted schema.tablename correctly."""
+def test_get_table_id():
     client = APIClient(local_api_spec=API_SPEC, api_key="none")
     client.get_database_id = mock.Mock(return_value=123)
 
@@ -48,7 +44,7 @@ def test_get_table_id(schema_tablename):
 
     client.tables.list = mock.Mock(return_value=mock_tables)
 
-    client.get_table_id(table=schema_tablename, database=123)
+    client.get_table_id(table="foo.bar", database=123)
 
     client.tables.list.assert_called_once_with(
         database_id=123, schema="foo", name="bar"

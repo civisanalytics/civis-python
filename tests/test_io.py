@@ -1644,7 +1644,7 @@ def test_read_civis_sql_pandas():
             "db",
             return_as="pandas",
             client=m_client,
-            polling_interval=0.01,
+            polling_interval=POLL_INTERVAL,
         )
         assert pd.read_csv(io.StringIO(expected_data)).equals(actual_data)
 
@@ -1672,7 +1672,7 @@ def test_read_civis_sql_polars():
             "db",
             return_as="polars",
             client=m_client,
-            polling_interval=0.01,
+            polling_interval=POLL_INTERVAL,
         )
         assert pl.read_csv(io.StringIO(expected_data)).equals(actual_data)
 
@@ -1813,7 +1813,7 @@ def test_warns_or_raise_exception_for_deprecated_use_pandas(
             use_pandas=use_pandas,
             return_as=return_as,
             client=m_client,
-            polling_interval=0.001,
+            polling_interval=POLL_INTERVAL,
         )
         if func_name == "read_civis":
             args = {"table": "schema.tablename", **shared_args}
