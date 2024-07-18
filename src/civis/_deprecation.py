@@ -6,11 +6,12 @@ import warnings
 class DeprecatedKwargDefault:
     """A stand-in default value of a deprecated keyword argument.
 
-    As its name suggests, ``DeprecatedKwargDefault`` only works for a keyword argument.
+    As its name suggests, ``DeprecatedKwargDefault`` only works for a keyword argument
+    that has a default value.
     Compared to the decorator approach using ``civis._deprecation.deprecate_param``,
     ``DeprecatedKwargDefault`` allows a more flexible treatment beyond emitting
-    a generic deprecation warning. Intended usage: If you have a function ``func``
-    with a kwarg ``bar`` that has a default value:
+    a generic deprecation warning. Intended usage: Suppose you have a function ``func``
+    with a kwarg ``bar`` that has a default value.
 
     .. code-block: python
 

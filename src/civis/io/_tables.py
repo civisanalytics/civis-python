@@ -80,8 +80,9 @@ def _validate_return_as(return_as):
 def _warn_deprecated_use_pandas(use_pandas, return_as):
     if not isinstance(use_pandas, DeprecatedKwargDefault):
         warn_msg = (
-            "use_pandas is deprecated and will be removed in civis-python v3.0.0. "
-            "Do not set the use_pandas argument and instead use the return_as argument."
+            "use_pandas is deprecated and will be removed in civis-python v3.0.0 "
+            "(no release timeline yet). To update your code, do not set the use_pandas "
+            "argument and instead use return_as."
         )
         if use_pandas and return_as in ("list", "pandas"):
             # return_as has a default value of "list". If return_as is "list",
