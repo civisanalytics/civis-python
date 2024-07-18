@@ -1,4 +1,5 @@
 import copy
+import concurrent.futures as cf
 from datetime import datetime
 from math import floor
 from unittest import mock
@@ -198,7 +199,7 @@ def test_no_retry_on_connection_error():
         assert session_context.send.call_count == expected_call_count
 
 
-def test_retry_respect_retry_after_headers():
+def _retry_respect_retry_after_headers(verb):
     expected_call_count = 0
     max_calls = 2
     retry_after = 1
@@ -210,38 +211,29 @@ def test_retry_respect_retry_after_headers():
     session_context.send.return_value.status_code = 429
     session_context.send.return_value.headers = {"Retry-After": str(retry_after)}
 
-    for verb in [
-        "HEAD",
-        "TRACE",
-        "GET",
-        "PUT",
-        "OPTIONS",
-        "DELETE",
-        "POST",
-        "head",
-        "trace",
-        "get",
-        "put",
-        "options",
-        "delete",
-        "post",
-    ]:
-        expected_call_count += max_calls
+    expected_call_count += max_calls
 
-        request_info = dict(
-            params={"secondParameter": "b", "firstParameter": "a"},
-            json={},
-            url="https://api.civisanalytics.com/wobble/wubble",
-            method=verb,
-        )
+    request_info = dict(
+        params={"secondParameter": "b", "firstParameter": "a"},
+        json={},
+        url="https://api.civisanalytics.com/wobble/wubble",
+        method=verb,
+    )
 
-        request = Request(**request_info)
-        pre_request = session_context.prepare_request(request)
+    request = Request(**request_info)
+    pre_request = session_context.prepare_request(request)
 
-        start_time = datetime.now().timestamp()
-        retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
-        end_time = datetime.now().timestamp()
-        duration = end_time - start_time
+    start_time = datetime.now().timestamp()
+    retry_request(verb, pre_request, session_context, _get_retrying(max_calls))
+    end_time = datetime.now().timestamp()
+    duration = end_time - start_time
 
-        assert session_context.send.call_count == expected_call_count
-        assert floor(duration) == retry_after * (max_calls - 1)
+    assert session_context.send.call_count == expected_call_count
+    assert floor(duration) == retry_after * (max_calls - 1)
+
+
+def test_retry_respect_retry_after_headers():
+    verbs = ["HEAD", "TRACE", "GET", "PUT", "OPTIONS", "DELETE", "POST"]
+    all_verbs = [v for v in (verbs + [v.lower() for v in verbs])]
+    with cf.ThreadPoolExecutor() as executor:
+        executor.map(_retry_respect_retry_after_headers, all_verbs)

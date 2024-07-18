@@ -1537,7 +1537,11 @@ def test_read_civis_sql_no_dataframe_special_encoding_sad_path(m_requests):
     # which should raise UnicodeDecodeError.
     with pytest.raises(UnicodeDecodeError):
         civis.io.read_civis_sql(
-            "select 1", "db", return_as="list", client=m_client, polling_interval=1
+            "select 1",
+            "db",
+            return_as="list",
+            client=m_client,
+            polling_interval=POLL_INTERVAL,
         )
 
 
@@ -1575,7 +1579,7 @@ def test_read_civis_sql_no_dataframe_special_encoding_happy_path(m_requests):
         "db",
         return_as="list",
         client=m_client,
-        polling_interval=1,
+        polling_interval=POLL_INTERVAL,
         encoding=encoding,
     )
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
@@ -1612,7 +1616,7 @@ def test_read_civis_sql_no_dataframe(m_requests):
         "db",
         return_as="list",
         client=m_client,
-        polling_interval=1,
+        polling_interval=POLL_INTERVAL,
     )
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
 
