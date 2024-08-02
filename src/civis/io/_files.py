@@ -187,7 +187,7 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     return file_response.id
 
 
-def file_to_civis(buf, name=None, client=None, **kwargs):
+def file_to_civis(buf, name=None, expires_at="DEFAULT", description=None, client=None):
     """Upload a file to Civis.
 
     Parameters
@@ -204,20 +204,20 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
         The name you wish to give the file. If not given, it will be inferred
         from the basename of ``buf`` (if ``buf`` is a string for a file path)
         or ``buf.name`` (if ``buf`` is a file-like object).
+    expires_at : str, optional
+        The date and time the file will expire. If not specified, the file
+        will expire in 30 days.
+        To specify a date and time, format it by the ISO 8601 standard
+        (e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``), or equivalently,
+        the returned value of the ``isoformat()`` method from
+        a :class:`datetime.date <datetime.date>`
+        or :class:`datetime.datetime <datetime.datetime>` object.
+        To keep a file indefinitely, specify ``None``.
+    description : str, optional
+        Description (max length: 512 characters) of the file object.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
-    **kwargs : kwargs
-        Extra keyword arguments will be passed to the file creation
-        endpoint. See :func:`~civis.resources._resources.Files.post`.
-        In particular, ``expires_at`` can be specified for
-        the date and time the file will expire. If not specified, the file
-        will expire in 30 days. To keep a file indefinitely, specify ``None``.
-        To specify a date and time, format it by the ISO 8601 standard,
-        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what the ``isoformat()`` method returns from
-        a :class:`datetime.date <datetime.date>`
-        or :class:`datetime.datetime <datetime.datetime>` object.
 
     Returns
     -------
@@ -228,6 +228,8 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
     ------
     TypeError
         If ``name`` is not provided and cannot be inferred from ``buf``
+    ValueError
+        If ``description`` is provided and it's longer than 512 characters.
 
     Examples
     --------
@@ -272,7 +274,7 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
 
     if isinstance(buf, str):
         with open(buf, "rb") as f:
-            return _file_to_civis(f, name, client=client, **kwargs)
+            return _file_to_civis(f, name, expires_at, description, client)
 
     # we should only pass _file_to_civis a file-like object that is
     # on disk, seekable and at position 0
@@ -286,12 +288,12 @@ def file_to_civis(buf, name=None, client=None, **kwargs):
             with open(tmp_path, mode) as fout:
                 shutil.copyfileobj(buf, fout, CHUNK_SIZE)
             with open(tmp_path, "rb") as fin:
-                return _file_to_civis(fin, name, client=client, **kwargs)
+                return _file_to_civis(fin, name, expires_at, description, client)
     else:
-        return _file_to_civis(buf, name, client=client, **kwargs)
+        return _file_to_civis(buf, name, expires_at, description, client)
 
 
-def _file_to_civis(buf, name, client=None, **kwargs):
+def _file_to_civis(buf, name, expires_at, description, client):
     if client is None:
         client = APIClient()
 
@@ -303,6 +305,19 @@ def _file_to_civis(buf, name, client=None, **kwargs):
             "Could not determine file size; defaulting to "
             "single post. Files over 5GB will fail."
         )
+
+    kwargs = {}
+    if expires_at != "DEFAULT":
+        # A missing parameter signifies the default value here.
+        kwargs["expires_at"] = expires_at
+    if description:
+        if len(description) > 512:
+            raise ValueError(
+                "file description is longer than 512 characters - "
+                f"length is {len(description)} from {description!r}"
+            )
+        else:
+            kwargs["description"] = description
 
     if not file_size or file_size <= MIN_MULTIPART_SIZE:
         return _single_upload(buf, name, client, **kwargs)
@@ -517,7 +532,12 @@ def file_to_dataframe(file_id, compression="infer", client=None, **read_kwargs):
 
 
 def dataframe_to_file(
-    df, name="data.csv", expires_at="DEFAULT", client=None, **to_csv_kws
+    df,
+    name="data.csv",
+    expires_at="DEFAULT",
+    description=None,
+    client=None,
+    **to_csv_kws,
 ):
     """Store a :class:`~pandas.DataFrame` as a CSV in Civis Platform
 
@@ -529,12 +549,15 @@ def dataframe_to_file(
         The name of the Civis File
     expires_at : str, optional
         The date and time the file will expire. If not specified, the file
-        will expire in 30 days. To keep a file indefinitely, specify ``None``.
-        To specify a date and time, format it by the ISO 8601 standard,
-        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what the ``isoformat()`` method returns from
+        will expire in 30 days.
+        To specify a date and time, format it by the ISO 8601 standard
+        (e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``), or equivalently,
+        the returned value of the ``isoformat()`` method from
         a :class:`datetime.date <datetime.date>`
         or :class:`datetime.datetime <datetime.datetime>` object.
+        To keep a file indefinitely, specify ``None``.
+    description : str, optional
+        Description (max length: 512 characters) of the file object.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -547,6 +570,11 @@ def dataframe_to_file(
     file_id : int
         The integer ID of the new Civis File object
 
+    Raises
+    ------
+    ValueError
+        If ``description`` is provided and it's longer than 512 characters.
+
     See Also
     --------
     :func:`file_to_civis`
@@ -555,10 +583,7 @@ def dataframe_to_file(
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
         df.to_csv(path, **to_csv_kws)
-        file_kwargs = {"name": name}
-        if expires_at != "DEFAULT":
-            # A missing parameter signifies the default value here.
-            file_kwargs["expires_at"] = expires_at
+        file_kwargs = dict(name=name, expires_at=expires_at, description=description)
         fid = file_to_civis(path, client=client, **file_kwargs)
     return fid
 
@@ -594,7 +619,12 @@ def file_to_json(file_id, client=None, **json_kwargs):
 
 
 def json_to_file(
-    obj, name="file.json", expires_at="DEFAULT", client=None, **json_kwargs
+    obj,
+    name="file.json",
+    expires_at="DEFAULT",
+    description=None,
+    client=None,
+    **json_kwargs,
 ):
     """Store a JSON-serializable object in a Civis File
 
@@ -606,12 +636,15 @@ def json_to_file(
         The name of the Civis File
     expires_at : str, optional
         The date and time the file will expire. If not specified, the file
-        will expire in 30 days. To keep a file indefinitely, specify ``None``.
-        To specify a date and time, format it by the ISO 8601 standard,
-        e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``,
-        and what the ``isoformat()`` method returns from
+        will expire in 30 days.
+        To specify a date and time, format it by the ISO 8601 standard
+        (e.g., ``"2020-12-31"``, ``"2020-12-31T23:03:40Z"``), or equivalently,
+        the returned value of the ``isoformat()`` method from
         a :class:`datetime.date <datetime.date>`
         or :class:`datetime.datetime <datetime.datetime>` object.
+        To keep a file indefinitely, specify ``None``.
+    description : str, optional
+        Description (max length: 512 characters) of the file object.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
@@ -624,6 +657,11 @@ def json_to_file(
     file_id : int
         The integer ID of the new Civis File object
 
+    Raises
+    ------
+    ValueError
+        If ``description`` is provided and it's longer than 512 characters.
+
     See Also
     --------
     :func:`file_to_civis`
@@ -634,10 +672,7 @@ def json_to_file(
     json.dump(obj, txt, **json_kwargs)
     txt.seek(0)
 
-    file_kwargs = {"name": name}
-    if expires_at != "DEFAULT":
-        # A missing parameter signifies the default value here.
-        file_kwargs["expires_at"] = expires_at
+    file_kwargs = dict(name=name, expires_at=expires_at, description=description)
     fid = file_to_civis(txt.buffer, client=client, **file_kwargs)
     return fid
 
