@@ -49,11 +49,16 @@ def test_valid_workflow_yaml():
             "      input:",
             "      on-success:\n        - undefined_task\n      input:",
         ),
+        # non-ASCII characters are not allowed
+        ("hello world", "hëlló wòrld"),
     ],
 )
 def test_invalid_workflow_yaml(replace_to_break):
     """Break a valid workflow yaml, which should raise a WorkflowValidationError."""
-    invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(*replace_to_break)
+    replacee, replacer = replace_to_break
+    if replacee not in _VALID_WORKFLOW_YAML:
+        raise ValueError(f"{replacee!r} not in the workflow yaml to be tested")
+    invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(replacee, replacer)
     with pytest.raises(WorkflowValidationError):
         validate_workflow_yaml(invalid_wf_yaml)
 
