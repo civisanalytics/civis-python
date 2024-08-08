@@ -225,8 +225,7 @@ TASK_SCHEMA = {
         _if_then_create_script("civis.scripts.sql"),
         _if_then_create_script("civis.scripts.javascript"),
         _if_then_create_script("civis.scripts.container"),
-        # TODO: dbt job type is upcoming!
-        # _if_then_create_script("civis.scripts.dbt"),
+        _if_then_create_script("civis.scripts.dbt"),
         _if_then_create_script("civis.scripts.custom"),
         _if_then_create_script("civis.enhancements.cass_ncoa"),
         _if_then_execute("civis.run_job", "job_id"),
