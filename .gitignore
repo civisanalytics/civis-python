@@ -41,6 +41,7 @@ swagger.json
 # Sphinx docs
 docs/source/generated/
 docs/source/api_*.rst
+docs/build/
 
 # IDEs
 .idea

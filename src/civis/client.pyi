@@ -2926,6 +2926,122 @@ class _Databases:
         """
         ...
 
+    def list_schemas_tables_projects(
+        self,
+        id: int,
+        schema_name: str,
+        table_name: str,
+        hidden: bool | None = ...,
+    ) -> Response:
+        """List the projects a Table belongs to
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+        hidden : bool, optional
+            If specified to be true, returns hidden items. Defaults to false, returning
+            non-hidden items.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for this project.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of this project.
+            - description : str
+                A description of the project.
+            - users : List[dict]
+                Users who can see the project.
+
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - auto_share : bool
+            - created_at : str (time)
+            - updated_at : str (time)
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def put_schemas_tables_projects(
+        self,
+        id: int,
+        project_id: int,
+        schema_name: str,
+        table_name: str,
+    ) -> Response:
+        """Add a Table to a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        project_id : int
+            The ID of the project.
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def delete_schemas_tables_projects(
+        self,
+        id: int,
+        project_id: int,
+        schema_name: str,
+        table_name: str,
+    ) -> Response:
+        """Remove a Table from a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        project_id : int
+            The ID of the project.
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
     def post_schemas_scan(
         self,
         id: int,
@@ -3035,8 +3151,8 @@ class _Databases:
         id : int
             The ID of the database.
         active : bool, optional
-            If true returns active users. If false returns deactivated users. If
-            omitted returns all users.
+            If true returns active users. If false returns deactivated users. Defaults
+            to true.
 
         Returns
         -------
@@ -11952,6 +12068,7 @@ class _Files:
         self,
         name: str,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> Response:
         """Initiate an upload of a file into the platform
 
@@ -11962,6 +12079,8 @@ class _Files:
         expires_at : str (date-time), optional
             The date and time the file will expire. If not specified, the file will
             expire in 30 days. To keep a file indefinitely, specify null.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -11977,6 +12096,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - upload_url : str
                 The URL that may be used to upload a file. To use the upload URL,
                 initiate a POST request to the given URL with the file you wish to
@@ -11994,6 +12115,7 @@ class _Files:
         name: str,
         num_parts: int,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> Response:
         """Initiate a multipart upload
 
@@ -12007,6 +12129,8 @@ class _Files:
         expires_at : str (date-time), optional
             The date and time the file will expire. If not specified, the file will
             expire in 30 days. To keep a file indefinitely, specify null.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12022,6 +12146,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - upload_urls : List[str]
                 An array of URLs that may be used to upload file parts. Use separate
                 PUT requests to complete the part uploads. Links expire after 12 hours.
@@ -12078,6 +12204,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -12121,6 +12249,7 @@ class _Files:
         id: int,
         name: str,
         expires_at: str,
+        description: str | None = ...,
     ) -> Response:
         """Update details about a file
 
@@ -12132,6 +12261,8 @@ class _Files:
             The file name. The extension must match the previous extension.
         expires_at : str (date-time)
             The date and time the file will expire.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12147,6 +12278,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -12190,6 +12323,7 @@ class _Files:
         id: int,
         name: str | None = ...,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> Response:
         """Update details about a file
 
@@ -12201,6 +12335,8 @@ class _Files:
             The file name. The extension must match the previous extension.
         expires_at : str (date-time), optional
             The date and time the file will expire.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12216,6 +12352,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -23736,7 +23874,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23778,7 +23916,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -23833,7 +23971,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -23882,7 +24020,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23910,7 +24048,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -23942,7 +24080,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -23969,7 +24107,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23994,7 +24132,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28130,7 +28268,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28235,7 +28373,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28257,7 +28395,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28285,7 +28425,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28327,7 +28467,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -28382,7 +28522,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -28431,7 +28571,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28459,7 +28599,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -28491,7 +28631,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -28518,7 +28658,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28543,7 +28683,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28621,7 +28761,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28643,7 +28783,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28752,7 +28894,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28774,7 +28916,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28856,7 +29000,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28878,7 +29022,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -29363,7 +29509,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -29385,7 +29531,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -31831,7 +31979,6 @@ class _Scripts:
     def post_containers(
         self,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -31844,6 +31991,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -31869,8 +32017,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -31959,6 +32105,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -32429,7 +32577,6 @@ class _Scripts:
         self,
         id: int,
         required_resources: dict,
-        docker_image_name: str,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -32442,6 +32589,7 @@ class _Scripts:
         remote_host_credential_id: int | None = ...,
         git_credential_id: int | None = ...,
         docker_command: str | None = ...,
+        docker_image_name: str | None = ...,
         docker_image_tag: str | None = ...,
         instance_type: str | None = ...,
         cancel_timeout: int | None = ...,
@@ -32468,8 +32616,6 @@ class _Scripts:
                 space will be used to hold the git repo configured for the container
                 and anything your container writes to /tmp or /data. Fractional values
                 (e.g. 0.25) are supported.
-        docker_image_name : str
-            The name of the docker image to pull from DockerHub.
         name : str, optional
             The name of the container.
         parent_id : int, optional
@@ -32558,6 +32704,8 @@ class _Scripts:
         docker_command : str, optional
             The command to run on the container. Will be run via sh as: ["sh", "-c",
             dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
         docker_image_tag : str, optional
             The tag of the docker image to pull from DockerHub.
         instance_type : str, optional
@@ -34760,8 +34908,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34773,6 +34919,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -34964,8 +35112,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -34977,6 +35123,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35293,8 +35441,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35306,6 +35452,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35324,11 +35472,11 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
+        source: str | None = ...,
     ) -> Response:
         """Update some attributes of this Python Script
 
@@ -35430,8 +35578,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -35443,6 +35589,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -35622,8 +35770,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35635,6 +35781,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -35951,8 +36099,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -35964,6 +36110,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36155,8 +36303,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36168,6 +36314,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36484,8 +36632,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36497,6 +36643,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -36515,11 +36663,11 @@ class _Scripts:
         target_project_id: int | None = ...,
         required_resources: dict | None = ...,
         instance_type: str | None = ...,
-        source: str | None = ...,
         cancel_timeout: int | None = ...,
         docker_image_tag: str | None = ...,
         partition_label: str | None = ...,
         running_as_id: int | None = ...,
+        source: str | None = ...,
     ) -> Response:
         """Update some attributes of this R Script
 
@@ -36621,8 +36769,6 @@ class _Scripts:
         instance_type : str, optional
             The EC2 instance type to deploy to. Only available for jobs running on
             kubernetes.
-        source : str, optional
-            The body/text of the script.
         cancel_timeout : int, optional
             The amount of time (in seconds) to wait before forcibly terminating the
             script. When the script is cancelled, it is first sent a TERM signal. If
@@ -36634,6 +36780,8 @@ class _Scripts:
             The partition label used to run this object.
         running_as_id : int, optional
             The ID of the runner of this script.
+        source : str, optional
+            The body/text of the script.
 
         Returns
         -------
@@ -36813,8 +36961,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -36826,6 +36972,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -40905,7 +41053,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -40947,7 +41095,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41002,7 +41150,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41051,7 +41199,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41079,7 +41227,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41111,7 +41259,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41138,7 +41286,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41163,7 +41311,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41188,7 +41336,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41230,7 +41378,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41285,7 +41433,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41334,7 +41482,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41362,7 +41510,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41394,7 +41542,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41421,7 +41569,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41446,7 +41594,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41471,7 +41619,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41513,7 +41661,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41568,7 +41716,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41617,7 +41765,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41645,7 +41793,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41677,7 +41825,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41704,7 +41852,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41729,7 +41877,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41754,7 +41902,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41796,7 +41944,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41851,7 +41999,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41900,7 +42048,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41928,7 +42076,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41960,7 +42108,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41987,7 +42135,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -42012,7 +42160,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -43809,8 +43957,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -43822,6 +43968,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -44399,8 +44547,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -44412,6 +44558,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46196,8 +46344,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46209,6 +46355,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -46410,8 +46558,6 @@ class _Scripts:
             - instance_type : str
                 The EC2 instance type to deploy to. Only available for jobs running on
                 kubernetes.
-            - source : str
-                The body/text of the script.
             - cancel_timeout : int
                 The amount of time (in seconds) to wait before forcibly terminating the
                 script. When the script is cancelled, it is first sent a TERM signal.
@@ -46423,6 +46569,8 @@ class _Scripts:
                 The partition label used to run this object.
             - running_as_id : int
                 The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
         """
         ...
 
@@ -55158,7 +55306,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55200,7 +55348,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -55255,7 +55403,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -55304,7 +55452,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55332,7 +55480,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -55364,7 +55512,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -55391,7 +55539,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55416,7 +55564,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------

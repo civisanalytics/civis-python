@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   a `tenacity.Retrying` instance can be provided to customize retries. (#495)
 - Added `civis.workflows.validate_workflow_yaml`
   to validate a Civis Platform workflow YAML definition. (#497)
+- The helper I/O functions that create a Civis file
+  (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
+  accept a new `description` keyword argument for the new `description` attribute
+  of Civis file objects. (#498)
 
 ### Changed
 ### Deprecated
