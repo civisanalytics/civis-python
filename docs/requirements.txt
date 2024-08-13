@@ -6,11 +6,11 @@
 #
 alabaster==0.7.16
     # via sphinx
-attrs==23.2.0
+attrs==24.2.0
     # via
     #   jsonschema
     #   referencing
-babel==2.15.0
+babel==2.16.0
     # via sphinx
 certifi==2024.7.4
     # via requests
@@ -34,19 +34,19 @@ joblib==1.4.2
     # via civis (pyproject.toml)
 jsonref==1.1.0
     # via civis (pyproject.toml)
-jsonschema==4.22.0
+jsonschema==4.23.0
     # via civis (pyproject.toml)
 jsonschema-specifications==2023.12.1
     # via jsonschema
 markupsafe==2.1.5
     # via jinja2
-numpydoc==1.7.0
+numpydoc==1.8.0
     # via civis (pyproject.toml)
-packaging==24.0
+packaging==24.1
     # via sphinx
 pygments==2.18.0
     # via sphinx
-pyyaml==6.0.1
+pyyaml==6.0.2
     # via civis (pyproject.toml)
 referencing==0.35.1
     # via
@@ -56,13 +56,13 @@ requests==2.32.3
     # via
     #   civis (pyproject.toml)
     #   sphinx
-rpds-py==0.18.1
+rpds-py==0.20.0
     # via
     #   jsonschema
     #   referencing
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==7.3.7
+sphinx==7.4.7
     # via
     #   civis (pyproject.toml)
     #   numpydoc
@@ -70,23 +70,23 @@ sphinx==7.3.7
     #   sphinxcontrib-jquery
 sphinx-rtd-theme==2.0.0
     # via civis (pyproject.toml)
-sphinxcontrib-applehelp==1.0.8
+sphinxcontrib-applehelp==2.0.0
     # via sphinx
-sphinxcontrib-devhelp==1.0.6
+sphinxcontrib-devhelp==2.0.0
     # via sphinx
-sphinxcontrib-htmlhelp==2.0.5
+sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
 sphinxcontrib-jquery==4.1
     # via sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
-sphinxcontrib-qthelp==1.0.7
+sphinxcontrib-qthelp==2.0.0
     # via sphinx
-sphinxcontrib-serializinghtml==1.1.10
+sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tabulate==0.9.0
     # via numpydoc
-tenacity==8.3.0
+tenacity==9.0.0
     # via civis (pyproject.toml)
 urllib3==2.2.2
     # via requests
