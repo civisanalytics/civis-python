@@ -162,18 +162,43 @@ See the `documentation <https://civis-python.readthedocs.io>`_ for a more
 complete user guide.
 
 
-Build Documentation Locally
----------------------------
+Building Documentation
+----------------------
 
-To install dependencies for building the documentation::
+Background:
 
-    pip install -r docs/requirements.txt
+* We use the Sphinx framework. The documentation source files are in ``docs/source/``.
+* All auto-generated files, including the HTML pages, are explicitly not versioned
+  (see ``.gitignore``).
 
-To build the API documentation locally::
+For the public documentation at https://civis-python.readthedocs.io:
 
-    sphinx-build -b html docs/source docs/build/html  # or prepend this command with `FETCH_REMOTE_RESOURCES=true ` for the API resources available to the given CIVIS_API_KEY
+* The doc build is configured by ``.readthedocs.yaml``.
+  Normally, even when we need to update the documentation or make a new release of civis-python,
+  neither this configuration YAML file nor Civis's account on the Read the Docs site need
+  any updates.
+* To update the documentation, the files under ``docs/source/`` can be updated as needed.
+  If the "API Resources" page needs to be updated because the upstream Civis API has been updated,
+  then the following need to happen:
+  (i) the new Civis API updates must be accessible by a "standard" Civis Platform user,
+  i.e., not behind a feature flag, and
+  (ii) you'll need to locally run ``python tools/update_civis_api_spec.py`` to update
+  ``civis_api_spec.json`` inside the ``civis`` Python package codebase.
+  It is this JSON file that's the basis for the Civis API information on the "API Resources" page.
+  Regardless of which Civis API key you use to run ``python tools/update_civis_api_spec.py``,
+  the updated ``civis_api_spec.json`` only contains Civis API information available to
+  a standard Civis Platform user.
 
-Then open ``docs/build/html/index.html``.
+To build the documentation locally, for testing and development:
+
+* Install the full doc-related dependencies: ``pip install -r docs/requirements.txt``.
+* Run ``sphinx-build -b html docs/source docs/build/html``.
+  In case you would like for the "API Resources" page to locally show what a specific
+  Civis Platform user would see from the Civis API
+  (rather than use the available ``civis_api_spec.json`` for a standard Civis Platform user),
+  set the environment variable ``CIVIS_API_KEY`` to this user's key
+  and prepend this command with ``FETCH_REMOTE_RESOURCES=true``.
+
 
 Command-line Interface (CLI)
 ----------------------------

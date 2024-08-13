@@ -2,8 +2,10 @@ import tempfile
 import csv
 import gzip
 import io
+import itertools
 import json
 import os
+from functools import partial
 from io import StringIO, BytesIO
 from unittest import mock
 from tempfile import TemporaryDirectory
@@ -1348,6 +1350,43 @@ def test_file_to_civis(mock_requests, input_filename):
     mock_requests.post.assert_called_once_with(
         mock_civis.files.post.return_value.upload_url, files=mock.ANY, timeout=60
     )
+
+
+def test_file_to_civis_error_for_description_too_long():
+    with TemporaryDirectory() as temp_dir:
+        file_path = os.path.join(temp_dir, "some_data")
+        with open(file_path, "wb") as f:
+            f.write(b"foobar")
+        with pytest.raises(ValueError, match="longer than 512 characters"):
+            _files.file_to_civis(
+                file_path, client=create_client_mock(), description="a" * 513
+            )
+
+
+@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.parametrize(
+    "func, should_add_description",
+    itertools.product(
+        [
+            partial(_files.file_to_civis, io.BytesIO(b"some_data"), name="abc"),
+            partial(_files.dataframe_to_file, pd.DataFrame({"a": [1]}), name="abc"),
+            partial(_files.json_to_file, {"a": 1}, name="abc"),
+        ],
+        (True, False),
+    ),
+)
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_description_attribute_added_or_not(
+    mock_requests, func, should_add_description
+):
+    mock_client = create_client_mock()
+    description = "some_description"
+    if should_add_description:
+        func(description=description, client=mock_client)
+        mock_client.files.post.assert_called_with("abc", description=description)
+    else:
+        func(client=mock_client)
+        mock_client.files.post.assert_called_with("abc")
 
 
 @pytest.mark.parametrize(
