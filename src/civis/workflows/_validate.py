@@ -59,6 +59,19 @@ def _get_next_task_names(next_tasks: str | list | dict | None) -> list[str]:
         return []
     elif isinstance(next_tasks, str):
         return [next_tasks]
+    elif isinstance(next_tasks, list):
+        task_names = []
+        for task in next_tasks:
+            if isinstance(task, str):
+                task_names.append(task)
+            elif isinstance(task, dict):
+                task_names.append(list(task.keys())[0])
+            else:
+                raise WorkflowValidationError(
+                    "each item in next task list must be either of type str or dict: "
+                    f"{type(task)} ({task})"
+                )
+        return task_names
     elif isinstance(next_tasks, list) and isinstance(next_tasks[0], str):
         return next_tasks
     elif isinstance(next_tasks, list) and isinstance(next_tasks[0], dict):
