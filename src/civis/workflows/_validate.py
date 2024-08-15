@@ -72,10 +72,6 @@ def _get_next_task_names(next_tasks: str | list | dict | None) -> list[str]:
                     f"{type(task)} ({task})"
                 )
         return task_names
-    elif isinstance(next_tasks, list) and isinstance(next_tasks[0], str):
-        return next_tasks
-    elif isinstance(next_tasks, list) and isinstance(next_tasks[0], dict):
-        return [list(nt.keys())[0] for nt in next_tasks]
     elif isinstance(next_tasks, dict):
         return _get_next_task_names(next_tasks.get("next"))
 
