@@ -2927,6 +2927,122 @@ class _Databases:
         """
         ...
 
+    def list_schemas_tables_projects(
+        self,
+        id: int,
+        schema_name: str,
+        table_name: str,
+        hidden: bool | None = ...,
+    ) -> _ResponseDatabasesListSchemasTablesProjects:
+        """List the projects a Table belongs to
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+        hidden : bool, optional
+            If specified to be true, returns hidden items. Defaults to false, returning
+            non-hidden items.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for this project.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of this project.
+            - description : str
+                A description of the project.
+            - users : List[dict]
+                Users who can see the project.
+
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - auto_share : bool
+            - created_at : str (time)
+            - updated_at : str (time)
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def put_schemas_tables_projects(
+        self,
+        id: int,
+        project_id: int,
+        schema_name: str,
+        table_name: str,
+    ) -> Response:
+        """Add a Table to a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        project_id : int
+            The ID of the project.
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def delete_schemas_tables_projects(
+        self,
+        id: int,
+        project_id: int,
+        schema_name: str,
+        table_name: str,
+    ) -> Response:
+        """Remove a Table from a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database
+        project_id : int
+            The ID of the project.
+        schema_name : str
+            The name of the schema
+        table_name : str
+            The name of the table
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
     def post_schemas_scan(
         self,
         id: int,
@@ -11953,6 +12069,7 @@ class _Files:
         self,
         name: str,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> _ResponseFilesPost:
         """Initiate an upload of a file into the platform
 
@@ -11963,6 +12080,8 @@ class _Files:
         expires_at : str (date-time), optional
             The date and time the file will expire. If not specified, the file will
             expire in 30 days. To keep a file indefinitely, specify null.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -11978,6 +12097,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - upload_url : str
                 The URL that may be used to upload a file. To use the upload URL,
                 initiate a POST request to the given URL with the file you wish to
@@ -11995,6 +12116,7 @@ class _Files:
         name: str,
         num_parts: int,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> _ResponseFilesPostMultipart:
         """Initiate a multipart upload
 
@@ -12008,6 +12130,8 @@ class _Files:
         expires_at : str (date-time), optional
             The date and time the file will expire. If not specified, the file will
             expire in 30 days. To keep a file indefinitely, specify null.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12023,6 +12147,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - upload_urls : List[str]
                 An array of URLs that may be used to upload file parts. Use separate
                 PUT requests to complete the part uploads. Links expire after 12 hours.
@@ -12079,6 +12205,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -12122,6 +12250,7 @@ class _Files:
         id: int,
         name: str,
         expires_at: str,
+        description: str | None = ...,
     ) -> _ResponseFilesPut:
         """Update details about a file
 
@@ -12133,6 +12262,8 @@ class _Files:
             The file name. The extension must match the previous extension.
         expires_at : str (date-time)
             The date and time the file will expire.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12148,6 +12279,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -12191,6 +12324,7 @@ class _Files:
         id: int,
         name: str | None = ...,
         expires_at: str | None = ...,
+        description: str | None = ...,
     ) -> _ResponseFilesPatch:
         """Update details about a file
 
@@ -12202,6 +12336,8 @@ class _Files:
             The file name. The extension must match the previous extension.
         expires_at : str (date-time), optional
             The date and time the file will expire.
+        description : str, optional
+            The user-defined description of the file.
 
         Returns
         -------
@@ -12217,6 +12353,8 @@ class _Files:
             - expires_at : str (date-time)
                 The date and time the file will expire. If not specified, the file will
                 expire in 30 days. To keep a file indefinitely, specify null.
+            - description : str
+                The user-defined description of the file.
             - author : dict
                 - id : int
                     The ID of this user.
@@ -23737,7 +23875,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23779,7 +23917,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -23834,7 +23972,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -23883,7 +24021,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23911,7 +24049,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -23943,7 +24081,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -23970,7 +24108,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -23995,7 +24133,7 @@ class _Notebooks:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28131,7 +28269,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28236,7 +28374,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28258,7 +28396,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28286,7 +28426,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28328,7 +28468,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -28383,7 +28523,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -28432,7 +28572,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28460,7 +28600,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -28492,7 +28632,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -28519,7 +28659,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28544,7 +28684,7 @@ class _Reports:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -28622,7 +28762,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28644,7 +28784,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28753,7 +28895,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28775,7 +28917,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -28857,7 +29001,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -28879,7 +29023,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -29364,7 +29510,7 @@ class _Reports:
                 - name : str
                     The name of the script.
                 - sql : str
-                    The raw SQL query for the script.
+                    The raw SQL query for the script, if applicable.
             - job_path : str
                 The link to details of the job that backs this report.
             - tableau_id : int
@@ -29386,7 +29532,9 @@ class _Reports:
             - hidden : bool
                 The hidden status of the item.
             - auth_data_url : str
+                DEPRECATED: For legacy reports
             - auth_code_url : str
+                Link to code to render in the report.
             - config : str
                 Any configuration metadata for this report.
             - valid_output_file : bool
@@ -36830,6 +36978,1465 @@ class _Scripts:
         """
         ...
 
+    def post_dbt(
+        self,
+        name: str,
+        repo_http_uri: str,
+        parent_id: int | None = ...,
+        user_context: str | None = ...,
+        params: List[dict] | None = ...,
+        arguments: dict | None = ...,
+        schedule: dict | None = ...,
+        notifications: dict | None = ...,
+        next_run_at: str | None = ...,
+        time_zone: str | None = ...,
+        hidden: bool | None = ...,
+        target_project_id: int | None = ...,
+        required_resources: dict | None = ...,
+        instance_type: str | None = ...,
+        cancel_timeout: int | None = ...,
+        docker_image_tag: str | None = ...,
+        partition_label: str | None = ...,
+        running_as_id: int | None = ...,
+        dbt_project: dict | None = ...,
+        repo_ref: str | None = ...,
+        target_database: dict | None = ...,
+    ) -> _ResponseScriptsPostDbt:
+        """Create a dbt Script
+
+        Parameters
+        ----------
+        name : str
+            The name of the script.
+        repo_http_uri : str
+            The URL of the git repository.
+        parent_id : int, optional
+            The ID of the parent job that will trigger this script
+        user_context : str, optional
+            "runner" or "author", who to execute the script as when run as a template.
+        params : List[dict], optional
+            A definition of the parameters this script accepts in the arguments field.
+
+            - name : str
+                The variable's name as used within your code.
+            - label : str
+                The label to present to users when asking them for the value.
+            - description : str
+                A short sentence or fragment describing this parameter to the end user.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - required : bool
+                Whether this param is required.
+            - value : str
+                The value you would like to set this param to. Setting this value makes
+                this parameter a fixed param.
+            - default : str
+                If an argument for this parameter is not defined, it will use this
+                default value. Use true, True, t, y, yes, or 1 for true bool's or
+                false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                parameters that are required or a credential type.
+            - allowed_values : List[dict]
+                The possible values this parameter can take, effectively making this an
+                enumerable parameter. Allowed values is an array of hashes of the
+                following format: `{label: 'Import', 'value': 'import'}`
+        arguments : dict, optional
+            Parameter-value pairs to use when running this script. Only settable if
+            this script has defined parameters.
+        schedule : dict, optional
+            - scheduled : bool
+                If the item is scheduled.
+            - scheduled_days : List[int]
+                Days of the week, based on numeric value starting at 0 for Sunday.
+                Mutually exclusive with scheduledDaysOfMonth
+            - scheduled_hours : List[int]
+                Hours of the day it is scheduled on.
+            - scheduled_minutes : List[int]
+                Minutes of the day it is scheduled on.
+            - scheduled_runs_per_hour : int
+                Deprecated in favor of scheduled minutes.
+            - scheduled_days_of_month : List[int]
+                Days of the month it is scheduled on, mutually exclusive with
+                scheduledDays.
+        notifications : dict, optional
+            - urls : List[str]
+                URLs to receive a POST request at job completion
+            - success_email_subject : str
+                Custom subject line for success e-mail.
+            - success_email_body : str
+                Custom body text for success e-mail, written in Markdown.
+            - success_email_addresses : List[str]
+                Addresses to notify by e-mail when the job completes successfully.
+            - success_email_from_name : str
+                Name from which success emails are sent; defaults to "Civis."
+            - success_email_reply_to : str
+                Address for replies to success emails; defaults to the author of the
+                job.
+            - failure_email_addresses : List[str]
+                Addresses to notify by e-mail when the job fails.
+            - stall_warning_minutes : int
+                Stall warning emails will be sent after this amount of minutes.
+            - success_on : bool
+                If success email notifications are on. Defaults to user's preferences.
+            - failure_on : bool
+                If failure email notifications are on. Defaults to user's preferences.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
+        time_zone : str, optional
+            The time zone of this script.
+        hidden : bool, optional
+            The hidden status of the item.
+        target_project_id : int, optional
+            Target project to which script outputs will be added.
+        required_resources : dict, optional
+            - cpu : int
+                The number of CPU shares to allocate for the container. Each core has
+                1000 shares. Must be at least 2 shares.
+            - memory : int
+                The amount of RAM to allocate for the container (in MB). Must be at
+                least 4 MB.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the container. This
+                space will be used to hold the git repo configured for the container
+                and anything your container writes to /tmp or /data. Fractional values
+                (e.g. 0.25) are supported.
+        instance_type : str, optional
+            The EC2 instance type to deploy to. Only available for jobs running on
+            kubernetes.
+        cancel_timeout : int, optional
+            The amount of time (in seconds) to wait before forcibly terminating the
+            script. When the script is cancelled, it is first sent a TERM signal. If
+            the script is still running after the timeout, it is sent a KILL signal.
+            Defaults to 0.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub.
+        partition_label : str, optional
+            The partition label used to run this object.
+        running_as_id : int, optional
+            The ID of the runner of this script.
+        dbt_project : dict, optional
+            - target : str
+                Which profile target to use. Ignored when used in conjunction with
+                generate_profiles.
+            - schema : str
+                The output schema for dbt to use.
+            - project_dir : str
+                The path to dbt_project.yml. Defaults to the root of the repository.
+                Generates 'DBT_PROJECT_DIR' environment variable.
+            - profiles_dir : str
+                The path to the profiles.yml file to be used by dbt. Ignored when used
+                in conjunction with generate_profiles. Generates 'DBT_PROFILES_DIR'
+                environment variable.
+            - dbt_version : str
+                The version of dbt to use. Generates 'DBT_VERSION' environment
+                variable.
+            - dbt_command : str
+                The primary dbt command to run. Valid commands are build, run, test,
+                compile, and retry.
+            - dbt_command_line_args : str
+                Additional command line arguments to pass to dbt.
+            - docs_report_id : str
+                The ID of the HTML report hosting the static dbt docs for this job.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - generate_profiles : bool
+                Whether to generate the profiles.yml file when running the script.
+                Defaults to false.
+        repo_ref : str, optional
+            A git reference specifying an unambiguous version of the file. Can be a
+            branch name, a tag, or the full or shortened SHA of a commit. Defaults to
+            'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
+    def get_dbt(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGetDbt:
+        """Get a dbt Script
+
+        Parameters
+        ----------
+        id : int
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
+    def put_dbt(
+        self,
+        id: int,
+        name: str,
+        repo_http_uri: str,
+        parent_id: int | None = ...,
+        user_context: str | None = ...,
+        params: List[dict] | None = ...,
+        arguments: dict | None = ...,
+        schedule: dict | None = ...,
+        notifications: dict | None = ...,
+        next_run_at: str | None = ...,
+        time_zone: str | None = ...,
+        target_project_id: int | None = ...,
+        required_resources: dict | None = ...,
+        instance_type: str | None = ...,
+        cancel_timeout: int | None = ...,
+        docker_image_tag: str | None = ...,
+        partition_label: str | None = ...,
+        running_as_id: int | None = ...,
+        dbt_project: dict | None = ...,
+        repo_ref: str | None = ...,
+        target_database: dict | None = ...,
+    ) -> _ResponseScriptsPutDbt:
+        """Replace all attributes of this dbt Script
+
+        Parameters
+        ----------
+        id : int
+            The ID for the script.
+        name : str
+            The name of the script.
+        repo_http_uri : str
+            The URL of the git repository.
+        parent_id : int, optional
+            The ID of the parent job that will trigger this script
+        user_context : str, optional
+            "runner" or "author", who to execute the script as when run as a template.
+        params : List[dict], optional
+            A definition of the parameters this script accepts in the arguments field.
+
+            - name : str
+                The variable's name as used within your code.
+            - label : str
+                The label to present to users when asking them for the value.
+            - description : str
+                A short sentence or fragment describing this parameter to the end user.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - required : bool
+                Whether this param is required.
+            - value : str
+                The value you would like to set this param to. Setting this value makes
+                this parameter a fixed param.
+            - default : str
+                If an argument for this parameter is not defined, it will use this
+                default value. Use true, True, t, y, yes, or 1 for true bool's or
+                false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                parameters that are required or a credential type.
+            - allowed_values : List[dict]
+                The possible values this parameter can take, effectively making this an
+                enumerable parameter. Allowed values is an array of hashes of the
+                following format: `{label: 'Import', 'value': 'import'}`
+        arguments : dict, optional
+            Parameter-value pairs to use when running this script. Only settable if
+            this script has defined parameters.
+        schedule : dict, optional
+            - scheduled : bool
+                If the item is scheduled.
+            - scheduled_days : List[int]
+                Days of the week, based on numeric value starting at 0 for Sunday.
+                Mutually exclusive with scheduledDaysOfMonth
+            - scheduled_hours : List[int]
+                Hours of the day it is scheduled on.
+            - scheduled_minutes : List[int]
+                Minutes of the day it is scheduled on.
+            - scheduled_runs_per_hour : int
+                Deprecated in favor of scheduled minutes.
+            - scheduled_days_of_month : List[int]
+                Days of the month it is scheduled on, mutually exclusive with
+                scheduledDays.
+        notifications : dict, optional
+            - urls : List[str]
+                URLs to receive a POST request at job completion
+            - success_email_subject : str
+                Custom subject line for success e-mail.
+            - success_email_body : str
+                Custom body text for success e-mail, written in Markdown.
+            - success_email_addresses : List[str]
+                Addresses to notify by e-mail when the job completes successfully.
+            - success_email_from_name : str
+                Name from which success emails are sent; defaults to "Civis."
+            - success_email_reply_to : str
+                Address for replies to success emails; defaults to the author of the
+                job.
+            - failure_email_addresses : List[str]
+                Addresses to notify by e-mail when the job fails.
+            - stall_warning_minutes : int
+                Stall warning emails will be sent after this amount of minutes.
+            - success_on : bool
+                If success email notifications are on. Defaults to user's preferences.
+            - failure_on : bool
+                If failure email notifications are on. Defaults to user's preferences.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
+        time_zone : str, optional
+            The time zone of this script.
+        target_project_id : int, optional
+            Target project to which script outputs will be added.
+        required_resources : dict, optional
+            - cpu : int
+                The number of CPU shares to allocate for the container. Each core has
+                1000 shares. Must be at least 2 shares.
+            - memory : int
+                The amount of RAM to allocate for the container (in MB). Must be at
+                least 4 MB.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the container. This
+                space will be used to hold the git repo configured for the container
+                and anything your container writes to /tmp or /data. Fractional values
+                (e.g. 0.25) are supported.
+        instance_type : str, optional
+            The EC2 instance type to deploy to. Only available for jobs running on
+            kubernetes.
+        cancel_timeout : int, optional
+            The amount of time (in seconds) to wait before forcibly terminating the
+            script. When the script is cancelled, it is first sent a TERM signal. If
+            the script is still running after the timeout, it is sent a KILL signal.
+            Defaults to 0.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub.
+        partition_label : str, optional
+            The partition label used to run this object.
+        running_as_id : int, optional
+            The ID of the runner of this script.
+        dbt_project : dict, optional
+            - target : str
+                Which profile target to use. Ignored when used in conjunction with
+                generate_profiles.
+            - schema : str
+                The output schema for dbt to use.
+            - project_dir : str
+                The path to dbt_project.yml. Defaults to the root of the repository.
+                Generates 'DBT_PROJECT_DIR' environment variable.
+            - profiles_dir : str
+                The path to the profiles.yml file to be used by dbt. Ignored when used
+                in conjunction with generate_profiles. Generates 'DBT_PROFILES_DIR'
+                environment variable.
+            - dbt_version : str
+                The version of dbt to use. Generates 'DBT_VERSION' environment
+                variable.
+            - dbt_command : str
+                The primary dbt command to run. Valid commands are build, run, test,
+                compile, and retry.
+            - dbt_command_line_args : str
+                Additional command line arguments to pass to dbt.
+            - docs_report_id : str
+                The ID of the HTML report hosting the static dbt docs for this job.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - generate_profiles : bool
+                Whether to generate the profiles.yml file when running the script.
+                Defaults to false.
+        repo_ref : str, optional
+            A git reference specifying an unambiguous version of the file. Can be a
+            branch name, a tag, or the full or shortened SHA of a commit. Defaults to
+            'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
+    def patch_dbt(
+        self,
+        id: int,
+        name: str | None = ...,
+        parent_id: int | None = ...,
+        user_context: str | None = ...,
+        params: List[dict] | None = ...,
+        arguments: dict | None = ...,
+        schedule: dict | None = ...,
+        notifications: dict | None = ...,
+        next_run_at: str | None = ...,
+        time_zone: str | None = ...,
+        target_project_id: int | None = ...,
+        required_resources: dict | None = ...,
+        instance_type: str | None = ...,
+        cancel_timeout: int | None = ...,
+        docker_image_tag: str | None = ...,
+        partition_label: str | None = ...,
+        running_as_id: int | None = ...,
+        dbt_project: dict | None = ...,
+        repo_http_uri: str | None = ...,
+        repo_ref: str | None = ...,
+        target_database: dict | None = ...,
+    ) -> _ResponseScriptsPatchDbt:
+        """Update some attributes of this dbt Script
+
+        Parameters
+        ----------
+        id : int
+            The ID for the script.
+        name : str, optional
+            The name of the script.
+        parent_id : int, optional
+            The ID of the parent job that will trigger this script
+        user_context : str, optional
+            "runner" or "author", who to execute the script as when run as a template.
+        params : List[dict], optional
+            A definition of the parameters this script accepts in the arguments field.
+
+            - name : str
+                The variable's name as used within your code.
+            - label : str
+                The label to present to users when asking them for the value.
+            - description : str
+                A short sentence or fragment describing this parameter to the end user.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - required : bool
+                Whether this param is required.
+            - value : str
+                The value you would like to set this param to. Setting this value makes
+                this parameter a fixed param.
+            - default : str
+                If an argument for this parameter is not defined, it will use this
+                default value. Use true, True, t, y, yes, or 1 for true bool's or
+                false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                parameters that are required or a credential type.
+            - allowed_values : List[dict]
+                The possible values this parameter can take, effectively making this an
+                enumerable parameter. Allowed values is an array of hashes of the
+                following format: `{label: 'Import', 'value': 'import'}`
+        arguments : dict, optional
+            Parameter-value pairs to use when running this script. Only settable if
+            this script has defined parameters.
+        schedule : dict, optional
+            - scheduled : bool
+                If the item is scheduled.
+            - scheduled_days : List[int]
+                Days of the week, based on numeric value starting at 0 for Sunday.
+                Mutually exclusive with scheduledDaysOfMonth
+            - scheduled_hours : List[int]
+                Hours of the day it is scheduled on.
+            - scheduled_minutes : List[int]
+                Minutes of the day it is scheduled on.
+            - scheduled_runs_per_hour : int
+                Deprecated in favor of scheduled minutes.
+            - scheduled_days_of_month : List[int]
+                Days of the month it is scheduled on, mutually exclusive with
+                scheduledDays.
+        notifications : dict, optional
+            - urls : List[str]
+                URLs to receive a POST request at job completion
+            - success_email_subject : str
+                Custom subject line for success e-mail.
+            - success_email_body : str
+                Custom body text for success e-mail, written in Markdown.
+            - success_email_addresses : List[str]
+                Addresses to notify by e-mail when the job completes successfully.
+            - success_email_from_name : str
+                Name from which success emails are sent; defaults to "Civis."
+            - success_email_reply_to : str
+                Address for replies to success emails; defaults to the author of the
+                job.
+            - failure_email_addresses : List[str]
+                Addresses to notify by e-mail when the job fails.
+            - stall_warning_minutes : int
+                Stall warning emails will be sent after this amount of minutes.
+            - success_on : bool
+                If success email notifications are on. Defaults to user's preferences.
+            - failure_on : bool
+                If failure email notifications are on. Defaults to user's preferences.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
+        time_zone : str, optional
+            The time zone of this script.
+        target_project_id : int, optional
+            Target project to which script outputs will be added.
+        required_resources : dict, optional
+            - cpu : int
+                The number of CPU shares to allocate for the container. Each core has
+                1000 shares. Must be at least 2 shares.
+            - memory : int
+                The amount of RAM to allocate for the container (in MB). Must be at
+                least 4 MB.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the container. This
+                space will be used to hold the git repo configured for the container
+                and anything your container writes to /tmp or /data. Fractional values
+                (e.g. 0.25) are supported.
+        instance_type : str, optional
+            The EC2 instance type to deploy to. Only available for jobs running on
+            kubernetes.
+        cancel_timeout : int, optional
+            The amount of time (in seconds) to wait before forcibly terminating the
+            script. When the script is cancelled, it is first sent a TERM signal. If
+            the script is still running after the timeout, it is sent a KILL signal.
+            Defaults to 0.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub.
+        partition_label : str, optional
+            The partition label used to run this object.
+        running_as_id : int, optional
+            The ID of the runner of this script.
+        dbt_project : dict, optional
+            - target : str
+                Which profile target to use. Ignored when used in conjunction with
+                generate_profiles.
+            - schema : str
+                The output schema for dbt to use.
+            - project_dir : str
+                The path to dbt_project.yml. Defaults to the root of the repository.
+                Generates 'DBT_PROJECT_DIR' environment variable.
+            - profiles_dir : str
+                The path to the profiles.yml file to be used by dbt. Ignored when used
+                in conjunction with generate_profiles. Generates 'DBT_PROFILES_DIR'
+                environment variable.
+            - dbt_version : str
+                The version of dbt to use. Generates 'DBT_VERSION' environment
+                variable.
+            - dbt_command : str
+                The primary dbt command to run. Valid commands are build, run, test,
+                compile, and retry.
+            - dbt_command_line_args : str
+                Additional command line arguments to pass to dbt.
+            - docs_report_id : str
+                The ID of the HTML report hosting the static dbt docs for this job.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - generate_profiles : bool
+                Whether to generate the profiles.yml file when running the script.
+                Defaults to false.
+        repo_http_uri : str, optional
+            The URL of the git repository.
+        repo_ref : str, optional
+            A git reference specifying an unambiguous version of the file. Can be a
+            branch name, a tag, or the full or shortened SHA of a commit. Defaults to
+            'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
     def post_javascript(
         self,
         name: str,
@@ -39948,6 +41555,193 @@ class _Scripts:
         """
         ...
 
+    def post_dbt_runs(
+        self,
+        id: int,
+    ) -> _ResponseScriptsPostDbtRuns:
+        """Start a run
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt job.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID of the run.
+            - dbt_id : int
+                The ID of the dbt job.
+            - state : str
+                The state of the run, one of 'queued' 'running' 'succeeded' 'failed' or
+                'cancelled'.
+            - is_cancel_requested : bool
+                True if run cancel requested, else false.
+            - created_at : str (time)
+                The time the run was created.
+            - started_at : str (time)
+                The time the run started at.
+            - finished_at : str (time)
+                The time the run completed.
+            - error : str
+                The error, if any, returned by the run.
+            - max_memory_usage : float (float)
+                If the run has finished, the maximum amount of memory used during the
+                run, in MB.
+            - max_cpu_usage : float (float)
+                If the run has finished, the maximum amount of cpu used during the run,
+                in millicores.
+        """
+        ...
+
+    def list_dbt_runs(
+        self,
+        id: int,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> Iterator[_ResponseScriptsListDbtRuns]:
+        """List runs for the given dbt job
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt job.
+        limit : int, optional
+            Number of results to return. Defaults to 20. Maximum allowed is 100.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to id. Must be one of:
+            id.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator to iterate over all responses. Use when
+            more results than the maximum allowed by limit are needed. When
+            True, limit and page_num are ignored. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.response.PaginatedResponse`
+            - id : int
+                The ID of the run.
+            - dbt_id : int
+                The ID of the dbt job.
+            - state : str
+                The state of the run, one of 'queued' 'running' 'succeeded' 'failed' or
+                'cancelled'.
+            - is_cancel_requested : bool
+                True if run cancel requested, else false.
+            - created_at : str (time)
+                The time the run was created.
+            - started_at : str (time)
+                The time the run started at.
+            - finished_at : str (time)
+                The time the run completed.
+            - error : str
+                The error, if any, returned by the run.
+            - max_memory_usage : float (float)
+                If the run has finished, the maximum amount of memory used during the
+                run, in MB.
+            - max_cpu_usage : float (float)
+                If the run has finished, the maximum amount of cpu used during the run,
+                in millicores.
+        """
+        ...
+
+    def get_dbt_runs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetDbtRuns:
+        """Check status of a run
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt job.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID of the run.
+            - dbt_id : int
+                The ID of the dbt job.
+            - state : str
+                The state of the run, one of 'queued' 'running' 'succeeded' 'failed' or
+                'cancelled'.
+            - is_cancel_requested : bool
+                True if run cancel requested, else false.
+            - created_at : str (time)
+                The time the run was created.
+            - started_at : str (time)
+                The time the run started at.
+            - finished_at : str (time)
+                The time the run completed.
+            - error : str
+                The error, if any, returned by the run.
+            - max_memory_usage : float (float)
+                If the run has finished, the maximum amount of memory used during the
+                run, in MB.
+            - max_cpu_usage : float (float)
+                If the run has finished, the maximum amount of cpu used during the run,
+                in millicores.
+        """
+        ...
+
+    def delete_dbt_runs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> Response:
+        """Cancel a run
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt job.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        None
+            Response code 202: success
+        """
+        ...
+
+    def patch_dbt_runs(
+        self,
+        id: int,
+        run_id: int,
+        error: str | None = ...,
+    ) -> Response:
+        """Update the given run
+
+        Parameters
+        ----------
+        id : int
+            ID of the Job
+        run_id : int
+            ID of the Run
+        error : str, optional
+            The error message to update
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
     def list_dbt_runs_logs(
         self,
         id: int,
@@ -40701,6 +42495,92 @@ class _Scripts:
         """
         ...
 
+    def list_dbt_runs_outputs(
+        self,
+        id: int,
+        run_id: int,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> Iterator[_ResponseScriptsListDbtRunsOutputs]:
+        """List the outputs for a run
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt script.
+        run_id : int
+            The ID of the run.
+        limit : int, optional
+            Number of results to return. Defaults to its maximum of 50.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to created_at. Must be
+            one of: created_at, id.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator to iterate over all responses. Use when
+            more results than the maximum allowed by limit are needed. When
+            True, limit and page_num are ignored. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.response.PaginatedResponse`
+            - object_type : str
+                The type of the output. Valid values are File, Table, Report, Project,
+                Credential, or JSONValue
+            - object_id : int
+                The ID of the output.
+            - name : str
+                The name of the output.
+            - link : str
+                The hypermedia link to the output.
+            - value : str
+        """
+        ...
+
+    def post_dbt_runs_outputs(
+        self,
+        id: int,
+        run_id: int,
+        object_type: str,
+        object_id: int,
+    ) -> _ResponseScriptsPostDbtRunsOutputs:
+        """Add an output for a run
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt script.
+        run_id : int
+            The ID of the run.
+        object_type : str
+            The type of the output. Valid values are File, Table, Report, Project,
+            Credential, or JSONValue
+        object_id : int
+            The ID of the output.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - object_type : str
+                The type of the output. Valid values are File, Table, Report, Project,
+                Credential, or JSONValue
+            - object_id : int
+                The ID of the output.
+            - name : str
+                The name of the output.
+            - link : str
+                The hypermedia link to the output.
+            - value : str
+        """
+        ...
+
     def list_javascript_runs_outputs(
         self,
         id: int,
@@ -40906,7 +42786,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -40948,7 +42828,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41003,7 +42883,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41052,7 +42932,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41080,7 +42960,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41112,7 +42992,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41139,7 +43019,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41164,7 +43044,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41189,7 +43069,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41231,7 +43111,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41286,7 +43166,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41335,7 +43215,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41363,7 +43243,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41395,7 +43275,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41422,7 +43302,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41447,7 +43327,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41472,7 +43352,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41514,7 +43394,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41569,7 +43449,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41618,7 +43498,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41646,7 +43526,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41678,7 +43558,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41705,7 +43585,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41730,7 +43610,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41755,7 +43635,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41797,7 +43677,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41852,7 +43732,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -41901,7 +43781,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -41929,7 +43809,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -41961,7 +43841,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -41988,7 +43868,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -42013,7 +43893,7 @@ class _Scripts:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -44416,6 +46296,633 @@ class _Scripts:
         """
         ...
 
+    def list_dbt_shares(
+        self,
+        id: int,
+    ) -> _ResponseScriptsListDbtShares:
+        """List users and groups permissioned on this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - readers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - writers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - owners : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - total_user_shares : int
+                For owners, the number of total users shared. For writers and readers,
+                the number of visible users shared.
+            - total_group_shares : int
+                For owners, the number of total groups shared. For writers and readers,
+                the number of visible groups shared.
+        """
+        ...
+
+    def put_dbt_shares_users(
+        self,
+        id: int,
+        user_ids: List[int],
+        permission_level: str,
+        share_email_body: str | None = ...,
+        send_shared_email: bool | None = ...,
+    ) -> _ResponseScriptsPutDbtSharesUsers:
+        """Set the permissions users have on this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        user_ids : List[int]
+            An array of one or more user IDs.
+        permission_level : str
+            Options are: "read", "write", or "manage".
+        share_email_body : str, optional
+            Custom body text for e-mail sent on a share.
+        send_shared_email : bool, optional
+            Send email to the recipients of a share.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - readers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - writers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - owners : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - total_user_shares : int
+                For owners, the number of total users shared. For writers and readers,
+                the number of visible users shared.
+            - total_group_shares : int
+                For owners, the number of total groups shared. For writers and readers,
+                the number of visible groups shared.
+        """
+        ...
+
+    def delete_dbt_shares_users(
+        self,
+        id: int,
+        user_id: int,
+    ) -> Response:
+        """Revoke the permissions a user has on this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        user_id : int
+            The ID of the user.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def put_dbt_shares_groups(
+        self,
+        id: int,
+        group_ids: List[int],
+        permission_level: str,
+        share_email_body: str | None = ...,
+        send_shared_email: bool | None = ...,
+    ) -> _ResponseScriptsPutDbtSharesGroups:
+        """Set the permissions groups has on this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        group_ids : List[int]
+            An array of one or more group IDs.
+        permission_level : str
+            Options are: "read", "write", or "manage".
+        share_email_body : str, optional
+            Custom body text for e-mail sent on a share.
+        send_shared_email : bool, optional
+            Send email to the recipients of a share.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - readers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - writers : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - owners : dict
+                - users : List[dict]
+                    - id : int
+                    - name : str
+                - groups : List[dict]
+                    - id : int
+                    - name : str
+            - total_user_shares : int
+                For owners, the number of total users shared. For writers and readers,
+                the number of visible users shared.
+            - total_group_shares : int
+                For owners, the number of total groups shared. For writers and readers,
+                the number of visible groups shared.
+        """
+        ...
+
+    def delete_dbt_shares_groups(
+        self,
+        id: int,
+        group_id: int,
+    ) -> Response:
+        """Revoke the permissions a group has on this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        group_id : int
+            The ID of the group.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def list_dbt_dependencies(
+        self,
+        id: int,
+        user_id: int | None = ...,
+    ) -> _ResponseScriptsListDbtDependencies:
+        """List dependent objects for this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        user_id : int, optional
+            ID of target user
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - object_type : str
+                Dependent object type
+            - fco_type : str
+                Human readable dependent object type
+            - id : int
+                Dependent object ID
+            - name : str
+                Dependent object name, or nil if the requesting user cannot read this
+                object
+            - permission_level : str
+                Permission level of target user (not user's groups) for dependent
+                object. Null if no target user or not shareable (e.g. a database
+                table).
+            - description : str
+                Additional information about the dependency, if relevant
+            - shareable : bool
+                Whether or not the requesting user can share this object.
+        """
+        ...
+
+    def put_dbt_transfer(
+        self,
+        id: int,
+        user_id: int,
+        include_dependencies: bool,
+        email_body: str | None = ...,
+        send_email: bool | None = ...,
+    ) -> _ResponseScriptsPutDbtTransfer:
+        """Transfer ownership of this object to another user
+
+        Parameters
+        ----------
+        id : int
+            The ID of the resource that is shared.
+        user_id : int
+            ID of target user
+        include_dependencies : bool
+            Whether or not to give manage permissions on all dependencies
+        email_body : str, optional
+            Custom body text for e-mail sent on transfer.
+        send_email : bool, optional
+            Send email to the target user of the transfer?
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - dependencies : List[dict]
+                Dependent objects for this object
+
+                - object_type : str
+                    Dependent object type
+                - fco_type : str
+                    Human readable dependent object type
+                - id : int
+                    Dependent object ID
+                - name : str
+                    Dependent object name, or nil if the requesting user cannot read
+                    this object
+                - permission_level : str
+                    Permission level of target user (not user's groups) for dependent
+                    object. Null if no target user or not shareable (e.g. a database
+                    table).
+                - description : str
+                    Additional information about the dependency, if relevant
+                - shared : bool
+                    Whether dependent object was successfully shared with target user
+        """
+        ...
+
+    def list_dbt_projects(
+        self,
+        id: int,
+        hidden: bool | None = ...,
+    ) -> _ResponseScriptsListDbtProjects:
+        """List the projects a dbt Script belongs to
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt Script.
+        hidden : bool, optional
+            If specified to be true, returns hidden items. Defaults to false, returning
+            non-hidden items.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for this project.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of this project.
+            - description : str
+                A description of the project.
+            - users : List[dict]
+                Users who can see the project.
+
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - auto_share : bool
+            - created_at : str (time)
+            - updated_at : str (time)
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def put_dbt_projects(
+        self,
+        id: int,
+        project_id: int,
+    ) -> Response:
+        """Add a dbt Script to a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt Script.
+        project_id : int
+            The ID of the project.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def delete_dbt_projects(
+        self,
+        id: int,
+        project_id: int,
+    ) -> Response:
+        """Remove a dbt Script from a project
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt Script.
+        project_id : int
+            The ID of the project.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def put_dbt_archive(
+        self,
+        id: int,
+        status: bool,
+    ) -> _ResponseScriptsPutDbtArchive:
+        """Update the archive status of this object
+
+        Parameters
+        ----------
+        id : int
+            The ID of the object.
+        status : bool
+            The desired archived status of the object.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
     def list_javascript_shares(
         self,
         id: int,
@@ -46661,6 +49168,257 @@ class _Scripts:
                 Target project to which script outputs will be added.
             - running_as_id : int
                 The ID of the runner of this script.
+        """
+        ...
+
+    def post_dbt_clone(
+        self,
+        id: int,
+        clone_schedule: bool | None = ...,
+        clone_triggers: bool | None = ...,
+        clone_notifications: bool | None = ...,
+    ) -> _ResponseScriptsPostDbtClone:
+        """Clone this dbt Script
+
+        Parameters
+        ----------
+        id : int
+            The ID for the script.
+        clone_schedule : bool, optional
+            If true, also copy the schedule to the new script.
+        clone_triggers : bool, optional
+            If true, also copy the triggers to the new script.
+        clone_notifications : bool, optional
+            If true, also copy the notifications to the new script.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of the script (e.g SQL, Container, Python, R, JavaScript, dbt)
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time the script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - required_resources : dict
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : dict
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository.
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -55159,7 +57917,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55201,7 +57959,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -55256,7 +58014,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         git_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, or the full or shortened SHA of a commit.
@@ -55305,7 +58063,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55333,7 +58091,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         content : str
             The contents to commit to the file.
         message : str
@@ -55365,7 +58123,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
 
@@ -55392,7 +58150,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -55417,7 +58175,7 @@ class _Workflows:
         Parameters
         ----------
         id : int
-            The ID of the file.
+            The ID of the item.
 
         Returns
         -------
@@ -57251,6 +60009,31 @@ class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobLastRun(Respons
 class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobMatchOptions(Response):
     max_matches: int
     threshold: str
+
+class _ResponseDatabasesListSchemasTablesProjects(Response):
+    id: int
+    author: _ResponseDatabasesListSchemasTablesProjectsAuthor
+    name: str
+    description: str
+    users: List[_ResponseDatabasesListSchemasTablesProjectsUsers]
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseDatabasesListSchemasTablesProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseDatabasesListSchemasTablesProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseDatabasesPostSchemasScan(Response):
     job_id: int
@@ -60568,6 +63351,7 @@ class _ResponseFilesPost(Response):
     created_at: str
     file_size: int
     expires_at: str
+    description: str
     upload_url: str
     upload_fields: dict
     my_permission_level: str
@@ -60578,6 +63362,7 @@ class _ResponseFilesPostMultipart(Response):
     created_at: str
     file_size: int
     expires_at: str
+    description: str
     upload_urls: List[str]
 
 class _ResponseFilesGet(Response):
@@ -60586,6 +63371,7 @@ class _ResponseFilesGet(Response):
     created_at: str
     file_size: int
     expires_at: str
+    description: str
     author: _ResponseFilesGetAuthor
     download_url: str
     file_url: str
@@ -60615,6 +63401,7 @@ class _ResponseFilesPut(Response):
     created_at: str
     file_size: int
     expires_at: str
+    description: str
     author: _ResponseFilesPutAuthor
     download_url: str
     file_url: str
@@ -60644,6 +63431,7 @@ class _ResponseFilesPatch(Response):
     created_at: str
     file_size: int
     expires_at: str
+    description: str
     author: _ResponseFilesPatchAuthor
     download_url: str
     file_url: str
@@ -70611,6 +73399,494 @@ class _ResponseScriptsPatchRRequiredResources(Response):
     memory: int
     disk_space: float
 
+class _ResponseScriptsPostDbt(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostDbtAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsPostDbtProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsPostDbtParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostDbtLinks
+    schedule: _ResponseScriptsPostDbtSchedule
+    notifications: _ResponseScriptsPostDbtNotifications
+    running_as: _ResponseScriptsPostDbtRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostDbtLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostDbtRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsPostDbtDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsPostDbtTargetDatabase
+
+class _ResponseScriptsPostDbtAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostDbtProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostDbtParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostDbtLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostDbtSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsPostDbtNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostDbtRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostDbtLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostDbtRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostDbtDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsPostDbtTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseScriptsGetDbt(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsGetDbtAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsGetDbtProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetDbtParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsGetDbtLinks
+    schedule: _ResponseScriptsGetDbtSchedule
+    notifications: _ResponseScriptsGetDbtNotifications
+    running_as: _ResponseScriptsGetDbtRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsGetDbtLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsGetDbtRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsGetDbtDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsGetDbtTargetDatabase
+
+class _ResponseScriptsGetDbtAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetDbtProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsGetDbtParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetDbtLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsGetDbtSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetDbtNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetDbtRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsGetDbtLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsGetDbtRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetDbtDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsGetDbtTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseScriptsPutDbt(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutDbtAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsPutDbtProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsPutDbtParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutDbtLinks
+    schedule: _ResponseScriptsPutDbtSchedule
+    notifications: _ResponseScriptsPutDbtNotifications
+    running_as: _ResponseScriptsPutDbtRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutDbtLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutDbtRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsPutDbtDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsPutDbtTargetDatabase
+
+class _ResponseScriptsPutDbtAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutDbtProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutDbtLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutDbtSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsPutDbtNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutDbtRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutDbtLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutDbtRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutDbtDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsPutDbtTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseScriptsPatchDbt(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPatchDbtAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsPatchDbtProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsPatchDbtParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPatchDbtLinks
+    schedule: _ResponseScriptsPatchDbtSchedule
+    notifications: _ResponseScriptsPatchDbtNotifications
+    running_as: _ResponseScriptsPatchDbtRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPatchDbtLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPatchDbtRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsPatchDbtDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsPatchDbtTargetDatabase
+
+class _ResponseScriptsPatchDbtAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchDbtProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPatchDbtParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPatchDbtLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPatchDbtSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsPatchDbtNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPatchDbtRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPatchDbtLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPatchDbtRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPatchDbtDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsPatchDbtTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
 class _ResponseScriptsPostJavascript(Response):
     id: int
     name: str
@@ -71684,6 +74960,42 @@ class _ResponseScriptsListRRunsLogs(Response):
     message: str
     level: str
 
+class _ResponseScriptsPostDbtRuns(Response):
+    id: int
+    dbt_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsListDbtRuns(Response):
+    id: int
+    dbt_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
+class _ResponseScriptsGetDbtRuns(Response):
+    id: int
+    dbt_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+    max_memory_usage: float
+    max_cpu_usage: float
+
 class _ResponseScriptsListDbtRunsLogs(Response):
     id: int
     created_at: str
@@ -71811,6 +75123,20 @@ class _ResponseScriptsListRRunsOutputs(Response):
     value: str
 
 class _ResponseScriptsPostRRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsListDbtRunsOutputs(Response):
+    object_type: str
+    object_id: int
+    name: str
+    link: str
+    value: str
+
+class _ResponseScriptsPostDbtRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
@@ -73263,6 +76589,303 @@ class _ResponseScriptsPutRArchiveRequiredResources(Response):
     memory: int
     disk_space: float
 
+class _ResponseScriptsListDbtShares(Response):
+    readers: _ResponseScriptsListDbtSharesReaders
+    writers: _ResponseScriptsListDbtSharesWriters
+    owners: _ResponseScriptsListDbtSharesOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsListDbtSharesReaders(Response):
+    users: List[_ResponseScriptsListDbtSharesReadersUsers]
+    groups: List[_ResponseScriptsListDbtSharesReadersGroups]
+
+class _ResponseScriptsListDbtSharesReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtSharesReadersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtSharesWriters(Response):
+    users: List[_ResponseScriptsListDbtSharesWritersUsers]
+    groups: List[_ResponseScriptsListDbtSharesWritersGroups]
+
+class _ResponseScriptsListDbtSharesWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtSharesWritersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtSharesOwners(Response):
+    users: List[_ResponseScriptsListDbtSharesOwnersUsers]
+    groups: List[_ResponseScriptsListDbtSharesOwnersGroups]
+
+class _ResponseScriptsListDbtSharesOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtSharesOwnersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsers(Response):
+    readers: _ResponseScriptsPutDbtSharesUsersReaders
+    writers: _ResponseScriptsPutDbtSharesUsersWriters
+    owners: _ResponseScriptsPutDbtSharesUsersOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutDbtSharesUsersReaders(Response):
+    users: List[_ResponseScriptsPutDbtSharesUsersReadersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesUsersReadersGroups]
+
+class _ResponseScriptsPutDbtSharesUsersReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsersReadersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsersWriters(Response):
+    users: List[_ResponseScriptsPutDbtSharesUsersWritersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesUsersWritersGroups]
+
+class _ResponseScriptsPutDbtSharesUsersWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsersWritersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsersOwners(Response):
+    users: List[_ResponseScriptsPutDbtSharesUsersOwnersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesUsersOwnersGroups]
+
+class _ResponseScriptsPutDbtSharesUsersOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesUsersOwnersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroups(Response):
+    readers: _ResponseScriptsPutDbtSharesGroupsReaders
+    writers: _ResponseScriptsPutDbtSharesGroupsWriters
+    owners: _ResponseScriptsPutDbtSharesGroupsOwners
+    total_user_shares: int
+    total_group_shares: int
+
+class _ResponseScriptsPutDbtSharesGroupsReaders(Response):
+    users: List[_ResponseScriptsPutDbtSharesGroupsReadersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesGroupsReadersGroups]
+
+class _ResponseScriptsPutDbtSharesGroupsReadersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroupsReadersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroupsWriters(Response):
+    users: List[_ResponseScriptsPutDbtSharesGroupsWritersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesGroupsWritersGroups]
+
+class _ResponseScriptsPutDbtSharesGroupsWritersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroupsWritersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroupsOwners(Response):
+    users: List[_ResponseScriptsPutDbtSharesGroupsOwnersUsers]
+    groups: List[_ResponseScriptsPutDbtSharesGroupsOwnersGroups]
+
+class _ResponseScriptsPutDbtSharesGroupsOwnersUsers(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtSharesGroupsOwnersGroups(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsListDbtDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shareable: bool
+
+class _ResponseScriptsPutDbtTransfer(Response):
+    dependencies: List[_ResponseScriptsPutDbtTransferDependencies]
+
+class _ResponseScriptsPutDbtTransferDependencies(Response):
+    object_type: str
+    fco_type: str
+    id: int
+    name: str
+    permission_level: str
+    description: str
+    shared: bool
+
+class _ResponseScriptsListDbtProjects(Response):
+    id: int
+    author: _ResponseScriptsListDbtProjectsAuthor
+    name: str
+    description: str
+    users: List[_ResponseScriptsListDbtProjectsUsers]
+    auto_share: bool
+    created_at: str
+    updated_at: str
+    archived: str
+
+class _ResponseScriptsListDbtProjectsAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsListDbtProjectsUsers(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutDbtArchive(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPutDbtArchiveAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsPutDbtArchiveProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsPutDbtArchiveParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPutDbtArchiveLinks
+    schedule: _ResponseScriptsPutDbtArchiveSchedule
+    notifications: _ResponseScriptsPutDbtArchiveNotifications
+    running_as: _ResponseScriptsPutDbtArchiveRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPutDbtArchiveLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPutDbtArchiveRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsPutDbtArchiveDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsPutDbtArchiveTargetDatabase
+
+class _ResponseScriptsPutDbtArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutDbtArchiveProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPutDbtArchiveParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPutDbtArchiveLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPutDbtArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsPutDbtArchiveNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPutDbtArchiveRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPutDbtArchiveLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPutDbtArchiveRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPutDbtArchiveDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsPutDbtArchiveTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
 class _ResponseScriptsListJavascriptShares(Response):
     readers: _ResponseScriptsListJavascriptSharesReaders
     writers: _ResponseScriptsListJavascriptSharesWriters
@@ -74338,6 +77961,128 @@ class _ResponseScriptsPostContainersCloneLastRun(Response):
     started_at: str
     finished_at: str
     error: str
+
+class _ResponseScriptsPostDbtClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseScriptsPostDbtCloneAuthor
+    state: str
+    finished_at: str
+    category: str
+    projects: List[_ResponseScriptsPostDbtCloneProjects]
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsPostDbtCloneParams]
+    arguments: dict
+    is_template: bool
+    published_as_template_id: int
+    from_template_id: int
+    template_dependents_count: int
+    template_script_name: str
+    links: _ResponseScriptsPostDbtCloneLinks
+    schedule: _ResponseScriptsPostDbtCloneSchedule
+    notifications: _ResponseScriptsPostDbtCloneNotifications
+    running_as: _ResponseScriptsPostDbtCloneRunningAs
+    next_run_at: str
+    time_zone: str
+    last_run: _ResponseScriptsPostDbtCloneLastRun
+    my_permission_level: str
+    hidden: bool
+    target_project_id: int
+    archived: str
+    required_resources: _ResponseScriptsPostDbtCloneRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsPostDbtCloneDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsPostDbtCloneTargetDatabase
+
+class _ResponseScriptsPostDbtCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostDbtCloneProjects(Response):
+    id: int
+    name: str
+
+class _ResponseScriptsPostDbtCloneParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: str
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsPostDbtCloneLinks(Response):
+    details: str
+    runs: str
+
+class _ResponseScriptsPostDbtCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsPostDbtCloneNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsPostDbtCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseScriptsPostDbtCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseScriptsPostDbtCloneRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsPostDbtCloneDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    generate_profiles: bool
+
+class _ResponseScriptsPostDbtCloneTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
 
 class _ResponseScriptsPostCustomClone(Response):
     id: int

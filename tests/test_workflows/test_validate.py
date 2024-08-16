@@ -29,32 +29,35 @@ def test_valid_workflow_yaml():
 
 
 @pytest.mark.parametrize(
-    "replace_to_break",
+    "replacee, replacer, error_message_contains",
     [
-        # "version" is required
-        ('version: "2.0"', ""),
-        # "tasks" is required
-        ("tasks:", "foobar:"),
-        # invalid "action"
-        ("civis.scripts.container", "civis.script.container"),
-        # invalid "task" property
-        ("      action:", "      foo: bar\n      action:"),
-        # task transitioning to itself
+        ('version: "2.0"', "", "'version' is a required property"),
+        ("tasks:", "foobar:", "'tasks' is a required property"),
+        (
+            "civis.scripts.container",
+            "civis.script.container",
+            "'civis.script.container' is not one of",
+        ),
+        ("      action:", "      foo: bar\n      action:", "'foo' was unexpected"),
         (
             "      input:",
             "      on-success:\n        - task_1\n      input:",
+            "A task cannot transition to itself",
         ),
-        # task transitioning to an undefined task
         (
             "      input:",
             "      on-success:\n        - undefined_task\n      input:",
+            "undefined task",
         ),
+        ("hello world", "hëlló wòrld", "cannot contain non-ASCII characters"),
     ],
 )
-def test_invalid_workflow_yaml(replace_to_break):
+def test_invalid_workflow_yaml(replacee, replacer, error_message_contains):
     """Break a valid workflow yaml, which should raise a WorkflowValidationError."""
-    invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(*replace_to_break)
-    with pytest.raises(WorkflowValidationError):
+    if replacee not in _VALID_WORKFLOW_YAML:
+        raise ValueError(f"{replacee!r} not in the workflow yaml to be tested")
+    invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(replacee, replacer)
+    with pytest.raises(WorkflowValidationError, match=error_message_contains):
         validate_workflow_yaml(invalid_wf_yaml)
 
 
