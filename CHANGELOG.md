@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The new kwarg `retries` has been added to `civis.APIClient` so that
   a `tenacity.Retrying` instance can be provided to customize retries. (#495)
 - Added `civis.workflows.validate_workflow_yaml`
-  to validate a Civis Platform workflow YAML definition. (#497)
+  to validate a Civis Platform workflow YAML definition. (#497, #499)
 - The helper I/O functions that create a Civis file
   (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
   accept a new `description` keyword argument for the new `description` attribute
@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Deprecated
 ### Removed
+- Dropped support for Python 3.9. (#499)
+
 ### Fixed
 ### Security
 
