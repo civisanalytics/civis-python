@@ -46,7 +46,7 @@ ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
     "    If True, return a generator to iterate over all responses. Use when\n"
     "    more results than the maximum allowed by limit are needed. When\n"
-    "    True, ``page_num`` is ignored. Defaults to False.\n"
+    "    True, 'page_num' is ignored. Defaults to False.\n"
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
