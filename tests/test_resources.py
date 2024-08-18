@@ -21,7 +21,7 @@ with open(API_SPEC_PATH) as f:
 
 RESPONSE_DOC = """Returns
 -------
-:class:`civis.response.Response`
+:class:`civis.Response`
     - id : int
         The ID of the credential.
     - name : str

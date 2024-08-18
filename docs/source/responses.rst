@@ -3,8 +3,8 @@
 Responses
 =========
 
-A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.response.Response` object
-(or a :class:`civis.response.PaginatedResponse` object, if ``<method>`` is a "list" call):
+A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.Response` object
+(or a :class:`civis.PaginatedResponse` object, if ``<method>`` is a "list" call):
 
 .. code-block:: python
 
@@ -23,7 +23,7 @@ A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.res
                             online=False),
             ...
 
-To retrieve information from a :class:`civis.response.Response` object,
+To retrieve information from a :class:`civis.Response` object,
 either the "getattr" or "getitem" syntax can be used:
 
 .. code-block:: python
@@ -46,9 +46,9 @@ Nested response objects can be accessed using the same syntax:
    >>> response.author.name
    'Platform User Name'
 
-Note that :class:`civis.response.Response` objects are read-only.
+Note that :class:`civis.Response` objects are read-only.
 If you need to modify information from a response object,
-call :func:`civis.response.Response.json` to get a dictionary representation of the response object.
+call :func:`civis.Response.json` to get a dictionary representation of the response object.
 You can then modify this dictionary as needed:
 
 .. code-block:: python
@@ -63,10 +63,10 @@ You can then modify this dictionary as needed:
 Response Types
 --------------
 
-.. autoclass:: civis.response.Response
+.. autoclass:: civis.Response
    :members:
 
-.. autoclass:: civis.response.PaginatedResponse
+.. autoclass:: civis.PaginatedResponse
    :members:
 
 .. autoclass:: civis.futures.CivisFuture

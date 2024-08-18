@@ -68,7 +68,7 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
 
     Returns
     -------
-    list, dict, `civis.response.Response`, or `requests.Response`
+    list, dict, `civis.Response`, or `requests.Response`
         Depending on the value of `return_type`.
     """
     if return_type == "raw":
@@ -342,14 +342,14 @@ class PaginatedResponse:
 
 
 def find(object_list, filter_func=None, **kwargs):
-    """Filter :class:`civis.response.Response` objects.
+    """Filter :class:`civis.Response` objects.
 
     Parameters
     ----------
     object_list : iterable
         An iterable of arbitrary objects, particularly those with attributes
         that can be targeted by the filters in `kwargs`. A major use case is
-        an iterable of :class:`civis.response.Response` objects.
+        an iterable of :class:`civis.Response` objects.
     filter_func : callable, optional
         A one-argument function. If specified, `kwargs` are ignored.
         An `object` from the input iterable is kept in the returned list
@@ -375,9 +375,9 @@ def find(object_list, filter_func=None, **kwargs):
     --------
     >>> import civis
     >>> client = civis.APIClient()
-    >>> # creds is a list of civis.response.Response objects
+    >>> # creds is a list of civis.Response objects
     >>> creds = client.credentials.list()
-    >>> # target_creds contains civis.response.Response objects
+    >>> # target_creds contains civis.Response objects
     >>> # with the attribute 'name' == 'username'
     >>> target_creds = find(creds, name='username')
 
@@ -408,7 +408,7 @@ def find(object_list, filter_func=None, **kwargs):
 
 
 def find_one(object_list, filter_func=None, **kwargs):
-    """Return one satisfying :class:`civis.response.Response` object.
+    """Return one satisfying :class:`civis.Response` object.
 
     The arguments are the same as those for :func:`civis.find`.
     If more than one object satisfies the filtering criteria,

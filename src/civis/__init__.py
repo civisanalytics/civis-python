@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from civis.client import APIClient
 from civis.loggers import civis_logger
-from civis.response import find, find_one
+from civis.response import find, find_one, Response, PaginatedResponse
 from civis.service_client import ServiceClient
 
 
@@ -40,7 +40,9 @@ __all__ = [
     "io",
     "civis_logger",
     "ml",
+    "PaginatedResponse",
     "parallel",
+    "Response",
     "ServiceClient",
     "utils",
     "workflows",

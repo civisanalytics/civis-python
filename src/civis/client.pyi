@@ -24,7 +24,7 @@ class _Admin:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this organization.
             - name : str
@@ -86,7 +86,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -142,7 +142,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -219,7 +219,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -287,7 +287,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -333,7 +333,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -394,7 +394,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -442,7 +442,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -475,7 +475,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -526,7 +526,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -577,7 +577,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -636,7 +636,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the Alias object.
             - object_id : int
@@ -687,7 +687,7 @@ class _Announcements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of this announcement
             - subject : str
@@ -746,7 +746,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of this cluster.
             - organization_id : str
@@ -831,7 +831,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this cluster.
             - organization_id : str
@@ -918,7 +918,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - total_normalized_hours : int
                 The total number of normalized hours used by this cluster.
             - normalized_hours_by_instance_type : str
@@ -969,7 +969,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The id of this deployment.
             - name : str
@@ -1023,7 +1023,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - base_type : str
                 The base type of this deployment
             - state : str
@@ -1055,7 +1055,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cluster_partition_id : int
                 The ID of this cluster partition.
             - name : str
@@ -1135,7 +1135,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cluster_partition_id : int
                 The ID of this cluster partition.
             - name : str
@@ -1218,7 +1218,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cluster_partition_id : int
                 The ID of this cluster partition.
             - name : str
@@ -1309,7 +1309,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cluster_partition_id : int
                 The ID of this cluster partition.
             - name : str
@@ -1376,7 +1376,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - instance_config_id : int
                 The ID of this InstanceConfig.
             - instance_type : str
@@ -1436,7 +1436,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of this deployment.
             - base_type : str
@@ -1505,7 +1505,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - user_id : str
                 The owning user's ID
             - user_name : str
@@ -1547,7 +1547,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cpu_graph_url : str
                 URL for the graph of historical CPU usage in this instance config.
             - mem_graph_url : str
@@ -1563,7 +1563,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - types : List[str]
                 list of acceptable credential types
         """
@@ -1625,7 +1625,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the credential.
             - name : str
@@ -1717,7 +1717,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the credential.
             - name : str
@@ -1812,7 +1812,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the credential.
             - name : str
@@ -1907,7 +1907,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the credential.
             - name : str
@@ -1963,7 +1963,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the credential.
             - name : str
@@ -2050,7 +2050,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the credential.
             - name : str
@@ -2110,7 +2110,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - access_key : str
                 The identifier of the credential.
             - secret_access_key : str
@@ -2133,7 +2133,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -2189,7 +2189,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -2266,7 +2266,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -2334,7 +2334,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -2380,7 +2380,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -2412,7 +2412,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the database.
             - name : str
@@ -2439,7 +2439,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the database.
             - name : str
@@ -2474,7 +2474,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - schema : str
                 The name of a schema.
         """
@@ -2499,7 +2499,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the table.
             - schema : str
@@ -2534,7 +2534,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -2743,7 +2743,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -2950,7 +2950,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -3067,7 +3067,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - job_id : int
                 The ID of the job created.
             - run_id : int
@@ -3097,7 +3097,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - grantee : str
                 Name of the granted user or group
             - grantee_type : str
@@ -3128,7 +3128,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - grantee : str
                 Name of the granted user or group
             - grantee_type : str
@@ -3157,7 +3157,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - username : str
                 Username
             - active : bool
@@ -3178,7 +3178,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - group_name : str
                 The name of the group.
             - members : List[str]
@@ -3199,7 +3199,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this whitelisted IP address.
             - remote_host_id : int
@@ -3231,7 +3231,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this whitelisted IP address.
             - remote_host_id : int
@@ -3264,7 +3264,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -3288,7 +3288,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -3312,7 +3312,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -3336,7 +3336,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - cpu_graph_url : str
                 URL for the aws redshift cpu utliization graph.
             - disk_graph_url : str
@@ -3459,7 +3459,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -3596,7 +3596,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -3817,7 +3817,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -4038,7 +4038,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -4185,7 +4185,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -4323,7 +4323,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - civis_data_match_id : int
@@ -4376,7 +4376,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - civis_data_match_id : int
@@ -4413,7 +4413,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - civis_data_match_id : int
@@ -4479,7 +4479,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -4504,7 +4504,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -4549,7 +4549,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -4576,7 +4576,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -4632,7 +4632,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -4709,7 +4709,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -4777,7 +4777,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -4823,7 +4823,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -4863,7 +4863,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -5005,7 +5005,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -5123,7 +5123,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -5334,7 +5334,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -5685,7 +5685,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -6036,7 +6036,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -6260,7 +6260,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -6489,7 +6489,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -6709,7 +6709,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - identity_resolution_id : int
@@ -6790,7 +6790,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - identity_resolution_id : int
@@ -6849,7 +6849,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - identity_resolution_id : int
@@ -6943,7 +6943,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -6968,7 +6968,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -6985,7 +6985,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the type.
         """
@@ -6999,7 +6999,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - field : str
                 The name of the field.
             - description : str
@@ -7051,7 +7051,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -7198,7 +7198,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -7349,7 +7349,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -7609,7 +7609,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -7869,7 +7869,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -8021,7 +8021,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - cass_ncoa_id : int
@@ -8074,7 +8074,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - cass_ncoa_id : int
@@ -8111,7 +8111,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - cass_ncoa_id : int
@@ -8177,7 +8177,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -8202,7 +8202,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -8247,7 +8247,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -8348,7 +8348,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -8466,7 +8466,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -8662,7 +8662,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -8858,7 +8858,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -8977,7 +8977,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - geocode_id : int
@@ -9030,7 +9030,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - geocode_id : int
@@ -9067,7 +9067,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - geocode_id : int
@@ -9133,7 +9133,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -9158,7 +9158,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -9203,7 +9203,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -9230,7 +9230,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9286,7 +9286,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9363,7 +9363,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9431,7 +9431,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -9477,7 +9477,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -9518,7 +9518,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -9615,7 +9615,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -9767,7 +9767,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9823,7 +9823,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9900,7 +9900,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -9968,7 +9968,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -10014,7 +10014,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -10055,7 +10055,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -10152,7 +10152,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -10271,7 +10271,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -10327,7 +10327,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -10404,7 +10404,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -10472,7 +10472,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -10518,7 +10518,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -10559,7 +10559,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -10656,7 +10656,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the enhancement.
             - name : str
@@ -10913,7 +10913,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this export.
             - name : str
@@ -10963,7 +10963,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - state : str
             - created_at : str (time)
@@ -11012,7 +11012,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
             - state : str
             - created_at : str (time)
@@ -11042,7 +11042,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - state : str
             - created_at : str (time)
@@ -11104,7 +11104,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -11151,7 +11151,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -11231,7 +11231,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this Csv Export job.
             - name : str
@@ -11300,7 +11300,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this Csv Export job.
             - name : str
@@ -11426,7 +11426,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this Csv Export job.
             - name : str
@@ -11552,7 +11552,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this Csv Export job.
             - name : str
@@ -11625,7 +11625,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this Csv Export job.
             - name : str
@@ -11700,7 +11700,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -11794,7 +11794,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -11850,7 +11850,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -11927,7 +11927,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -11995,7 +11995,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -12041,7 +12041,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -12085,7 +12085,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the file.
             - name : str
@@ -12135,7 +12135,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the file.
             - name : str
@@ -12193,7 +12193,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the file.
             - name : str
@@ -12267,7 +12267,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the file.
             - name : str
@@ -12341,7 +12341,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the file.
             - name : str
@@ -12432,7 +12432,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the job created.
             - file_id : int
@@ -12472,7 +12472,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the job created.
             - file_id : int
@@ -12539,7 +12539,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the job created.
             - file_id : int
@@ -12606,7 +12606,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the job created.
             - file_id : int
@@ -12650,7 +12650,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the job created.
             - file_id : int
@@ -12708,7 +12708,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this git repository.
             - repo_url : str
@@ -12731,7 +12731,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this git repository.
             - repo_url : str
@@ -12754,7 +12754,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this git repository.
             - repo_url : str
@@ -12795,7 +12795,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - branches : List[str]
                 List of branch names of this git repository.
             - tags : List[str]
@@ -12850,7 +12850,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of this group.
             - name : str
@@ -12931,7 +12931,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this group.
             - name : str
@@ -13002,7 +13002,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this group.
             - name : str
@@ -13104,7 +13104,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this group.
             - name : str
@@ -13206,7 +13206,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this group.
             - name : str
@@ -13278,7 +13278,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13334,7 +13334,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13411,7 +13411,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13479,7 +13479,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this group.
             - name : str
@@ -13572,7 +13572,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - manageable : List[dict]
                 - id : int
                 - name : str
@@ -13599,7 +13599,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13655,7 +13655,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13732,7 +13732,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -13800,7 +13800,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -13846,7 +13846,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -13887,7 +13887,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -13984,7 +13984,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the import.
             - sync_type : str
@@ -14275,7 +14275,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - name : str
                 The name of the import.
             - sync_type : str
@@ -14437,7 +14437,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the import.
             - sync_type : str
@@ -14730,7 +14730,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the import.
             - upload_uri : str
@@ -14762,7 +14762,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - import_id : int
@@ -14815,7 +14815,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - import_id : int
@@ -14852,7 +14852,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - import_id : int
@@ -14918,7 +14918,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -14954,7 +14954,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -15077,7 +15077,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - name : str
@@ -15187,7 +15187,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - name : str
@@ -15396,7 +15396,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - name : str
@@ -15605,7 +15605,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - name : str
@@ -15719,7 +15719,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - name : str
@@ -15830,7 +15830,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - csv_import_id : int
@@ -15883,7 +15883,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - csv_import_id : int
@@ -15920,7 +15920,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - csv_import_id : int
@@ -15986,7 +15986,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -16031,7 +16031,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for the import.
             - schema : str
@@ -16095,7 +16095,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - schema : str
@@ -16133,7 +16133,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the import.
             - schema : str
@@ -16171,7 +16171,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the import.
             - sync_type : str
@@ -16489,7 +16489,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the import.
             - sync_type : str
@@ -16733,7 +16733,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - state : str
             - created_at : str (time)
@@ -16760,7 +16760,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - run_id : int
                 The ID of the new run triggered.
         """
@@ -16779,7 +16779,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -16906,7 +16906,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - source : dict
                 - id : int
@@ -17139,7 +17139,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - source : dict
                 - id : int
@@ -17270,7 +17270,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - source : dict
                 - id : int
@@ -17441,7 +17441,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
             - name : str
             - type : str
@@ -17505,7 +17505,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
             - type : str
@@ -17591,7 +17591,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - trigger_email : str
                 Email address which may be used to trigger this job to run.
         """
@@ -17610,7 +17610,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
             - type : str
@@ -17696,7 +17696,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
             - type : str
@@ -17762,7 +17762,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
             - state : str
             - created_at : str (time)
@@ -17789,7 +17789,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - state : str
             - created_at : str (time)
@@ -17819,7 +17819,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - state : str
             - created_at : str (time)
@@ -17889,7 +17889,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -17927,7 +17927,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -17954,7 +17954,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -18020,7 +18020,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18076,7 +18076,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18153,7 +18153,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18221,7 +18221,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -18267,7 +18267,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -18308,7 +18308,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -18405,7 +18405,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
             - type : str
@@ -18496,7 +18496,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the JSON Value.
             - name : str
@@ -18519,7 +18519,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the JSON Value.
             - name : str
@@ -18549,7 +18549,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the JSON Value.
             - name : str
@@ -18572,7 +18572,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18628,7 +18628,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18705,7 +18705,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18773,7 +18773,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -18819,7 +18819,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -18857,7 +18857,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18913,7 +18913,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -18990,7 +18990,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19058,7 +19058,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the match target
             - name : str
@@ -19079,7 +19079,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the match target
             - name : str
@@ -19112,7 +19112,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the match target
             - name : str
@@ -19139,7 +19139,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the match target
             - name : str
@@ -19175,7 +19175,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the match target
             - name : str
@@ -19203,7 +19203,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19259,7 +19259,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19336,7 +19336,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19404,7 +19404,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -19433,7 +19433,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19489,7 +19489,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19566,7 +19566,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19634,7 +19634,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The optimization ID.
             - author : dict
@@ -19730,7 +19730,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19786,7 +19786,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19863,7 +19863,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -19931,7 +19931,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -19979,7 +19979,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The optimization ID.
             - author : dict
@@ -20075,7 +20075,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The optimization ID.
             - author : dict
@@ -20171,7 +20171,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The optimization ID.
             - author : dict
@@ -20322,7 +20322,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The optimization ID.
             - author : dict
@@ -20418,7 +20418,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The optimization ID.
             - author : dict
@@ -20514,7 +20514,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - optimization_id : int
@@ -20567,7 +20567,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - optimization_id : int
@@ -20604,7 +20604,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - optimization_id : int
@@ -20670,7 +20670,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -20698,7 +20698,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -20719,7 +20719,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -20748,7 +20748,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -20780,7 +20780,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -20817,7 +20817,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -20855,7 +20855,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -20883,7 +20883,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -20924,7 +20924,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -20965,7 +20965,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -20999,7 +20999,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 Name for the DMA region.
             - number : int
@@ -21026,7 +21026,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the target.
             - identifier : str
@@ -21044,7 +21044,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the model type.
             - algorithm : str
@@ -21117,7 +21117,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the model.
             - table_name : str
@@ -21264,7 +21264,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the model.
             - table_name : str
@@ -21469,7 +21469,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the model build.
             - state : str
@@ -21555,7 +21555,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the model build.
             - state : str
@@ -21612,7 +21612,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -21637,7 +21637,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -21693,7 +21693,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -21770,7 +21770,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -21838,7 +21838,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -21884,7 +21884,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -21925,7 +21925,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -22022,7 +22022,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the model.
             - table_name : str
@@ -22224,7 +22224,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the model associated with this schedule.
             - schedule : dict
@@ -22290,7 +22290,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -22419,7 +22419,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -22536,7 +22536,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -22709,7 +22709,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -22882,7 +22882,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -22999,7 +22999,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - update_url : str
                 Time-limited URL to PUT new contents of the .ipynb file for this
                 notebook.
@@ -23021,7 +23021,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -23139,7 +23139,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -23195,7 +23195,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -23272,7 +23272,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -23340,7 +23340,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -23386,7 +23386,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -23426,7 +23426,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this notebook.
             - name : str
@@ -23548,7 +23548,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -23664,7 +23664,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -23716,7 +23716,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -23770,7 +23770,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -23854,7 +23854,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - message : str
                 The log message.
             - stream : str
@@ -23879,7 +23879,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -23934,7 +23934,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -23989,7 +23989,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -24025,7 +24025,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -24059,7 +24059,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -24087,7 +24087,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -24112,7 +24112,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -24137,7 +24137,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -24188,7 +24188,7 @@ class _Ontology:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - key : str
             - title : str
             - desc : str
@@ -24234,7 +24234,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24275,7 +24275,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24312,7 +24312,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24356,7 +24356,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24400,7 +24400,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24438,7 +24438,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -24494,7 +24494,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -24571,7 +24571,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -24639,7 +24639,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -24685,7 +24685,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -24725,7 +24725,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this permission set.
             - name : str
@@ -24766,7 +24766,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - resource_name : str
                 The name of the resource.
             - read : bool
@@ -24810,7 +24810,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - permission_set_id : int
                 The ID for the permission set this resource belongs to.
             - name : str
@@ -24841,7 +24841,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - permission_set_id : int
                 The ID for the permission set this resource belongs to.
             - name : str
@@ -24869,7 +24869,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - permission_set_id : int
                 The ID for the permission set this resource belongs to.
             - name : str
@@ -24900,7 +24900,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - permission_set_id : int
                 The ID for the permission set this resource belongs to.
             - name : str
@@ -24949,7 +24949,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -25008,7 +25008,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -25091,7 +25091,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -25160,7 +25160,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the prediction.
             - model_id : int
@@ -25206,7 +25206,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the prediction.
             - model_id : int
@@ -25295,7 +25295,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 ID of the prediction associated with this schedule.
             - schedule : dict
@@ -25368,7 +25368,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this project.
             - author : dict
@@ -25433,7 +25433,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -25645,7 +25645,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -25850,7 +25850,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -26064,7 +26064,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -26273,7 +26273,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -26479,7 +26479,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -26535,7 +26535,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -26612,7 +26612,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -26680,7 +26680,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -26726,7 +26726,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -26766,7 +26766,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -26976,7 +26976,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -27128,7 +27128,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The query ID.
             - database : int
@@ -27210,7 +27210,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The query ID.
             - database : int
@@ -27279,7 +27279,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - query_id : int
@@ -27332,7 +27332,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - query_id : int
@@ -27369,7 +27369,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - query_id : int
@@ -27435,7 +27435,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -27463,7 +27463,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The query ID.
             - database : int
@@ -27528,7 +27528,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The query ID.
             - database : int
@@ -27593,7 +27593,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The query ID.
             - database : int
@@ -27663,7 +27663,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -27703,7 +27703,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -27750,7 +27750,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -27814,7 +27814,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -27878,7 +27878,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -27926,7 +27926,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -27982,7 +27982,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -28059,7 +28059,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -28168,7 +28168,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The path to a data_set.
             - full_path : bool
@@ -28225,7 +28225,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of this report.
             - name : str
@@ -28325,7 +28325,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -28430,7 +28430,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -28485,7 +28485,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -28540,7 +28540,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -28576,7 +28576,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -28610,7 +28610,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -28638,7 +28638,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -28663,7 +28663,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -28688,7 +28688,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -28713,7 +28713,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -28846,7 +28846,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -28952,7 +28952,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -29076,7 +29076,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29132,7 +29132,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29209,7 +29209,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29277,7 +29277,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -29323,7 +29323,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -29364,7 +29364,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -29461,7 +29461,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -29566,7 +29566,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -29630,7 +29630,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -29691,7 +29691,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -29749,7 +29749,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29805,7 +29805,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29882,7 +29882,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -29950,7 +29950,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -29996,7 +29996,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -30037,7 +30037,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -30134,7 +30134,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -30192,7 +30192,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - organization : dict
@@ -30230,7 +30230,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -30311,7 +30311,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -30404,7 +30404,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -30485,7 +30485,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -30566,7 +30566,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -30622,7 +30622,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -30699,7 +30699,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -30767,7 +30767,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -30813,7 +30813,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -30854,7 +30854,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -30951,7 +30951,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this report.
             - name : str
@@ -31049,7 +31049,7 @@ class _Roles:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 ID of the Role.
             - name : str
@@ -31069,7 +31069,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the type.
         """
@@ -31088,7 +31088,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this run.
             - sql_id : int
@@ -31199,7 +31199,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -31418,7 +31418,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for the script.
             - name : str
@@ -31583,7 +31583,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -31766,7 +31766,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -31967,7 +31967,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - state : str
@@ -32131,7 +32131,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -32359,7 +32359,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -32728,7 +32728,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -33097,7 +33097,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -33383,7 +33383,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -33530,7 +33530,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -33738,7 +33738,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -34069,7 +34069,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -34400,7 +34400,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -34733,7 +34733,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -34937,7 +34937,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -35266,7 +35266,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -35595,7 +35595,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -35924,7 +35924,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -36128,7 +36128,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -36457,7 +36457,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -36786,7 +36786,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -37155,7 +37155,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -37396,7 +37396,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -37802,7 +37802,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -38208,7 +38208,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -38551,7 +38551,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -38735,7 +38735,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -39021,7 +39021,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -39307,7 +39307,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -39528,7 +39528,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for the script.
             - name : str
@@ -39692,7 +39692,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -39907,7 +39907,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -40203,7 +40203,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -40499,7 +40499,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -40715,7 +40715,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - sql_id : int
@@ -40781,7 +40781,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - sql_id : int
@@ -40831,7 +40831,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - sql_id : int
@@ -40934,7 +40934,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -40959,7 +40959,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - container_id : int
@@ -41018,7 +41018,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - container_id : int
@@ -41061,7 +41061,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - container_id : int
@@ -41122,7 +41122,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - python_id : int
@@ -41181,7 +41181,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - python_id : int
@@ -41224,7 +41224,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - python_id : int
@@ -41320,7 +41320,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41345,7 +41345,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - r_id : int
@@ -41404,7 +41404,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - r_id : int
@@ -41447,7 +41447,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - r_id : int
@@ -41543,7 +41543,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41568,7 +41568,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - dbt_id : int
@@ -41627,7 +41627,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - dbt_id : int
@@ -41670,7 +41670,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - dbt_id : int
@@ -41766,7 +41766,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41791,7 +41791,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - javascript_id : int
@@ -41844,7 +41844,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - javascript_id : int
@@ -41881,7 +41881,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - javascript_id : int
@@ -41971,7 +41971,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41996,7 +41996,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - custom_id : int
@@ -42057,7 +42057,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the run.
             - custom_id : int
@@ -42102,7 +42102,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the run.
             - custom_id : int
@@ -42176,7 +42176,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -42223,7 +42223,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42272,7 +42272,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42309,7 +42309,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42358,7 +42358,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42395,7 +42395,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42444,7 +42444,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42481,7 +42481,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42530,7 +42530,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42567,7 +42567,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42616,7 +42616,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42653,7 +42653,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42702,7 +42702,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42739,7 +42739,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 The type of the output. Valid values are File, Table, Report, Project,
                 Credential, or JSONValue
@@ -42790,7 +42790,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -42845,7 +42845,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -42900,7 +42900,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -42936,7 +42936,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -42970,7 +42970,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -42998,7 +42998,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43023,7 +43023,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43048,7 +43048,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43073,7 +43073,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43128,7 +43128,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43183,7 +43183,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43219,7 +43219,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43253,7 +43253,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43281,7 +43281,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43306,7 +43306,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43331,7 +43331,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43356,7 +43356,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43411,7 +43411,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43466,7 +43466,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43502,7 +43502,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43536,7 +43536,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43564,7 +43564,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43589,7 +43589,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43614,7 +43614,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43639,7 +43639,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43694,7 +43694,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43749,7 +43749,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43785,7 +43785,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43819,7 +43819,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43847,7 +43847,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43872,7 +43872,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43897,7 +43897,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -43922,7 +43922,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -43978,7 +43978,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -44055,7 +44055,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -44123,7 +44123,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -44169,7 +44169,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -44210,7 +44210,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -44307,7 +44307,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -44516,7 +44516,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -44572,7 +44572,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -44649,7 +44649,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -44717,7 +44717,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -44763,7 +44763,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -44804,7 +44804,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -44901,7 +44901,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -45129,7 +45129,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45185,7 +45185,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45262,7 +45262,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45330,7 +45330,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -45376,7 +45376,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -45417,7 +45417,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -45514,7 +45514,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -45719,7 +45719,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45775,7 +45775,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45852,7 +45852,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -45920,7 +45920,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -45966,7 +45966,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -46007,7 +46007,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -46104,7 +46104,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -46309,7 +46309,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -46365,7 +46365,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -46442,7 +46442,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -46510,7 +46510,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -46556,7 +46556,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -46597,7 +46597,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -46694,7 +46694,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -46936,7 +46936,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -46992,7 +46992,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -47069,7 +47069,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -47137,7 +47137,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -47183,7 +47183,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -47224,7 +47224,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -47321,7 +47321,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -47506,7 +47506,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -47562,7 +47562,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -47639,7 +47639,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -47707,7 +47707,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -47753,7 +47753,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -47794,7 +47794,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -47891,7 +47891,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -48116,7 +48116,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -48334,7 +48334,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -48528,7 +48528,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -48742,7 +48742,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -48956,7 +48956,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -49193,7 +49193,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - name : str
@@ -49444,7 +49444,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the script.
             - from_template_aliases : List[dict]
@@ -49685,7 +49685,7 @@ class _Search:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - total_results : int
                 The number of items matching the search query.
             - aggregations : dict
@@ -49733,7 +49733,7 @@ class _Search:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - type : str
                 The name of the item type.
         """
@@ -49795,7 +49795,7 @@ class _Search:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The query ID.
             - database : int
@@ -49869,7 +49869,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this Service.
             - name : str
@@ -50026,7 +50026,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -50162,7 +50162,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -50372,7 +50372,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -50582,7 +50582,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -50719,7 +50719,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -50775,7 +50775,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -50852,7 +50852,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -50920,7 +50920,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -50966,7 +50966,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -51006,7 +51006,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -51147,7 +51147,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -51263,7 +51263,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -51315,7 +51315,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -51369,7 +51369,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -51444,7 +51444,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - deployment_id : int
                 The ID for this deployment.
             - user_id : int
@@ -51507,7 +51507,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - message : str
                 The log message.
             - stream : str
@@ -51531,7 +51531,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this Service.
             - name : str
@@ -51677,7 +51677,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the token.
             - name : str
@@ -51717,7 +51717,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the token.
             - name : str
@@ -51771,7 +51771,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the storage host.
             - owner : dict
@@ -51820,7 +51820,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the storage host.
             - owner : dict
@@ -51859,7 +51859,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the storage host.
             - owner : dict
@@ -51911,7 +51911,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the storage host.
             - owner : dict
@@ -51963,7 +51963,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the storage host.
             - owner : dict
@@ -52002,7 +52002,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -52058,7 +52058,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -52135,7 +52135,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -52203,7 +52203,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -52249,7 +52249,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -52306,7 +52306,7 @@ class _Table_Tags:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 Table Tag ID
             - name : str
@@ -52340,7 +52340,7 @@ class _Table_Tags:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 Table Tag ID
             - name : str
@@ -52377,7 +52377,7 @@ class _Table_Tags:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 Table Tag ID
             - name : str
@@ -52437,7 +52437,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the enhancement.
             - source_table_id : int
@@ -52486,7 +52486,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the enhancement.
             - source_table_id : int
@@ -52535,7 +52535,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the enhancement.
             - source_table_id : int
@@ -52570,7 +52570,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the enhancement.
             - source_table_id : int
@@ -52625,7 +52625,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - job_id : int
                 The ID of the job created.
             - run_id : int
@@ -52649,7 +52649,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -52889,7 +52889,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -52956,7 +52956,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -53167,7 +53167,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - database_id : int
@@ -53271,7 +53271,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - name : str
                 Name of the column.
             - civis_data_type : str
@@ -53338,7 +53338,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the table.
             - table_tag_id : int
@@ -53384,7 +53384,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -53479,7 +53479,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -53535,7 +53535,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -53612,7 +53612,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -53680,7 +53680,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -53726,7 +53726,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -53790,7 +53790,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
             - name : str
                 The name of the template.
@@ -53850,7 +53850,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
                 The name of the template.
@@ -53899,7 +53899,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
                 The name of the template.
@@ -53965,7 +53965,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
                 The name of the template.
@@ -54031,7 +54031,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - name : str
                 The name of the template.
@@ -54081,7 +54081,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -54137,7 +54137,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -54214,7 +54214,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -54282,7 +54282,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -54328,7 +54328,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -54369,7 +54369,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -54491,7 +54491,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
             - public : bool
                 If the template is public or not.
@@ -54557,7 +54557,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - public : bool
                 If the template is public or not.
@@ -54646,7 +54646,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - public : bool
                 If the template is public or not.
@@ -54748,7 +54748,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - public : bool
                 If the template is public or not.
@@ -54850,7 +54850,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
             - public : bool
                 If the template is public or not.
@@ -54950,7 +54950,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - run_id : int
                 The ID of the run which contributed this usage.
             - job_id : int
@@ -54994,7 +54994,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the usage statistic to get.
             - run_id : int
@@ -55033,7 +55033,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the usage statistic to get.
             - run_id : int
@@ -55082,7 +55082,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - credits : float (float)
                 The number of credits used.
             - organization_id : int
@@ -55104,7 +55104,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55136,7 +55136,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55168,7 +55168,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55196,7 +55196,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55265,7 +55265,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of this user.
             - user : str
@@ -55376,7 +55376,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -55472,7 +55472,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -55705,7 +55705,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -55792,7 +55792,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : str
                 The ID of the object.
             - name : str
@@ -55824,7 +55824,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -55847,7 +55847,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this theme.
             - name : str
@@ -55870,7 +55870,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this theme.
             - name : str
@@ -55902,7 +55902,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -56066,7 +56066,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -56187,7 +56187,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID of the API key.
             - name : str
@@ -56252,7 +56252,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the API key.
             - name : str
@@ -56313,7 +56313,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the API key.
             - name : str
@@ -56372,7 +56372,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of the API key.
             - name : str
@@ -56428,7 +56428,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -56556,7 +56556,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The id of the favorite.
             - object_id : int
@@ -56610,7 +56610,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The id of the favorite.
             - object_id : int
@@ -56672,7 +56672,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -56696,7 +56696,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - user : str
@@ -56852,7 +56852,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -56972,7 +56972,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -57064,7 +57064,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -57207,7 +57207,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -57350,7 +57350,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -57443,7 +57443,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -57499,7 +57499,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -57576,7 +57576,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - readers : dict
                 - users : List[dict]
                     - id : int
@@ -57644,7 +57644,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -57690,7 +57690,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - dependencies : List[dict]
                 Dependent objects for this object
 
@@ -57730,7 +57730,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -57827,7 +57827,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this project.
             - author : dict
@@ -57921,7 +57921,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -57976,7 +57976,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -58031,7 +58031,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -58067,7 +58067,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -58101,7 +58101,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -58129,7 +58129,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -58154,7 +58154,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -58179,7 +58179,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - content : str
                 The file's contents.
             - type : str
@@ -58210,7 +58210,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -58322,7 +58322,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.PaginatedResponse`
+        :class:`civis.PaginatedResponse`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58377,7 +58377,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58477,7 +58477,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58577,7 +58577,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58677,7 +58677,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58781,7 +58781,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - id : int
                 The ID for this workflow execution.
             - state : str
@@ -58884,7 +58884,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.response.Response`
+        :class:`civis.Response`
             - name : str
                 The name of the task.
             - mistral_state : str
