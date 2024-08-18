@@ -308,10 +308,8 @@ class PaginatedResponse:
         self._params = initial_params.copy()
         self._endpoint = endpoint
 
-        # We are paginating through all items, so start at the beginning and
-        # let the API determine the limit.
+        # We are paginating through all items, so start at the beginning.
         self._params["page_num"] = 1
-        self._params.pop("limit", None)
 
         self._iter = None
 
