@@ -52,7 +52,14 @@ def test_create_method_iterator_kwarg():
         {"name": "order_by", "in": "query", "required": False, "doc": ""},
     ]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
 
@@ -68,7 +75,14 @@ def test_create_method_no_iterator_kwarg():
     # unexpected "iterator" parameter is passed in
     args = [{"name": "id", "in": "query", "required": True, "doc": ""}]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
 
@@ -81,7 +95,14 @@ def test_create_method_no_iterator_kwarg():
     # code path; verify that this also rejects unexpected arguments.
     args2 = [{"name": "foo", "in": "query", "required": False, "doc": ""}]
     method2 = _resources.create_method(
-        args2, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args2,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint2 = mock.MagicMock()
     with pytest.raises(TypeError) as excinfo:
@@ -533,7 +554,14 @@ def _create_mock_endpoint():
         {"name": "bar", "in": "query", "required": False, "doc": ""},
     ]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
     return mock_endpoint, method
@@ -586,7 +614,14 @@ def test_create_method_keyword_only():
 def test_create_method_deprecation_warning():
     args = [{"name": "foo", "in": "query", "required": True, "doc": ""}]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = Endpoint({"api_key": "abc"}, client=create_client_mock())
     mock_endpoint._make_request = mock.Mock()
