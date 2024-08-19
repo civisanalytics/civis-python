@@ -13,8 +13,14 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import builtins
 import os
 import datetime
+
+# Set __sphinx_build__ before we import "civis", so that within the "civis" namespace,
+# we can tell whether we're running the Sphinx doc build or not.
+# https://stackoverflow.com/a/65147676
+builtins.__sphinx_build__ = True
 
 import civis
 

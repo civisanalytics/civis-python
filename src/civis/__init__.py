@@ -9,6 +9,14 @@ from civis.response import find, find_one, Response, PaginatedResponse
 from civis.service_client import ServiceClient
 
 
+try:
+    # __sphinx_build__ is injected into bulitins in docs/source/conf.py.
+    if __sphinx_build__:
+        _BUILDING_SPHINX_DOC = True
+except NameError:
+    _BUILDING_SPHINX_DOC = False
+
+
 def _lazy_import(name):
     # https://docs.python.org/3/library/importlib.html#implementing-lazy-imports
     spec = importlib.util.find_spec(name)
@@ -20,7 +28,7 @@ def _lazy_import(name):
     return module
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or _BUILDING_SPHINX_DOC:
     from civis import futures, io, ml, parallel, utils, workflows
 else:
     futures = _lazy_import("civis.futures")
