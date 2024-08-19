@@ -74,7 +74,11 @@ class APIClient:
                 f"Return type must be one of {set(_RETURN_TYPES)}: " f"{return_type}"
             )
         self._feature_flags = ()
-        session_auth_key = get_api_key(api_key)
+        if local_api_spec is not None:
+            # No authentication needed when using a local api spec
+            session_auth_key = None
+        else:
+            session_auth_key = get_api_key(api_key)
         self._session_kwargs = {"api_key": session_auth_key, "retrying": retries}
         self.last_response = None
 
