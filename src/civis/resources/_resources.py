@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from collections.abc import Iterator
 from functools import lru_cache
 import json
 import os
@@ -7,7 +8,7 @@ import sys
 import time
 import textwrap
 from inspect import Signature, Parameter
-from typing import Iterator, List
+from typing import List
 
 from jsonref import JsonRef
 import requests
@@ -44,9 +45,12 @@ TYPE_MAP = {
 }
 ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
-    "    If True, return a generator to iterate over all responses. Use when\n"
-    "    more results than the maximum allowed by limit are needed. When\n"
-    "    True, 'page_num' is ignored. Defaults to False.\n"
+    "    If True, return a generator (specifically, a\n"
+    "    :class:`civis.PaginatedResponse` object) to iterate over all responses.\n"
+    "    Use it when more results than the maximum allowed by 'limit' are needed.\n"
+    "    When True, 'page_num' is ignored.\n"
+    "    If False, return a list of :class:`civis.Response` objects, whose size is\n"
+    "    determined by 'limit'. Defaults to False.\n"
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None

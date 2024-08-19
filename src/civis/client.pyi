@@ -388,9 +388,12 @@ class _Aliases:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -681,9 +684,12 @@ class _Announcements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -740,9 +746,12 @@ class _Clusters:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -963,9 +972,12 @@ class _Clusters:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -1619,9 +1631,12 @@ class _Credentials:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -4370,9 +4385,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -4543,9 +4561,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -5117,9 +5138,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -6784,9 +6808,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -7045,9 +7072,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -8068,9 +8098,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -8241,9 +8274,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -9024,9 +9060,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -9197,9 +9236,12 @@ class _Enhancements:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -10907,9 +10949,12 @@ class _Exports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -11006,9 +11051,12 @@ class _Exports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -11145,9 +11193,12 @@ class _Exports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -12702,9 +12753,12 @@ class _Git_Repos:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -12844,9 +12898,12 @@ class _Groups:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -14269,9 +14326,12 @@ class _Imports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -14809,9 +14869,12 @@ class _Imports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -15877,9 +15940,12 @@ class _Imports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -16025,9 +16091,12 @@ class _Imports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -17435,9 +17504,12 @@ class _Jobs:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -17756,9 +17828,12 @@ class _Jobs:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -17883,9 +17958,12 @@ class _Jobs:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -19973,9 +20051,12 @@ class _Media:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -20561,9 +20642,12 @@ class _Media:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -21111,9 +21195,12 @@ class _Models:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -21549,9 +21636,12 @@ class _Models:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -22284,9 +22374,12 @@ class _Notebooks:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -23658,9 +23751,12 @@ class _Notebooks:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -24228,9 +24324,12 @@ class _Permission_Sets:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -24804,9 +24903,12 @@ class _Permission_Sets:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -25362,9 +25464,12 @@ class _Projects:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -27122,9 +27227,12 @@ class _Queries:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -27326,9 +27434,12 @@ class _Queries:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -28219,9 +28330,12 @@ class _Reports:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -31043,9 +31157,12 @@ class _Roles:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -31126,7 +31243,7 @@ class _Scripts:
         notifications: dict | None = ...,
         hidden: bool | None = ...,
     ) -> _ResponseScriptsPost:
-        """Create a script
+        """Create a script (legacy)
 
         Parameters
         ----------
@@ -31412,9 +31529,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -31482,465 +31602,11 @@ class _Scripts:
         """
         ...
 
-    def patch(
-        self,
-        id: int,
-        name: str | None = ...,
-        sql: str | None = ...,
-        params: List[dict] | None = ...,
-        arguments: dict | None = ...,
-        template_script_id: int | None = ...,
-        schedule: dict | None = ...,
-        notifications: dict | None = ...,
-        parent_id: int | None = ...,
-        running_as_id: int | None = ...,
-    ) -> _ResponseScriptsPatch:
-        """Update a script
-
-        Parameters
-        ----------
-        id : int
-            The ID for the script.
-        name : str, optional
-            The name of the script.
-        sql : str, optional
-            The raw SQL query for the script.
-        params : List[dict], optional
-            A definition of the parameters this script accepts in the arguments field.
-            Cannot be set if this script uses a template script.
-
-            - name : str
-                The variable's name as used within your code.
-            - label : str
-                The label to present to users when asking them for the value.
-            - description : str
-                A short sentence or fragment describing this parameter to the end user.
-            - type : str
-                The type of parameter. Valid options: string, multi_line_string,
-                integer, float, bool, file, table, database, credential_aws,
-                credential_redshift, or credential_custom
-            - required : bool
-                Whether this param is required.
-            - value : str
-                The value you would like to set this param to. Setting this value makes
-                this parameter a fixed param.
-            - default : str
-                If an argument for this parameter is not defined, it will use this
-                default value. Use true, True, t, y, yes, or 1 for true bool's or
-                false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                parameters that are required or a credential type.
-            - allowed_values : List[dict]
-                The possible values this parameter can take, effectively making this an
-                enumerable parameter. Allowed values is an array of hashes of the
-                following format: `{label: 'Import', 'value': 'import'}`
-        arguments : dict, optional
-            Parameter-value pairs to use when running this script. Only settable if
-            this script has defined parameters.
-        template_script_id : int, optional
-            The ID of the template script, if any.  A script cannot both have a
-            template script and be a template for other scripts.
-        schedule : dict, optional
-            - scheduled : bool
-                If the item is scheduled.
-            - scheduled_days : List[int]
-                Days of the week, based on numeric value starting at 0 for Sunday.
-                Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : List[int]
-                Hours of the day it is scheduled on.
-            - scheduled_minutes : List[int]
-                Minutes of the day it is scheduled on.
-            - scheduled_runs_per_hour : int
-                Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : List[int]
-                Days of the month it is scheduled on, mutually exclusive with
-                scheduledDays.
-        notifications : dict, optional
-            - urls : List[str]
-                URLs to receive a POST request at job completion
-            - success_email_subject : str
-                Custom subject line for success e-mail.
-            - success_email_body : str
-                Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : List[str]
-                Addresses to notify by e-mail when the job completes successfully.
-            - success_email_from_name : str
-                Name from which success emails are sent; defaults to "Civis."
-            - success_email_reply_to : str
-                Address for replies to success emails; defaults to the author of the
-                job.
-            - failure_email_addresses : List[str]
-                Addresses to notify by e-mail when the job fails.
-            - stall_warning_minutes : int
-                Stall warning emails will be sent after this amount of minutes.
-            - success_on : bool
-                If success email notifications are on. Defaults to user's preferences.
-            - failure_on : bool
-                If failure email notifications are on. Defaults to user's preferences.
-        parent_id : int, optional
-            The ID of the parent job that will trigger this script
-        running_as_id : int, optional
-            The ID of the runner of this script.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID for the script.
-            - name : str
-                The name of the script.
-            - type : str
-                The type of script.
-            - created_at : str (time)
-                The time this script was created.
-            - updated_at : str (time)
-                The time this script was last updated.
-            - author : :class:`civis.Response`
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - state : str
-                The status of the script's last run.
-            - finished_at : str (time)
-                The time that the script's last run finished.
-            - category : str
-                The category of the script.
-            - projects : List[:class:`civis.Response`]
-                A list of projects containing the script.
-
-                - id : int
-                    The ID for the project.
-                - name : str
-                    The name of the project.
-            - parent_id : int
-                The ID of the parent job that will trigger this script
-            - user_context : str
-                "runner" or "author", who to execute the script as when run as a
-                template.
-            - params : List[:class:`civis.Response`]
-                A definition of the parameters this script accepts in the arguments
-                field.
-
-                - name : str
-                    The variable's name as used within your code.
-                - label : str
-                    The label to present to users when asking them for the value.
-                - description : str
-                    A short sentence or fragment describing this parameter to the end
-                    user.
-                - type : str
-                    The type of parameter. Valid options: string, multi_line_string,
-                    integer, float, bool, file, table, database, credential_aws,
-                    credential_redshift, or credential_custom
-                - required : bool
-                    Whether this param is required.
-                - value : str
-                    The value you would like to set this param to. Setting this value
-                    makes this parameter a fixed param.
-                - default : str
-                    If an argument for this parameter is not defined, it will use this
-                    default value. Use true, True, t, y, yes, or 1 for true bool's or
-                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                    parameters that are required or a credential type.
-                - allowed_values : List[:class:`civis.Response`]
-                    The possible values this parameter can take, effectively making
-                    this an enumerable parameter. Allowed values is an array of hashes
-                    of the following format: `{label: 'Import', 'value': 'import'}`
-            - arguments : :class:`civis.Response`
-                Parameter-value pairs to use when running this script. Only settable if
-                this script has defined parameters.
-            - is_template : bool
-                Whether others scripts use this one as a template.
-            - published_as_template_id : int
-                The ID of the template that this script is backing.
-            - from_template_id : int
-                The ID of the template this script uses, if any.
-            - template_dependents_count : int
-                How many other scripts use this one as a template.
-            - template_script_name : str
-                The name of the template script.
-            - links : :class:`civis.Response`
-                - details : str
-                    The details link to get more information about the script.
-                - runs : str
-                    The runs link to get the run information list for this script.
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
-            - running_as : :class:`civis.Response`
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - next_run_at : str (time)
-                The time of the next scheduled run.
-            - time_zone : str
-                The time zone of this script.
-            - last_run : :class:`civis.Response`
-                - id : int
-                - state : str
-                - created_at : str (time)
-                    The time that the run was queued.
-                - started_at : str (time)
-                    The time that the run started.
-                - finished_at : str (time)
-                    The time that the run completed.
-                - error : str
-                    The error message for this run, if present.
-            - my_permission_level : str
-                Your permission level on the object. One of "read", "write", or
-                "manage".
-            - hidden : bool
-                The hidden status of the item.
-            - target_project_id : int
-                Target project to which script outputs will be added.
-            - archived : str
-                The archival status of the requested item(s).
-            - sql : str
-                The raw SQL query for the script.
-            - expanded_arguments : :class:`civis.Response`
-                Expanded arguments for use in injecting into different environments.
-            - template_script_id : int
-                The ID of the template script, if any.
-        """
-        ...
-
-    def get(
-        self,
-        id: int,
-    ) -> _ResponseScriptsGet:
-        """Get details about a script
-
-        Parameters
-        ----------
-        id : int
-            The ID for the script.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID for the script.
-            - name : str
-                The name of the script.
-            - type : str
-                The type of script.
-            - created_at : str (time)
-                The time this script was created.
-            - updated_at : str (time)
-                The time this script was last updated.
-            - author : :class:`civis.Response`
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - state : str
-                The status of the script's last run.
-            - finished_at : str (time)
-                The time that the script's last run finished.
-            - category : str
-                The category of the script.
-            - projects : List[:class:`civis.Response`]
-                A list of projects containing the script.
-
-                - id : int
-                    The ID for the project.
-                - name : str
-                    The name of the project.
-            - parent_id : int
-                The ID of the parent job that will trigger this script
-            - user_context : str
-                "runner" or "author", who to execute the script as when run as a
-                template.
-            - params : List[:class:`civis.Response`]
-                A definition of the parameters this script accepts in the arguments
-                field.
-
-                - name : str
-                    The variable's name as used within your code.
-                - label : str
-                    The label to present to users when asking them for the value.
-                - description : str
-                    A short sentence or fragment describing this parameter to the end
-                    user.
-                - type : str
-                    The type of parameter. Valid options: string, multi_line_string,
-                    integer, float, bool, file, table, database, credential_aws,
-                    credential_redshift, or credential_custom
-                - required : bool
-                    Whether this param is required.
-                - value : str
-                    The value you would like to set this param to. Setting this value
-                    makes this parameter a fixed param.
-                - default : str
-                    If an argument for this parameter is not defined, it will use this
-                    default value. Use true, True, t, y, yes, or 1 for true bool's or
-                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                    parameters that are required or a credential type.
-                - allowed_values : List[:class:`civis.Response`]
-                    The possible values this parameter can take, effectively making
-                    this an enumerable parameter. Allowed values is an array of hashes
-                    of the following format: `{label: 'Import', 'value': 'import'}`
-            - arguments : :class:`civis.Response`
-                Parameter-value pairs to use when running this script. Only settable if
-                this script has defined parameters.
-            - is_template : bool
-                Whether others scripts use this one as a template.
-            - published_as_template_id : int
-                The ID of the template that this script is backing.
-            - from_template_id : int
-                The ID of the template this script uses, if any.
-            - template_dependents_count : int
-                How many other scripts use this one as a template.
-            - template_script_name : str
-                The name of the template script.
-            - links : :class:`civis.Response`
-                - details : str
-                    The details link to get more information about the script.
-                - runs : str
-                    The runs link to get the run information list for this script.
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
-            - running_as : :class:`civis.Response`
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - next_run_at : str (time)
-                The time of the next scheduled run.
-            - time_zone : str
-                The time zone of this script.
-            - last_run : :class:`civis.Response`
-                - id : int
-                - state : str
-                - created_at : str (time)
-                    The time that the run was queued.
-                - started_at : str (time)
-                    The time that the run started.
-                - finished_at : str (time)
-                    The time that the run completed.
-                - error : str
-                    The error message for this run, if present.
-            - my_permission_level : str
-                Your permission level on the object. One of "read", "write", or
-                "manage".
-            - hidden : bool
-                The hidden status of the item.
-            - target_project_id : int
-                Target project to which script outputs will be added.
-            - archived : str
-                The archival status of the requested item(s).
-            - sql : str
-                The raw SQL query for the script.
-            - expanded_arguments : :class:`civis.Response`
-                Expanded arguments for use in injecting into different environments.
-            - template_script_id : int
-                The ID of the template script, if any.
-        """
-        ...
-
     def post_run(
         self,
         id: int,
     ) -> Response:
-        """Run a script
+        """Run a SQL script (legacy)
 
         Parameters
         ----------
@@ -31974,6 +31640,189 @@ class _Scripts:
                 The state of the run, one of 'queued', 'running' or 'cancelled'.
             - is_cancel_requested : bool
                 True if run cancel requested, else false.
+        """
+        ...
+
+    def get(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGet:
+        """Get details about a SQL script (legacy)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the script.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of script.
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time this script was last updated.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[:class:`civis.Response`]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : :class:`civis.Response`
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : :class:`civis.Response`
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - sql : str
+                The raw SQL query for the script.
+            - expanded_arguments : :class:`civis.Response`
+                Expanded arguments for use in injecting into different environments.
+            - template_script_id : int
+                The ID of the template script, if any.
         """
         ...
 
@@ -39522,9 +39371,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -40775,9 +40627,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -41012,9 +40867,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -41175,9 +41033,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -41398,9 +41259,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -41621,9 +41485,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -41838,9 +41705,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42051,9 +41921,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42217,9 +42090,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42266,9 +42142,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42352,9 +42231,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42438,9 +42320,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42524,9 +42409,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42610,9 +42498,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -42696,9 +42587,12 @@ class _Scripts:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -49789,9 +49683,12 @@ class _Search:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -49863,9 +49760,12 @@ class _Services:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -51257,9 +51157,12 @@ class _Services:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -52300,9 +52203,12 @@ class _Table_Tags:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -52883,9 +52789,12 @@ class _Tables:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -53265,9 +53174,12 @@ class _Tables:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -53784,9 +53696,12 @@ class _Templates:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -54485,9 +54400,12 @@ class _Templates:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -55259,9 +55177,12 @@ class _Users:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -56181,9 +56102,12 @@ class _Users:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -56550,9 +56474,12 @@ class _Users:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to asc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -56846,9 +56773,12 @@ class _Workflows:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -58316,9 +58246,12 @@ class _Workflows:
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
         iterator : bool, optional
-            If True, return a generator to iterate over all responses. Use when
-            more results than the maximum allowed by limit are needed. When
-            True, 'page_num' is ignored. Defaults to False.
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
 
         Returns
         -------
@@ -71478,100 +71411,10 @@ class _ResponseScriptsListLastRun(Response):
     finished_at: str
     error: str
 
-class _ResponseScriptsPatch(Response):
-    id: int
-    name: str
-    type: str
-    created_at: str
-    updated_at: str
-    author: _ResponseScriptsPatchAuthor
-    state: str
-    finished_at: str
-    category: str
-    projects: List[_ResponseScriptsPatchProjects]
-    parent_id: int
-    user_context: str
-    params: List[_ResponseScriptsPatchParams]
-    arguments: dict
-    is_template: bool
-    published_as_template_id: int
-    from_template_id: int
-    template_dependents_count: int
-    template_script_name: str
-    links: _ResponseScriptsPatchLinks
-    schedule: _ResponseScriptsPatchSchedule
-    notifications: _ResponseScriptsPatchNotifications
-    running_as: _ResponseScriptsPatchRunningAs
-    next_run_at: str
-    time_zone: str
-    last_run: _ResponseScriptsPatchLastRun
-    my_permission_level: str
-    hidden: bool
-    target_project_id: int
-    archived: str
-    sql: str
-    expanded_arguments: dict
-    template_script_id: int
-
-class _ResponseScriptsPatchAuthor(Response):
-    id: int
-    name: str
-    username: str
-    initials: str
-    online: bool
-
-class _ResponseScriptsPatchProjects(Response):
-    id: int
-    name: str
-
-class _ResponseScriptsPatchParams(Response):
-    name: str
-    label: str
-    description: str
-    type: str
-    required: bool
-    value: str
-    default: str
-    allowed_values: List
-
-class _ResponseScriptsPatchLinks(Response):
-    details: str
-    runs: str
-
-class _ResponseScriptsPatchSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
-
-class _ResponseScriptsPatchNotifications(Response):
-    urls: List[str]
-    success_email_subject: str
-    success_email_body: str
-    success_email_addresses: List[str]
-    success_email_from_name: str
-    success_email_reply_to: str
-    failure_email_addresses: List[str]
-    stall_warning_minutes: int
-    success_on: bool
-    failure_on: bool
-
-class _ResponseScriptsPatchRunningAs(Response):
-    id: int
-    name: str
-    username: str
-    initials: str
-    online: bool
-
-class _ResponseScriptsPatchLastRun(Response):
+class _ResponseScriptsPostCancel(Response):
     id: int
     state: str
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
+    is_cancel_requested: bool
 
 class _ResponseScriptsGet(Response):
     id: int
@@ -71667,11 +71510,6 @@ class _ResponseScriptsGetLastRun(Response):
     started_at: str
     finished_at: str
     error: str
-
-class _ResponseScriptsPostCancel(Response):
-    id: int
-    state: str
-    is_cancel_requested: bool
 
 class _ResponseScriptsPostContainers(Response):
     id: int
