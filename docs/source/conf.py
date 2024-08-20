@@ -350,6 +350,9 @@ def _make_attr_docs(class_names, module_path):
 
 def _attach_classes_to_module(module, class_data):
     for class_name, klass in class_data.items():
+        # Modify the endpoint method's return annotaiton, so that in the compiled
+        # Sphinx docs we show the user-friendly Response or Paginated instead of
+        # something like _ResponseScriptsList.
         for name, method in vars(klass).items():
             if name.startswith("_"):
                 continue
