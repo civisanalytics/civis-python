@@ -24,27 +24,49 @@ A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.Res
             ...
 
 To retrieve information from a :class:`civis.Response` object,
-either the "getattr" or "getitem" syntax can be used:
+use the attribute syntax:
 
 .. code-block:: python
 
    >>> response.id
    12345
-   >>> response['id']
-   12345
-   >>> response['name']
-   'some script name'
    >>> response.name
    'some script name'
+   >>> response.author
+   Response(id=67890,
+            name='Platform User Name',
+            username='platformusername',
+            initials='PUN',
+            online=False)
+   >>> response.author.username
+   'platformusername'
 
-Nested response objects can be accessed using the same syntax:
+:class:`civis.APIClient` is type-annotated for the returned :class:`civis.Response` object
+of a given Civis API endpoint's method, including the expected attributes.
+These type annotations facilitate code development and testing:
+
+* If your IDE has auto-complete support, typing ``response.`` from the example above
+  prompts possible attributes ``{id, name, author, ...}``.
+* Type checking (by tools such as ``mypy``) in test suites and continuous integration
+  helps to catch issues such as typos and unexpected attributes.
+
+Alternatively, the "getitem" syntax can also be used:
 
 .. code-block:: python
 
-   >>> response.author['name']
-   'Platform User Name'
-   >>> response.author.name
-   'Platform User Name'
+   >>> response['id']
+   12345
+   >>> response['author']
+   Response(id=67890,
+            name='Platform User Name',
+            username='platformusername',
+            initials='PUN',
+            online=False)
+
+Although the "getitem" syntax would lose the benefits of the attribute syntax
+listed above, the "getitem" syntax is more user-friendly when an attribute name
+is available programmatically,
+e.g., ``response[foo]`` versus ``getattr(response, foo)``.
 
 Note that :class:`civis.Response` objects are read-only.
 If you need to modify information from a response object,

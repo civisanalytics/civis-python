@@ -42,7 +42,7 @@ Instructions for creating a new key are found
 `here <https://civis.zendesk.com/hc/en-us/articles/216341583-Generating-an-API-Key>`_.
 API keys have a set expiration date and new keys will need to be created at
 least every 30 days. The API client will look for a ``CIVIS_API_KEY``
-environmental variable to access your API key, so after creating a new API key,
+environment variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
 
 Linux / MacOS
@@ -74,7 +74,7 @@ Windows
 Installation
 ------------
 
-After creating an API key and setting the ``CIVIS_API_KEY`` environmental
+After creating an API key and setting the ``CIVIS_API_KEY`` environment
 variable, install the Python package ``civis`` with the recommended method via ``pip``::
 
     pip install civis

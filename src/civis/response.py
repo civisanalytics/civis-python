@@ -284,7 +284,7 @@ class PaginatedResponse:
         Make GET requests to this path.
     initial_params : dict
         Query params that should be passed along with each request. Note that
-        if `initial_params` contains the keys `page_num` or `limit`, they will
+        if `initial_params` contains the key `page_num`, it will
         be ignored. The given dict is not modified.
     endpoint : `civis.base.Endpoint`
         An endpoint used to make API requests.
