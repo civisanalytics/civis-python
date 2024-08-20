@@ -59,7 +59,7 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
     assert not list_runs_cmd.params[1].required
 
     # Check that the extra files upload command was added
-    expected_names = {"path", "name", "expires_at"}
+    expected_names = {"path", "name", "expires_at", "description"}
     files_upload_params = cli.commands["files"].commands["upload"].params
     assert {_.name for _ in files_upload_params} == expected_names
 
