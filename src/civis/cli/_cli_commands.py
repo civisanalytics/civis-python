@@ -64,26 +64,34 @@ _FOLLOW_POLL_INTERVAL_SEC = 3
         "The date and time the file will expire "
         '(ISO-8601 format, e.g., "2017-01-15" or '
         '"2017-01-15T15:25:10Z"). '
-        'Set "never" for the file to not expire.'
+        'Set "never" for the file to not expire. '
         "The default is the default in Civis (30 days)."
     ),
 )
-def files_upload_cmd(path, name, expires_at):
+@click.option(
+    "--description",
+    type=str,
+    default=None,
+    help="Description (max length: 512 characters) of the file object",
+)
+def files_upload_cmd(path, name, expires_at, description):
     """Upload a local file to Civis and get back the File ID."""
 
     if name is None:
         name = os.path.basename(path)
 
+    kwargs = {"description": description}
+
     if expires_at is None:
-        # Use the default in Civis platform (30 days).
-        expires_kwarg = {}
+        # Let file_to_civis use the default in Civis platform (30 days).
+        pass
     elif expires_at.lower() == "never":
-        expires_kwarg = {"expires_at": None}
+        kwargs = {"expires_at": None}
     else:
-        expires_kwarg = {"expires_at": expires_at}
+        kwargs = {"expires_at": expires_at}
 
     with open(path, "rb") as f:
-        file_id = file_to_civis(f, name=name, **expires_kwarg)
+        file_id = file_to_civis(f, name=name, **kwargs)
     print(file_id)
 
 
