@@ -125,6 +125,7 @@ def test_property_type():
     assert _resources.property_type(prop) == "List"
     assert _resources.property_type(prop2) == "dict"
     assert _resources.property_type(prop3) == "str (date)"
+    assert _resources.property_type(prop3, get_format=False) == "str"
 
 
 def test_name_and_type_doc():
@@ -371,12 +372,19 @@ def test_type_from_param():
         {"type": "array"},
         {"type": "array", "items": {"type": "integer"}},
         {"type": "array", "items": {"$ref": "#/definitions/Object0"}},
+        {"type": "object"},
     ]
     assert _resources.type_from_param(params[0]) == "str"
     assert _resources.type_from_param(params[1]) == "int"
     assert _resources.type_from_param(params[2]) == "List"
     assert _resources.type_from_param(params[3]) == "List[int]"
     assert _resources.type_from_param(params[4]) == "List[dict]"
+    assert _resources.type_from_param(params[4], skip_dict_item_type=True) == "List"
+    assert _resources.type_from_param(params[5]) == "dict"
+    assert (
+        _resources.type_from_param(params[5], in_returned_object=True)
+        == ":class:`civis.Response`"
+    )  # noqa: E501
 
 
 def test_iterable_method():
