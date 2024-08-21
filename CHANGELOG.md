@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The helper I/O functions that create a Civis file
   (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
   accept a new `description` keyword argument for the new `description` attribute
-  of Civis file objects. (#498)
+  of Civis file objects. (#498, #500)
 
 ### Changed
 ### Deprecated
