@@ -209,8 +209,8 @@ class Response:
     def __getattr__(self, item):
         try:
             return self.__getitem__(item)
-        except KeyError as e:
-            raise AttributeError(f"Response object has no attribute {str(e)}")
+        except KeyError:
+            raise AttributeError(f"Response object has no attribute {item!r}")
 
     def __len__(self):
         return len(self._data_snake)
