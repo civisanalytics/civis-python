@@ -342,6 +342,11 @@ def test_repr(json_data, expected_repr):
     assert repr(response) == expected_repr
 
 
+def test_repr_with_empty_string_key():
+    response = Response({"": 123})
+    assert repr(response) == "Response(_=123)"
+
+
 @pytest.mark.skipif(
     sys.version_info < (3, 10),
     reason=(

@@ -223,8 +223,13 @@ class Response:
 
     def _to_dataclass_repr_pprint(self):
         """Convert the response to a dataclass for repr and pprint purposes."""
-        klass = dataclasses.make_dataclass("Response", self._data_snake.keys())
-        return klass(**self._data_snake)
+        # Response keys from Civis API can be invalid Python identifiers,
+        # e.g., empty strings (under the Databases endpoint, for column information).
+        data = {
+            k if k.isidentifier() else f"_{k}": v for k, v in self._data_snake.items()
+        }
+        klass = dataclasses.make_dataclass("Response", data.keys())
+        return klass(**data)
 
     def _repr_pretty_(self, p, cycle):
         """Pretty-print the response object in IPython and Jupyter.
