@@ -784,8 +784,8 @@ class _Clusters:
                         The ID of this InstanceConfig.
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
-                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, and
-                        c5.18xlarge.
+                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
+                        and g5.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -869,8 +869,8 @@ class _Clusters:
                         The ID of this InstanceConfig.
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
-                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, and
-                        c5.18xlarge.
+                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
+                        and g5.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -1081,7 +1081,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1135,7 +1135,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1161,7 +1161,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1218,7 +1218,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1244,7 +1244,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1335,7 +1335,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1393,7 +1393,7 @@ class _Clusters:
                 The ID of this InstanceConfig.
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -2431,11 +2431,17 @@ class _Databases:
             - id : int
                 The ID for the database.
             - name : str
-                The name of the database.
+                The name of the database in Platform.
             - adapter : str
                 The type of the database.
             - cluster_identifier : str
                 The cluster identifier of the database.
+            - host : str
+                The host of the database server.
+            - port : int
+                The port of the database.
+            - database_name : str
+                The internal name of the database.
             - managed : bool
                 True if the database is Civis-managed. False otherwise.
         """
@@ -2458,11 +2464,17 @@ class _Databases:
             - id : int
                 The ID for the database.
             - name : str
-                The name of the database.
+                The name of the database in Platform.
             - adapter : str
                 The type of the database.
             - cluster_identifier : str
                 The cluster identifier of the database.
+            - host : str
+                The host of the database server.
+            - port : int
+                The port of the database.
+            - database_name : str
+                The internal name of the database.
             - managed : bool
                 True if the database is Civis-managed. False otherwise.
         """
@@ -36984,11 +36996,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
                 Updates every time a run succeeds. This report will be automatically
                 shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -37211,11 +37227,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -37452,11 +37472,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -37631,11 +37655,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
                 Updates every time a run succeeds. This report will be automatically
                 shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -37858,11 +37886,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -38035,11 +38067,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
                 Updates every time a run succeeds. This report will be automatically
                 shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -38264,11 +38300,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -46795,11 +46835,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -49294,11 +49338,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
                     Updates every time a run succeeds. This report will be
                     automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -56586,6 +56634,78 @@ class _Users:
         """
         ...
 
+    def patch_me_favorites_ranking_top(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite to the top of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_bottom(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite to the bottom of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_higher(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite one position closer to the top of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_lower(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite one position closer to the bottom of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
     def post_unsuspend(
         self,
         id: int,
@@ -59673,6 +59793,9 @@ class _ResponseDatabasesList(Response):
     name: str
     adapter: str
     cluster_identifier: str
+    host: str
+    port: int
+    database_name: str
     managed: bool
 
 class _ResponseDatabasesGet(Response):
@@ -59680,6 +59803,9 @@ class _ResponseDatabasesGet(Response):
     name: str
     adapter: str
     cluster_identifier: str
+    host: str
+    port: int
+    database_name: str
     managed: bool
 
 class _ResponseDatabasesListSchemas(Response):
@@ -73353,6 +73479,7 @@ class _ResponseScriptsPostDbtDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsPostDbtTargetDatabase(Response):
@@ -73475,6 +73602,7 @@ class _ResponseScriptsGetDbtDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsGetDbtTargetDatabase(Response):
@@ -73597,6 +73725,7 @@ class _ResponseScriptsPutDbtDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsPutDbtTargetDatabase(Response):
@@ -73719,6 +73848,7 @@ class _ResponseScriptsPatchDbtDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsPatchDbtTargetDatabase(Response):
@@ -76718,6 +76848,7 @@ class _ResponseScriptsPutDbtArchiveDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsPutDbtArchiveTargetDatabase(Response):
@@ -77916,6 +78047,7 @@ class _ResponseScriptsPostDbtCloneDbtProject(Response):
     dbt_command: str
     dbt_command_line_args: str
     docs_report_id: str
+    skip_docs_generation: bool
     generate_profiles: bool
 
 class _ResponseScriptsPostDbtCloneTargetDatabase(Response):
