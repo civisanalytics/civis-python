@@ -8,6 +8,11 @@ from civis._camel_to_snake import camel_to_snake
 
 _RETURN_TYPES = frozenset({"snake", "raw"})
 
+# "arguments": Script arguments are often environment variables in
+# ALL_CAPS that we don't want to convert to snake_case.
+# "environmentVariables": from objects under the `Services` endpoint
+_RESPONSE_KEYS_PRESERVE_CASE = frozenset({"arguments", "environmentVariables"})
+
 
 class CivisClientError(Exception):
     def __init__(self, message, response):
@@ -131,9 +136,7 @@ class Response:
             for key, v in json_data.items():
 
                 if isinstance(v, dict):
-                    # Script arguments are often environment variables in
-                    # ALL_CAPS that we don't want to convert to snake_case.
-                    if key == "arguments":
+                    if key in _RESPONSE_KEYS_PRESERVE_CASE:
                         val = Response(v, snake_case=False)
                     else:
                         val = Response(v)
@@ -307,8 +310,12 @@ def _pprint_response(self, object, stream, indent, allowance, context, level):
         else:
             items = object.items()
         self._format_dict_items(
-            # The 9 in `indent + 9` is the length of "Response(".
-            items, stream, indent + 9, allowance + 1, context, level
+            items,
+            stream,
+            indent + 9,  # The 9 in `indent + 9` is the length of "Response(".
+            allowance + 1,
+            context,
+            level,
         )
     write("})")
 

@@ -248,21 +248,21 @@ def test_response_cross_compatibility():
     )
 
 
-def test_response_arguments_preserve_case():
-    json_data = {
-        "arguments": {"FOO": 123, "FOO_BAR": 456},
-    }
+@pytest.mark.parametrize("key", ["arguments", "environmentVariables"])
+def test_response_keys_preserve_case(key):
+    json_data = {key: {"FOO": 123, "FOO_BAR": 456}}
     response = Response(json_data)
-    assert response.arguments.FOO == 123
-    assert response.arguments.FOO_BAR == 456
+    resp = getattr(response, camel_to_snake(key))
+    assert resp.FOO == resp["FOO"] == 123
+    assert resp.FOO_BAR == resp["FOO_BAR"] == 456
     with pytest.raises(AttributeError):
-        response.arguments.foo
+        resp.foo
     with pytest.raises(KeyError):
-        response.arguments["foo"]
+        resp["foo"]
     with pytest.raises(AttributeError):
-        response.arguments.foo_bar
+        resp.foo_bar
     with pytest.raises(KeyError):
-        response.arguments["foo_bar"]
+        resp["foo_bar"]
 
 
 @pytest.mark.parametrize(
