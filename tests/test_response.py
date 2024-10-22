@@ -1,7 +1,6 @@
 import io
 import pickle
 import pprint
-import sys
 from string import ascii_lowercase
 from unittest import mock
 
@@ -322,17 +321,17 @@ def test_len(json_data, expected_length):
 @pytest.mark.parametrize(
     "json_data, expected_repr",
     [
-        (None, "Response()"),
-        ({}, "Response()"),
-        ({"foo": 123}, "Response(foo=123)"),
-        ({"foo": {"barBaz": 456}}, "Response(foo=Response(bar_baz=456))"),
+        (None, "Response({})"),
+        ({}, "Response({})"),
+        ({"foo": 123}, "Response({'foo': 123})"),
+        ({"foo": {"barBaz": 456}}, "Response({'foo': Response({'bar_baz': 456})})"),
         # repr() call doesn't wrap long lines.
         (
             {
                 "foo": {ascii_lowercase[i]: i for i in range(3)},
                 "fooBar": {ascii_lowercase[i]: i for i in range(15)},
             },
-            "Response(foo=Response(a=0, b=1, c=2), foo_bar=Response(a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, j=9, k=10, l=11, m=12, n=13, o=14))",  # noqa: E501
+            "Response({'foo': Response({'a': 0, 'b': 1, 'c': 2}), 'foo_bar': Response({'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9, 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14})})",  # noqa: E501
         ),
     ],
 )
@@ -344,61 +343,54 @@ def test_repr(json_data, expected_repr):
 
 def test_repr_with_empty_string_key():
     response = Response({"": 123})
-    assert repr(response) == "Response(_=123)"
+    assert repr(response) == "Response({'': 123})"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 10),
-    reason=(
-        "pprint for dataclasses is only available since 3.10+, "
-        "https://bugs.python.org/issue43080"
-    ),
-)
 @pytest.mark.parametrize(
     "json_data, expected",
     [
         # A "short" response's pprint looks the same as its repr.
-        ({"foo": {"barBaz": 456}}, "Response(foo=Response(bar_baz=456))"),
+        ({"foo": {"barBaz": 456}}, "Response({'foo': Response({'bar_baz': 456})})"),
         # A "long" response's pprint triggers line wrapping in pretty-printing.
         (
             {ascii_lowercase[i]: i for i in range(15)},
-            "Response(a=0,\n"
-            "         b=1,\n"
-            "         c=2,\n"
-            "         d=3,\n"
-            "         e=4,\n"
-            "         f=5,\n"
-            "         g=6,\n"
-            "         h=7,\n"
-            "         i=8,\n"
-            "         j=9,\n"
-            "         k=10,\n"
-            "         l=11,\n"
-            "         m=12,\n"
-            "         n=13,\n"
-            "         o=14)",
+            "Response({'a': 0,\n"
+            "          'b': 1,\n"
+            "          'c': 2,\n"
+            "          'd': 3,\n"
+            "          'e': 4,\n"
+            "          'f': 5,\n"
+            "          'g': 6,\n"
+            "          'h': 7,\n"
+            "          'i': 8,\n"
+            "          'j': 9,\n"
+            "          'k': 10,\n"
+            "          'l': 11,\n"
+            "          'm': 12,\n"
+            "          'n': 13,\n"
+            "          'o': 14})",
         ),
         (
             {
                 "foo": {ascii_lowercase[i]: i for i in range(3)},
                 "fooBar": {ascii_lowercase[i]: i for i in range(15)},
             },
-            "Response(foo=Response(a=0, b=1, c=2),\n"
-            "         foo_bar=Response(a=0,\n"
-            "                          b=1,\n"
-            "                          c=2,\n"
-            "                          d=3,\n"
-            "                          e=4,\n"
-            "                          f=5,\n"
-            "                          g=6,\n"
-            "                          h=7,\n"
-            "                          i=8,\n"
-            "                          j=9,\n"
-            "                          k=10,\n"
-            "                          l=11,\n"
-            "                          m=12,\n"
-            "                          n=13,\n"
-            "                          o=14))",
+            "Response({'foo': Response({'a': 0, 'b': 1, 'c': 2}),\n"
+            "          'foo_bar': Response({'a': 0,\n"
+            "                               'b': 1,\n"
+            "                               'c': 2,\n"
+            "                               'd': 3,\n"
+            "                               'e': 4,\n"
+            "                               'f': 5,\n"
+            "                               'g': 6,\n"
+            "                               'h': 7,\n"
+            "                               'i': 8,\n"
+            "                               'j': 9,\n"
+            "                               'k': 10,\n"
+            "                               'l': 11,\n"
+            "                               'm': 12,\n"
+            "                               'n': 13,\n"
+            "                               'o': 14})})",
         ),
     ],
 )

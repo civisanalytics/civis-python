@@ -1,4 +1,3 @@
-import dataclasses
 import json
 import pprint
 
@@ -216,20 +215,10 @@ class Response:
         return len(self._data_snake)
 
     def __repr__(self):
-        return repr(self._to_dataclass_repr_pprint())
+        return f"Response({repr(self._data_snake)})"
 
     def __hash__(self):
         return hash(json.dumps(self.json_data))
-
-    def _to_dataclass_repr_pprint(self):
-        """Convert the response to a dataclass for repr and pprint purposes."""
-        # Response keys from Civis API can be invalid Python identifiers,
-        # e.g., empty strings (under the Databases endpoint, for column information).
-        data = {
-            k if k.isidentifier() else f"_{k}": v for k, v in self._data_snake.items()
-        }
-        klass = dataclasses.make_dataclass("Response", data.keys())
-        return klass(**data)
 
     def _repr_pretty_(self, p, cycle):
         """Pretty-print the response object in IPython and Jupyter.
@@ -239,7 +228,7 @@ class Response:
         if cycle:
             p.text("Response(...)")
         else:
-            p.text(pprint.pformat(self._to_dataclass_repr_pprint()))
+            p.text(pprint.pformat(self))
 
     def get(self, key, default=None):
         """Get the value for the given key."""
@@ -265,19 +254,66 @@ class Response:
         self.__dict__ = state
 
 
-class _ResponsePrettyPrinter(pprint.PrettyPrinter):
-    """Override pprint.PrettyPrinter so that pprint.pprint(response) works nicely.
+class _safe_key:
+    """Helper function for key functions when sorting unorderable objects.
 
-    https://stackoverflow.com/a/15417704
+    The wrapped-object will fallback to a Py2.x style comparison for
+    unorderable types (sorting first comparing the type name and then by
+    the obj ids).  Does not work recursively, so dict.items() must have
+    _safe_key applied to both the key and the value.
+
+    Source: https://github.com/python/cpython/blob/3.13/Lib/pprint.py#L80-L100
     """
 
-    def _format(self, obj, stream, indent, allowance, context, level):
-        if isinstance(obj, Response):
-            obj = obj._to_dataclass_repr_pprint()
-        super()._format(obj, stream, indent, allowance, context, level)
+    __slots__ = ["obj"]
+
+    def __init__(self, obj):
+        self.obj = obj
+
+    def __lt__(self, other):
+        try:
+            return self.obj < other.obj
+        except TypeError:
+            return (str(type(self.obj)), id(self.obj)) < (
+                str(type(other.obj)),
+                id(other.obj),
+            )
 
 
-pprint.PrettyPrinter = _ResponsePrettyPrinter
+def _safe_tuple(t):
+    """Helper function for comparing 2-tuples
+
+    Source: https://github.com/python/cpython/blob/3.13/Lib/pprint.py#L102-L104
+    """
+    return _safe_key(t[0]), _safe_key(t[1])
+
+
+def _pprint_response(self, object, stream, indent, allowance, context, level):
+    """Pretty-print a Response object.
+
+    Inspired by https://stackoverflow.com/a/52521743
+    Based on python's dict pprint:
+    https://github.com/python/cpython/blob/3.7/Lib/pprint.py#L180-L192
+    """
+    write = stream.write
+    object = object._data_snake
+    write("Response({")
+    if self._indent_per_level > 1:
+        write((self._indent_per_level - 1) * " ")
+    length = len(object)
+    if length:
+        if self._sort_dicts:
+            items = sorted(object.items(), key=_safe_tuple)
+        else:
+            items = object.items()
+        self._format_dict_items(
+            # The 9 in `indent + 9` is the length of "Response(".
+            items, stream, indent + 9, allowance + 1, context, level
+        )
+    write("})")
+
+
+pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response
 
 
 class PaginatedResponse:

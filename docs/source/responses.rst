@@ -12,16 +12,16 @@ A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.Res
    >>> client = civis.APIClient()
    >>> response = client.scripts.get(12345)
    >>> response
-   Response(id=12345,
-            name='some script name',
-            created_at='2018-06-11T20:43:07.000Z',
-            updated_at='2018-06-11T20:43:19.000Z',
-            author=Response(id=67890,
-                            name='Platform User Name',
-                            username='platformusername',
-                            initials='PUN',
-                            online=False),
-            ...
+   Response({'id': 12345,
+             'name': 'some script name',
+             'created_at': '2018-06-11T20:43:07.000Z',
+             'updated_at': '2018-06-11T20:43:19.000Z',
+             'author': Response({'id': 67890,
+                                 'name': 'Platform User Name',
+                                 'username': 'platformusername',
+                                 'initials': 'PUN',
+                                 'online': False}),
+             ...
 
 To retrieve information from a :class:`civis.Response` object,
 use the attribute syntax:
@@ -33,11 +33,11 @@ use the attribute syntax:
    >>> response.name
    'some script name'
    >>> response.author
-   Response(id=67890,
-            name='Platform User Name',
-            username='platformusername',
-            initials='PUN',
-            online=False)
+   Response({'id': 67890,
+             'name': 'Platform User Name',
+             'username': 'platformusername',
+             'initials': 'PUN',
+             'online': False})
    >>> response.author.username
    'platformusername'
 
@@ -57,11 +57,11 @@ Alternatively, the "getitem" syntax can also be used:
    >>> response['id']
    12345
    >>> response['author']
-   Response(id=67890,
-            name='Platform User Name',
-            username='platformusername',
-            initials='PUN',
-            online=False)
+   Response({'id': 67890,
+             'name': 'Platform User Name',
+             'username': 'platformusername',
+             'initials': 'PUN',
+             'online': False})
 
 Although the "getitem" syntax would lose the benefits of the attribute syntax
 listed above, the "getitem" syntax is more user-friendly when an attribute name
