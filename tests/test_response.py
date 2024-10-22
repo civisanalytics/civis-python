@@ -399,6 +399,14 @@ def test_pprint(json_data, expected):
     assert pprint.pformat(response) == expected
 
 
+def test_jsonvalue_as_run_output():
+    json_data = {"objectType": "JSONValue", "value": {"foo": 456}}
+    response = Response(json_data)
+    value = response.value
+    assert isinstance(value, dict)
+    assert value == {"foo": 456}
+
+
 def test_get():
     # JSON data from the Civis API is in camelCase.
     json_data = {"foo": 123, "bar": {"bazQux": 456}}

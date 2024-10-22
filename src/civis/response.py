@@ -135,7 +135,11 @@ class Response:
         if json_data is not None:
             for key, v in json_data.items():
 
-                if isinstance(v, dict):
+                if key == "value" and json_data.get("objectType") == "JSONValue":
+                    # When json_data is a JSONValue from a script's run output,
+                    # `v` is the deserialized JSON.
+                    val = v
+                elif isinstance(v, dict):
                     if key in _RESPONSE_KEYS_PRESERVE_CASE:
                         val = Response(v, snake_case=False)
                     else:
