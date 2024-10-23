@@ -407,6 +407,15 @@ def test_jsonvalue_as_run_output():
     assert value == {"foo": 456}
 
 
+def test_jsonvalue_as_response():
+    # json_data comes from a client.json_values.{get,post,patch} call.
+    json_data = {"id": 12345, "name": "JSON Value 12345", "value": {"a": 123}}
+    response = Response(json_data, from_json_values=True)
+    value = response.value
+    assert isinstance(value, dict)
+    assert value == {"a": 123}
+
+
 def test_get():
     # JSON data from the Civis API is in camelCase.
     json_data = {"foo": 123, "bar": {"bazQux": 456}}

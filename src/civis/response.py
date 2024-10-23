@@ -55,7 +55,9 @@ def _response_to_json(response):
             raise CivisClientError("Unable to parse JSON from response", response)
 
 
-def convert_response_data_type(response, headers=None, return_type="snake"):
+def convert_response_data_type(
+    response, headers=None, return_type="snake", from_json_values=False
+):
     """Convert a raw response into a given type.
 
     Parameters
@@ -69,6 +71,8 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
     return_type : string, {'snake', 'raw'}
         Convert the response to this type. See documentation on
         `civis.APIClient` for details of the return types.
+    from_json_values : bool, optional
+        If True, the `response` comes from the `json_values` endpoint.
 
     Returns
     -------
@@ -86,9 +90,12 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
             data = response
 
         if isinstance(data, list):
-            return [Response(d, headers=headers) for d in data]
+            return [
+                Response(d, headers=headers, from_json_values=from_json_values)
+                for d in data
+            ]
         else:
-            return Response(data, headers=headers)
+            return Response(data, headers=headers, from_json_values=from_json_values)
 
     else:
         raise ValueError(f"Return type not one of {set(_RETURN_TYPES)}: {return_type}")
@@ -118,7 +125,9 @@ class Response:
         Total number of calls per API rate limit period.
     """
 
-    def __init__(self, json_data, *, headers=None, snake_case=True):
+    def __init__(
+        self, json_data, *, headers=None, snake_case=True, from_json_values=False
+    ):
         self.json_data = json_data
         self.headers = headers
         self.calls_remaining = (
@@ -135,9 +144,12 @@ class Response:
         if json_data is not None:
             for key, v in json_data.items():
 
-                if key == "value" and json_data.get("objectType") == "JSONValue":
-                    # When json_data is a JSONValue from a script's run output,
-                    # `v` is the deserialized JSON.
+                if key == "value" and (
+                    from_json_values or json_data.get("objectType") == "JSONValue"
+                ):
+                    # When json_data represents a JSONValue (either from one of the
+                    # methods under the `json_values` endpoint or from a script's run
+                    # output), `v` is the deserialized JSON.
                     val = v
                 elif isinstance(v, dict):
                     if key in _RESPONSE_KEYS_PRESERVE_CASE:
@@ -380,6 +392,7 @@ class PaginatedResponse:
                     data,
                     headers=response.headers,
                     return_type=self._endpoint._return_type,
+                    from_json_values=(self._path or "").startswith("json_values"),
                 )
                 yield converted_data
 
