@@ -55082,10 +55082,10 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : List[str]
-                Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
+            - notification_emails : List[str]
+                Addresses to notify by e-mail when the limit is reached.
         """
         ...
 
@@ -55114,10 +55114,10 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : List[str]
-                Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
+            - notification_emails : List[str]
+                Addresses to notify by e-mail when the limit is reached.
         """
         ...
 
@@ -55144,8 +55144,7 @@ class _Usage_Limits:
             - updated_at : str (time)
                 The time the limit was last updated.
             - hard_limit : int
-                The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
-                2000000000.
+                The limit value. One of 1000, 10000, 50000, and 100000.
         """
         ...
 
@@ -55172,8 +55171,7 @@ class _Usage_Limits:
             - updated_at : str (time)
                 The time the limit was last updated.
             - hard_limit : int
-                The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
-                2000000000.
+                The limit value. One of 1000, 10000, 50000, and 100000.
         """
         ...
 
@@ -80289,8 +80287,8 @@ class _ResponseUsageLimitsListMatching(Response):
     created_at: str
     updated_at: str
     hard_limit: int
-    notification_emails: List[str]
     task: str
+    notification_emails: List[str]
 
 class _ResponseUsageLimitsGetMatching(Response):
     id: int
@@ -80298,8 +80296,8 @@ class _ResponseUsageLimitsGetMatching(Response):
     created_at: str
     updated_at: str
     hard_limit: int
-    notification_emails: List[str]
     task: str
+    notification_emails: List[str]
 
 class _ResponseUsageLimitsListLlm(Response):
     id: int
