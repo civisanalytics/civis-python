@@ -4592,7 +4592,7 @@ class _Enhancements:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -8305,7 +8305,7 @@ class _Enhancements:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -9267,7 +9267,7 @@ class _Enhancements:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -11224,7 +11224,7 @@ class _Exports:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -18381,7 +18381,7 @@ class _Jobs:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -18983,7 +18983,7 @@ class _Json_Values:
                 The ID of the JSON Value.
             - name : str
                 The name of the JSON Value.
-            - value : str
+            - value : object
                 The deserialized JSON value.
         """
         ...
@@ -19006,7 +19006,7 @@ class _Json_Values:
                 The ID of the JSON Value.
             - name : str
                 The name of the JSON Value.
-            - value : str
+            - value : object
                 The deserialized JSON value.
         """
         ...
@@ -19036,7 +19036,7 @@ class _Json_Values:
                 The ID of the JSON Value.
             - name : str
                 The name of the JSON Value.
-            - value : str
+            - value : object
                 The deserialized JSON value.
         """
         ...
@@ -31675,7 +31675,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -31777,7 +31777,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -32117,7 +32117,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -32292,7 +32292,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -32450,7 +32450,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -32678,7 +32678,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -32891,7 +32891,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -33047,7 +33047,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -33248,7 +33248,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -33416,7 +33416,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -33698,7 +33698,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -33840,7 +33840,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -34048,7 +34048,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -34239,7 +34239,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -34379,7 +34379,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -34564,7 +34564,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -34710,7 +34710,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -34897,7 +34897,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -35043,7 +35043,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -35247,7 +35247,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -35432,7 +35432,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -35576,7 +35576,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -35759,7 +35759,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -35905,7 +35905,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -36088,7 +36088,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -36234,7 +36234,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -36438,7 +36438,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -36623,7 +36623,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -36767,7 +36767,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -36950,7 +36950,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -37096,7 +37096,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -37282,7 +37282,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -37469,7 +37469,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -37714,7 +37714,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -37943,7 +37943,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -38128,7 +38128,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -38355,7 +38355,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -38542,7 +38542,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -38767,7 +38767,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -38889,7 +38889,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -39073,7 +39073,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -39239,7 +39239,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -39359,7 +39359,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -39519,7 +39519,7 @@ class _Scripts:
                 credential_redshift, or credential_custom
             - required : bool
                 Whether this param is required.
-            - value : str
+            - value : object
                 The value you would like to set this param to. Setting this value makes
                 this parameter a fixed param.
             - default : str
@@ -39645,7 +39645,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -40040,7 +40040,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -40255,7 +40255,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -40551,7 +40551,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -40847,7 +40847,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -42541,7 +42541,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42593,7 +42593,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42630,7 +42630,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42682,7 +42682,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42719,7 +42719,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42771,7 +42771,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42808,7 +42808,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42860,7 +42860,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42897,7 +42897,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42949,7 +42949,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -42986,7 +42986,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -43038,7 +43038,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -43075,7 +43075,7 @@ class _Scripts:
                 The name of the output.
             - link : str
                 The hypermedia link to the output.
-            - value : str
+            - value : object
         """
         ...
 
@@ -44690,7 +44690,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -45293,7 +45293,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -45897,7 +45897,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -46487,7 +46487,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -47077,7 +47077,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -47708,7 +47708,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -48285,7 +48285,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -48503,7 +48503,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -48721,7 +48721,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -48915,7 +48915,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -49129,7 +49129,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -49352,7 +49352,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -49580,7 +49580,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -49842,7 +49842,7 @@ class _Scripts:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -54943,7 +54943,7 @@ class _Templates:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -55032,7 +55032,7 @@ class _Templates:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -55134,7 +55134,7 @@ class _Templates:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -55236,7 +55236,7 @@ class _Templates:
                     credential_redshift, or credential_custom
                 - required : bool
                     Whether this param is required.
-                - value : str
+                - value : object
                     The value you would like to set this param to. Setting this value
                     makes this parameter a fixed param.
                 - default : str
@@ -60959,7 +60959,7 @@ class _ResponseEnhancementsListCivisDataMatchRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseEnhancementsListCivisDataMatchShares(Response):
     readers: _ResponseEnhancementsListCivisDataMatchSharesReaders
@@ -62340,7 +62340,7 @@ class _ResponseEnhancementsListCassNcoaRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseEnhancementsPostGeocode(Response):
     id: int
@@ -62624,7 +62624,7 @@ class _ResponseEnhancementsListGeocodeRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseEnhancementsListCassNcoaShares(Response):
     readers: _ResponseEnhancementsListCassNcoaSharesReaders
@@ -63477,7 +63477,7 @@ class _ResponseExportsListFilesCsvRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseExportsPostFilesCsv(Response):
     id: int
@@ -65764,7 +65764,7 @@ class _ResponseJobsListRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseJobsListRunsLogs(Response):
     id: int
@@ -66032,17 +66032,17 @@ class _ResponseJobsPutArchiveSchedule(Response):
 class _ResponseJsonValuesPost(Response):
     id: int
     name: str
-    value: str
+    value: object
 
 class _ResponseJsonValuesGet(Response):
     id: int
     name: str
-    value: str
+    value: object
 
 class _ResponseJsonValuesPatch(Response):
     id: int
     name: str
-    value: str
+    value: object
 
 class _ResponseJsonValuesListShares(Response):
     readers: _ResponseJsonValuesListSharesReaders
@@ -71842,7 +71842,7 @@ class _ResponseScriptsPostParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -71984,7 +71984,7 @@ class _ResponseScriptsGetParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72093,7 +72093,7 @@ class _ResponseScriptsPostContainersParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72207,7 +72207,7 @@ class _ResponseScriptsGetContainersParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72321,7 +72321,7 @@ class _ResponseScriptsPutContainersParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72435,7 +72435,7 @@ class _ResponseScriptsPatchContainersParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72545,7 +72545,7 @@ class _ResponseScriptsPostSqlParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72653,7 +72653,7 @@ class _ResponseScriptsGetSqlParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72761,7 +72761,7 @@ class _ResponseScriptsPutSqlParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72869,7 +72869,7 @@ class _ResponseScriptsPatchSqlParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -72977,7 +72977,7 @@ class _ResponseScriptsPostPython3Params(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73081,7 +73081,7 @@ class _ResponseScriptsGetPython3Params(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73185,7 +73185,7 @@ class _ResponseScriptsPutPython3Params(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73289,7 +73289,7 @@ class _ResponseScriptsPatchPython3Params(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73393,7 +73393,7 @@ class _ResponseScriptsPostRParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73497,7 +73497,7 @@ class _ResponseScriptsGetRParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73601,7 +73601,7 @@ class _ResponseScriptsPutRParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73705,7 +73705,7 @@ class _ResponseScriptsPatchRParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73812,7 +73812,7 @@ class _ResponseScriptsPostDbtParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -73935,7 +73935,7 @@ class _ResponseScriptsGetDbtParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74058,7 +74058,7 @@ class _ResponseScriptsPutDbtParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74181,7 +74181,7 @@ class _ResponseScriptsPatchDbtParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74298,7 +74298,7 @@ class _ResponseScriptsPostJavascriptParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74394,7 +74394,7 @@ class _ResponseScriptsGetJavascriptParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74490,7 +74490,7 @@ class _ResponseScriptsPutJavascriptParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74586,7 +74586,7 @@ class _ResponseScriptsPatchJavascriptParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74744,7 +74744,7 @@ class _ResponseScriptsPostCustomParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74859,7 +74859,7 @@ class _ResponseScriptsGetCustomParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -74974,7 +74974,7 @@ class _ResponseScriptsPutCustomParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -75089,7 +75089,7 @@ class _ResponseScriptsPatchCustomParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -75443,91 +75443,91 @@ class _ResponseScriptsListSqlRunsOutputs(Response):
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListContainersRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostContainersRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListPython3RunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostPython3RunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListRRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostRRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListDbtRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostDbtRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListJavascriptRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostJavascriptRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListCustomRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsPostCustomRunsOutputs(Response):
     object_type: str
     object_id: int
     name: str
     link: str
-    value: str
+    value: object
 
 class _ResponseScriptsListSqlGit(Response):
     git_ref: str
@@ -76048,7 +76048,7 @@ class _ResponseScriptsPutSqlArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -76341,7 +76341,7 @@ class _ResponseScriptsPutContainersArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -76620,7 +76620,7 @@ class _ResponseScriptsPutPython3ArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -76899,7 +76899,7 @@ class _ResponseScriptsPutRArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -77181,7 +77181,7 @@ class _ResponseScriptsPutDbtArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -77473,7 +77473,7 @@ class _ResponseScriptsPutJavascriptArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -77743,7 +77743,7 @@ class _ResponseScriptsPutCustomArchiveParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -77851,7 +77851,7 @@ class _ResponseScriptsPostSqlCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -77956,7 +77956,7 @@ class _ResponseScriptsPostJavascriptCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -78055,7 +78055,7 @@ class _ResponseScriptsPostPython3CloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -78159,7 +78159,7 @@ class _ResponseScriptsPostRCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -78273,7 +78273,7 @@ class _ResponseScriptsPostContainersCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -78380,7 +78380,7 @@ class _ResponseScriptsPostDbtCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -78507,7 +78507,7 @@ class _ResponseScriptsPostCustomCloneParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -80511,7 +80511,7 @@ class _ResponseTemplatesPostScriptsParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -80548,7 +80548,7 @@ class _ResponseTemplatesGetScriptsParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -80585,7 +80585,7 @@ class _ResponseTemplatesPutScriptsParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 
@@ -80622,7 +80622,7 @@ class _ResponseTemplatesPatchScriptsParams(Response):
     description: str
     type: str
     required: bool
-    value: str
+    value: object
     default: str
     allowed_values: List
 

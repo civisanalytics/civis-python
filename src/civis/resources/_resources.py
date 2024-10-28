@@ -92,7 +92,11 @@ def name_and_type_doc(name, prop, level, optional=False, in_returned_object=Fals
     and its type. This is intended to be combined with another
     doc string element that gives a description of the parameter.
     """
-    prop_type = property_type(prop, in_returned_object=in_returned_object)
+    prop_type = (
+        "object"
+        if name == "value"
+        else property_type(prop, in_returned_object=in_returned_object)
+    )
     snake_name = camel_to_snake(name)
     indent = " " * level * 4
     dash = "- " if level > 0 else ""
@@ -211,7 +215,11 @@ def return_annotation_from_properties(
 def return_annotation_from_property(endpoint_name, method_name, name, prop, properties):
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
-    prop_type = property_type(prop, get_format=False, skip_dict_item_type=True)
+    prop_type = (
+        "object"
+        if name == "value"
+        else property_type(prop, get_format=False, skip_dict_item_type=True)
+    )
     if child and prop_type == "List":
         return List[
             return_annotation_from_properties(endpoint_name, method_name, name, child)
