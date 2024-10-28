@@ -14157,7 +14157,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : :class:`civis.Response`
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -14186,24 +14186,66 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
+                        For Auto Imports. The maximum number of errors that can occur
+                        without the job failing.
                     - existing_table_rows : str
+                        For Auto Imports. The behavior if a table with the requested
+                        name already exists.  One of "fail", "truncate", "append", or
+                        "drop".Defaults to "fail".
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : :class:`civis.Response`
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -14214,27 +14256,31 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
                     - first_row_is_header : bool
+                        For Google Doc Imports. A boolean value indicating whether or
+                        not the first row is a header row.
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -14306,8 +14352,7 @@ class _Imports:
         ----------
         type : str, optional
             If specified, return imports of these types. It accepts a comma-separated
-            list, possible values are 'AutoImport', 'Dbsync', 'Salesforce',
-            'GdocImport'.
+            list, possible values are Dbsync, AutoImport, GdocImport, and GdocExport.
         destination : str, optional
             If specified, returns imports with one of these destinations. It accepts a
             comma-separated list of remote host ids.
@@ -14613,7 +14658,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : :class:`civis.Response`
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -14642,24 +14687,66 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
+                        For Auto Imports. The maximum number of errors that can occur
+                        without the job failing.
                     - existing_table_rows : str
+                        For Auto Imports. The behavior if a table with the requested
+                        name already exists.  One of "fail", "truncate", "append", or
+                        "drop".Defaults to "fail".
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : :class:`civis.Response`
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -14670,27 +14757,31 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
                     - first_row_is_header : bool
+                        For Google Doc Imports. A boolean value indicating whether or
+                        not the first row is a header row.
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16356,7 +16447,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : :class:`civis.Response`
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -16385,24 +16476,66 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
+                        For Auto Imports. The maximum number of errors that can occur
+                        without the job failing.
                     - existing_table_rows : str
+                        For Auto Imports. The behavior if a table with the requested
+                        name already exists.  One of "fail", "truncate", "append", or
+                        "drop".Defaults to "fail".
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : :class:`civis.Response`
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -16413,27 +16546,31 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
                     - first_row_is_header : bool
+                        For Google Doc Imports. A boolean value indicating whether or
+                        not the first row is a header row.
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16674,7 +16811,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : :class:`civis.Response`
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -16703,24 +16840,66 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
+                        For Auto Imports. The maximum number of errors that can occur
+                        without the job failing.
                     - existing_table_rows : str
+                        For Auto Imports. The behavior if a table with the requested
+                        name already exists.  One of "fail", "truncate", "append", or
+                        "drop".Defaults to "fail".
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : :class:`civis.Response`
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -16731,27 +16910,31 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
                     - first_row_is_header : bool
+                        For Google Doc Imports. A boolean value indicating whether or
+                        not the first row is a header row.
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16908,7 +17091,7 @@ class _Imports:
                     The worksheet tab id.
             - salesforce : dict
                 - object_name : str
-                    The Salesforce object name.
+                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -16936,24 +17119,60 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
+                For Auto Imports. The maximum number of errors that can occur without
+                the job failing.
             - existing_table_rows : str
+                For Auto Imports. The behavior if a table with the requested name
+                already exists.  One of "fail", "truncate", "append", or
+                "drop".Defaults to "fail".
             - diststyle : str
+                For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
+                For Auto Imports. The distkey to use for a Redshift table.
             - sortkey1 : str
+                For Auto Imports. The first sortkey to use for a Redshift table.
             - sortkey2 : str
+                For Auto Imports. The second sortkey to use for a Redshift table.
             - column_delimiter : str
+                For Auto Imports. The column delimiter for the file. Valid arguments
+                are "comma", "tab", and "pipe". If column_delimiter is null or omitted,
+                it will be auto-detected.
             - column_overrides : dict
-                Hash used for overriding auto-detected names and types, with keys being
-                the index of the column being overridden.
+                For Auto Imports. Hash used for overriding auto-detected names and
+                types, with keys being the index of the column being overridden.
             - escaped : bool
-                If true, escape quotes with a backslash; otherwise, escape quotes by
-                double-quoting. Defaults to false.
+                For Auto Imports. If true, escape quotes with a backslash; otherwise,
+                escape quotes by double-quoting. Defaults to false.
             - identity_column : str
+                For DB Syncs. The column or columns to use as primary key for
+                incremental syncs. Should be a unique identifier. If blank, primary key
+                columns will be auto-detected. If more than one identity column is
+                specified, an identity column must be specified for each table. We
+                recommend the primary key be a sequential data type such as an integer,
+                double, timestamp, date, or float. If using a primary key that is a
+                string data type, we recommend having a last_modified_column to ensure
+                all data is synced to the destination table.
+            - last_modified_column : str
+                For DB Syncs. The column to use to detect recently modified data for
+                incremental syncs. Defaults to "Auto-Detect", which will use the first
+                column it finds containing either "modif" or "update" in the name. When
+                specified, only rows where last_modified_column in the source >=
+                last_modified_column in the destination will be synced.
             - row_chunk_size : int
+                For DB Syncs. If specified, will split the sync into chunks of this
+                size.
             - wipe_destination_table : bool
+                For DB Syncs. If true, will perform a full table refresh.
             - truncate_long_lines : bool
+                For DB Syncs to Redshift. When true, truncates column data to fit the
+                column specification.
             - invalid_char_replacement : str
+                For DB Syncs to Redshift. If specified, will replace each invalid UTF-8
+                character with this character. Must be a single ASCII character.
             - verify_table_row_counts : bool
+                For DB Syncs. When true, an error will be raised if the destination
+                table does not have the same number of rows as the source table after
+                the sync.
             - partition_column_name : str
                 This parameter is deprecated
             - partition_schema_name : str
@@ -16964,26 +17183,30 @@ class _Imports:
                 This parameter is deprecated
             - partition_table_partition_column_max_name : str
                 This parameter is deprecated
-            - last_modified_column : str
             - mysql_catalog_matches_schema : bool
                 This attribute is no longer available; defaults to true but cannot be
                 used.
             - chunking_method : str
                 This parameter is deprecated
             - first_row_is_header : bool
+                For Google Doc Imports. A boolean value indicating whether or not the
+                first row is a header row.
             - export_action : str
-                The kind of export action you want to have the export execute. Set to
-                "newsprsht" if you want a new worksheet inside a new spreadsheet. Set
-                to "newwksht" if you want a new worksheet inside an existing
-                spreadsheet. Set to "updatewksht" if you want to overwrite an existing
-                worksheet inside an existing spreadsheet. Set to "appendwksht" if you
-                want to append to the end of an existing worksheet inside an existing
-                spreadsheet. Default is set to "newsprsht"
+                For Google Doc Exports. The kind of export action you want to have the
+                export execute. Set to "newsprsht" if you want a new worksheet inside a
+                new spreadsheet. Set to "newwksht" if you want a new worksheet inside
+                an existing spreadsheet. Set to "updatewksht" if you want to overwrite
+                an existing worksheet inside an existing spreadsheet. Set to
+                "appendwksht" if you want to append to the end of an existing worksheet
+                inside an existing spreadsheet. Default is set to "newsprsht"
             - sql_query : str
-                If you are doing a Google Sheet export, this is your SQL query.
+                For Google Doc Exports. The SQL query for the export.
             - contact_lists : str
+                This parameter is deprecated
             - soql_query : str
+                This parameter is deprecated
             - include_deleted_records : bool
+                This parameter is deprecated
 
         Returns
         -------
@@ -17019,7 +17242,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : :class:`civis.Response`
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17047,24 +17270,63 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
+                    For Auto Imports. The maximum number of errors that can occur
+                    without the job failing.
                 - existing_table_rows : str
+                    For Auto Imports. The behavior if a table with the requested name
+                    already exists.  One of "fail", "truncate", "append", or
+                    "drop".Defaults to "fail".
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : :class:`civis.Response`
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -17075,27 +17337,31 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
                 - first_row_is_header : bool
+                    For Google Doc Imports. A boolean value indicating whether or not
+                    the first row is a header row.
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -17141,7 +17407,7 @@ class _Imports:
                     The worksheet tab id.
             - salesforce : dict
                 - object_name : str
-                    The Salesforce object name.
+                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17169,24 +17435,60 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
+                For Auto Imports. The maximum number of errors that can occur without
+                the job failing.
             - existing_table_rows : str
+                For Auto Imports. The behavior if a table with the requested name
+                already exists.  One of "fail", "truncate", "append", or
+                "drop".Defaults to "fail".
             - diststyle : str
+                For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
+                For Auto Imports. The distkey to use for a Redshift table.
             - sortkey1 : str
+                For Auto Imports. The first sortkey to use for a Redshift table.
             - sortkey2 : str
+                For Auto Imports. The second sortkey to use for a Redshift table.
             - column_delimiter : str
+                For Auto Imports. The column delimiter for the file. Valid arguments
+                are "comma", "tab", and "pipe". If column_delimiter is null or omitted,
+                it will be auto-detected.
             - column_overrides : dict
-                Hash used for overriding auto-detected names and types, with keys being
-                the index of the column being overridden.
+                For Auto Imports. Hash used for overriding auto-detected names and
+                types, with keys being the index of the column being overridden.
             - escaped : bool
-                If true, escape quotes with a backslash; otherwise, escape quotes by
-                double-quoting. Defaults to false.
+                For Auto Imports. If true, escape quotes with a backslash; otherwise,
+                escape quotes by double-quoting. Defaults to false.
             - identity_column : str
+                For DB Syncs. The column or columns to use as primary key for
+                incremental syncs. Should be a unique identifier. If blank, primary key
+                columns will be auto-detected. If more than one identity column is
+                specified, an identity column must be specified for each table. We
+                recommend the primary key be a sequential data type such as an integer,
+                double, timestamp, date, or float. If using a primary key that is a
+                string data type, we recommend having a last_modified_column to ensure
+                all data is synced to the destination table.
+            - last_modified_column : str
+                For DB Syncs. The column to use to detect recently modified data for
+                incremental syncs. Defaults to "Auto-Detect", which will use the first
+                column it finds containing either "modif" or "update" in the name. When
+                specified, only rows where last_modified_column in the source >=
+                last_modified_column in the destination will be synced.
             - row_chunk_size : int
+                For DB Syncs. If specified, will split the sync into chunks of this
+                size.
             - wipe_destination_table : bool
+                For DB Syncs. If true, will perform a full table refresh.
             - truncate_long_lines : bool
+                For DB Syncs to Redshift. When true, truncates column data to fit the
+                column specification.
             - invalid_char_replacement : str
+                For DB Syncs to Redshift. If specified, will replace each invalid UTF-8
+                character with this character. Must be a single ASCII character.
             - verify_table_row_counts : bool
+                For DB Syncs. When true, an error will be raised if the destination
+                table does not have the same number of rows as the source table after
+                the sync.
             - partition_column_name : str
                 This parameter is deprecated
             - partition_schema_name : str
@@ -17197,26 +17499,30 @@ class _Imports:
                 This parameter is deprecated
             - partition_table_partition_column_max_name : str
                 This parameter is deprecated
-            - last_modified_column : str
             - mysql_catalog_matches_schema : bool
                 This attribute is no longer available; defaults to true but cannot be
                 used.
             - chunking_method : str
                 This parameter is deprecated
             - first_row_is_header : bool
+                For Google Doc Imports. A boolean value indicating whether or not the
+                first row is a header row.
             - export_action : str
-                The kind of export action you want to have the export execute. Set to
-                "newsprsht" if you want a new worksheet inside a new spreadsheet. Set
-                to "newwksht" if you want a new worksheet inside an existing
-                spreadsheet. Set to "updatewksht" if you want to overwrite an existing
-                worksheet inside an existing spreadsheet. Set to "appendwksht" if you
-                want to append to the end of an existing worksheet inside an existing
-                spreadsheet. Default is set to "newsprsht"
+                For Google Doc Exports. The kind of export action you want to have the
+                export execute. Set to "newsprsht" if you want a new worksheet inside a
+                new spreadsheet. Set to "newwksht" if you want a new worksheet inside
+                an existing spreadsheet. Set to "updatewksht" if you want to overwrite
+                an existing worksheet inside an existing spreadsheet. Set to
+                "appendwksht" if you want to append to the end of an existing worksheet
+                inside an existing spreadsheet. Default is set to "newsprsht"
             - sql_query : str
-                If you are doing a Google Sheet export, this is your SQL query.
+                For Google Doc Exports. The SQL query for the export.
             - contact_lists : str
+                This parameter is deprecated
             - soql_query : str
+                This parameter is deprecated
             - include_deleted_records : bool
+                This parameter is deprecated
 
         Returns
         -------
@@ -17252,7 +17558,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : :class:`civis.Response`
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17280,24 +17586,63 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
+                    For Auto Imports. The maximum number of errors that can occur
+                    without the job failing.
                 - existing_table_rows : str
+                    For Auto Imports. The behavior if a table with the requested name
+                    already exists.  One of "fail", "truncate", "append", or
+                    "drop".Defaults to "fail".
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : :class:`civis.Response`
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -17308,27 +17653,31 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
                 - first_row_is_header : bool
+                    For Google Doc Imports. A boolean value indicating whether or not
+                    the first row is a header row.
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -17383,7 +17732,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : :class:`civis.Response`
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17411,24 +17760,63 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
+                    For Auto Imports. The maximum number of errors that can occur
+                    without the job failing.
                 - existing_table_rows : str
+                    For Auto Imports. The behavior if a table with the requested name
+                    already exists.  One of "fail", "truncate", "append", or
+                    "drop".Defaults to "fail".
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : :class:`civis.Response`
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -17439,27 +17827,31 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
                 - first_row_is_header : bool
+                    For Google Doc Imports. A boolean value indicating whether or not
+                    the first row is a header row.
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -64186,6 +64578,7 @@ class _ResponseImportsPutArchiveSyncsAdvancedOptions(Response):
     column_overrides: dict
     escaped: bool
     identity_column: str
+    last_modified_column: str
     row_chunk_size: int
     wipe_destination_table: bool
     truncate_long_lines: bool
@@ -64196,7 +64589,6 @@ class _ResponseImportsPutArchiveSyncsAdvancedOptions(Response):
     partition_table_name: str
     partition_table_partition_column_min_name: str
     partition_table_partition_column_max_name: str
-    last_modified_column: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
     first_row_is_header: bool
@@ -64394,6 +64786,7 @@ class _ResponseImportsPostSyncsAdvancedOptions(Response):
     column_overrides: dict
     escaped: bool
     identity_column: str
+    last_modified_column: str
     row_chunk_size: int
     wipe_destination_table: bool
     truncate_long_lines: bool
@@ -64404,7 +64797,6 @@ class _ResponseImportsPostSyncsAdvancedOptions(Response):
     partition_table_name: str
     partition_table_partition_column_min_name: str
     partition_table_partition_column_max_name: str
-    last_modified_column: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
     first_row_is_header: bool
@@ -64890,6 +65282,7 @@ class _ResponseImportsGetSyncsAdvancedOptions(Response):
     column_overrides: dict
     escaped: bool
     identity_column: str
+    last_modified_column: str
     row_chunk_size: int
     wipe_destination_table: bool
     truncate_long_lines: bool
@@ -64900,7 +65293,6 @@ class _ResponseImportsGetSyncsAdvancedOptions(Response):
     partition_table_name: str
     partition_table_partition_column_min_name: str
     partition_table_partition_column_max_name: str
-    last_modified_column: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
     first_row_is_header: bool
@@ -65046,6 +65438,7 @@ class _ResponseImportsPutSyncsAdvancedOptions(Response):
     column_overrides: dict
     escaped: bool
     identity_column: str
+    last_modified_column: str
     row_chunk_size: int
     wipe_destination_table: bool
     truncate_long_lines: bool
@@ -65056,7 +65449,6 @@ class _ResponseImportsPutSyncsAdvancedOptions(Response):
     partition_table_name: str
     partition_table_partition_column_min_name: str
     partition_table_partition_column_max_name: str
-    last_modified_column: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
     first_row_is_header: bool
@@ -65162,6 +65554,7 @@ class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     column_overrides: dict
     escaped: bool
     identity_column: str
+    last_modified_column: str
     row_chunk_size: int
     wipe_destination_table: bool
     truncate_long_lines: bool
@@ -65172,7 +65565,6 @@ class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     partition_table_name: str
     partition_table_partition_column_min_name: str
     partition_table_partition_column_max_name: str
-    last_modified_column: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
     first_row_is_header: bool
