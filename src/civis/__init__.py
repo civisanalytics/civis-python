@@ -29,6 +29,7 @@ def _lazy_import(name):
 
 
 if TYPE_CHECKING or _BUILDING_SPHINX_DOC:
+    # Regularly loaded modules are needed for typing information and doc generation.
     from civis import futures, io, ml, parallel, utils, workflows
 else:
     futures = _lazy_import("civis.futures")

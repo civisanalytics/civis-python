@@ -325,13 +325,9 @@ def _pprint_response(self, object, stream, indent, allowance, context, level):
             items = sorted(object.items(), key=_safe_tuple)
         else:
             items = object.items()
+        # The 9 in `indent + 9` is the length of "Response(".
         self._format_dict_items(
-            items,
-            stream,
-            indent + 9,  # The 9 in `indent + 9` is the length of "Response(".
-            allowance + 1,
-            context,
-            level,
+            items, stream, indent + 9, allowance + 1, context, level
         )
     write("})")
 

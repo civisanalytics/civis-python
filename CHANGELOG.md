@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added support for Python 3.13. (#501)
 
 ### Changed
+- When a `PaginatedResponse` object is returned from an API call,
+  a user-specified `limit` kwarg is now honored to facilitate speeding up the pagination. (#501)
+
 ### Deprecated
 ### Removed
 - Dropped support for Python 3.9. (#499)
