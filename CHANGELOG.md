@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 ### Deprecated
+- The method `get_database_credential_id` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0. (502)
+
 ### Removed
 - Dropped support for Python 3.9. (#499)
 
