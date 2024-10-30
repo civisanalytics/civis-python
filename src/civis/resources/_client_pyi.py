@@ -76,6 +76,7 @@ from civis.response import Response, PaginatedResponse
 # before we can define APIClient to use them.
 class APIClient:
     default_credential: int | None
+    default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
     last_response: Any

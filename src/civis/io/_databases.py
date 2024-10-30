@@ -56,7 +56,7 @@ def query_civis(
     if client is None:
         client = APIClient()
     database_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
+    cred_id = credential_id or client.default_database_credential_id
     resp = client.queries.post(
         database_id, sql, preview_rows, credential=cred_id, hidden=hidden
     )
@@ -127,8 +127,8 @@ def transfer_table(
     """
     if client is None:
         client = APIClient()
-    source_cred_id = source_credential_id or client.default_credential
-    dest_cred_id = dest_credential_id or client.default_credential
+    source_cred_id = source_credential_id or client.default_database_credential_id
+    dest_cred_id = dest_credential_id or client.default_database_credential_id
     job_name = maybe_get_random_name(job_name)
     source = {
         "remote_host_id": client.get_database_id(source_db),

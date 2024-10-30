@@ -177,7 +177,7 @@ class APIClient:
             "from a username and database name. No replacement for this method is "
             "being planned. If you need to programmatically access a database "
             "credential ID that is or may likely be the default credential, "
-            "consider the property `default_credential`.",
+            "consider the property `default_database_credential_id`.",
             FutureWarning,
             stacklevel=2,  # Point to the user code that calls this method.
         )
@@ -352,8 +352,23 @@ class APIClient:
     @lru_cache(maxsize=128)
     def default_credential(self):
         """The current user's default credential."""
-        # NOTE: this should be optional to endpoints...so this could go away
+        warnings.warn(
+            "The property `default_credential` is deprecated and will be removed "
+            "at civis-python v3.0.0. "
+            "Please use `default_database_credential_id` instead.",
+            FutureWarning,
+            stacklevel=2,  # Point to the user code that calls this method.
+        )
         creds = self.credentials.list(default=True)
+        return creds[0]["id"] if len(creds) > 0 else None
+
+    @property
+    @lru_cache(maxsize=128)
+    def default_database_credential_id(self):
+        """The current user's default database credential ID."""
+        creds = self.credentials.list(
+            default=True, type="Database", remote_host_id=None
+        )
         return creds[0]["id"] if len(creds) > 0 else None
 
     @property

@@ -15,11 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
   accept a new `description` keyword argument for the new `description` attribute
   of Civis file objects. (#498, #500)
+- Added the new property `default_database_credential_id` at `civis.APIClient`,
+  which is going to replace the existing `default_credential`. (#502)
 
 ### Changed
 ### Deprecated
 - The method `get_database_credential_id` at `civis.APIClient` has been deprecated
-  and will be removed at civis-python v3.0.0. (502)
+  and will be removed at civis-python v3.0.0. There's no replacement for this method. (#502)
+- The property `default_credential` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0,
+  in favor of the new property `default_database_credential_id`. (#502)
 
 ### Removed
 - Dropped support for Python 3.9. (#499)

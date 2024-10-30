@@ -774,8 +774,8 @@ class _Clusters:
                         The ID of this InstanceConfig.
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
-                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, and
-                        c5.18xlarge.
+                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
+                        and g5.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -859,8 +859,8 @@ class _Clusters:
                         The ID of this InstanceConfig.
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
-                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, and
-                        c5.18xlarge.
+                        m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
+                        and g5.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -1068,7 +1068,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1122,7 +1122,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1148,7 +1148,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1205,7 +1205,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1231,7 +1231,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1322,7 +1322,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1380,7 +1380,7 @@ class _Clusters:
                 The ID of this InstanceConfig.
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, and c5.18xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -2415,11 +2415,17 @@ class _Databases:
             - id : int
                 The ID for the database.
             - name : str
-                The name of the database.
+                The name of the database in Platform.
             - adapter : str
                 The type of the database.
             - cluster_identifier : str
                 The cluster identifier of the database.
+            - host : str
+                The host of the database server.
+            - port : int
+                The port of the database.
+            - database_name : str
+                The internal name of the database.
             - managed : bool
                 True if the database is Civis-managed. False otherwise.
         """
@@ -2442,11 +2448,17 @@ class _Databases:
             - id : int
                 The ID for the database.
             - name : str
-                The name of the database.
+                The name of the database in Platform.
             - adapter : str
                 The type of the database.
             - cluster_identifier : str
                 The cluster identifier of the database.
+            - host : str
+                The host of the database server.
+            - port : int
+                The port of the database.
+            - database_name : str
+                The internal name of the database.
             - managed : bool
                 True if the database is Civis-managed. False otherwise.
         """
@@ -14087,7 +14099,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : dict
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : dict
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -14116,24 +14128,69 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : dict
                     - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : dict
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -14144,27 +14201,28 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -14236,8 +14294,7 @@ class _Imports:
         ----------
         type : str, optional
             If specified, return imports of these types. It accepts a comma-separated
-            list, possible values are 'AutoImport', 'Dbsync', 'Salesforce',
-            'GdocImport'.
+            list, possible values are Dbsync, AutoImport, GdocImport, and GdocExport.
         destination : str, optional
             If specified, returns imports with one of these destinations. It accepts a
             comma-separated list of remote host ids.
@@ -14540,7 +14597,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : dict
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : dict
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -14569,24 +14626,69 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : dict
                     - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : dict
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -14597,27 +14699,28 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16274,7 +16377,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : dict
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : dict
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -16303,24 +16406,69 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : dict
                     - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : dict
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -16331,27 +16479,28 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16592,7 +16741,7 @@ class _Imports:
                             The worksheet tab id.
                     - salesforce : dict
                         - object_name : str
-                            The Salesforce object name.
+                            This parameter is deprecated
                 - destination : dict
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -16621,24 +16770,69 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : dict
                     - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
                     - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
                     - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
                     - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
                     - column_overrides : dict
-                        Hash used for overriding auto-detected names and types, with
-                        keys being the index of the column being overridden.
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
                     - escaped : bool
-                        If true, escape quotes with a backslash; otherwise, escape
-                        quotes by double-quoting. Defaults to false.
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
                     - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
                     - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
                     - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
                     - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
                     - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
                     - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
                     - partition_column_name : str
                         This parameter is deprecated
                     - partition_schema_name : str
@@ -16649,27 +16843,28 @@ class _Imports:
                         This parameter is deprecated
                     - partition_table_partition_column_max_name : str
                         This parameter is deprecated
-                    - last_modified_column : str
                     - mysql_catalog_matches_schema : bool
                         This attribute is no longer available; defaults to true but
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
                     - export_action : str
-                        The kind of export action you want to have the export execute.
-                        Set to "newsprsht" if you want a new worksheet inside a new
-                        spreadsheet. Set to "newwksht" if you want a new worksheet
-                        inside an existing spreadsheet. Set to "updatewksht" if you
-                        want to overwrite an existing worksheet inside an existing
-                        spreadsheet. Set to "appendwksht" if you want to append to the
-                        end of an existing worksheet inside an existing spreadsheet.
-                        Default is set to "newsprsht"
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
                     - sql_query : str
-                        If you are doing a Google Sheet export, this is your SQL query.
+                        For Google Doc Exports. The SQL query for the export.
                     - contact_lists : str
+                        This parameter is deprecated
                     - soql_query : str
+                        This parameter is deprecated
                     - include_deleted_records : bool
+                        This parameter is deprecated
             - state : str
             - created_at : str (date-time)
             - updated_at : str (date-time)
@@ -16826,7 +17021,7 @@ class _Imports:
                     The worksheet tab id.
             - salesforce : dict
                 - object_name : str
-                    The Salesforce object name.
+                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -16854,24 +17049,63 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
+                For Google Doc and Auto Imports. The maximum number of errors that can
+                occur without the job failing.
             - existing_table_rows : str
+                For Google Doc and Auto Imports. The behavior if a table with the
+                requested name already exists.  One of "fail", "truncate", "append", or
+                "drop".Defaults to "fail".
+            - first_row_is_header : bool
+                For Google Doc and Auto Imports. A boolean value indicating whether or
+                not the first row is a header row.
             - diststyle : str
+                For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
+                For Auto Imports. The distkey to use for a Redshift table.
             - sortkey1 : str
+                For Auto Imports. The first sortkey to use for a Redshift table.
             - sortkey2 : str
+                For Auto Imports. The second sortkey to use for a Redshift table.
             - column_delimiter : str
+                For Auto Imports. The column delimiter for the file. Valid arguments
+                are "comma", "tab", and "pipe". If column_delimiter is null or omitted,
+                it will be auto-detected.
             - column_overrides : dict
-                Hash used for overriding auto-detected names and types, with keys being
-                the index of the column being overridden.
+                For Auto Imports. Hash used for overriding auto-detected names and
+                types, with keys being the index of the column being overridden.
             - escaped : bool
-                If true, escape quotes with a backslash; otherwise, escape quotes by
-                double-quoting. Defaults to false.
+                For Auto Imports. If true, escape quotes with a backslash; otherwise,
+                escape quotes by double-quoting. Defaults to false.
             - identity_column : str
+                For DB Syncs. The column or columns to use as primary key for
+                incremental syncs. Should be a unique identifier. If blank, primary key
+                columns will be auto-detected. If more than one identity column is
+                specified, an identity column must be specified for each table. We
+                recommend the primary key be a sequential data type such as an integer,
+                double, timestamp, date, or float. If using a primary key that is a
+                string data type, we recommend having a last_modified_column to ensure
+                all data is synced to the destination table.
+            - last_modified_column : str
+                For DB Syncs. The column to use to detect recently modified data for
+                incremental syncs. Defaults to "Auto-Detect", which will use the first
+                column it finds containing either "modif" or "update" in the name. When
+                specified, only rows where last_modified_column in the source >=
+                last_modified_column in the destination will be synced.
             - row_chunk_size : int
+                For DB Syncs. If specified, will split the sync into chunks of this
+                size.
             - wipe_destination_table : bool
+                For DB Syncs. If true, will perform a full table refresh.
             - truncate_long_lines : bool
+                For DB Syncs to Redshift. When true, truncates column data to fit the
+                column specification.
             - invalid_char_replacement : str
+                For DB Syncs to Redshift. If specified, will replace each invalid UTF-8
+                character with this character. Must be a single ASCII character.
             - verify_table_row_counts : bool
+                For DB Syncs. When true, an error will be raised if the destination
+                table does not have the same number of rows as the source table after
+                the sync.
             - partition_column_name : str
                 This parameter is deprecated
             - partition_schema_name : str
@@ -16882,26 +17116,27 @@ class _Imports:
                 This parameter is deprecated
             - partition_table_partition_column_max_name : str
                 This parameter is deprecated
-            - last_modified_column : str
             - mysql_catalog_matches_schema : bool
                 This attribute is no longer available; defaults to true but cannot be
                 used.
             - chunking_method : str
                 This parameter is deprecated
-            - first_row_is_header : bool
             - export_action : str
-                The kind of export action you want to have the export execute. Set to
-                "newsprsht" if you want a new worksheet inside a new spreadsheet. Set
-                to "newwksht" if you want a new worksheet inside an existing
-                spreadsheet. Set to "updatewksht" if you want to overwrite an existing
-                worksheet inside an existing spreadsheet. Set to "appendwksht" if you
-                want to append to the end of an existing worksheet inside an existing
-                spreadsheet. Default is set to "newsprsht"
+                For Google Doc Exports. The kind of export action you want to have the
+                export execute. Set to "newsprsht" if you want a new worksheet inside a
+                new spreadsheet. Set to "newwksht" if you want a new worksheet inside
+                an existing spreadsheet. Set to "updatewksht" if you want to overwrite
+                an existing worksheet inside an existing spreadsheet. Set to
+                "appendwksht" if you want to append to the end of an existing worksheet
+                inside an existing spreadsheet. Default is set to "newsprsht"
             - sql_query : str
-                If you are doing a Google Sheet export, this is your SQL query.
+                For Google Doc Exports. The SQL query for the export.
             - contact_lists : str
+                This parameter is deprecated
             - soql_query : str
+                This parameter is deprecated
             - include_deleted_records : bool
+                This parameter is deprecated
 
         Returns
         -------
@@ -16937,7 +17172,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : dict
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : dict
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -16965,24 +17200,66 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : dict
                 - max_errors : int
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : dict
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -16993,27 +17270,28 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -17059,7 +17337,7 @@ class _Imports:
                     The worksheet tab id.
             - salesforce : dict
                 - object_name : str
-                    The Salesforce object name.
+                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17087,24 +17365,63 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
+                For Google Doc and Auto Imports. The maximum number of errors that can
+                occur without the job failing.
             - existing_table_rows : str
+                For Google Doc and Auto Imports. The behavior if a table with the
+                requested name already exists.  One of "fail", "truncate", "append", or
+                "drop".Defaults to "fail".
+            - first_row_is_header : bool
+                For Google Doc and Auto Imports. A boolean value indicating whether or
+                not the first row is a header row.
             - diststyle : str
+                For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
+                For Auto Imports. The distkey to use for a Redshift table.
             - sortkey1 : str
+                For Auto Imports. The first sortkey to use for a Redshift table.
             - sortkey2 : str
+                For Auto Imports. The second sortkey to use for a Redshift table.
             - column_delimiter : str
+                For Auto Imports. The column delimiter for the file. Valid arguments
+                are "comma", "tab", and "pipe". If column_delimiter is null or omitted,
+                it will be auto-detected.
             - column_overrides : dict
-                Hash used for overriding auto-detected names and types, with keys being
-                the index of the column being overridden.
+                For Auto Imports. Hash used for overriding auto-detected names and
+                types, with keys being the index of the column being overridden.
             - escaped : bool
-                If true, escape quotes with a backslash; otherwise, escape quotes by
-                double-quoting. Defaults to false.
+                For Auto Imports. If true, escape quotes with a backslash; otherwise,
+                escape quotes by double-quoting. Defaults to false.
             - identity_column : str
+                For DB Syncs. The column or columns to use as primary key for
+                incremental syncs. Should be a unique identifier. If blank, primary key
+                columns will be auto-detected. If more than one identity column is
+                specified, an identity column must be specified for each table. We
+                recommend the primary key be a sequential data type such as an integer,
+                double, timestamp, date, or float. If using a primary key that is a
+                string data type, we recommend having a last_modified_column to ensure
+                all data is synced to the destination table.
+            - last_modified_column : str
+                For DB Syncs. The column to use to detect recently modified data for
+                incremental syncs. Defaults to "Auto-Detect", which will use the first
+                column it finds containing either "modif" or "update" in the name. When
+                specified, only rows where last_modified_column in the source >=
+                last_modified_column in the destination will be synced.
             - row_chunk_size : int
+                For DB Syncs. If specified, will split the sync into chunks of this
+                size.
             - wipe_destination_table : bool
+                For DB Syncs. If true, will perform a full table refresh.
             - truncate_long_lines : bool
+                For DB Syncs to Redshift. When true, truncates column data to fit the
+                column specification.
             - invalid_char_replacement : str
+                For DB Syncs to Redshift. If specified, will replace each invalid UTF-8
+                character with this character. Must be a single ASCII character.
             - verify_table_row_counts : bool
+                For DB Syncs. When true, an error will be raised if the destination
+                table does not have the same number of rows as the source table after
+                the sync.
             - partition_column_name : str
                 This parameter is deprecated
             - partition_schema_name : str
@@ -17115,26 +17432,27 @@ class _Imports:
                 This parameter is deprecated
             - partition_table_partition_column_max_name : str
                 This parameter is deprecated
-            - last_modified_column : str
             - mysql_catalog_matches_schema : bool
                 This attribute is no longer available; defaults to true but cannot be
                 used.
             - chunking_method : str
                 This parameter is deprecated
-            - first_row_is_header : bool
             - export_action : str
-                The kind of export action you want to have the export execute. Set to
-                "newsprsht" if you want a new worksheet inside a new spreadsheet. Set
-                to "newwksht" if you want a new worksheet inside an existing
-                spreadsheet. Set to "updatewksht" if you want to overwrite an existing
-                worksheet inside an existing spreadsheet. Set to "appendwksht" if you
-                want to append to the end of an existing worksheet inside an existing
-                spreadsheet. Default is set to "newsprsht"
+                For Google Doc Exports. The kind of export action you want to have the
+                export execute. Set to "newsprsht" if you want a new worksheet inside a
+                new spreadsheet. Set to "newwksht" if you want a new worksheet inside
+                an existing spreadsheet. Set to "updatewksht" if you want to overwrite
+                an existing worksheet inside an existing spreadsheet. Set to
+                "appendwksht" if you want to append to the end of an existing worksheet
+                inside an existing spreadsheet. Default is set to "newsprsht"
             - sql_query : str
-                If you are doing a Google Sheet export, this is your SQL query.
+                For Google Doc Exports. The SQL query for the export.
             - contact_lists : str
+                This parameter is deprecated
             - soql_query : str
+                This parameter is deprecated
             - include_deleted_records : bool
+                This parameter is deprecated
 
         Returns
         -------
@@ -17170,7 +17488,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : dict
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : dict
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17198,24 +17516,66 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : dict
                 - max_errors : int
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : dict
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -17226,27 +17586,28 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -17301,7 +17662,7 @@ class _Imports:
                         The worksheet tab id.
                 - salesforce : dict
                     - object_name : str
-                        The Salesforce object name.
+                        This parameter is deprecated
             - destination : dict
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -17329,24 +17690,66 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : dict
                 - max_errors : int
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
                 - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
                 - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
                 - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
                 - column_overrides : dict
-                    Hash used for overriding auto-detected names and types, with keys
-                    being the index of the column being overridden.
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
                 - escaped : bool
-                    If true, escape quotes with a backslash; otherwise, escape quotes
-                    by double-quoting. Defaults to false.
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
                 - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
                 - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
                 - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
                 - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
                 - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
                 - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
                 - partition_column_name : str
                     This parameter is deprecated
                 - partition_schema_name : str
@@ -17357,27 +17760,28 @@ class _Imports:
                     This parameter is deprecated
                 - partition_table_partition_column_max_name : str
                     This parameter is deprecated
-                - last_modified_column : str
                 - mysql_catalog_matches_schema : bool
                     This attribute is no longer available; defaults to true but cannot
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
                 - export_action : str
-                    The kind of export action you want to have the export execute. Set
-                    to "newsprsht" if you want a new worksheet inside a new
-                    spreadsheet. Set to "newwksht" if you want a new worksheet inside
-                    an existing spreadsheet. Set to "updatewksht" if you want to
-                    overwrite an existing worksheet inside an existing spreadsheet. Set
-                    to "appendwksht" if you want to append to the end of an existing
-                    worksheet inside an existing spreadsheet. Default is set to
-                    "newsprsht"
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
                 - sql_query : str
-                    If you are doing a Google Sheet export, this is your SQL query.
+                    For Google Doc Exports. The SQL query for the export.
                 - contact_lists : str
+                    This parameter is deprecated
                 - soql_query : str
+                    This parameter is deprecated
                 - include_deleted_records : bool
+                    This parameter is deprecated
         """
         ...
 
@@ -31125,7 +31529,7 @@ class _Scripts:
         notifications: dict | None = ...,
         hidden: bool | None = ...,
     ) -> Response:
-        """Create a script
+        """Create a script (legacy)
 
         Parameters
         ----------
@@ -31481,465 +31885,11 @@ class _Scripts:
         """
         ...
 
-    def patch(
-        self,
-        id: int,
-        name: str | None = ...,
-        sql: str | None = ...,
-        params: List[dict] | None = ...,
-        arguments: dict | None = ...,
-        template_script_id: int | None = ...,
-        schedule: dict | None = ...,
-        notifications: dict | None = ...,
-        parent_id: int | None = ...,
-        running_as_id: int | None = ...,
-    ) -> Response:
-        """Update a script
-
-        Parameters
-        ----------
-        id : int
-            The ID for the script.
-        name : str, optional
-            The name of the script.
-        sql : str, optional
-            The raw SQL query for the script.
-        params : List[dict], optional
-            A definition of the parameters this script accepts in the arguments field.
-            Cannot be set if this script uses a template script.
-
-            - name : str
-                The variable's name as used within your code.
-            - label : str
-                The label to present to users when asking them for the value.
-            - description : str
-                A short sentence or fragment describing this parameter to the end user.
-            - type : str
-                The type of parameter. Valid options: string, multi_line_string,
-                integer, float, bool, file, table, database, credential_aws,
-                credential_redshift, or credential_custom
-            - required : bool
-                Whether this param is required.
-            - value : str
-                The value you would like to set this param to. Setting this value makes
-                this parameter a fixed param.
-            - default : str
-                If an argument for this parameter is not defined, it will use this
-                default value. Use true, True, t, y, yes, or 1 for true bool's or
-                false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                parameters that are required or a credential type.
-            - allowed_values : List[dict]
-                The possible values this parameter can take, effectively making this an
-                enumerable parameter. Allowed values is an array of hashes of the
-                following format: `{label: 'Import', 'value': 'import'}`
-        arguments : dict, optional
-            Parameter-value pairs to use when running this script. Only settable if
-            this script has defined parameters.
-        template_script_id : int, optional
-            The ID of the template script, if any.  A script cannot both have a
-            template script and be a template for other scripts.
-        schedule : dict, optional
-            - scheduled : bool
-                If the item is scheduled.
-            - scheduled_days : List[int]
-                Days of the week, based on numeric value starting at 0 for Sunday.
-                Mutually exclusive with scheduledDaysOfMonth
-            - scheduled_hours : List[int]
-                Hours of the day it is scheduled on.
-            - scheduled_minutes : List[int]
-                Minutes of the day it is scheduled on.
-            - scheduled_runs_per_hour : int
-                Deprecated in favor of scheduled minutes.
-            - scheduled_days_of_month : List[int]
-                Days of the month it is scheduled on, mutually exclusive with
-                scheduledDays.
-        notifications : dict, optional
-            - urls : List[str]
-                URLs to receive a POST request at job completion
-            - success_email_subject : str
-                Custom subject line for success e-mail.
-            - success_email_body : str
-                Custom body text for success e-mail, written in Markdown.
-            - success_email_addresses : List[str]
-                Addresses to notify by e-mail when the job completes successfully.
-            - success_email_from_name : str
-                Name from which success emails are sent; defaults to "Civis."
-            - success_email_reply_to : str
-                Address for replies to success emails; defaults to the author of the
-                job.
-            - failure_email_addresses : List[str]
-                Addresses to notify by e-mail when the job fails.
-            - stall_warning_minutes : int
-                Stall warning emails will be sent after this amount of minutes.
-            - success_on : bool
-                If success email notifications are on. Defaults to user's preferences.
-            - failure_on : bool
-                If failure email notifications are on. Defaults to user's preferences.
-        parent_id : int, optional
-            The ID of the parent job that will trigger this script
-        running_as_id : int, optional
-            The ID of the runner of this script.
-
-        Returns
-        -------
-        :class:`civis.response.Response`
-            - id : int
-                The ID for the script.
-            - name : str
-                The name of the script.
-            - type : str
-                The type of script.
-            - created_at : str (time)
-                The time this script was created.
-            - updated_at : str (time)
-                The time this script was last updated.
-            - author : dict
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - state : str
-                The status of the script's last run.
-            - finished_at : str (time)
-                The time that the script's last run finished.
-            - category : str
-                The category of the script.
-            - projects : List[dict]
-                A list of projects containing the script.
-
-                - id : int
-                    The ID for the project.
-                - name : str
-                    The name of the project.
-            - parent_id : int
-                The ID of the parent job that will trigger this script
-            - user_context : str
-                "runner" or "author", who to execute the script as when run as a
-                template.
-            - params : List[dict]
-                A definition of the parameters this script accepts in the arguments
-                field.
-
-                - name : str
-                    The variable's name as used within your code.
-                - label : str
-                    The label to present to users when asking them for the value.
-                - description : str
-                    A short sentence or fragment describing this parameter to the end
-                    user.
-                - type : str
-                    The type of parameter. Valid options: string, multi_line_string,
-                    integer, float, bool, file, table, database, credential_aws,
-                    credential_redshift, or credential_custom
-                - required : bool
-                    Whether this param is required.
-                - value : str
-                    The value you would like to set this param to. Setting this value
-                    makes this parameter a fixed param.
-                - default : str
-                    If an argument for this parameter is not defined, it will use this
-                    default value. Use true, True, t, y, yes, or 1 for true bool's or
-                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                    parameters that are required or a credential type.
-                - allowed_values : List[dict]
-                    The possible values this parameter can take, effectively making
-                    this an enumerable parameter. Allowed values is an array of hashes
-                    of the following format: `{label: 'Import', 'value': 'import'}`
-            - arguments : dict
-                Parameter-value pairs to use when running this script. Only settable if
-                this script has defined parameters.
-            - is_template : bool
-                Whether others scripts use this one as a template.
-            - published_as_template_id : int
-                The ID of the template that this script is backing.
-            - from_template_id : int
-                The ID of the template this script uses, if any.
-            - template_dependents_count : int
-                How many other scripts use this one as a template.
-            - template_script_name : str
-                The name of the template script.
-            - links : dict
-                - details : str
-                    The details link to get more information about the script.
-                - runs : str
-                    The runs link to get the run information list for this script.
-            - schedule : dict
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : dict
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
-            - running_as : dict
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - next_run_at : str (time)
-                The time of the next scheduled run.
-            - time_zone : str
-                The time zone of this script.
-            - last_run : dict
-                - id : int
-                - state : str
-                - created_at : str (time)
-                    The time that the run was queued.
-                - started_at : str (time)
-                    The time that the run started.
-                - finished_at : str (time)
-                    The time that the run completed.
-                - error : str
-                    The error message for this run, if present.
-            - my_permission_level : str
-                Your permission level on the object. One of "read", "write", or
-                "manage".
-            - hidden : bool
-                The hidden status of the item.
-            - target_project_id : int
-                Target project to which script outputs will be added.
-            - archived : str
-                The archival status of the requested item(s).
-            - sql : str
-                The raw SQL query for the script.
-            - expanded_arguments : dict
-                Expanded arguments for use in injecting into different environments.
-            - template_script_id : int
-                The ID of the template script, if any.
-        """
-        ...
-
-    def get(
-        self,
-        id: int,
-    ) -> Response:
-        """Get details about a script
-
-        Parameters
-        ----------
-        id : int
-            The ID for the script.
-
-        Returns
-        -------
-        :class:`civis.response.Response`
-            - id : int
-                The ID for the script.
-            - name : str
-                The name of the script.
-            - type : str
-                The type of script.
-            - created_at : str (time)
-                The time this script was created.
-            - updated_at : str (time)
-                The time this script was last updated.
-            - author : dict
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - state : str
-                The status of the script's last run.
-            - finished_at : str (time)
-                The time that the script's last run finished.
-            - category : str
-                The category of the script.
-            - projects : List[dict]
-                A list of projects containing the script.
-
-                - id : int
-                    The ID for the project.
-                - name : str
-                    The name of the project.
-            - parent_id : int
-                The ID of the parent job that will trigger this script
-            - user_context : str
-                "runner" or "author", who to execute the script as when run as a
-                template.
-            - params : List[dict]
-                A definition of the parameters this script accepts in the arguments
-                field.
-
-                - name : str
-                    The variable's name as used within your code.
-                - label : str
-                    The label to present to users when asking them for the value.
-                - description : str
-                    A short sentence or fragment describing this parameter to the end
-                    user.
-                - type : str
-                    The type of parameter. Valid options: string, multi_line_string,
-                    integer, float, bool, file, table, database, credential_aws,
-                    credential_redshift, or credential_custom
-                - required : bool
-                    Whether this param is required.
-                - value : str
-                    The value you would like to set this param to. Setting this value
-                    makes this parameter a fixed param.
-                - default : str
-                    If an argument for this parameter is not defined, it will use this
-                    default value. Use true, True, t, y, yes, or 1 for true bool's or
-                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
-                    parameters that are required or a credential type.
-                - allowed_values : List[dict]
-                    The possible values this parameter can take, effectively making
-                    this an enumerable parameter. Allowed values is an array of hashes
-                    of the following format: `{label: 'Import', 'value': 'import'}`
-            - arguments : dict
-                Parameter-value pairs to use when running this script. Only settable if
-                this script has defined parameters.
-            - is_template : bool
-                Whether others scripts use this one as a template.
-            - published_as_template_id : int
-                The ID of the template that this script is backing.
-            - from_template_id : int
-                The ID of the template this script uses, if any.
-            - template_dependents_count : int
-                How many other scripts use this one as a template.
-            - template_script_name : str
-                The name of the template script.
-            - links : dict
-                - details : str
-                    The details link to get more information about the script.
-                - runs : str
-                    The runs link to get the run information list for this script.
-            - schedule : dict
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : dict
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
-            - running_as : dict
-                - id : int
-                    The ID of this user.
-                - name : str
-                    This user's name.
-                - username : str
-                    This user's username.
-                - initials : str
-                    This user's initials.
-                - online : bool
-                    Whether this user is online.
-            - next_run_at : str (time)
-                The time of the next scheduled run.
-            - time_zone : str
-                The time zone of this script.
-            - last_run : dict
-                - id : int
-                - state : str
-                - created_at : str (time)
-                    The time that the run was queued.
-                - started_at : str (time)
-                    The time that the run started.
-                - finished_at : str (time)
-                    The time that the run completed.
-                - error : str
-                    The error message for this run, if present.
-            - my_permission_level : str
-                Your permission level on the object. One of "read", "write", or
-                "manage".
-            - hidden : bool
-                The hidden status of the item.
-            - target_project_id : int
-                Target project to which script outputs will be added.
-            - archived : str
-                The archival status of the requested item(s).
-            - sql : str
-                The raw SQL query for the script.
-            - expanded_arguments : dict
-                Expanded arguments for use in injecting into different environments.
-            - template_script_id : int
-                The ID of the template script, if any.
-        """
-        ...
-
     def post_run(
         self,
         id: int,
     ) -> Response:
-        """Run a script
+        """Run a SQL script (legacy)
 
         Parameters
         ----------
@@ -31973,6 +31923,189 @@ class _Scripts:
                 The state of the run, one of 'queued', 'running' or 'cancelled'.
             - is_cancel_requested : bool
                 True if run cancel requested, else false.
+        """
+        ...
+
+    def get(
+        self,
+        id: int,
+    ) -> Response:
+        """Get details about a SQL script (legacy)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the script.
+
+        Returns
+        -------
+        :class:`civis.response.Response`
+            - id : int
+                The ID for the script.
+            - name : str
+                The name of the script.
+            - type : str
+                The type of script.
+            - created_at : str (time)
+                The time this script was created.
+            - updated_at : str (time)
+                The time this script was last updated.
+            - author : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the script's last run.
+            - finished_at : str (time)
+                The time that the script's last run finished.
+            - category : str
+                The category of the script.
+            - projects : List[dict]
+                A list of projects containing the script.
+
+                - id : int
+                    The ID for the project.
+                - name : str
+                    The name of the project.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[dict]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : str
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[dict]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : dict
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - is_template : bool
+                Whether others scripts use this one as a template.
+            - published_as_template_id : int
+                The ID of the template that this script is backing.
+            - from_template_id : int
+                The ID of the template this script uses, if any.
+            - template_dependents_count : int
+                How many other scripts use this one as a template.
+            - template_script_name : str
+                The name of the template script.
+            - links : dict
+                - details : str
+                    The details link to get more information about the script.
+                - runs : str
+                    The runs link to get the run information list for this script.
+            - schedule : dict
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : dict
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : dict
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - last_run : dict
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - archived : str
+                The archival status of the requested item(s).
+            - sql : str
+                The raw SQL query for the script.
+            - expanded_arguments : dict
+                Expanded arguments for use in injecting into different environments.
+            - template_script_id : int
+                The ID of the template script, if any.
         """
         ...
 
@@ -36999,6 +37132,7 @@ class _Scripts:
         running_as_id: int | None = ...,
         dbt_project: dict | None = ...,
         repo_ref: str | None = ...,
+        target_database: dict | None = ...,
     ) -> Response:
         """Create a dbt Script
 
@@ -37119,10 +37253,6 @@ class _Scripts:
                 generate_profiles.
             - schema : str
                 The output schema for dbt to use.
-            - remote_host_id : int
-                The remote host ID that this script will connect to.
-            - credential_id : int
-                The credential that this script will use.
             - project_dir : str
                 The path to dbt_project.yml. Defaults to the root of the repository.
                 Generates 'DBT_PROJECT_DIR' environment variable.
@@ -37137,10 +37267,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
-                Updates every time a run succeeds.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -37148,6 +37283,11 @@ class _Scripts:
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, a tag, or the full or shortened SHA of a commit. Defaults to
             'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
 
         Returns
         -------
@@ -37344,10 +37484,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -37362,10 +37498,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -37375,6 +37516,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -37583,10 +37729,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -37601,10 +37743,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -37614,6 +37761,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -37639,6 +37791,7 @@ class _Scripts:
         running_as_id: int | None = ...,
         dbt_project: dict | None = ...,
         repo_ref: str | None = ...,
+        target_database: dict | None = ...,
     ) -> Response:
         """Replace all attributes of this dbt Script
 
@@ -37759,10 +37912,6 @@ class _Scripts:
                 generate_profiles.
             - schema : str
                 The output schema for dbt to use.
-            - remote_host_id : int
-                The remote host ID that this script will connect to.
-            - credential_id : int
-                The credential that this script will use.
             - project_dir : str
                 The path to dbt_project.yml. Defaults to the root of the repository.
                 Generates 'DBT_PROJECT_DIR' environment variable.
@@ -37777,10 +37926,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
-                Updates every time a run succeeds.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -37788,6 +37942,11 @@ class _Scripts:
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, a tag, or the full or shortened SHA of a commit. Defaults to
             'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
 
         Returns
         -------
@@ -37984,10 +38143,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -38002,10 +38157,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -38015,6 +38175,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -38040,6 +38205,7 @@ class _Scripts:
         dbt_project: dict | None = ...,
         repo_http_uri: str | None = ...,
         repo_ref: str | None = ...,
+        target_database: dict | None = ...,
     ) -> Response:
         """Update some attributes of this dbt Script
 
@@ -38158,10 +38324,6 @@ class _Scripts:
                 generate_profiles.
             - schema : str
                 The output schema for dbt to use.
-            - remote_host_id : int
-                The remote host ID that this script will connect to.
-            - credential_id : int
-                The credential that this script will use.
             - project_dir : str
                 The path to dbt_project.yml. Defaults to the root of the repository.
                 Generates 'DBT_PROJECT_DIR' environment variable.
@@ -38176,10 +38338,15 @@ class _Scripts:
                 The primary dbt command to run. Valid commands are build, run, test,
                 compile, and retry.
             - dbt_command_line_args : str
-                Additional command line arguments to pass to dbt.
+                Additional command line arguments to pass to dbt. Ignored when dbt
+                retry command is selected.
             - docs_report_id : str
                 The ID of the HTML report hosting the static dbt docs for this job.
-                Updates every time a run succeeds.
+                Updates every time a run succeeds. This report will be automatically
+                shared with all users who are shared on the job.
+            - skip_docs_generation : bool
+                Whether to skip dbt docs generation. If true, the linked docs report
+                will not be updated when the script runs. Defaults to false.
             - generate_profiles : bool
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
@@ -38189,6 +38356,11 @@ class _Scripts:
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, a tag, or the full or shortened SHA of a commit. Defaults to
             'main'.
+        target_database : dict, optional
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
 
         Returns
         -------
@@ -38385,10 +38557,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -38403,10 +38571,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -38416,6 +38589,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -46869,10 +47047,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -46887,10 +47061,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -46900,6 +47079,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -49366,10 +49550,6 @@ class _Scripts:
                     generate_profiles.
                 - schema : str
                     The output schema for dbt to use.
-                - remote_host_id : int
-                    The remote host ID that this script will connect to.
-                - credential_id : int
-                    The credential that this script will use.
                 - project_dir : str
                     The path to dbt_project.yml. Defaults to the root of the
                     repository. Generates 'DBT_PROJECT_DIR' environment variable.
@@ -49384,10 +49564,15 @@ class _Scripts:
                     The primary dbt command to run. Valid commands are build, run,
                     test, compile, and retry.
                 - dbt_command_line_args : str
-                    Additional command line arguments to pass to dbt.
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
                 - docs_report_id : str
                     The ID of the HTML report hosting the static dbt docs for this job.
-                    Updates every time a run succeeds.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
                 - generate_profiles : bool
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
@@ -49397,6 +49582,11 @@ class _Scripts:
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
                 to 'main'.
+            - target_database : dict
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
         """
         ...
 
@@ -55094,10 +55284,10 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : List[str]
-                Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
+            - notification_emails : List[str]
+                Addresses to notify by e-mail when the limit is reached.
         """
         ...
 
@@ -55126,10 +55316,10 @@ class _Usage_Limits:
             - hard_limit : int
                 The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
                 2000000000.
-            - notification_emails : List[str]
-                Addresses to notify by e-mail when the limit is reached.
             - task : str
                 The category of this limit. One of 'IDR' or 'CDM'.
+            - notification_emails : List[str]
+                Addresses to notify by e-mail when the limit is reached.
         """
         ...
 
@@ -55156,8 +55346,7 @@ class _Usage_Limits:
             - updated_at : str (time)
                 The time the limit was last updated.
             - hard_limit : int
-                The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
-                2000000000.
+                The limit value. One of 1000, 10000, 50000, and 100000.
         """
         ...
 
@@ -55184,8 +55373,7 @@ class _Usage_Limits:
             - updated_at : str (time)
                 The time the limit was last updated.
             - hard_limit : int
-                The limit value. One of 50000000, 200000000, 500000000, 1000000000, and
-                2000000000.
+                The limit value. One of 1000, 10000, 50000, and 100000.
         """
         ...
 
@@ -56624,6 +56812,78 @@ class _Users:
         id: int,
     ) -> Response:
         """Unfavorite an item
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_top(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite to the top of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_bottom(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite to the bottom of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_higher(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite one position closer to the top of the list
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def patch_me_favorites_ranking_lower(
+        self,
+        id: int,
+    ) -> Response:
+        """Move a favorite one position closer to the bottom of the list
 
         Parameters
         ----------
@@ -58913,6 +59173,7 @@ class _Workflows:
 # before we can define APIClient to use them.
 class APIClient:
     default_credential: int | None
+    default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
     last_response: Any
