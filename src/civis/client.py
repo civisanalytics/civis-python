@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 import logging
 import textwrap
+import warnings
 from typing import TYPE_CHECKING
 
 import civis
@@ -168,6 +169,18 @@ class APIClient:
         >>> client.get_database_credential_id(1111, 'redshift-general')
         1111
         """
+        warnings.warn(
+            "The method `get_database_credential_id` is deprecated and will be removed "
+            "at civis-python v3.0.0. Its continued usage is strongly discouraged. "
+            "Given the way Civis Platform has evolved over the years, "
+            "there's currently no reliable way to get a database credential ID "
+            "from a username and database name. No replacement for this method is "
+            "being planned. If you need to programmatically access a database "
+            "credential ID that is or may likely be the default credential, "
+            "consider the property `default_credential`.",
+            FutureWarning,
+            stacklevel=2,  # Point to the user code that calls this method.
+        )
         if isinstance(username, int):
             return username
         else:
