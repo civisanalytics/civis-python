@@ -21,7 +21,7 @@ with open(API_SPEC_PATH) as f:
 
 RESPONSE_DOC = """Returns
 -------
-:class:`civis.response.Response`
+:class:`civis.Response`
     - id : int
         The ID of the credential.
     - name : str
@@ -52,7 +52,14 @@ def test_create_method_iterator_kwarg():
         {"name": "order_by", "in": "query", "required": False, "doc": ""},
     ]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
 
@@ -68,7 +75,14 @@ def test_create_method_no_iterator_kwarg():
     # unexpected "iterator" parameter is passed in
     args = [{"name": "id", "in": "query", "required": True, "doc": ""}]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
 
@@ -81,7 +95,14 @@ def test_create_method_no_iterator_kwarg():
     # code path; verify that this also rejects unexpected arguments.
     args2 = [{"name": "foo", "in": "query", "required": False, "doc": ""}]
     method2 = _resources.create_method(
-        args2, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args2,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint2 = mock.MagicMock()
     with pytest.raises(TypeError) as excinfo:
@@ -104,6 +125,7 @@ def test_property_type():
     assert _resources.property_type(prop) == "List"
     assert _resources.property_type(prop2) == "dict"
     assert _resources.property_type(prop3) == "str (date)"
+    assert _resources.property_type(prop3, get_format=False) == "str"
 
 
 def test_name_and_type_doc():
@@ -350,12 +372,19 @@ def test_type_from_param():
         {"type": "array"},
         {"type": "array", "items": {"type": "integer"}},
         {"type": "array", "items": {"$ref": "#/definitions/Object0"}},
+        {"type": "object"},
     ]
     assert _resources.type_from_param(params[0]) == "str"
     assert _resources.type_from_param(params[1]) == "int"
     assert _resources.type_from_param(params[2]) == "List"
     assert _resources.type_from_param(params[3]) == "List[int]"
     assert _resources.type_from_param(params[4]) == "List[dict]"
+    assert _resources.type_from_param(params[4], skip_dict_item_type=True) == "List"
+    assert _resources.type_from_param(params[5]) == "dict"
+    assert (
+        _resources.type_from_param(params[5], in_returned_object=True)
+        == ":class:`civis.Response`"
+    )  # noqa: E501
 
 
 def test_iterable_method():
@@ -533,7 +562,14 @@ def _create_mock_endpoint():
         {"name": "bar", "in": "query", "required": False, "doc": ""},
     ]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = mock.MagicMock()
     return mock_endpoint, method
@@ -586,7 +622,14 @@ def test_create_method_keyword_only():
 def test_create_method_deprecation_warning():
     args = [{"name": "foo", "in": "query", "required": True, "doc": ""}]
     method = _resources.create_method(
-        args, "get", "mock_name", "/objects", "deprecation", "param_doc", "resp_doc"
+        args,
+        "get",
+        "mock_name",
+        "/objects",
+        "deprecation",
+        "param_doc",
+        "resp_doc",
+        "return_annotation",
     )
     mock_endpoint = Endpoint({"api_key": "abc"}, client=create_client_mock())
     mock_endpoint._make_request = mock.Mock()
@@ -688,3 +731,8 @@ def test_generate_classes_with_ttl_cache__expire_cache(mock_gen, mock_expire_tim
         # so that we should trigger the cache clearing at every iteration.
         time.sleep(0.001)
     assert mock_gen.call_count == 5
+
+
+@pytest.mark.parametrize("source, expected", [("ab_cd", "AbCd"), ("", "")])
+def test_snake_to_camel(source, expected):
+    assert _resources._snake_to_camel(source) == expected

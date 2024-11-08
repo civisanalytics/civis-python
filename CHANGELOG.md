@@ -15,13 +15,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
   accept a new `description` keyword argument for the new `description` attribute
   of Civis file objects. (#498, #500)
+- `Response` objects are now fully typed through the attribute syntax. (#501)
+- Both `Response` and `PaginatedResponse` are now directly available under the `civis` namespace. (#501)
+- Added support for Python 3.13. (#501)
 
 ### Changed
+- When a `PaginatedResponse` object is returned from an API call,
+  a user-specified `limit` kwarg is now honored to facilitate speeding up the pagination. (#501)
+
 ### Deprecated
 ### Removed
 - Dropped support for Python 3.9. (#499)
 
 ### Fixed
+- The repr form of `Response` objects is now the dict-based `Response({‘spam’: 123})`
+  instead of the dataclass-based `Response(spam=123)`, since response object keys can
+  be invalid Python identifiers. (#501)
+- In `Response` object instantiation, object keys that originate from environment variables
+  are now preserved for their (customarily upper-) case even in the default snake-case setting. (#501)
+- In `Response` object instantiation, an API response that represents a JSONValue object
+  now has its `value` attribute unmodified as the Python object representation
+  of the deserialized JSON form (as opposed to being converted to a `Response`-based form). (#501)
+
 ### Security
 
 ## 2.3.0 - 2024-06-14
@@ -90,7 +105,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 (Changes documented in this section are not repeated in the following sections.)
 
-- A `civis.response.Response` object is no longer mutable.
+- A `civis.response.Response` object is no longer mutable
+  (implementationally, it subclassed `dict` before, which is no longer the case).
   More concretely, both the "setitem" (e.g., `response["foo"] = "bar"`)
   and "setattr" (e.g., `response.foo = "bar"`) operations
   would now raise an `CivisImmutableResponseError` exception. (#463)

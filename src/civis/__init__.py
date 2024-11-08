@@ -5,8 +5,16 @@ from typing import TYPE_CHECKING
 
 from civis.client import APIClient
 from civis.loggers import civis_logger
-from civis.response import find, find_one
+from civis.response import find, find_one, Response, PaginatedResponse
 from civis.service_client import ServiceClient
+
+
+try:
+    # __sphinx_build__ is injected into bulitins in docs/source/conf.py.
+    if __sphinx_build__:
+        _BUILDING_SPHINX_DOC = True
+except NameError:
+    _BUILDING_SPHINX_DOC = False
 
 
 def _lazy_import(name):
@@ -20,7 +28,8 @@ def _lazy_import(name):
     return module
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or _BUILDING_SPHINX_DOC:
+    # Regularly loaded modules are needed for typing information and doc generation.
     from civis import futures, io, ml, parallel, utils, workflows
 else:
     futures = _lazy_import("civis.futures")
@@ -40,7 +49,9 @@ __all__ = [
     "io",
     "civis_logger",
     "ml",
+    "PaginatedResponse",
     "parallel",
+    "Response",
     "ServiceClient",
     "utils",
     "workflows",

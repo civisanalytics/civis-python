@@ -15,7 +15,7 @@ from civis import APIClient
 from civis.resources import API_SPEC_PATH
 
 
-_CLIENT = APIClient(local_api_spec=API_SPEC_PATH)
+_CLIENT = APIClient(local_api_spec=API_SPEC_PATH, api_key="no-key-needed")
 
 
 def _endpoint_method_params(endpoint: str, method: str) -> tuple[list[str], list[str]]:

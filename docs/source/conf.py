@@ -13,10 +13,17 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import builtins
+import inspect
 import os
 import datetime
 
-import civis
+# Set __sphinx_build__ before we import "civis", so that within the "civis" namespace,
+# we can tell whether we're running the Sphinx doc build or not.
+# https://stackoverflow.com/a/65147676
+builtins.__sphinx_build__ = True
+
+import civis  # noqa: E402
 
 # -- General configuration ------------------------------------------------
 
@@ -314,7 +321,6 @@ numpydoc_show_class_members = True
 # Preserve signatures of a few methods wrapped with lru_cache. Need to set
 # this before we import civis. See https://stackoverflow.com/a/28371786.
 import functools  # noqa: E402
-import inspect  # noqa: E402
 
 
 def noop_lru_cache(*args, **kwargs):
@@ -343,8 +349,21 @@ def _make_attr_docs(class_names, module_path):
 
 
 def _attach_classes_to_module(module, class_data):
-    for class_name, cls in class_data.items():
-        setattr(module, class_name.title(), cls)
+    for class_name, klass in class_data.items():
+        # Modify the endpoint method's return annotaiton, so that in the compiled
+        # Sphinx docs we show the user-friendly Response or Paginated instead of
+        # something like _ResponseScriptsList.
+        for name, method in vars(klass).items():
+            if name.startswith("_"):
+                continue
+            signature = inspect.signature(method)
+            if signature.return_annotation.__name__ == "Iterator":
+                new_return_anno = list[civis.Response] | civis.PaginatedResponse
+            else:
+                new_return_anno = civis.Response
+            method.__signature__ = signature.replace(return_annotation=new_return_anno)
+            setattr(klass, name, method)
+        setattr(module, class_name.title(), klass)
 
 
 _autodoc_fmt = (
@@ -387,8 +406,6 @@ def _write_resources_rst(class_names, filename, civis_module):
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
 
-
-import civis  # noqa: E402
 
 _generated_attach_point = civis.resources._resources
 _generated_attach_path = "civis.resources._resources"

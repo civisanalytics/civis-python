@@ -1,8 +1,10 @@
 import inspect
 import os
 import textwrap
+import typing
 
 from civis.resources import generate_classes_maybe_cached
+from civis.response import Response
 
 
 CLIENT_PYI_PATH = os.path.join(
@@ -25,6 +27,17 @@ def _get_annotation(param):
         return f"{param.annotation} | None"
 
 
+def _extract_nested_response_classes(response_classes, return_type):
+    response_classes[return_type.__name__] = return_type
+    for typ in return_type.__annotations__.values():
+        if isinstance(typ, str):
+            continue
+        if isinstance(typ, typing._GenericAlias):
+            typ = typing.get_args(typ)[0]
+        response_classes = _extract_nested_response_classes(response_classes, typ)
+    return response_classes
+
+
 def generate_client_pyi(client_pyi_path, api_spec_path):
     classes = generate_classes_maybe_cached(
         api_spec_path, api_key="not_needed", api_version="1.0"
@@ -36,12 +49,15 @@ def generate_client_pyi(client_pyi_path, api_spec_path):
 # Do not edit it by hand.
 
 from collections import OrderedDict
+from collections.abc import Iterator
 from typing import Any, List
 
-from civis.response import Response, PaginatedResponse
+from civis.response import Response
 
 """
         )
+
+        response_classes = {}
 
         for endpoint_name, endpoint_class in classes.items():
             f.write(f"class {_get_endpoint_class_name(endpoint_name)}:\n")
@@ -50,11 +66,18 @@ from civis.response import Response, PaginatedResponse
                 method_def = ""
                 if method_name.startswith("_"):
                     continue
+                signature = inspect.signature(method)
+                return_type = signature.return_annotation
+                if return_type is not Response:
+                    if return_type.__name__ == "Iterator":
+                        response_classes = _extract_nested_response_classes(
+                            response_classes, typing.get_args(return_type)[0]
+                        )
+                    else:
+                        response_classes = _extract_nested_response_classes(
+                            response_classes, return_type
+                        )
                 params = inspect.signature(method).parameters
-                if "iterator" in params:
-                    return_type = "PaginatedResponse"
-                else:
-                    return_type = "Response"
                 method_def += f"    def {method_name}(\n"
                 for param_name, param in params.items():
                     annotation = _get_annotation(param)
@@ -64,11 +87,42 @@ from civis.response import Response, PaginatedResponse
                         method_def += f"        {param_name}: {annotation},\n"
                     else:
                         method_def += f"        {param_name}: {annotation} = ...,\n"
-                method_def += f"    ) -> {return_type}:\n"
+                if return_type.__name__ == "Iterator":
+                    return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                else:
+                    return_str = return_type.__name__
+                method_def += f"    ) -> {return_str}:\n"
                 method_doc = textwrap.indent(method.__doc__, " " * 8).lstrip()
                 method_def += f'        """{method_doc}\n        """\n        ...\n'
                 method_defs.append(method_def)
             f.write("\n".join(method_defs))
+            f.write("\n")
+
+        for response_class in response_classes.values():
+            if len(line1 := f"class {response_class.__name__}(Response):") <= 88:
+                f.write(f"{line1}\n")
+            elif len(line2 := f"class {response_class.__name__}(") <= 88:
+                f.write(f"{line2}\n    Response\n):\n")
+            else:
+                f.write(
+                    f"class {response_class.__name__}(  # noqa: E501\n"
+                    "    Response\n):\n"
+                )
+            for name, anno in response_class.__annotations__.items():
+                inner_anno_str = None
+                if isinstance(anno, str):
+                    anno_str = anno
+                elif isinstance(anno, typing._GenericAlias):
+                    inner_anno_str = typing.get_args(anno)[0].__name__
+                    anno_str = f"{anno.__name__}[{inner_anno_str}]"
+                else:
+                    anno_str = anno.__name__
+                if len(line := f"    {name}: {anno_str}") <= 88:
+                    f.write(f"{line}\n")
+                elif anno_str.startswith("List"):
+                    f.write(f"    {name}: List[\n        {inner_anno_str}\n    ]\n")
+                else:
+                    f.write(f"    {name}: (\n        {anno_str}\n    )\n")
             f.write("\n")
 
         f.write(

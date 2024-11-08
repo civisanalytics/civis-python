@@ -141,7 +141,7 @@ class ServiceClient:
 
             - ``'raw'`` Returns the raw :class:`requests:requests.Response`
             object.
-            - ``'snake'`` Returns a :class:`civis.response.Response` object
+            - ``'snake'`` Returns a :class:`civis.Response` object
             for the json-encoded content of a response. This maps the
             top-level json keys to snake_case.
         local_api_spec : collections.OrderedDict or string, optional
