@@ -163,7 +163,11 @@ class Endpoint:
             resp = PaginatedResponse(path, params, self)
         else:
             resp = self._make_request(method, path, params, data, **kwargs)
-            resp = convert_response_data_type(resp, return_type=self._return_type)
+            resp = convert_response_data_type(
+                resp,
+                return_type=self._return_type,
+                from_json_values=(path or "").startswith("json_values"),
+            )
         self._client.last_response = resp
         return resp
 

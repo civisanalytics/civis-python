@@ -33,7 +33,7 @@ DEFAULT_RETRYING = eval(  # nosec
 
 def get_api_key(api_key):
     """Pass-through if `api_key` is not None otherwise tries the CIVIS_API_KEY
-    environmental variable.
+    environment variable.
     """
     if api_key is not None:  # always prefer user given one
         return api_key

@@ -1,4 +1,3 @@
-import dataclasses
 import json
 import pprint
 
@@ -8,6 +7,11 @@ from civis._camel_to_snake import camel_to_snake
 
 
 _RETURN_TYPES = frozenset({"snake", "raw"})
+
+# "arguments": Script arguments are often environment variables in
+# ALL_CAPS that we don't want to convert to snake_case.
+# "environmentVariables": from objects under the `Services` endpoint
+_RESPONSE_KEYS_PRESERVE_CASE = frozenset({"arguments", "environmentVariables"})
 
 
 class CivisClientError(Exception):
@@ -51,7 +55,9 @@ def _response_to_json(response):
             raise CivisClientError("Unable to parse JSON from response", response)
 
 
-def convert_response_data_type(response, headers=None, return_type="snake"):
+def convert_response_data_type(
+    response, headers=None, return_type="snake", from_json_values=False
+):
     """Convert a raw response into a given type.
 
     Parameters
@@ -65,10 +71,12 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
     return_type : string, {'snake', 'raw'}
         Convert the response to this type. See documentation on
         `civis.APIClient` for details of the return types.
+    from_json_values : bool, optional
+        If True, the `response` comes from the `json_values` endpoint.
 
     Returns
     -------
-    list, dict, `civis.response.Response`, or `requests.Response`
+    list, dict, `civis.Response`, or `requests.Response`
         Depending on the value of `return_type`.
     """
     if return_type == "raw":
@@ -82,9 +90,12 @@ def convert_response_data_type(response, headers=None, return_type="snake"):
             data = response
 
         if isinstance(data, list):
-            return [Response(d, headers=headers) for d in data]
+            return [
+                Response(d, headers=headers, from_json_values=from_json_values)
+                for d in data
+            ]
         else:
-            return Response(data, headers=headers)
+            return Response(data, headers=headers, from_json_values=from_json_values)
 
     else:
         raise ValueError(f"Return type not one of {set(_RETURN_TYPES)}: {return_type}")
@@ -114,7 +125,9 @@ class Response:
         Total number of calls per API rate limit period.
     """
 
-    def __init__(self, json_data, *, headers=None, snake_case=True):
+    def __init__(
+        self, json_data, *, headers=None, snake_case=True, from_json_values=False
+    ):
         self.json_data = json_data
         self.headers = headers
         self.calls_remaining = (
@@ -131,10 +144,15 @@ class Response:
         if json_data is not None:
             for key, v in json_data.items():
 
-                if isinstance(v, dict):
-                    # Script arguments are often environment variables in
-                    # ALL_CAPS that we don't want to convert to snake_case.
-                    if key == "arguments":
+                if key == "value" and (
+                    from_json_values or json_data.get("objectType") == "JSONValue"
+                ):
+                    # When json_data represents a JSONValue (either from one of the
+                    # methods under the `json_values` endpoint or from a script's run
+                    # output), `v` is the deserialized JSON.
+                    val = v
+                elif isinstance(v, dict):
+                    if key in _RESPONSE_KEYS_PRESERVE_CASE:
                         val = Response(v, snake_case=False)
                     else:
                         val = Response(v)
@@ -209,22 +227,17 @@ class Response:
     def __getattr__(self, item):
         try:
             return self.__getitem__(item)
-        except KeyError as e:
-            raise AttributeError(f"Response object has no attribute {str(e)}")
+        except KeyError:
+            raise AttributeError(f"Response object has no attribute {item!r}")
 
     def __len__(self):
         return len(self._data_snake)
 
     def __repr__(self):
-        return repr(self._to_dataclass_repr_pprint())
+        return f"Response({repr(self._data_snake)})"
 
     def __hash__(self):
         return hash(json.dumps(self.json_data))
-
-    def _to_dataclass_repr_pprint(self):
-        """Convert the response to a dataclass for repr and pprint purposes."""
-        klass = dataclasses.make_dataclass("Response", self._data_snake.keys())
-        return klass(**self._data_snake)
 
     def _repr_pretty_(self, p, cycle):
         """Pretty-print the response object in IPython and Jupyter.
@@ -234,7 +247,7 @@ class Response:
         if cycle:
             p.text("Response(...)")
         else:
-            p.text(pprint.pformat(self._to_dataclass_repr_pprint()))
+            p.text(pprint.pformat(self))
 
     def get(self, key, default=None):
         """Get the value for the given key."""
@@ -260,19 +273,66 @@ class Response:
         self.__dict__ = state
 
 
-class _ResponsePrettyPrinter(pprint.PrettyPrinter):
-    """Override pprint.PrettyPrinter so that pprint.pprint(response) works nicely.
+class _safe_key:
+    """Helper function for key functions when sorting unorderable objects.
 
-    https://stackoverflow.com/a/15417704
+    The wrapped-object will fallback to a Py2.x style comparison for
+    unorderable types (sorting first comparing the type name and then by
+    the obj ids).  Does not work recursively, so dict.items() must have
+    _safe_key applied to both the key and the value.
+
+    Source: https://github.com/python/cpython/blob/3.13/Lib/pprint.py#L80-L100
     """
 
-    def _format(self, obj, stream, indent, allowance, context, level):
-        if isinstance(obj, Response):
-            obj = obj._to_dataclass_repr_pprint()
-        super()._format(obj, stream, indent, allowance, context, level)
+    __slots__ = ["obj"]
+
+    def __init__(self, obj):
+        self.obj = obj
+
+    def __lt__(self, other):
+        try:
+            return self.obj < other.obj
+        except TypeError:
+            return (str(type(self.obj)), id(self.obj)) < (
+                str(type(other.obj)),
+                id(other.obj),
+            )
 
 
-pprint.PrettyPrinter = _ResponsePrettyPrinter
+def _safe_tuple(t):
+    """Helper function for comparing 2-tuples
+
+    Source: https://github.com/python/cpython/blob/3.13/Lib/pprint.py#L102-L104
+    """
+    return _safe_key(t[0]), _safe_key(t[1])
+
+
+def _pprint_response(self, object, stream, indent, allowance, context, level):
+    """Pretty-print a Response object.
+
+    Inspired by https://stackoverflow.com/a/52521743
+    Based on python's dict pprint:
+    https://github.com/python/cpython/blob/3.7/Lib/pprint.py#L180-L192
+    """
+    write = stream.write
+    object = object._data_snake
+    write("Response({")
+    if self._indent_per_level > 1:
+        write((self._indent_per_level - 1) * " ")
+    length = len(object)
+    if length:
+        if self._sort_dicts:
+            items = sorted(object.items(), key=_safe_tuple)
+        else:
+            items = object.items()
+        # The 9 in `indent + 9` is the length of "Response(".
+        self._format_dict_items(
+            items, stream, indent + 9, allowance + 1, context, level
+        )
+    write("})")
+
+
+pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response
 
 
 class PaginatedResponse:
@@ -284,7 +344,7 @@ class PaginatedResponse:
         Make GET requests to this path.
     initial_params : dict
         Query params that should be passed along with each request. Note that
-        if `initial_params` contains the keys `page_num` or `limit`, they will
+        if `initial_params` contains the key `page_num`, it will
         be ignored. The given dict is not modified.
     endpoint : `civis.base.Endpoint`
         An endpoint used to make API requests.
@@ -308,10 +368,8 @@ class PaginatedResponse:
         self._params = initial_params.copy()
         self._endpoint = endpoint
 
-        # We are paginating through all items, so start at the beginning and
-        # let the API determine the limit.
+        # We are paginating through all items, so start at the beginning.
         self._params["page_num"] = 1
-        self._params.pop("limit", None)
 
         self._iter = None
 
@@ -330,6 +388,7 @@ class PaginatedResponse:
                     data,
                     headers=response.headers,
                     return_type=self._endpoint._return_type,
+                    from_json_values=(self._path or "").startswith("json_values"),
                 )
                 yield converted_data
 
@@ -342,14 +401,14 @@ class PaginatedResponse:
 
 
 def find(object_list, filter_func=None, **kwargs):
-    """Filter :class:`civis.response.Response` objects.
+    """Filter :class:`civis.Response` objects.
 
     Parameters
     ----------
     object_list : iterable
         An iterable of arbitrary objects, particularly those with attributes
         that can be targeted by the filters in `kwargs`. A major use case is
-        an iterable of :class:`civis.response.Response` objects.
+        an iterable of :class:`civis.Response` objects.
     filter_func : callable, optional
         A one-argument function. If specified, `kwargs` are ignored.
         An `object` from the input iterable is kept in the returned list
@@ -375,9 +434,9 @@ def find(object_list, filter_func=None, **kwargs):
     --------
     >>> import civis
     >>> client = civis.APIClient()
-    >>> # creds is a list of civis.response.Response objects
+    >>> # creds is a list of civis.Response objects
     >>> creds = client.credentials.list()
-    >>> # target_creds contains civis.response.Response objects
+    >>> # target_creds contains civis.Response objects
     >>> # with the attribute 'name' == 'username'
     >>> target_creds = find(creds, name='username')
 
@@ -408,7 +467,7 @@ def find(object_list, filter_func=None, **kwargs):
 
 
 def find_one(object_list, filter_func=None, **kwargs):
-    """Return one satisfying :class:`civis.response.Response` object.
+    """Return one satisfying :class:`civis.Response` object.
 
     The arguments are the same as those for :func:`civis.find`.
     If more than one object satisfies the filtering criteria,

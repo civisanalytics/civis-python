@@ -31,7 +31,7 @@ class APIClient:
         The following types are implemented:
 
         - ``'raw'`` Returns the raw :class:`requests:requests.Response` object.
-        - ``'snake'`` Returns a :class:`civis.response.Response` object for the
+        - ``'snake'`` Returns a :class:`civis.Response` object for the
           json-encoded content of a response. This maps the top-level json
           keys to snake_case.
     api_version : string, optional
