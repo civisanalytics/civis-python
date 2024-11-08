@@ -15,11 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
   accept a new `description` keyword argument for the new `description` attribute
   of Civis file objects. (#498, #500)
-- Added the new property `default_database_credential_id` at `civis.APIClient`,
-  which is going to replace the existing `default_credential`. (#502)
 - `Response` objects are now fully typed through the attribute syntax. (#501)
 - Both `Response` and `PaginatedResponse` are now directly available under the `civis` namespace. (#501)
 - Added support for Python 3.13. (#501)
+- Added the new property `default_database_credential_id` at `civis.APIClient`,
+  which is going to replace the existing `default_credential`. (#502)
 
 ### Changed
 - When a `PaginatedResponse` object is returned from an API call,
