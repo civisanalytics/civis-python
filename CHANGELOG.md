@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## 2.4.0 - 2024-11-11
+
+### Added
 - The new kwarg `retries` has been added to `civis.APIClient` so that
   a `tenacity.Retrying` instance can be provided to customize retries. (#495)
 - Added `civis.workflows.validate_workflow_yaml`
@@ -44,8 +58,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - In `Response` object instantiation, an API response that represents a JSONValue object
   now has its `value` attribute unmodified as the Python object representation
   of the deserialized JSON form (as opposed to being converted to a `Response`-based form). (#501)
-
-### Security
 
 ## 2.3.0 - 2024-06-14
 
