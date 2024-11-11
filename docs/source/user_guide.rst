@@ -146,7 +146,7 @@ the current user.
 .. code:: python
 
    >>> db_id = client.get_database_id('cluster-name')
-   >>> cred_id = client.default_credential
+   >>> cred_id = client.default_database_credential_id
 
 In order to export a table, we need to write some SQL that will generate the
 data to export. Then we create the export job and run it.

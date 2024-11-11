@@ -18,12 +18,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Response` objects are now fully typed through the attribute syntax. (#501)
 - Both `Response` and `PaginatedResponse` are now directly available under the `civis` namespace. (#501)
 - Added support for Python 3.13. (#501)
+- Added the new property `default_database_credential_id` at `civis.APIClient`,
+  which is going to replace the existing `default_credential`. (#502)
 
 ### Changed
 - When a `PaginatedResponse` object is returned from an API call,
   a user-specified `limit` kwarg is now honored to facilitate speeding up the pagination. (#501)
 
 ### Deprecated
+- The method `get_database_credential_id` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0. There's no replacement for this method. (#502)
+- The property `default_credential` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0,
+  in favor of the new property `default_database_credential_id`. (#502)
+
 ### Removed
 - Dropped support for Python 3.9. (#499)
 

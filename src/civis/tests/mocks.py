@@ -1,5 +1,6 @@
 """Mock client creation and tooling"""
 
+import warnings
 from functools import lru_cache
 from unittest import mock
 
@@ -30,7 +31,9 @@ def create_client_mock(cache=None):
     real_client = _real_client(cache)
 
     # Prevent the client from trying to talk to the real API when autospeccing
-    with mock.patch("requests.Session", mock.MagicMock):
+    with mock.patch("requests.Session", mock.MagicMock), warnings.catch_warnings():
+        # Ignore deprecation warning from `client.default_credential`.
+        warnings.simplefilter("ignore", FutureWarning)
         mock_client = mock.create_autospec(real_client, spec_set=True)
 
     return mock_client

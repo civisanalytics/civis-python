@@ -346,7 +346,7 @@ def read_civis_sql(
         raise ImportError("use_pandas is True but pandas is not installed.")
 
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
 
     script_id, run_id = _sql_script(
         client,
@@ -485,7 +485,7 @@ def civis_to_csv(
         client = APIClient()
 
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
 
     # don't fix bug that would cause breaking change for now
     # when gzip compression is requested, a gzip file is not actually returned
@@ -1150,7 +1150,7 @@ def civis_file_to_table(
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
+    cred_id = credential_id or client.default_database_credential_id
     if delimiter is not None:  # i.e. it was provided as an argument
         delimiter = DELIMITERS.get(delimiter)
         if not delimiter:
@@ -1271,7 +1271,7 @@ def _sql_script(
 ):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
     csv_settings = csv_settings or {}
     sql_params_arguments = sql_params_arguments or {}
 

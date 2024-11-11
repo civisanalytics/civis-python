@@ -14186,12 +14186,15 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
-                        For Auto Imports. The maximum number of errors that can occur
-                        without the job failing.
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
-                        For Auto Imports. The behavior if a table with the requested
-                        name already exists.  One of "fail", "truncate", "append", or
-                        "drop".Defaults to "fail".
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
                         For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
@@ -14261,9 +14264,6 @@ class _Imports:
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
-                        For Google Doc Imports. A boolean value indicating whether or
-                        not the first row is a header row.
                     - export_action : str
                         For Google Doc Exports. The kind of export action you want to
                         have the export execute. Set to "newsprsht" if you want a new
@@ -14687,12 +14687,15 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
-                        For Auto Imports. The maximum number of errors that can occur
-                        without the job failing.
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
-                        For Auto Imports. The behavior if a table with the requested
-                        name already exists.  One of "fail", "truncate", "append", or
-                        "drop".Defaults to "fail".
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
                         For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
@@ -14762,9 +14765,6 @@ class _Imports:
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
-                        For Google Doc Imports. A boolean value indicating whether or
-                        not the first row is a header row.
                     - export_action : str
                         For Google Doc Exports. The kind of export action you want to
                         have the export execute. Set to "newsprsht" if you want a new
@@ -16476,12 +16476,15 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
-                        For Auto Imports. The maximum number of errors that can occur
-                        without the job failing.
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
-                        For Auto Imports. The behavior if a table with the requested
-                        name already exists.  One of "fail", "truncate", "append", or
-                        "drop".Defaults to "fail".
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
                         For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
@@ -16551,9 +16554,6 @@ class _Imports:
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
-                        For Google Doc Imports. A boolean value indicating whether or
-                        not the first row is a header row.
                     - export_action : str
                         For Google Doc Exports. The kind of export action you want to
                         have the export execute. Set to "newsprsht" if you want a new
@@ -16840,12 +16840,15 @@ class _Imports:
                             The worksheet tab id.
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
-                        For Auto Imports. The maximum number of errors that can occur
-                        without the job failing.
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
                     - existing_table_rows : str
-                        For Auto Imports. The behavior if a table with the requested
-                        name already exists.  One of "fail", "truncate", "append", or
-                        "drop".Defaults to "fail".
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop".Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
                     - diststyle : str
                         For Auto Imports. The diststyle to use for a Redshift table.
                     - distkey : str
@@ -16915,9 +16918,6 @@ class _Imports:
                         cannot be used.
                     - chunking_method : str
                         This parameter is deprecated
-                    - first_row_is_header : bool
-                        For Google Doc Imports. A boolean value indicating whether or
-                        not the first row is a header row.
                     - export_action : str
                         For Google Doc Exports. The kind of export action you want to
                         have the export execute. Set to "newsprsht" if you want a new
@@ -17119,12 +17119,15 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
-                For Auto Imports. The maximum number of errors that can occur without
-                the job failing.
+                For Google Doc and Auto Imports. The maximum number of errors that can
+                occur without the job failing.
             - existing_table_rows : str
-                For Auto Imports. The behavior if a table with the requested name
-                already exists.  One of "fail", "truncate", "append", or
+                For Google Doc and Auto Imports. The behavior if a table with the
+                requested name already exists.  One of "fail", "truncate", "append", or
                 "drop".Defaults to "fail".
+            - first_row_is_header : bool
+                For Google Doc and Auto Imports. A boolean value indicating whether or
+                not the first row is a header row.
             - diststyle : str
                 For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
@@ -17188,9 +17191,6 @@ class _Imports:
                 used.
             - chunking_method : str
                 This parameter is deprecated
-            - first_row_is_header : bool
-                For Google Doc Imports. A boolean value indicating whether or not the
-                first row is a header row.
             - export_action : str
                 For Google Doc Exports. The kind of export action you want to have the
                 export execute. Set to "newsprsht" if you want a new worksheet inside a
@@ -17270,12 +17270,15 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
-                    For Auto Imports. The maximum number of errors that can occur
-                    without the job failing.
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
-                    For Auto Imports. The behavior if a table with the requested name
-                    already exists.  One of "fail", "truncate", "append", or
-                    "drop".Defaults to "fail".
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
                     For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
@@ -17342,9 +17345,6 @@ class _Imports:
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
-                    For Google Doc Imports. A boolean value indicating whether or not
-                    the first row is a header row.
                 - export_action : str
                     For Google Doc Exports. The kind of export action you want to have
                     the export execute. Set to "newsprsht" if you want a new worksheet
@@ -17435,12 +17435,15 @@ class _Imports:
                     The worksheet tab id.
         advanced_options : dict, optional
             - max_errors : int
-                For Auto Imports. The maximum number of errors that can occur without
-                the job failing.
+                For Google Doc and Auto Imports. The maximum number of errors that can
+                occur without the job failing.
             - existing_table_rows : str
-                For Auto Imports. The behavior if a table with the requested name
-                already exists.  One of "fail", "truncate", "append", or
+                For Google Doc and Auto Imports. The behavior if a table with the
+                requested name already exists.  One of "fail", "truncate", "append", or
                 "drop".Defaults to "fail".
+            - first_row_is_header : bool
+                For Google Doc and Auto Imports. A boolean value indicating whether or
+                not the first row is a header row.
             - diststyle : str
                 For Auto Imports. The diststyle to use for a Redshift table.
             - distkey : str
@@ -17504,9 +17507,6 @@ class _Imports:
                 used.
             - chunking_method : str
                 This parameter is deprecated
-            - first_row_is_header : bool
-                For Google Doc Imports. A boolean value indicating whether or not the
-                first row is a header row.
             - export_action : str
                 For Google Doc Exports. The kind of export action you want to have the
                 export execute. Set to "newsprsht" if you want a new worksheet inside a
@@ -17586,12 +17586,15 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
-                    For Auto Imports. The maximum number of errors that can occur
-                    without the job failing.
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
-                    For Auto Imports. The behavior if a table with the requested name
-                    already exists.  One of "fail", "truncate", "append", or
-                    "drop".Defaults to "fail".
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
                     For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
@@ -17658,9 +17661,6 @@ class _Imports:
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
-                    For Google Doc Imports. A boolean value indicating whether or not
-                    the first row is a header row.
                 - export_action : str
                     For Google Doc Exports. The kind of export action you want to have
                     the export execute. Set to "newsprsht" if you want a new worksheet
@@ -17760,12 +17760,15 @@ class _Imports:
                         The worksheet tab id.
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
-                    For Auto Imports. The maximum number of errors that can occur
-                    without the job failing.
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
                 - existing_table_rows : str
-                    For Auto Imports. The behavior if a table with the requested name
-                    already exists.  One of "fail", "truncate", "append", or
-                    "drop".Defaults to "fail".
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop".Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
                 - diststyle : str
                     For Auto Imports. The diststyle to use for a Redshift table.
                 - distkey : str
@@ -17832,9 +17835,6 @@ class _Imports:
                     be used.
                 - chunking_method : str
                     This parameter is deprecated
-                - first_row_is_header : bool
-                    For Google Doc Imports. A boolean value indicating whether or not
-                    the first row is a header row.
                 - export_action : str
                     For Google Doc Exports. The kind of export action you want to have
                     the export execute. Set to "newsprsht" if you want a new worksheet
@@ -64570,6 +64570,7 @@ class _ResponseImportsPutArchiveSyncsDestinationGoogleWorksheet(Response):
 class _ResponseImportsPutArchiveSyncsAdvancedOptions(Response):
     max_errors: int
     existing_table_rows: str
+    first_row_is_header: bool
     diststyle: str
     distkey: str
     sortkey1: str
@@ -64591,7 +64592,6 @@ class _ResponseImportsPutArchiveSyncsAdvancedOptions(Response):
     partition_table_partition_column_max_name: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
-    first_row_is_header: bool
     export_action: str
     sql_query: str
     contact_lists: str
@@ -64778,6 +64778,7 @@ class _ResponseImportsPostSyncsDestinationGoogleWorksheet(Response):
 class _ResponseImportsPostSyncsAdvancedOptions(Response):
     max_errors: int
     existing_table_rows: str
+    first_row_is_header: bool
     diststyle: str
     distkey: str
     sortkey1: str
@@ -64799,7 +64800,6 @@ class _ResponseImportsPostSyncsAdvancedOptions(Response):
     partition_table_partition_column_max_name: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
-    first_row_is_header: bool
     export_action: str
     sql_query: str
     contact_lists: str
@@ -65274,6 +65274,7 @@ class _ResponseImportsGetSyncsDestinationGoogleWorksheet(Response):
 class _ResponseImportsGetSyncsAdvancedOptions(Response):
     max_errors: int
     existing_table_rows: str
+    first_row_is_header: bool
     diststyle: str
     distkey: str
     sortkey1: str
@@ -65295,7 +65296,6 @@ class _ResponseImportsGetSyncsAdvancedOptions(Response):
     partition_table_partition_column_max_name: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
-    first_row_is_header: bool
     export_action: str
     sql_query: str
     contact_lists: str
@@ -65430,6 +65430,7 @@ class _ResponseImportsPutSyncsDestinationGoogleWorksheet(Response):
 class _ResponseImportsPutSyncsAdvancedOptions(Response):
     max_errors: int
     existing_table_rows: str
+    first_row_is_header: bool
     diststyle: str
     distkey: str
     sortkey1: str
@@ -65451,7 +65452,6 @@ class _ResponseImportsPutSyncsAdvancedOptions(Response):
     partition_table_partition_column_max_name: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
-    first_row_is_header: bool
     export_action: str
     sql_query: str
     contact_lists: str
@@ -65546,6 +65546,7 @@ class _ResponseImportsPutSyncsArchiveDestinationGoogleWorksheet(Response):
 class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     max_errors: int
     existing_table_rows: str
+    first_row_is_header: bool
     diststyle: str
     distkey: str
     sortkey1: str
@@ -65567,7 +65568,6 @@ class _ResponseImportsPutSyncsArchiveAdvancedOptions(Response):
     partition_table_partition_column_max_name: str
     mysql_catalog_matches_schema: bool
     chunking_method: str
-    first_row_is_header: bool
     export_action: str
     sql_query: str
     contact_lists: str
@@ -81987,6 +81987,7 @@ class _ResponseWorkflowsPostExecutionsRetryTasksExecutions(Response):
 # before we can define APIClient to use them.
 class APIClient:
     default_credential: int | None
+    default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
     last_response: Any

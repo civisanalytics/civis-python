@@ -199,7 +199,7 @@ def test_civis_file_to_table_table_exists(m_run_cleaning, m_process_cleaning_res
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
 
     mock_civis.databases.get_schemas_tables.return_value = Response({"name": "table1"})
     m_process_cleaning_results.return_value = (
@@ -288,7 +288,7 @@ def test_civis_file_to_table_table_doesnt_exist(
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
 
     mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     mock_columns = [{"name": "foo", "sql_type": "INTEGER"}]
@@ -378,7 +378,7 @@ def test_civis_file_to_table_table_doesnt_exist_all_sql_types_missing(
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
     mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{"name": "a", "sql_type": ""}, {"name": "b", "sql_type": ""}]
     detected_columns = [
@@ -471,7 +471,7 @@ def test_civis_file_to_table_table_does_not_exist_some_sql_types_missing(
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
     mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{"name": "a", "sql_type": "INT"}, {"name": "b", "sql_type": ""}]
 
@@ -503,7 +503,7 @@ def test_civis_file_to_table_table_columns_keys_misspelled(
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
     mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     table_columns = [{"name": "a", "sqlType": "INT"}, {"name": "b", "bad_type": ""}]
 
@@ -541,7 +541,7 @@ def test_civis_file_to_table_table_doesnt_exist_provide_table_columns(
 
         mock_civis.imports.post_files_csv.return_value.id = mock_import_id
         mock_civis.get_database_id.return_value = 42
-        mock_civis.default_credential = 713
+        mock_civis.default_database_credential_id = 713
         mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
         table_columns = [
             {"name": "foo", "sql_type": "INTEGER"},
@@ -645,7 +645,7 @@ def test_civis_file_to_table_multi_file(m_run_cleaning, m_process_cleaning_resul
 
     mock_civis.imports.post_files_csv.return_value.id = mock_import_id
     mock_civis.get_database_id.return_value = 42
-    mock_civis.default_credential = 713
+    mock_civis.default_database_credential_id = 713
 
     mock_civis.databases.get_schemas_tables.side_effect = MockAPIError(404)
     mock_columns = [{"name": "foo", "sql_type": "INTEGER"}]
@@ -1449,7 +1449,7 @@ def test_sql_script():
     mock_client = create_client_mock()
     mock_client.scripts.post_sql.return_value = response
     mock_client.get_database_id.return_value = database_id
-    mock_client.default_credential = credential_id
+    mock_client.default_database_credential_id = credential_id
 
     civis.io._tables._sql_script(
         client=mock_client,

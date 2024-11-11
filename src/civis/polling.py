@@ -71,7 +71,7 @@ class PollableResult(CivisAsyncResultBase):
     --------
     >>> client = civis.APIClient()
     >>> database_id = client.get_database_id("my_database")
-    >>> cred_id = client.default_credential
+    >>> cred_id = client.default_database_credential_id
     >>> sql = "SELECT 1"
     >>> preview_rows = 10
     >>> response = client.queries.post(database_id, sql, preview_rows,
