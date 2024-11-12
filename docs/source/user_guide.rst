@@ -123,15 +123,15 @@ your user information:
 .. code:: python
 
    >>> client.users.list_me()
-   Response(email='user@email.com',
-            feature_flags=Response(left_nav_basic=True,
-                                   results=True,
-                                   scripts_notify=True,
-                                   table_person_matching=True),
-            id=1,
-            initials='UN',
-            name='User Name',
-            username='uname')
+   Response({'email': 'user@email.com',
+             'feature_flags': Response({'left_nav_basic': True,
+                                        'results': True,
+                                        'scripts_notify': True,
+                                        'table_person_matching': True}),
+             'id': 1,
+             'initials': 'UN',
+             'name': 'User Name',
+             'username': 'uname'})
 
 For a complete list of the API endpoints and their methods,
 check out :ref:`api_resources`.
@@ -146,7 +146,7 @@ the current user.
 .. code:: python
 
    >>> db_id = client.get_database_id('cluster-name')
-   >>> cred_id = client.default_credential
+   >>> cred_id = client.default_database_credential_id
 
 In order to export a table, we need to write some SQL that will generate the
 data to export. Then we create the export job and run it.
@@ -218,10 +218,10 @@ API Response Types and Functions
 ================================
 
 Many API requests via an :class:`~civis.APIClient` instance return an iterable
-of :class:`civis.response.Response` objects.
+of :class:`civis.Response` objects.
 For endpoints that support pagination when the `iterator` kwarg is specified,
-a :class:`civis.response.PaginatedResponse` object is returned.
-To facilitate working with :class:`civis.response.Response` objects,
+a :class:`civis.PaginatedResponse` object is returned.
+To facilitate working with :class:`civis.Response` objects,
 the helper functions :func:`civis.find` and :func:`civis.find_one` are defined.
 For more notes, see :ref:`responses`.
 

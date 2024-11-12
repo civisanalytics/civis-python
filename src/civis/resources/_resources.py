@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from collections.abc import Iterator
 from functools import lru_cache
 import json
 import os
@@ -7,6 +8,7 @@ import sys
 import time
 import textwrap
 from inspect import Signature, Parameter
+from typing import List
 
 from jsonref import JsonRef
 import requests
@@ -15,6 +17,7 @@ from requests import Request
 from civis.base import Endpoint, get_base_url, open_session
 from civis._camel_to_snake import camel_to_snake
 from civis._utils import get_api_key, retry_request
+from civis.response import Response
 
 
 API_VERSIONS = frozenset({"1.0"})
@@ -42,14 +45,21 @@ TYPE_MAP = {
 }
 ITERATOR_PARAM_DESC = (
     "iterator : bool, optional\n"
-    "    If True, return a generator to iterate over all responses. Use when\n"
-    "    more results than the maximum allowed by limit are needed. When\n"
-    "    True, limit and page_num are ignored. Defaults to False.\n"
+    "    If True, return a generator (specifically, a\n"
+    "    :class:`civis.PaginatedResponse` object) to iterate over all responses.\n"
+    "    Use it when more results than the maximum allowed by 'limit' are needed.\n"
+    "    When True, 'page_num' is ignored.\n"
+    "    If False, return a list of :class:`civis.Response` objects, whose size is\n"
+    "    determined by 'limit'. Defaults to False.\n"
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
 DEFAULT_ARG_VALUE = None
 
 _BRACKETED_REGEX = re.compile(r"^{.*}$")
+
+
+def _snake_to_camel(s):
+    return "".join(s.title() for s in s.split("_"))
 
 
 def exclude_resource(path, api_version):
@@ -65,18 +75,28 @@ def get_properties(x):
     return x.get("properties") or x.get("items", {}).get("properties")
 
 
-def property_type(props):
-    t = type_from_param(props)
+def property_type(
+    props, get_format=True, skip_dict_item_type=False, in_returned_object=False
+):
+    t = type_from_param(
+        props,
+        skip_dict_item_type=skip_dict_item_type,
+        in_returned_object=in_returned_object,
+    )
     fmt = props.get("format")
-    return "{} ({})".format(t, fmt) if fmt else t
+    return "{} ({})".format(t, fmt) if get_format and fmt else t
 
 
-def name_and_type_doc(name, prop, level, optional=False):
+def name_and_type_doc(name, prop, level, optional=False, in_returned_object=False):
     """Create a doc string element that includes a parameter's name
     and its type. This is intended to be combined with another
     doc string element that gives a description of the parameter.
     """
-    prop_type = property_type(prop)
+    prop_type = (
+        "object"
+        if name == "value"
+        else property_type(prop, in_returned_object=in_returned_object)
+    )
     snake_name = camel_to_snake(name)
     indent = " " * level * 4
     dash = "- " if level > 0 else ""
@@ -85,7 +105,9 @@ def name_and_type_doc(name, prop, level, optional=False):
     return doc.format(indent, dash, snake_name, prop_type, opt_str)
 
 
-def docs_from_property(name, prop, properties, level, optional=False):
+def docs_from_property(
+    name, prop, properties, level, optional=False, in_returned_object=False
+):
     """Create a list of doc string elements from a single property
     object. Avoids infinite recursion when a property contains a
     circular reference to its parent.
@@ -93,7 +115,7 @@ def docs_from_property(name, prop, properties, level, optional=False):
     docs = []
     child_properties = get_properties(prop)
     child = None if child_properties == properties else child_properties
-    docs.append(name_and_type_doc(name, prop, level, optional))
+    docs.append(name_and_type_doc(name, prop, level, optional, in_returned_object))
     doc_str = prop.get("description")
     if doc_str:
         indent = 4 * (level + 1) * " "
@@ -102,16 +124,19 @@ def docs_from_property(name, prop, properties, level, optional=False):
         )
         docs.append(f"{doc_wrap}\n") if child else docs.append(doc_wrap)
     if child:
-        child_docs = docs_from_properties(child, level + 1)
+        child_docs = docs_from_properties(child, level + 1, in_returned_object)
         docs.append("\n".join(child_docs))
     return docs
 
 
-def docs_from_properties(properties, level=0):
+def docs_from_properties(properties, level=0, in_returned_object=False):
     """Return doc string elements from a dictionary of properties."""
     docs = []
+    optional = False
     for name, prop in properties.items():
-        doc_list = docs_from_property(name, prop, properties, level)
+        doc_list = docs_from_property(
+            name, prop, properties, level, optional, in_returned_object
+        )
         docs.extend(doc_list)
     return docs
 
@@ -135,10 +160,14 @@ def doc_from_responses(responses, is_iterable):
     properties = get_properties(schema)
     if properties:
         if is_iterable:
-            resp_type = ":class:`civis.response.PaginatedResponse`\n"
+            resp_type = ":class:`civis.PaginatedResponse`\n"
         else:
-            resp_type = ":class:`civis.response.Response`\n"
-        result_doc = resp_type + ("\n".join(docs_from_properties(properties, level=1)))
+            resp_type = ":class:`civis.Response`\n"
+        result_doc = resp_type + (
+            "\n".join(
+                docs_from_properties(properties, level=1, in_returned_object=True)
+            )
+        )
     else:
         description = response_object["description"]
         result_doc_fmt = "None\n    Response code {}: {}"
@@ -146,12 +175,71 @@ def doc_from_responses(responses, is_iterable):
     return "Returns\n-------\n" + result_doc
 
 
+def return_annotation_from_responses(
+    endpoint_name, method_name, responses, is_iterable
+):
+    response_object = next(iter(responses.values()))
+    schema = response_object.get("schema", {})
+    properties = get_properties(schema)
+    if properties:
+        return_annotation = return_annotation_from_properties(
+            endpoint_name, method_name, "", properties
+        )
+        if is_iterable:
+            return Iterator[return_annotation]
+        else:
+            return return_annotation
+    else:
+        return Response
+
+
+def return_annotation_from_properties(
+    endpoint_name, method_name, param_name, properties
+):
+    klass_name = (
+        "_Response"
+        + _snake_to_camel(endpoint_name)
+        + _snake_to_camel(method_name)
+        + _snake_to_camel(param_name)
+    )
+    klass = type(klass_name, (), {})
+    klass.__annotations__ = {}
+    for name, prop in properties.items():
+        name = camel_to_snake(name)
+        klass.__annotations__[name] = return_annotation_from_property(
+            endpoint_name, f"{method_name}_{param_name}", name, prop, properties
+        )
+    return klass
+
+
+def return_annotation_from_property(endpoint_name, method_name, name, prop, properties):
+    child_properties = get_properties(prop)
+    child = None if child_properties == properties else child_properties
+    prop_type = (
+        "object"
+        if name == "value"
+        else property_type(prop, get_format=False, skip_dict_item_type=True)
+    )
+    if child and prop_type == "List":
+        return List[
+            return_annotation_from_properties(endpoint_name, method_name, name, child)
+        ]
+    elif child:
+        return return_annotation_from_properties(
+            endpoint_name, method_name, name, child
+        )
+    else:
+        return prop_type
+
+
 def join_doc_elements(*args):
     return "\n".join(args).rstrip()
 
 
-def type_from_param(param):
+def type_from_param(param, skip_dict_item_type=False, in_returned_object=False):
     main_type = TYPE_MAP[param["type"]]
+    if main_type == "dict" and in_returned_object:
+        main_type = ":class:`civis.Response`"
     item_type = None
     if main_type == "List":
         items = param.get("items", {})
@@ -159,6 +247,11 @@ def type_from_param(param):
             item_type = TYPE_MAP[items["type"]]
         elif "$ref" in items:
             item_type = "dict"
+        if item_type == "dict":
+            if skip_dict_item_type:
+                item_type = None
+            elif in_returned_object:
+                item_type = ":class:`civis.Response`"
     return f"{main_type}[{item_type}]" if item_type else main_type
 
 
@@ -193,7 +286,9 @@ def iterable_method(method, params):
     return method.lower() == "get" and params_present
 
 
-def create_signature(args, optional_args, prepend_self=False):
+def create_signature(
+    args, optional_args, prepend_self=False, return_annotation=Signature.empty
+):
     """Dynamically create a signature for a function from strings.
 
     This function can be used to create a signature for a dynamically
@@ -209,6 +304,8 @@ def create_signature(args, optional_args, prepend_self=False):
         and their default values.
     prepend_self : bool, optional
         If True, add the "self" arg as the first arg for a class method.
+    return_annotation : object, optional
+        Return annotation of the function.
 
     Returns
     -------
@@ -232,7 +329,7 @@ def create_signature(args, optional_args, prepend_self=False):
         )
         for name, arg in optional_args.items()
     ]
-    return Signature(p)
+    return Signature(p, return_annotation=return_annotation)
 
 
 def split_method_params(params):
@@ -260,7 +357,14 @@ def split_method_params(params):
 
 
 def create_method(
-    params, verb, method_name, path, deprecation_warning, param_doc, response_doc
+    params,
+    verb,
+    method_name,
+    path,
+    deprecation_warning,
+    param_doc,
+    response_doc,
+    return_annotation,
 ):
     """Dynamically create a function to make an API call.
 
@@ -287,6 +391,8 @@ def create_method(
         Documentation string for the returned function f's parameters
     response_doc : str
         Documentation string for the returned function f's response
+    return_annotation : object
+        Return annotation of the returned function.
 
     Returns
     ------
@@ -319,7 +425,9 @@ def create_method(
         )
 
     # Add signature to function, including 'self' for class method
-    sig_self = create_signature(sig_args, sig_opt_args, prepend_self=True)
+    sig_self = create_signature(
+        sig_args, sig_opt_args, prepend_self=True, return_annotation=return_annotation
+    )
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
@@ -481,9 +589,19 @@ def parse_method(verb, operation, path):
     is_iterable = iterable_method(verb, query_params)
     response_doc = doc_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
+    return_annotation = return_annotation_from_responses(
+        path.split("/")[0], name, responses, is_iterable
+    )
 
     method = create_method(
-        args, verb, name, path, deprecation_warning, param_doc, response_doc
+        args,
+        verb,
+        name,
+        path,
+        deprecation_warning,
+        param_doc,
+        response_doc,
+        return_annotation,
     )
     return name, method
 

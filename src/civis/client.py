@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 import logging
 import textwrap
+import warnings
 from typing import TYPE_CHECKING
 
 import civis
@@ -30,7 +31,7 @@ class APIClient:
         The following types are implemented:
 
         - ``'raw'`` Returns the raw :class:`requests:requests.Response` object.
-        - ``'snake'`` Returns a :class:`civis.response.Response` object for the
+        - ``'snake'`` Returns a :class:`civis.Response` object for the
           json-encoded content of a response. This maps the top-level json
           keys to snake_case.
     api_version : string, optional
@@ -168,6 +169,18 @@ class APIClient:
         >>> client.get_database_credential_id(1111, 'redshift-general')
         1111
         """
+        warnings.warn(
+            "The method `get_database_credential_id` is deprecated and will be removed "
+            "at civis-python v3.0.0. Its continued usage is strongly discouraged. "
+            "Given the way Civis Platform has evolved over the years, "
+            "there's currently no reliable way to get a database credential ID "
+            "from a username and database name. No replacement for this method is "
+            "being planned. If you need to programmatically access a database "
+            "credential ID that is or may likely be the default credential, "
+            "consider the property `default_database_credential_id`.",
+            FutureWarning,
+            stacklevel=2,  # Point to the user code that calls this method.
+        )
         if isinstance(username, int):
             return username
         else:
@@ -339,8 +352,23 @@ class APIClient:
     @lru_cache(maxsize=128)
     def default_credential(self):
         """The current user's default credential."""
-        # NOTE: this should be optional to endpoints...so this could go away
+        warnings.warn(
+            "The property `default_credential` is deprecated and will be removed "
+            "at civis-python v3.0.0. "
+            "Please use `default_database_credential_id` instead.",
+            FutureWarning,
+            stacklevel=2,  # Point to the user code that calls this method.
+        )
         creds = self.credentials.list(default=True)
+        return creds[0]["id"] if len(creds) > 0 else None
+
+    @property
+    @lru_cache(maxsize=128)
+    def default_database_credential_id(self):
+        """The current user's default database credential ID."""
+        creds = self.credentials.list(
+            default=True, type="Database", remote_host_id=None
+        )
         return creds[0]["id"] if len(creds) > 0 else None
 
     @property

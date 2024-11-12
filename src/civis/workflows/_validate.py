@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import io
+
 import jsonschema
 import yaml
 
@@ -28,15 +30,27 @@ def validate_workflow_yaml(wf_def: str, /) -> None:
     WorkflowValidationError
         If the workflow definition is invalid.
     """
-    _validate_workflow(yaml.safe_load(wf_def))
+    _validate_workflow_yaml_ascii_only(wf_def)
+    wf_def_dict = yaml.safe_load(wf_def)
+    _validate_workflow_by_schema(wf_def_dict)
+    _validate_workflow_tasks(wf_def_dict)
 
 
-def _validate_workflow(wf: dict) -> None:
+def _validate_workflow_by_schema(wf: dict) -> None:
     try:
         jsonschema.validate(wf, WORKFLOW_SCHEMA)
     except jsonschema.ValidationError as e:
         raise WorkflowValidationError(e)
-    _validate_workflow_tasks(wf)
+
+
+def _validate_workflow_yaml_ascii_only(wf_def: str) -> None:
+    for line_no, line in enumerate(io.StringIO(wf_def), 1):
+        for char_no, char in enumerate(line, 1):
+            if not char.isascii():
+                raise WorkflowValidationError(
+                    "Workflow definition YAML cannot contain non-ASCII characters: "
+                    f"(line {line_no}) {line!r}, (character {char_no}) {char!r}"
+                )
 
 
 def _get_next_task_names(next_tasks: str | list | dict | None) -> list[str]:
@@ -45,10 +59,19 @@ def _get_next_task_names(next_tasks: str | list | dict | None) -> list[str]:
         return []
     elif isinstance(next_tasks, str):
         return [next_tasks]
-    elif isinstance(next_tasks, list) and isinstance(next_tasks[0], str):
-        return next_tasks
-    elif isinstance(next_tasks, list) and isinstance(next_tasks[0], dict):
-        return [list(nt.keys())[0] for nt in next_tasks]
+    elif isinstance(next_tasks, list):
+        task_names = []
+        for task in next_tasks:
+            if isinstance(task, str):
+                task_names.append(task)
+            elif isinstance(task, dict):
+                task_names.append(list(task.keys())[0])
+            else:
+                raise WorkflowValidationError(
+                    "each item in next task list must be either of type str or dict: "
+                    f"{type(task)} ({task})"
+                )
+        return task_names
     elif isinstance(next_tasks, dict):
         return _get_next_task_names(next_tasks.get("next"))
 

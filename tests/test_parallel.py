@@ -455,7 +455,7 @@ def test_result_exception_no_result(m_sleep):
     with pytest.raises(CivisJobFailure) as exc:
         res.get()
 
-    assert "Response(state='failed')" in str(exc.value)
+    assert "Response({'state': 'failed'})" in str(exc.value)
     assert callback.call_count == 0
 
 

@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "civis"
-version = "2.3.0"
+version = "2.4.0"
 description = "Civis API Python Client"
 readme = "README.rst"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 authors = [ { name = "Civis Analytics", email = "opensource@civisanalytics.com" } ]
 license = { text = "BSD-3-Clause" }
 dependencies = [
@@ -26,10 +26,10 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 [project.urls]
@@ -43,26 +43,26 @@ civis_joblib_worker = "civis.run_joblib_func:main"
 [project.optional-dependencies]
 dev-core = [
     "bandit",  # Install the latest version.
-    "black == 24.4.2",
+    "black == 24.10.0",
     "build == 1.2.1",
-    "flake8 == 7.1.0",
-    "pandas == 2.2.2",
+    "flake8 == 7.1.1",
+    "pandas == 2.2.3",
     "pip-audit",  # Install the latest version.
-    "polars == 1.2.0",
-    "pytest == 8.2.2",
+    "polars == 1.13.0",
+    "pytest == 8.3.3",
     "pytest-cov == 5.0.0",
     "twine == 5.1.1",
 ]
 dev-civisml = [
     "feather-format == 0.4.1",
-    "numpy == 1.26.4",
-    "scikit-learn == 1.5.0",
-    "scipy == 1.13.1",
+    "numpy == 2.1.2",
+    "scikit-learn == 1.5.2",
+    "scipy == 1.14.1",
 ]
 docs = [
     # docs/requirements.txt pins all transitive dependencies for a reproducible doc build.
-    "numpydoc == 1.7.0",
-    "Sphinx == 7.3.7",
+    "numpydoc == 1.8.0",
+    "Sphinx == 7.4.7",
     "sphinx-rtd-theme == 2.0.0",
 ]
 

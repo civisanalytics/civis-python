@@ -42,17 +42,6 @@ except ImportError:
 
 CHUNK_SIZE = 32 * 1024
 log = logging.getLogger(__name__)
-__all__ = [
-    "read_civis",
-    "read_civis_sql",
-    "civis_to_csv",
-    "civis_to_multifile_csv",
-    "dataframe_to_civis",
-    "csv_to_civis",
-    "civis_file_to_table",
-    "split_schema_tablename",
-    "export_to_civis_file",
-]
 
 DELIMITERS = {
     ",": "comma",
@@ -425,7 +414,7 @@ def read_civis_sql(
         client = APIClient()
 
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
 
     script_id, run_id = _sql_script(
         client,
@@ -567,7 +556,7 @@ def civis_to_csv(
         client = APIClient()
 
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
 
     # don't fix bug that would cause breaking change for now
     # when gzip compression is requested, a gzip file is not actually returned
@@ -1243,7 +1232,7 @@ def civis_file_to_table(
     if schema is None:
         raise ValueError("Provide a schema as part of the `table` input.")
     db_id = client.get_database_id(database)
-    cred_id = credential_id or client.default_credential
+    cred_id = credential_id or client.default_database_credential_id
     if delimiter is not None:  # i.e. it was provided as an argument
         delimiter = DELIMITERS.get(delimiter)
         if not delimiter:
@@ -1364,7 +1353,7 @@ def _sql_script(
 ):
     job_name = maybe_get_random_name(job_name)
     db_id = client.get_database_id(database)
-    credential_id = credential_id or client.default_credential
+    credential_id = credential_id or client.default_database_credential_id
     csv_settings = csv_settings or {}
     sql_params_arguments = sql_params_arguments or {}
 

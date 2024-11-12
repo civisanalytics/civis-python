@@ -15,7 +15,7 @@ from civis import APIClient
 from civis.resources import API_SPEC_PATH
 
 
-_CLIENT = APIClient(local_api_spec=API_SPEC_PATH)
+_CLIENT = APIClient(local_api_spec=API_SPEC_PATH, api_key="no-key-needed")
 
 
 def _endpoint_method_params(endpoint: str, method: str) -> tuple[list[str], list[str]]:
@@ -122,10 +122,10 @@ TASK_TRANSITION_SCHEMA = {
     "oneOf": [
         # A single task name.
         {"type": "string"},
-        # A list of task names to transition to.
-        {"type": "array", "items": {"type": "string"}},
-        # A list of task names that each have a YAQL guard expression.
-        {"type": "array", "items": {"type": "object"}},
+        # A list of either (i) task names to transition to, or
+        # (ii) task names that each have a YAQL guard expression, or
+        # a mixture of (i) and (ii).
+        {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}},
         # A single task name or a list of task names under the (optional?) key "next".
         {
             "type": "object",
@@ -225,8 +225,7 @@ TASK_SCHEMA = {
         _if_then_create_script("civis.scripts.sql"),
         _if_then_create_script("civis.scripts.javascript"),
         _if_then_create_script("civis.scripts.container"),
-        # TODO: dbt job type is upcoming!
-        # _if_then_create_script("civis.scripts.dbt"),
+        _if_then_create_script("civis.scripts.dbt"),
         _if_then_create_script("civis.scripts.custom"),
         _if_then_create_script("civis.enhancements.cass_ncoa"),
         _if_then_execute("civis.run_job", "job_id"),

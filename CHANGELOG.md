@@ -7,16 +7,57 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## 2.4.0 - 2024-11-11
+
+### Added
 - The new kwarg `retries` has been added to `civis.APIClient` so that
   a `tenacity.Retrying` instance can be provided to customize retries. (#495)
 - Added `civis.workflows.validate_workflow_yaml`
-  to validate a Civis Platform workflow YAML definition. (#497)
+  to validate a Civis Platform workflow YAML definition. (#497, #499)
+- The helper I/O functions that create a Civis file
+  (i.e., `civis.io.file_to_civis`, `civis.io.dataframe_to_file`, and `civis.io.json_to_file`)
+  accept a new `description` keyword argument for the new `description` attribute
+  of Civis file objects. (#498, #500)
+- `Response` objects are now fully typed through the attribute syntax. (#501)
+- Both `Response` and `PaginatedResponse` are now directly available under the `civis` namespace. (#501)
+- Added support for Python 3.13. (#501)
+- Added the new property `default_database_credential_id` at `civis.APIClient`,
+  which is going to replace the existing `default_credential`. (#502)
 
 ### Changed
+- When a `PaginatedResponse` object is returned from an API call,
+  a user-specified `limit` kwarg is now honored to facilitate speeding up the pagination. (#501)
+
 ### Deprecated
+- The method `get_database_credential_id` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0. There's no replacement for this method. (#502)
+- The property `default_credential` at `civis.APIClient` has been deprecated
+  and will be removed at civis-python v3.0.0,
+  in favor of the new property `default_database_credential_id`. (#502)
+
 ### Removed
+- Dropped support for Python 3.9. (#499)
+
 ### Fixed
-### Security
+- The repr form of `Response` objects is now the dict-based `Response({‘spam’: 123})`
+  instead of the dataclass-based `Response(spam=123)`, since response object keys can
+  be invalid Python identifiers. (#501)
+- In `Response` object instantiation, object keys that originate from environment variables
+  are now preserved for their (customarily upper-) case even in the default snake-case setting. (#501)
+- In `Response` object instantiation, an API response that represents a JSONValue object
+  now has its `value` attribute unmodified as the Python object representation
+  of the deserialized JSON form (as opposed to being converted to a `Response`-based form). (#501)
 
 ## 2.3.0 - 2024-06-14
 
@@ -84,7 +125,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 (Changes documented in this section are not repeated in the following sections.)
 
-- A `civis.response.Response` object is no longer mutable.
+- A `civis.response.Response` object is no longer mutable
+  (implementationally, it subclassed `dict` before, which is no longer the case).
   More concretely, both the "setitem" (e.g., `response["foo"] = "bar"`)
   and "setattr" (e.g., `response.foo = "bar"`) operations
   would now raise an `CivisImmutableResponseError` exception. (#463)
