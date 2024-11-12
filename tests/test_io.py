@@ -1,7 +1,6 @@
 import tempfile
 import csv
 import gzip
-import itertools
 import io
 import itertools
 import json

@@ -128,6 +128,8 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
+# Suppress irrelevant warnings during doc builds.
+numpydoc_class_members_toctree = False
 
 # -- Options for HTML output ----------------------------------------------
 
