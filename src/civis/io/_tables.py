@@ -90,8 +90,7 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
             )
         # stacklevel=3 to point the warning to the user's code
         warnings.warn(warn_msg, FutureWarning, stacklevel=3)
-        use_pandas = DeprecatedKwargDefault()
-    return use_pandas, return_as
+    return return_as
 
 
 def read_civis(
@@ -125,9 +124,13 @@ def read_civis(
         If ``"list"`` (the default), return a list.
         If ``"pandas"``, return a :class:`pandas.DataFrame`.
         If ``"polars"``, return a :class:`polars.DataFrame`.
-    use_pandas : bool, optional [DEPRECATED]
-        ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
-        Use ``return_as`` instead.
+    use_pandas : bool, optional
+        If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
+        return a list of results from :func:`python:csv.reader`.
+
+        .. deprecated:: 2.5.0
+            `use_pandas` will be removed at civis-python v3.0.0.
+            Please use `return_as` instead.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas.read_csv` or
@@ -195,7 +198,7 @@ def read_civis(
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
     _validate_return_as(return_as)
-    use_pandas, return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
+    return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
@@ -204,7 +207,6 @@ def read_civis(
         sql=sql,
         database=database,
         return_as=return_as,
-        use_pandas=use_pandas,
         encoding=encoding,
         job_name=job_name,
         client=client,
@@ -332,9 +334,13 @@ def read_civis_sql(
         If ``"list"`` (the default), return a list.
         If ``"pandas"``, return a :class:`pandas.DataFrame`.
         If ``"polars"``, return a :class:`polars.DataFrame`.
-    use_pandas : bool, optional [DEPRECATED]
-        ``use_pandas`` is deprecated and will be removed in civis-python v3.0.0.
-        Use ``return_as`` instead.
+    use_pandas : bool, optional
+        If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
+        return a list of results from :func:`python:csv.reader`.
+
+        .. deprecated:: 2.5.0
+            `use_pandas` will be removed at civis-python v3.0.0.
+            Please use `return_as` instead.
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
@@ -408,7 +414,7 @@ def read_civis_sql(
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
     _validate_return_as(return_as)
-    _, return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
+    return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
