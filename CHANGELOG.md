@@ -7,10 +7,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- The `civis.io.*` functions for dataframes support polars in addition to pandas. (#503)
+    * For `civis.io.read_civis_sql` and `civis.io.read_civis`:
+        The new kwarg `return_as` has been added. It defaults to `"list"` to maintain
+        the same return behavior as civis-python <= v2.4.0.
+        To return a dataframe, set `return_as` to either `"pandas"` or `"polars"`.
+    * For `civis.io.dataframe_to_file` and `civis.io.dataframe_to_civis`:
+        Either a pandas or polars dataframe can now be directly used as input.
+    * For `civis.io.file_to_dataframe`:
+        The new kwarg `return_as` has been added. It defaults to `"pandas"` to maintain
+        the same return behavior as civis-python <= v2.4.0.
+        To return a polars dataframe, set `return_as` to `"polars"`.
 
 ### Changed
 
 ### Deprecated
+- The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
+  has been deprecated and will be removed at civis-python v3.0.0. Its continued
+  usage is discouraged, and please use the new kwarg `return_as` instead
+  (see notes under the "added" section above). (#503)
 
 ### Removed
 
