@@ -178,16 +178,26 @@ For the public documentation at https://civis-python.readthedocs.io:
   neither this configuration YAML file nor Civis's account on the Read the Docs site need
   any updates.
 * To update the documentation, the files under ``docs/source/`` can be updated as needed.
-  If the "API Resources" page needs to be updated because the upstream Civis API has been updated,
+  If the "API Resources" pages need to be updated because the upstream Civis API has been updated,
   then the following need to happen:
   (i) the new Civis API updates must be accessible by a "standard" Civis Platform user,
   i.e., not behind a feature flag, and
   (ii) you'll need to locally run ``python tools/update_civis_api_spec.py`` to update
   ``civis_api_spec.json`` inside the ``civis`` Python package codebase.
-  It is this JSON file that's the basis for the Civis API information on the "API Resources" page.
+  It is this JSON file that's the basis for the Civis API information on the "API Resources" pages.
   Regardless of which Civis API key you use to run ``python tools/update_civis_api_spec.py``,
   the updated ``civis_api_spec.json`` only contains Civis API information available to
   a standard Civis Platform user.
+* The URL https://civis-python.readthedocs.io auto-redirects to
+  the "stable" URL https://civis-python.readthedocs.io/en/stable/ which reflects
+  the most recent released civis-python version
+  (every GitHub release with the tag "vX.Y.Z" triggers a new "stable" doc build
+  on the Read The Docs site).
+  In contrast, the "latest" URL https://civis-python.readthedocs.io/en/latest/ reflects
+  the most recent commit to the upstream ``main`` branch of the civis-python codebase on GitHub.
+  If there are doc changes (e.g., new or removed Civis API methods) that we'd really like to
+  show up at the "stable" URL sooner rather than waiting for the next release with other code changes,
+  we can make a patch release (i.e., increment the "Z" in "vX.Y.Z").
 
 To build the documentation locally, for testing and development:
 

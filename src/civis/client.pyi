@@ -785,7 +785,7 @@ class _Clusters:
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
                         m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
-                        and g5.2xlarge.
+                        and g6.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -870,7 +870,7 @@ class _Clusters:
                     - instance_type : str
                         An EC2 instance type. Possible values include t2.large,
                         m4.xlarge, m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge,
-                        and g5.2xlarge.
+                        and g6.2xlarge.
                     - min_instances : int
                         The minimum number of instances of that type in this cluster.
                     - max_instances : int
@@ -1081,7 +1081,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1135,7 +1135,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1161,7 +1161,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1218,7 +1218,7 @@ class _Clusters:
 
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -1244,7 +1244,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1335,7 +1335,7 @@ class _Clusters:
                     The ID of this InstanceConfig.
                 - instance_type : str
                     An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                    m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
                 - min_instances : int
                     The minimum number of instances of that type in this cluster.
                 - max_instances : int
@@ -1393,7 +1393,7 @@ class _Clusters:
                 The ID of this InstanceConfig.
             - instance_type : str
                 An EC2 instance type. Possible values include t2.large, m4.xlarge,
-                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g5.2xlarge.
+                m4.2xlarge, m4.4xlarge, m5.12xlarge, c5.18xlarge, and g6.2xlarge.
             - min_instances : int
                 The minimum number of instances of that type in this cluster.
             - max_instances : int
@@ -14191,7 +14191,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -14692,7 +14692,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -16481,7 +16481,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -16845,7 +16845,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -17124,7 +17124,7 @@ class _Imports:
             - existing_table_rows : str
                 For Google Doc and Auto Imports. The behavior if a table with the
                 requested name already exists.  One of "fail", "truncate", "append", or
-                "drop".Defaults to "fail".
+                "drop". Defaults to "fail".
             - first_row_is_header : bool
                 For Google Doc and Auto Imports. A boolean value indicating whether or
                 not the first row is a header row.
@@ -17275,7 +17275,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -17440,7 +17440,7 @@ class _Imports:
             - existing_table_rows : str
                 For Google Doc and Auto Imports. The behavior if a table with the
                 requested name already exists.  One of "fail", "truncate", "append", or
-                "drop".Defaults to "fail".
+                "drop". Defaults to "fail".
             - first_row_is_header : bool
                 For Google Doc and Auto Imports. A boolean value indicating whether or
                 not the first row is a header row.
@@ -17591,7 +17591,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -17765,7 +17765,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -22793,7 +22793,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - user : :class:`civis.Response`
@@ -22877,7 +22878,8 @@ class _Notebooks:
         name : str, optional
             The name of this notebook.
         language : str, optional
-            The kernel language of this notebook.
+            The kernel language of this notebook ("python3" or "r"). Defaults to
+            "python3".
         description : str, optional
             The description of this notebook.
         file_id : str, optional
@@ -22905,7 +22907,8 @@ class _Notebooks:
         partition_label : str, optional
             The partition label used to run this object.
         git_repo_url : str, optional
-            The url of the git repository
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref : str, optional
             The git reference if git repo is specified
         git_path : str, optional
@@ -22922,7 +22925,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -23005,7 +23009,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -23039,7 +23044,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -23122,7 +23128,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -23169,7 +23176,8 @@ class _Notebooks:
         name : str, optional
             The name of this notebook.
         language : str, optional
-            The kernel language of this notebook.
+            The kernel language of this notebook ("python3" or "r"). Defaults to
+            "python3".
         description : str, optional
             The description of this notebook.
         file_id : str, optional
@@ -23197,7 +23205,8 @@ class _Notebooks:
         partition_label : str, optional
             The partition label used to run this object.
         git_repo_url : str, optional
-            The url of the git repository
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref : str, optional
             The git reference if git repo is specified
         git_path : str, optional
@@ -23212,7 +23221,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -23295,7 +23305,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -23342,7 +23353,8 @@ class _Notebooks:
         name : str, optional
             The name of this notebook.
         language : str, optional
-            The kernel language of this notebook.
+            The kernel language of this notebook ("python3" or "r"). Defaults to
+            "python3".
         description : str, optional
             The description of this notebook.
         file_id : str, optional
@@ -23370,7 +23382,8 @@ class _Notebooks:
         partition_label : str, optional
             The partition label used to run this object.
         git_repo_url : str, optional
-            The url of the git repository
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref : str, optional
             The git reference if git repo is specified
         git_path : str, optional
@@ -23385,7 +23398,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -23468,7 +23482,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -23524,7 +23539,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -23607,7 +23623,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -23929,7 +23946,8 @@ class _Notebooks:
             - name : str
                 The name of this notebook.
             - language : str
-                The kernel language of this notebook.
+                The kernel language of this notebook ("python3" or "r"). Defaults to
+                "python3".
             - description : str
                 The description of this notebook.
             - notebook_url : str
@@ -24012,7 +24030,8 @@ class _Notebooks:
             - git_repo_id : int
                 The ID of the git repository.
             - git_repo_url : str
-                The url of the git repository
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - git_ref : str
                 The git reference if git repo is specified
             - git_path : str
@@ -24426,7 +24445,8 @@ class _Notebooks:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -24481,7 +24501,8 @@ class _Notebooks:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -24584,56 +24605,6 @@ class _Notebooks:
             The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout_latest(
-        self,
-        id: int,
-    ) -> _ResponseNotebooksPostGitCheckoutLatest:
-        """Checkout latest commit on the current branch of a script or workflow
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseNotebooksPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
 
         Returns
         -------
@@ -28995,7 +28966,8 @@ class _Reports:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -29050,7 +29022,8 @@ class _Reports:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -29153,56 +29126,6 @@ class _Reports:
             The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout_latest(
-        self,
-        id: int,
-    ) -> _ResponseReportsPostGitCheckoutLatest:
-        """Checkout latest commit on the current branch of a script or workflow
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseReportsPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
 
         Returns
         -------
@@ -37262,7 +37185,8 @@ class _Scripts:
         name : str
             The name of the script.
         repo_http_uri : str
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         parent_id : int, optional
             The ID of the parent job that will trigger this script
         user_context : str, optional
@@ -37632,7 +37556,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -37877,7 +37802,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -37923,7 +37849,8 @@ class _Scripts:
         name : str
             The name of the script.
         repo_http_uri : str
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         parent_id : int, optional
             The ID of the parent job that will trigger this script
         user_context : str, optional
@@ -38291,7 +38218,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -38472,7 +38400,8 @@ class _Scripts:
                 Whether to generate the profiles.yml file when running the script.
                 Defaults to false.
         repo_http_uri : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         repo_ref : str, optional
             A git reference specifying an unambiguous version of the file. Can be a
             branch name, a tag, or the full or shortened SHA of a commit. Defaults to
@@ -38705,7 +38634,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -43163,7 +43093,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -43218,7 +43149,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -43446,7 +43378,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -43501,7 +43434,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -43729,7 +43663,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -43784,7 +43719,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -44012,7 +43948,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -44067,7 +44004,8 @@ class _Scripts:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -47240,7 +47178,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -49743,7 +49682,8 @@ class _Scripts:
                     Whether to generate the profiles.yml file when running the script.
                     Defaults to false.
             - repo_http_uri : str
-                The URL of the git repository.
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
             - repo_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, a tag, or the full or shortened SHA of a commit. Defaults
@@ -58408,7 +58348,8 @@ class _Workflows:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -58463,7 +58404,8 @@ class _Workflows:
         git_path : str, optional
             The path of the file in the repository.
         git_repo_url : str, optional
-            The URL of the git repository.
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
         git_ref_type : str, optional
             Specifies if the file is versioned by branch or tag.
         pull_from_git : bool, optional
@@ -58586,31 +58528,6 @@ class _Workflows:
         id: int,
     ) -> _ResponseWorkflowsPostGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseWorkflowsPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
 
         Parameters
         ----------
@@ -68258,18 +68175,6 @@ class _ResponseNotebooksGetGitCommits(Response):
     size: int
     file_hash: str
 
-class _ResponseNotebooksPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseNotebooksPostGitCheckout(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
 class _ResponseOntologyList(Response):
     key: str
     title: str
@@ -70712,18 +70617,6 @@ class _ResponseReportsPostGitCommits(Response):
     file_hash: str
 
 class _ResponseReportsGetGitCommits(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseReportsPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseReportsPostGitCheckout(Response):
     content: str
     type: str
     size: int
@@ -81673,12 +81566,6 @@ class _ResponseWorkflowsGetGitCommits(Response):
     file_hash: str
 
 class _ResponseWorkflowsPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseWorkflowsPostGitCheckout(Response):
     content: str
     type: str
     size: int
