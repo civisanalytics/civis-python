@@ -14191,7 +14191,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -14692,7 +14692,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -16481,7 +16481,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -16845,7 +16845,7 @@ class _Imports:
                     - existing_table_rows : str
                         For Google Doc and Auto Imports. The behavior if a table with
                         the requested name already exists.  One of "fail", "truncate",
-                        "append", or "drop".Defaults to "fail".
+                        "append", or "drop". Defaults to "fail".
                     - first_row_is_header : bool
                         For Google Doc and Auto Imports. A boolean value indicating
                         whether or not the first row is a header row.
@@ -17124,7 +17124,7 @@ class _Imports:
             - existing_table_rows : str
                 For Google Doc and Auto Imports. The behavior if a table with the
                 requested name already exists.  One of "fail", "truncate", "append", or
-                "drop".Defaults to "fail".
+                "drop". Defaults to "fail".
             - first_row_is_header : bool
                 For Google Doc and Auto Imports. A boolean value indicating whether or
                 not the first row is a header row.
@@ -17275,7 +17275,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -17440,7 +17440,7 @@ class _Imports:
             - existing_table_rows : str
                 For Google Doc and Auto Imports. The behavior if a table with the
                 requested name already exists.  One of "fail", "truncate", "append", or
-                "drop".Defaults to "fail".
+                "drop". Defaults to "fail".
             - first_row_is_header : bool
                 For Google Doc and Auto Imports. A boolean value indicating whether or
                 not the first row is a header row.
@@ -17591,7 +17591,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -17765,7 +17765,7 @@ class _Imports:
                 - existing_table_rows : str
                     For Google Doc and Auto Imports. The behavior if a table with the
                     requested name already exists.  One of "fail", "truncate",
-                    "append", or "drop".Defaults to "fail".
+                    "append", or "drop". Defaults to "fail".
                 - first_row_is_header : bool
                     For Google Doc and Auto Imports. A boolean value indicating whether
                     or not the first row is a header row.
@@ -24620,56 +24620,6 @@ class _Notebooks:
         """
         ...
 
-    def post_git_checkout_latest(
-        self,
-        id: int,
-    ) -> _ResponseNotebooksPostGitCheckoutLatest:
-        """Checkout latest commit on the current branch of a script or workflow
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseNotebooksPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
 class _Notifications:
     def list(
         self,
@@ -29176,56 +29126,6 @@ class _Reports:
             The ID of the item.
         commit_hash : str
             The SHA (full or shortened) of the desired git commit.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout_latest(
-        self,
-        id: int,
-    ) -> _ResponseReportsPostGitCheckoutLatest:
-        """Checkout latest commit on the current branch of a script or workflow
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseReportsPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
 
         Returns
         -------
@@ -58648,31 +58548,6 @@ class _Workflows:
         """
         ...
 
-    def post_git_checkout(
-        self,
-        id: int,
-    ) -> _ResponseWorkflowsPostGitCheckout:
-        """Checkout content that the existing git_ref points to and save to the object
-
-        Parameters
-        ----------
-        id : int
-            The ID of the item.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - content : str
-                The file's contents.
-            - type : str
-                The file's type.
-            - size : int
-                The file's size.
-            - file_hash : str
-                The SHA of the file.
-        """
-        ...
-
     def post_clone(
         self,
         id: int,
@@ -68300,18 +68175,6 @@ class _ResponseNotebooksGetGitCommits(Response):
     size: int
     file_hash: str
 
-class _ResponseNotebooksPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseNotebooksPostGitCheckout(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
 class _ResponseOntologyList(Response):
     key: str
     title: str
@@ -70754,18 +70617,6 @@ class _ResponseReportsPostGitCommits(Response):
     file_hash: str
 
 class _ResponseReportsGetGitCommits(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseReportsPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseReportsPostGitCheckout(Response):
     content: str
     type: str
     size: int
@@ -81715,12 +81566,6 @@ class _ResponseWorkflowsGetGitCommits(Response):
     file_hash: str
 
 class _ResponseWorkflowsPostGitCheckoutLatest(Response):
-    content: str
-    type: str
-    size: int
-    file_hash: str
-
-class _ResponseWorkflowsPostGitCheckout(Response):
     content: str
     type: str
     size: int
