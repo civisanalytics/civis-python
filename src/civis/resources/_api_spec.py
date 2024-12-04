@@ -40,7 +40,7 @@ def _compare(reference: dict, compared: dict) -> tuple[dict, dict]:
         "methods": defaultdict(set),
     }
     changed = {
-        "method signatures": defaultdict(set),
+        "method parameters": defaultdict(set),
         "method docstrings": defaultdict(set),
     }
     for endpoint_name in set(compared.keys()) - set(reference.keys()):
@@ -54,13 +54,16 @@ def _compare(reference: dict, compared: dict) -> tuple[dict, dict]:
         for meth_name in set(methods_compared.keys()) & set(methods_reference.keys()):
             method_compared = methods_compared[meth_name]
             method_reference = methods_reference[meth_name]
-            if signature(method_compared) != signature(method_reference):
-                changed["method signatures"][endpoint_name].add(meth_name)
+            if (
+                signature(method_compared).parameters
+                != signature(method_reference).parameters
+            ):
+                changed["method parameters"][endpoint_name].add(meth_name)
             if method_compared.__doc__ != method_reference.__doc__:
                 changed["method docstrings"][endpoint_name].add(meth_name)
     # Convert defaultdicts to regular dicts for nicer pprinting.
     new["methods"] = dict(new["methods"])
-    changed["method signatures"] = dict(changed["method signatures"])
+    changed["method parameters"] = dict(changed["method parameters"])
     changed["method docstrings"] = dict(changed["method docstrings"])
     return new, changed
 
