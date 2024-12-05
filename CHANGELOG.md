@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fixed the tool for checking if the upstream Civis API spec has changed. (#505)
 
 ### Security
 
