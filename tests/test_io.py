@@ -40,7 +40,11 @@ from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.tests.mocks import create_client_mock
 
+
 POLL_INTERVAL = 0.00001
+
+# https://circleci.com/docs/variables/#built-in-environment-variables
+ON_CI = os.environ.get("CI", "false").lower() == "true"
 
 
 class MockAPIError(CivisAPIError):
@@ -972,7 +976,7 @@ def test_check_column_types_passing():
     assert allow_inconsistent_headers is False
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 @mock.patch("civis.io._tables.file_to_civis")
 @mock.patch("civis.io._tables.civis_file_to_table")
 def test_dataframe_to_civis_pandas(m_civis_file_to_table, m_file_to_civis):
@@ -1032,7 +1036,7 @@ def test_dataframe_to_civis_pandas(m_civis_file_to_table, m_file_to_civis):
     )
 
 
-@pytest.mark.skipif(not has_polars, reason="polars not installed")
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
 @mock.patch("civis.io._tables.file_to_civis")
 @mock.patch("civis.io._tables.civis_file_to_table")
 def test_dataframe_to_civis_polars(m_civis_file_to_table, m_file_to_civis):
@@ -1274,7 +1278,7 @@ def test_file_id_from_run_output_no_filename():
     assert fid == 2013
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_expired():
     m_client = mock.Mock()
     url = None
@@ -1286,7 +1290,7 @@ def test_file_to_dataframe_expired():
         civis.io.file_to_dataframe(121, client=m_client)
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
     url = "url"
@@ -1298,7 +1302,7 @@ def test_file_to_dataframe_infer():
         mock_read_csv.assert_called_once_with(url, compression="infer")
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
     m_client = mock.Mock()
     url = "url"
@@ -1310,7 +1314,7 @@ def test_file_to_dataframe_infer_gzip():
         mock_read_csv.assert_called_once_with(url, compression="gzip")
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
     m_client = mock.Mock()
     url = "url"
@@ -1326,7 +1330,7 @@ def test_file_to_dataframe_kwargs():
         )
 
 
-@pytest.mark.skipif(not has_polars, reason="polars not installed")
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
 def test_file_to_dataframe_polars():
     m_client = mock.Mock()
     url = "url"
@@ -1445,7 +1449,7 @@ def test_file_to_civis_error_for_description_too_long():
             )
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 @pytest.mark.parametrize(
     "func, should_add_description",
     itertools.product(
@@ -1659,7 +1663,7 @@ def test_read_civis_sql_no_dataframe(m_requests):
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_read_civis_sql_pandas():
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_csv_path = os.path.join(tmp_dir, "data.csv")
@@ -1687,7 +1691,7 @@ def test_read_civis_sql_pandas():
         assert pd.read_csv(io.StringIO(expected_data)).equals(actual_data)
 
 
-@pytest.mark.skipif(not has_polars, reason="polars not installed")
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
 def test_read_civis_sql_polars():
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_csv_path = os.path.join(tmp_dir, "data.csv")
@@ -1795,8 +1799,10 @@ def test_maybe_random_name_not_random():
     assert maybe_get_random_name(given_name) == given_name
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
-@pytest.mark.skipif(not has_polars, reason="polars not installed")
+@pytest.mark.skipif(
+    not ON_CI and not (has_pandas and has_polars),
+    reason="pandas or polars not installed",
+)
 @pytest.mark.parametrize(
     "func_name, use_pandas, return_as",
     itertools.product(
