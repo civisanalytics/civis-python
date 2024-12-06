@@ -44,7 +44,7 @@ from civis.tests.mocks import create_client_mock
 POLL_INTERVAL = 0.00001
 
 # https://circleci.com/docs/variables/#built-in-environment-variables
-ON_CI = os.environ.get("CI", "false").lower() == "true"
+ON_CI = os.getenv("CI", "false").lower() == "true"
 
 
 class MockAPIError(CivisAPIError):
