@@ -10,7 +10,7 @@ from civis.service_client import ServiceClient
 
 
 try:
-    # __sphinx_build__ is injected into bulitins in docs/source/conf.py.
+    # __sphinx_build__ is injected into bulitins in docs/conf.py.
     if __sphinx_build__:
         _BUILDING_SPHINX_DOC = True
 except NameError:

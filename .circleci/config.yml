@@ -82,12 +82,12 @@ workflows:
           name: black
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            black --check src tools tests docs/source/conf.py
+            black --check src tools tests docs/conf.py
       - pre-build:
           name: flake8
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
-            flake8 src tools tests docs/source/conf.py
+            flake8 src tools tests docs/conf.py
       - pre-build:
           name: pip-audit
           command-run: |
@@ -100,7 +100,7 @@ workflows:
           command-run: |
             pip install --progress-bar off -r docs/requirements.txt && \
             pip install --progress-bar off --no-deps -e . && \
-            sphinx-build -b html -n docs/source/ docs/build/
+            sphinx-build -b html -n docs/ docs/build
       - pre-build:
           name: twine
           command-run: |

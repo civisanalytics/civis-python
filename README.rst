@@ -167,7 +167,7 @@ Building Documentation
 
 Background:
 
-* We use the Sphinx framework. The documentation source files are in ``docs/source/``.
+* We use the Sphinx framework. The documentation source files are in ``docs/``.
 * All auto-generated files, including the HTML pages, are explicitly not versioned
   (see ``.gitignore``).
 
@@ -177,7 +177,7 @@ For the public documentation at https://civis-python.readthedocs.io:
   Normally, even when we need to update the documentation or make a new release of civis-python,
   neither this configuration YAML file nor Civis's account on the Read the Docs site need
   any updates.
-* To update the documentation, the files under ``docs/source/`` can be updated as needed.
+* To update the documentation, the files under ``docs/`` can be updated as needed.
   If the "API Resources" pages need to be updated because the upstream Civis API has been updated,
   then the following need to happen:
   (i) the new Civis API updates must be accessible by a "standard" Civis Platform user,
@@ -209,7 +209,7 @@ To update this file:
 To build the documentation locally, for testing and development:
 
 * Install the full doc-related dependencies: ``pip install -r docs/requirements.txt``.
-* Run ``sphinx-build -b html docs/source docs/build/html``.
+* Run ``sphinx-build -b html docs docs/build``.
   In case you would like for the "API Resources" page to locally show what a specific
   Civis Platform user would see from the Civis API
   (rather than use the available ``civis_api_spec.json`` for a standard Civis Platform user),
