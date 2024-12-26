@@ -199,6 +199,13 @@ For the public documentation at https://civis-python.readthedocs.io:
   show up at the "stable" URL sooner rather than waiting for the next release with other code changes,
   we can make a patch release (i.e., increment the "Z" in "vX.Y.Z").
 
+The doc build has its full dependencies listed in ``docs/requirements.txt``.
+To update this file:
+
+* Install the latest version of ``pip-tools``: ``pip install --upgrade pip-tools``.
+# Run the ``pip-compile`` command at the top of ``docs/requirements.txt``, with the flag
+  ``--upgrade`` added to upgrade all transitive dependencies as well.
+
 To build the documentation locally, for testing and development:
 
 * Install the full doc-related dependencies: ``pip install -r docs/requirements.txt``.
