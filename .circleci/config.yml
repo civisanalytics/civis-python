@@ -5,7 +5,7 @@ orbs:
 
 jobs:
   pre-build:
-    description: A check that doesn't need every supported Python version (e.g., code style checks, sphinx docs can build)
+    description: A check that doesn't need every supported Python version (e.g., code style checks)
     parameters:
       command-run:
         type: string
@@ -96,12 +96,6 @@ workflows:
             pip-audit --version && \
             pip-audit --skip-editable
       - pre-build:
-          name: sphinx-build
-          command-run: |
-            pip install --progress-bar off -r docs/requirements.txt && \
-            pip install --progress-bar off --no-deps -e . && \
-            sphinx-build -b html -n docs/ docs/build
-      - pre-build:
           name: twine
           command-run: |
             pip install --progress-bar off -e ".[dev-core]" && \
@@ -114,7 +108,6 @@ workflows:
             - black
             - flake8
             - pip-audit
-            - sphinx-build
             - twine
           matrix:
             parameters:
@@ -125,5 +118,4 @@ workflows:
             - black
             - flake8
             - pip-audit
-            - sphinx-build
             - twine
