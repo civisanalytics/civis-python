@@ -203,7 +203,7 @@ The doc build has its full dependencies listed in ``docs/requirements.txt``.
 To update this file:
 
 * Install the latest version of ``pip-tools``: ``pip install --upgrade pip-tools``.
-# Run the ``pip-compile`` command at the top of ``docs/requirements.txt``, with the flag
+* Run the ``pip-compile`` command at the top of ``docs/requirements.txt``, with the flag
   ``--upgrade`` added to upgrade all transitive dependencies as well.
 
 To build the documentation locally, for testing and development:
