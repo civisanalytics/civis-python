@@ -55999,6 +55999,8 @@ class _Users:
                 on by default.
             - my_activity_metrics : bool
                 Whether the activity metrics are filtered to the current user.
+            - ai_sql_assist_disabled : bool
+                Whether the query page includes AI-powered SQL assistance.
         last_checked_announcements : str (date-time), optional
             The date and time at which the user last checked their announcements.
 
@@ -56839,8 +56841,8 @@ class _Users:
         object_type : str, optional
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Project, Workflow, Tableau Report, Service
-            Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
+            Report, Service Report, HTML Report, SQL Report
         limit : int, optional
             Number of results to return. Defaults to 50. Maximum allowed is 1000.
         page_num : int, optional
@@ -56870,8 +56872,8 @@ class _Users:
             - object_type : str
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
-                Script, JavaScript Script, SQL Script, Project, Workflow, Tableau
-                Report, Service Report, HTML Report, SQL Report
+                Script, JavaScript Script, SQL Script, Template Script, Project,
+                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
@@ -56910,8 +56912,8 @@ class _Users:
         object_type : str
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Project, Workflow, Tableau Report, Service
-            Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
+            Report, Service Report, HTML Report, SQL Report
 
         Returns
         -------
@@ -56924,8 +56926,8 @@ class _Users:
             - object_type : str
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
-                Script, JavaScript Script, SQL Script, Project, Workflow, Tableau
-                Report, Service Report, HTML Report, SQL Report
+                Script, JavaScript Script, SQL Script, Template Script, Project,
+                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
