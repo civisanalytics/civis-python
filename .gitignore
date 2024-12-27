@@ -39,8 +39,8 @@ swagger.json
 *.swp
 
 # Sphinx docs
-docs/source/generated/
-docs/source/api_*.rst
+docs/generated/
+docs/api_*.rst
 docs/build/
 
 # IDEs

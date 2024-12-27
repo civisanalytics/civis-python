@@ -4,31 +4,31 @@
 #
 #    pip-compile --extra=docs --output-file=docs/requirements.txt pyproject.toml
 #
-alabaster==0.7.16
+alabaster==1.0.0
     # via sphinx
-attrs==24.2.0
+attrs==24.3.0
     # via
     #   jsonschema
     #   referencing
 babel==2.16.0
     # via sphinx
-certifi==2024.7.4
+certifi==2024.12.14
     # via requests
-charset-normalizer==3.3.2
+charset-normalizer==3.4.1
     # via requests
-click==8.1.7
+click==8.1.8
     # via civis (pyproject.toml)
-cloudpickle==3.0.0
+cloudpickle==3.1.0
     # via civis (pyproject.toml)
-docutils==0.20.1
+docutils==0.21.2
     # via
     #   sphinx
     #   sphinx-rtd-theme
-idna==3.7
+idna==3.10
     # via requests
 imagesize==1.4.1
     # via sphinx
-jinja2==3.1.4
+jinja2==3.1.5
     # via sphinx
 joblib==1.4.2
     # via civis (pyproject.toml)
@@ -36,13 +36,13 @@ jsonref==1.1.0
     # via civis (pyproject.toml)
 jsonschema==4.23.0
     # via civis (pyproject.toml)
-jsonschema-specifications==2023.12.1
+jsonschema-specifications==2024.10.1
     # via jsonschema
-markupsafe==2.1.5
+markupsafe==3.0.2
     # via jinja2
 numpydoc==1.8.0
     # via civis (pyproject.toml)
-packaging==24.1
+packaging==24.2
     # via sphinx
 pygments==2.18.0
     # via sphinx
@@ -56,19 +56,19 @@ requests==2.32.3
     # via
     #   civis (pyproject.toml)
     #   sphinx
-rpds-py==0.20.0
+rpds-py==0.22.3
     # via
     #   jsonschema
     #   referencing
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==7.4.7
+sphinx==8.1.3
     # via
     #   civis (pyproject.toml)
     #   numpydoc
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
-sphinx-rtd-theme==2.0.0
+sphinx-rtd-theme==3.0.2
     # via civis (pyproject.toml)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
@@ -88,5 +88,5 @@ tabulate==0.9.0
     # via numpydoc
 tenacity==9.0.0
     # via civis (pyproject.toml)
-urllib3==2.2.2
+urllib3==2.3.0
     # via requests
