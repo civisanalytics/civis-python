@@ -10,7 +10,7 @@ build:
 
 sphinx:
   builder: html
-  configuration: docs/source/conf.py
+  configuration: docs/conf.py
 
 # Declare the full Python requirements required for stability.
 # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html

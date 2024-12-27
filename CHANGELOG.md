@@ -15,9 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+### Security
+
+## 2.4.2 - 2025-01-02
+
+### Changed
+- Refactored `docs/` since the `docs/source/` subdirectory is no longer needed. (#506)
+
+### Fixed
 - Fixed the tool for checking if the upstream Civis API spec has changed. (#505)
 
 ### Security
+- Bumped the transitive dependency `jinja2`'s version from 3.1.4 to 3.1.5,
+  due to CVE-2024-56326. (#506)
 
 ## 2.4.1 - 2024-11-27
 

@@ -10,17 +10,17 @@ Civis API Python Client
       civis, civis platform, civis analytics, civis api, civis python,
       data science, data engineering, data analysis, data analytics, machine learning
 
-.. include:: ../../README.rst
+.. include:: ../README.rst
   :start-after: start-include-marker-introductory-paragraph
   :end-before: end-include-marker-introductory-paragraph
 
 
-.. include:: ../../README.rst
+.. include:: ../README.rst
   :start-after: start-include-marker-api-keys-section
   :end-before: end-include-marker-api-keys-section
 
 
-.. include:: ../../README.rst
+.. include:: ../README.rst
   :start-after: start-include-marker-installation-section
   :end-before: end-include-marker-installation-section
 
