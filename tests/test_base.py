@@ -47,3 +47,17 @@ def test_civis_api_error_empty_response():
 
     error = CivisAPIError(response)
     assert error.error_message == "No Response Content from Civis API"
+
+
+@pytest.mark.parametrize(
+    "source_params, expected_params",
+    [
+        ({}, None),
+        (None, None),
+        ({"foo": 123, "bar": [1, 2]}, {"foo": 123, "bar[]": [1, 2]}),
+        ({"foo": 123, "bar": (1, 2)}, {"foo": 123, "bar[]": [1, 2]}),
+        ({"foo": 123, "bar": {1, 2}}, {"foo": 123, "bar[]": [1, 2]}),
+    ],
+)
+def test_array_params(source_params, expected_params):
+    assert Endpoint._handle_array_params(source_params) == expected_params

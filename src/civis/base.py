@@ -119,8 +119,27 @@ class Endpoint:
             return self._base_url
         return tostr_urljoin(self._base_url, path.strip("/"))
 
+    @staticmethod
+    def _handle_array_params(params):
+        """Convert array-like parameters to the format that Civis API expects.
+        
+        Different APIs expect array-like parameters in different formats.
+        For Civis API, an array parameter `foo` needs to be passed in as `foo[]`.
+        Related reference: https://stackoverflow.com/a/23347265
+        """
+        if not params:
+            return
+        new_params = {}
+        for key, value in params.items():
+            if isinstance(value, (list, tuple, set)):
+                new_params[f"{key}[]"] = list(value)
+            else:
+                new_params[key] = value
+        return new_params
+
     def _make_request(self, method, path=None, params=None, data=None, **kwargs):
         url = self._build_path(path)
+        params = self._handle_array_params(params)
 
         with self._lock:
             if self._client._retrying is None:
