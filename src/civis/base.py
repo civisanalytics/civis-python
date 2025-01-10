@@ -122,7 +122,7 @@ class Endpoint:
     @staticmethod
     def _handle_array_params(params):
         """Convert array-like parameters to the format that Civis API expects.
-        
+
         Different APIs expect array-like parameters in different formats.
         For Civis API, an array parameter `foo` needs to be passed in as `foo[]`.
         Related reference: https://stackoverflow.com/a/23347265

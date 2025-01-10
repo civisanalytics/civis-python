@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## 2.4.3 - 2025-01-14
+
+### Fixed
+- Fixed the way array query parameters are passed to a Civis API call,
+  so that all items in an array are included in the correctly formatted URL. (#507)
+
 ## 2.4.2 - 2025-01-02
 
 ### Changed
