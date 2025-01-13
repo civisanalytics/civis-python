@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-## 2.4.3 - 2025-01-14
+## 2.4.3 - 2025-01-13
 
 ### Fixed
 - Fixed the way array query parameters are passed to a Civis API call,
