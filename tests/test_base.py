@@ -54,9 +54,13 @@ def test_civis_api_error_empty_response():
     [
         ({}, None),
         (None, None),
-        ({"foo": 123, "bar": [1, 2]}, {"foo": 123, "bar[]": [1, 2]}),
-        ({"foo": 123, "bar": (1, 2)}, {"foo": 123, "bar[]": [1, 2]}),
-        ({"foo": 123, "bar": {1, 2}}, {"foo": 123, "bar[]": [1, 2]}),
+        (
+            {"foo": 123, "bar": "hello", "baz": {"a": 1, "b": 2}},
+            {"foo": 123, "bar": "hello", "baz": {"a": 1, "b": 2}},
+        ),
+        ({"foo": [1, 2, 3]}, {"foo[]": [1, 2, 3]}),
+        ({"foo": (1, 2, 3)}, {"foo[]": [1, 2, 3]}),
+        ({"foo": {1, 2, 3}}, {"foo[]": [1, 2, 3]}),
     ],
 )
 def test_array_params(source_params, expected_params):

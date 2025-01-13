@@ -131,7 +131,7 @@ class Endpoint:
             return
         new_params = {}
         for key, value in params.items():
-            if isinstance(value, (list, tuple, set)):
+            if hasattr(value, "__iter__") and not isinstance(value, (dict, str)):
                 new_params[f"{key}[]"] = list(value)
             else:
                 new_params[key] = value
