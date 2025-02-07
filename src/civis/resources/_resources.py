@@ -477,7 +477,7 @@ def parse_param(param):
     return args
 
 
-def parse_params(parameters, summary, verb):
+def parse_params(parameters, summary, verb, path):
     """Parse the parameters of a function specification into a list
     of dictionaries which are used to generate the function at runtime.
     """
@@ -500,6 +500,7 @@ def parse_params(parameters, summary, verb):
         summary_str = "{}\n".format(textwrap.fill(summary, width=79))
     else:
         summary_str = ""
+    summary_str = f"{summary_str}\nURL: ``{verb.upper()} {path}``\n"
     if param_docs:
         docs = "{}\nParameters\n----------\n{}".format(summary_str, param_docs)
     elif summary:
@@ -583,7 +584,7 @@ def parse_method(verb, operation, path):
     if "deprecated" in summary.lower():
         return None
 
-    args, param_doc = parse_params(params, summary, verb)
+    args, param_doc = parse_params(params, summary, verb, path)
     elements = split_method_params(params)
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
