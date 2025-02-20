@@ -191,12 +191,6 @@ def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
         A log message dictionary with "message", "createdAt" and other attributes
         provided by the job logs endpoint. Note that this will block execution
         until the job has stopped and all log messages are retrieved.
-
-    Notes
-    -----
-    This command could miss some log entries from a currently-running job.
-    It does not re-fetch logs that might have been saved out of order, to
-    preserve the chronological order of the logs and without duplication.
     """
     if raw_client is None:
         raw_client = APIClient(return_type="raw")
