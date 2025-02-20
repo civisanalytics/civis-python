@@ -1,9 +1,17 @@
 import logging
+import operator
+import time
+from datetime import datetime
 
 from civis import APIClient
 from civis.futures import CivisFuture
 
 log = logging.getLogger(__name__)
+
+_FOLLOW_POLL_INTERVAL_SEC = 4
+_LOG_REFETCH_CUTOFF_SECONDS = 300
+_LOG_REFETCH_COUNT = 100
+_LOGS_PER_QUERY = 250
 
 
 def run_job(job_id, client=None, polling_interval=None):
@@ -96,3 +104,132 @@ def run_template(id, arguments, JSONValue=False, client=None):
     else:
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
+
+
+def _compute_effective_max_log_id(logs):
+    """Find a max log ID use in order to avoid missing late messages.
+
+    The order of log IDs may not be consistent with "created at" times
+    since log entries are created by Civis Platform as well as the code
+    for the job itself. This function looks through recent logs
+    and finds a maximum ID that is at least as old as a set cutoff period,
+    so that messages with lower IDs that show up a bit late won't be skipped.
+    With this, it is still theoretically possible but extremely unlikely
+    for some late log messages to be skipped in the job_logs function.
+    """
+    if not logs:
+        return 0
+
+    sorted_logs = sorted(logs, key=operator.itemgetter("id"))
+
+    max_created_at_timestamp = datetime.fromisoformat(
+        sorted_logs[-1]["createdAt"]
+    ).timestamp()
+    cutoff = time.time() - _LOG_REFETCH_CUTOFF_SECONDS
+    if max_created_at_timestamp < cutoff:
+        return sorted_logs[-1]["id"]
+    elif len(sorted_logs) >= _LOG_REFETCH_COUNT:
+        return sorted_logs[-_LOG_REFETCH_COUNT]["id"]
+
+    return 0
+
+
+def _job_finished_past_timeout(job_id, run_id, finished_timeout, raw_client):
+    """Return true if the run finished more than so many seconds ago."""
+    if finished_timeout is None:
+        return False
+
+    run = raw_client.jobs.get_runs(job_id, run_id)
+    finished_at = run.json()["finishedAt"]
+    if finished_at is None:
+        return False
+    finished_at_ts = datetime.fromisoformat(finished_at).timestamp()
+    result = finished_at_ts < time.time() - finished_timeout
+    return result
+
+
+def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
+    """Return a generator of log message dictionaries for a given run.
+
+    Parameters
+    ----------
+    job_id : int
+        The ID of the job to retrieve log message for.
+    run_id : int or None
+        The ID of the run to retrieve log messages for.
+        If None, the ID for the most recent run will be used.
+    raw_client: :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
+        The return_type should be set to "raw".
+    finished_timeout: int or None
+        If not None, then this function will return once the run has
+        been finished for the specified number of seconds.
+        If None, then this function will wait until the API says there
+        will be no more new log messages, which may take a few minutes.
+
+    Yields
+    ------
+    dict
+        A log message dictionary with "message", "createdAt" and other attributes
+        provided by the job logs endpoint. Note that this will block execution
+        until the job has stopped and all log messages are retrieved.
+
+    Notes
+    -----
+    This command could miss some log entries from a currently-running job.
+    It does not re-fetch logs that might have been saved out of order, to
+    preserve the chronological order of the logs and without duplication.
+    """
+    if raw_client is None:
+        raw_client = APIClient(return_type="raw")
+    if run_id is None:
+        run_id = raw_client.jobs.list_runs(
+            job_id, limit=1, order="id", order_dir="desc"
+        ).json()[0]["id"]
+
+    local_max_log_id = 0
+    continue_polling = True
+
+    known_log_ids = set()
+
+    while continue_polling:
+        # This call gets a limited number of log messages since last_id,
+        # ordered by log ID.
+        response = raw_client.jobs.list_runs_logs(
+            job_id,
+            run_id,
+            last_id=local_max_log_id,
+            limit=_LOGS_PER_QUERY,
+        )
+        if "civis-max-id" in response.headers:
+            remote_max_log_id = int(response.headers["civis-max-id"])
+        else:
+            # Platform hasn't seen any logs at all yet
+            remote_max_log_id = None
+        logs = response.json()
+        if logs:
+            local_max_log_id = max(log["id"] for log in logs)
+            logs.sort(key=operator.itemgetter("createdAt", "id"))
+        for log in logs:
+            if log["id"] in known_log_ids:
+                continue
+            known_log_ids.add(log["id"])
+            yield log
+
+        log_finished = response.headers["civis-cache-control"] != "no-store"
+
+        if remote_max_log_id is None:
+            remote_has_more_logs_to_get_now = False
+        elif local_max_log_id == remote_max_log_id:
+            remote_has_more_logs_to_get_now = False
+            local_max_log_id = _compute_effective_max_log_id(logs)
+            if log_finished or _job_finished_past_timeout(
+                job_id, run_id, finished_timeout, raw_client
+            ):
+                continue_polling = False
+        else:
+            remote_has_more_logs_to_get_now = True
+
+        if continue_polling and not remote_has_more_logs_to_get_now:
+            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)

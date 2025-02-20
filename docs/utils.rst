@@ -11,3 +11,4 @@ and templates on the Civis Platform.
 
    run_job
    run_template
+   job_logs

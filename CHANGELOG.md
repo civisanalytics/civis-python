@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- Added `civis.utils.job_logs()` function to return a generator of log messages for a job run (#509)
+
 ### Changed
+
+- Revised the CLI commands `civis jobs follow-log` and `civis jobs follow-run-log` to not skip log messages for running jobs (#509)
 
 ### Deprecated
 
@@ -114,7 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   top-level and nested response objects. (#493)
 
 ### Security
-- Bumped the minimum required version of `requests` to the latest v2.32.3, 
+- Bumped the minimum required version of `requests` to the latest v2.32.3,
   due to a security vulnerability for < v2.32.0
   ([CVE-2024-35195](https://nvd.nist.gov/vuln/detail/CVE-2024-35195)). (#488)
 
@@ -181,7 +185,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated references from 'master' to 'main' (#460)
-- Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated 
+- Clarified the usage example for `civis.io.civis_to_multifile_csv`. Updated
   CircleCI config so dev-requirements is only used when needed. (#452)
 - Removed unneeded `time.sleep` calls and `pytest.mark` calls and mocked `time.sleep` calls to optimize tests. (#453)
 - Refactored tests to remove dependency on the vcr library. (#456)
@@ -227,7 +231,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Added a warning message when using `civis.io.file_to_civis` with file size of 0 bytes (#451)
 - Specified that `civis.io.civis_file_to_table` can handle compressed files (#450)
-- Explicitly stated CSV-like civis file format requirement in 
+- Explicitly stated CSV-like civis file format requirement in
   `civis.io.civis_file_to_table`'s docstring (#445)
 - Called out the fact that `joblib.Parallel`'s `pre_dispatch` defaults to `"2*n_jobs"`
   in the Sphinx docs (#443)
@@ -247,7 +251,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   has `VARCHAR` (#439)
 - Updated info about MacOS shell configuration file to be `~/.zshrc` (#444)
 - Fixed the Sphinx docs to show details of multi-word API endpoints (#442)
-- Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415) 
+- Dropped the buggy/unnecessary `_get_headers` in `civis.io.read_civis_sql` (#415)
 - Clarified the `table_columns` parameter in `civis.io.*` functions (#434)
 - Warned about the `retry_total` parameter of `civis.APIClient` being inactive and deprecated (#431)
 - Converted `assert` statements in non-test code into proper error handling (#430, #435)
