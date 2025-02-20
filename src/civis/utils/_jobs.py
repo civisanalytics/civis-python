@@ -8,7 +8,7 @@ from civis.futures import CivisFuture
 
 log = logging.getLogger(__name__)
 
-_FOLLOW_POLL_INTERVAL_SEC = 4
+_FOLLOW_POLL_INTERVAL_SEC = 5
 _LOG_REFETCH_CUTOFF_SECONDS = 300
 _LOG_REFETCH_COUNT = 100
 _LOGS_PER_QUERY = 250
@@ -106,6 +106,23 @@ def run_template(id, arguments, JSONValue=False, client=None):
         return file_ids
 
 
+def _timestamp_from_iso_str(s):
+    """Return an integer POSIX timestamp for a given ISO date string.
+
+    Note: Until Python 3.11, datetime.fromisoformat doesn't work
+    with the format returned by Civis Platform.
+    """
+    try:
+        return datetime.fromisoformat(s).timestamp()
+    except ValueError:
+        try:
+            # This is the format that Civis Platform returns.
+            return datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%f%z").timestamp()
+        except ValueError:
+            # Another format, just in case.
+            return datetime.strptime(s, "%Y-%m-%dT%H:%M:%S%z").timestamp()
+
+
 def _compute_effective_max_log_id(logs):
     """Find a max log ID use in order to avoid missing late messages.
 
@@ -122,9 +139,7 @@ def _compute_effective_max_log_id(logs):
 
     sorted_logs = sorted(logs, key=operator.itemgetter("id"))
 
-    max_created_at_timestamp = datetime.fromisoformat(
-        sorted_logs[-1]["createdAt"]
-    ).timestamp()
+    max_created_at_timestamp = _timestamp_from_iso_str(sorted_logs[-1]["createdAt"])
     cutoff = time.time() - _LOG_REFETCH_CUTOFF_SECONDS
     if max_created_at_timestamp < cutoff:
         return sorted_logs[-1]["id"]
@@ -143,7 +158,7 @@ def _job_finished_past_timeout(job_id, run_id, finished_timeout, raw_client):
     finished_at = run.json()["finishedAt"]
     if finished_at is None:
         return False
-    finished_at_ts = datetime.fromisoformat(finished_at).timestamp()
+    finished_at_ts = _timestamp_from_iso_str(finished_at)
     result = finished_at_ts < time.time() - finished_timeout
     return result
 
@@ -167,6 +182,8 @@ def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
         been finished for the specified number of seconds.
         If None, then this function will wait until the API says there
         will be no more new log messages, which may take a few minutes.
+        A timeout of 30-60 seconds is usually enough to retrieve all
+        log messages.
 
     Yields
     ------

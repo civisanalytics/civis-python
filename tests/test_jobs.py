@@ -190,12 +190,15 @@ def sample_logs():
     ]
 
 
-def test_job_logs_single_batch(mock_client, sample_logs):
+@patch("civis.utils._jobs.time")
+def test_job_logs_single_batch(mock_time, mock_client, sample_logs):
     """Test when all logs are retrieved in a single batch."""
     mock_response = Mock()
     mock_response.json.return_value = sample_logs
     mock_response.headers = {"civis-max-id": "3", "civis-cache-control": "store"}
+
     mock_client.jobs.list_runs_logs.return_value = mock_response
+    mock_time.time.return_value = datetime.fromisoformat("2025-01-01").timestamp()
 
     logs = list(job_logs(job_id=123, run_id=456, raw_client=mock_client))
 
