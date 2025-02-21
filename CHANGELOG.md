@@ -8,11 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Added `civis.utils.job_logs()` function to return a generator of log messages for a job run (#509)
-
 ### Changed
-
-- Revised the CLI commands `civis jobs follow-log` and `civis jobs follow-run-log` to not skip log messages for running jobs (#509)
 
 ### Deprecated
 
@@ -21,6 +17,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Security
+
+## 2.5.0 - 2025-02-21
+
+### Added
+
+- Added `civis.utils.job_logs()` function to return a generator of log messages for a job run (#509)
+
+### Changed
+
+- Revised the CLI commands `civis jobs follow-log` and `civis jobs follow-run-log` to not skip log messages for running jobs (#509)
 
 ## 2.4.3 - 2025-01-13
 
