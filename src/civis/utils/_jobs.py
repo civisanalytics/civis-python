@@ -176,7 +176,9 @@ def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
     raw_client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
-        The return_type should be set to "raw".
+        The return_type should be set to "raw", which is needed to check
+        the "civis-cache-control" and "civis-max-id" headers when
+        list_runs_logs returns an empty list of new messages.
     finished_timeout: int or None
         If not None, then this function will return once the run has
         been finished for the specified number of seconds.
