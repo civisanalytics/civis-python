@@ -4,10 +4,8 @@
 Additional commands to add to the CLI beyond the OpenAPI spec.
 """
 import functools
-import operator
 import os
 import sys
-import time
 
 import click
 import requests
@@ -15,6 +13,7 @@ import webbrowser
 
 import civis
 from civis.io import file_to_civis, civis_to_file
+from civis.utils import job_logs
 
 
 # From http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=CIVIS
@@ -41,11 +40,8 @@ If the job is still running, this command will continue outputting logs
 until the run is done and then exit. If the run is already finished, it
 will output all the logs from that run and then exit.
 
-NOTE: This command could miss some log entries from a currently-running
-job. It does not re-fetch logs that might have been saved out of order, to
-preserve the chronological order of the logs and without duplication.
+NOTE: Log entries may appear our of order, particularly at the end of a run.
 """
-_FOLLOW_POLL_INTERVAL_SEC = 3
 
 
 @click.command("upload")
@@ -236,41 +232,8 @@ def jobs_follow_run_log(id, run_id):
 
 
 def _jobs_follow_run_log(id, run_id):
-    client = civis.APIClient(return_type="raw")
-    local_max_log_id = 0
-    continue_polling = True
-
-    while continue_polling:
-        # This call gets all available log messages since last_id up to
-        # the page size, ordered by log ID. We leave it to Platform to decide
-        # the best page size.
-        response = client.jobs.list_runs_logs(id, run_id, last_id=local_max_log_id)
-        if "civis-max-id" in response.headers:
-            remote_max_log_id = int(response.headers["civis-max-id"])
-        else:
-            # Platform hasn't seen any logs at all yet
-            remote_max_log_id = None
-        logs = response.json()
-        if logs:
-            local_max_log_id = max(log["id"] for log in logs)
-            logs.sort(key=operator.itemgetter("createdAt", "id"))
-        for log in logs:
-            print(" ".join((log["createdAt"], log["message"].rstrip())))
-        # if output is a pipe, write the buffered output immediately:
-        sys.stdout.flush()
-
-        log_finished = response.headers["civis-cache-control"] != "no-store"
-        if remote_max_log_id is None:
-            remote_has_more_logs_to_get_now = False
-        elif local_max_log_id == remote_max_log_id:
-            remote_has_more_logs_to_get_now = False
-            if log_finished:
-                continue_polling = False
-        else:
-            remote_has_more_logs_to_get_now = True
-
-        if continue_polling and not remote_has_more_logs_to_get_now:
-            time.sleep(_FOLLOW_POLL_INTERVAL_SEC)
+    for log in job_logs(id, run_id):
+        print(" ".join((log["createdAt"], log["message"].rstrip())), flush=True)
 
 
 @click.command("download")
