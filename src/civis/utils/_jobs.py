@@ -163,7 +163,7 @@ def _job_finished_past_timeout(job_id, run_id, finished_timeout, raw_client):
     return result
 
 
-def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
+def job_logs(job_id, run_id=None, finished_timeout=None):
     """Return a generator of log message dictionaries for a given run.
 
     Parameters
@@ -173,12 +173,6 @@ def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
     run_id : int or None
         The ID of the run to retrieve log messages for.
         If None, the ID for the most recent run will be used.
-    raw_client: :class:`civis.APIClient`, optional
-        If not provided, an :class:`civis.APIClient` object will be
-        created from the :envvar:`CIVIS_API_KEY`.
-        The return_type should be set to "raw", which is needed to check
-        the "civis-cache-control" and "civis-max-id" headers when
-        list_runs_logs returns an empty list of new messages.
     finished_timeout: int or None
         If not None, then this function will return once the run has
         been finished for the specified number of seconds.
@@ -194,8 +188,13 @@ def job_logs(job_id, run_id=None, raw_client=None, finished_timeout=None):
         provided by the job logs endpoint. Note that this will block execution
         until the job has stopped and all log messages are retrieved.
     """
-    if raw_client is None:
-        raw_client = APIClient(return_type="raw")
+    # The return_type for the client is "raw" in order to check
+    # the "civis-cache-control" and "civis-max-id" headers when
+    # list_runs_logs returns an empty list of new messages.
+    # Caching of the endpoint information in
+    # civis.resources.generate_classes_maybe_cached avoids extra API calls.
+    raw_client = APIClient(return_type="raw")
+
     if run_id is None:
         run_id = raw_client.jobs.list_runs(
             job_id, limit=1, order="id", order_dir="desc"

@@ -215,13 +215,13 @@ def _str_table_result(cols, rows):
 )
 @click.argument("id", type=int)
 def jobs_follow_log(id):
-    raw_client = civis.APIClient(return_type="raw")
-    runs = raw_client.jobs.list_runs(id, limit=1, order="id", order_dir="desc").json()
+    client = civis.APIClient()
+    runs = client.jobs.list_runs(id, limit=1, order="id", order_dir="desc")
     if not runs:
         raise click.ClickException("No runs found for that job ID.")
-    run_id = runs[0]["id"]
+    run_id = runs[0].id
     print("Run ID: " + str(run_id))
-    _jobs_follow_run_log(id, run_id, raw_client=raw_client)
+    _jobs_follow_run_log(id, run_id)
 
 
 @click.command("follow-run-log", help="Output live run log." + _FOLLOW_LOG_NOTE)
@@ -231,8 +231,8 @@ def jobs_follow_run_log(id, run_id):
     _jobs_follow_run_log(id, run_id)
 
 
-def _jobs_follow_run_log(id, run_id, raw_client=None):
-    for log in job_logs(id, run_id, raw_client=raw_client):
+def _jobs_follow_run_log(id, run_id):
+    for log in job_logs(id, run_id):
         print(" ".join((log["createdAt"], log["message"].rstrip())), flush=True)
 
 
