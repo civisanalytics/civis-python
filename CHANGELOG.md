@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- Added examples to `civis.utils.job_logs()` docstring (#510)
+
 ### Changed
 
 ### Deprecated
@@ -17,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Security
+
+- Updated `docs/requirements.txt` due to a security advisory for jinja2. See GHSA-cpwx-vrp4-4pq7 (#510)
 
 ## 2.5.0 - 2025-02-24
 
