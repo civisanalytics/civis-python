@@ -187,6 +187,16 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
         A log message dictionary with "message", "createdAt" and other attributes
         provided by the job logs endpoint. Note that this will block execution
         until the job has stopped and all log messages are retrieved.
+
+    Examples
+    --------
+    >>> # Print all log messages from a job's most recent run
+    >>> for log in job_logs(job_id=123456):
+    ...     print(f"{log['createdAt']}: {log['message']}")
+    ...
+    >>> # Get logs from a specific run with a 30 second timeout
+    >>> for log in job_logs(job_id=123456, run_id=789, finished_timeout=30):
+    ...     print(log['message'])
     """
     # The return_type for the client is "raw" in order to check
     # the "civis-cache-control" and "civis-max-id" headers when
