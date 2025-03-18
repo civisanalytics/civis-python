@@ -71,9 +71,13 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
         warn_msg = (
             "use_pandas is deprecated and will be removed in civis-python v3.0.0 "
             "(no release timeline yet). To update your code, do not set the use_pandas "
-            "argument and instead use return_as."
+            "argument and instead only use return_as."
         )
-        if use_pandas and return_as in ("list", "pandas"):
+        conflict_msg = (
+            "Update your code so that the use_pandas argument is no longer set, "
+            "and set return_as to one of {'list', 'pandas', 'polars'}."
+        )
+        if use_pandas and return_as == "list":
             # return_as has a default value of "list". If return_as is "list",
             # there's no way to tell if the user sets it explicitly or if it's
             # from the default value (unless we either rewrite the function signature
@@ -85,8 +89,12 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
         elif use_pandas and return_as == "polars":
             raise ValueError(
                 "Conflicting argument values: use_pandas=True but return_as='polars'. "
-                "Update your code so that the use_pandas argument is no longer set, "
-                "and set return_as to either 'pandas' or 'polars' for a dataframe."
+                + conflict_msg
+            )
+        elif not use_pandas and return_as == "pandas":
+            raise ValueError(
+                "Conflicting argument values: use_pandas=False but return_as='pandas'. "
+                + conflict_msg
             )
         # stacklevel=3 to point the warning to the user's code
         warnings.warn(warn_msg, FutureWarning, stacklevel=3)
