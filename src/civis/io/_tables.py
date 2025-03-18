@@ -136,7 +136,7 @@ def read_civis(
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
 
-        .. deprecated:: 2.5.0
+        .. deprecated:: 2.6.0
             `use_pandas` will be removed at civis-python v3.0.0.
             Please use `return_as` instead.
     encoding : str, optional
@@ -346,7 +346,7 @@ def read_civis_sql(
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
 
-        .. deprecated:: 2.5.0
+        .. deprecated:: 2.6.0
             `use_pandas` will be removed at civis-python v3.0.0.
             Please use `return_as` instead.
     sql_params_arguments : dict, optional
