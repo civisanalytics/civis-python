@@ -42,6 +42,7 @@ swagger.json
 docs/generated/
 docs/api_*.rst
 docs/build/
+docs/_static/hide_endpoint_class_sig.css
 
 # IDEs
 .idea
