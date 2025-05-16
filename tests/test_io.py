@@ -1819,6 +1819,8 @@ def test_warns_or_raise_exception_for_deprecated_use_pandas(
         warn_or_raise = None
     elif use_pandas is True and return_as == "polars":
         warn_or_raise = ValueError
+    elif use_pandas is False and return_as == "pandas":
+        warn_or_raise = ValueError
     else:
         warn_or_raise = FutureWarning
 

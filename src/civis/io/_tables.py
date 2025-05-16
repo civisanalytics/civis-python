@@ -69,9 +69,11 @@ def _validate_return_as(return_as):
 def _warn_deprecated_use_pandas(use_pandas, return_as):
     if not isinstance(use_pandas, DeprecatedKwargDefault):
         warn_msg = (
+            "To support multiple dataframe libraries, the keyword argument "
             "use_pandas is deprecated and will be removed in civis-python v3.0.0 "
-            "(no release timeline yet). To update your code, do not set the use_pandas "
-            "argument and instead only use return_as."
+            "(no release timeline yet). "
+            "Please update your code to use return_as instead and "
+            "no longer set use_pandas. "
         )
         conflict_msg = (
             "Update your code so that the use_pandas argument is no longer set, "
@@ -85,7 +87,7 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
             # So when use_pandas=True and return_as="list", assume the user's intent
             # is to return a pandas dataframe.
             return_as = "pandas"
-            warn_msg += " To return a pandas dataframe, set return_as to 'pandas'."
+            warn_msg += 'To return a pandas dataframe, set return_as="pandas". '
         elif use_pandas and return_as == "polars":
             raise ValueError(
                 "Conflicting argument values: use_pandas=True but return_as='polars'. "
@@ -97,7 +99,7 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
                 + conflict_msg
             )
         # stacklevel=3 to point the warning to the user's code
-        warnings.warn(warn_msg, FutureWarning, stacklevel=3)
+        warnings.warn(warn_msg.strip(), FutureWarning, stacklevel=3)
     return return_as
 
 
@@ -136,9 +138,9 @@ def read_civis(
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
 
-        .. deprecated:: 2.5.0
-            `use_pandas` will be removed at civis-python v3.0.0.
-            Please use `return_as` instead.
+        .. deprecated:: 2.6.0
+            ``use_pandas`` will be removed at civis-python v3.0.0.
+            Please use ``return_as`` instead.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
         the ``encoding`` kwarg of :func:`pandas.read_csv` or
@@ -346,9 +348,9 @@ def read_civis_sql(
         If ``True``, return a :class:`pandas:pandas.DataFrame`. Otherwise,
         return a list of results from :func:`python:csv.reader`.
 
-        .. deprecated:: 2.5.0
-            `use_pandas` will be removed at civis-python v3.0.0.
-            Please use `return_as` instead.
+        .. deprecated:: 2.6.0
+            ``use_pandas`` will be removed at civis-python v3.0.0.
+            Please use ``return_as`` instead.
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to
         :func:`civis.APIClient.scripts.post_sql<civis.resources._resources.Scripts.post_sql>`.
