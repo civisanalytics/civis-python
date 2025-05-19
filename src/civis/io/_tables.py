@@ -70,14 +70,16 @@ def _warn_deprecated_use_pandas(use_pandas, return_as):
     if not isinstance(use_pandas, DeprecatedKwargDefault):
         warn_msg = (
             "To support multiple dataframe libraries, the keyword argument "
-            "use_pandas is deprecated and will be removed in civis-python v3.0.0 "
+            "'use_pandas' is deprecated since civis-python v2.6.0 "
+            "and will be removed in civis-python v3.0.0 "
             "(no release timeline yet). "
-            "Please update your code to use return_as instead and "
-            "no longer set use_pandas. "
+            "While 'use_pandas' still works for now, you're strongly encouraged to "
+            "update your code to use the new keyword argument 'return_as' instead and "
+            "stop settting 'use_pandas'. "
         )
         conflict_msg = (
-            "Update your code so that the use_pandas argument is no longer set, "
-            "and set return_as to one of {'list', 'pandas', 'polars'}."
+            "Update your code so that the 'use_pandas' argument is no longer set, "
+            "and set 'return_as' to one of {'list', 'pandas', 'polars'}."
         )
         if use_pandas and return_as == "list":
             # return_as has a default value of "list". If return_as is "list",
