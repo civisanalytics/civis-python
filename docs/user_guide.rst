@@ -198,7 +198,7 @@ for :func:`logging.getLogger` with this behavior built in.
 
     from civis import civis_logger
 
-    _LOG = civis_logger()  # instead of _LOG = logging.getLogger(__name__)
+    _LOG = civis_logger(__name__)
 
     def some_function():
         ...
