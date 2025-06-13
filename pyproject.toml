@@ -54,7 +54,7 @@ dev-core = [
 ]
 dev-civisml = [
     "feather-format == 0.4.1",
-    "numpy == 2.3.0",
+    "numpy == 2.2.6",
     "scikit-learn == 1.7.0",
     "scipy == 1.15.3",
 ]
