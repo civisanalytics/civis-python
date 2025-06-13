@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
-
 - Added examples to `civis.utils.job_logs()` docstring (#510)
 
 ### Changed
@@ -17,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fixed `civis_logger` for needing a user-provided `__name__` as best practice. (#512)
 
 ### Security
 
