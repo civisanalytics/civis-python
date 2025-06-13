@@ -110,7 +110,7 @@ class TestPolling(unittest.TestCase):
         poller_timestamps = []
 
         def append_new_timestamp(*args, **kwargs):
-            nonlocal poller_timestamps
+            nonlocal poller_timestamps  # noqa: F824
             poller_timestamps.append(time.time())
             if len(poller_timestamps) < 5:
                 return Response({"state": "running"})
