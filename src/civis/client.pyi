@@ -1567,6 +1567,53 @@ class _Clusters:
         """
         ...
 
+    def list_kubernetes_instance_configs_historical_metrics(
+        self,
+        instance_config_id: int,
+        timeframe: str | None = ...,
+        metric: str | None = ...,
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics:
+        """Get graphs of historical resource usage in an Instance Config
+
+        Parameters
+        ----------
+        instance_config_id : int
+            The ID of this instance config.
+        timeframe : str, optional
+            The span of time that the graphs cover. Must be one of 1_day, 1_week.
+        metric : str, optional
+            The metric to retrieve. Must be one of cpu, memory.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - instance_config_id : int
+                The ID of this instance config.
+            - metric : str
+                URL for the graph of historical CPU usage in this instance config.
+            - timeframe : str
+                The span of time that the graphs cover. Must be one of 1_day, 1_week.
+            - unit : str
+                The unit of the values.
+            - metrics : :class:`civis.Response`
+                - used : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+                - requested : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+                - capacity : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+        """
+        ...
+
 class _Credentials:
     def list_types(
         self,
@@ -22843,7 +22890,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - archived : str
                 The archival status of the requested item(s).
         """
@@ -22997,7 +23044,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -23116,7 +23163,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -23293,7 +23340,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -23470,7 +23517,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -23611,7 +23658,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -24018,7 +24065,7 @@ class _Notebooks:
                 - created_at : str (time)
                 - updated_at : str (time)
                 - notebook_id : int
-                    The ID of owning Notebook
+                    The ID of the owning Notebook
             - credentials : List[int]
                 A list of credential IDs to pass to the notebook.
             - environment_variables : :class:`civis.Response`
@@ -24215,7 +24262,7 @@ class _Notebooks:
             - created_at : str (time)
             - updated_at : str (time)
             - notebook_id : int
-                The ID of owning Notebook
+                The ID of the owning Notebook
         """
         ...
 
@@ -24269,7 +24316,7 @@ class _Notebooks:
             - created_at : str (time)
             - updated_at : str (time)
             - notebook_id : int
-                The ID of owning Notebook
+                The ID of the owning Notebook
         """
         ...
 
@@ -24323,7 +24370,7 @@ class _Notebooks:
             - created_at : str (time)
             - updated_at : str (time)
             - notebook_id : int
-                The ID of owning Notebook
+                The ID of the owning Notebook
         """
         ...
 
@@ -24665,6 +24712,152 @@ class _Ontology:
             - desc : str
                 A description of this field.
             - aliases : List[str]
+        """
+        ...
+
+class _Organizations:
+    def list_favorites(
+        self,
+        object_id: int | None = ...,
+        object_type: str | None = ...,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> Iterator[_ResponseOrganizationsListFavorites]:
+        """List Favorites
+
+        Parameters
+        ----------
+        object_id : int, optional
+            The id of the object. If specified as a query parameter, must also specify
+            object_type parameter.
+        object_type : str, optional
+            The type of the object that is favorited. Valid options: Container Script,
+            Identity Resolution, Import, Python Script, R Script, dbt Script,
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
+            Report, Service Report, HTML Report, SQL Report
+        limit : int, optional
+            Number of results to return. Defaults to 50. Maximum allowed is 1000.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to created_at. Must be
+            one of: created_at, object_type, object_id.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a list of :class:`civis.Response` objects, whose size is
+            determined by 'limit'. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.PaginatedResponse`
+            - id : int
+                The id of the favorite.
+            - object_id : int
+                The id of the object. If specified as a query parameter, must also
+                specify object_type parameter.
+            - object_type : str
+                The type of the object that is favorited. Valid options: Container
+                Script, Identity Resolution, Import, Python Script, R Script, dbt
+                Script, JavaScript Script, SQL Script, Template Script, Project,
+                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+            - object_name : str
+                The name of the object that is favorited.
+            - created_at : str (time)
+                The time this favorite was created.
+            - object_updated_at : str (time)
+                The time the object that is favorited was last updated
+            - object_author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - position : int
+                The rank position of this favorite. Use the patch
+                users/me/favorites/:id/ranking/ endpoints to update.
+        """
+        ...
+
+    def post_favorites(
+        self,
+        object_id: int,
+        object_type: str,
+    ) -> _ResponseOrganizationsPostFavorites:
+        """Favorite an item for your organization
+
+        Parameters
+        ----------
+        object_id : int
+            The id of the object. If specified as a query parameter, must also specify
+            object_type parameter.
+        object_type : str
+            The type of the object that is favorited. Valid options: Container Script,
+            Identity Resolution, Import, Python Script, R Script, dbt Script,
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
+            Report, Service Report, HTML Report, SQL Report
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The id of the favorite.
+            - object_id : int
+                The id of the object. If specified as a query parameter, must also
+                specify object_type parameter.
+            - object_type : str
+                The type of the object that is favorited. Valid options: Container
+                Script, Identity Resolution, Import, Python Script, R Script, dbt
+                Script, JavaScript Script, SQL Script, Template Script, Project,
+                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+            - object_name : str
+                The name of the object that is favorited.
+            - created_at : str (time)
+                The time this favorite was created.
+            - object_updated_at : str (time)
+                The time the object that is favorited was last updated
+            - object_author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+        """
+        ...
+
+    def delete_favorites(
+        self,
+        id: int,
+    ) -> Response:
+        """Unfavorite an item for your organization
+
+        Parameters
+        ----------
+        id : int
+            The id of the favorite.
+
+        Returns
+        -------
+        None
+            Response code 204: success
         """
         ...
 
@@ -55254,9 +55447,9 @@ class _Usage:
             - job_id : int
                 The ID of the job which contributed this usage.
             - user_id : int
-                The ID of the user who started the run.
+                The ID of the user who contributed this usage.
             - organization_id : int
-                The organization of the user who started the run.
+                The organization of the user who contributed this usage.
             - run_created_at : str (date-time)
                 When the run was created at.
             - run_time : int
@@ -55300,9 +55493,9 @@ class _Usage:
             - job_id : int
                 The ID of the job which contributed this usage.
             - user_id : int
-                The ID of the user who started the run.
+                The ID of the user who contributed this usage.
             - organization_id : int
-                The organization of the user who started the run.
+                The organization of the user who contributed this usage.
             - run_created_at : str (date-time)
                 When the run was created at.
             - run_time : int
@@ -55339,9 +55532,9 @@ class _Usage:
             - job_id : int
                 The ID of the job which contributed this usage.
             - user_id : int
-                The ID of the user who started the run.
+                The ID of the user who contributed this usage.
             - organization_id : int
-                The organization of the user who started the run.
+                The organization of the user who contributed this usage.
             - run_created_at : str (date-time)
                 When the run was created at.
             - run_time : int
@@ -55671,7 +55864,7 @@ class _Users:
         robot : bool, optional
             Whether the user is a robot.
         send_email : bool, optional
-            Whether the user will receive a welcome email.
+            Whether the user will receive a welcome email. Defaults to false.
 
         Returns
         -------
@@ -55818,7 +56011,7 @@ class _Users:
             - sign_in_count : int
                 The number of times the user has signed in.
             - assuming_role : bool
-                Whether the user is assuming a role or not.
+                Whether the user is assuming this role or not.
             - assuming_admin : bool
                 Whether the user is assuming admin.
             - assuming_admin_expiration : str (date-time)
@@ -55999,8 +56192,12 @@ class _Users:
                 on by default.
             - my_activity_metrics : bool
                 Whether the activity metrics are filtered to the current user.
+            - standard_sql_autocomplete_disabled : bool
+                Whether the query page includes standard SQL autocomplete.
             - ai_sql_assist_disabled : bool
-                Whether the query page includes AI-powered SQL assistance.
+                Whether the query page includes AI-powered SQL autocomplete.
+            - query_preview_rows : int
+                Number of preview rows query should return in the UI.
         last_checked_announcements : str (date-time), optional
             The date and time at which the user last checked their announcements.
 
@@ -56053,7 +56250,7 @@ class _Users:
             - sign_in_count : int
                 The number of times the user has signed in.
             - assuming_role : bool
-                Whether the user is assuming a role or not.
+                Whether the user is assuming this role or not.
             - assuming_admin : bool
                 Whether the user is assuming admin.
             - assuming_admin_expiration : str (date-time)
@@ -57210,8 +57407,11 @@ class _Workflows:
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
         state : List[str], optional
-            State of the most recent execution.One or more of queued, running,
-            succeeded, failed, cancelled, idle, and scheduled.
+            State of the most recent execution. One or more of queued, running,
+            succeeded, failed, cancelled, idle, and scheduled. Note that the
+            "scheduled" state applies only to scheduled workflows which have never been
+            run. If you want to see all scheduled workflows, please use the "scheduled"
+            filter instead.
         scheduled : bool, optional
             If the workflow is scheduled.
         limit : int, optional
@@ -59800,6 +60000,40 @@ class _ResponseClustersListKubernetesInstanceConfigsUserStatistics(Response):
 class _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs(Response):
     cpu_graph_url: str
     mem_graph_url: str
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics(Response):
+    instance_config_id: int
+    metric: str
+    timeframe: str
+    unit: str
+    metrics: _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetrics
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetrics(Response):
+    used: _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsUsed
+    requested: (
+        _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsRequested
+    )
+    capacity: (
+        _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsCapacity
+    )
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsUsed(
+    Response
+):
+    times: List[int]
+    values: List[float]
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsRequested(
+    Response
+):
+    times: List[int]
+    values: List[float]
+
+class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsCapacity(
+    Response
+):
+    times: List[int]
+    values: List[float]
 
 class _ResponseCredentialsListTypes(Response):
     types: List[str]
@@ -68182,6 +68416,39 @@ class _ResponseOntologyList(Response):
     title: str
     desc: str
     aliases: List[str]
+
+class _ResponseOrganizationsListFavorites(Response):
+    id: int
+    object_id: int
+    object_type: str
+    object_name: str
+    created_at: str
+    object_updated_at: str
+    object_author: _ResponseOrganizationsListFavoritesObjectAuthor
+    position: int
+
+class _ResponseOrganizationsListFavoritesObjectAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseOrganizationsPostFavorites(Response):
+    id: int
+    object_id: int
+    object_type: str
+    object_name: str
+    created_at: str
+    object_updated_at: str
+    object_author: _ResponseOrganizationsPostFavoritesObjectAuthor
+
+class _ResponseOrganizationsPostFavoritesObjectAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponsePermissionSetsList(Response):
     id: int
@@ -81932,6 +82199,7 @@ class APIClient:
     notebooks = _Notebooks()
     notifications = _Notifications()
     ontology = _Ontology()
+    organizations = _Organizations()
     permission_sets = _Permission_Sets()
     predictions = _Predictions()
     projects = _Projects()
