@@ -871,7 +871,7 @@ class _CivisBackend(ParallelBackendBase):
             raise out
         return out
 
-    def apply_async(self, func, callback=None):
+    def submit(self, func, callback=None):
         """Schedule func to be run"""
         # Serialize func to a temporary file and upload it to a Civis File.
         # Make the temporary files expire in a week.
