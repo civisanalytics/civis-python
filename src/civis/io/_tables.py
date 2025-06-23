@@ -66,7 +66,10 @@ def _validate_return_as(return_as):
         raise ImportError("return_as is 'polars' but polars is not installed.")
 
 
-def _warn_deprecated_use_pandas(use_pandas, return_as):
+def _warn_or_raise_for_use_pandas(use_pandas, return_as):
+    """When it's time to actually remove use_pandas at civis-python v3.0.0,
+    Just remove this helper function as well as all usage of use_pandas."""
+
     if not isinstance(use_pandas, DeprecatedKwargDefault):
         warn_msg = (
             "To support multiple dataframe libraries, the keyword argument "
@@ -210,7 +213,7 @@ def read_civis(
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
     _validate_return_as(return_as)
-    return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
+    return_as = _warn_or_raise_for_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
@@ -426,7 +429,7 @@ def read_civis_sql(
     civis.io.civis_to_csv : Write directly to a CSV file.
     """
     _validate_return_as(return_as)
-    return_as = _warn_deprecated_use_pandas(use_pandas, return_as)
+    return_as = _warn_or_raise_for_use_pandas(use_pandas, return_as)
 
     if client is None:
         client = APIClient()
