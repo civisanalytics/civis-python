@@ -12,11 +12,11 @@ attrs==25.3.0
     #   referencing
 babel==2.17.0
     # via sphinx
-certifi==2025.4.26
+certifi==2025.6.15
     # via requests
 charset-normalizer==3.4.2
     # via requests
-click==8.2.0
+click==8.2.1
     # via civis (pyproject.toml)
 cloudpickle==3.1.1
     # via civis (pyproject.toml)
@@ -30,11 +30,11 @@ imagesize==1.4.1
     # via sphinx
 jinja2==3.1.6
     # via sphinx
-joblib==1.5.0
+joblib==1.5.1
     # via civis (pyproject.toml)
 jsonref==1.1.0
     # via civis (pyproject.toml)
-jsonschema==4.23.0
+jsonschema==4.24.0
     # via civis (pyproject.toml)
 jsonschema-specifications==2025.4.1
     # via jsonschema
@@ -44,7 +44,7 @@ numpydoc==1.8.0
     # via civis (pyproject.toml)
 packaging==25.0
     # via sphinx
-pygments==2.19.1
+pygments==2.19.2
     # via sphinx
 pyyaml==6.0.2
     # via civis (pyproject.toml)
@@ -52,13 +52,13 @@ referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   civis (pyproject.toml)
     #   sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-rpds-py==0.25.0
+rpds-py==0.25.1
     # via
     #   jsonschema
     #   referencing
@@ -90,7 +90,7 @@ tabulate==0.9.0
     # via numpydoc
 tenacity==9.1.2
     # via civis (pyproject.toml)
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via referencing
-urllib3==2.4.0
+urllib3==2.5.0
     # via requests

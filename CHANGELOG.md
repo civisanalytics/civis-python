@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added examples to `civis.utils.job_logs()` docstring (#510)
 
 ### Changed
+- Updated Civis parallel backend's internals for refactored joblib's backend. (#513)
 
 ### Deprecated
 - The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fixed `civis_logger` for needing a user-provided `__name__` as best practice. (#512)
 
 ### Security
 - Updated `docs/requirements.txt` due to a security advisory for jinja2. See GHSA-cpwx-vrp4-4pq7 (#510)
