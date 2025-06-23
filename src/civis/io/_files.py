@@ -25,6 +25,15 @@ try:
 except ImportError:
     HAS_PANDAS = False
 
+try:
+    import polars as pl
+
+    HAS_POLARS = True
+except ImportError:
+    HAS_POLARS = False
+
+_DATAFRAME_RETURN_AS_OPTIONS = frozenset(["pandas", "polars"])
+
 MIN_MULTIPART_SIZE = 50 * 2**20  # 50MB
 MIN_PART_SIZE = 5 * 2**20  # 5MB
 MAX_PART_SIZE = 5 * 2**30  # 5GB
@@ -476,42 +485,55 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     return obj["object_id"]
 
 
-def file_to_dataframe(file_id, compression="infer", client=None, **read_kwargs):
-    """Load a :class:`~pandas.DataFrame` from a CSV stored in a Civis File
+def file_to_dataframe(
+    file_id, return_as="pandas", compression="infer", client=None, **read_kwargs
+):
+    """Load a dataframe from a CSV stored in a Civis File.
 
-    The :class:`~pandas.DataFrame` will be read directly from Civis
+    The dataframe will be read directly from Civis
     without copying the CSV to a local file on disk.
 
     Parameters
     ----------
     file_id : int
         ID of a Civis File which contains a CSV
+    return_as : str, {"pandas", "polars"}
+        Return a :class:`pandas.DataFrame` instance if ``"pandas"`` is provided,
+        or a :class:`polars.DataFrame` instance for ``"polars"``. Default: ``"pandas"``.
     compression : str, optional
-        If "infer", set the ``compression`` argument of ``pandas.read_csv``
+        (Only active if ``return_as`` is ``"pandas"``.)
+        If "infer", set the ``compression`` argument of :func:`pandas.read_csv`
         based on the file extension of the name of the Civis File.
-        Otherwise pass this argument to ``pandas.read_csv``.
+        Otherwise pass this argument to :func:`pandas.read_csv`.
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
     **read_kwargs
         Additional arguments will be passed directly to
-        :func:`~pandas.read_csv`.
+        :func:`~pandas.read_csv` or :func:`polars.read_csv`.
 
     Returns
     -------
-    :class:`~pandas.DataFrame` containing the contents of the CSV
+    :class:`~pandas.DataFrame` or :class:`polars.DataFrame`
 
     Raises
     ------
     ImportError
-        If ``pandas`` is not available
+        If ``return_as`` is ``"pandas"`` and pandas is not installed.
+        If ``return_as`` is ``"polars"`` and polars is not installed.
 
     See Also
     --------
     pandas.read_csv
     """
-    if not HAS_PANDAS:
-        raise ImportError("file_to_dataframe requires pandas to be installed.")
+    if return_as not in _DATAFRAME_RETURN_AS_OPTIONS:
+        raise ValueError(f"unsupported return_as option: {return_as}")
+
+    if return_as == "pandas" and not HAS_PANDAS:
+        raise ImportError("return_as is 'pandas' but pandas is not installed.")
+    elif return_as == "polars" and not HAS_POLARS:
+        raise ImportError("return_as is 'polars' but polars is not installed.")
+
     client = APIClient() if client is None else client
     file_info = client.files.get(file_id)
     file_url = file_info.file_url
@@ -522,13 +544,16 @@ def file_to_dataframe(file_id, compression="infer", client=None, **read_kwargs):
             "expired.".format(file_id)
         )
     file_name = file_info.name
-    if compression == "infer":
+    if return_as == "pandas" and compression == "infer":
         comp_exts = {".gz": "gzip", ".xz": "xz", ".bz2": "bz2", ".zip": "zip"}
         ext = os.path.splitext(file_name)[-1]
         if ext in comp_exts:
             compression = comp_exts[ext]
 
-    return pd.read_csv(file_url, compression=compression, **read_kwargs)
+    if return_as == "pandas":
+        return pd.read_csv(file_url, compression=compression, **read_kwargs)
+    else:
+        return pl.read_csv(file_url, **read_kwargs)
 
 
 def dataframe_to_file(
@@ -539,12 +564,12 @@ def dataframe_to_file(
     client=None,
     **to_csv_kws,
 ):
-    """Store a :class:`~pandas.DataFrame` as a CSV in Civis Platform
+    """Store a dataframe as a CSV in Civis Platform.
 
     Parameters
     ----------
-    df : :class:`~pandas.DataFrame`
-        The table to upload.
+    df : :class:`~pandas.DataFrame` | :class:`polars.DataFrame`
+        The dataframe to upload.
     name : str, optional
         The name of the Civis File
     expires_at : str, optional
@@ -563,7 +588,7 @@ def dataframe_to_file(
         created from the :envvar:`CIVIS_API_KEY`.
     **to_csv_kws
         Additional keyword parameters will be passed directly to
-        :func:`~pandas.DataFrame.to_csv`.
+        :func:`~pandas.DataFrame.to_csv` or :func:`polars.DataFrame.write_csv`.
 
     Returns
     -------
@@ -579,10 +604,19 @@ def dataframe_to_file(
     --------
     :func:`file_to_civis`
     :func:`~pandas.DataFrame.to_csv`
+    :func:`polars.DataFrame.write_csv`
     """
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
-        df.to_csv(path, **to_csv_kws)
+        if (df_lib := df.__module__.split(".")[0]) == "pandas":
+            df.to_csv(path, **to_csv_kws)
+        elif df_lib == "polars":
+            df.write_csv(path, **to_csv_kws)
+        else:
+            raise ValueError(
+                f"unsuppported dataframe library {df_lib!r} "
+                "-- only pandas and polars are supported"
+            )
         file_kwargs = dict(name=name, expires_at=expires_at, description=description)
         fid = file_to_civis(path, client=client, **file_kwargs)
     return fid

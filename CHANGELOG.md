@@ -7,12 +7,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- The `civis.io.*` functions for dataframes support polars in addition to pandas. (#511)
+    * For `civis.io.read_civis_sql` and `civis.io.read_civis`:
+        The new kwarg `return_as` has been added. It defaults to `"list"` to maintain
+        the same return behavior as civis-python <= v2.5.0.
+        To return a dataframe, set `return_as` to either `"pandas"` or `"polars"`.
+    * For `civis.io.dataframe_to_file` and `civis.io.dataframe_to_civis`:
+        Either a pandas or polars dataframe can now be directly used as input.
+    * For `civis.io.file_to_dataframe`:
+        The new kwarg `return_as` has been added. It defaults to `"pandas"` to maintain
+        the same return behavior as civis-python <= v2.5.0.
+        To return a polars dataframe, set `return_as` to `"polars"`.
 - Added examples to `civis.utils.job_logs()` docstring (#510)
 
 ### Changed
 - Updated Civis parallel backend's internals for refactored joblib's backend. (#513)
 
 ### Deprecated
+- The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
+  has been deprecated and will be removed at civis-python v3.0.0 (no release timeline yet).
+  Its continued usage is discouraged, and please use the new kwarg `return_as` instead
+  (see notes under the "added" section above).
 
 ### Removed
 
@@ -25,12 +40,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.5.0 - 2025-02-24
 
 ### Added
-
 - Added `civis.utils.job_logs()` function to return a generator of log messages for a job run (#509)
 
 ### Changed
-
-- Revised the CLI commands `civis jobs follow-log` and `civis jobs follow-run-log` to not skip log messages for running jobs (#509)
+- Revised the CLI commands `civis jobs follow-log` and `civis jobs follow-run-log`
+  to not skip log messages for running jobs (#509)
 
 ## 2.4.3 - 2025-01-13
 

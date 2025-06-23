@@ -44,7 +44,7 @@ numpydoc==1.8.0
     # via civis (pyproject.toml)
 packaging==25.0
     # via sphinx
-pygments==2.19.1
+pygments==2.19.2
     # via sphinx
 pyyaml==6.0.2
     # via civis (pyproject.toml)
@@ -92,5 +92,5 @@ tenacity==9.1.2
     # via civis (pyproject.toml)
 typing-extensions==4.14.0
     # via referencing
-urllib3==2.4.0
+urllib3==2.5.0
     # via requests
