@@ -25,8 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
-  has been deprecated and will be removed at civis-python v3.0.0. Its continued
-  usage is discouraged, and please use the new kwarg `return_as` instead
+  has been deprecated and will be removed at civis-python v3.0.0 (no release timeline yet).
+  Its continued usage is discouraged, and please use the new kwarg `return_as` instead
   (see notes under the "added" section above).
 
 ### Removed
