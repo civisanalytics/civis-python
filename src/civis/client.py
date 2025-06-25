@@ -100,8 +100,7 @@ class APIClient:
 
         .. deprecated:: 2.6.0
             This property is deprecated and will be removed at civis-python v3.0.0.
-            Please use :py:meth:`~civis.APIClient.users.list_me()['feature_flags']`
-            instead.
+            Please use ``client.users.list_me()["feature_flags"]`` instead.
 
         Returns
         -------
