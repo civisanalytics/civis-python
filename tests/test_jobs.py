@@ -184,9 +184,9 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
 @pytest.fixture
 def sample_logs():
     return [
-        {"id": 1, "message": "First log", "createdAt": "2023-01-01T00:00:00Z"},
-        {"id": 2, "message": "Second log", "createdAt": "2023-01-01T00:00:01Z"},
-        {"id": 3, "message": "Third log", "createdAt": "2023-01-01T00:00:02Z"},
+        {"id": 1, "message": "First log", "created_at": "2023-01-01T00:00:00Z"},
+        {"id": 2, "message": "Second log", "created_at": "2023-01-01T00:00:01Z"},
+        {"id": 3, "message": "Third log", "created_at": "2023-01-01T00:00:02Z"},
     ]
 
 
@@ -216,10 +216,10 @@ def test_job_logs_single_batch(mock_time, mock_APIClient, mock_client, sample_lo
 def test_job_logs_multiple_batches(mock_time, mock_APIClient, mock_client):
     """Test when logs are retrieved in multiple batches."""
     first_batch = [
-        {"id": 1, "message": "Log 1", "createdAt": "2023-01-01T00:00:00Z"},
-        {"id": 2, "message": "Log 2", "createdAt": "2023-01-01T00:00:01Z"},
+        {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:00Z"},
+        {"id": 2, "message": "Log 2", "created_at": "2023-01-01T00:00:01Z"},
     ]
-    second_batch = [{"id": 3, "message": "Log 3", "createdAt": "2023-01-01T00:00:02Z"}]
+    second_batch = [{"id": 3, "message": "Log 3", "created_at": "2023-01-01T00:00:02Z"}]
 
     mock_response1 = Mock()
     mock_response1.json.return_value = first_batch
@@ -275,15 +275,15 @@ def test_job_logs_sorted_order(mock_APIClient, mock_client):
     The sorting only works within a single API call.
     """
     unsorted_logs = [
-        {"id": 2, "message": "Log 2", "createdAt": "2023-01-01T00:00:01Z"},
-        {"id": 1, "message": "Log 1", "createdAt": "2023-01-01T00:00:01Z"},
-        {"id": 3, "message": "Log 3", "createdAt": "2023-01-01T00:00:00Z"},
+        {"id": 2, "message": "Log 2", "created_at": "2023-01-01T00:00:01Z"},
+        {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:01Z"},
+        {"id": 3, "message": "Log 3", "created_at": "2023-01-01T00:00:00Z"},
     ]
 
     expected_order = [
-        {"id": 3, "message": "Log 3", "createdAt": "2023-01-01T00:00:00Z"},
-        {"id": 1, "message": "Log 1", "createdAt": "2023-01-01T00:00:01Z"},
-        {"id": 2, "message": "Log 2", "createdAt": "2023-01-01T00:00:01Z"},
+        {"id": 3, "message": "Log 3", "created_at": "2023-01-01T00:00:00Z"},
+        {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:01Z"},
+        {"id": 2, "message": "Log 2", "created_at": "2023-01-01T00:00:01Z"},
     ]
 
     mock_response = Mock()
@@ -303,8 +303,8 @@ def test_job_logs_sorted_order(mock_APIClient, mock_client):
 def test_job_logs_no_duplicate_logs(mock_time, mock_APIClient, mock_client):
     """Test that duplicate log messages won't be yielded."""
     expected_logs = [
-        {"id": 1, "message": "Log 1", "createdAt": "2023-01-01T00:00:00Z"},
-        {"id": 2, "message": "Log 2", "createdAt": "2023-01-01T00:00:01Z"},
+        {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:00Z"},
+        {"id": 2, "message": "Log 2", "created_at": "2023-01-01T00:00:01Z"},
     ]
 
     mock_response1 = Mock()
@@ -333,8 +333,8 @@ def test_compute_effective_max_log_id_all_logs_before_cutoff(mock_time):
     dt_now = datetime.now()
     # The log messages were from more seconds ago than the cutoff.
     logs = [
-        {"id": 1, "createdAt": (dt_now - timedelta(seconds=400)).isoformat()},
-        {"id": 2, "createdAt": (dt_now - timedelta(seconds=350)).isoformat()},
+        {"id": 1, "created_at": (dt_now - timedelta(seconds=400)).isoformat()},
+        {"id": 2, "created_at": (dt_now - timedelta(seconds=350)).isoformat()},
     ]
     mock_time.time.side_effect = lambda: dt_now.timestamp()
     assert _compute_effective_max_log_id(logs) == 2
@@ -346,8 +346,8 @@ def test_compute_effective_max_log_id_logs_within_cutoff(mock_time):
     # Both log messages were from fewer seconds ago than the cutoff,
     # so they'll both be retrieved again to avoid skipping any.
     logs = [
-        {"id": 1, "createdAt": (dt_now - timedelta(seconds=200)).isoformat()},
-        {"id": 2, "createdAt": (dt_now - timedelta(seconds=150)).isoformat()},
+        {"id": 1, "created_at": (dt_now - timedelta(seconds=200)).isoformat()},
+        {"id": 2, "created_at": (dt_now - timedelta(seconds=150)).isoformat()},
     ]
     mock_time.time.side_effect = lambda: dt_now.timestamp()
     assert _compute_effective_max_log_id(logs) == 0
@@ -357,7 +357,7 @@ def test_compute_effective_max_log_id_logs_within_cutoff(mock_time):
 def test_compute_effective_max_log_id_logs_exceed_refetch_count(mock_time):
     dt_now = datetime.now()
     logs = [
-        {"id": i, "createdAt": (dt_now - timedelta(seconds=i)).isoformat()}
+        {"id": i, "created_at": (dt_now - timedelta(seconds=i)).isoformat()}
         for i in range(110)
     ]
     mock_time.time.side_effect = lambda: dt_now.timestamp()
@@ -369,14 +369,14 @@ def test_job_finished_past_timeout_no_timeout(mock_client):
 
 
 def test_job_finished_past_timeout_not_finished(mock_client):
-    mock_client.jobs.get_runs.return_value.json.return_value = {"finishedAt": None}
+    mock_client.jobs.get_runs.return_value.json.return_value = {"finished_at": None}
     assert not _job_finished_past_timeout(123, 456, 10, mock_client)
 
 
 def test_job_finished_past_timeout_finished_recently(mock_client):
     finished_at = (datetime.now() - timedelta(seconds=5)).isoformat()
     mock_client.jobs.get_runs.return_value.json.return_value = {
-        "finishedAt": finished_at
+        "finished_at": finished_at
     }
     assert not _job_finished_past_timeout(123, 456, 10, mock_client)
 
@@ -384,6 +384,6 @@ def test_job_finished_past_timeout_finished_recently(mock_client):
 def test_job_finished_past_timeout_finished_long_ago(mock_client):
     finished_at = (datetime.now() - timedelta(seconds=20)).isoformat()
     mock_client.jobs.get_runs.return_value.json.return_value = {
-        "finishedAt": finished_at
+        "finished_at": finished_at
     }
     assert _job_finished_past_timeout(123, 456, 10, mock_client)

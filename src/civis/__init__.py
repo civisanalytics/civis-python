@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from civis.client import APIClient
 from civis.loggers import civis_logger
-from civis.response import find, find_one, Response, PaginatedResponse
+from civis.response import find, find_one, ListResponse, Response, PaginatedResponse
 from civis.service_client import ServiceClient
 
 
@@ -43,11 +43,12 @@ __version__ = version("civis")
 __all__ = [
     "__version__",
     "APIClient",
+    "civis_logger",
     "find",
     "find_one",
     "futures",
     "io",
-    "civis_logger",
+    "ListResponse",
     "ml",
     "PaginatedResponse",
     "parallel",
