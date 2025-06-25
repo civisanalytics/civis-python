@@ -96,6 +96,24 @@ class APIClient:
 
     @property
     def feature_flags(self):
+        """The feature flags for the current user.
+
+        .. deprecated:: 2.6.0
+            This property is deprecated and will be removed at civis-python v3.0.0.
+            Please use :py:meth:`~civis.APIClient.users.list_me()['feature_flags']`
+            instead.
+
+        Returns
+        -------
+        tuple[str]
+        """
+        warnings.warn(
+            "The property `feature_flags` is deprecated and will be removed "
+            "at civis-python v3.0.0. Please use "
+            "client.users.list_me()['feature_flags'] instead.",
+            FutureWarning,
+            stacklevel=2,  # Point to the user code that calls this method.
+        )
         if self._feature_flags:
             return self._feature_flags
         me = self.users.list_me()
