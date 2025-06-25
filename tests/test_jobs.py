@@ -190,19 +190,17 @@ def sample_logs():
     ]
 
 
-@patch("civis.utils._jobs.APIClient")
 @patch("civis.utils._jobs.time")
-def test_job_logs_single_batch(mock_time, mock_APIClient, mock_client, sample_logs):
+def test_job_logs_single_batch(mock_time, mock_client, sample_logs):
     """Test when all logs are retrieved in a single batch."""
     mock_response = Mock()
     mock_response.json.return_value = sample_logs
     mock_response.headers = {"civis-max-id": "3", "civis-cache-control": "store"}
 
     mock_client.jobs.list_runs_logs.return_value = mock_response
-    mock_APIClient.return_value = mock_client
     mock_time.time.return_value = datetime.fromisoformat("2025-01-01").timestamp()
 
-    logs = list(job_logs(job_id=123, run_id=456))
+    logs = list(job_logs(job_id=123, run_id=456, client=mock_client))
 
     assert len(logs) == 3
     assert logs == sample_logs
@@ -211,9 +209,8 @@ def test_job_logs_single_batch(mock_time, mock_APIClient, mock_client, sample_lo
     )
 
 
-@patch("civis.utils._jobs.APIClient")
 @patch("civis.utils._jobs.time")
-def test_job_logs_multiple_batches(mock_time, mock_APIClient, mock_client):
+def test_job_logs_multiple_batches(mock_time, mock_client):
     """Test when logs are retrieved in multiple batches."""
     first_batch = [
         {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:00Z"},
@@ -230,10 +227,9 @@ def test_job_logs_multiple_batches(mock_time, mock_APIClient, mock_client):
     mock_response2.headers = {"civis-max-id": "3", "civis-cache-control": "store"}
 
     mock_client.jobs.list_runs_logs.side_effect = [mock_response1, mock_response2]
-    mock_APIClient.return_value = mock_client
     mock_time.time.return_value = datetime.fromisoformat("2025-01-01").timestamp()
 
-    logs = list(job_logs(job_id=123, run_id=456))
+    logs = list(job_logs(job_id=123, run_id=456, client=mock_client))
 
     assert len(logs) == 3
     assert logs == first_batch + second_batch
@@ -241,11 +237,8 @@ def test_job_logs_multiple_batches(mock_time, mock_APIClient, mock_client):
     mock_time.sleep.assert_called_once()
 
 
-@patch("civis.utils._jobs.APIClient")
 @patch("civis.utils._jobs.time")
-def test_job_logs_no_logs_initially(
-    mock_time, mock_APIClient, mock_client, sample_logs
-):
+def test_job_logs_no_logs_initially(mock_time, mock_client, sample_logs):
     """Test behavior when no logs are available."""
 
     mock_response1 = Mock()
@@ -257,18 +250,16 @@ def test_job_logs_no_logs_initially(
     mock_response2.headers = {"civis-cache-control": "store", "civis-max-id": "3"}
 
     mock_client.jobs.list_runs_logs.side_effect = [mock_response1, mock_response2]
-    mock_APIClient.return_value = mock_client
     mock_time.time.return_value = datetime.fromisoformat("2025-01-01").timestamp()
 
-    logs = list(job_logs(job_id=123, run_id=456))
+    logs = list(job_logs(job_id=123, run_id=456, client=mock_client))
 
     assert len(logs) == len(sample_logs)
     assert mock_client.jobs.list_runs_logs.call_count == 2
     mock_time.sleep.assert_called_once()
 
 
-@patch("civis.utils._jobs.APIClient")
-def test_job_logs_sorted_order(mock_APIClient, mock_client):
+def test_job_logs_sorted_order(mock_client):
     """Test that logs are properly sorted by createdAt and id.
 
     Note: logs won't be sorted if they are out of order across different API calls.
@@ -291,16 +282,14 @@ def test_job_logs_sorted_order(mock_APIClient, mock_client):
     mock_response.headers = {"civis-max-id": "3", "civis-cache-control": "store"}
 
     mock_client.jobs.list_runs_logs.return_value = mock_response
-    mock_APIClient.return_value = mock_client
 
-    logs = list(job_logs(job_id=123, run_id=456))
+    logs = list(job_logs(job_id=123, run_id=456, client=mock_client))
 
     assert logs == expected_order
 
 
-@patch("civis.utils._jobs.APIClient")
 @patch("civis.utils._jobs.time")
-def test_job_logs_no_duplicate_logs(mock_time, mock_APIClient, mock_client):
+def test_job_logs_no_duplicate_logs(mock_time, mock_client):
     """Test that duplicate log messages won't be yielded."""
     expected_logs = [
         {"id": 1, "message": "Log 1", "created_at": "2023-01-01T00:00:00Z"},
@@ -317,9 +306,8 @@ def test_job_logs_no_duplicate_logs(mock_time, mock_APIClient, mock_client):
 
     mock_time.time.return_value = datetime.fromisoformat("2025-01-01").timestamp()
     mock_client.jobs.list_runs_logs.side_effect = (mock_response1, mock_response2)
-    mock_APIClient.return_value = mock_client
 
-    actual_logs = list(job_logs(job_id=123, run_id=456))
+    actual_logs = list(job_logs(job_id=123, run_id=456, client=mock_client))
 
     assert actual_logs == expected_logs
 
