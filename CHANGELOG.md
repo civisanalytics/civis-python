@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
-- The `civis.io.*` functions for dataframes support polars in addition to pandas. (#511)
+- The `civis.io.*` functions for dataframes support polars in addition to pandas. (#515)
     * For `civis.io.read_civis_sql` and `civis.io.read_civis`:
         The new kwarg `return_as` has been added. It defaults to `"list"` to maintain
         the same return behavior as civis-python <= v2.5.0.
@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   has been deprecated and will be removed at civis-python v3.0.0 (no release timeline yet).
   Its continued usage is discouraged, and please use the new kwarg `return_as` instead
   (see notes under the "added" section above).
+- The property `feature_flags` at a `civis.APIClient` instance is now deprecated.
+  `client.users.list_me()["feature_flags"]` should be used instead. (#516)
 
 ### Removed
 
