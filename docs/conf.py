@@ -47,10 +47,11 @@ autosummary_generate = True
 intersphinx_mapping = {
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
     "python": ("https://docs.python.org/3", None),
-    "requests": ("https://docs.python-requests.org/en/latest/", None),
+    "requests": ("https://requests.readthedocs.io/en/latest/", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
     "tenacity": ("https://tenacity.readthedocs.io/en/latest/", None),
+    "polars": ("https://docs.pola.rs/api/python/stable/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -127,6 +128,8 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
+# Suppress irrelevant warnings during doc builds.
+numpydoc_class_members_toctree = False
 
 # -- Options for HTML output ----------------------------------------------
 

@@ -26,7 +26,7 @@ uploads the data back into Civis:
 
    >>> df = civis.io.read_civis(table="my_schema.my_table",
    ...                          database="database",
-   ...                          use_pandas=True)
+   ...                          return_as="pandas")
    >>> correlation_matrix = df.corr()
    >>> correlation_matrix["corr_var"] = correlation_matrix.index
    >>> fut = civis.io.dataframe_to_civis(df=correlation_matrix,
@@ -198,7 +198,7 @@ for :func:`logging.getLogger` with this behavior built in.
 
     from civis import civis_logger
 
-    _LOG = civis_logger()  # instead of _LOG = logging.getLogger(__name__)
+    _LOG = civis_logger(__name__)  # instead of _LOG = logging.getLogger(__name__)
 
     def some_function():
         ...

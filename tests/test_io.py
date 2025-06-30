@@ -5,6 +5,7 @@ import io
 import itertools
 import json
 import os
+import warnings
 from functools import partial
 from io import StringIO, BytesIO
 from unittest import mock
@@ -22,8 +23,16 @@ try:
 except ImportError:
     has_pandas = False
 
+try:
+    import polars as pl
+
+    has_polars = True
+except ImportError:
+    has_polars = False
+
 import civis
 from civis.io import _files
+from civis._deprecation import DeprecatedKwargDefault
 from civis.io._files import _retry
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name
@@ -31,8 +40,11 @@ from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.tests.mocks import create_client_mock
 
+
 POLL_INTERVAL = 0.00001
-api_import_str = "civis.resources._resources.get_api_spec"
+
+# https://circleci.com/docs/variables/#built-in-environment-variables
+ON_CI = os.getenv("CI", "false").lower() == "true"
 
 
 class MockAPIError(CivisAPIError):
@@ -964,10 +976,10 @@ def test_check_column_types_passing():
     assert allow_inconsistent_headers is False
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 @mock.patch("civis.io._tables.file_to_civis")
 @mock.patch("civis.io._tables.civis_file_to_table")
-def test_dataframe_to_civis(m_civis_file_to_table, m_file_to_civis):
+def test_dataframe_to_civis_pandas(m_civis_file_to_table, m_file_to_civis):
     mock_civis = create_client_mock()
     df = pd.DataFrame([[1, 2, 3], [2, 3, 4]])
     m_file_to_civis.return_value = 42
@@ -991,6 +1003,66 @@ def test_dataframe_to_civis(m_civis_file_to_table, m_file_to_civis):
         # it is
         m_to_csv.assert_called_once_with(mock.ANY, encoding="utf-8", index=False)
         out_path = m_to_csv.call_args.args[0]
+
+    m_file_to_civis.assert_called_once_with(
+        mock.ANY, "api_client_test_fixture", client=mock_civis
+    )
+
+    # Ensure that the file written to above is the same file as that
+    # uploaded to Civis in this call
+    assert m_file_to_civis.call_args.args[0] == out_path
+
+    m_civis_file_to_table.assert_called_once_with(
+        m_file_to_civis.return_value,
+        "redshift-general",
+        "scratch.api_client_test_fixture",
+        client=mock_civis,
+        max_errors=None,
+        existing_table_rows="truncate",
+        diststyle=None,
+        distkey=None,
+        sortkey1=None,
+        sortkey2=None,
+        table_columns=None,
+        delimiter=",",
+        primary_keys=None,
+        last_modified_keys=None,
+        escaped=False,
+        execution="immediate",
+        headers=True,
+        credential_id=None,
+        polling_interval=None,
+        hidden=True,
+    )
+
+
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
+@mock.patch("civis.io._tables.file_to_civis")
+@mock.patch("civis.io._tables.civis_file_to_table")
+def test_dataframe_to_civis_polars(m_civis_file_to_table, m_file_to_civis):
+    mock_civis = create_client_mock()
+    df = pl.DataFrame([[1, 2, 3], [2, 3, 4]], orient="row")
+    m_file_to_civis.return_value = 42
+    mock_future = mock.create_autospec(civis.futures.CivisFuture, spec_set=True)
+    m_civis_file_to_table.return_value = mock_future
+
+    # use a mock to spy on the dataframe's to_csv method so we can
+    # check on its calls without impeding its actual usage.
+    with mock.patch.object(df, "write_csv", wraps=df.write_csv) as m_write_csv:
+        result = civis.io.dataframe_to_civis(
+            df,
+            "redshift-general",
+            "scratch.api_client_test_fixture",
+            existing_table_rows="truncate",
+            client=mock_civis,
+        )
+        assert result == mock_future
+
+        # ANY here represents the path to which the dataframe was written
+        # Since it's a temporary directory we don't know/care exactly what
+        # it is
+        m_write_csv.assert_called_once_with(mock.ANY)
+        out_path = m_write_csv.call_args.args[0]
 
     m_file_to_civis.assert_called_once_with(
         mock.ANY, "api_client_test_fixture", client=mock_civis
@@ -1206,7 +1278,7 @@ def test_file_id_from_run_output_no_filename():
     assert fid == 2013
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_expired():
     m_client = mock.Mock()
     url = None
@@ -1218,7 +1290,7 @@ def test_file_to_dataframe_expired():
         civis.io.file_to_dataframe(121, client=m_client)
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
     m_client = mock.Mock()
     url = "url"
@@ -1230,7 +1302,7 @@ def test_file_to_dataframe_infer():
         mock_read_csv.assert_called_once_with(url, compression="infer")
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
     m_client = mock.Mock()
     url = "url"
@@ -1242,7 +1314,7 @@ def test_file_to_dataframe_infer_gzip():
         mock_read_csv.assert_called_once_with(url, compression="gzip")
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
     m_client = mock.Mock()
     url = "url"
@@ -1256,6 +1328,20 @@ def test_file_to_dataframe_kwargs():
         mock_read_csv.assert_called_once_with(
             url, compression="special", delimiter="|", nrows=10
         )
+
+
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
+def test_file_to_dataframe_polars():
+    m_client = mock.Mock()
+    url = "url"
+    m_client.files.get.return_value = Response({"name": "spam.csv", "file_url": url})
+    with mock.patch.object(
+        civis.io._files.pl, "read_csv", autospec=True
+    ) as mock_read_csv:
+        civis.io.file_to_dataframe(
+            121, return_as="polars", client=m_client, separator="|", n_rows=10
+        )
+        mock_read_csv.assert_called_once_with(url, separator="|", n_rows=10)
 
 
 @mock.patch.object(civis.io._files, "civis_to_file", autospec=True)
@@ -1363,7 +1449,7 @@ def test_file_to_civis_error_for_description_too_long():
             )
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 @pytest.mark.parametrize(
     "func, should_add_description",
     itertools.product(
@@ -1472,7 +1558,7 @@ def test_sql_script():
 
 
 @mock.patch.object(civis.io._tables, "requests")
-def test_read_civis_sql_no_pandas_special_encoding_sad_path(m_requests):
+def test_read_civis_sql_no_dataframe_special_encoding_sad_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1493,12 +1579,16 @@ def test_read_civis_sql_no_pandas_special_encoding_sad_path(m_requests):
     # which should raise UnicodeDecodeError.
     with pytest.raises(UnicodeDecodeError):
         civis.io.read_civis_sql(
-            "select 1", "db", use_pandas=False, client=m_client, polling_interval=1
+            "select 1",
+            "db",
+            return_as="list",
+            client=m_client,
+            polling_interval=POLL_INTERVAL,
         )
 
 
 @mock.patch.object(civis.io._tables, "requests")
-def test_read_civis_sql_no_pandas_special_encoding_happy_path(m_requests):
+def test_read_civis_sql_no_dataframe_special_encoding_happy_path(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1529,16 +1619,16 @@ def test_read_civis_sql_no_pandas_special_encoding_happy_path(m_requests):
     actual_data = civis.io.read_civis_sql(
         "select 1",
         "db",
-        use_pandas=False,
+        return_as="list",
         client=m_client,
-        polling_interval=1,
+        polling_interval=POLL_INTERVAL,
         encoding=encoding,
     )
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
 
 
 @mock.patch.object(civis.io._tables, "requests")
-def test_read_civis_sql_no_pandas(m_requests):
+def test_read_civis_sql_no_dataframe(m_requests):
     # Set up a mock client object for what civis.io.read_civis_sql needs.
     m_client = create_client_mock()
     m_client.scripts.get_sql_runs.return_value = Response(
@@ -1566,14 +1656,14 @@ def test_read_civis_sql_no_pandas(m_requests):
     actual_data = civis.io.read_civis_sql(
         "select 1",
         "db",
-        use_pandas=False,
+        return_as="list",
         client=m_client,
-        polling_interval=1,
+        polling_interval=POLL_INTERVAL,
     )
     assert list(csv.reader(io.StringIO(expected_data))) == actual_data
 
 
-@pytest.mark.skipif(not has_pandas, reason="pandas not installed")
+@pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_read_civis_sql_pandas():
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_csv_path = os.path.join(tmp_dir, "data.csv")
@@ -1594,11 +1684,39 @@ def test_read_civis_sql_pandas():
         actual_data = civis.io.read_civis_sql(
             "select 1",
             "db",
-            use_pandas=True,
+            return_as="pandas",
             client=m_client,
-            polling_interval=1,
+            polling_interval=POLL_INTERVAL,
         )
         assert pd.read_csv(io.StringIO(expected_data)).equals(actual_data)
+
+
+@pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
+def test_read_civis_sql_polars():
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_csv_path = os.path.join(tmp_dir, "data.csv")
+        expected_data = "foo,bar\n123,very good\n"
+        with open(tmp_csv_path, "wb") as f:
+            f.write(gzip.compress(expected_data.encode("utf-8")))
+
+        # Set up a mock client object for what civis.io.read_civis_sql needs.
+        m_client = create_client_mock()
+        m_client.scripts.get_sql_runs.return_value = Response(
+            {
+                "output": [
+                    {"path": tmp_csv_path, "file_id": 123, "output_name": "blah"}
+                ],
+                "state": "success",
+            }
+        )
+        actual_data = civis.io.read_civis_sql(
+            "select 1",
+            "db",
+            return_as="polars",
+            client=m_client,
+            polling_interval=POLL_INTERVAL,
+        )
+        assert pl.read_csv(io.StringIO(expected_data)).equals(actual_data)
 
 
 def test_io_no_retry():
@@ -1679,3 +1797,83 @@ def test_maybe_random_name_random(mock_uuid):
 def test_maybe_random_name_not_random():
     given_name = "22222"
     assert maybe_get_random_name(given_name) == given_name
+
+
+@pytest.mark.skipif(
+    not ON_CI and not (has_pandas and has_polars),
+    reason="pandas or polars not installed",
+)
+@pytest.mark.parametrize(
+    "func_name, use_pandas, return_as",
+    itertools.product(
+        ("read_civis_sql", "read_civis"),
+        (True, False, DeprecatedKwargDefault()),
+        ("list", "pandas", "polars"),
+    ),
+)
+@mock.patch.object(civis.io._tables, "requests")
+def test_warns_or_raise_exception_for_deprecated_use_pandas(
+    m_requests, func_name, use_pandas, return_as
+):
+    if isinstance(use_pandas, DeprecatedKwargDefault):
+        warn_or_raise = None
+    elif use_pandas is True and return_as == "polars":
+        warn_or_raise = ValueError
+    elif use_pandas is False and return_as == "pandas":
+        warn_or_raise = ValueError
+    else:
+        warn_or_raise = FutureWarning
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_csv_path = os.path.join(tmp_dir, "data.csv")
+        expected_data = "foo,bar\n123,very good\n"
+        with open(tmp_csv_path, "wb") as f:
+            f.write(gzip.compress(expected_data.encode("utf-8")))
+
+        # Set up a mock client object for what civis.io.read_civis(_sql) needs.
+        m_client = create_client_mock()
+        m_client.scripts.get_sql_runs.return_value = Response(
+            {
+                "output": [
+                    {"path": tmp_csv_path, "file_id": 123, "output_name": "blah"}
+                ],
+                "state": "success",
+            }
+        )
+        m_response = mock.Mock()
+        # The helper function _decompress_stream() calls
+        # response.raw.read(CHUNK_SIZE) in a while loop.
+        # In the mock `m_response.raw.read` here, we use side_effect so that
+        # we get the data back from the first call and no data in the second call
+        # inside the while loop (because the data has all been consumed in the
+        # first call).
+        m_response.raw.read.side_effect = [
+            gzip.compress(expected_data.encode("utf-8")),
+            b"",
+        ]
+        m_requests.get.return_value = m_response
+
+        func = getattr(civis.io, func_name)
+        shared_args = dict(
+            database="db",
+            use_pandas=use_pandas,
+            return_as=return_as,
+            client=m_client,
+            polling_interval=POLL_INTERVAL,
+        )
+        if func_name == "read_civis":
+            args = {"table": "schema.tablename", **shared_args}
+        else:
+            args = {"sql": "select * from schema.tablename", **shared_args}
+
+        if warn_or_raise and warn_or_raise.__base__.__name__ == "Warning":
+            with pytest.warns(warn_or_raise):
+                func(**args)
+        elif warn_or_raise and warn_or_raise.__base__.__name__ == "Exception":
+            with pytest.raises(warn_or_raise):
+                func(**args)
+        else:
+            # Check that no warning is emitted.
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                func(**args)

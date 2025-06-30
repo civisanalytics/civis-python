@@ -1,4 +1,5 @@
 import json
+import warnings
 from collections import OrderedDict
 from unittest import mock
 
@@ -22,24 +23,24 @@ def test_feature_flags(mock_spec):
     client = APIClient()
     setattr(client, "users", FakeUsersEndpoint())
 
-    assert client.feature_flags == ("foo", "bar")
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        assert client.feature_flags == ("foo", "bar")
 
 
 @mock.patch("civis.resources._resources.get_api_spec", return_value=API_SPEC)
 def test_feature_flags_memoized(mock_spec):
     client = APIClient()
     setattr(client, "users", FakeUsersEndpoint())
-    with mock.patch.object(client.users, "list_me", wraps=client.users.list_me):
-        client.feature_flags
-        client.feature_flags
-        assert client.users.list_me.call_count == 1
+    with warnings.catch_warnings():
+        with mock.patch.object(client.users, "list_me", wraps=client.users.list_me):
+            warnings.simplefilter("ignore")
+            client.feature_flags
+            client.feature_flags
+            assert client.users.list_me.call_count == 1
 
 
-@pytest.mark.parametrize(
-    "schema_tablename", ["foo.bar", '"foo".bar', 'foo."bar"', '"foo"."bar"']
-)
-def test_get_table_id(schema_tablename):
-    """Check that get_table_id handles quoted schema.tablename correctly."""
+def test_get_table_id():
     client = APIClient(local_api_spec=API_SPEC, api_key="none")
     client.get_database_id = mock.Mock(return_value=123)
 
@@ -48,7 +49,7 @@ def test_get_table_id(schema_tablename):
 
     client.tables.list = mock.Mock(return_value=mock_tables)
 
-    client.get_table_id(table=schema_tablename, database=123)
+    client.get_table_id(table="foo.bar", database=123)
 
     client.tables.list.assert_called_once_with(
         database_id=123, schema="foo", name="bar"

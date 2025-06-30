@@ -29,8 +29,7 @@ def civis_logger(name=None, level=None, fmt="%(message)s"):
     ----------
     name : str, optional
         Logger name, to be passed into :func:`logging.getLogger`.
-        If ``None`` or not provided, ``__name__`` of the module where
-        this logger is instantiated is used.
+        A common practice is to pass in the module name as ``__name__``.
     level : int or str, optional
         Level from which logging is done,
         see https://docs.python.org/3/library/logging.html#logging-levels.
@@ -50,7 +49,7 @@ def civis_logger(name=None, level=None, fmt="%(message)s"):
     -------
     :class:`logging.Logger`
     """
-    logger = logging.getLogger(name if name is not None else globals()["__name__"])
+    logger = logging.getLogger(name)
 
     if level is None:
         logger.setLevel(os.getenv("CIVIS_LOG_LEVEL") or logging.INFO)

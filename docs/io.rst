@@ -10,8 +10,9 @@ Tables
 Often, your data will be in structured format like a table in a relational
 database, a CSV, or a dataframe. The following functions handle moving
 structured data to and from Civis. When using these functions, it is
-recommended to have ``pandas`` installed and to pass ``use_pandas=True`` in
-the appropriate functions. If ``pandas`` is not installed, data returned
+recommended to have ``pandas`` or ``polars`` installed and to pass ``return_as="pandas"``
+or ``return_as="polars"``, respectively, in
+the appropriate functions. If ``pandas`` or ``polars`` is not installed, data returned
 from Civis will all be treated as strings.
 
 .. currentmodule:: civis.io
