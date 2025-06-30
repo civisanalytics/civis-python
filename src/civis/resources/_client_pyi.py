@@ -89,6 +89,8 @@ from civis.response import Response
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
                     return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                elif method_name.startswith("list_"):
+                    return_str = f"List[{return_type.__name__}]"
                 else:
                     return_str = return_type.__name__
                 method_def += f"    ) -> {return_str}:\n"
