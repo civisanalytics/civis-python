@@ -503,7 +503,7 @@ def parse_params(parameters, summary, verb, path):
         summary_str = "{}\n".format(textwrap.fill(summary, width=79))
     else:
         summary_str = ""
-    summary_str = f"{summary_str}\nURL: ``{verb.upper()} {path}``\n"
+    summary_str = f"{summary_str}\nAPI URL: ``{verb.upper()} /{path}``\n"
     if param_docs:
         docs = "{}\nParameters\n----------\n{}".format(summary_str, param_docs)
     elif summary:
@@ -652,11 +652,12 @@ def parse_api_spec(api_spec, api_version):
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
             cls.__doc__ = (
-                "Examples\n"
-                "--------\n"
-                ">>> import civis\n"
-                ">>> client = civis.APIClient()\n"
-                f">>> client.{base_path}.{methods[0][0]}(...)"
+                f"Civis API ``/{base_path}`` endpoint\n\n"
+                ".. code-block:: python\n\n"
+                "    import civis\n"
+                "    client = civis.APIClient()\n"
+                f"    # Call client.{base_path}.<method>(<arguments>) to make a request, e.g.:\n"  # noqa: E501
+                f"    client.{base_path}.{methods[0][0]}(...)\n\n"
             )
             classes[base_path] = cls
         for method_name, method in methods:
