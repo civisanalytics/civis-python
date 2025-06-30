@@ -10,6 +10,7 @@ from civis.response import Response
 class _Admin:
     def list_organizations(
         self,
+        *,
         status: List[str] | None = ...,
         org_type: List[str] | None = ...,
     ) -> List[_ResponseAdminListOrganizations]:
@@ -126,6 +127,7 @@ class _Aliases:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseAliasesPutSharesUsers:
@@ -207,6 +209,7 @@ class _Aliases:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseAliasesPutSharesGroups:
@@ -286,6 +289,7 @@ class _Aliases:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseAliasesListDependencies]:
         """List dependent objects for this object
@@ -327,6 +331,7 @@ class _Aliases:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseAliasesPutTransfer:
@@ -375,6 +380,7 @@ class _Aliases:
 
     def list(
         self,
+        *,
         object_type: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -442,6 +448,7 @@ class _Aliases:
         object_id: int,
         object_type: str,
         alias: str,
+        *,
         display_name: str | None = ...,
     ) -> _ResponseAliasesPost:
         """Create an Alias
@@ -528,6 +535,7 @@ class _Aliases:
         object_id: int,
         object_type: str,
         alias: str,
+        *,
         display_name: str | None = ...,
     ) -> _ResponseAliasesPut:
         """Replace all attributes of this Alias
@@ -578,6 +586,7 @@ class _Aliases:
     def patch(
         self,
         id: int,
+        *,
         object_id: int | None = ...,
         object_type: str | None = ...,
         alias: str | None = ...,
@@ -694,6 +703,7 @@ class _Aliases:
 class _Announcements:
     def list(
         self,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -744,6 +754,7 @@ class _Announcements:
 class _Clusters:
     def list_kubernetes(
         self,
+        *,
         organization_id: int | None = ...,
         organization_slug: str | None = ...,
         raw_cluster_slug: str | None = ...,
@@ -864,6 +875,7 @@ class _Clusters:
     def get_kubernetes(
         self,
         id: int,
+        *,
         include_usage_stats: bool | None = ...,
     ) -> _ResponseClustersGetKubernetes:
         """Describe a Kubernetes Cluster
@@ -953,6 +965,7 @@ class _Clusters:
     def list_kubernetes_compute_hours(
         self,
         id: int,
+        *,
         include_usage_stats: bool | None = ...,
     ) -> List[_ResponseClustersListKubernetesComputeHours]:
         """List compute hours for a Kubernetes Cluster
@@ -982,6 +995,7 @@ class _Clusters:
     def list_kubernetes_deployments(
         self,
         id: int,
+        *,
         base_type: str | None = ...,
         state: str | None = ...,
         limit: int | None = ...,
@@ -1100,6 +1114,7 @@ class _Clusters:
     def list_kubernetes_partitions(
         self,
         id: int,
+        *,
         include_usage_stats: bool | None = ...,
     ) -> List[_ResponseClustersListKubernetesPartitions]:
         """List Cluster Partitions for given cluster
@@ -1251,6 +1266,7 @@ class _Clusters:
         self,
         id: int,
         cluster_partition_id: int,
+        *,
         instance_configs: List[dict] | None = ...,
         name: str | None = ...,
         labels: List[str] | None = ...,
@@ -1359,6 +1375,7 @@ class _Clusters:
         self,
         id: int,
         cluster_partition_id: int,
+        *,
         include_usage_stats: bool | None = ...,
     ) -> _ResponseClustersGetKubernetesPartitions:
         """Describe a Cluster Partition
@@ -1430,6 +1447,7 @@ class _Clusters:
     def get_kubernetes_instance_configs(
         self,
         instance_config_id: int,
+        *,
         include_usage_stats: bool | None = ...,
     ) -> _ResponseClustersGetKubernetesInstanceConfigs:
         """Describe an Instance Config
@@ -1492,6 +1510,7 @@ class _Clusters:
     def list_kubernetes_instance_configs_active_workloads(
         self,
         id: int,
+        *,
         state: str | None = ...,
     ) -> List[_ResponseClustersListKubernetesInstanceConfigsActiveWorkloads]:
         """List active workloads in an Instance Config
@@ -1557,6 +1576,7 @@ class _Clusters:
     def list_kubernetes_instance_configs_user_statistics(
         self,
         instance_config_id: int,
+        *,
         order: str | None = ...,
         order_dir: str | None = ...,
     ) -> List[_ResponseClustersListKubernetesInstanceConfigsUserStatistics]:
@@ -1608,6 +1628,7 @@ class _Clusters:
     def list_kubernetes_instance_configs_historical_graphs(
         self,
         instance_config_id: int,
+        *,
         timeframe: str | None = ...,
     ) -> List[_ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs]:
         """Get graphs of historical resource usage in an Instance Config
@@ -1634,6 +1655,7 @@ class _Clusters:
     def list_kubernetes_instance_configs_historical_metrics(
         self,
         instance_config_id: int,
+        *,
         timeframe: str | None = ...,
         metric: str | None = ...,
     ) -> List[_ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics]:
@@ -1698,6 +1720,7 @@ class _Credentials:
 
     def list(
         self,
+        *,
         type: str | None = ...,
         remote_host_id: int | None = ...,
         default: bool | None = ...,
@@ -1806,6 +1829,7 @@ class _Credentials:
         type: str,
         username: str,
         password: str,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         remote_host_id: int | None = ...,
@@ -1901,6 +1925,7 @@ class _Credentials:
         type: str,
         username: str,
         password: str,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         remote_host_id: int | None = ...,
@@ -1995,6 +2020,7 @@ class _Credentials:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         type: str | None = ...,
         description: str | None = ...,
@@ -2241,6 +2267,7 @@ class _Credentials:
     def post_temporary(
         self,
         id: int,
+        *,
         duration: int | None = ...,
     ) -> _ResponseCredentialsPostTemporary:
         """Generate a temporary credential for accessing S3
@@ -2318,6 +2345,7 @@ class _Credentials:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseCredentialsPutSharesUsers:
@@ -2399,6 +2427,7 @@ class _Credentials:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseCredentialsPutSharesGroups:
@@ -2478,6 +2507,7 @@ class _Credentials:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseCredentialsListDependencies]:
         """List dependent objects for this object
@@ -2519,6 +2549,7 @@ class _Credentials:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseCredentialsPutTransfer:
@@ -2633,6 +2664,7 @@ class _Databases:
     def list_schemas(
         self,
         id: int,
+        *,
         name: str | None = ...,
         credential_id: int | None = ...,
     ) -> List[_ResponseDatabasesListSchemas]:
@@ -2663,6 +2695,7 @@ class _Databases:
         self,
         id: int,
         schema_name: str,
+        *,
         credential_id: int | None = ...,
     ) -> List[_ResponseDatabasesListSchemasTables]:
         """List tables in this schema
@@ -2698,6 +2731,7 @@ class _Databases:
         id: int,
         schema_name: str,
         table_name: str,
+        *,
         credential_id: int | None = ...,
     ) -> _ResponseDatabasesGetSchemasTables:
         """Show basic table info
@@ -2906,6 +2940,7 @@ class _Databases:
         id: int,
         schema_name: str,
         table_name: str,
+        *,
         credential_id: int | None = ...,
         description: str | None = ...,
     ) -> _ResponseDatabasesPatchSchemasTables:
@@ -3117,6 +3152,7 @@ class _Databases:
         id: int,
         schema_name: str,
         table_name: str,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseDatabasesListSchemasTablesProjects]:
         """List the projects a Table belongs to
@@ -3238,6 +3274,7 @@ class _Databases:
         self,
         id: int,
         schema: str,
+        *,
         stats_priority: str | None = ...,
     ) -> _ResponseDatabasesPostSchemasScan:
         """Creates and enqueues a schema scanner job
@@ -3273,6 +3310,7 @@ class _Databases:
         id: int,
         schema_name: str,
         table_name: str,
+        *,
         credential_id: int | None = ...,
     ) -> _ResponseDatabasesGetTablePrivilegesSchemaName:
         """Show table privileges
@@ -3308,6 +3346,7 @@ class _Databases:
         self,
         id: int,
         schema_name: str,
+        *,
         credential_id: int | None = ...,
     ) -> _ResponseDatabasesGetSchemaPrivileges:
         """Show schema privileges
@@ -3340,6 +3379,7 @@ class _Databases:
     def list_users(
         self,
         id: int,
+        *,
         active: bool | None = ...,
     ) -> List[_ResponseDatabasesListUsers]:
         """Show list of database users
@@ -3481,6 +3521,7 @@ class _Databases:
     def patch_advanced_settings(
         self,
         id: int,
+        *,
         export_caching_enabled: bool | None = ...,
     ) -> _ResponseDatabasesPatchAdvancedSettings:
         """Update the advanced settings for this database
@@ -3588,6 +3629,7 @@ class _Enhancements:
         input_table: dict,
         match_target_id: int,
         output_table: dict,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         max_matches: int | None = ...,
@@ -3948,6 +3990,7 @@ class _Enhancements:
         input_table: dict,
         match_target_id: int,
         output_table: dict,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         max_matches: int | None = ...,
@@ -4166,6 +4209,7 @@ class _Enhancements:
     def patch_civis_data_match(
         self,
         id: int,
+        *,
         name: str | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -4389,6 +4433,7 @@ class _Enhancements:
     def post_civis_data_match_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -4574,6 +4619,7 @@ class _Enhancements:
     def list_civis_data_match_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -4696,6 +4742,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseEnhancementsListCivisDataMatchRunsLogs]:
@@ -4759,6 +4806,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -4861,6 +4909,7 @@ class _Enhancements:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchSharesUsers:
@@ -4942,6 +4991,7 @@ class _Enhancements:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchSharesGroups:
@@ -5021,6 +5071,7 @@ class _Enhancements:
     def list_civis_data_match_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseEnhancementsListCivisDataMatchDependencies]:
         """List dependent objects for this object
@@ -5062,6 +5113,7 @@ class _Enhancements:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchTransfer:
@@ -5254,6 +5306,7 @@ class _Enhancements:
     def list_civis_data_match_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseEnhancementsListCivisDataMatchProjects]:
         """List the projects a Civis Data Match Enhancement belongs to
@@ -5357,6 +5410,7 @@ class _Enhancements:
 
     def list_identity_resolution(
         self,
+        *,
         archived: str | None = ...,
         status: str | None = ...,
         limit: int | None = ...,
@@ -5469,6 +5523,7 @@ class _Enhancements:
         self,
         name: str,
         sources: List[dict],
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         threshold: float | None = ...,
@@ -5823,6 +5878,7 @@ class _Enhancements:
         id: int,
         name: str,
         sources: List[dict],
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         threshold: float | None = ...,
@@ -6174,6 +6230,7 @@ class _Enhancements:
     def patch_identity_resolution(
         self,
         id: int,
+        *,
         name: str | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -6527,6 +6584,7 @@ class _Enhancements:
     def get_identity_resolution(
         self,
         id: int,
+        *,
         is_legacy_id: bool | None = ...,
     ) -> _ResponseEnhancementsGetIdentityResolution:
         """Get an Identity Resolution Enhancement
@@ -6753,6 +6811,7 @@ class _Enhancements:
     def post_identity_resolution_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -7048,6 +7107,7 @@ class _Enhancements:
     def list_identity_resolution_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -7220,6 +7280,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseEnhancementsListIdentityResolutionRunsLogs]:
@@ -7314,6 +7375,7 @@ class _Enhancements:
 
     def list(
         self,
+        *,
         type: str | None = ...,
         author: str | None = ...,
         status: str | None = ...,
@@ -7395,6 +7457,7 @@ class _Enhancements:
         self,
         name: str,
         source: dict,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         destination: dict | None = ...,
@@ -7808,6 +7871,7 @@ class _Enhancements:
         id: int,
         name: str,
         source: dict,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         destination: dict | None = ...,
@@ -8068,6 +8132,7 @@ class _Enhancements:
     def patch_cass_ncoa(
         self,
         id: int,
+        *,
         name: str | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -8366,6 +8431,7 @@ class _Enhancements:
     def list_cass_ncoa_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -8488,6 +8554,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseEnhancementsListCassNcoaRunsLogs]:
@@ -8551,6 +8618,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -8608,6 +8676,7 @@ class _Enhancements:
         remote_host_id: int,
         credential_id: int,
         source_schema_and_table: str,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         multipart_key: List[str] | None = ...,
@@ -8924,6 +8993,7 @@ class _Enhancements:
         remote_host_id: int,
         credential_id: int,
         source_schema_and_table: str,
+        *,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
         multipart_key: List[str] | None = ...,
@@ -9118,6 +9188,7 @@ class _Enhancements:
     def patch_geocode(
         self,
         id: int,
+        *,
         name: str | None = ...,
         schedule: dict | None = ...,
         notifications: dict | None = ...,
@@ -9352,6 +9423,7 @@ class _Enhancements:
     def list_geocode_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -9474,6 +9546,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseEnhancementsListGeocodeRunsLogs]:
@@ -9537,6 +9610,7 @@ class _Enhancements:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -9639,6 +9713,7 @@ class _Enhancements:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaSharesUsers:
@@ -9720,6 +9795,7 @@ class _Enhancements:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaSharesGroups:
@@ -9799,6 +9875,7 @@ class _Enhancements:
     def list_cass_ncoa_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseEnhancementsListCassNcoaDependencies]:
         """List dependent objects for this object
@@ -9840,6 +9917,7 @@ class _Enhancements:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaTransfer:
@@ -9889,6 +9967,7 @@ class _Enhancements:
     def list_cass_ncoa_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseEnhancementsListCassNcoaProjects]:
         """List the projects a CASS/NCOA Enhancement belongs to
@@ -10198,6 +10277,7 @@ class _Enhancements:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeSharesUsers:
@@ -10279,6 +10359,7 @@ class _Enhancements:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeSharesGroups:
@@ -10358,6 +10439,7 @@ class _Enhancements:
     def list_geocode_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseEnhancementsListGeocodeDependencies]:
         """List dependent objects for this object
@@ -10399,6 +10481,7 @@ class _Enhancements:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeTransfer:
@@ -10448,6 +10531,7 @@ class _Enhancements:
     def list_geocode_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseEnhancementsListGeocodeProjects]:
         """List the projects a Geocode Enhancement belongs to
@@ -10724,6 +10808,7 @@ class _Enhancements:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionSharesUsers:
@@ -10805,6 +10890,7 @@ class _Enhancements:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionSharesGroups:
@@ -10884,6 +10970,7 @@ class _Enhancements:
     def list_identity_resolution_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseEnhancementsListIdentityResolutionDependencies]:
         """List dependent objects for this object
@@ -10925,6 +11012,7 @@ class _Enhancements:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionTransfer:
@@ -10974,6 +11062,7 @@ class _Enhancements:
     def list_identity_resolution_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseEnhancementsListIdentityResolutionProjects]:
         """List the projects an Identity Resolution Enhancement belongs to
@@ -11303,6 +11392,7 @@ class _Enhancements:
 class _Exports:
     def list(
         self,
+        *,
         type: str | None = ...,
         status: str | None = ...,
         author: str | None = ...,
@@ -11428,6 +11518,7 @@ class _Exports:
     def list_files_csv_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -11539,6 +11630,7 @@ class _Exports:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseExportsListFilesCsvRunsLogs]:
@@ -11577,6 +11669,7 @@ class _Exports:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -11632,6 +11725,7 @@ class _Exports:
         self,
         source: dict,
         destination: dict,
+        *,
         name: str | None = ...,
         include_header: bool | None = ...,
         compression: str | None = ...,
@@ -11829,6 +11923,7 @@ class _Exports:
         id: int,
         source: dict,
         destination: dict,
+        *,
         name: str | None = ...,
         include_header: bool | None = ...,
         compression: str | None = ...,
@@ -11955,6 +12050,7 @@ class _Exports:
     def patch_files_csv(
         self,
         id: int,
+        *,
         name: str | None = ...,
         source: dict | None = ...,
         destination: dict | None = ...,
@@ -12159,6 +12255,7 @@ class _Files:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseFilesListProjects]:
         """List the projects a File belongs to
@@ -12311,6 +12408,7 @@ class _Files:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseFilesPutSharesUsers:
@@ -12392,6 +12490,7 @@ class _Files:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseFilesPutSharesGroups:
@@ -12471,6 +12570,7 @@ class _Files:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseFilesListDependencies]:
         """List dependent objects for this object
@@ -12512,6 +12612,7 @@ class _Files:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseFilesPutTransfer:
@@ -12561,6 +12662,7 @@ class _Files:
     def post(
         self,
         name: str,
+        *,
         expires_at: str | None = ...,
         description: str | None = ...,
     ) -> _ResponseFilesPost:
@@ -12610,6 +12712,7 @@ class _Files:
         self,
         name: str,
         num_parts: int,
+        *,
         expires_at: str | None = ...,
         description: str | None = ...,
     ) -> _ResponseFilesPostMultipart:
@@ -12675,6 +12778,7 @@ class _Files:
     def get(
         self,
         id: int,
+        *,
         link_expires_at: str | None = ...,
         inline: bool | None = ...,
     ) -> _ResponseFilesGet:
@@ -12751,6 +12855,7 @@ class _Files:
         id: int,
         name: str,
         expires_at: str,
+        *,
         description: str | None = ...,
     ) -> _ResponseFilesPut:
         """Update details about a file
@@ -12825,6 +12930,7 @@ class _Files:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         expires_at: str | None = ...,
         description: str | None = ...,
@@ -12901,6 +13007,7 @@ class _Files:
     def post_preprocess_csv(
         self,
         file_id: int,
+        *,
         in_place: bool | None = ...,
         detect_table_columns: bool | None = ...,
         force_character_set_conversion: bool | None = ...,
@@ -13013,6 +13120,7 @@ class _Files:
         self,
         id: int,
         file_id: int,
+        *,
         in_place: bool | None = ...,
         detect_table_columns: bool | None = ...,
         force_character_set_conversion: bool | None = ...,
@@ -13081,6 +13189,7 @@ class _Files:
     def patch_preprocess_csv(
         self,
         id: int,
+        *,
         file_id: int | None = ...,
         in_place: bool | None = ...,
         detect_table_columns: bool | None = ...,
@@ -13196,6 +13305,7 @@ class _Files:
 class _Git_Repos:
     def list(
         self,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -13335,6 +13445,7 @@ class _Git_Repos:
 class _Groups:
     def list(
         self,
+        *,
         query: str | None = ...,
         permission: str | None = ...,
         include_members: bool | None = ...,
@@ -13429,6 +13540,7 @@ class _Groups:
     def post(
         self,
         name: str,
+        *,
         description: str | None = ...,
         slug: str | None = ...,
         organization_id: int | None = ...,
@@ -13604,6 +13716,7 @@ class _Groups:
         self,
         id: int,
         name: str,
+        *,
         description: str | None = ...,
         slug: str | None = ...,
         organization_id: int | None = ...,
@@ -13707,6 +13820,7 @@ class _Groups:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         slug: str | None = ...,
@@ -13859,6 +13973,7 @@ class _Groups:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseGroupsPutSharesUsers:
@@ -13940,6 +14055,7 @@ class _Groups:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseGroupsPutSharesGroups:
@@ -14196,6 +14312,7 @@ class _Imports:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseImportsPutSharesUsers:
@@ -14277,6 +14394,7 @@ class _Imports:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseImportsPutSharesGroups:
@@ -14356,6 +14474,7 @@ class _Imports:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseImportsListDependencies]:
         """List dependent objects for this object
@@ -14397,6 +14516,7 @@ class _Imports:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseImportsPutTransfer:
@@ -14446,6 +14566,7 @@ class _Imports:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseImportsListProjects]:
         """List the projects an Import belongs to
@@ -14845,6 +14966,7 @@ class _Imports:
 
     def list(
         self,
+        *,
         type: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
@@ -14988,6 +15110,7 @@ class _Imports:
         name: str,
         sync_type: str,
         is_outbound: bool,
+        *,
         source: dict | None = ...,
         destination: dict | None = ...,
         schedule: dict | None = ...,
@@ -15355,6 +15478,7 @@ class _Imports:
         name: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         max_errors: int | None = ...,
         existing_table_rows: str | None = ...,
         diststyle: str | None = ...,
@@ -15470,6 +15594,7 @@ class _Imports:
     def list_files_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -15592,6 +15717,7 @@ class _Imports:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseImportsListFilesRunsLogs]:
@@ -15630,6 +15756,7 @@ class _Imports:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseImportsListRunsLogs]:
@@ -15669,6 +15796,7 @@ class _Imports:
         source: dict,
         destination: dict,
         first_row_is_header: bool,
+        *,
         name: str | None = ...,
         column_delimiter: str | None = ...,
         escaped: bool | None = ...,
@@ -15993,6 +16121,7 @@ class _Imports:
         source: dict,
         destination: dict,
         first_row_is_header: bool,
+        *,
         name: str | None = ...,
         column_delimiter: str | None = ...,
         escaped: bool | None = ...,
@@ -16201,6 +16330,7 @@ class _Imports:
     def patch_files_csv(
         self,
         id: int,
+        *,
         name: str | None = ...,
         source: dict | None = ...,
         destination: dict | None = ...,
@@ -16564,6 +16694,7 @@ class _Imports:
     def list_files_csv_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -16686,6 +16817,7 @@ class _Imports:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseImportsListFilesCsvRunsLogs]:
@@ -16722,6 +16854,7 @@ class _Imports:
 
     def list_batches(
         self,
+        *,
         hidden: bool | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -16789,6 +16922,7 @@ class _Imports:
         table: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         column_delimiter: str | None = ...,
         first_row_is_header: bool | None = ...,
         compression: str | None = ...,
@@ -17189,6 +17323,7 @@ class _Imports:
         name: str,
         sync_type: str,
         is_outbound: bool,
+        *,
         source: dict | None = ...,
         destination: dict | None = ...,
         schedule: dict | None = ...,
@@ -17628,6 +17763,7 @@ class _Imports:
         id: int,
         source: dict,
         destination: dict,
+        *,
         advanced_options: dict | None = ...,
     ) -> _ResponseImportsPostSyncs:
         """Create a sync
@@ -17943,6 +18079,7 @@ class _Imports:
         sync_id: int,
         source: dict,
         destination: dict,
+        *,
         advanced_options: dict | None = ...,
     ) -> _ResponseImportsPutSyncs:
         """Update a sync
@@ -18259,6 +18396,7 @@ class _Imports:
         self,
         id: int,
         sync_id: int,
+        *,
         status: bool | None = ...,
     ) -> _ResponseImportsPutSyncsArchive:
         """Update the archive status of this sync
@@ -18434,6 +18572,7 @@ class _Imports:
 class _Jobs:
     def list(
         self,
+        *,
         state: str | None = ...,
         type: str | None = ...,
         q: str | None = ...,
@@ -18796,6 +18935,7 @@ class _Jobs:
     def list_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -18933,6 +19073,7 @@ class _Jobs:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -18988,6 +19129,7 @@ class _Jobs:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseJobsListRunsLogs]:
@@ -19025,6 +19167,7 @@ class _Jobs:
     def list_workflows(
         self,
         id: int,
+        *,
         archived: str | None = ...,
     ) -> List[_ResponseJobsListWorkflows]:
         """List the workflows a job belongs to
@@ -19143,6 +19286,7 @@ class _Jobs:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseJobsPutSharesUsers:
@@ -19224,6 +19368,7 @@ class _Jobs:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseJobsPutSharesGroups:
@@ -19303,6 +19448,7 @@ class _Jobs:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseJobsListDependencies]:
         """List dependent objects for this object
@@ -19344,6 +19490,7 @@ class _Jobs:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseJobsPutTransfer:
@@ -19393,6 +19540,7 @@ class _Jobs:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseJobsListProjects]:
         """List the projects a Job belongs to
@@ -19589,6 +19737,7 @@ class _Json_Values:
     def post(
         self,
         value_str: str,
+        *,
         name: str | None = ...,
     ) -> _ResponseJsonValuesPost:
         """Create a JSON Value
@@ -19643,6 +19792,7 @@ class _Json_Values:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         value_str: str | None = ...,
     ) -> _ResponseJsonValuesPatch:
@@ -19723,6 +19873,7 @@ class _Json_Values:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutSharesUsers:
@@ -19804,6 +19955,7 @@ class _Json_Values:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutSharesGroups:
@@ -19883,6 +20035,7 @@ class _Json_Values:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseJsonValuesListDependencies]:
         """List dependent objects for this object
@@ -19924,6 +20077,7 @@ class _Json_Values:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutTransfer:
@@ -20022,6 +20176,7 @@ class _Match_Targets:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMatchTargetsPutSharesUsers:
@@ -20103,6 +20258,7 @@ class _Match_Targets:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMatchTargetsPutSharesGroups:
@@ -20237,6 +20393,7 @@ class _Match_Targets:
     def post(
         self,
         name: str,
+        *,
         target_file_name: str | None = ...,
         archived: bool | None = ...,
     ) -> _ResponseMatchTargetsPost:
@@ -20301,6 +20458,7 @@ class _Match_Targets:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         target_file_name: str | None = ...,
         archived: bool | None = ...,
@@ -20388,6 +20546,7 @@ class _Media:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutSpotOrdersSharesUsers:
@@ -20469,6 +20628,7 @@ class _Media:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutSpotOrdersSharesGroups:
@@ -20630,6 +20790,7 @@ class _Media:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutOptimizationsSharesUsers:
@@ -20711,6 +20872,7 @@ class _Media:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutOptimizationsSharesGroups:
@@ -20939,6 +21101,7 @@ class _Media:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutRatecardsSharesUsers:
@@ -21020,6 +21183,7 @@ class _Media:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutRatecardsSharesGroups:
@@ -21132,6 +21296,7 @@ class _Media:
 
     def list_optimizations(
         self,
+        *,
         archived: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -21202,6 +21367,7 @@ class _Media:
     def post_optimizations(
         self,
         runs: List[dict],
+        *,
         name: str | None = ...,
         programs: List[str] | None = ...,
         networks: List[str] | None = ...,
@@ -21450,6 +21616,7 @@ class _Media:
     def patch_optimizations(
         self,
         id: int,
+        *,
         name: str | None = ...,
         runs: List[dict] | None = ...,
         programs: List[str] | None = ...,
@@ -21737,6 +21904,7 @@ class _Media:
     def list_optimizations_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -21859,6 +22027,7 @@ class _Media:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseMediaListOptimizationsRunsLogs]:
@@ -21895,6 +22064,7 @@ class _Media:
 
     def list_spot_orders(
         self,
+        *,
         id: int | None = ...,
         archived: str | None = ...,
     ) -> List[_ResponseMediaListSpotOrders]:
@@ -21921,6 +22091,7 @@ class _Media:
 
     def post_spot_orders(
         self,
+        *,
         body: str | None = ...,
     ) -> _ResponseMediaPostSpotOrders:
         """Create a spot order
@@ -21984,6 +22155,7 @@ class _Media:
     def put_spot_orders(
         self,
         id: int,
+        *,
         body: str | None = ...,
     ) -> _ResponseMediaPutSpotOrders:
         """Edit the specified spot order
@@ -22017,6 +22189,7 @@ class _Media:
 
     def list_ratecards(
         self,
+        *,
         archived: str | None = ...,
         filename: str | None = ...,
         dma_number: int | None = ...,
@@ -22170,6 +22343,7 @@ class _Media:
     def patch_ratecards(
         self,
         id: int,
+        *,
         filename: str | None = ...,
         start_on: str | None = ...,
         end_on: str | None = ...,
@@ -22212,6 +22386,7 @@ class _Media:
 
     def list_dmas(
         self,
+        *,
         name: str | None = ...,
         number: int | None = ...,
     ) -> List[_ResponseMediaListDmas]:
@@ -22240,6 +22415,7 @@ class _Media:
 
     def list_targets(
         self,
+        *,
         name: str | None = ...,
         identifier: str | None = ...,
         data_source: str | None = ...,
@@ -22293,6 +22469,7 @@ class _Models:
 
     def list(
         self,
+        *,
         model_name: str | None = ...,
         training_table_name: str | None = ...,
         dependent_variable: str | None = ...,
@@ -22773,6 +22950,7 @@ class _Models:
     def list_builds(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -22845,6 +23023,7 @@ class _Models:
         self,
         id: int,
         build_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseModelsListBuildsLogs]:
@@ -22930,6 +23109,7 @@ class _Models:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseModelsPutSharesUsers:
@@ -23011,6 +23191,7 @@ class _Models:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseModelsPutSharesGroups:
@@ -23090,6 +23271,7 @@ class _Models:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseModelsListDependencies]:
         """List dependent objects for this object
@@ -23131,6 +23313,7 @@ class _Models:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseModelsPutTransfer:
@@ -23180,6 +23363,7 @@ class _Models:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseModelsListProjects]:
         """List the projects a Model belongs to
@@ -23527,6 +23711,7 @@ class _Models:
 class _Notebooks:
     def list(
         self,
+        *,
         hidden: bool | None = ...,
         archived: str | None = ...,
         author: str | None = ...,
@@ -23639,6 +23824,7 @@ class _Notebooks:
 
     def post(
         self,
+        *,
         name: str | None = ...,
         language: str | None = ...,
         description: str | None = ...,
@@ -23940,6 +24126,7 @@ class _Notebooks:
     def put(
         self,
         id: int,
+        *,
         name: str | None = ...,
         language: str | None = ...,
         description: str | None = ...,
@@ -24119,6 +24306,7 @@ class _Notebooks:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         language: str | None = ...,
         description: str | None = ...,
@@ -24491,6 +24679,7 @@ class _Notebooks:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseNotebooksPutSharesUsers:
@@ -24572,6 +24761,7 @@ class _Notebooks:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseNotebooksPutSharesGroups:
@@ -24651,6 +24841,7 @@ class _Notebooks:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseNotebooksListDependencies]:
         """List dependent objects for this object
@@ -24692,6 +24883,7 @@ class _Notebooks:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseNotebooksPutTransfer:
@@ -24866,6 +25058,7 @@ class _Notebooks:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseNotebooksListProjects]:
         """List the projects a Notebook belongs to
@@ -24970,6 +25163,7 @@ class _Notebooks:
     def list_deployments(
         self,
         notebook_id: int,
+        *,
         deployment_id: int | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -25047,6 +25241,7 @@ class _Notebooks:
     def post_deployments(
         self,
         notebook_id: int,
+        *,
         deployment_id: int | None = ...,
     ) -> _ResponseNotebooksPostDeployments:
         """Deploy a Notebook
@@ -25183,6 +25378,7 @@ class _Notebooks:
         self,
         id: int,
         deployment_id: int,
+        *,
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
@@ -25259,6 +25455,7 @@ class _Notebooks:
     def put_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -25317,6 +25514,7 @@ class _Notebooks:
     def patch_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -25468,6 +25666,7 @@ class _Notebooks:
 class _Notifications:
     def list(
         self,
+        *,
         last_event_id: str | None = ...,
         r: str | None = ...,
         mock: str | None = ...,
@@ -25495,6 +25694,7 @@ class _Notifications:
 class _Ontology:
     def list(
         self,
+        *,
         subset: str | None = ...,
     ) -> _ResponseOntologyList:
         """List the ontology of column names Civis uses
@@ -25520,6 +25720,7 @@ class _Ontology:
 class _Organizations:
     def list_favorites(
         self,
+        *,
         object_id: int | None = ...,
         object_type: str | None = ...,
         limit: int | None = ...,
@@ -25673,6 +25874,7 @@ class _Organizations:
 class _Permission_Sets:
     def list(
         self,
+        *,
         archived: str | None = ...,
         author: str | None = ...,
         limit: int | None = ...,
@@ -25741,6 +25943,7 @@ class _Permission_Sets:
     def post(
         self,
         name: str,
+        *,
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPost:
         """Create a Permission Set
@@ -25824,6 +26027,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
+        *,
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPut:
         """Replace all attributes of this Permission Set
@@ -25869,6 +26073,7 @@ class _Permission_Sets:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPatch:
@@ -25963,6 +26168,7 @@ class _Permission_Sets:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutSharesUsers:
@@ -26044,6 +26250,7 @@ class _Permission_Sets:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutSharesGroups:
@@ -26123,6 +26330,7 @@ class _Permission_Sets:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponsePermissionSetsListDependencies]:
         """List dependent objects for this object
@@ -26164,6 +26372,7 @@ class _Permission_Sets:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutTransfer:
@@ -26286,6 +26495,7 @@ class _Permission_Sets:
     def list_resources(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -26337,6 +26547,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
+        *,
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPostResources:
         """Create a resource in a permission set
@@ -26400,6 +26611,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
+        *,
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPatchResources:
         """Update a resource in a permission set
@@ -26507,6 +26719,7 @@ class _Permission_Sets:
         name: str,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutResourcesSharesUsers:
@@ -26594,6 +26807,7 @@ class _Permission_Sets:
         name: str,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutResourcesSharesGroups:
@@ -26678,6 +26892,7 @@ class _Permission_Sets:
 class _Predictions:
     def list(
         self,
+        *,
         model_id: int | None = ...,
     ) -> _ResponsePredictionsList:
         """List predictions
@@ -26857,6 +27072,7 @@ class _Predictions:
 class _Projects:
     def list(
         self,
+        *,
         permission: str | None = ...,
         auto_share: bool | None = ...,
         author: str | None = ...,
@@ -26952,6 +27168,7 @@ class _Projects:
         self,
         name: str,
         description: str,
+        *,
         note: str | None = ...,
         auto_share: bool | None = ...,
         hidden: bool | None = ...,
@@ -27172,6 +27389,7 @@ class _Projects:
     def post_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_notifications: bool | None = ...,
     ) -> _ResponseProjectsPostClone:
@@ -27593,6 +27811,7 @@ class _Projects:
     def put(
         self,
         project_id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         note: str | None = ...,
@@ -28068,6 +28287,7 @@ class _Projects:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseProjectsPutSharesUsers:
@@ -28149,6 +28369,7 @@ class _Projects:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseProjectsPutSharesGroups:
@@ -28228,6 +28449,7 @@ class _Projects:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseProjectsListDependencies]:
         """List dependent objects for this object
@@ -28269,6 +28491,7 @@ class _Projects:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseProjectsPutTransfer:
@@ -28529,6 +28752,7 @@ class _Projects:
     def list_parent_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseProjectsListParentProjects]:
         """List the Parent Projects an item belongs to
@@ -28633,6 +28857,7 @@ class _Projects:
 class _Queries:
     def list(
         self,
+        *,
         query: str | None = ...,
         database_id: int | None = ...,
         credential_id: int | None = ...,
@@ -28751,6 +28976,7 @@ class _Queries:
         database: int,
         sql: str,
         preview_rows: int,
+        *,
         credential: int | None = ...,
         hidden: bool | None = ...,
         interactive: bool | None = ...,
@@ -28886,6 +29112,7 @@ class _Queries:
     def list_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -29008,6 +29235,7 @@ class _Queries:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseQueriesListRunsLogs]:
@@ -29249,6 +29477,7 @@ class _Queries:
 class _Remote_Hosts:
     def list(
         self,
+        *,
         type: str | None = ...,
     ) -> _ResponseRemoteHostsList:
         """List Remote Hosts
@@ -29461,6 +29690,7 @@ class _Remote_Hosts:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         type: str | None = ...,
         url: str | None = ...,
@@ -29575,6 +29805,7 @@ class _Remote_Hosts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseRemoteHostsPutSharesUsers:
@@ -29656,6 +29887,7 @@ class _Remote_Hosts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseRemoteHostsPutSharesGroups:
@@ -29735,6 +29967,7 @@ class _Remote_Hosts:
     def post_authenticate(
         self,
         id: int,
+        *,
         credential_id: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
@@ -29765,6 +29998,7 @@ class _Remote_Hosts:
     def list_data_sets(
         self,
         id: int,
+        *,
         credential_id: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
@@ -29805,6 +30039,7 @@ class _Remote_Hosts:
 class _Reports:
     def list(
         self,
+        *,
         type: str | None = ...,
         template_id: int | None = ...,
         author: str | None = ...,
@@ -29924,6 +30159,7 @@ class _Reports:
 
     def post(
         self,
+        *,
         script_id: int | None = ...,
         name: str | None = ...,
         code_body: str | None = ...,
@@ -30091,6 +30327,7 @@ class _Reports:
     def put_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -30149,6 +30386,7 @@ class _Reports:
     def patch_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -30407,6 +30645,7 @@ class _Reports:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         script_id: int | None = ...,
         code_body: str | None = ...,
@@ -30719,6 +30958,7 @@ class _Reports:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSharesUsers:
@@ -30800,6 +31040,7 @@ class _Reports:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSharesGroups:
@@ -30879,6 +31120,7 @@ class _Reports:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseReportsListDependencies]:
         """List dependent objects for this object
@@ -30920,6 +31162,7 @@ class _Reports:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutTransfer:
@@ -30969,6 +31212,7 @@ class _Reports:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseReportsListProjects]:
         """List the projects a Report belongs to
@@ -31243,6 +31487,7 @@ class _Reports:
     def patch_services(
         self,
         id: int,
+        *,
         name: str | None = ...,
         provide_api_key: bool | None = ...,
     ) -> _ResponseReportsPatchServices:
@@ -31309,6 +31554,7 @@ class _Reports:
     def post_services(
         self,
         service_id: int,
+        *,
         provide_api_key: bool | None = ...,
     ) -> _ResponseReportsPostServices:
         """Create a service report
@@ -31420,6 +31666,7 @@ class _Reports:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesSharesUsers:
@@ -31501,6 +31748,7 @@ class _Reports:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesSharesGroups:
@@ -31580,6 +31828,7 @@ class _Reports:
     def list_services_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseReportsListServicesDependencies]:
         """List dependent objects for this object
@@ -31621,6 +31870,7 @@ class _Reports:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesTransfer:
@@ -31670,6 +31920,7 @@ class _Reports:
     def list_services_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseReportsListServicesProjects]:
         """List the projects a Service Report belongs to
@@ -31870,6 +32121,7 @@ class _Reports:
         query_id: int,
         name: str,
         config: str,
+        *,
         description: str | None = ...,
     ) -> _ResponseReportsPostSql:
         """Create a SQL report
@@ -32043,6 +32295,7 @@ class _Reports:
     def patch_sql(
         self,
         id: int,
+        *,
         query_id: int | None = ...,
         name: str | None = ...,
         config: str | None = ...,
@@ -32269,6 +32522,7 @@ class _Reports:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlSharesUsers:
@@ -32350,6 +32604,7 @@ class _Reports:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlSharesGroups:
@@ -32429,6 +32684,7 @@ class _Reports:
     def list_sql_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseReportsListSqlDependencies]:
         """List dependent objects for this object
@@ -32470,6 +32726,7 @@ class _Reports:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlTransfer:
@@ -32519,6 +32776,7 @@ class _Reports:
     def list_sql_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseReportsListSqlProjects]:
         """List the projects a SQL Report belongs to
@@ -32709,6 +32967,7 @@ class _Reports:
 class _Roles:
     def list(
         self,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -32817,6 +33076,7 @@ class _Scripts:
         remote_host_id: int,
         credential_id: int,
         sql: str,
+        *,
         params: List[dict] | None = ...,
         arguments: dict | None = ...,
         template_script_id: int | None = ...,
@@ -33066,6 +33326,7 @@ class _Scripts:
 
     def list(
         self,
+        *,
         type: str | None = ...,
         category: str | None = ...,
         author: str | None = ...,
@@ -33420,6 +33681,7 @@ class _Scripts:
     def post_containers(
         self,
         required_resources: dict,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -34022,6 +34284,7 @@ class _Scripts:
         self,
         id: int,
         required_resources: dict,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -34392,6 +34655,7 @@ class _Scripts:
     def patch_containers(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -34764,6 +35028,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         message: str | None = ...,
         level: str | None = ...,
         messages: List[dict] | None = ...,
@@ -34813,6 +35078,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListContainersRunsLogs]:
@@ -34853,6 +35119,7 @@ class _Scripts:
         sql: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -35397,6 +35664,7 @@ class _Scripts:
         sql: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -35726,6 +35994,7 @@ class _Scripts:
     def patch_sql(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -36060,6 +36329,7 @@ class _Scripts:
         self,
         name: str,
         source: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -36598,6 +36868,7 @@ class _Scripts:
         id: int,
         name: str,
         source: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -36927,6 +37198,7 @@ class _Scripts:
     def patch_python3(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -37259,6 +37531,7 @@ class _Scripts:
         self,
         name: str,
         source: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -37797,6 +38070,7 @@ class _Scripts:
         id: int,
         name: str,
         source: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -38126,6 +38400,7 @@ class _Scripts:
     def patch_r(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -38458,6 +38733,7 @@ class _Scripts:
         self,
         name: str,
         repo_http_uri: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -39125,6 +39401,7 @@ class _Scripts:
         id: int,
         name: str,
         repo_http_uri: str,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -39541,6 +39818,7 @@ class _Scripts:
     def patch_dbt(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -39962,6 +40240,7 @@ class _Scripts:
         source: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -40437,6 +40716,7 @@ class _Scripts:
         source: str,
         remote_host_id: int,
         credential_id: int,
+        *,
         parent_id: int | None = ...,
         user_context: str | None = ...,
         params: List[dict] | None = ...,
@@ -40721,6 +41001,7 @@ class _Scripts:
     def patch_javascript(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         user_context: str | None = ...,
@@ -41008,6 +41289,7 @@ class _Scripts:
 
     def list_custom(
         self,
+        *,
         from_template_id: str | None = ...,
         author: str | None = ...,
         status: str | None = ...,
@@ -41132,6 +41414,7 @@ class _Scripts:
     def post_custom(
         self,
         from_template_id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         arguments: dict | None = ...,
@@ -41650,6 +41933,7 @@ class _Scripts:
     def put_custom(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         arguments: dict | None = ...,
@@ -41948,6 +42232,7 @@ class _Scripts:
     def patch_custom(
         self,
         id: int,
+        *,
         name: str | None = ...,
         parent_id: int | None = ...,
         arguments: dict | None = ...,
@@ -42295,6 +42580,7 @@ class _Scripts:
     def list_sql_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -42443,6 +42729,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -42469,6 +42756,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListSqlRunsLogs]:
@@ -42548,6 +42836,7 @@ class _Scripts:
     def list_containers_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -42723,6 +43012,7 @@ class _Scripts:
     def list_python3_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -42857,6 +43147,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -42883,6 +43174,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListPython3RunsLogs]:
@@ -42962,6 +43254,7 @@ class _Scripts:
     def list_r_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43096,6 +43389,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -43122,6 +43416,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListRRunsLogs]:
@@ -43201,6 +43496,7 @@ class _Scripts:
     def list_dbt_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43335,6 +43631,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -43361,6 +43658,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListDbtRunsLogs]:
@@ -43434,6 +43732,7 @@ class _Scripts:
     def list_javascript_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43556,6 +43855,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -43582,6 +43882,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListJavascriptRunsLogs]:
@@ -43663,6 +43964,7 @@ class _Scripts:
     def list_custom_runs(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43801,6 +44103,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         last_id: int | None = ...,
         limit: int | None = ...,
     ) -> List[_ResponseScriptsListCustomRunsLogs]:
@@ -43839,6 +44142,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43894,6 +44198,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -43988,6 +44293,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -44082,6 +44388,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -44176,6 +44483,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -44270,6 +44578,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -44364,6 +44673,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -44458,6 +44768,7 @@ class _Scripts:
         self,
         id: int,
         run_id: int,
+        *,
         error: str | None = ...,
     ) -> Response:
         """Update the given run
@@ -44521,6 +44832,7 @@ class _Scripts:
     def put_sql_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -44579,6 +44891,7 @@ class _Scripts:
     def patch_sql_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -44822,6 +45135,7 @@ class _Scripts:
     def put_javascript_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -44880,6 +45194,7 @@ class _Scripts:
     def patch_javascript_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -45123,6 +45438,7 @@ class _Scripts:
     def put_python3_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -45181,6 +45497,7 @@ class _Scripts:
     def patch_python3_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -45424,6 +45741,7 @@ class _Scripts:
     def put_r_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -45482,6 +45800,7 @@ class _Scripts:
     def patch_r_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -45735,6 +46054,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlSharesUsers:
@@ -45816,6 +46136,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlSharesGroups:
@@ -45895,6 +46216,7 @@ class _Scripts:
     def list_sql_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListSqlDependencies]:
         """List dependent objects for this object
@@ -45936,6 +46258,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlTransfer:
@@ -45985,6 +46308,7 @@ class _Scripts:
     def list_sql_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListSqlProjects]:
         """List the projects a SQL Script belongs to
@@ -46351,6 +46675,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersSharesUsers:
@@ -46432,6 +46757,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersSharesGroups:
@@ -46511,6 +46837,7 @@ class _Scripts:
     def list_containers_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListContainersDependencies]:
         """List dependent objects for this object
@@ -46552,6 +46879,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersTransfer:
@@ -46601,6 +46929,7 @@ class _Scripts:
     def list_containers_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListContainersProjects]:
         """List the projects a Container Script belongs to
@@ -46986,6 +47315,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3SharesUsers:
@@ -47067,6 +47397,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3SharesGroups:
@@ -47146,6 +47477,7 @@ class _Scripts:
     def list_python3_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListPython3Dependencies]:
         """List dependent objects for this object
@@ -47187,6 +47519,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3Transfer:
@@ -47236,6 +47569,7 @@ class _Scripts:
     def list_python3_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListPython3Projects]:
         """List the projects a Python Script belongs to
@@ -47598,6 +47932,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutRSharesUsers:
@@ -47679,6 +48014,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutRSharesGroups:
@@ -47758,6 +48094,7 @@ class _Scripts:
     def list_r_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListRDependencies]:
         """List dependent objects for this object
@@ -47799,6 +48136,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutRTransfer:
@@ -47848,6 +48186,7 @@ class _Scripts:
     def list_r_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListRProjects]:
         """List the projects an R Script belongs to
@@ -48210,6 +48549,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtSharesUsers:
@@ -48291,6 +48631,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtSharesGroups:
@@ -48370,6 +48711,7 @@ class _Scripts:
     def list_dbt_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListDbtDependencies]:
         """List dependent objects for this object
@@ -48411,6 +48753,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtTransfer:
@@ -48460,6 +48803,7 @@ class _Scripts:
     def list_dbt_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListDbtProjects]:
         """List the projects a dbt Script belongs to
@@ -48864,6 +49208,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptSharesUsers:
@@ -48945,6 +49290,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptSharesGroups:
@@ -49024,6 +49370,7 @@ class _Scripts:
     def list_javascript_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListJavascriptDependencies]:
         """List dependent objects for this object
@@ -49065,6 +49412,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptTransfer:
@@ -49114,6 +49462,7 @@ class _Scripts:
     def list_javascript_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListJavascriptProjects]:
         """List the projects a JavaScript Script belongs to
@@ -49456,6 +49805,7 @@ class _Scripts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomSharesUsers:
@@ -49537,6 +49887,7 @@ class _Scripts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomSharesGroups:
@@ -49616,6 +49967,7 @@ class _Scripts:
     def list_custom_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseScriptsListCustomDependencies]:
         """List dependent objects for this object
@@ -49657,6 +50009,7 @@ class _Scripts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomTransfer:
@@ -49706,6 +50059,7 @@ class _Scripts:
     def list_custom_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseScriptsListCustomProjects]:
         """List the projects a Custom Script belongs to
@@ -50031,6 +50385,7 @@ class _Scripts:
     def post_sql_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -50251,6 +50606,7 @@ class _Scripts:
     def post_javascript_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -50447,6 +50803,7 @@ class _Scripts:
     def post_python3_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -50663,6 +51020,7 @@ class _Scripts:
     def post_r_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -50879,6 +51237,7 @@ class _Scripts:
     def post_containers_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -51118,6 +51477,7 @@ class _Scripts:
     def post_dbt_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -51376,6 +51736,7 @@ class _Scripts:
     def post_custom_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_triggers: bool | None = ...,
         clone_notifications: bool | None = ...,
@@ -51603,6 +51964,7 @@ class _Scripts:
 class _Search:
     def list(
         self,
+        *,
         query: str | None = ...,
         type: str | None = ...,
         offset: int | None = ...,
@@ -51698,6 +52060,7 @@ class _Search:
 
     def list_queries(
         self,
+        *,
         search_string: str | None = ...,
         database_id: int | None = ...,
         credential_id: int | None = ...,
@@ -51790,6 +52153,7 @@ class _Search:
 class _Services:
     def list(
         self,
+        *,
         hidden: bool | None = ...,
         archived: str | None = ...,
         author: str | None = ...,
@@ -51908,6 +52272,7 @@ class _Services:
 
     def post(
         self,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         type: str | None = ...,
@@ -52262,6 +52627,7 @@ class _Services:
     def put(
         self,
         id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         docker_image_name: str | None = ...,
@@ -52474,6 +52840,7 @@ class _Services:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         docker_image_name: str | None = ...,
@@ -52734,6 +53101,7 @@ class _Services:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseServicesPutSharesUsers:
@@ -52815,6 +53183,7 @@ class _Services:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseServicesPutSharesGroups:
@@ -52894,6 +53263,7 @@ class _Services:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseServicesListDependencies]:
         """List dependent objects for this object
@@ -52935,6 +53305,7 @@ class _Services:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseServicesPutTransfer:
@@ -53126,6 +53497,7 @@ class _Services:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseServicesListProjects]:
         """List the projects a Service belongs to
@@ -53230,6 +53602,7 @@ class _Services:
     def list_deployments(
         self,
         service_id: int,
+        *,
         deployment_id: int | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -53307,6 +53680,7 @@ class _Services:
     def post_deployments(
         self,
         service_id: int,
+        *,
         deployment_id: int | None = ...,
     ) -> _ResponseServicesPostDeployments:
         """Deploy a Service
@@ -53442,6 +53816,7 @@ class _Services:
     def post_redeploy(
         self,
         service_id: int,
+        *,
         deployment_id: int | None = ...,
     ) -> _ResponseServicesPostRedeploy:
         """Redeploy a Service
@@ -53499,6 +53874,7 @@ class _Services:
         self,
         id: int,
         deployment_id: int,
+        *,
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
@@ -53676,6 +54052,7 @@ class _Services:
         self,
         id: int,
         name: str,
+        *,
         machine_token: bool | None = ...,
         expires_in: int | None = ...,
     ) -> _ResponseServicesPostTokens:
@@ -53827,6 +54204,7 @@ class _Storage_Hosts:
         provider: str,
         bucket: str,
         name: str,
+        *,
         s3_options: dict | None = ...,
     ) -> _ResponseStorageHostsPost:
         """Create a new storage host
@@ -53920,6 +54298,7 @@ class _Storage_Hosts:
         name: str,
         provider: str,
         bucket: str,
+        *,
         s3_options: dict | None = ...,
     ) -> _ResponseStorageHostsPut:
         """Replace all attributes of this storage host
@@ -53971,6 +54350,7 @@ class _Storage_Hosts:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         provider: str | None = ...,
         bucket: str | None = ...,
@@ -54073,6 +54453,7 @@ class _Storage_Hosts:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutSharesUsers:
@@ -54154,6 +54535,7 @@ class _Storage_Hosts:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutSharesGroups:
@@ -54233,6 +54615,7 @@ class _Storage_Hosts:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseStorageHostsListDependencies]:
         """List dependent objects for this object
@@ -54274,6 +54657,7 @@ class _Storage_Hosts:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutTransfer:
@@ -54323,6 +54707,7 @@ class _Storage_Hosts:
 class _Table_Tags:
     def list(
         self,
+        *,
         name: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -54516,6 +54901,7 @@ class _Tables:
     def post_enhancements_cass_ncoa(
         self,
         source_table_id: int,
+        *,
         perform_ncoa: bool | None = ...,
         ncoa_credential_id: int | None = ...,
         output_level: str | None = ...,
@@ -54671,6 +55057,7 @@ class _Tables:
         database_id: int,
         schema: str,
         table_name: str,
+        *,
         stats_priority: str | None = ...,
     ) -> _ResponseTablesPostScan:
         """Creates and enqueues a single table scanner job on a new table
@@ -54906,6 +55293,7 @@ class _Tables:
 
     def list(
         self,
+        *,
         database_id: int | None = ...,
         schema: str | None = ...,
         name: str | None = ...,
@@ -55222,6 +55610,7 @@ class _Tables:
     def patch(
         self,
         id: int,
+        *,
         ontology_mapping: dict | None = ...,
         description: str | None = ...,
         primary_keys: List[str] | None = ...,
@@ -55321,6 +55710,7 @@ class _Tables:
     def list_columns(
         self,
         id: int,
+        *,
         name: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
@@ -55461,6 +55851,7 @@ class _Tables:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseTablesListProjects]:
         """List the projects a Table belongs to
@@ -55614,6 +56005,7 @@ class _Templates:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsSharesUsers:
@@ -55695,6 +56087,7 @@ class _Templates:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsSharesGroups:
@@ -55774,6 +56167,7 @@ class _Templates:
     def list_reports_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseTemplatesListReportsDependencies]:
         """List dependent objects for this object
@@ -55815,6 +56209,7 @@ class _Templates:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsTransfer:
@@ -55863,6 +56258,7 @@ class _Templates:
 
     def list_reports(
         self,
+        *,
         hidden: bool | None = ...,
         author: str | None = ...,
         category: str | None = ...,
@@ -55941,6 +56337,7 @@ class _Templates:
         self,
         name: str,
         code_body: str,
+        *,
         category: str | None = ...,
         archived: bool | None = ...,
         provide_api_key: bool | None = ...,
@@ -56062,6 +56459,7 @@ class _Templates:
         id: int,
         name: str,
         code_body: str,
+        *,
         category: str | None = ...,
         archived: bool | None = ...,
         provide_api_key: bool | None = ...,
@@ -56128,6 +56526,7 @@ class _Templates:
     def patch_reports(
         self,
         id: int,
+        *,
         name: str | None = ...,
         category: str | None = ...,
         archived: bool | None = ...,
@@ -56244,6 +56643,7 @@ class _Templates:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsSharesUsers:
@@ -56325,6 +56725,7 @@ class _Templates:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsSharesGroups:
@@ -56404,6 +56805,7 @@ class _Templates:
     def list_scripts_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseTemplatesListScriptsDependencies]:
         """List dependent objects for this object
@@ -56445,6 +56847,7 @@ class _Templates:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsTransfer:
@@ -56494,6 +56897,7 @@ class _Templates:
     def list_scripts_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseTemplatesListScriptsProjects]:
         """List the projects a Script Template belongs to
@@ -56597,6 +57001,7 @@ class _Templates:
 
     def list_scripts(
         self,
+        *,
         hidden: bool | None = ...,
         author: str | None = ...,
         category: str | None = ...,
@@ -56683,6 +57088,7 @@ class _Templates:
         self,
         script_id: int,
         name: str,
+        *,
         note: str | None = ...,
         ui_report_id: int | None = ...,
         archived: bool | None = ...,
@@ -56882,6 +57288,7 @@ class _Templates:
         self,
         id: int,
         name: str,
+        *,
         note: str | None = ...,
         ui_report_id: int | None = ...,
         archived: bool | None = ...,
@@ -56985,6 +57392,7 @@ class _Templates:
     def patch_scripts(
         self,
         id: int,
+        *,
         name: str | None = ...,
         note: str | None = ...,
         ui_report_id: int | None = ...,
@@ -57089,6 +57497,7 @@ class _Templates:
 class _Usage:
     def list_matching(
         self,
+        *,
         org_id: int | None = ...,
         task: str | None = ...,
         start_date: str | None = ...,
@@ -57134,6 +57543,7 @@ class _Usage:
 
     def list_llm(
         self,
+        *,
         org_id: int | None = ...,
         start_date: str | None = ...,
         end_date: str | None = ...,
@@ -57227,6 +57637,7 @@ class _Usage:
     def list_llm_organization_summary(
         self,
         org_id: int,
+        *,
         start_date: str | None = ...,
         end_date: str | None = ...,
     ) -> List[_ResponseUsageListLlmOrganizationSummary]:
@@ -57260,6 +57671,7 @@ class _Usage:
 class _Usage_Limits:
     def list_matching(
         self,
+        *,
         task: str | None = ...,
     ) -> List[_ResponseUsageLimitsListMatching]:
         """List Matching Usage Limits
@@ -57328,6 +57740,7 @@ class _Usage_Limits:
 
     def list_llm(
         self,
+        *,
         organization_id: int | None = ...,
     ) -> List[_ResponseUsageLimitsListLlm]:
         """List LLM Usage Limits
@@ -57387,6 +57800,7 @@ class _Usage_Limits:
 class _Users:
     def list(
         self,
+        *,
         feature_flag: str | None = ...,
         account_status: str | None = ...,
         query: str | None = ...,
@@ -57493,6 +57907,7 @@ class _Users:
         email: str,
         primary_group_id: int,
         user: str,
+        *,
         active: bool | None = ...,
         city: str | None = ...,
         state: str | None = ...,
@@ -57723,6 +58138,7 @@ class _Users:
 
     def patch_me(
         self,
+        *,
         preferences: dict | None = ...,
         last_checked_announcements: str | None = ...,
     ) -> _ResponseUsersPatchMe:
@@ -57964,6 +58380,7 @@ class _Users:
 
     def list_me_activity(
         self,
+        *,
         status: str | None = ...,
         author: str | None = ...,
         order: str | None = ...,
@@ -58195,6 +58612,7 @@ class _Users:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         email: str | None = ...,
         active: bool | None = ...,
@@ -58361,6 +58779,7 @@ class _Users:
     def list_api_keys(
         self,
         id: str,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -58427,6 +58846,7 @@ class _Users:
         id: str,
         expires_in: int,
         name: str,
+        *,
         constraints: List[dict] | None = ...,
     ) -> _ResponseUsersPostApiKeys:
         """Create a new API key belonging to the logged-in user
@@ -58736,6 +59156,7 @@ class _Users:
 
     def list_me_favorites(
         self,
+        *,
         object_id: int | None = ...,
         object_type: str | None = ...,
         limit: int | None = ...,
@@ -59120,6 +59541,7 @@ class _Users:
 class _Workflows:
     def list(
         self,
+        *,
         hidden: bool | None = ...,
         archived: str | None = ...,
         author: str | None = ...,
@@ -59230,6 +59652,7 @@ class _Workflows:
     def post(
         self,
         name: str,
+        *,
         description: str | None = ...,
         from_job_chain: int | None = ...,
         definition: str | None = ...,
@@ -59474,6 +59897,7 @@ class _Workflows:
         self,
         id: int,
         name: str,
+        *,
         description: str | None = ...,
         definition: str | None = ...,
         schedule: dict | None = ...,
@@ -59618,6 +60042,7 @@ class _Workflows:
     def patch(
         self,
         id: int,
+        *,
         name: str | None = ...,
         description: str | None = ...,
         definition: str | None = ...,
@@ -59811,6 +60236,7 @@ class _Workflows:
         id: int,
         user_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutSharesUsers:
@@ -59892,6 +60318,7 @@ class _Workflows:
         id: int,
         group_ids: List[int],
         permission_level: str,
+        *,
         share_email_body: str | None = ...,
         send_shared_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutSharesGroups:
@@ -59971,6 +60398,7 @@ class _Workflows:
     def list_dependencies(
         self,
         id: int,
+        *,
         user_id: int | None = ...,
     ) -> List[_ResponseWorkflowsListDependencies]:
         """List dependent objects for this object
@@ -60012,6 +60440,7 @@ class _Workflows:
         id: int,
         user_id: int,
         include_dependencies: bool,
+        *,
         email_body: str | None = ...,
         send_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutTransfer:
@@ -60159,6 +60588,7 @@ class _Workflows:
     def list_projects(
         self,
         id: int,
+        *,
         hidden: bool | None = ...,
     ) -> List[_ResponseWorkflowsListProjects]:
         """List the projects a Workflow belongs to
@@ -60301,6 +60731,7 @@ class _Workflows:
     def put_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -60359,6 +60790,7 @@ class _Workflows:
     def patch_git(
         self,
         id: int,
+        *,
         git_ref: str | None = ...,
         git_branch: str | None = ...,
         git_path: str | None = ...,
@@ -60537,6 +60969,7 @@ class _Workflows:
     def post_clone(
         self,
         id: int,
+        *,
         clone_schedule: bool | None = ...,
         clone_notifications: bool | None = ...,
     ) -> _ResponseWorkflowsPostClone:
@@ -60638,6 +61071,7 @@ class _Workflows:
     def list_executions(
         self,
         id: int,
+        *,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -60708,6 +61142,7 @@ class _Workflows:
     def post_executions(
         self,
         id: int,
+        *,
         target_task: str | None = ...,
         input: dict | None = ...,
         included_tasks: List[str] | None = ...,
@@ -61124,6 +61559,7 @@ class _Workflows:
         self,
         id: int,
         execution_id: int,
+        *,
         task_name: str | None = ...,
     ) -> _ResponseWorkflowsPostExecutionsRetry:
         """Retry a failed task, or all failed tasks in an execution
