@@ -1,7 +1,8 @@
 API Client
 ==========
 
-:class:`~civis.APIClient` is a class for handling requests to the Civis API.
+:class:`~civis.APIClient` is a class for handling requests to the
+`Civis API <https://support.civisanalytics.com/hc/en-us/articles/360001597191-API-Basics>`_.
 An instantiated :class:`~civis.APIClient` contains a set of resources
 (listed in :ref:`api_resources`) where each resource is an object with methods. By convention,
 an instantiated :class:`~civis.APIClient` object is named ``client`` and API
