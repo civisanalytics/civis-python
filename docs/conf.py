@@ -358,7 +358,9 @@ def _attach_classes_to_module(module, class_data):
                 continue
             signature = inspect.signature(method)
             if signature.return_annotation.__name__ == "Iterator":
-                new_return_anno = list[civis.Response] | civis.PaginatedResponse
+                new_return_anno = civis.ListResponse | civis.PaginatedResponse
+            elif method.__name__.startswith("list_"):
+                new_return_anno = civis.ListResponse
             else:
                 new_return_anno = civis.Response
             method.__signature__ = signature.replace(return_annotation=new_return_anno)

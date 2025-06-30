@@ -15,6 +15,8 @@ class _Admin:
     ) -> _ResponseAdminListOrganizations:
         """List organizations
 
+        URL: ``GET admin/organizations``
+
         Parameters
         ----------
         status : List[str], optional
@@ -24,7 +26,7 @@ class _Admin:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this organization.
             - name : str
@@ -79,6 +81,8 @@ class _Aliases:
     ) -> _ResponseAliasesListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET aliases/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -86,7 +90,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -126,6 +130,8 @@ class _Aliases:
         send_shared_email: bool | None = ...,
     ) -> _ResponseAliasesPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT aliases/{id}/shares/users``
 
         Parameters
         ----------
@@ -180,6 +186,8 @@ class _Aliases:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE aliases/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -203,6 +211,8 @@ class _Aliases:
         send_shared_email: bool | None = ...,
     ) -> _ResponseAliasesPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT aliases/{id}/shares/groups``
 
         Parameters
         ----------
@@ -257,6 +267,8 @@ class _Aliases:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE aliases/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -278,6 +290,8 @@ class _Aliases:
     ) -> _ResponseAliasesListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET aliases/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -287,7 +301,7 @@ class _Aliases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -317,6 +331,8 @@ class _Aliases:
         send_email: bool | None = ...,
     ) -> _ResponseAliasesPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT aliases/{id}/transfer``
 
         Parameters
         ----------
@@ -368,6 +384,8 @@ class _Aliases:
     ) -> Iterator[_ResponseAliasesList]:
         """List Aliases
 
+        URL: ``GET aliases``
+
         Parameters
         ----------
         object_type : str, optional
@@ -392,7 +410,8 @@ class _Aliases:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -426,6 +445,8 @@ class _Aliases:
         display_name: str | None = ...,
     ) -> _ResponseAliasesPost:
         """Create an Alias
+
+        URL: ``POST aliases``
 
         Parameters
         ----------
@@ -472,6 +493,8 @@ class _Aliases:
     ) -> _ResponseAliasesGet:
         """Get an Alias
 
+        URL: ``GET aliases/{id}``
+
         Parameters
         ----------
         id : int
@@ -508,6 +531,8 @@ class _Aliases:
         display_name: str | None = ...,
     ) -> _ResponseAliasesPut:
         """Replace all attributes of this Alias
+
+        URL: ``PUT aliases/{id}``
 
         Parameters
         ----------
@@ -560,6 +585,8 @@ class _Aliases:
     ) -> _ResponseAliasesPatch:
         """Update some attributes of this Alias
 
+        URL: ``PATCH aliases/{id}``
+
         Parameters
         ----------
         id : int
@@ -607,6 +634,8 @@ class _Aliases:
     ) -> Response:
         """Delete an alias
 
+        URL: ``DELETE aliases/{id}``
+
         Parameters
         ----------
         id : int
@@ -625,6 +654,8 @@ class _Aliases:
         alias: str,
     ) -> _ResponseAliasesGetObjectType:
         """Get details about an alias within an FCO type
+
+        URL: ``GET aliases/{object_type}/{alias}``
 
         Parameters
         ----------
@@ -671,6 +702,8 @@ class _Announcements:
     ) -> Iterator[_ResponseAnnouncementsList]:
         """List announcements
 
+        URL: ``GET announcements``
+
         Parameters
         ----------
         limit : int, optional
@@ -688,7 +721,8 @@ class _Announcements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -722,6 +756,8 @@ class _Clusters:
     ) -> Iterator[_ResponseClustersListKubernetes]:
         """List Kubernetes Clusters
 
+        URL: ``GET clusters/kubernetes``
+
         Parameters
         ----------
         organization_id : int, optional
@@ -750,7 +786,8 @@ class _Clusters:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -830,6 +867,8 @@ class _Clusters:
         include_usage_stats: bool | None = ...,
     ) -> _ResponseClustersGetKubernetes:
         """Describe a Kubernetes Cluster
+
+        URL: ``GET clusters/kubernetes/{id}``
 
         Parameters
         ----------
@@ -918,6 +957,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesComputeHours:
         """List compute hours for a Kubernetes Cluster
 
+        URL: ``GET clusters/kubernetes/{id}/compute_hours``
+
         Parameters
         ----------
         id : int
@@ -927,7 +968,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - total_normalized_hours : int
                 The total number of normalized hours used by this cluster.
             - normalized_hours_by_instance_type : str
@@ -950,6 +991,8 @@ class _Clusters:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseClustersListKubernetesDeployments]:
         """List the deployments associated with a Kubernetes Cluster
+
+        URL: ``GET clusters/kubernetes/{id}/deployments``
 
         Parameters
         ----------
@@ -976,7 +1019,8 @@ class _Clusters:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -1028,6 +1072,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesDeploymentStats:
         """Get stats about deployments associated with a Kubernetes Cluster
 
+        URL: ``GET clusters/kubernetes/{id}/deployment_stats``
+
         Parameters
         ----------
         id : int
@@ -1035,7 +1081,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - base_type : str
                 The base type of this deployment
             - state : str
@@ -1058,6 +1104,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesPartitions:
         """List Cluster Partitions for given cluster
 
+        URL: ``GET clusters/kubernetes/{id}/partitions``
+
         Parameters
         ----------
         id : int
@@ -1067,7 +1115,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - cluster_partition_id : int
                 The ID of this cluster partition.
             - name : str
@@ -1125,6 +1173,8 @@ class _Clusters:
         labels: List[str],
     ) -> _ResponseClustersPostKubernetesPartitions:
         """Create a Cluster Partition for given cluster
+
+        URL: ``POST clusters/kubernetes/{id}/partitions``
 
         Parameters
         ----------
@@ -1207,6 +1257,8 @@ class _Clusters:
     ) -> _ResponseClustersPatchKubernetesPartitions:
         """Update a Cluster Partition
 
+        URL: ``PATCH clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
+
         Parameters
         ----------
         id : int
@@ -1287,6 +1339,8 @@ class _Clusters:
     ) -> Response:
         """Delete a Cluster Partition
 
+        URL: ``DELETE clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
+
         Parameters
         ----------
         id : int
@@ -1308,6 +1362,8 @@ class _Clusters:
         include_usage_stats: bool | None = ...,
     ) -> _ResponseClustersGetKubernetesPartitions:
         """Describe a Cluster Partition
+
+        URL: ``GET clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
 
         Parameters
         ----------
@@ -1378,6 +1434,8 @@ class _Clusters:
     ) -> _ResponseClustersGetKubernetesInstanceConfigs:
         """Describe an Instance Config
 
+        URL: ``GET clusters/kubernetes/instance_configs/{instance_config_id}``
+
         Parameters
         ----------
         instance_config_id : int
@@ -1438,6 +1496,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesInstanceConfigsActiveWorkloads:
         """List active workloads in an Instance Config
 
+        URL: ``GET clusters/kubernetes/instance_configs/{id}/active_workloads``
+
         Parameters
         ----------
         id : int
@@ -1448,7 +1508,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The id of this deployment.
             - base_type : str
@@ -1502,6 +1562,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesInstanceConfigsUserStatistics:
         """Get statistics about the current users of an Instance Config
 
+        URL: ``GET clusters/kubernetes/instance_configs/{instance_config_id}/user_statistics``
+
         Parameters
         ----------
         instance_config_id : int
@@ -1517,7 +1579,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - user_id : str
                 The owning user's ID
             - user_name : str
@@ -1550,6 +1612,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs:
         """Get graphs of historical resource usage in an Instance Config
 
+        URL: ``GET clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
+
         Parameters
         ----------
         instance_config_id : int
@@ -1559,7 +1623,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - cpu_graph_url : str
                 URL for the graph of historical CPU usage in this instance config.
             - mem_graph_url : str
@@ -1575,6 +1639,8 @@ class _Clusters:
     ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics:
         """Get graphs of historical resource usage in an Instance Config
 
+        URL: ``GET clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
+
         Parameters
         ----------
         instance_config_id : int
@@ -1586,7 +1652,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - instance_config_id : int
                 The ID of this instance config.
             - metric : str
@@ -1620,9 +1686,11 @@ class _Credentials:
     ) -> _ResponseCredentialsListTypes:
         """Get list of Credential Types
 
+        URL: ``GET credentials/types``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - types : List[str]
                 list of acceptable credential types
         """
@@ -1643,6 +1711,8 @@ class _Credentials:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseCredentialsList]:
         """List credentials
+
+        URL: ``GET credentials``
 
         Parameters
         ----------
@@ -1682,7 +1752,8 @@ class _Credentials:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -1745,6 +1816,8 @@ class _Credentials:
         oauth: bool | None = ...,
     ) -> _ResponseCredentialsPost:
         """Create a credential
+
+        URL: ``POST credentials``
 
         Parameters
         ----------
@@ -1838,6 +1911,8 @@ class _Credentials:
         oauth: bool | None = ...,
     ) -> _ResponseCredentialsPut:
         """Update an existing credential
+
+        URL: ``PUT credentials/{id}``
 
         Parameters
         ----------
@@ -1934,6 +2009,8 @@ class _Credentials:
     ) -> _ResponseCredentialsPatch:
         """Update some attributes of a credential
 
+        URL: ``PATCH credentials/{id}``
+
         Parameters
         ----------
         id : int
@@ -2018,6 +2095,8 @@ class _Credentials:
     ) -> _ResponseCredentialsGet:
         """Get a credential
 
+        URL: ``GET credentials/{id}``
+
         Parameters
         ----------
         id : int
@@ -2074,6 +2153,8 @@ class _Credentials:
     ) -> Response:
         """Delete a credential
 
+        URL: ``DELETE credentials/{id}``
+
         Parameters
         ----------
         id : int
@@ -2094,6 +2175,8 @@ class _Credentials:
         password: str,
     ) -> _ResponseCredentialsPostAuthenticate:
         """Authenticate against a remote host
+
+        URL: ``POST credentials/authenticate``
 
         Parameters
         ----------
@@ -2162,6 +2245,8 @@ class _Credentials:
     ) -> _ResponseCredentialsPostTemporary:
         """Generate a temporary credential for accessing S3
 
+        URL: ``POST credentials/{id}/temporary``
+
         Parameters
         ----------
         id : int
@@ -2188,6 +2273,8 @@ class _Credentials:
     ) -> _ResponseCredentialsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET credentials/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -2195,7 +2282,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -2235,6 +2322,8 @@ class _Credentials:
         send_shared_email: bool | None = ...,
     ) -> _ResponseCredentialsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT credentials/{id}/shares/users``
 
         Parameters
         ----------
@@ -2289,6 +2378,8 @@ class _Credentials:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE credentials/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -2312,6 +2403,8 @@ class _Credentials:
         send_shared_email: bool | None = ...,
     ) -> _ResponseCredentialsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT credentials/{id}/shares/groups``
 
         Parameters
         ----------
@@ -2366,6 +2459,8 @@ class _Credentials:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE credentials/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -2387,6 +2482,8 @@ class _Credentials:
     ) -> _ResponseCredentialsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET credentials/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -2396,7 +2493,7 @@ class _Credentials:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -2426,6 +2523,8 @@ class _Credentials:
         send_email: bool | None = ...,
     ) -> _ResponseCredentialsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT credentials/{id}/transfer``
 
         Parameters
         ----------
@@ -2472,6 +2571,8 @@ class _Databases:
     ) -> _ResponseDatabasesList:
         """List databases
 
+        URL: ``GET databases``
+
         Returns
         -------
         :class:`civis.Response`
@@ -2499,6 +2600,8 @@ class _Databases:
         id: int,
     ) -> _ResponseDatabasesGet:
         """Show database information
+
+        URL: ``GET databases/{id}``
 
         Parameters
         ----------
@@ -2535,6 +2638,8 @@ class _Databases:
     ) -> _ResponseDatabasesListSchemas:
         """List schemas in this database
 
+        URL: ``GET databases/{id}/schemas``
+
         Parameters
         ----------
         id : int
@@ -2548,7 +2653,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - schema : str
                 The name of a schema.
         """
@@ -2562,6 +2667,8 @@ class _Databases:
     ) -> _ResponseDatabasesListSchemasTables:
         """List tables in this schema
 
+        URL: ``GET databases/{id}/schemas/{schema_name}/tables``
+
         Parameters
         ----------
         id : int
@@ -2573,7 +2680,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 The name of the table.
             - schema : str
@@ -2594,6 +2701,8 @@ class _Databases:
         credential_id: int | None = ...,
     ) -> _ResponseDatabasesGetSchemasTables:
         """Show basic table info
+
+        URL: ``GET databases/{id}/schemas/{schema_name}/tables/{table_name}``
 
         Parameters
         ----------
@@ -2801,6 +2910,8 @@ class _Databases:
         description: str | None = ...,
     ) -> _ResponseDatabasesPatchSchemasTables:
         """Update a table
+
+        URL: ``PATCH databases/{id}/schemas/{schema_name}/tables/{table_name}``
 
         Parameters
         ----------
@@ -3010,6 +3121,8 @@ class _Databases:
     ) -> _ResponseDatabasesListSchemasTablesProjects:
         """List the projects a Table belongs to
 
+        URL: ``GET databases/{id}/schemas/{schema_name}/tables/{table_name}/projects``
+
         Parameters
         ----------
         id : int
@@ -3024,7 +3137,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -3072,6 +3185,8 @@ class _Databases:
     ) -> Response:
         """Add a Table to a project
 
+        URL: ``PUT databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -3099,6 +3214,8 @@ class _Databases:
     ) -> Response:
         """Remove a Table from a project
 
+        URL: ``DELETE databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -3124,6 +3241,8 @@ class _Databases:
         stats_priority: str | None = ...,
     ) -> _ResponseDatabasesPostSchemasScan:
         """Creates and enqueues a schema scanner job
+
+        URL: ``POST databases/{id}/schemas/scan``
 
         Parameters
         ----------
@@ -3158,6 +3277,8 @@ class _Databases:
     ) -> _ResponseDatabasesGetTablePrivilegesSchemaName:
         """Show table privileges
 
+        URL: ``GET databases/{id}/table_privileges/{schema_name}/{table_name}``
+
         Parameters
         ----------
         id : int
@@ -3191,6 +3312,8 @@ class _Databases:
     ) -> _ResponseDatabasesGetSchemaPrivileges:
         """Show schema privileges
 
+        URL: ``GET databases/{id}/schema_privileges/{schema_name}``
+
         Parameters
         ----------
         id : int
@@ -3221,6 +3344,8 @@ class _Databases:
     ) -> _ResponseDatabasesListUsers:
         """Show list of database users
 
+        URL: ``GET databases/{id}/users``
+
         Parameters
         ----------
         id : int
@@ -3231,7 +3356,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - username : str
                 Username
             - active : bool
@@ -3245,6 +3370,8 @@ class _Databases:
     ) -> _ResponseDatabasesListGroups:
         """List groups in the specified database
 
+        URL: ``GET databases/{id}/groups``
+
         Parameters
         ----------
         id : int
@@ -3252,7 +3379,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - group_name : str
                 The name of the group.
             - members : List[str]
@@ -3266,6 +3393,8 @@ class _Databases:
     ) -> _ResponseDatabasesListWhitelistIps:
         """List whitelisted IPs for the specified database
 
+        URL: ``GET databases/{id}/whitelist-ips``
+
         Parameters
         ----------
         id : int
@@ -3273,7 +3402,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this whitelisted IP address.
             - remote_host_id : int
@@ -3295,6 +3424,8 @@ class _Databases:
         whitelisted_ip_id: int,
     ) -> _ResponseDatabasesGetWhitelistIps:
         """View details about a whitelisted IP
+
+        URL: ``GET databases/{id}/whitelist-ips/{whitelisted_ip_id}``
 
         Parameters
         ----------
@@ -3331,6 +3462,8 @@ class _Databases:
     ) -> _ResponseDatabasesListAdvancedSettings:
         """Get the advanced settings for this database
 
+        URL: ``GET databases/{id}/advanced-settings``
+
         Parameters
         ----------
         id : int
@@ -3338,7 +3471,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -3351,6 +3484,8 @@ class _Databases:
         export_caching_enabled: bool | None = ...,
     ) -> _ResponseDatabasesPatchAdvancedSettings:
         """Update the advanced settings for this database
+
+        URL: ``PATCH databases/{id}/advanced-settings``
 
         Parameters
         ----------
@@ -3376,6 +3511,8 @@ class _Databases:
     ) -> _ResponseDatabasesPutAdvancedSettings:
         """Edit the advanced settings for this database
 
+        URL: ``PUT databases/{id}/advanced-settings``
+
         Parameters
         ----------
         id : int
@@ -3399,6 +3536,8 @@ class _Databases:
         timeframe: str,
     ) -> _ResponseDatabasesGetStatusGraphsTimeframe:
         """Get the status graphs for this database
+
+        URL: ``GET databases/{id}/status_graphs/timeframe/{timeframe}``
 
         Parameters
         ----------
@@ -3432,6 +3571,8 @@ class _Endpoints:
     ) -> Response:
         """List API endpoints
 
+        URL: ``GET endpoints``
+
         Returns
         -------
         None
@@ -3455,6 +3596,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPostCivisDataMatch:
         """Create a Civis Data Match Enhancement
+
+        URL: ``POST enhancements/civis-data-match``
 
         Parameters
         ----------
@@ -3664,6 +3807,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsGetCivisDataMatch:
         """Get a Civis Data Match Enhancement
 
+        URL: ``GET enhancements/civis-data-match/{id}``
+
         Parameters
         ----------
         id : int
@@ -3811,6 +3956,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatch:
         """Replace all attributes of this Civis Data Match Enhancement
+
+        URL: ``PUT enhancements/civis-data-match/{id}``
 
         Parameters
         ----------
@@ -4033,6 +4180,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPatchCivisDataMatch:
         """Update some attributes of this Civis Data Match Enhancement
 
+        URL: ``PATCH enhancements/civis-data-match/{id}``
+
         Parameters
         ----------
         id : int
@@ -4246,6 +4395,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPostCivisDataMatchClone:
         """Clone this Civis Data Match Enhancement
 
+        URL: ``POST enhancements/civis-data-match/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -4390,6 +4541,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPostCivisDataMatchRuns:
         """Start a run
 
+        URL: ``POST enhancements/civis-data-match/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -4429,6 +4582,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRuns]:
         """List runs for the given Civis Data Match job
 
+        URL: ``GET enhancements/civis-data-match/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -4448,7 +4603,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -4480,6 +4636,8 @@ class _Enhancements:
         run_id: int,
     ) -> _ResponseEnhancementsGetCivisDataMatchRuns:
         """Check status of a run
+
+        URL: ``GET enhancements/civis-data-match/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -4518,6 +4676,8 @@ class _Enhancements:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE enhancements/civis-data-match/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -4541,6 +4701,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCivisDataMatchRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET enhancements/civis-data-match/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -4556,7 +4718,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -4573,6 +4735,8 @@ class _Enhancements:
         id: int,
     ) -> _ResponseEnhancementsPostCivisDataMatchCancel:
         """Cancel a run
+
+        URL: ``POST enhancements/civis-data-match/{id}/cancel``
 
         Parameters
         ----------
@@ -4603,6 +4767,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET enhancements/civis-data-match/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -4624,7 +4790,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -4649,6 +4816,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCivisDataMatchShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET enhancements/civis-data-match/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -4656,7 +4825,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -4696,6 +4865,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT enhancements/civis-data-match/{id}/shares/users``
 
         Parameters
         ----------
@@ -4750,6 +4921,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE enhancements/civis-data-match/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -4773,6 +4946,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT enhancements/civis-data-match/{id}/shares/groups``
 
         Parameters
         ----------
@@ -4827,6 +5002,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE enhancements/civis-data-match/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -4848,6 +5025,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCivisDataMatchDependencies:
         """List dependent objects for this object
 
+        URL: ``GET enhancements/civis-data-match/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -4857,7 +5036,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -4887,6 +5066,8 @@ class _Enhancements:
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCivisDataMatchTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT enhancements/civis-data-match/{id}/transfer``
 
         Parameters
         ----------
@@ -4933,6 +5114,8 @@ class _Enhancements:
         status: bool,
     ) -> _ResponseEnhancementsPutCivisDataMatchArchive:
         """Update the archive status of this object
+
+        URL: ``PUT enhancements/civis-data-match/{id}/archive``
 
         Parameters
         ----------
@@ -5075,6 +5258,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCivisDataMatchProjects:
         """List the projects a Civis Data Match Enhancement belongs to
 
+        URL: ``GET enhancements/civis-data-match/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -5085,7 +5270,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -5131,6 +5316,8 @@ class _Enhancements:
     ) -> Response:
         """Add a Civis Data Match Enhancement to a project
 
+        URL: ``PUT enhancements/civis-data-match/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -5151,6 +5338,8 @@ class _Enhancements:
         project_id: int,
     ) -> Response:
         """Remove a Civis Data Match Enhancement from a project
+
+        URL: ``DELETE enhancements/civis-data-match/{id}/projects/{project_id}``
 
         Parameters
         ----------
@@ -5178,6 +5367,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListIdentityResolution]:
         """List Identity Resolution Enhancements
 
+        URL: ``GET enhancements/identity-resolution``
+
         Parameters
         ----------
         archived : str, optional
@@ -5201,7 +5392,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -5288,6 +5480,8 @@ class _Enhancements:
         legacy_id: int | None = ...,
     ) -> _ResponseEnhancementsPostIdentityResolution:
         """Create an Identity Resolution Enhancement
+
+        URL: ``POST enhancements/identity-resolution``
 
         Parameters
         ----------
@@ -5640,6 +5834,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPutIdentityResolution:
         """Replace all attributes of this Identity Resolution Enhancement
 
+        URL: ``PUT enhancements/identity-resolution/{id}``
+
         Parameters
         ----------
         id : int
@@ -5991,6 +6187,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPatchIdentityResolution:
         """Update some attributes of this Identity Resolution Enhancement
 
+        URL: ``PATCH enhancements/identity-resolution/{id}``
+
         Parameters
         ----------
         id : int
@@ -6333,6 +6531,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsGetIdentityResolution:
         """Get an Identity Resolution Enhancement
 
+        URL: ``GET enhancements/identity-resolution/{id}``
+
         Parameters
         ----------
         id : int
@@ -6558,6 +6758,8 @@ class _Enhancements:
         clone_notifications: bool | None = ...,
     ) -> _ResponseEnhancementsPostIdentityResolutionClone:
         """Clone this Identity Resolution Enhancement
+
+        URL: ``POST enhancements/identity-resolution/{id}/clone``
 
         Parameters
         ----------
@@ -6785,6 +6987,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPostIdentityResolutionRuns:
         """Start a run
 
+        URL: ``POST enhancements/identity-resolution/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -6852,6 +7056,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListIdentityResolutionRuns]:
         """List runs for the given Identity Resolution job
 
+        URL: ``GET enhancements/identity-resolution/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -6871,7 +7077,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -6925,6 +7132,8 @@ class _Enhancements:
         run_id: int,
     ) -> _ResponseEnhancementsGetIdentityResolutionRuns:
         """Check status of a run
+
+        URL: ``GET enhancements/identity-resolution/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -6991,6 +7200,8 @@ class _Enhancements:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE enhancements/identity-resolution/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -7014,6 +7225,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListIdentityResolutionRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET enhancements/identity-resolution/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -7029,7 +7242,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -7046,6 +7259,8 @@ class _Enhancements:
         id: int,
     ) -> _ResponseEnhancementsPostIdentityResolutionCancel:
         """Cancel a run
+
+        URL: ``POST enhancements/identity-resolution/{id}/cancel``
 
         Parameters
         ----------
@@ -7069,9 +7284,11 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListTypes:
         """List available enhancement types
 
+        URL: ``GET enhancements/types``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 The name of the type.
         """
@@ -7083,9 +7300,11 @@ class _Enhancements:
         """List the fields in a field mapping for Civis Data Match, Data Unification, and
         Table Deduplication jobs
 
+        URL: ``GET enhancements/field-mapping``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - field : str
                 The name of the field.
             - description : str
@@ -7106,6 +7325,8 @@ class _Enhancements:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseEnhancementsList]:
         """List Enhancements
+
+        URL: ``GET enhancements``
 
         Parameters
         ----------
@@ -7135,7 +7356,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -7186,6 +7408,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPostCassNcoa:
         """Create a CASS/NCOA Enhancement
+
+        URL: ``POST enhancements/cass-ncoa``
 
         Parameters
         ----------
@@ -7432,6 +7656,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsGetCassNcoa:
         """Get a CASS/NCOA Enhancement
 
+        URL: ``GET enhancements/cass-ncoa/{id}``
+
         Parameters
         ----------
         id : int
@@ -7595,6 +7821,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoa:
         """Replace all attributes of this CASS/NCOA Enhancement
+
+        URL: ``PUT enhancements/cass-ncoa/{id}``
 
         Parameters
         ----------
@@ -7856,6 +8084,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPatchCassNcoa:
         """Update some attributes of this CASS/NCOA Enhancement
 
+        URL: ``PATCH enhancements/cass-ncoa/{id}``
+
         Parameters
         ----------
         id : int
@@ -8103,6 +8333,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPostCassNcoaRuns:
         """Start a run
 
+        URL: ``POST enhancements/cass-ncoa/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -8142,6 +8374,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListCassNcoaRuns]:
         """List runs for the given CASS NCOA job
 
+        URL: ``GET enhancements/cass-ncoa/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -8161,7 +8395,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -8193,6 +8428,8 @@ class _Enhancements:
         run_id: int,
     ) -> _ResponseEnhancementsGetCassNcoaRuns:
         """Check status of a run
+
+        URL: ``GET enhancements/cass-ncoa/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -8231,6 +8468,8 @@ class _Enhancements:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE enhancements/cass-ncoa/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -8254,6 +8493,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCassNcoaRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET enhancements/cass-ncoa/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -8269,7 +8510,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -8286,6 +8527,8 @@ class _Enhancements:
         id: int,
     ) -> _ResponseEnhancementsPostCassNcoaCancel:
         """Cancel a run
+
+        URL: ``POST enhancements/cass-ncoa/{id}/cancel``
 
         Parameters
         ----------
@@ -8316,6 +8559,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListCassNcoaRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET enhancements/cass-ncoa/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -8337,7 +8582,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -8374,6 +8620,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPostGeocode:
         """Create a Geocode Enhancement
+
+        URL: ``POST enhancements/geocode``
 
         Parameters
         ----------
@@ -8555,6 +8803,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsGetGeocode:
         """Get a Geocode Enhancement
 
+        URL: ``GET enhancements/geocode/{id}``
+
         Parameters
         ----------
         id : int
@@ -8686,6 +8936,8 @@ class _Enhancements:
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPutGeocode:
         """Replace all attributes of this Geocode Enhancement
+
+        URL: ``PUT enhancements/geocode/{id}``
 
         Parameters
         ----------
@@ -8883,6 +9135,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPatchGeocode:
         """Update some attributes of this Geocode Enhancement
 
+        URL: ``PATCH enhancements/geocode/{id}``
+
         Parameters
         ----------
         id : int
@@ -9065,6 +9319,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsPostGeocodeRuns:
         """Start a run
 
+        URL: ``POST enhancements/geocode/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -9104,6 +9360,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListGeocodeRuns]:
         """List runs for the given Geocode job
 
+        URL: ``GET enhancements/geocode/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -9123,7 +9381,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -9155,6 +9414,8 @@ class _Enhancements:
         run_id: int,
     ) -> _ResponseEnhancementsGetGeocodeRuns:
         """Check status of a run
+
+        URL: ``GET enhancements/geocode/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -9193,6 +9454,8 @@ class _Enhancements:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE enhancements/geocode/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -9216,6 +9479,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListGeocodeRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET enhancements/geocode/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -9231,7 +9496,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -9248,6 +9513,8 @@ class _Enhancements:
         id: int,
     ) -> _ResponseEnhancementsPostGeocodeCancel:
         """Cancel a run
+
+        URL: ``POST enhancements/geocode/{id}/cancel``
 
         Parameters
         ----------
@@ -9278,6 +9545,8 @@ class _Enhancements:
     ) -> Iterator[_ResponseEnhancementsListGeocodeRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET enhancements/geocode/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -9299,7 +9568,8 @@ class _Enhancements:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -9324,6 +9594,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCassNcoaShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET enhancements/cass-ncoa/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -9331,7 +9603,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -9371,6 +9643,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT enhancements/cass-ncoa/{id}/shares/users``
 
         Parameters
         ----------
@@ -9425,6 +9699,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE enhancements/cass-ncoa/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -9448,6 +9724,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT enhancements/cass-ncoa/{id}/shares/groups``
 
         Parameters
         ----------
@@ -9502,6 +9780,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE enhancements/cass-ncoa/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -9523,6 +9803,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCassNcoaDependencies:
         """List dependent objects for this object
 
+        URL: ``GET enhancements/cass-ncoa/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -9532,7 +9814,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -9562,6 +9844,8 @@ class _Enhancements:
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutCassNcoaTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT enhancements/cass-ncoa/{id}/transfer``
 
         Parameters
         ----------
@@ -9609,6 +9893,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListCassNcoaProjects:
         """List the projects a CASS/NCOA Enhancement belongs to
 
+        URL: ``GET enhancements/cass-ncoa/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -9619,7 +9905,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -9665,6 +9951,8 @@ class _Enhancements:
     ) -> Response:
         """Add a CASS/NCOA Enhancement to a project
 
+        URL: ``PUT enhancements/cass-ncoa/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -9686,6 +9974,8 @@ class _Enhancements:
     ) -> Response:
         """Remove a CASS/NCOA Enhancement from a project
 
+        URL: ``DELETE enhancements/cass-ncoa/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -9706,6 +9996,8 @@ class _Enhancements:
         status: bool,
     ) -> _ResponseEnhancementsPutCassNcoaArchive:
         """Update the archive status of this object
+
+        URL: ``PUT enhancements/cass-ncoa/{id}/archive``
 
         Parameters
         ----------
@@ -9861,6 +10153,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListGeocodeShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET enhancements/geocode/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -9868,7 +10162,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -9908,6 +10202,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT enhancements/geocode/{id}/shares/users``
 
         Parameters
         ----------
@@ -9962,6 +10258,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE enhancements/geocode/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -9985,6 +10283,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT enhancements/geocode/{id}/shares/groups``
 
         Parameters
         ----------
@@ -10039,6 +10339,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE enhancements/geocode/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -10060,6 +10362,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListGeocodeDependencies:
         """List dependent objects for this object
 
+        URL: ``GET enhancements/geocode/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -10069,7 +10373,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -10099,6 +10403,8 @@ class _Enhancements:
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutGeocodeTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT enhancements/geocode/{id}/transfer``
 
         Parameters
         ----------
@@ -10146,6 +10452,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListGeocodeProjects:
         """List the projects a Geocode Enhancement belongs to
 
+        URL: ``GET enhancements/geocode/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -10156,7 +10464,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -10202,6 +10510,8 @@ class _Enhancements:
     ) -> Response:
         """Add a Geocode Enhancement to a project
 
+        URL: ``PUT enhancements/geocode/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -10223,6 +10533,8 @@ class _Enhancements:
     ) -> Response:
         """Remove a Geocode Enhancement from a project
 
+        URL: ``DELETE enhancements/geocode/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -10243,6 +10555,8 @@ class _Enhancements:
         status: bool,
     ) -> _ResponseEnhancementsPutGeocodeArchive:
         """Update the archive status of this object
+
+        URL: ``PUT enhancements/geocode/{id}/archive``
 
         Parameters
         ----------
@@ -10365,6 +10679,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListIdentityResolutionShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET enhancements/identity-resolution/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -10372,7 +10688,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -10412,6 +10728,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT enhancements/identity-resolution/{id}/shares/users``
 
         Parameters
         ----------
@@ -10466,6 +10784,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE enhancements/identity-resolution/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -10489,6 +10809,8 @@ class _Enhancements:
         send_shared_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT enhancements/identity-resolution/{id}/shares/groups``
 
         Parameters
         ----------
@@ -10543,6 +10865,8 @@ class _Enhancements:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE enhancements/identity-resolution/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -10564,6 +10888,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListIdentityResolutionDependencies:
         """List dependent objects for this object
 
+        URL: ``GET enhancements/identity-resolution/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -10573,7 +10899,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -10603,6 +10929,8 @@ class _Enhancements:
         send_email: bool | None = ...,
     ) -> _ResponseEnhancementsPutIdentityResolutionTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT enhancements/identity-resolution/{id}/transfer``
 
         Parameters
         ----------
@@ -10650,6 +10978,8 @@ class _Enhancements:
     ) -> _ResponseEnhancementsListIdentityResolutionProjects:
         """List the projects an Identity Resolution Enhancement belongs to
 
+        URL: ``GET enhancements/identity-resolution/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -10660,7 +10990,7 @@ class _Enhancements:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -10706,6 +11036,8 @@ class _Enhancements:
     ) -> Response:
         """Add an Identity Resolution Enhancement to a project
 
+        URL: ``PUT enhancements/identity-resolution/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -10727,6 +11059,8 @@ class _Enhancements:
     ) -> Response:
         """Remove an Identity Resolution Enhancement from a project
 
+        URL: ``DELETE enhancements/identity-resolution/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -10747,6 +11081,8 @@ class _Enhancements:
         status: bool,
     ) -> _ResponseEnhancementsPutIdentityResolutionArchive:
         """Update the archive status of this object
+
+        URL: ``PUT enhancements/identity-resolution/{id}/archive``
 
         Parameters
         ----------
@@ -10980,6 +11316,8 @@ class _Exports:
     ) -> Iterator[_ResponseExportsList]:
         """List
 
+        URL: ``GET exports``
+
         Parameters
         ----------
         type : str, optional
@@ -11012,7 +11350,8 @@ class _Exports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -11060,6 +11399,8 @@ class _Exports:
     ) -> _ResponseExportsPostFilesCsvRuns:
         """Start a run
 
+        URL: ``POST exports/files/csv/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -11095,6 +11436,8 @@ class _Exports:
     ) -> Iterator[_ResponseExportsListFilesCsvRuns]:
         """List runs for the given CSV Export job
 
+        URL: ``GET exports/files/csv/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -11114,7 +11457,8 @@ class _Exports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -11139,6 +11483,8 @@ class _Exports:
         run_id: int,
     ) -> _ResponseExportsGetFilesCsvRuns:
         """Check status of a run
+
+        URL: ``GET exports/files/csv/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -11173,6 +11519,8 @@ class _Exports:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE exports/files/csv/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -11196,6 +11544,8 @@ class _Exports:
     ) -> _ResponseExportsListFilesCsvRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET exports/files/csv/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -11211,7 +11561,7 @@ class _Exports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -11235,6 +11585,8 @@ class _Exports:
     ) -> Iterator[_ResponseExportsListFilesCsvRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET exports/files/csv/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -11256,7 +11608,8 @@ class _Exports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -11288,6 +11641,8 @@ class _Exports:
         max_file_size: int | None = ...,
     ) -> _ResponseExportsPostFilesCsv:
         """Create a CSV Export
+
+        URL: ``POST exports/files/csv``
 
         Parameters
         ----------
@@ -11404,6 +11759,8 @@ class _Exports:
     ) -> _ResponseExportsGetFilesCsv:
         """Get a CSV Export
 
+        URL: ``GET exports/files/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -11481,6 +11838,8 @@ class _Exports:
         max_file_size: int | None = ...,
     ) -> _ResponseExportsPutFilesCsv:
         """Replace all attributes of this CSV Export
+
+        URL: ``PUT exports/files/csv/{id}``
 
         Parameters
         ----------
@@ -11608,6 +11967,8 @@ class _Exports:
     ) -> _ResponseExportsPatchFilesCsv:
         """Update some attributes of this CSV Export
 
+        URL: ``PATCH exports/files/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -11726,6 +12087,8 @@ class _Exports:
     ) -> _ResponseExportsPutFilesCsvArchive:
         """Update the archive status of this object
 
+        URL: ``PUT exports/files/csv/{id}/archive``
+
         Parameters
         ----------
         id : int
@@ -11800,6 +12163,8 @@ class _Files:
     ) -> _ResponseFilesListProjects:
         """List the projects a File belongs to
 
+        URL: ``GET files/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -11810,7 +12175,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -11856,6 +12221,8 @@ class _Files:
     ) -> Response:
         """Add a File to a project
 
+        URL: ``PUT files/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -11877,6 +12244,8 @@ class _Files:
     ) -> Response:
         """Remove a File from a project
 
+        URL: ``DELETE files/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -11897,6 +12266,8 @@ class _Files:
     ) -> _ResponseFilesListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET files/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -11904,7 +12275,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -11944,6 +12315,8 @@ class _Files:
         send_shared_email: bool | None = ...,
     ) -> _ResponseFilesPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT files/{id}/shares/users``
 
         Parameters
         ----------
@@ -11998,6 +12371,8 @@ class _Files:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE files/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -12021,6 +12396,8 @@ class _Files:
         send_shared_email: bool | None = ...,
     ) -> _ResponseFilesPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT files/{id}/shares/groups``
 
         Parameters
         ----------
@@ -12075,6 +12452,8 @@ class _Files:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE files/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -12096,6 +12475,8 @@ class _Files:
     ) -> _ResponseFilesListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET files/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -12105,7 +12486,7 @@ class _Files:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -12135,6 +12516,8 @@ class _Files:
         send_email: bool | None = ...,
     ) -> _ResponseFilesPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT files/{id}/transfer``
 
         Parameters
         ----------
@@ -12183,6 +12566,8 @@ class _Files:
     ) -> _ResponseFilesPost:
         """Initiate an upload of a file into the platform
 
+        URL: ``POST files``
+
         Parameters
         ----------
         name : str
@@ -12230,6 +12615,8 @@ class _Files:
     ) -> _ResponseFilesPostMultipart:
         """Initiate a multipart upload
 
+        URL: ``POST files/multipart``
+
         Parameters
         ----------
         name : str
@@ -12271,6 +12658,8 @@ class _Files:
     ) -> Response:
         """Complete a multipart upload
 
+        URL: ``POST files/multipart/{id}/complete``
+
         Parameters
         ----------
         id : int
@@ -12290,6 +12679,8 @@ class _Files:
         inline: bool | None = ...,
     ) -> _ResponseFilesGet:
         """Get details about a file
+
+        URL: ``GET files/{id}``
 
         Parameters
         ----------
@@ -12364,6 +12755,8 @@ class _Files:
     ) -> _ResponseFilesPut:
         """Update details about a file
 
+        URL: ``PUT files/{id}``
+
         Parameters
         ----------
         id : int
@@ -12437,6 +12830,8 @@ class _Files:
         description: str | None = ...,
     ) -> _ResponseFilesPatch:
         """Update details about a file
+
+        URL: ``PATCH files/{id}``
 
         Parameters
         ----------
@@ -12515,6 +12910,8 @@ class _Files:
     ) -> _ResponseFilesPostPreprocessCsv:
         """Create a Preprocess CSV
 
+        URL: ``POST files/preprocess/csv``
+
         Parameters
         ----------
         file_id : int
@@ -12576,6 +12973,8 @@ class _Files:
     ) -> _ResponseFilesGetPreprocessCsv:
         """Get a Preprocess CSV
 
+        URL: ``GET files/preprocess/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -12621,6 +13020,8 @@ class _Files:
         column_delimiter: str | None = ...,
     ) -> _ResponseFilesPutPreprocessCsv:
         """Replace all attributes of this Preprocess CSV
+
+        URL: ``PUT files/preprocess/csv/{id}``
 
         Parameters
         ----------
@@ -12689,6 +13090,8 @@ class _Files:
     ) -> _ResponseFilesPatchPreprocessCsv:
         """Update some attributes of this Preprocess CSV
 
+        URL: ``PATCH files/preprocess/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -12751,6 +13154,8 @@ class _Files:
     ) -> _ResponseFilesPutPreprocessCsvArchive:
         """Update the archive status of this object
 
+        URL: ``PUT files/preprocess/csv/{id}/archive``
+
         Parameters
         ----------
         id : int
@@ -12799,6 +13204,8 @@ class _Git_Repos:
     ) -> Iterator[_ResponseGitReposList]:
         """List bookmarked git repositories
 
+        URL: ``GET git_repos``
+
         Parameters
         ----------
         limit : int, optional
@@ -12816,7 +13223,8 @@ class _Git_Repos:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -12836,6 +13244,8 @@ class _Git_Repos:
         repo_url: str,
     ) -> _ResponseGitReposPost:
         """Bookmark a git repository
+
+        URL: ``POST git_repos``
 
         Parameters
         ----------
@@ -12860,6 +13270,8 @@ class _Git_Repos:
     ) -> _ResponseGitReposGet:
         """Get a bookmarked git repository
 
+        URL: ``GET git_repos/{id}``
+
         Parameters
         ----------
         id : int
@@ -12883,6 +13295,8 @@ class _Git_Repos:
     ) -> Response:
         """Remove the bookmark on a git repository
 
+        URL: ``DELETE git_repos/{id}``
+
         Parameters
         ----------
         id : int
@@ -12901,6 +13315,8 @@ class _Git_Repos:
     ) -> _ResponseGitReposListRefs:
         """Get all branches and tags of a bookmarked git repository
 
+        URL: ``GET git_repos/{id}/refs``
+
         Parameters
         ----------
         id : int
@@ -12908,7 +13324,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - branches : List[str]
                 List of branch names of this git repository.
             - tags : List[str]
@@ -12931,6 +13347,8 @@ class _Groups:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseGroupsList]:
         """List Groups
+
+        URL: ``GET groups``
 
         Parameters
         ----------
@@ -12961,7 +13379,8 @@ class _Groups:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -13021,6 +13440,8 @@ class _Groups:
         default_services_label: str | None = ...,
     ) -> _ResponseGroupsPost:
         """Create a Group
+
+        URL: ``POST groups``
 
         Parameters
         ----------
@@ -13112,6 +13533,8 @@ class _Groups:
     ) -> _ResponseGroupsGet:
         """Get a Group
 
+        URL: ``GET groups/{id}``
+
         Parameters
         ----------
         id : int
@@ -13192,6 +13615,8 @@ class _Groups:
         default_services_label: str | None = ...,
     ) -> _ResponseGroupsPut:
         """Replace all attributes of this Group
+
+        URL: ``PUT groups/{id}``
 
         Parameters
         ----------
@@ -13295,6 +13720,8 @@ class _Groups:
     ) -> _ResponseGroupsPatch:
         """Update some attributes of this Group
 
+        URL: ``PATCH groups/{id}``
+
         Parameters
         ----------
         id : int
@@ -13387,6 +13814,8 @@ class _Groups:
     ) -> _ResponseGroupsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET groups/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -13394,7 +13823,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -13434,6 +13863,8 @@ class _Groups:
         send_shared_email: bool | None = ...,
     ) -> _ResponseGroupsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT groups/{id}/shares/users``
 
         Parameters
         ----------
@@ -13488,6 +13919,8 @@ class _Groups:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE groups/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -13511,6 +13944,8 @@ class _Groups:
         send_shared_email: bool | None = ...,
     ) -> _ResponseGroupsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT groups/{id}/shares/groups``
 
         Parameters
         ----------
@@ -13565,6 +14000,8 @@ class _Groups:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE groups/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -13585,6 +14022,8 @@ class _Groups:
         user_id: int,
     ) -> _ResponseGroupsPutMembers:
         """Add a user to a group
+
+        URL: ``PUT groups/{id}/members/{user_id}``
 
         Parameters
         ----------
@@ -13661,6 +14100,8 @@ class _Groups:
     ) -> Response:
         """Remove a user from a group
 
+        URL: ``DELETE groups/{id}/members/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -13681,6 +14122,8 @@ class _Groups:
     ) -> _ResponseGroupsListChildGroups:
         """Get child groups of this group
 
+        URL: ``GET groups/{id}/child_groups``
+
         Parameters
         ----------
         id : int
@@ -13688,7 +14131,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - manageable : List[:class:`civis.Response`]
                 - id : int
                 - name : str
@@ -13708,6 +14151,8 @@ class _Imports:
     ) -> _ResponseImportsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET imports/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -13715,7 +14160,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -13755,6 +14200,8 @@ class _Imports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseImportsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT imports/{id}/shares/users``
 
         Parameters
         ----------
@@ -13809,6 +14256,8 @@ class _Imports:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE imports/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -13832,6 +14281,8 @@ class _Imports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseImportsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT imports/{id}/shares/groups``
 
         Parameters
         ----------
@@ -13886,6 +14337,8 @@ class _Imports:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE imports/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -13907,6 +14360,8 @@ class _Imports:
     ) -> _ResponseImportsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET imports/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -13916,7 +14371,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -13946,6 +14401,8 @@ class _Imports:
         send_email: bool | None = ...,
     ) -> _ResponseImportsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT imports/{id}/transfer``
 
         Parameters
         ----------
@@ -13993,6 +14450,8 @@ class _Imports:
     ) -> _ResponseImportsListProjects:
         """List the projects an Import belongs to
 
+        URL: ``GET imports/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -14003,7 +14462,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -14049,6 +14508,8 @@ class _Imports:
     ) -> Response:
         """Add an Import to a project
 
+        URL: ``PUT imports/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -14070,6 +14531,8 @@ class _Imports:
     ) -> Response:
         """Remove an Import from a project
 
+        URL: ``DELETE imports/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -14090,6 +14553,8 @@ class _Imports:
         status: bool,
     ) -> _ResponseImportsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT imports/{id}/archive``
 
         Parameters
         ----------
@@ -14395,6 +14860,8 @@ class _Imports:
     ) -> Iterator[_ResponseImportsList]:
         """List Imports
 
+        URL: ``GET imports``
+
         Parameters
         ----------
         type : str, optional
@@ -14434,7 +14901,8 @@ class _Imports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -14530,6 +14998,8 @@ class _Imports:
         hidden: bool | None = ...,
     ) -> _ResponseImportsPost:
         """Create a new import configuration
+
+        URL: ``POST imports``
 
         Parameters
         ----------
@@ -14899,6 +15369,8 @@ class _Imports:
     ) -> _ResponseImportsPostFiles:
         """Initate an import of a tabular file into the platform
 
+        URL: ``POST imports/files``
+
         Parameters
         ----------
         schema : str
@@ -14965,6 +15437,8 @@ class _Imports:
     ) -> _ResponseImportsPostFilesRuns:
         """Start a run
 
+        URL: ``POST imports/files/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -15004,6 +15478,8 @@ class _Imports:
     ) -> Iterator[_ResponseImportsListFilesRuns]:
         """List runs for the given Import job
 
+        URL: ``GET imports/files/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -15023,7 +15499,8 @@ class _Imports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -15055,6 +15532,8 @@ class _Imports:
         run_id: int,
     ) -> _ResponseImportsGetFilesRuns:
         """Check status of a run
+
+        URL: ``GET imports/files/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -15093,6 +15572,8 @@ class _Imports:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE imports/files/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -15116,6 +15597,8 @@ class _Imports:
     ) -> _ResponseImportsListFilesRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET imports/files/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -15131,7 +15614,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -15152,6 +15635,8 @@ class _Imports:
     ) -> _ResponseImportsListRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET imports/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -15167,7 +15652,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -15197,6 +15682,8 @@ class _Imports:
         hidden: bool | None = ...,
     ) -> _ResponseImportsPostFilesCsv:
         """Create a CSV Import
+
+        URL: ``POST imports/files/csv``
 
         Parameters
         ----------
@@ -15394,6 +15881,8 @@ class _Imports:
     ) -> _ResponseImportsGetFilesCsv:
         """Get a CSV Import
 
+        URL: ``GET imports/files/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -15516,6 +16005,8 @@ class _Imports:
         redshift_destination_options: dict | None = ...,
     ) -> _ResponseImportsPutFilesCsv:
         """Replace all attributes of this CSV Import
+
+        URL: ``PUT imports/files/csv/{id}``
 
         Parameters
         ----------
@@ -15726,6 +16217,8 @@ class _Imports:
     ) -> _ResponseImportsPatchFilesCsv:
         """Update some attributes of this CSV Import
 
+        URL: ``PATCH imports/files/csv/{id}``
+
         Parameters
         ----------
         id : int
@@ -15923,6 +16416,8 @@ class _Imports:
     ) -> _ResponseImportsPutFilesCsvArchive:
         """Update the archive status of this object
 
+        URL: ``PUT imports/files/csv/{id}/archive``
+
         Parameters
         ----------
         id : int
@@ -16036,6 +16531,8 @@ class _Imports:
     ) -> _ResponseImportsPostFilesCsvRuns:
         """Start a run
 
+        URL: ``POST imports/files/csv/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -16075,6 +16572,8 @@ class _Imports:
     ) -> Iterator[_ResponseImportsListFilesCsvRuns]:
         """List runs for the given CSV Import job
 
+        URL: ``GET imports/files/csv/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -16094,7 +16593,8 @@ class _Imports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -16126,6 +16626,8 @@ class _Imports:
         run_id: int,
     ) -> _ResponseImportsGetFilesCsvRuns:
         """Check status of a run
+
+        URL: ``GET imports/files/csv/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -16164,6 +16666,8 @@ class _Imports:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE imports/files/csv/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -16187,6 +16691,8 @@ class _Imports:
     ) -> _ResponseImportsListFilesCsvRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET imports/files/csv/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -16202,7 +16708,7 @@ class _Imports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -16225,6 +16731,8 @@ class _Imports:
     ) -> Iterator[_ResponseImportsListBatches]:
         """List batch imports
 
+        URL: ``GET imports/batches``
+
         Parameters
         ----------
         hidden : bool, optional
@@ -16245,7 +16753,8 @@ class _Imports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -16286,6 +16795,8 @@ class _Imports:
         hidden: bool | None = ...,
     ) -> _ResponseImportsPostBatches:
         """Upload multiple files to Civis
+
+        URL: ``POST imports/batches``
 
         Parameters
         ----------
@@ -16345,6 +16856,8 @@ class _Imports:
     ) -> _ResponseImportsGetBatches:
         """Get details about a batch import
 
+        URL: ``GET imports/batches/{id}``
+
         Parameters
         ----------
         id : int
@@ -16382,6 +16895,8 @@ class _Imports:
         id: int,
     ) -> _ResponseImportsGet:
         """Get details about an import
+
+        URL: ``GET imports/{id}``
 
         Parameters
         ----------
@@ -16683,6 +17198,8 @@ class _Imports:
         time_zone: str | None = ...,
     ) -> _ResponseImportsPut:
         """Update an import
+
+        URL: ``PUT imports/{id}``
 
         Parameters
         ----------
@@ -17038,13 +17555,15 @@ class _Imports:
     ) -> _ResponseImportsListRuns:
         """Get the run history of this import
 
+        URL: ``GET imports/{id}/runs``
+
         Parameters
         ----------
         id : int
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
             - state : str
             - created_at : str (time)
@@ -17064,6 +17583,8 @@ class _Imports:
     ) -> _ResponseImportsPostRuns:
         """Run an import
 
+        URL: ``POST imports/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -17082,6 +17603,8 @@ class _Imports:
         id: int,
     ) -> _ResponseImportsPostCancel:
         """Cancel a run
+
+        URL: ``POST imports/{id}/cancel``
 
         Parameters
         ----------
@@ -17108,6 +17631,8 @@ class _Imports:
         advanced_options: dict | None = ...,
     ) -> _ResponseImportsPostSyncs:
         """Create a sync
+
+        URL: ``POST imports/{id}/syncs``
 
         Parameters
         ----------
@@ -17421,6 +17946,8 @@ class _Imports:
         advanced_options: dict | None = ...,
     ) -> _ResponseImportsPutSyncs:
         """Update a sync
+
+        URL: ``PUT imports/{id}/syncs/{sync_id}``
 
         Parameters
         ----------
@@ -17736,6 +18263,8 @@ class _Imports:
     ) -> _ResponseImportsPutSyncsArchive:
         """Update the archive status of this sync
 
+        URL: ``PUT imports/{id}/syncs/{sync_id}/archive``
+
         Parameters
         ----------
         id : int
@@ -17921,6 +18450,8 @@ class _Jobs:
     ) -> Iterator[_ResponseJobsList]:
         """List Jobs
 
+        URL: ``GET jobs``
+
         Parameters
         ----------
         state : str, optional
@@ -17959,7 +18490,8 @@ class _Jobs:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -18020,6 +18552,8 @@ class _Jobs:
         id: int,
     ) -> _ResponseJobsGet:
         """Show basic job info
+
+        URL: ``GET jobs/{id}``
 
         Parameters
         ----------
@@ -18107,6 +18641,8 @@ class _Jobs:
     ) -> _ResponseJobsPostTriggerEmail:
         """Generate and retrieve trigger email address
 
+        URL: ``POST jobs/{id}/trigger_email``
+
         Parameters
         ----------
         id : int
@@ -18126,6 +18662,8 @@ class _Jobs:
     ) -> _ResponseJobsListParents:
         """Show chain of parents as a list that this job triggers from
 
+        URL: ``GET jobs/{id}/parents``
+
         Parameters
         ----------
         id : int
@@ -18133,7 +18671,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
             - name : str
             - type : str
@@ -18212,6 +18750,8 @@ class _Jobs:
     ) -> _ResponseJobsListChildren:
         """Show nested tree of children that this job triggers
 
+        URL: ``GET jobs/{id}/children``
+
         Parameters
         ----------
         id : int
@@ -18219,7 +18759,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
             - name : str
             - type : str
@@ -18264,6 +18804,8 @@ class _Jobs:
     ) -> Iterator[_ResponseJobsListRuns]:
         """List runs for the given job
 
+        URL: ``GET jobs/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -18283,7 +18825,8 @@ class _Jobs:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -18307,6 +18850,8 @@ class _Jobs:
         id: int,
     ) -> _ResponseJobsPostRuns:
         """Run a job
+
+        URL: ``POST jobs/{id}/runs``
 
         Parameters
         ----------
@@ -18335,6 +18880,8 @@ class _Jobs:
         run_id: int,
     ) -> _ResponseJobsGetRuns:
         """Check status of a job
+
+        URL: ``GET jobs/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -18366,6 +18913,8 @@ class _Jobs:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE jobs/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -18392,6 +18941,8 @@ class _Jobs:
     ) -> Iterator[_ResponseJobsListRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET jobs/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -18413,7 +18964,8 @@ class _Jobs:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -18441,6 +18993,8 @@ class _Jobs:
     ) -> _ResponseJobsListRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET jobs/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -18456,7 +19010,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -18475,6 +19029,8 @@ class _Jobs:
     ) -> _ResponseJobsListWorkflows:
         """List the workflows a job belongs to
 
+        URL: ``GET jobs/{id}/workflows``
+
         Parameters
         ----------
         id : int
@@ -18483,7 +19039,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this workflow.
             - name : str
@@ -18542,6 +19098,8 @@ class _Jobs:
     ) -> _ResponseJobsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET jobs/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -18549,7 +19107,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -18589,6 +19147,8 @@ class _Jobs:
         send_shared_email: bool | None = ...,
     ) -> _ResponseJobsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT jobs/{id}/shares/users``
 
         Parameters
         ----------
@@ -18643,6 +19203,8 @@ class _Jobs:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE jobs/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -18666,6 +19228,8 @@ class _Jobs:
         send_shared_email: bool | None = ...,
     ) -> _ResponseJobsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT jobs/{id}/shares/groups``
 
         Parameters
         ----------
@@ -18720,6 +19284,8 @@ class _Jobs:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE jobs/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -18741,6 +19307,8 @@ class _Jobs:
     ) -> _ResponseJobsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET jobs/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -18750,7 +19318,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -18780,6 +19348,8 @@ class _Jobs:
         send_email: bool | None = ...,
     ) -> _ResponseJobsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT jobs/{id}/transfer``
 
         Parameters
         ----------
@@ -18827,6 +19397,8 @@ class _Jobs:
     ) -> _ResponseJobsListProjects:
         """List the projects a Job belongs to
 
+        URL: ``GET jobs/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -18837,7 +19409,7 @@ class _Jobs:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -18883,6 +19455,8 @@ class _Jobs:
     ) -> Response:
         """Add a Job to a project
 
+        URL: ``PUT jobs/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -18904,6 +19478,8 @@ class _Jobs:
     ) -> Response:
         """Remove a Job from a project
 
+        URL: ``DELETE jobs/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -18924,6 +19500,8 @@ class _Jobs:
         status: bool,
     ) -> _ResponseJobsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT jobs/{id}/archive``
 
         Parameters
         ----------
@@ -19015,6 +19593,8 @@ class _Json_Values:
     ) -> _ResponseJsonValuesPost:
         """Create a JSON Value
 
+        URL: ``POST json_values``
+
         Parameters
         ----------
         value_str : str
@@ -19041,6 +19621,8 @@ class _Json_Values:
     ) -> _ResponseJsonValuesGet:
         """Get details about a JSON Value
 
+        URL: ``GET json_values/{id}``
+
         Parameters
         ----------
         id : int
@@ -19065,6 +19647,8 @@ class _Json_Values:
         value_str: str | None = ...,
     ) -> _ResponseJsonValuesPatch:
         """Update some attributes of this JSON Value
+
+        URL: ``PATCH json_values/{id}``
 
         Parameters
         ----------
@@ -19094,6 +19678,8 @@ class _Json_Values:
     ) -> _ResponseJsonValuesListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET json_values/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -19101,7 +19687,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -19141,6 +19727,8 @@ class _Json_Values:
         send_shared_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT json_values/{id}/shares/users``
 
         Parameters
         ----------
@@ -19195,6 +19783,8 @@ class _Json_Values:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE json_values/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -19218,6 +19808,8 @@ class _Json_Values:
         send_shared_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT json_values/{id}/shares/groups``
 
         Parameters
         ----------
@@ -19272,6 +19864,8 @@ class _Json_Values:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE json_values/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -19293,6 +19887,8 @@ class _Json_Values:
     ) -> _ResponseJsonValuesListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET json_values/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -19302,7 +19898,7 @@ class _Json_Values:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -19332,6 +19928,8 @@ class _Json_Values:
         send_email: bool | None = ...,
     ) -> _ResponseJsonValuesPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT json_values/{id}/transfer``
 
         Parameters
         ----------
@@ -19379,6 +19977,8 @@ class _Match_Targets:
     ) -> _ResponseMatchTargetsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET match_targets/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -19386,7 +19986,7 @@ class _Match_Targets:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -19426,6 +20026,8 @@ class _Match_Targets:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMatchTargetsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT match_targets/{id}/shares/users``
 
         Parameters
         ----------
@@ -19480,6 +20082,8 @@ class _Match_Targets:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE match_targets/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -19503,6 +20107,8 @@ class _Match_Targets:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMatchTargetsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT match_targets/{id}/shares/groups``
 
         Parameters
         ----------
@@ -19557,6 +20163,8 @@ class _Match_Targets:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE match_targets/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -19577,6 +20185,8 @@ class _Match_Targets:
         status: bool,
     ) -> _ResponseMatchTargetsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT match_targets/{id}/archive``
 
         Parameters
         ----------
@@ -19606,6 +20216,8 @@ class _Match_Targets:
     ) -> _ResponseMatchTargetsList:
         """List match targets
 
+        URL: ``GET match_targets``
+
         Returns
         -------
         :class:`civis.Response`
@@ -19629,6 +20241,8 @@ class _Match_Targets:
         archived: bool | None = ...,
     ) -> _ResponseMatchTargetsPost:
         """Create a new match target
+
+        URL: ``POST match_targets``
 
         Parameters
         ----------
@@ -19661,6 +20275,8 @@ class _Match_Targets:
     ) -> _ResponseMatchTargetsGet:
         """Show Match Target info
 
+        URL: ``GET match_targets/{id}``
+
         Parameters
         ----------
         id : int
@@ -19690,6 +20306,8 @@ class _Match_Targets:
         archived: bool | None = ...,
     ) -> _ResponseMatchTargetsPatch:
         """Update a match target
+
+        URL: ``PATCH match_targets/{id}``
 
         Parameters
         ----------
@@ -19725,6 +20343,8 @@ class _Media:
     ) -> _ResponseMediaListSpotOrdersShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET media/spot_orders/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -19732,7 +20352,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -19772,6 +20392,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutSpotOrdersSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT media/spot_orders/{id}/shares/users``
 
         Parameters
         ----------
@@ -19826,6 +20448,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE media/spot_orders/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -19849,6 +20473,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutSpotOrdersSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT media/spot_orders/{id}/shares/groups``
 
         Parameters
         ----------
@@ -19903,6 +20529,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE media/spot_orders/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -19923,6 +20551,8 @@ class _Media:
         status: bool,
     ) -> _ResponseMediaPutSpotOrdersArchive:
         """Update the archive status of this object
+
+        URL: ``PUT media/spot_orders/{id}/archive``
 
         Parameters
         ----------
@@ -19955,6 +20585,8 @@ class _Media:
     ) -> _ResponseMediaListOptimizationsShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET media/optimizations/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -19962,7 +20594,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -20002,6 +20634,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutOptimizationsSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT media/optimizations/{id}/shares/users``
 
         Parameters
         ----------
@@ -20056,6 +20690,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE media/optimizations/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -20079,6 +20715,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutOptimizationsSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT media/optimizations/{id}/shares/groups``
 
         Parameters
         ----------
@@ -20133,6 +20771,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE media/optimizations/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -20153,6 +20793,8 @@ class _Media:
         status: bool,
     ) -> _ResponseMediaPutOptimizationsArchive:
         """Update the archive status of this object
+
+        URL: ``PUT media/optimizations/{id}/archive``
 
         Parameters
         ----------
@@ -20252,6 +20894,8 @@ class _Media:
     ) -> _ResponseMediaListRatecardsShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET media/ratecards/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -20259,7 +20903,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -20299,6 +20943,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutRatecardsSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT media/ratecards/{id}/shares/users``
 
         Parameters
         ----------
@@ -20353,6 +20999,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE media/ratecards/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -20376,6 +21024,8 @@ class _Media:
         send_shared_email: bool | None = ...,
     ) -> _ResponseMediaPutRatecardsSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT media/ratecards/{id}/shares/groups``
 
         Parameters
         ----------
@@ -20430,6 +21080,8 @@ class _Media:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE media/ratecards/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -20450,6 +21102,8 @@ class _Media:
         status: bool,
     ) -> _ResponseMediaPutRatecardsArchive:
         """Update the archive status of this object
+
+        URL: ``PUT media/ratecards/{id}/archive``
 
         Parameters
         ----------
@@ -20487,6 +21141,8 @@ class _Media:
     ) -> Iterator[_ResponseMediaListOptimizations]:
         """List all optimizations
 
+        URL: ``GET media/optimizations``
+
         Parameters
         ----------
         archived : str, optional
@@ -20506,7 +21162,8 @@ class _Media:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -20553,6 +21210,8 @@ class _Media:
         time_slot_percentages: dict | None = ...,
     ) -> _ResponseMediaPostOptimizations:
         """Create a new optimization
+
+        URL: ``POST media/optimizations``
 
         Parameters
         ----------
@@ -20696,6 +21355,8 @@ class _Media:
     ) -> _ResponseMediaGetOptimizations:
         """Show a single optimization
 
+        URL: ``GET media/optimizations/{id}``
+
         Parameters
         ----------
         id : int
@@ -20798,6 +21459,8 @@ class _Media:
         time_slot_percentages: dict | None = ...,
     ) -> _ResponseMediaPatchOptimizations:
         """Edit an existing optimization
+
+        URL: ``PATCH media/optimizations/{id}``
 
         Parameters
         ----------
@@ -20943,6 +21606,8 @@ class _Media:
     ) -> _ResponseMediaPostOptimizationsClone:
         """Clone an existing optimization
 
+        URL: ``POST media/optimizations/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -21039,6 +21704,8 @@ class _Media:
     ) -> _ResponseMediaPostOptimizationsRuns:
         """Start a run
 
+        URL: ``POST media/optimizations/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -21078,6 +21745,8 @@ class _Media:
     ) -> Iterator[_ResponseMediaListOptimizationsRuns]:
         """List runs for the given Optimization job
 
+        URL: ``GET media/optimizations/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -21097,7 +21766,8 @@ class _Media:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -21129,6 +21799,8 @@ class _Media:
         run_id: int,
     ) -> _ResponseMediaGetOptimizationsRuns:
         """Check status of a run
+
+        URL: ``GET media/optimizations/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -21167,6 +21839,8 @@ class _Media:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE media/optimizations/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -21190,6 +21864,8 @@ class _Media:
     ) -> _ResponseMediaListOptimizationsRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET media/optimizations/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -21205,7 +21881,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -21224,6 +21900,8 @@ class _Media:
     ) -> _ResponseMediaListSpotOrders:
         """List all spot orders
 
+        URL: ``GET media/spot_orders``
+
         Parameters
         ----------
         id : int, optional
@@ -21233,7 +21911,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for the spot order.
             - archived : str
@@ -21246,6 +21924,8 @@ class _Media:
         body: str | None = ...,
     ) -> _ResponseMediaPostSpotOrders:
         """Create a spot order
+
+        URL: ``POST media/spot_orders``
 
         Parameters
         ----------
@@ -21276,6 +21956,8 @@ class _Media:
     ) -> _ResponseMediaGetSpotOrders:
         """Show a single spot order
 
+        URL: ``GET media/spot_orders/{id}``
+
         Parameters
         ----------
         id : int
@@ -21305,6 +21987,8 @@ class _Media:
         body: str | None = ...,
     ) -> _ResponseMediaPutSpotOrders:
         """Edit the specified spot order
+
+        URL: ``PUT media/spot_orders/{id}``
 
         Parameters
         ----------
@@ -21339,6 +22023,8 @@ class _Media:
     ) -> _ResponseMediaListRatecards:
         """List all ratecards
 
+        URL: ``GET media/ratecards``
+
         Parameters
         ----------
         archived : str, optional
@@ -21352,7 +22038,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ratecard ID.
             - filename : str
@@ -21376,6 +22062,8 @@ class _Media:
         dma_number: int,
     ) -> _ResponseMediaPostRatecards:
         """Create a Ratecard
+
+        URL: ``POST media/ratecards``
 
         Parameters
         ----------
@@ -21412,6 +22100,8 @@ class _Media:
     ) -> _ResponseMediaGetRatecards:
         """Get a Ratecard
 
+        URL: ``GET media/ratecards/{id}``
+
         Parameters
         ----------
         id : int
@@ -21443,6 +22133,8 @@ class _Media:
         dma_number: int,
     ) -> _ResponseMediaPutRatecards:
         """Replace all attributes of this Ratecard
+
+        URL: ``PUT media/ratecards/{id}``
 
         Parameters
         ----------
@@ -21485,6 +22177,8 @@ class _Media:
     ) -> _ResponseMediaPatchRatecards:
         """Update some attributes of this Ratecard
 
+        URL: ``PATCH media/ratecards/{id}``
+
         Parameters
         ----------
         id : int
@@ -21523,6 +22217,8 @@ class _Media:
     ) -> _ResponseMediaListDmas:
         """List all Designated Market Areas
 
+        URL: ``GET media/dmas``
+
         Parameters
         ----------
         name : str, optional
@@ -21534,7 +22230,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 Name for the DMA region.
             - number : int
@@ -21550,6 +22246,8 @@ class _Media:
     ) -> _ResponseMediaListTargets:
         """List all Media Targets
 
+        URL: ``GET media/targets``
+
         Parameters
         ----------
         name : str, optional
@@ -21561,7 +22259,7 @@ class _Media:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 The name of the target.
             - identifier : str
@@ -21577,9 +22275,11 @@ class _Models:
     ) -> _ResponseModelsListTypes:
         """List all available model types
 
+        URL: ``GET models/types``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the model type.
             - algorithm : str
@@ -21607,6 +22307,8 @@ class _Models:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseModelsList]:
         """List
+
+        URL: ``GET models``
 
         Parameters
         ----------
@@ -21650,7 +22352,8 @@ class _Models:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -21794,6 +22497,8 @@ class _Models:
         id: int,
     ) -> _ResponseModelsGet:
         """Retrieve model configuration
+
+        URL: ``GET models/{id}``
 
         Parameters
         ----------
@@ -21998,6 +22703,8 @@ class _Models:
     ) -> _ResponseModelsGetBuilds:
         """Check status of a build
 
+        URL: ``GET models/{id}/builds/{build_id}``
+
         Parameters
         ----------
         id : int
@@ -22047,6 +22754,8 @@ class _Models:
     ) -> Response:
         """Cancel a build
 
+        URL: ``DELETE models/{id}/builds/{build_id}``
+
         Parameters
         ----------
         id : int
@@ -22072,6 +22781,8 @@ class _Models:
     ) -> Iterator[_ResponseModelsListBuilds]:
         """List builds for the given Model job
 
+        URL: ``GET models/{id}/builds``
+
         Parameters
         ----------
         id : int
@@ -22091,7 +22802,8 @@ class _Models:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -22138,6 +22850,8 @@ class _Models:
     ) -> _ResponseModelsListBuildsLogs:
         """Get the logs for a build
 
+        URL: ``GET models/{id}/builds/{build_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -22153,7 +22867,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -22171,6 +22885,8 @@ class _Models:
     ) -> _ResponseModelsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET models/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -22178,7 +22894,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -22218,6 +22934,8 @@ class _Models:
         send_shared_email: bool | None = ...,
     ) -> _ResponseModelsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT models/{id}/shares/users``
 
         Parameters
         ----------
@@ -22272,6 +22990,8 @@ class _Models:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE models/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -22295,6 +23015,8 @@ class _Models:
         send_shared_email: bool | None = ...,
     ) -> _ResponseModelsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT models/{id}/shares/groups``
 
         Parameters
         ----------
@@ -22349,6 +23071,8 @@ class _Models:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE models/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -22370,6 +23094,8 @@ class _Models:
     ) -> _ResponseModelsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET models/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -22379,7 +23105,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -22409,6 +23135,8 @@ class _Models:
         send_email: bool | None = ...,
     ) -> _ResponseModelsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT models/{id}/transfer``
 
         Parameters
         ----------
@@ -22456,6 +23184,8 @@ class _Models:
     ) -> _ResponseModelsListProjects:
         """List the projects a Model belongs to
 
+        URL: ``GET models/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -22466,7 +23196,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -22512,6 +23242,8 @@ class _Models:
     ) -> Response:
         """Add a Model to a project
 
+        URL: ``PUT models/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -22533,6 +23265,8 @@ class _Models:
     ) -> Response:
         """Remove a Model from a project
 
+        URL: ``DELETE models/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -22553,6 +23287,8 @@ class _Models:
         status: bool,
     ) -> _ResponseModelsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT models/{id}/archive``
 
         Parameters
         ----------
@@ -22758,6 +23494,8 @@ class _Models:
     ) -> _ResponseModelsListSchedules:
         """Show the model build schedule
 
+        URL: ``GET models/{id}/schedules``
+
         Parameters
         ----------
         id : int
@@ -22765,7 +23503,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the model associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -22801,6 +23539,8 @@ class _Notebooks:
     ) -> Iterator[_ResponseNotebooksList]:
         """List Notebooks
 
+        URL: ``GET notebooks``
+
         Parameters
         ----------
         hidden : bool, optional
@@ -22829,7 +23569,8 @@ class _Notebooks:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -22919,6 +23660,8 @@ class _Notebooks:
         hidden: bool | None = ...,
     ) -> _ResponseNotebooksPost:
         """Create a Notebook
+
+        URL: ``POST notebooks``
 
         Parameters
         ----------
@@ -23079,6 +23822,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksGet:
         """Get a Notebook
 
+        URL: ``GET notebooks/{id}``
+
         Parameters
         ----------
         id : int
@@ -23215,6 +23960,8 @@ class _Notebooks:
         git_path: str | None = ...,
     ) -> _ResponseNotebooksPut:
         """Replace all attributes of this Notebook
+
+        URL: ``PUT notebooks/{id}``
 
         Parameters
         ----------
@@ -23393,6 +24140,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksPatch:
         """Update some attributes of this Notebook
 
+        URL: ``PATCH notebooks/{id}``
+
         Parameters
         ----------
         id : int
@@ -23552,13 +24301,15 @@ class _Notebooks:
     ) -> _ResponseNotebooksListUpdateLinks:
         """Get URLs to update notebook
 
+        URL: ``GET notebooks/{id}/update-links``
+
         Parameters
         ----------
         id : int
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - update_url : str
                 Time-limited URL to PUT new contents of the .ipynb file for this
                 notebook.
@@ -23573,6 +24324,8 @@ class _Notebooks:
         id: int,
     ) -> _ResponseNotebooksPostClone:
         """Clone this Notebook
+
+        URL: ``POST notebooks/{id}/clone``
 
         Parameters
         ----------
@@ -23693,6 +24446,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET notebooks/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -23700,7 +24455,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -23740,6 +24495,8 @@ class _Notebooks:
         send_shared_email: bool | None = ...,
     ) -> _ResponseNotebooksPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT notebooks/{id}/shares/users``
 
         Parameters
         ----------
@@ -23794,6 +24551,8 @@ class _Notebooks:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE notebooks/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -23817,6 +24576,8 @@ class _Notebooks:
         send_shared_email: bool | None = ...,
     ) -> _ResponseNotebooksPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT notebooks/{id}/shares/groups``
 
         Parameters
         ----------
@@ -23871,6 +24632,8 @@ class _Notebooks:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE notebooks/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -23892,6 +24655,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET notebooks/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -23901,7 +24666,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -23931,6 +24696,8 @@ class _Notebooks:
         send_email: bool | None = ...,
     ) -> _ResponseNotebooksPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT notebooks/{id}/transfer``
 
         Parameters
         ----------
@@ -23977,6 +24744,8 @@ class _Notebooks:
         status: bool,
     ) -> _ResponseNotebooksPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT notebooks/{id}/archive``
 
         Parameters
         ----------
@@ -24101,6 +24870,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListProjects:
         """List the projects a Notebook belongs to
 
+        URL: ``GET notebooks/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -24111,7 +24882,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -24157,6 +24928,8 @@ class _Notebooks:
     ) -> Response:
         """Add a Notebook to a project
 
+        URL: ``PUT notebooks/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -24177,6 +24950,8 @@ class _Notebooks:
         project_id: int,
     ) -> Response:
         """Remove a Notebook from a project
+
+        URL: ``DELETE notebooks/{id}/projects/{project_id}``
 
         Parameters
         ----------
@@ -24204,6 +24979,8 @@ class _Notebooks:
     ) -> Iterator[_ResponseNotebooksListDeployments]:
         """List deployments for a Notebook
 
+        URL: ``GET notebooks/{notebook_id}/deployments``
+
         Parameters
         ----------
         notebook_id : int
@@ -24225,7 +25002,8 @@ class _Notebooks:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -24272,6 +25050,8 @@ class _Notebooks:
         deployment_id: int | None = ...,
     ) -> _ResponseNotebooksPostDeployments:
         """Deploy a Notebook
+
+        URL: ``POST notebooks/{notebook_id}/deployments``
 
         Parameters
         ----------
@@ -24327,6 +25107,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksGetDeployments:
         """Get details about a Notebook deployment
 
+        URL: ``GET notebooks/{notebook_id}/deployments/{deployment_id}``
+
         Parameters
         ----------
         notebook_id : int
@@ -24381,6 +25163,8 @@ class _Notebooks:
     ) -> Response:
         """Delete a Notebook deployment
 
+        URL: ``DELETE notebooks/{notebook_id}/deployments/{deployment_id}``
+
         Parameters
         ----------
         notebook_id : int
@@ -24405,6 +25189,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListDeploymentsLogs:
         """Get the logs for a Notebook deployment
 
+        URL: ``GET notebooks/{id}/deployments/{deployment_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -24420,7 +25206,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - message : str
                 The log message.
             - stream : str
@@ -24438,6 +25224,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET notebooks/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -24445,7 +25233,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -24479,6 +25267,8 @@ class _Notebooks:
         pull_from_git: bool | None = ...,
     ) -> _ResponseNotebooksPutGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT notebooks/{id}/git``
 
         Parameters
         ----------
@@ -24536,6 +25326,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksPatchGit:
         """Update an attached git file
 
+        URL: ``PATCH notebooks/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -24586,6 +25378,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksListGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET notebooks/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -24593,7 +25387,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -24613,6 +25407,8 @@ class _Notebooks:
         file_hash: str,
     ) -> _ResponseNotebooksPostGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST notebooks/{id}/git/commits``
 
         Parameters
         ----------
@@ -24646,6 +25442,8 @@ class _Notebooks:
     ) -> _ResponseNotebooksGetGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET notebooks/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -24676,6 +25474,8 @@ class _Notifications:
     ) -> Response:
         """Receive a stream of notifications as they come in
 
+        URL: ``GET notifications``
+
         Parameters
         ----------
         last_event_id : str, optional
@@ -24698,6 +25498,8 @@ class _Ontology:
         subset: str | None = ...,
     ) -> _ResponseOntologyList:
         """List the ontology of column names Civis uses
+
+        URL: ``GET ontology``
 
         Parameters
         ----------
@@ -24728,6 +25530,8 @@ class _Organizations:
     ) -> Iterator[_ResponseOrganizationsListFavorites]:
         """List Favorites
 
+        URL: ``GET organizations/favorites``
+
         Parameters
         ----------
         object_id : int, optional
@@ -24753,7 +25557,8 @@ class _Organizations:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -24798,6 +25603,8 @@ class _Organizations:
         object_type: str,
     ) -> _ResponseOrganizationsPostFavorites:
         """Favorite an item for your organization
+
+        URL: ``POST organizations/favorites``
 
         Parameters
         ----------
@@ -24849,6 +25656,8 @@ class _Organizations:
     ) -> Response:
         """Unfavorite an item for your organization
 
+        URL: ``DELETE organizations/favorites/{id}``
+
         Parameters
         ----------
         id : int
@@ -24874,6 +25683,8 @@ class _Permission_Sets:
     ) -> Iterator[_ResponsePermissionSetsList]:
         """List Permission Sets
 
+        URL: ``GET permission_sets``
+
         Parameters
         ----------
         archived : str, optional
@@ -24896,7 +25707,8 @@ class _Permission_Sets:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -24932,6 +25744,8 @@ class _Permission_Sets:
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPost:
         """Create a Permission Set
+
+        URL: ``POST permission_sets``
 
         Parameters
         ----------
@@ -24973,6 +25787,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsGet:
         """Get a Permission Set
 
+        URL: ``GET permission_sets/{id}``
+
         Parameters
         ----------
         id : int
@@ -25011,6 +25827,8 @@ class _Permission_Sets:
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPut:
         """Replace all attributes of this Permission Set
+
+        URL: ``PUT permission_sets/{id}``
 
         Parameters
         ----------
@@ -25056,6 +25874,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsPatch:
         """Update some attributes of this Permission Set
 
+        URL: ``PATCH permission_sets/{id}``
+
         Parameters
         ----------
         id : int
@@ -25098,6 +25918,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET permission_sets/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -25105,7 +25927,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -25145,6 +25967,8 @@ class _Permission_Sets:
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT permission_sets/{id}/shares/users``
 
         Parameters
         ----------
@@ -25199,6 +26023,8 @@ class _Permission_Sets:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE permission_sets/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -25222,6 +26048,8 @@ class _Permission_Sets:
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT permission_sets/{id}/shares/groups``
 
         Parameters
         ----------
@@ -25276,6 +26104,8 @@ class _Permission_Sets:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE permission_sets/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -25297,6 +26127,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET permission_sets/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -25306,7 +26138,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -25336,6 +26168,8 @@ class _Permission_Sets:
         send_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT permission_sets/{id}/transfer``
 
         Parameters
         ----------
@@ -25383,6 +26217,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsPutArchive:
         """Update the archive status of this object
 
+        URL: ``PUT permission_sets/{id}/archive``
+
         Parameters
         ----------
         id : int
@@ -25424,6 +26260,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsListUsersPermissions:
         """Get all permissions for a user, in this permission set
 
+        URL: ``GET permission_sets/{id}/users/{user_id}/permissions``
+
         Parameters
         ----------
         id : int
@@ -25433,7 +26271,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - resource_name : str
                 The name of the resource.
             - read : bool
@@ -25456,6 +26294,8 @@ class _Permission_Sets:
     ) -> Iterator[_ResponsePermissionSetsListResources]:
         """List resources in a permission set
 
+        URL: ``GET permission_sets/{id}/resources``
+
         Parameters
         ----------
         id : int
@@ -25475,7 +26315,8 @@ class _Permission_Sets:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -25499,6 +26340,8 @@ class _Permission_Sets:
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPostResources:
         """Create a resource in a permission set
+
+        URL: ``POST permission_sets/{id}/resources``
 
         Parameters
         ----------
@@ -25530,6 +26373,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsGetResources:
         """Get a resource in a permission set
 
+        URL: ``GET permission_sets/{id}/resources/{name}``
+
         Parameters
         ----------
         id : int
@@ -25558,6 +26403,8 @@ class _Permission_Sets:
         description: str | None = ...,
     ) -> _ResponsePermissionSetsPatchResources:
         """Update a resource in a permission set
+
+        URL: ``PATCH permission_sets/{id}/resources/{name}``
 
         Parameters
         ----------
@@ -25589,6 +26436,8 @@ class _Permission_Sets:
     ) -> Response:
         """Delete a resource in a permission set
 
+        URL: ``DELETE permission_sets/{id}/resources/{name}``
+
         Parameters
         ----------
         id : int
@@ -25610,6 +26459,8 @@ class _Permission_Sets:
     ) -> _ResponsePermissionSetsListResourcesShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET permission_sets/{id}/resources/{name}/shares``
+
         Parameters
         ----------
         id : int
@@ -25619,7 +26470,7 @@ class _Permission_Sets:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -25660,6 +26511,8 @@ class _Permission_Sets:
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutResourcesSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT permission_sets/{id}/resources/{name}/shares/users``
 
         Parameters
         ----------
@@ -25717,6 +26570,8 @@ class _Permission_Sets:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE permission_sets/{id}/resources/{name}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -25743,6 +26598,8 @@ class _Permission_Sets:
         send_shared_email: bool | None = ...,
     ) -> _ResponsePermissionSetsPutResourcesSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT permission_sets/{id}/resources/{name}/shares/groups``
 
         Parameters
         ----------
@@ -25800,6 +26657,8 @@ class _Permission_Sets:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE permission_sets/{id}/resources/{name}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -25822,6 +26681,8 @@ class _Predictions:
         model_id: int | None = ...,
     ) -> _ResponsePredictionsList:
         """List predictions
+
+        URL: ``GET predictions``
 
         Parameters
         ----------
@@ -25868,6 +26729,8 @@ class _Predictions:
         id: int,
     ) -> _ResponsePredictionsGet:
         """Show the specified prediction
+
+        URL: ``GET predictions/{id}``
 
         Parameters
         ----------
@@ -25958,6 +26821,8 @@ class _Predictions:
     ) -> _ResponsePredictionsListSchedules:
         """Show the prediction schedule
 
+        URL: ``GET predictions/{id}/schedules``
+
         Parameters
         ----------
         id : int
@@ -25965,7 +26830,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 ID of the prediction associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -26005,6 +26870,8 @@ class _Projects:
     ) -> Iterator[_ResponseProjectsList]:
         """List projects
 
+        URL: ``GET projects``
+
         Parameters
         ----------
         permission : str, optional
@@ -26036,7 +26903,8 @@ class _Projects:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -26089,6 +26957,8 @@ class _Projects:
         hidden: bool | None = ...,
     ) -> _ResponseProjectsPost:
         """Create a project
+
+        URL: ``POST projects``
 
         Parameters
         ----------
@@ -26307,6 +27177,8 @@ class _Projects:
     ) -> _ResponseProjectsPostClone:
         """Clone this
 
+        URL: ``POST projects/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -26517,6 +27389,8 @@ class _Projects:
     ) -> _ResponseProjectsGet:
         """Get a detailed view of a project and the objects in it
 
+        URL: ``GET projects/{project_id}``
+
         Parameters
         ----------
         project_id : int
@@ -26724,6 +27598,8 @@ class _Projects:
         note: str | None = ...,
     ) -> _ResponseProjectsPut:
         """Update a project
+
+        URL: ``PUT projects/{project_id}``
 
         Parameters
         ----------
@@ -26937,6 +27813,8 @@ class _Projects:
     ) -> _ResponseProjectsPutAutoShare:
         """Enable or disable Auto-Share on a project
 
+        URL: ``PUT projects/{project_id}/auto_share``
+
         Parameters
         ----------
         project_id : int
@@ -27145,6 +28023,8 @@ class _Projects:
     ) -> _ResponseProjectsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET projects/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -27152,7 +28032,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -27192,6 +28072,8 @@ class _Projects:
         send_shared_email: bool | None = ...,
     ) -> _ResponseProjectsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT projects/{id}/shares/users``
 
         Parameters
         ----------
@@ -27246,6 +28128,8 @@ class _Projects:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE projects/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -27269,6 +28153,8 @@ class _Projects:
         send_shared_email: bool | None = ...,
     ) -> _ResponseProjectsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT projects/{id}/shares/groups``
 
         Parameters
         ----------
@@ -27323,6 +28209,8 @@ class _Projects:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE projects/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -27344,6 +28232,8 @@ class _Projects:
     ) -> _ResponseProjectsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET projects/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -27353,7 +28243,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -27383,6 +28273,8 @@ class _Projects:
         send_email: bool | None = ...,
     ) -> _ResponseProjectsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT projects/{id}/transfer``
 
         Parameters
         ----------
@@ -27429,6 +28321,8 @@ class _Projects:
         status: bool,
     ) -> _ResponseProjectsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT projects/{id}/archive``
 
         Parameters
         ----------
@@ -27639,6 +28533,8 @@ class _Projects:
     ) -> _ResponseProjectsListParentProjects:
         """List the Parent Projects an item belongs to
 
+        URL: ``GET projects/{id}/parent_projects``
+
         Parameters
         ----------
         id : int
@@ -27649,7 +28545,7 @@ class _Projects:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -27695,6 +28591,8 @@ class _Projects:
     ) -> Response:
         """Add an item to a Parent Project
 
+        URL: ``PUT projects/{id}/parent_projects/{parent_project_id}``
+
         Parameters
         ----------
         id : int
@@ -27715,6 +28613,8 @@ class _Projects:
         parent_project_id: int,
     ) -> Response:
         """Remove an item from a Parent Project
+
+        URL: ``DELETE projects/{id}/parent_projects/{parent_project_id}``
 
         Parameters
         ----------
@@ -27752,6 +28652,8 @@ class _Queries:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseQueriesList]:
         """List queries
+
+        URL: ``GET queries``
 
         Parameters
         ----------
@@ -27799,7 +28701,8 @@ class _Queries:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -27858,6 +28761,8 @@ class _Queries:
         filename_prefix: str | None = ...,
     ) -> _ResponseQueriesPost:
         """Execute a query
+
+        URL: ``POST queries``
 
         Parameters
         ----------
@@ -27948,6 +28853,8 @@ class _Queries:
     ) -> _ResponseQueriesPostRuns:
         """Start a run
 
+        URL: ``POST queries/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -27987,6 +28894,8 @@ class _Queries:
     ) -> Iterator[_ResponseQueriesListRuns]:
         """List runs for the given Query job
 
+        URL: ``GET queries/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -28006,7 +28915,8 @@ class _Queries:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -28038,6 +28948,8 @@ class _Queries:
         run_id: int,
     ) -> _ResponseQueriesGetRuns:
         """Check status of a run
+
+        URL: ``GET queries/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -28076,6 +28988,8 @@ class _Queries:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE queries/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -28099,6 +29013,8 @@ class _Queries:
     ) -> _ResponseQueriesListRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET queries/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -28114,7 +29030,7 @@ class _Queries:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -28132,6 +29048,8 @@ class _Queries:
         script_id: int,
     ) -> _ResponseQueriesPutScripts:
         """Update the query's associated script
+
+        URL: ``PUT queries/{id}/scripts/{script_id}``
 
         Parameters
         ----------
@@ -28200,6 +29118,8 @@ class _Queries:
     ) -> _ResponseQueriesGet:
         """Get details about a query
 
+        URL: ``GET queries/{id}``
+
         Parameters
         ----------
         id : int
@@ -28264,6 +29184,8 @@ class _Queries:
         id: int,
     ) -> _ResponseQueriesDelete:
         """Sets Query Hidden to true
+
+        URL: ``DELETE queries/{id}``
 
         Parameters
         ----------
@@ -28331,6 +29253,8 @@ class _Remote_Hosts:
     ) -> _ResponseRemoteHostsList:
         """List Remote Hosts
 
+        URL: ``GET remote_hosts``
+
         Parameters
         ----------
         type : str, optional
@@ -28366,6 +29290,8 @@ class _Remote_Hosts:
         type: str,
     ) -> _ResponseRemoteHostsPost:
         """Create a Remote Host
+
+        URL: ``POST remote_hosts``
 
         Parameters
         ----------
@@ -28423,6 +29349,8 @@ class _Remote_Hosts:
     ) -> _ResponseRemoteHostsGet:
         """Get a Remote Host
 
+        URL: ``GET remote_hosts/{id}``
+
         Parameters
         ----------
         id : int
@@ -28473,6 +29401,8 @@ class _Remote_Hosts:
         description: str,
     ) -> _ResponseRemoteHostsPut:
         """Replace all attributes of this Remote Host
+
+        URL: ``PUT remote_hosts/{id}``
 
         Parameters
         ----------
@@ -28538,6 +29468,8 @@ class _Remote_Hosts:
     ) -> _ResponseRemoteHostsPatch:
         """Update some attributes of this Remote Host
 
+        URL: ``PATCH remote_hosts/{id}``
+
         Parameters
         ----------
         id : int
@@ -28598,6 +29530,8 @@ class _Remote_Hosts:
     ) -> _ResponseRemoteHostsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET remote_hosts/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -28605,7 +29539,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -28645,6 +29579,8 @@ class _Remote_Hosts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseRemoteHostsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT remote_hosts/{id}/shares/users``
 
         Parameters
         ----------
@@ -28699,6 +29635,8 @@ class _Remote_Hosts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE remote_hosts/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -28722,6 +29660,8 @@ class _Remote_Hosts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseRemoteHostsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT remote_hosts/{id}/shares/groups``
 
         Parameters
         ----------
@@ -28776,6 +29716,8 @@ class _Remote_Hosts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE remote_hosts/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -28799,6 +29741,8 @@ class _Remote_Hosts:
     ) -> Response:
         """Authenticate against a remote host using either a credential or a user name and
         password
+
+        URL: ``POST remote_hosts/{id}/authenticate``
 
         Parameters
         ----------
@@ -28829,6 +29773,8 @@ class _Remote_Hosts:
     ) -> _ResponseRemoteHostsListDataSets:
         """List data sets available from a remote host
 
+        URL: ``GET remote_hosts/{id}/data_sets``
+
         Parameters
         ----------
         id : int
@@ -28847,7 +29793,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 The path to a data_set.
             - full_path : bool
@@ -28871,6 +29817,8 @@ class _Reports:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseReportsList]:
         """List Reports
+
+        URL: ``GET reports``
 
         Parameters
         ----------
@@ -28902,7 +29850,8 @@ class _Reports:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -28985,6 +29934,8 @@ class _Reports:
         hidden: bool | None = ...,
     ) -> _ResponseReportsPost:
         """Create an HTML report
+
+        URL: ``POST reports``
 
         Parameters
         ----------
@@ -29105,6 +30056,8 @@ class _Reports:
     ) -> _ResponseReportsListGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET reports/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -29112,7 +30065,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -29146,6 +30099,8 @@ class _Reports:
         pull_from_git: bool | None = ...,
     ) -> _ResponseReportsPutGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT reports/{id}/git``
 
         Parameters
         ----------
@@ -29203,6 +30158,8 @@ class _Reports:
     ) -> _ResponseReportsPatchGit:
         """Update an attached git file
 
+        URL: ``PATCH reports/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -29253,6 +30210,8 @@ class _Reports:
     ) -> _ResponseReportsListGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET reports/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -29260,7 +30219,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -29280,6 +30239,8 @@ class _Reports:
         file_hash: str,
     ) -> _ResponseReportsPostGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST reports/{id}/git/commits``
 
         Parameters
         ----------
@@ -29313,6 +30274,8 @@ class _Reports:
     ) -> _ResponseReportsGetGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET reports/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -29339,6 +30302,8 @@ class _Reports:
         id: int,
     ) -> _ResponseReportsGet:
         """Get a single report
+
+        URL: ``GET reports/{id}``
 
         Parameters
         ----------
@@ -29453,6 +30418,8 @@ class _Reports:
         description: str | None = ...,
     ) -> _ResponseReportsPatch:
         """Update a report
+
+        URL: ``PATCH reports/{id}``
 
         Parameters
         ----------
@@ -29579,6 +30546,8 @@ class _Reports:
         """Grant this report the ability to perform Civis platform API operations on your
         behalf
 
+        URL: ``POST reports/{id}/grants``
+
         Parameters
         ----------
         id : int
@@ -29685,6 +30654,8 @@ class _Reports:
         """Revoke permission for this report to perform Civis platform API operations on
         your behalf
 
+        URL: ``DELETE reports/{id}/grants``
+
         Parameters
         ----------
         id : int
@@ -29703,6 +30674,8 @@ class _Reports:
     ) -> _ResponseReportsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET reports/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -29710,7 +30683,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -29750,6 +30723,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT reports/{id}/shares/users``
 
         Parameters
         ----------
@@ -29804,6 +30779,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE reports/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -29827,6 +30804,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT reports/{id}/shares/groups``
 
         Parameters
         ----------
@@ -29881,6 +30860,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE reports/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -29902,6 +30883,8 @@ class _Reports:
     ) -> _ResponseReportsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET reports/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -29911,7 +30894,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -29941,6 +30924,8 @@ class _Reports:
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT reports/{id}/transfer``
 
         Parameters
         ----------
@@ -29988,6 +30973,8 @@ class _Reports:
     ) -> _ResponseReportsListProjects:
         """List the projects a Report belongs to
 
+        URL: ``GET reports/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -29998,7 +30985,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -30044,6 +31031,8 @@ class _Reports:
     ) -> Response:
         """Add a Report to a project
 
+        URL: ``PUT reports/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -30065,6 +31054,8 @@ class _Reports:
     ) -> Response:
         """Remove a Report from a project
 
+        URL: ``DELETE reports/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -30085,6 +31076,8 @@ class _Reports:
         status: bool,
     ) -> _ResponseReportsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT reports/{id}/archive``
 
         Parameters
         ----------
@@ -30193,6 +31186,8 @@ class _Reports:
     ) -> _ResponseReportsGetServices:
         """Get a single service report
 
+        URL: ``GET reports/services/{id}``
+
         Parameters
         ----------
         id : int
@@ -30252,6 +31247,8 @@ class _Reports:
         provide_api_key: bool | None = ...,
     ) -> _ResponseReportsPatchServices:
         """Update some attributes of this service report
+
+        URL: ``PATCH reports/services/{id}``
 
         Parameters
         ----------
@@ -30316,6 +31313,8 @@ class _Reports:
     ) -> _ResponseReportsPostServices:
         """Create a service report
 
+        URL: ``POST reports/services``
+
         Parameters
         ----------
         service_id : int
@@ -30376,6 +31375,8 @@ class _Reports:
     ) -> _ResponseReportsListServicesShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET reports/services/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -30383,7 +31384,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -30423,6 +31424,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT reports/services/{id}/shares/users``
 
         Parameters
         ----------
@@ -30477,6 +31480,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE reports/services/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -30500,6 +31505,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT reports/services/{id}/shares/groups``
 
         Parameters
         ----------
@@ -30554,6 +31561,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE reports/services/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -30575,6 +31584,8 @@ class _Reports:
     ) -> _ResponseReportsListServicesDependencies:
         """List dependent objects for this object
 
+        URL: ``GET reports/services/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -30584,7 +31595,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -30614,6 +31625,8 @@ class _Reports:
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutServicesTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT reports/services/{id}/transfer``
 
         Parameters
         ----------
@@ -30661,6 +31674,8 @@ class _Reports:
     ) -> _ResponseReportsListServicesProjects:
         """List the projects a Service Report belongs to
 
+        URL: ``GET reports/services/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -30671,7 +31686,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -30717,6 +31732,8 @@ class _Reports:
     ) -> Response:
         """Add a Service Report to a project
 
+        URL: ``PUT reports/services/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -30738,6 +31755,8 @@ class _Reports:
     ) -> Response:
         """Remove a Service Report from a project
 
+        URL: ``DELETE reports/services/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -30758,6 +31777,8 @@ class _Reports:
         status: bool,
     ) -> _ResponseReportsPutServicesArchive:
         """Update the archive status of this object
+
+        URL: ``PUT reports/services/{id}/archive``
 
         Parameters
         ----------
@@ -30819,6 +31840,8 @@ class _Reports:
     ) -> _ResponseReportsPostRefresh:
         """Refresh the data in this Tableau report
 
+        URL: ``POST reports/{id}/refresh``
+
         Parameters
         ----------
         id : int
@@ -30850,6 +31873,8 @@ class _Reports:
         description: str | None = ...,
     ) -> _ResponseReportsPostSql:
         """Create a SQL report
+
+        URL: ``POST reports/sql``
 
         Parameters
         ----------
@@ -30938,6 +31963,8 @@ class _Reports:
     ) -> _ResponseReportsGetSql:
         """Get a single SQL report
 
+        URL: ``GET reports/sql/{id}``
+
         Parameters
         ----------
         id : int
@@ -31022,6 +32049,8 @@ class _Reports:
         description: str | None = ...,
     ) -> _ResponseReportsPatchSql:
         """Update a SQL report
+
+        URL: ``PATCH reports/sql/{id}``
 
         Parameters
         ----------
@@ -31112,6 +32141,8 @@ class _Reports:
     ) -> _ResponseReportsPostSqlRefresh:
         """Refresh the data in a SQL report
 
+        URL: ``POST reports/sql/{id}/refresh``
+
         Parameters
         ----------
         id : int
@@ -31193,6 +32224,8 @@ class _Reports:
     ) -> _ResponseReportsListSqlShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET reports/sql/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -31200,7 +32233,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -31240,6 +32273,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT reports/sql/{id}/shares/users``
 
         Parameters
         ----------
@@ -31294,6 +32329,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE reports/sql/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -31317,6 +32354,8 @@ class _Reports:
         send_shared_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT reports/sql/{id}/shares/groups``
 
         Parameters
         ----------
@@ -31371,6 +32410,8 @@ class _Reports:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE reports/sql/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -31392,6 +32433,8 @@ class _Reports:
     ) -> _ResponseReportsListSqlDependencies:
         """List dependent objects for this object
 
+        URL: ``GET reports/sql/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -31401,7 +32444,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -31431,6 +32474,8 @@ class _Reports:
         send_email: bool | None = ...,
     ) -> _ResponseReportsPutSqlTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT reports/sql/{id}/transfer``
 
         Parameters
         ----------
@@ -31478,6 +32523,8 @@ class _Reports:
     ) -> _ResponseReportsListSqlProjects:
         """List the projects a SQL Report belongs to
 
+        URL: ``GET reports/sql/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -31488,7 +32535,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -31534,6 +32581,8 @@ class _Reports:
     ) -> Response:
         """Add a SQL Report to a project
 
+        URL: ``PUT reports/sql/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -31555,6 +32604,8 @@ class _Reports:
     ) -> Response:
         """Remove a SQL Report from a project
 
+        URL: ``DELETE reports/sql/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -31575,6 +32626,8 @@ class _Reports:
         status: bool,
     ) -> _ResponseReportsPutSqlArchive:
         """Update the archive status of this object
+
+        URL: ``PUT reports/sql/{id}/archive``
 
         Parameters
         ----------
@@ -31664,6 +32717,8 @@ class _Roles:
     ) -> Iterator[_ResponseRolesList]:
         """List Roles
 
+        URL: ``GET roles``
+
         Parameters
         ----------
         limit : int, optional
@@ -31681,7 +32736,8 @@ class _Roles:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -31704,9 +32760,11 @@ class _Scripts:
     ) -> _ResponseScriptsListTypes:
         """List available script types
 
+        URL: ``GET scripts/types``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - name : str
                 The name of the type.
         """
@@ -31718,6 +32776,8 @@ class _Scripts:
     ) -> _ResponseScriptsListHistory:
         """Get the run history and outputs of this script
 
+        URL: ``GET scripts/{id}/history``
+
         Parameters
         ----------
         id : int
@@ -31725,7 +32785,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this run.
             - sql_id : int
@@ -31764,6 +32824,8 @@ class _Scripts:
         hidden: bool | None = ...,
     ) -> _ResponseScriptsPost:
         """Create a script (legacy)
+
+        URL: ``POST scripts``
 
         Parameters
         ----------
@@ -32018,6 +33080,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsList]:
         """List Scripts
 
+        URL: ``GET scripts``
+
         Parameters
         ----------
         type : str, optional
@@ -32053,7 +33117,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -32128,6 +33193,8 @@ class _Scripts:
     ) -> Response:
         """Run a SQL script (legacy)
 
+        URL: ``POST scripts/{id}/run``
+
         Parameters
         ----------
         id : int
@@ -32145,6 +33212,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostCancel:
         """Cancel a run
+
+        URL: ``POST scripts/{id}/cancel``
 
         Parameters
         ----------
@@ -32168,6 +33237,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsGet:
         """Get details about a SQL script (legacy)
+
+        URL: ``GET scripts/{id}``
 
         Parameters
         ----------
@@ -32372,6 +33443,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPostContainers:
         """Create a container
+
+        URL: ``POST scripts/containers``
 
         Parameters
         ----------
@@ -32721,6 +33794,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetContainers:
         """View a container
 
+        URL: ``GET scripts/containers/{id}``
+
         Parameters
         ----------
         id : int
@@ -32969,6 +34044,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutContainers:
         """Edit a container
+
+        URL: ``PUT scripts/containers/{id}``
 
         Parameters
         ----------
@@ -33339,6 +34416,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchContainers:
         """Update a container
 
+        URL: ``PATCH scripts/containers/{id}``
+
         Parameters
         ----------
         id : int
@@ -33692,6 +34771,8 @@ class _Scripts:
     ) -> Response:
         """Add log messages
 
+        URL: ``POST scripts/containers/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -33737,6 +34818,8 @@ class _Scripts:
     ) -> _ResponseScriptsListContainersRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/containers/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -33752,7 +34835,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -33784,6 +34867,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPostSql:
         """Create a SQL Script
+
+        URL: ``POST scripts/sql``
 
         Parameters
         ----------
@@ -34101,6 +35186,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetSql:
         """Get a SQL Script
 
+        URL: ``GET scripts/sql/{id}``
+
         Parameters
         ----------
         id : int
@@ -34323,6 +35410,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutSql:
         """Replace all attributes of this SQL Script
+
+        URL: ``PUT scripts/sql/{id}``
 
         Parameters
         ----------
@@ -34654,6 +35743,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPatchSql:
         """Update some attributes of this SQL Script
+
+        URL: ``PATCH scripts/sql/{id}``
 
         Parameters
         ----------
@@ -34988,6 +36079,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostPython3:
         """Create a Python Script
 
+        URL: ``POST scripts/python3``
+
         Parameters
         ----------
         name : str
@@ -35300,6 +36393,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetPython3:
         """Get a Python Script
 
+        URL: ``GET scripts/python3/{id}``
+
         Parameters
         ----------
         id : int
@@ -35520,6 +36615,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutPython3:
         """Replace all attributes of this Python Script
+
+        URL: ``PUT scripts/python3/{id}``
 
         Parameters
         ----------
@@ -35850,6 +36947,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchPython3:
         """Update some attributes of this Python Script
 
+        URL: ``PATCH scripts/python3/{id}``
+
         Parameters
         ----------
         id : int
@@ -36179,6 +37278,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostR:
         """Create an R Script
 
+        URL: ``POST scripts/r``
+
         Parameters
         ----------
         name : str
@@ -36491,6 +37592,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetR:
         """Get an R Script
 
+        URL: ``GET scripts/r/{id}``
+
         Parameters
         ----------
         id : int
@@ -36711,6 +37814,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutR:
         """Replace all attributes of this R Script
+
+        URL: ``PUT scripts/r/{id}``
 
         Parameters
         ----------
@@ -37040,6 +38145,8 @@ class _Scripts:
         source: str | None = ...,
     ) -> _ResponseScriptsPatchR:
         """Update some attributes of this R Script
+
+        URL: ``PATCH scripts/r/{id}``
 
         Parameters
         ----------
@@ -37372,6 +38479,8 @@ class _Scripts:
         target_database: dict | None = ...,
     ) -> _ResponseScriptsPostDbt:
         """Create a dbt Script
+
+        URL: ``POST scripts/dbt``
 
         Parameters
         ----------
@@ -37769,6 +38878,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetDbt:
         """Get a dbt Script
 
+        URL: ``GET scripts/dbt/{id}``
+
         Parameters
         ----------
         id : int
@@ -38034,6 +39145,8 @@ class _Scripts:
         target_database: dict | None = ...,
     ) -> _ResponseScriptsPutDbt:
         """Replace all attributes of this dbt Script
+
+        URL: ``PUT scripts/dbt/{id}``
 
         Parameters
         ----------
@@ -38451,6 +39564,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchDbt:
         """Update some attributes of this dbt Script
 
+        URL: ``PATCH scripts/dbt/{id}``
+
         Parameters
         ----------
         id : int
@@ -38861,6 +39976,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostJavascript:
         """Create a JavaScript Script
 
+        URL: ``POST scripts/javascript``
+
         Parameters
         ----------
         name : str
@@ -39133,6 +40250,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetJavascript:
         """Get a JavaScript Script
 
+        URL: ``GET scripts/javascript/{id}``
+
         Parameters
         ----------
         id : int
@@ -39330,6 +40449,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutJavascript:
         """Replace all attributes of this JavaScript Script
+
+        URL: ``PUT scripts/javascript/{id}``
 
         Parameters
         ----------
@@ -39617,6 +40738,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchJavascript:
         """Update some attributes of this JavaScript Script
 
+        URL: ``PATCH scripts/javascript/{id}``
+
         Parameters
         ----------
         id : int
@@ -39898,6 +41021,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListCustom]:
         """List Custom Scripts
 
+        URL: ``GET scripts/custom``
+
         Parameters
         ----------
         from_template_id : str, optional
@@ -39930,7 +41055,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -40021,6 +41147,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPostCustom:
         """Create a Custom Script
+
+        URL: ``POST scripts/custom``
 
         Parameters
         ----------
@@ -40308,6 +41436,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetCustom:
         """Get a Custom Script
 
+        URL: ``GET scripts/custom/{id}``
+
         Parameters
         ----------
         id : int
@@ -40534,6 +41664,8 @@ class _Scripts:
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutCustom:
         """Replace all attributes of this Custom Script
+
+        URL: ``PUT scripts/custom/{id}``
 
         Parameters
         ----------
@@ -40831,6 +41963,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchCustom:
         """Update some attributes of this Custom Script
 
+        URL: ``PATCH scripts/custom/{id}``
+
         Parameters
         ----------
         id : int
@@ -41115,6 +42249,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostSqlRuns:
         """Start a run
 
+        URL: ``POST scripts/sql/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -41167,6 +42303,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListSqlRuns]:
         """List runs for the given SQL job
 
+        URL: ``GET scripts/sql/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -41186,7 +42324,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -41231,6 +42370,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetSqlRuns:
         """Check status of a run
+
+        URL: ``GET scripts/sql/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41282,6 +42423,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/sql/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -41303,6 +42446,8 @@ class _Scripts:
         error: str | None = ...,
     ) -> Response:
         """Update the given run
+
+        URL: ``PATCH scripts/sql/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41329,6 +42474,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/sql/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -41344,7 +42491,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41361,6 +42508,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostContainersRuns:
         """Start a run
+
+        URL: ``POST scripts/containers/{id}/runs``
 
         Parameters
         ----------
@@ -41407,6 +42556,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListContainersRuns]:
         """List runs for the given Container job
 
+        URL: ``GET scripts/containers/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -41426,7 +42577,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -41464,6 +42616,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetContainersRuns:
         """Check status of a run
+
+        URL: ``GET scripts/containers/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41508,6 +42662,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/containers/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -41527,6 +42683,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostPython3Runs:
         """Start a run
+
+        URL: ``POST scripts/python3/{id}/runs``
 
         Parameters
         ----------
@@ -41573,6 +42731,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListPython3Runs]:
         """List runs for the given Python job
 
+        URL: ``GET scripts/python3/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -41592,7 +42752,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -41630,6 +42791,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetPython3Runs:
         """Check status of a run
+
+        URL: ``GET scripts/python3/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41674,6 +42837,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/python3/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -41695,6 +42860,8 @@ class _Scripts:
         error: str | None = ...,
     ) -> Response:
         """Update the given run
+
+        URL: ``PATCH scripts/python3/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41721,6 +42888,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3RunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/python3/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -41736,7 +42905,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41753,6 +42922,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostRRuns:
         """Start a run
+
+        URL: ``POST scripts/r/{id}/runs``
 
         Parameters
         ----------
@@ -41799,6 +42970,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListRRuns]:
         """List runs for the given R job
 
+        URL: ``GET scripts/r/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -41818,7 +42991,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -41856,6 +43030,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetRRuns:
         """Check status of a run
+
+        URL: ``GET scripts/r/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41900,6 +43076,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/r/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -41921,6 +43099,8 @@ class _Scripts:
         error: str | None = ...,
     ) -> Response:
         """Update the given run
+
+        URL: ``PATCH scripts/r/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -41947,6 +43127,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/r/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -41962,7 +43144,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -41979,6 +43161,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostDbtRuns:
         """Start a run
+
+        URL: ``POST scripts/dbt/{id}/runs``
 
         Parameters
         ----------
@@ -42025,6 +43209,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListDbtRuns]:
         """List runs for the given dbt job
 
+        URL: ``GET scripts/dbt/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -42044,7 +43230,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42082,6 +43269,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetDbtRuns:
         """Check status of a run
+
+        URL: ``GET scripts/dbt/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -42126,6 +43315,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/dbt/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -42147,6 +43338,8 @@ class _Scripts:
         error: str | None = ...,
     ) -> Response:
         """Update the given run
+
+        URL: ``PATCH scripts/dbt/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -42173,6 +43366,8 @@ class _Scripts:
     ) -> _ResponseScriptsListDbtRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/dbt/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -42188,7 +43383,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -42205,6 +43400,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostJavascriptRuns:
         """Start a run
+
+        URL: ``POST scripts/javascript/{id}/runs``
 
         Parameters
         ----------
@@ -42245,6 +43442,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListJavascriptRuns]:
         """List runs for the given Javascript job
 
+        URL: ``GET scripts/javascript/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -42264,7 +43463,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42296,6 +43496,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetJavascriptRuns:
         """Check status of a run
+
+        URL: ``GET scripts/javascript/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -42334,6 +43536,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/javascript/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -42355,6 +43559,8 @@ class _Scripts:
         error: str | None = ...,
     ) -> Response:
         """Update the given run
+
+        URL: ``PATCH scripts/javascript/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -42381,6 +43587,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/javascript/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -42396,7 +43604,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -42413,6 +43621,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostCustomRuns:
         """Start a run
+
+        URL: ``POST scripts/custom/{id}/runs``
 
         Parameters
         ----------
@@ -42461,6 +43671,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListCustomRuns]:
         """List runs for the given Custom job
 
+        URL: ``GET scripts/custom/{id}/runs``
+
         Parameters
         ----------
         id : int
@@ -42480,7 +43692,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42520,6 +43733,8 @@ class _Scripts:
         run_id: int,
     ) -> _ResponseScriptsGetCustomRuns:
         """Check status of a run
+
+        URL: ``GET scripts/custom/{id}/runs/{run_id}``
 
         Parameters
         ----------
@@ -42566,6 +43781,8 @@ class _Scripts:
     ) -> Response:
         """Cancel a run
 
+        URL: ``DELETE scripts/custom/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -42589,6 +43806,8 @@ class _Scripts:
     ) -> _ResponseScriptsListCustomRunsLogs:
         """Get the logs for a run
 
+        URL: ``GET scripts/custom/{id}/runs/{run_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -42604,7 +43823,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the log.
             - created_at : str (date-time)
@@ -42628,6 +43847,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListSqlRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/sql/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -42649,7 +43870,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42680,6 +43902,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListContainersRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/containers/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -42701,7 +43925,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42728,6 +43953,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostContainersRunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/containers/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -42769,6 +43996,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListPython3RunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/python3/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -42790,7 +44019,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42817,6 +44047,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostPython3RunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/python3/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -42858,6 +44090,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListRRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/r/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -42879,7 +44113,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42906,6 +44141,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostRRunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/r/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -42947,6 +44184,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListDbtRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/dbt/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -42968,7 +44207,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -42995,6 +44235,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostDbtRunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/dbt/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -43036,6 +44278,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListJavascriptRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/javascript/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -43057,7 +44301,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -43084,6 +44329,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostJavascriptRunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/javascript/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -43125,6 +44372,8 @@ class _Scripts:
     ) -> Iterator[_ResponseScriptsListCustomRunsOutputs]:
         """List the outputs for a run
 
+        URL: ``GET scripts/custom/{id}/runs/{run_id}/outputs``
+
         Parameters
         ----------
         id : int
@@ -43146,7 +44395,8 @@ class _Scripts:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -43173,6 +44423,8 @@ class _Scripts:
         object_id: int,
     ) -> _ResponseScriptsPostCustomRunsOutputs:
         """Add an output for a run
+
+        URL: ``POST scripts/custom/{id}/runs/{run_id}/outputs``
 
         Parameters
         ----------
@@ -43210,6 +44462,8 @@ class _Scripts:
     ) -> Response:
         """Update the given run
 
+        URL: ``PATCH scripts/container/{id}/runs/{run_id}``
+
         Parameters
         ----------
         id : int
@@ -43232,6 +44486,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET scripts/sql/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43239,7 +44495,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43273,6 +44529,8 @@ class _Scripts:
         pull_from_git: bool | None = ...,
     ) -> _ResponseScriptsPutSqlGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT scripts/sql/{id}/git``
 
         Parameters
         ----------
@@ -43330,6 +44588,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchSqlGit:
         """Update an attached git file
 
+        URL: ``PATCH scripts/sql/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43380,6 +44640,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET scripts/sql/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -43387,7 +44649,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43407,6 +44669,8 @@ class _Scripts:
         file_hash: str,
     ) -> _ResponseScriptsPostSqlGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST scripts/sql/{id}/git/commits``
 
         Parameters
         ----------
@@ -43440,6 +44704,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetSqlGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET scripts/sql/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -43467,6 +44733,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostSqlGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
+        URL: ``POST scripts/sql/{id}/git/checkout-latest``
+
         Parameters
         ----------
         id : int
@@ -43491,6 +44759,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostSqlGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
+
+        URL: ``POST scripts/sql/{id}/git/checkout``
 
         Parameters
         ----------
@@ -43517,6 +44787,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET scripts/javascript/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43524,7 +44796,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43558,6 +44830,8 @@ class _Scripts:
         pull_from_git: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT scripts/javascript/{id}/git``
 
         Parameters
         ----------
@@ -43615,6 +44889,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchJavascriptGit:
         """Update an attached git file
 
+        URL: ``PATCH scripts/javascript/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43665,6 +44941,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET scripts/javascript/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -43672,7 +44950,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43692,6 +44970,8 @@ class _Scripts:
         file_hash: str,
     ) -> _ResponseScriptsPostJavascriptGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST scripts/javascript/{id}/git/commits``
 
         Parameters
         ----------
@@ -43725,6 +45005,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetJavascriptGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET scripts/javascript/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -43752,6 +45034,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostJavascriptGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
+        URL: ``POST scripts/javascript/{id}/git/checkout-latest``
+
         Parameters
         ----------
         id : int
@@ -43776,6 +45060,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostJavascriptGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
+
+        URL: ``POST scripts/javascript/{id}/git/checkout``
 
         Parameters
         ----------
@@ -43802,6 +45088,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3Git:
         """Get the git metadata attached to an item
 
+        URL: ``GET scripts/python3/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43809,7 +45097,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -43843,6 +45131,8 @@ class _Scripts:
         pull_from_git: bool | None = ...,
     ) -> _ResponseScriptsPutPython3Git:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT scripts/python3/{id}/git``
 
         Parameters
         ----------
@@ -43900,6 +45190,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchPython3Git:
         """Update an attached git file
 
+        URL: ``PATCH scripts/python3/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -43950,6 +45242,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3GitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET scripts/python3/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -43957,7 +45251,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -43977,6 +45271,8 @@ class _Scripts:
         file_hash: str,
     ) -> _ResponseScriptsPostPython3GitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST scripts/python3/{id}/git/commits``
 
         Parameters
         ----------
@@ -44010,6 +45306,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetPython3GitCommits:
         """Get file contents at git ref
 
+        URL: ``GET scripts/python3/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -44037,6 +45335,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostPython3GitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
+        URL: ``POST scripts/python3/{id}/git/checkout-latest``
+
         Parameters
         ----------
         id : int
@@ -44061,6 +45361,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostPython3GitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
+
+        URL: ``POST scripts/python3/{id}/git/checkout``
 
         Parameters
         ----------
@@ -44087,6 +45389,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET scripts/r/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -44094,7 +45398,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -44128,6 +45432,8 @@ class _Scripts:
         pull_from_git: bool | None = ...,
     ) -> _ResponseScriptsPutRGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT scripts/r/{id}/git``
 
         Parameters
         ----------
@@ -44185,6 +45491,8 @@ class _Scripts:
     ) -> _ResponseScriptsPatchRGit:
         """Update an attached git file
 
+        URL: ``PATCH scripts/r/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -44235,6 +45543,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET scripts/r/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -44242,7 +45552,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -44262,6 +45572,8 @@ class _Scripts:
         file_hash: str,
     ) -> _ResponseScriptsPostRGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST scripts/r/{id}/git/commits``
 
         Parameters
         ----------
@@ -44295,6 +45607,8 @@ class _Scripts:
     ) -> _ResponseScriptsGetRGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET scripts/r/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -44322,6 +45636,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostRGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
+        URL: ``POST scripts/r/{id}/git/checkout-latest``
+
         Parameters
         ----------
         id : int
@@ -44346,6 +45662,8 @@ class _Scripts:
         id: int,
     ) -> _ResponseScriptsPostRGitCheckout:
         """Checkout content that the existing git_ref points to and save to the object
+
+        URL: ``POST scripts/r/{id}/git/checkout``
 
         Parameters
         ----------
@@ -44372,6 +45690,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/sql/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -44379,7 +45699,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -44419,6 +45739,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/sql/{id}/shares/users``
 
         Parameters
         ----------
@@ -44473,6 +45795,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/sql/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -44496,6 +45820,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/sql/{id}/shares/groups``
 
         Parameters
         ----------
@@ -44550,6 +45876,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/sql/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -44571,6 +45899,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/sql/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -44580,7 +45910,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -44610,6 +45940,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutSqlTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/sql/{id}/transfer``
 
         Parameters
         ----------
@@ -44657,6 +45989,8 @@ class _Scripts:
     ) -> _ResponseScriptsListSqlProjects:
         """List the projects a SQL Script belongs to
 
+        URL: ``GET scripts/sql/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -44667,7 +46001,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -44713,6 +46047,8 @@ class _Scripts:
     ) -> Response:
         """Add a SQL Script to a project
 
+        URL: ``PUT scripts/sql/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -44734,6 +46070,8 @@ class _Scripts:
     ) -> Response:
         """Remove a SQL Script from a project
 
+        URL: ``DELETE scripts/sql/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -44754,6 +46092,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutSqlArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/sql/{id}/archive``
 
         Parameters
         ----------
@@ -44966,6 +46306,8 @@ class _Scripts:
     ) -> _ResponseScriptsListContainersShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/containers/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -44973,7 +46315,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -45013,6 +46355,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/containers/{id}/shares/users``
 
         Parameters
         ----------
@@ -45067,6 +46411,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/containers/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -45090,6 +46436,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/containers/{id}/shares/groups``
 
         Parameters
         ----------
@@ -45144,6 +46492,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/containers/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -45165,6 +46515,8 @@ class _Scripts:
     ) -> _ResponseScriptsListContainersDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/containers/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -45174,7 +46526,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -45204,6 +46556,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutContainersTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/containers/{id}/transfer``
 
         Parameters
         ----------
@@ -45251,6 +46605,8 @@ class _Scripts:
     ) -> _ResponseScriptsListContainersProjects:
         """List the projects a Container Script belongs to
 
+        URL: ``GET scripts/containers/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -45261,7 +46617,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -45307,6 +46663,8 @@ class _Scripts:
     ) -> Response:
         """Add a Container Script to a project
 
+        URL: ``PUT scripts/containers/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -45328,6 +46686,8 @@ class _Scripts:
     ) -> Response:
         """Remove a Container Script from a project
 
+        URL: ``DELETE scripts/containers/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -45348,6 +46708,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutContainersArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/containers/{id}/archive``
 
         Parameters
         ----------
@@ -45579,6 +46941,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3Shares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/python3/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -45586,7 +46950,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -45626,6 +46990,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3SharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/python3/{id}/shares/users``
 
         Parameters
         ----------
@@ -45680,6 +47046,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/python3/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -45703,6 +47071,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3SharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/python3/{id}/shares/groups``
 
         Parameters
         ----------
@@ -45757,6 +47127,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/python3/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -45778,6 +47150,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3Dependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/python3/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -45787,7 +47161,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -45817,6 +47191,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutPython3Transfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/python3/{id}/transfer``
 
         Parameters
         ----------
@@ -45864,6 +47240,8 @@ class _Scripts:
     ) -> _ResponseScriptsListPython3Projects:
         """List the projects a Python Script belongs to
 
+        URL: ``GET scripts/python3/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -45874,7 +47252,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -45920,6 +47298,8 @@ class _Scripts:
     ) -> Response:
         """Add a Python Script to a project
 
+        URL: ``PUT scripts/python3/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -45941,6 +47321,8 @@ class _Scripts:
     ) -> Response:
         """Remove a Python Script from a project
 
+        URL: ``DELETE scripts/python3/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -45961,6 +47343,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutPython3Archive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/python3/{id}/archive``
 
         Parameters
         ----------
@@ -46169,6 +47553,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/r/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -46176,7 +47562,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -46216,6 +47602,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutRSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/r/{id}/shares/users``
 
         Parameters
         ----------
@@ -46270,6 +47658,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/r/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -46293,6 +47683,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutRSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/r/{id}/shares/groups``
 
         Parameters
         ----------
@@ -46347,6 +47739,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/r/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -46368,6 +47762,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/r/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -46377,7 +47773,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -46407,6 +47803,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutRTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/r/{id}/transfer``
 
         Parameters
         ----------
@@ -46454,6 +47852,8 @@ class _Scripts:
     ) -> _ResponseScriptsListRProjects:
         """List the projects an R Script belongs to
 
+        URL: ``GET scripts/r/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -46464,7 +47864,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -46510,6 +47910,8 @@ class _Scripts:
     ) -> Response:
         """Add an R Script to a project
 
+        URL: ``PUT scripts/r/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -46531,6 +47933,8 @@ class _Scripts:
     ) -> Response:
         """Remove an R Script from a project
 
+        URL: ``DELETE scripts/r/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -46551,6 +47955,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutRArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/r/{id}/archive``
 
         Parameters
         ----------
@@ -46759,6 +48165,8 @@ class _Scripts:
     ) -> _ResponseScriptsListDbtShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/dbt/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -46766,7 +48174,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -46806,6 +48214,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/dbt/{id}/shares/users``
 
         Parameters
         ----------
@@ -46860,6 +48270,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/dbt/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -46883,6 +48295,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/dbt/{id}/shares/groups``
 
         Parameters
         ----------
@@ -46937,6 +48351,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/dbt/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -46958,6 +48374,8 @@ class _Scripts:
     ) -> _ResponseScriptsListDbtDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/dbt/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -46967,7 +48385,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -46997,6 +48415,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutDbtTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/dbt/{id}/transfer``
 
         Parameters
         ----------
@@ -47044,6 +48464,8 @@ class _Scripts:
     ) -> _ResponseScriptsListDbtProjects:
         """List the projects a dbt Script belongs to
 
+        URL: ``GET scripts/dbt/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -47054,7 +48476,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -47100,6 +48522,8 @@ class _Scripts:
     ) -> Response:
         """Add a dbt Script to a project
 
+        URL: ``PUT scripts/dbt/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -47121,6 +48545,8 @@ class _Scripts:
     ) -> Response:
         """Remove a dbt Script from a project
 
+        URL: ``DELETE scripts/dbt/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -47141,6 +48567,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutDbtArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/dbt/{id}/archive``
 
         Parameters
         ----------
@@ -47391,6 +48819,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/javascript/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -47398,7 +48828,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -47438,6 +48868,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/javascript/{id}/shares/users``
 
         Parameters
         ----------
@@ -47492,6 +48924,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/javascript/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -47515,6 +48949,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/javascript/{id}/shares/groups``
 
         Parameters
         ----------
@@ -47569,6 +49005,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/javascript/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -47590,6 +49028,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/javascript/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -47599,7 +49039,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -47629,6 +49069,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutJavascriptTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/javascript/{id}/transfer``
 
         Parameters
         ----------
@@ -47676,6 +49118,8 @@ class _Scripts:
     ) -> _ResponseScriptsListJavascriptProjects:
         """List the projects a JavaScript Script belongs to
 
+        URL: ``GET scripts/javascript/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -47686,7 +49130,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -47732,6 +49176,8 @@ class _Scripts:
     ) -> Response:
         """Add a JavaScript Script to a project
 
+        URL: ``PUT scripts/javascript/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -47753,6 +49199,8 @@ class _Scripts:
     ) -> Response:
         """Remove a JavaScript Script from a project
 
+        URL: ``DELETE scripts/javascript/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -47773,6 +49221,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutJavascriptArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/javascript/{id}/archive``
 
         Parameters
         ----------
@@ -47961,6 +49411,8 @@ class _Scripts:
     ) -> _ResponseScriptsListCustomShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET scripts/custom/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -47968,7 +49420,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -48008,6 +49460,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT scripts/custom/{id}/shares/users``
 
         Parameters
         ----------
@@ -48062,6 +49516,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE scripts/custom/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -48085,6 +49541,8 @@ class _Scripts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT scripts/custom/{id}/shares/groups``
 
         Parameters
         ----------
@@ -48139,6 +49597,8 @@ class _Scripts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE scripts/custom/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -48160,6 +49620,8 @@ class _Scripts:
     ) -> _ResponseScriptsListCustomDependencies:
         """List dependent objects for this object
 
+        URL: ``GET scripts/custom/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -48169,7 +49631,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -48199,6 +49661,8 @@ class _Scripts:
         send_email: bool | None = ...,
     ) -> _ResponseScriptsPutCustomTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT scripts/custom/{id}/transfer``
 
         Parameters
         ----------
@@ -48246,6 +49710,8 @@ class _Scripts:
     ) -> _ResponseScriptsListCustomProjects:
         """List the projects a Custom Script belongs to
 
+        URL: ``GET scripts/custom/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -48256,7 +49722,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -48302,6 +49768,8 @@ class _Scripts:
     ) -> Response:
         """Add a Custom Script to a project
 
+        URL: ``PUT scripts/custom/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -48323,6 +49791,8 @@ class _Scripts:
     ) -> Response:
         """Remove a Custom Script from a project
 
+        URL: ``DELETE scripts/custom/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -48343,6 +49813,8 @@ class _Scripts:
         status: bool,
     ) -> _ResponseScriptsPutCustomArchive:
         """Update the archive status of this object
+
+        URL: ``PUT scripts/custom/{id}/archive``
 
         Parameters
         ----------
@@ -48565,6 +50037,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostSqlClone:
         """Clone this SQL Script
 
+        URL: ``POST scripts/sql/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -48783,6 +50257,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostJavascriptClone:
         """Clone this JavaScript Script
 
+        URL: ``POST scripts/javascript/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -48976,6 +50452,8 @@ class _Scripts:
         clone_notifications: bool | None = ...,
     ) -> _ResponseScriptsPostPython3Clone:
         """Clone this Python Script
+
+        URL: ``POST scripts/python3/{id}/clone``
 
         Parameters
         ----------
@@ -49191,6 +50669,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostRClone:
         """Clone this R Script
 
+        URL: ``POST scripts/r/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -49404,6 +50884,8 @@ class _Scripts:
         clone_notifications: bool | None = ...,
     ) -> _ResponseScriptsPostContainersClone:
         """Clone this Container Script
+
+        URL: ``POST scripts/containers/{id}/clone``
 
         Parameters
         ----------
@@ -49641,6 +51123,8 @@ class _Scripts:
         clone_notifications: bool | None = ...,
     ) -> _ResponseScriptsPostDbtClone:
         """Clone this dbt Script
+
+        URL: ``POST scripts/dbt/{id}/clone``
 
         Parameters
         ----------
@@ -49898,6 +51382,8 @@ class _Scripts:
     ) -> _ResponseScriptsPostCustomClone:
         """Clone this Custom Script
 
+        URL: ``POST scripts/custom/{id}/clone``
+
         Parameters
         ----------
         id : int
@@ -50128,6 +51614,8 @@ class _Search:
     ) -> _ResponseSearchList:
         """Perform a search
 
+        URL: ``GET search``
+
         Parameters
         ----------
         query : str, optional
@@ -50198,9 +51686,11 @@ class _Search:
     ) -> _ResponseSearchListTypes:
         """List available search types
 
+        URL: ``GET search/types``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - type : str
                 The name of the item type.
         """
@@ -50223,6 +51713,8 @@ class _Search:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseSearchListQueries]:
         """Search queries that are not hidden
+
+        URL: ``GET search/queries``
 
         Parameters
         ----------
@@ -50260,7 +51752,8 @@ class _Search:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -50309,6 +51802,8 @@ class _Services:
     ) -> Iterator[_ResponseServicesList]:
         """List Services
 
+        URL: ``GET services``
+
         Parameters
         ----------
         hidden : bool, optional
@@ -50337,7 +51832,8 @@ class _Services:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -50434,6 +51930,8 @@ class _Services:
         hidden: bool | None = ...,
     ) -> _ResponseServicesPost:
         """Create a Service
+
+        URL: ``POST services``
 
         Parameters
         ----------
@@ -50629,6 +52127,8 @@ class _Services:
     ) -> _ResponseServicesGet:
         """Get a Service
 
+        URL: ``GET services/{id}``
+
         Parameters
         ----------
         id : int
@@ -50782,6 +52282,8 @@ class _Services:
         partition_label: str | None = ...,
     ) -> _ResponseServicesPut:
         """Replace all attributes of this Service
+
+        URL: ``PUT services/{id}``
 
         Parameters
         ----------
@@ -50993,6 +52495,8 @@ class _Services:
     ) -> _ResponseServicesPatch:
         """Update some attributes of this Service
 
+        URL: ``PATCH services/{id}``
+
         Parameters
         ----------
         id : int
@@ -51185,6 +52689,8 @@ class _Services:
     ) -> _ResponseServicesListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET services/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -51192,7 +52698,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -51232,6 +52738,8 @@ class _Services:
         send_shared_email: bool | None = ...,
     ) -> _ResponseServicesPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT services/{id}/shares/users``
 
         Parameters
         ----------
@@ -51286,6 +52794,8 @@ class _Services:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE services/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -51309,6 +52819,8 @@ class _Services:
         send_shared_email: bool | None = ...,
     ) -> _ResponseServicesPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT services/{id}/shares/groups``
 
         Parameters
         ----------
@@ -51363,6 +52875,8 @@ class _Services:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE services/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -51384,6 +52898,8 @@ class _Services:
     ) -> _ResponseServicesListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET services/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -51393,7 +52909,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -51423,6 +52939,8 @@ class _Services:
         send_email: bool | None = ...,
     ) -> _ResponseServicesPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT services/{id}/transfer``
 
         Parameters
         ----------
@@ -51469,6 +52987,8 @@ class _Services:
         status: bool,
     ) -> _ResponseServicesPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT services/{id}/archive``
 
         Parameters
         ----------
@@ -51610,6 +53130,8 @@ class _Services:
     ) -> _ResponseServicesListProjects:
         """List the projects a Service belongs to
 
+        URL: ``GET services/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -51620,7 +53142,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -51666,6 +53188,8 @@ class _Services:
     ) -> Response:
         """Add a Service to a project
 
+        URL: ``PUT services/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -51686,6 +53210,8 @@ class _Services:
         project_id: int,
     ) -> Response:
         """Remove a Service from a project
+
+        URL: ``DELETE services/{id}/projects/{project_id}``
 
         Parameters
         ----------
@@ -51713,6 +53239,8 @@ class _Services:
     ) -> Iterator[_ResponseServicesListDeployments]:
         """List deployments for a Service
 
+        URL: ``GET services/{service_id}/deployments``
+
         Parameters
         ----------
         service_id : int
@@ -51734,7 +53262,8 @@ class _Services:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -51781,6 +53310,8 @@ class _Services:
         deployment_id: int | None = ...,
     ) -> _ResponseServicesPostDeployments:
         """Deploy a Service
+
+        URL: ``POST services/{service_id}/deployments``
 
         Parameters
         ----------
@@ -51836,6 +53367,8 @@ class _Services:
     ) -> _ResponseServicesGetDeployments:
         """Get details about a Service deployment
 
+        URL: ``GET services/{service_id}/deployments/{deployment_id}``
+
         Parameters
         ----------
         service_id : int
@@ -51890,6 +53423,8 @@ class _Services:
     ) -> Response:
         """Delete a Service deployment
 
+        URL: ``DELETE services/{service_id}/deployments/{deployment_id}``
+
         Parameters
         ----------
         service_id : int
@@ -51910,6 +53445,8 @@ class _Services:
         deployment_id: int | None = ...,
     ) -> _ResponseServicesPostRedeploy:
         """Redeploy a Service
+
+        URL: ``POST services/{service_id}/redeploy``
 
         Parameters
         ----------
@@ -51968,6 +53505,8 @@ class _Services:
     ) -> _ResponseServicesListDeploymentsLogs:
         """Get the logs for a Service deployment
 
+        URL: ``GET services/{id}/deployments/{deployment_id}/logs``
+
         Parameters
         ----------
         id : int
@@ -51983,7 +53522,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - message : str
                 The log message.
             - stream : str
@@ -52000,6 +53539,8 @@ class _Services:
         id: int,
     ) -> _ResponseServicesPostClone:
         """Clone this Service
+
+        URL: ``POST services/{id}/clone``
 
         Parameters
         ----------
@@ -52140,6 +53681,8 @@ class _Services:
     ) -> _ResponseServicesPostTokens:
         """Create a new long-lived service token
 
+        URL: ``POST services/{id}/tokens``
+
         Parameters
         ----------
         id : int
@@ -52186,6 +53729,8 @@ class _Services:
     ) -> _ResponseServicesListTokens:
         """List tokens
 
+        URL: ``GET services/{id}/tokens``
+
         Parameters
         ----------
         id : int
@@ -52193,7 +53738,7 @@ class _Services:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the token.
             - name : str
@@ -52225,6 +53770,8 @@ class _Services:
     ) -> Response:
         """Revoke a token by id
 
+        URL: ``DELETE services/{id}/tokens/{token_id}``
+
         Parameters
         ----------
         id : int
@@ -52244,6 +53791,8 @@ class _Storage_Hosts:
         self,
     ) -> _ResponseStorageHostsList:
         """List the storage hosts
+
+        URL: ``GET storage_hosts``
 
         Returns
         -------
@@ -52281,6 +53830,8 @@ class _Storage_Hosts:
         s3_options: dict | None = ...,
     ) -> _ResponseStorageHostsPost:
         """Create a new storage host
+
+        URL: ``POST storage_hosts``
 
         Parameters
         ----------
@@ -52328,6 +53879,8 @@ class _Storage_Hosts:
     ) -> _ResponseStorageHostsGet:
         """Get a storage host
 
+        URL: ``GET storage_hosts/{id}``
+
         Parameters
         ----------
         id : int
@@ -52370,6 +53923,8 @@ class _Storage_Hosts:
         s3_options: dict | None = ...,
     ) -> _ResponseStorageHostsPut:
         """Replace all attributes of this storage host
+
+        URL: ``PUT storage_hosts/{id}``
 
         Parameters
         ----------
@@ -52423,6 +53978,8 @@ class _Storage_Hosts:
     ) -> _ResponseStorageHostsPatch:
         """Update some attributes of this storage host
 
+        URL: ``PATCH storage_hosts/{id}``
+
         Parameters
         ----------
         id : int
@@ -52471,6 +54028,8 @@ class _Storage_Hosts:
     ) -> _ResponseStorageHostsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET storage_hosts/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -52478,7 +54037,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -52518,6 +54077,8 @@ class _Storage_Hosts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT storage_hosts/{id}/shares/users``
 
         Parameters
         ----------
@@ -52572,6 +54133,8 @@ class _Storage_Hosts:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE storage_hosts/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -52595,6 +54158,8 @@ class _Storage_Hosts:
         send_shared_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT storage_hosts/{id}/shares/groups``
 
         Parameters
         ----------
@@ -52649,6 +54214,8 @@ class _Storage_Hosts:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE storage_hosts/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -52670,6 +54237,8 @@ class _Storage_Hosts:
     ) -> _ResponseStorageHostsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET storage_hosts/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -52679,7 +54248,7 @@ class _Storage_Hosts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -52709,6 +54278,8 @@ class _Storage_Hosts:
         send_email: bool | None = ...,
     ) -> _ResponseStorageHostsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT storage_hosts/{id}/transfer``
 
         Parameters
         ----------
@@ -52761,6 +54332,8 @@ class _Table_Tags:
     ) -> Iterator[_ResponseTableTagsList]:
         """List Table Tags
 
+        URL: ``GET table_tags``
+
         Parameters
         ----------
         name : str, optional
@@ -52780,7 +54353,8 @@ class _Table_Tags:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -52811,6 +54385,8 @@ class _Table_Tags:
         name: str,
     ) -> _ResponseTableTagsPost:
         """Create a Table Tag
+
+        URL: ``POST table_tags``
 
         Parameters
         ----------
@@ -52850,6 +54426,8 @@ class _Table_Tags:
     ) -> _ResponseTableTagsGet:
         """Get a Table Tag
 
+        URL: ``GET table_tags/{id}``
+
         Parameters
         ----------
         id : int
@@ -52887,6 +54465,8 @@ class _Table_Tags:
     ) -> Response:
         """Delete a Table Tag
 
+        URL: ``DELETE table_tags/{id}``
+
         Parameters
         ----------
         id : int
@@ -52908,6 +54488,8 @@ class _Tables:
             Warning: The tables/:source_table_id/enhancements/geocodings endpoint is deprecated and will be removed after January 1, 2021.
 
         Geocode a table
+
+        URL: ``POST tables/{source_table_id}/enhancements/geocodings``
 
         Parameters
         ----------
@@ -52944,6 +54526,8 @@ class _Tables:
             Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is deprecated and will be removed after January 1, 2021.
 
         Standardize addresses in a table
+
+        URL: ``POST tables/{source_table_id}/enhancements/cass-ncoa``
 
         Parameters
         ----------
@@ -53005,6 +54589,8 @@ class _Tables:
 
         View the status of a geocoding table enhancement
 
+        URL: ``GET tables/{source_table_id}/enhancements/geocodings/{id}``
+
         Parameters
         ----------
         id : int
@@ -53039,6 +54625,8 @@ class _Tables:
             Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is deprecated and will be removed after January 1, 2021.
 
         View the status of a CASS / NCOA table enhancement
+
+        URL: ``GET tables/{source_table_id}/enhancements/cass-ncoa/{id}``
 
         Parameters
         ----------
@@ -53087,6 +54675,8 @@ class _Tables:
     ) -> _ResponseTablesPostScan:
         """Creates and enqueues a single table scanner job on a new table
 
+        URL: ``POST tables/scan``
+
         Parameters
         ----------
         database_id : int
@@ -53121,6 +54711,8 @@ class _Tables:
             Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan from now on.
 
         Request a refresh for column and table statistics
+
+        URL: ``POST tables/{id}/refresh``
 
         Parameters
         ----------
@@ -53328,6 +54920,8 @@ class _Tables:
     ) -> Iterator[_ResponseTablesList]:
         """List tables
 
+        URL: ``GET tables``
+
         Parameters
         ----------
         database_id : int, optional
@@ -53366,7 +54960,8 @@ class _Tables:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -53431,6 +55026,8 @@ class _Tables:
         id: int,
     ) -> _ResponseTablesGet:
         """Show basic table info
+
+        URL: ``GET tables/{id}``
 
         Parameters
         ----------
@@ -53632,6 +55229,8 @@ class _Tables:
     ) -> _ResponseTablesPatch:
         """Update a table
 
+        URL: ``PATCH tables/{id}``
+
         Parameters
         ----------
         id : int
@@ -53731,6 +55330,8 @@ class _Tables:
     ) -> Iterator[_ResponseTablesListColumns]:
         """List columns in the specified table
 
+        URL: ``GET tables/{id}/columns``
+
         Parameters
         ----------
         id : int
@@ -53751,7 +55352,8 @@ class _Tables:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -53814,6 +55416,8 @@ class _Tables:
     ) -> _ResponseTablesPutTags:
         """Add a tag to a table
 
+        URL: ``PUT tables/{id}/tags/{table_tag_id}``
+
         Parameters
         ----------
         id : int
@@ -53838,6 +55442,8 @@ class _Tables:
     ) -> Response:
         """Add a tag to a table
 
+        URL: ``DELETE tables/{id}/tags/{table_tag_id}``
+
         Parameters
         ----------
         id : int
@@ -53859,6 +55465,8 @@ class _Tables:
     ) -> _ResponseTablesListProjects:
         """List the projects a Table belongs to
 
+        URL: ``GET tables/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -53869,7 +55477,7 @@ class _Tables:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -53915,6 +55523,8 @@ class _Tables:
     ) -> Response:
         """Add a Table to a project
 
+        URL: ``PUT tables/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -53935,6 +55545,8 @@ class _Tables:
         project_id: int,
     ) -> Response:
         """Remove a Table from a project
+
+        URL: ``DELETE tables/{id}/projects/{project_id}``
 
         Parameters
         ----------
@@ -53957,6 +55569,8 @@ class _Templates:
     ) -> _ResponseTemplatesListReportsShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET templates/reports/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -53964,7 +55578,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -54004,6 +55618,8 @@ class _Templates:
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT templates/reports/{id}/shares/users``
 
         Parameters
         ----------
@@ -54058,6 +55674,8 @@ class _Templates:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE templates/reports/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -54081,6 +55699,8 @@ class _Templates:
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT templates/reports/{id}/shares/groups``
 
         Parameters
         ----------
@@ -54135,6 +55755,8 @@ class _Templates:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE templates/reports/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -54156,6 +55778,8 @@ class _Templates:
     ) -> _ResponseTemplatesListReportsDependencies:
         """List dependent objects for this object
 
+        URL: ``GET templates/reports/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -54165,7 +55789,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -54195,6 +55819,8 @@ class _Templates:
         send_email: bool | None = ...,
     ) -> _ResponseTemplatesPutReportsTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT templates/reports/{id}/transfer``
 
         Parameters
         ----------
@@ -54248,6 +55874,8 @@ class _Templates:
     ) -> Iterator[_ResponseTemplatesListReports]:
         """List Report Templates
 
+        URL: ``GET templates/reports``
+
         Parameters
         ----------
         hidden : bool, optional
@@ -54273,7 +55901,8 @@ class _Templates:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -54318,6 +55947,8 @@ class _Templates:
         hidden: bool | None = ...,
     ) -> _ResponseTemplatesPostReports:
         """Create a Report Template
+
+        URL: ``POST templates/reports``
 
         Parameters
         ----------
@@ -54381,6 +56012,8 @@ class _Templates:
     ) -> _ResponseTemplatesGetReports:
         """Get a Report Template
 
+        URL: ``GET templates/reports/{id}``
+
         Parameters
         ----------
         id : int
@@ -54434,6 +56067,8 @@ class _Templates:
         provide_api_key: bool | None = ...,
     ) -> _ResponseTemplatesPutReports:
         """Replace all attributes of this Report Template
+
+        URL: ``PUT templates/reports/{id}``
 
         Parameters
         ----------
@@ -54501,6 +56136,8 @@ class _Templates:
     ) -> _ResponseTemplatesPatchReports:
         """Update some attributes of this Report Template
 
+        URL: ``PATCH templates/reports/{id}``
+
         Parameters
         ----------
         id : int
@@ -54562,6 +56199,8 @@ class _Templates:
     ) -> _ResponseTemplatesListScriptsShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET templates/scripts/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -54569,7 +56208,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -54609,6 +56248,8 @@ class _Templates:
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT templates/scripts/{id}/shares/users``
 
         Parameters
         ----------
@@ -54663,6 +56304,8 @@ class _Templates:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE templates/scripts/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -54686,6 +56329,8 @@ class _Templates:
         send_shared_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT templates/scripts/{id}/shares/groups``
 
         Parameters
         ----------
@@ -54740,6 +56385,8 @@ class _Templates:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE templates/scripts/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -54761,6 +56408,8 @@ class _Templates:
     ) -> _ResponseTemplatesListScriptsDependencies:
         """List dependent objects for this object
 
+        URL: ``GET templates/scripts/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -54770,7 +56419,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -54800,6 +56449,8 @@ class _Templates:
         send_email: bool | None = ...,
     ) -> _ResponseTemplatesPutScriptsTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT templates/scripts/{id}/transfer``
 
         Parameters
         ----------
@@ -54847,6 +56498,8 @@ class _Templates:
     ) -> _ResponseTemplatesListScriptsProjects:
         """List the projects a Script Template belongs to
 
+        URL: ``GET templates/scripts/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -54857,7 +56510,7 @@ class _Templates:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -54903,6 +56556,8 @@ class _Templates:
     ) -> Response:
         """Add a Script Template to a project
 
+        URL: ``PUT templates/scripts/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -54923,6 +56578,8 @@ class _Templates:
         project_id: int,
     ) -> Response:
         """Remove a Script Template from a project
+
+        URL: ``DELETE templates/scripts/{id}/projects/{project_id}``
 
         Parameters
         ----------
@@ -54951,6 +56608,8 @@ class _Templates:
     ) -> Iterator[_ResponseTemplatesListScripts]:
         """List Script Templates
 
+        URL: ``GET templates/scripts``
+
         Parameters
         ----------
         hidden : bool, optional
@@ -54977,7 +56636,8 @@ class _Templates:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -55029,6 +56689,8 @@ class _Templates:
         hidden: bool | None = ...,
     ) -> _ResponseTemplatesPostScripts:
         """Create a Script Template
+
+        URL: ``POST templates/scripts``
 
         Parameters
         ----------
@@ -55131,6 +56793,8 @@ class _Templates:
     ) -> _ResponseTemplatesGetScripts:
         """Get a Script Template
 
+        URL: ``GET templates/scripts/{id}``
+
         Parameters
         ----------
         id : int
@@ -55223,6 +56887,8 @@ class _Templates:
         archived: bool | None = ...,
     ) -> _ResponseTemplatesPutScripts:
         """Replace all attributes of this Script Template
+
+        URL: ``PUT templates/scripts/{id}``
 
         Parameters
         ----------
@@ -55326,6 +56992,8 @@ class _Templates:
     ) -> _ResponseTemplatesPatchScripts:
         """Update some attributes of this Script Template
 
+        URL: ``PATCH templates/scripts/{id}``
+
         Parameters
         ----------
         id : int
@@ -55428,6 +57096,8 @@ class _Usage:
     ) -> _ResponseUsageListMatching:
         """Get usage statistics for a given organization
 
+        URL: ``GET usage/matching``
+
         Parameters
         ----------
         org_id : int, optional
@@ -55441,7 +57111,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - run_id : int
                 The ID of the run which contributed this usage.
             - job_id : int
@@ -55470,6 +57140,8 @@ class _Usage:
     ) -> _ResponseUsageListLlm:
         """Get a list of usage statistics for a given organization
 
+        URL: ``GET usage/llm``
+
         Parameters
         ----------
         org_id : int, optional
@@ -55485,7 +57157,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the usage statistic to get.
             - run_id : int
@@ -55516,6 +57188,8 @@ class _Usage:
         id: int,
     ) -> _ResponseUsageGetLlm:
         """Get an individual usage statistic for a given organization
+
+        URL: ``GET usage/llm/{id}``
 
         Parameters
         ----------
@@ -55558,6 +57232,8 @@ class _Usage:
     ) -> _ResponseUsageListLlmOrganizationSummary:
         """Get summarized usage statistics for a given organization
 
+        URL: ``GET usage/llm/organization/{org_id}/summary``
+
         Parameters
         ----------
         org_id : int
@@ -55573,7 +57249,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - credits : float (float)
                 The number of credits used.
             - organization_id : int
@@ -55588,6 +57264,8 @@ class _Usage_Limits:
     ) -> _ResponseUsageLimitsListMatching:
         """List Matching Usage Limits
 
+        URL: ``GET usage_limits/matching``
+
         Parameters
         ----------
         task : str, optional
@@ -55595,7 +57273,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55619,6 +57297,8 @@ class _Usage_Limits:
         id: int,
     ) -> _ResponseUsageLimitsGetMatching:
         """Get a Matching Usage Limit
+
+        URL: ``GET usage_limits/matching/{id}``
 
         Parameters
         ----------
@@ -55652,6 +57332,8 @@ class _Usage_Limits:
     ) -> _ResponseUsageLimitsListLlm:
         """List LLM Usage Limits
 
+        URL: ``GET usage_limits/llm``
+
         Parameters
         ----------
         organization_id : int, optional
@@ -55659,7 +57341,7 @@ class _Usage_Limits:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for the limit.
             - organization_id : int
@@ -55678,6 +57360,8 @@ class _Usage_Limits:
         id: int,
     ) -> _ResponseUsageLimitsGetLlm:
         """Get a LLM Usage Limit
+
+        URL: ``GET usage_limits/llm/{id}``
 
         Parameters
         ----------
@@ -55718,6 +57402,8 @@ class _Users:
     ) -> Iterator[_ResponseUsersList]:
         """List users
 
+        URL: ``GET users``
+
         Parameters
         ----------
         feature_flag : str, optional
@@ -55752,7 +57438,8 @@ class _Users:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -55823,6 +57510,8 @@ class _Users:
         send_email: bool | None = ...,
     ) -> _ResponseUsersPost:
         """Create a new user (must be a team or org admin)
+
+        URL: ``POST users``
 
         Parameters
         ----------
@@ -55962,9 +57651,11 @@ class _Users:
     ) -> _ResponseUsersListMe:
         """Show info about the logged-in user
 
+        URL: ``GET users/me``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this user.
             - name : str
@@ -56036,6 +57727,8 @@ class _Users:
         last_checked_announcements: str | None = ...,
     ) -> _ResponseUsersPatchMe:
         """Update info about the logged-in user
+
+        URL: ``PATCH users/me``
 
         Parameters
         ----------
@@ -56277,6 +57970,8 @@ class _Users:
     ) -> _ResponseUsersListMeActivity:
         """Get recent activity for logged-in user
 
+        URL: ``GET users/me/activity``
+
         Parameters
         ----------
         status : str, optional
@@ -56290,7 +57985,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : str
                 The ID of the object.
             - name : str
@@ -56320,9 +58015,11 @@ class _Users:
     ) -> _ResponseUsersListMeOrganizationAdmins:
         """Get list of organization admins for logged-in user
 
+        URL: ``GET users/me/organization_admins``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this user.
             - name : str
@@ -56343,9 +58040,11 @@ class _Users:
     ) -> _ResponseUsersListMeThemes:
         """List themes
 
+        URL: ``GET users/me/themes``
+
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of this theme.
             - name : str
@@ -56360,6 +58059,8 @@ class _Users:
         id: int,
     ) -> _ResponseUsersGetMeThemes:
         """Show a theme
+
+        URL: ``GET users/me/themes/{id}``
 
         Parameters
         ----------
@@ -56392,6 +58093,8 @@ class _Users:
         id: int,
     ) -> _ResponseUsersGet:
         """Show info about a user
+
+        URL: ``GET users/{id}``
 
         Parameters
         ----------
@@ -56514,6 +58217,8 @@ class _Users:
         account_status: str | None = ...,
     ) -> _ResponseUsersPatch:
         """Update info about a user (must be a team or org admin)
+
+        URL: ``PATCH users/{id}``
 
         Parameters
         ----------
@@ -56664,6 +58369,8 @@ class _Users:
     ) -> Iterator[_ResponseUsersListApiKeys]:
         """Show API keys belonging to the specified user
 
+        URL: ``GET users/{id}/api_keys``
+
         Parameters
         ----------
         id : str
@@ -56683,7 +58390,8 @@ class _Users:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -56722,6 +58430,8 @@ class _Users:
         constraints: List[dict] | None = ...,
     ) -> _ResponseUsersPostApiKeys:
         """Create a new API key belonging to the logged-in user
+
+        URL: ``POST users/{id}/api_keys``
 
         Parameters
         ----------
@@ -56805,6 +58515,8 @@ class _Users:
     ) -> _ResponseUsersGetApiKeys:
         """Show the specified API key
 
+        URL: ``GET users/{id}/api_keys/{key_id}``
+
         Parameters
         ----------
         id : str
@@ -56864,6 +58576,8 @@ class _Users:
     ) -> _ResponseUsersDeleteApiKeys:
         """Revoke the specified API key
 
+        URL: ``DELETE users/{id}/api_keys/{key_id}``
+
         Parameters
         ----------
         id : str
@@ -56921,6 +58635,8 @@ class _Users:
         id: int,
     ) -> _ResponseUsersDeleteSessions:
         """Terminate all of the user's active sessions (must be a team or org admin)
+
+        URL: ``DELETE users/{id}/sessions``
 
         Parameters
         ----------
@@ -57030,6 +58746,8 @@ class _Users:
     ) -> Iterator[_ResponseUsersListMeFavorites]:
         """List Favorites
 
+        URL: ``GET users/me/favorites``
+
         Parameters
         ----------
         object_id : int, optional
@@ -57055,7 +58773,8 @@ class _Users:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -57100,6 +58819,8 @@ class _Users:
         object_type: str,
     ) -> _ResponseUsersPostMeFavorites:
         """Favorite an item
+
+        URL: ``POST users/me/favorites``
 
         Parameters
         ----------
@@ -57151,6 +58872,8 @@ class _Users:
     ) -> Response:
         """Unfavorite an item
 
+        URL: ``DELETE users/me/favorites/{id}``
+
         Parameters
         ----------
         id : int
@@ -57168,6 +58891,8 @@ class _Users:
         id: int,
     ) -> Response:
         """Move a favorite to the top of the list
+
+        URL: ``PATCH users/me/favorites/{id}/ranking/top``
 
         Parameters
         ----------
@@ -57187,6 +58912,8 @@ class _Users:
     ) -> Response:
         """Move a favorite to the bottom of the list
 
+        URL: ``PATCH users/me/favorites/{id}/ranking/bottom``
+
         Parameters
         ----------
         id : int
@@ -57204,6 +58931,8 @@ class _Users:
         id: int,
     ) -> Response:
         """Move a favorite one position closer to the top of the list
+
+        URL: ``PATCH users/me/favorites/{id}/ranking/higher``
 
         Parameters
         ----------
@@ -57223,6 +58952,8 @@ class _Users:
     ) -> Response:
         """Move a favorite one position closer to the bottom of the list
 
+        URL: ``PATCH users/me/favorites/{id}/ranking/lower``
+
         Parameters
         ----------
         id : int
@@ -57240,6 +58971,8 @@ class _Users:
         id: int,
     ) -> _ResponseUsersPostUnsuspend:
         """Unsuspends user
+
+        URL: ``POST users/{id}/unsuspend``
 
         Parameters
         ----------
@@ -57264,6 +58997,8 @@ class _Users:
     ) -> _ResponseUsersDelete2Fa:
         """Wipes the user's current 2FA settings so that they must reset them upon next
         login
+
+        URL: ``DELETE users/{id}/2fa``
 
         Parameters
         ----------
@@ -57368,6 +59103,8 @@ class _Users:
         """Sends the target user a 'Reset Password' or 'Welcome to Platform' email
         depending on the their status - Only available to Org and Team Admins
 
+        URL: ``POST users/{id}/access_email``
+
         Parameters
         ----------
         id : int
@@ -57395,6 +59132,8 @@ class _Workflows:
         iterator: bool | None = ...,
     ) -> Iterator[_ResponseWorkflowsList]:
         """List Workflows
+
+        URL: ``GET workflows``
 
         Parameters
         ----------
@@ -57429,7 +59168,8 @@ class _Workflows:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -57500,6 +59240,8 @@ class _Workflows:
         hidden: bool | None = ...,
     ) -> _ResponseWorkflowsPost:
         """Create a Workflow
+
+        URL: ``POST workflows``
 
         Parameters
         ----------
@@ -57640,6 +59382,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsGet:
         """Get a Workflow
 
+        URL: ``GET workflows/{id}``
+
         Parameters
         ----------
         id : int
@@ -57738,6 +59482,8 @@ class _Workflows:
         notifications: dict | None = ...,
     ) -> _ResponseWorkflowsPut:
         """Replace all attributes of this Workflow
+
+        URL: ``PUT workflows/{id}``
 
         Parameters
         ----------
@@ -57882,6 +59628,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsPatch:
         """Update some attributes of this Workflow
 
+        URL: ``PATCH workflows/{id}``
+
         Parameters
         ----------
         id : int
@@ -58018,6 +59766,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsListShares:
         """List users and groups permissioned on this object
 
+        URL: ``GET workflows/{id}/shares``
+
         Parameters
         ----------
         id : int
@@ -58025,7 +59775,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - readers : :class:`civis.Response`
                 - users : List[:class:`civis.Response`]
                     - id : int
@@ -58065,6 +59815,8 @@ class _Workflows:
         send_shared_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutSharesUsers:
         """Set the permissions users have on this object
+
+        URL: ``PUT workflows/{id}/shares/users``
 
         Parameters
         ----------
@@ -58119,6 +59871,8 @@ class _Workflows:
     ) -> Response:
         """Revoke the permissions a user has on this object
 
+        URL: ``DELETE workflows/{id}/shares/users/{user_id}``
+
         Parameters
         ----------
         id : int
@@ -58142,6 +59896,8 @@ class _Workflows:
         send_shared_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutSharesGroups:
         """Set the permissions groups has on this object
+
+        URL: ``PUT workflows/{id}/shares/groups``
 
         Parameters
         ----------
@@ -58196,6 +59952,8 @@ class _Workflows:
     ) -> Response:
         """Revoke the permissions a group has on this object
 
+        URL: ``DELETE workflows/{id}/shares/groups/{group_id}``
+
         Parameters
         ----------
         id : int
@@ -58217,6 +59975,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsListDependencies:
         """List dependent objects for this object
 
+        URL: ``GET workflows/{id}/dependencies``
+
         Parameters
         ----------
         id : int
@@ -58226,7 +59986,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - object_type : str
                 Dependent object type
             - fco_type : str
@@ -58256,6 +60016,8 @@ class _Workflows:
         send_email: bool | None = ...,
     ) -> _ResponseWorkflowsPutTransfer:
         """Transfer ownership of this object to another user
+
+        URL: ``PUT workflows/{id}/transfer``
 
         Parameters
         ----------
@@ -58302,6 +60064,8 @@ class _Workflows:
         status: bool,
     ) -> _ResponseWorkflowsPutArchive:
         """Update the archive status of this object
+
+        URL: ``PUT workflows/{id}/archive``
 
         Parameters
         ----------
@@ -58399,6 +60163,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsListProjects:
         """List the projects a Workflow belongs to
 
+        URL: ``GET workflows/{id}/projects``
+
         Parameters
         ----------
         id : int
@@ -58409,7 +60175,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for this project.
             - author : :class:`civis.Response`
@@ -58455,6 +60221,8 @@ class _Workflows:
     ) -> Response:
         """Add a Workflow to a project
 
+        URL: ``PUT workflows/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -58476,6 +60244,8 @@ class _Workflows:
     ) -> Response:
         """Remove a Workflow from a project
 
+        URL: ``DELETE workflows/{id}/projects/{project_id}``
+
         Parameters
         ----------
         id : int
@@ -58496,6 +60266,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsListGit:
         """Get the git metadata attached to an item
 
+        URL: ``GET workflows/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -58503,7 +60275,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -58537,6 +60309,8 @@ class _Workflows:
         pull_from_git: bool | None = ...,
     ) -> _ResponseWorkflowsPutGit:
         """Attach an item to a file in a git repo
+
+        URL: ``PUT workflows/{id}/git``
 
         Parameters
         ----------
@@ -58594,6 +60368,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsPatchGit:
         """Update an attached git file
 
+        URL: ``PATCH workflows/{id}/git``
+
         Parameters
         ----------
         id : int
@@ -58644,6 +60420,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsListGitCommits:
         """Get the git commits for an item on the current branch
 
+        URL: ``GET workflows/{id}/git/commits``
+
         Parameters
         ----------
         id : int
@@ -58651,7 +60429,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - commit_hash : str
                 The SHA of the commit.
             - author_name : str
@@ -58671,6 +60449,8 @@ class _Workflows:
         file_hash: str,
     ) -> _ResponseWorkflowsPostGitCommits:
         """Commit and push a new version of the file
+
+        URL: ``POST workflows/{id}/git/commits``
 
         Parameters
         ----------
@@ -58704,6 +60484,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsGetGitCommits:
         """Get file contents at git ref
 
+        URL: ``GET workflows/{id}/git/commits/{commit_hash}``
+
         Parameters
         ----------
         id : int
@@ -58731,6 +60513,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsPostGitCheckoutLatest:
         """Checkout latest commit on the current branch of a script or workflow
 
+        URL: ``POST workflows/{id}/git/checkout-latest``
+
         Parameters
         ----------
         id : int
@@ -58757,6 +60541,8 @@ class _Workflows:
         clone_notifications: bool | None = ...,
     ) -> _ResponseWorkflowsPostClone:
         """Clone this Workflow
+
+        URL: ``POST workflows/{id}/clone``
 
         Parameters
         ----------
@@ -58860,6 +60646,8 @@ class _Workflows:
     ) -> Iterator[_ResponseWorkflowsListExecutions]:
         """List workflow executions
 
+        URL: ``GET workflows/{id}/executions``
+
         Parameters
         ----------
         id : int
@@ -58879,7 +60667,8 @@ class _Workflows:
             :class:`civis.PaginatedResponse` object) to iterate over all responses.
             Use it when more results than the maximum allowed by 'limit' are needed.
             When True, 'page_num' is ignored.
-            If False, return a list of :class:`civis.Response` objects, whose size is
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
             determined by 'limit'. Defaults to False.
 
         Returns
@@ -58924,6 +60713,8 @@ class _Workflows:
         included_tasks: List[str] | None = ...,
     ) -> _ResponseWorkflowsPostExecutions:
         """Execute a workflow
+
+        URL: ``POST workflows/{id}/executions``
 
         Parameters
         ----------
@@ -59030,6 +60821,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsGetExecutions:
         """Get a workflow execution
 
+        URL: ``GET workflows/{id}/executions/{execution_id}``
+
         Parameters
         ----------
         id : int
@@ -59129,6 +60922,8 @@ class _Workflows:
         execution_id: int,
     ) -> _ResponseWorkflowsPostExecutionsCancel:
         """Cancel a workflow execution
+
+        URL: ``POST workflows/{id}/executions/{execution_id}/cancel``
 
         Parameters
         ----------
@@ -59230,6 +61025,8 @@ class _Workflows:
     ) -> _ResponseWorkflowsPostExecutionsResume:
         """Resume a paused workflow execution
 
+        URL: ``POST workflows/{id}/executions/{execution_id}/resume``
+
         Parameters
         ----------
         id : int
@@ -59330,6 +61127,8 @@ class _Workflows:
         task_name: str | None = ...,
     ) -> _ResponseWorkflowsPostExecutionsRetry:
         """Retry a failed task, or all failed tasks in an execution
+
+        URL: ``POST workflows/{id}/executions/{execution_id}/retry``
 
         Parameters
         ----------
@@ -59434,6 +61233,8 @@ class _Workflows:
         task_name: str,
     ) -> _ResponseWorkflowsGetExecutionsTasks:
         """Get a task of a workflow execution
+
+        URL: ``GET workflows/{id}/executions/{execution_id}/tasks/{task_name}``
 
         Parameters
         ----------

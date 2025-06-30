@@ -49,7 +49,8 @@ ITERATOR_PARAM_DESC = (
     "    :class:`civis.PaginatedResponse` object) to iterate over all responses.\n"
     "    Use it when more results than the maximum allowed by 'limit' are needed.\n"
     "    When True, 'page_num' is ignored.\n"
-    "    If False, return a list of :class:`civis.Response` objects, whose size is\n"
+    "    If False, return a :class:`civis.ListResponse` object\n"
+    "    (= a list of :class:`civis.Response` objects), whose size is\n"
     "    determined by 'limit'. Defaults to False.\n"
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
@@ -151,7 +152,7 @@ def deprecated_notice(deprecation_warning):
     return f"\n.. warning::\n\n    {deprecation_warning}\n"
 
 
-def doc_from_responses(responses, is_iterable):
+def doc_from_responses(responses, is_iterable, is_list):
     """Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
     """
@@ -161,6 +162,8 @@ def doc_from_responses(responses, is_iterable):
     if properties:
         if is_iterable:
             resp_type = ":class:`civis.PaginatedResponse`\n"
+        elif is_list:
+            resp_type = ":class:`civis.ListResponse`\n"
         else:
             resp_type = ":class:`civis.Response`\n"
         result_doc = resp_type + (
@@ -588,8 +591,8 @@ def parse_method(verb, operation, path):
     elements = split_method_params(params)
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
-    response_doc = doc_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
+    response_doc = doc_from_responses(responses, is_iterable, name.startswith("list_"))
     return_annotation = return_annotation_from_responses(
         path.split("/")[0], name, responses, is_iterable
     )

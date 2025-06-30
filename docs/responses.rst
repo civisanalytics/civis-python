@@ -91,6 +91,9 @@ Response Types
 .. autoclass:: civis.PaginatedResponse
    :members:
 
+.. autoclass:: civis.ListResponse
+   :members:
+
 .. autoclass:: civis.futures.CivisFuture
    :members:
 

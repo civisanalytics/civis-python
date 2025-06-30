@@ -361,7 +361,7 @@ def test_doc_from_responses():
             )
         ]
     )  # noqa: E501
-    x = _resources.doc_from_responses(responses, False)
+    x = _resources.doc_from_responses(responses, False, False)
     assert x == RESPONSE_DOC
 
 
