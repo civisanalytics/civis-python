@@ -139,7 +139,7 @@ def _compute_effective_max_log_id(logs):
 
     sorted_logs = sorted(logs, key=operator.itemgetter("id"))
 
-    max_created_at_timestamp = _timestamp_from_iso_str(sorted_logs[-1]["createdAt"])
+    max_created_at_timestamp = _timestamp_from_iso_str(sorted_logs[-1]["created_at"])
     cutoff = time.time() - _LOG_REFETCH_CUTOFF_SECONDS
     if max_created_at_timestamp < cutoff:
         return sorted_logs[-1]["id"]
@@ -149,13 +149,13 @@ def _compute_effective_max_log_id(logs):
     return 0
 
 
-def _job_finished_past_timeout(job_id, run_id, finished_timeout, raw_client):
+def _job_finished_past_timeout(job_id, run_id, finished_timeout, client):
     """Return true if the run finished more than so many seconds ago."""
     if finished_timeout is None:
         return False
 
-    run = raw_client.jobs.get_runs(job_id, run_id)
-    finished_at = run.json()["finishedAt"]
+    run = client.jobs.get_runs(job_id, run_id)
+    finished_at = run.json()["finished_at"]
     if finished_at is None:
         return False
     finished_at_ts = _timestamp_from_iso_str(finished_at)
@@ -163,7 +163,7 @@ def _job_finished_past_timeout(job_id, run_id, finished_timeout, raw_client):
     return result
 
 
-def job_logs(job_id, run_id=None, finished_timeout=None):
+def job_logs(job_id, run_id=None, finished_timeout=None, client=None):
     """Return a generator of log message dictionaries for a given run.
 
     Parameters
@@ -180,11 +180,14 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
         will be no more new log messages, which may take a few minutes.
         A timeout of 30-60 seconds is usually enough to retrieve all
         log messages.
+    client : :class:`civis.APIClient`, optional
+        If not provided, an :class:`civis.APIClient` object will be
+        created from the :envvar:`CIVIS_API_KEY`.
 
     Yields
     ------
     dict
-        A log message dictionary with "message", "createdAt" and other attributes
+        A log message dictionary with "message", "created_at" and other attributes
         provided by the job logs endpoint. Note that this will block execution
         until the job has stopped and all log messages are retrieved.
 
@@ -192,21 +195,16 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
     --------
     >>> # Print all log messages from a job's most recent run
     >>> for log in job_logs(job_id=123456):
-    ...     print(f"{log['createdAt']}: {log['message']}")
+    ...     print(f"{log['created_at']}: {log['message']}")
     ...
     >>> # Get logs from a specific run with a 30 second timeout
     >>> for log in job_logs(job_id=123456, run_id=789, finished_timeout=30):
     ...     print(log['message'])
     """
-    # The return_type for the client is "raw" in order to check
-    # the "civis-cache-control" and "civis-max-id" headers when
-    # list_runs_logs returns an empty list of new messages.
-    # Caching of the endpoint information in
-    # civis.resources.generate_classes_maybe_cached avoids extra API calls.
-    raw_client = APIClient(return_type="raw")
+    client = client or APIClient()
 
     if run_id is None:
-        run_id = raw_client.jobs.list_runs(
+        run_id = client.jobs.list_runs(
             job_id, limit=1, order="id", order_dir="desc"
         ).json()[0]["id"]
 
@@ -218,7 +216,7 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
     while continue_polling:
         # This call gets a limited number of log messages since last_id,
         # ordered by log ID.
-        response = raw_client.jobs.list_runs_logs(
+        response = client.jobs.list_runs_logs(
             job_id,
             run_id,
             last_id=local_max_log_id,
@@ -232,7 +230,7 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
         logs = response.json()
         if logs:
             local_max_log_id = max(log["id"] for log in logs)
-            logs.sort(key=operator.itemgetter("createdAt", "id"))
+            logs.sort(key=operator.itemgetter("created_at", "id"))
         for log in logs:
             if log["id"] in known_log_ids:
                 continue
@@ -247,7 +245,7 @@ def job_logs(job_id, run_id=None, finished_timeout=None):
             remote_has_more_logs_to_get_now = False
             local_max_log_id = _compute_effective_max_log_id(logs)
             if log_finished or _job_finished_past_timeout(
-                job_id, run_id, finished_timeout, raw_client
+                job_id, run_id, finished_timeout, client
             ):
                 continue_polling = False
         else:

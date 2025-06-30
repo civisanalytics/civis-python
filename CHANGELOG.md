@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added the keyword argument `client` to `civis.utils.job_logs()`. (#518)
+- Implemented `ListResponse` as a list of `civis.Response` objects that has "headers"
+  information from a Civis API call. (#518)
 - The `civis.io.*` functions for dataframes support polars in addition to pandas. (#515)
     * For `civis.io.read_civis_sql` and `civis.io.read_civis`:
         The new kwarg `return_as` has been added. It defaults to `"list"` to maintain
