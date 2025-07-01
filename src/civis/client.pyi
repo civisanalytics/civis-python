@@ -2599,14 +2599,14 @@ class _Credentials:
 class _Databases:
     def list(
         self,
-    ) -> _ResponseDatabasesList:
+    ) -> List[_ResponseDatabasesList]:
         """List databases
 
         API URL: ``GET /databases``
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID for the database.
             - name : str
@@ -3609,7 +3609,7 @@ class _Databases:
 class _Endpoints:
     def list(
         self,
-    ) -> Response:
+    ) -> List[Response]:
         """List API endpoints
 
         API URL: ``GET /endpoints``
@@ -20369,14 +20369,14 @@ class _Match_Targets:
 
     def list(
         self,
-    ) -> _ResponseMatchTargetsList:
+    ) -> List[_ResponseMatchTargetsList]:
         """List match targets
 
         API URL: ``GET /match_targets``
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the match target
             - name : str
@@ -25670,7 +25670,7 @@ class _Notifications:
         last_event_id: str | None = ...,
         r: str | None = ...,
         mock: str | None = ...,
-    ) -> Response:
+    ) -> List[Response]:
         """Receive a stream of notifications as they come in
 
         API URL: ``GET /notifications``
@@ -25696,7 +25696,7 @@ class _Ontology:
         self,
         *,
         subset: str | None = ...,
-    ) -> _ResponseOntologyList:
+    ) -> List[_ResponseOntologyList]:
         """List the ontology of column names Civis uses
 
         API URL: ``GET /ontology``
@@ -25708,7 +25708,7 @@ class _Ontology:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - key : str
             - title : str
             - desc : str
@@ -26894,7 +26894,7 @@ class _Predictions:
         self,
         *,
         model_id: int | None = ...,
-    ) -> _ResponsePredictionsList:
+    ) -> List[_ResponsePredictionsList]:
         """List predictions
 
         API URL: ``GET /predictions``
@@ -26906,7 +26906,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the prediction.
             - model_id : int
@@ -29479,7 +29479,7 @@ class _Remote_Hosts:
         self,
         *,
         type: str | None = ...,
-    ) -> _ResponseRemoteHostsList:
+    ) -> List[_ResponseRemoteHostsList]:
         """List Remote Hosts
 
         API URL: ``GET /remote_hosts``
@@ -29495,7 +29495,7 @@ class _Remote_Hosts:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the remote host.
             - name : str
@@ -51973,7 +51973,7 @@ class _Search:
         limit: int | None = ...,
         archived: str | None = ...,
         last_run_state: str | None = ...,
-    ) -> _ResponseSearchList:
+    ) -> List[_ResponseSearchList]:
         """Perform a search
 
         API URL: ``GET /search``
@@ -52002,7 +52002,7 @@ class _Search:
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - total_results : int
                 The number of items matching the search query.
             - aggregations : :class:`civis.Response`
@@ -54166,14 +54166,14 @@ class _Services:
 class _Storage_Hosts:
     def list(
         self,
-    ) -> _ResponseStorageHostsList:
+    ) -> List[_ResponseStorageHostsList]:
         """List the storage hosts
 
         API URL: ``GET /storage_hosts``
 
         Returns
         -------
-        :class:`civis.Response`
+        :class:`civis.ListResponse`
             - id : int
                 The ID of the storage host.
             - owner : :class:`civis.Response`
