@@ -3,8 +3,11 @@
 Responses
 =========
 
-A Civis API call from ``client.<endpoint>.<method>`` returns a :class:`civis.Response` object
-(or a :class:`civis.PaginatedResponse` object, if ``<method>`` is a "list" call with ``iterator=True``):
+A Civis API call from ``client.<endpoint>.<method>`` returns one of the "response" objects:
+
+* :class:`civis.PaginatedResponse` if ``<method>`` is a "list" call with ``iterator=True``,
+* :class:`civis.ListResponse` if ``<method>`` is a "list" call that either doesn't have an ``iterator`` argument or has ``iterator=False``, or
+* :class:`civis.Response`.
 
 .. code-block:: python
 

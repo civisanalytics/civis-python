@@ -337,7 +337,7 @@ pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response
 
 
 class PaginatedResponse:
-    """A response object which is an iterator
+    """A generator of :class:`civis.Response` objects, for paginated API calls.
 
     Parameters
     ----------
