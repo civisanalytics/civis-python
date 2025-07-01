@@ -594,7 +594,7 @@ def parse_method(verb, operation, path):
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
     name = parse_method_name(verb, path)
-    response_doc = doc_from_responses(responses, is_iterable, name.startswith("list_"))
+    response_doc = doc_from_responses(responses, is_iterable, name.startswith("list"))
     return_annotation = return_annotation_from_responses(
         path.split("/")[0], name, responses, is_iterable
     )

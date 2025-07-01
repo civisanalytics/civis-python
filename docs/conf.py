@@ -359,7 +359,7 @@ def _attach_classes_to_module(module, class_data):
             signature = inspect.signature(method)
             if signature.return_annotation.__name__ == "Iterator":
                 new_return_anno = civis.ListResponse | civis.PaginatedResponse
-            elif method.__name__.startswith("list_"):
+            elif method.__name__.startswith("list"):
                 new_return_anno = civis.ListResponse
             else:
                 new_return_anno = civis.Response
