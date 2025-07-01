@@ -446,7 +446,7 @@ def test_parse_params():
         "description": "nah!",
         "type": "integer",
     }
-    x, y = _resources.parse_params([param, param2], "summary!", "get", "/objects")
+    x, y = _resources.parse_params([param, param2], "summary!", "get", "objects")
     expect_x = [
         {
             "in": "query",
@@ -466,7 +466,7 @@ def test_parse_params():
     ]
     expect_y = (
         "summary!\n\n"
-        "URL: ``GET /objects``\n\n"
+        "API URL: ``GET /objects``\n\n"
         "Parameters\n"
         "----------\n"
         "b : int\n"

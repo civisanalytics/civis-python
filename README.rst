@@ -45,7 +45,7 @@ least every 30 days. The API client will look for a ``CIVIS_API_KEY``
 environment variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
 
-.. caution::
+.. note::
    Treat your API key like a password. Do not keep it under version control
    or share it with others.
 

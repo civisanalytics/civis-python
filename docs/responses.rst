@@ -92,7 +92,9 @@ Response Types
    :members:
 
 .. autoclass:: civis.ListResponse
-   :members:
+   :members: json
+..
+   use ":members: json" because ListResponse subclasses `list`, and we don't want to show methods for `list`.
 
 .. autoclass:: civis.futures.CivisFuture
    :members:

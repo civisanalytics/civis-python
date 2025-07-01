@@ -403,7 +403,7 @@ def _write_resources_rst(class_names, filename, civis_module):
                 endpoint_name = class_name.title()
                 full_path = ".".join((civis_module, endpoint_name))
                 endpoint_rst_file.write(
-                    f"{endpoint_name.replace('_', ' ')}\n"
+                    f"{endpoint_name.replace('Json', 'JSON').replace('_', ' ')}\n"
                     f"{'=' * len(endpoint_name)}\n\n"
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
@@ -415,7 +415,7 @@ def _write_hide_endpoint_class_sig_css(class_names):
     )
     with open(css_path, "w") as css_file:
         for class_name in class_names:
-            camel_case = "".join(s.title() for s in class_name.split("_"))
+            camel_case = class_name.title()
             css_file.write(
                 f"dt#civis\\.resources\\._resources\\.{camel_case}.sig.sig-object.py {{\n"  # noqa: E501
                 "    display: none;\n"

@@ -161,7 +161,9 @@ def doc_from_responses(responses, is_iterable, is_list):
     properties = get_properties(schema)
     if properties:
         if is_iterable:
-            resp_type = ":class:`civis.PaginatedResponse`\n"
+            resp_type = (
+                ":class:`civis.ListResponse` | :class:`civis.PaginatedResponse`\n"
+            )
         elif is_list:
             resp_type = ":class:`civis.ListResponse`\n"
         else:
@@ -652,7 +654,7 @@ def parse_api_spec(api_spec, api_version):
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
             cls.__doc__ = (
-                f"Civis API ``/{base_path}`` endpoint\n\n"
+                f"Civis API ``/{base_path}`` endpoint:\n\n"
                 ".. code-block:: python\n\n"
                 "    import civis\n"
                 "    client = civis.APIClient()\n"
