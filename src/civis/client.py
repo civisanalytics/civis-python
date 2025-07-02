@@ -59,6 +59,11 @@ class APIClient:
         please note that you should leave the ``retry`` attribute unspecified,
         because the conditions under which retries apply are pre-determined
         -- see :ref:`retries` for details.
+    headers : dict, optional
+        Additional headers to include in requests made by this client.
+        If a "User-Agent" header is provided, it will be prepended to information
+        including the Civis Python client version, Python version, and the requests
+        package version.
     """
 
     def __init__(
@@ -69,6 +74,7 @@ class APIClient:
         local_api_spec: collections.OrderedDict | str | None = None,
         force_refresh_api_spec: bool = False,
         retries: tenacity.Retrying | None = None,
+        headers: dict | None = None,
     ):
         if return_type not in _RETURN_TYPES:
             raise ValueError(
@@ -76,7 +82,11 @@ class APIClient:
             )
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
-        self._session_kwargs = {"api_key": session_auth_key, "retrying": retries}
+        self._session_kwargs = {
+            "api_key": session_auth_key,
+            "retrying": retries,
+            "headers": headers,
+        }
         self.last_response = None
 
         classes = generate_classes_maybe_cached(

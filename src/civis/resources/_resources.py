@@ -14,7 +14,7 @@ from jsonref import JsonRef
 import requests
 from requests import Request
 
-from civis.base import Endpoint, get_base_url, open_session
+from civis.base import Endpoint, get_base_url, get_headers, open_session
 from civis._camel_to_snake import camel_to_snake
 from civis._utils import get_api_key, retry_request
 from civis.response import Response
@@ -682,7 +682,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         API client version tag and ``requests`` version tag.
     """
     if api_version == "1.0":
-        with open_session(api_key, user_agent=user_agent) as sess:
+        with open_session(api_key, get_headers({"User-Agent": user_agent})) as sess:
             request = Request("GET", "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
             response = retry_request("get", pre_request, sess)
