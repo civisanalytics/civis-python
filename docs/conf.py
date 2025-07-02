@@ -358,7 +358,9 @@ def _attach_classes_to_module(module, class_data):
                 continue
             signature = inspect.signature(method)
             if signature.return_annotation.__name__ == "Iterator":
-                new_return_anno = list[civis.Response] | civis.PaginatedResponse
+                new_return_anno = civis.ListResponse | civis.PaginatedResponse
+            elif method.__name__.startswith("list"):
+                new_return_anno = civis.ListResponse
             else:
                 new_return_anno = civis.Response
             method.__signature__ = signature.replace(return_annotation=new_return_anno)
@@ -401,10 +403,24 @@ def _write_resources_rst(class_names, filename, civis_module):
                 endpoint_name = class_name.title()
                 full_path = ".".join((civis_module, endpoint_name))
                 endpoint_rst_file.write(
-                    f"{endpoint_name.replace('_', ' ')}\n"
+                    f"{endpoint_name.replace('Json', 'JSON').replace('_', ' ')}\n"
                     f"{'=' * len(endpoint_name)}\n\n"
                 )
                 endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
+
+
+def _write_hide_endpoint_class_sig_css(class_names):
+    css_path = os.path.join(
+        os.path.dirname(__file__), "_static", "hide_endpoint_class_sig.css"
+    )
+    with open(css_path, "w") as css_file:
+        for class_name in class_names:
+            camel_case = class_name.title()
+            css_file.write(
+                f"dt#civis\\.resources\\._resources\\.{camel_case}.sig.sig-object.py {{\n"  # noqa: E501
+                "    display: none;\n"
+                "}\n"
+            )
 
 
 _generated_attach_point = civis.resources._resources
@@ -440,7 +456,7 @@ civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names, _generated_attach
 #   instead of having to fake-attach the endpoint classes to a module.
 _attach_classes_to_module(_generated_attach_point, extra_classes)
 _write_resources_rst(sorted_class_names, _rst_basename, _generated_attach_path)
-
+_write_hide_endpoint_class_sig_css(sorted_class_names)
 
 # The following directive makes all (public) methods of an Endpoint
 # auto-discoverable. See https://stackoverflow.com/a/30783465
@@ -511,3 +527,4 @@ PythonDomain.directives["class"] = MaybeHiddenModulePyClasslike
 def setup(app):
     app.add_directive("generatedautosummary", GeneratedAutosummary)
     app.add_css_file("custom.css")
+    app.add_css_file("hide_endpoint_class_sig.css")

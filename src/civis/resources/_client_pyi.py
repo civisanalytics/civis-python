@@ -79,6 +79,7 @@ from civis.response import Response
                         )
                 params = inspect.signature(method).parameters
                 method_def += f"    def {method_name}(\n"
+                asterisk_added = False
                 for param_name, param in params.items():
                     annotation = _get_annotation(param)
                     if param_name == "self":
@@ -86,9 +87,17 @@ from civis.response import Response
                     elif param.kind == inspect.Parameter.POSITIONAL_OR_KEYWORD:
                         method_def += f"        {param_name}: {annotation},\n"
                     else:
+                        if (
+                            not asterisk_added
+                            and param.kind == inspect.Parameter.KEYWORD_ONLY
+                        ):
+                            method_def += "        *,\n"
+                            asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
                     return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                elif method_name.startswith("list"):
+                    return_str = f"List[{return_type.__name__}]"
                 else:
                     return_str = return_type.__name__
                 method_def += f"    ) -> {return_str}:\n"

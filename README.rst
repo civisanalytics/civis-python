@@ -24,7 +24,7 @@ Civis API Python Client
 The Civis API Python client is a Python package that helps analysts
 and developers interact with Civis Platform programmatically. The package includes a set of
 tools around common workflows as well as a convenient interface to make
-requests directly to the Civis API.
+requests directly to the `Civis API <https://support.civisanalytics.com/hc/en-us/articles/360001597191-API-Basics>`_.
 
 .. end-include-marker-introductory-paragraph
 
@@ -44,6 +44,10 @@ API keys have a set expiration date and new keys will need to be created at
 least every 30 days. The API client will look for a ``CIVIS_API_KEY``
 environment variable to access your API key, so after creating a new API key,
 follow the steps below for your operating system to set up your environment.
+
+.. note::
+   Treat your API key like a password. Do not keep it under version control
+   or share it with others.
 
 Linux / MacOS
 ~~~~~~~~~~~~~

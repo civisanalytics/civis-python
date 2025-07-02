@@ -337,7 +337,7 @@ pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response
 
 
 class PaginatedResponse:
-    """A response object which is an iterator
+    """A generator of :class:`civis.Response` objects, for paginated API calls.
 
     Parameters
     ----------
@@ -402,6 +402,18 @@ class PaginatedResponse:
 
 
 class ListResponse(list):
+    """A list of :class:`civis.Response` objects.
+
+    Parameters
+    ----------
+    responses : list[civis.Response]
+        A list of response objects to be stored in this list.
+    headers : dict, optional
+        Headers to be attached to the list response.
+        The headers info is available as an attribute, so that it can be accessed
+        even when the list is empty.
+    """
+
     __slots__ = ("headers",)
 
     def __init__(self, responses, headers=None):

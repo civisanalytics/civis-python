@@ -49,7 +49,8 @@ ITERATOR_PARAM_DESC = (
     "    :class:`civis.PaginatedResponse` object) to iterate over all responses.\n"
     "    Use it when more results than the maximum allowed by 'limit' are needed.\n"
     "    When True, 'page_num' is ignored.\n"
-    "    If False, return a list of :class:`civis.Response` objects, whose size is\n"
+    "    If False, return a :class:`civis.ListResponse` object\n"
+    "    (= a list of :class:`civis.Response` objects), whose size is\n"
     "    determined by 'limit'. Defaults to False.\n"
 )
 CACHED_SPEC_PATH = os.path.join(os.path.expanduser("~"), ".civis_api_spec.json")
@@ -151,7 +152,7 @@ def deprecated_notice(deprecation_warning):
     return f"\n.. warning::\n\n    {deprecation_warning}\n"
 
 
-def doc_from_responses(responses, is_iterable):
+def doc_from_responses(responses, is_iterable, is_list):
     """Return a doc string element from a responses object. The
     doc string describes the returned objects of a function.
     """
@@ -160,7 +161,11 @@ def doc_from_responses(responses, is_iterable):
     properties = get_properties(schema)
     if properties:
         if is_iterable:
-            resp_type = ":class:`civis.PaginatedResponse`\n"
+            resp_type = (
+                ":class:`civis.ListResponse` | :class:`civis.PaginatedResponse`\n"
+            )
+        elif is_list:
+            resp_type = ":class:`civis.ListResponse`\n"
         else:
             resp_type = ":class:`civis.Response`\n"
         result_doc = resp_type + (
@@ -477,7 +482,7 @@ def parse_param(param):
     return args
 
 
-def parse_params(parameters, summary, verb):
+def parse_params(parameters, summary, verb, path):
     """Parse the parameters of a function specification into a list
     of dictionaries which are used to generate the function at runtime.
     """
@@ -500,6 +505,7 @@ def parse_params(parameters, summary, verb):
         summary_str = "{}\n".format(textwrap.fill(summary, width=79))
     else:
         summary_str = ""
+    summary_str = f"{summary_str}\nAPI URL: ``{verb.upper()} /{path}``\n"
     if param_docs:
         docs = "{}\nParameters\n----------\n{}".format(summary_str, param_docs)
     elif summary:
@@ -583,12 +589,12 @@ def parse_method(verb, operation, path):
     if "deprecated" in summary.lower():
         return None
 
-    args, param_doc = parse_params(params, summary, verb)
+    args, param_doc = parse_params(params, summary, verb, path)
     elements = split_method_params(params)
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
-    response_doc = doc_from_responses(responses, is_iterable)
     name = parse_method_name(verb, path)
+    response_doc = doc_from_responses(responses, is_iterable, name.startswith("list"))
     return_annotation = return_annotation_from_responses(
         path.split("/")[0], name, responses, is_iterable
     )
@@ -648,11 +654,12 @@ def parse_api_spec(api_spec, api_version):
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
             cls.__doc__ = (
-                "Examples\n"
-                "--------\n"
-                ">>> import civis\n"
-                ">>> client = civis.APIClient()\n"
-                f">>> client.{base_path}.{methods[0][0]}(...)"
+                f"Civis API ``/{base_path}`` endpoint:\n\n"
+                ".. code-block:: python\n\n"
+                "    import civis\n"
+                "    client = civis.APIClient()\n"
+                f"    # Call client.{base_path}.<method>(<arguments>) to make a request, e.g.:\n"  # noqa: E501
+                f"    client.{base_path}.{methods[0][0]}(...)\n\n"
             )
             classes[base_path] = cls
         for method_name, method in methods:

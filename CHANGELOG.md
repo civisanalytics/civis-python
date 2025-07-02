@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated Civis parallel backend's internals for refactored joblib's backend. (#513)
+- Updated the Sphinx docs for `ListResponse` and the Civis API. (#519)
 
 ### Deprecated
 - The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
