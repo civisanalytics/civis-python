@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## 2.6.0 - 2025-07-02
+
+### Added
 - Added the keyword argument `client` to `civis.utils.job_logs()`. (#518)
 - Implemented `ListResponse` as a list of `civis.Response` objects that has "headers"
   information from a Civis API call. (#518)
@@ -38,6 +53,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Switched from a pool to the concurrent.futures API in the file multipart upload
+  implementation. (#520)
 - Fixed `civis_logger` for needing a user-provided `__name__` as best practice. (#512)
 
 ### Security
