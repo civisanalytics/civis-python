@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Switched from a pool to the concurrent.futures API in the file multipart upload
+  implementation. (#520)
 - Fixed `civis_logger` for needing a user-provided `__name__` as best practice. (#512)
 
 ### Security
