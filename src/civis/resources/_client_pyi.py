@@ -150,6 +150,7 @@ class APIClient:
         api_version: str = ...,
         local_api_spec: OrderedDict | str | None = ...,
         force_refresh_api_spec: bool = ...,
+        user_agent: str | None = ...,
     ): ...
     def get_aws_credential_id(
         self,
