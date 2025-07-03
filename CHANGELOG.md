@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## 2.7.1 - 2025-07-03
+
+### Fixed
+- Fixed `civis.APIClient` in the stub file for the new `user_agent` keyword argument. (#522)
+
 ## 2.7.0 - 2025-07-03
 
 ### Added
