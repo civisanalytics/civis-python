@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## 2.7.0 - 2025-07-07
+
+### Added
+- Added the keyword argument `user_agent` to `civis.APIClient`. (#521)
 
 ## 2.6.0 - 2025-07-02
 
@@ -49,8 +53,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   (see notes under the "added" section above).
 - The property `feature_flags` at a `civis.APIClient` instance is now deprecated.
   `client.users.list_me()["feature_flags"]` should be used instead. (#516)
-
-### Removed
 
 ### Fixed
 - Switched from a pool to the concurrent.futures API in the file multipart upload
