@@ -30,6 +30,8 @@ for name in CANCELLED:
 
 DEFAULT_API_ENDPOINT = "https://api.civisanalytics.com/"
 
+DEFAULT_USER_AGENT = "civis-python"
+
 
 def tostr_urljoin(*x):
     return join(*map(str, x))
@@ -104,24 +106,14 @@ def get_base_url():
     return base_url
 
 
-def get_headers(headers):
-    # If the user has set a custom User-Agent header, extract it from the headers,
-    # then append the Civis Python client version, Python version,
-    # and requests version to it. If the user has not set a custom User-Agent,
-    # use the default User-Agent string.
-    headers = headers or {}
-    user_agent = "civis-python"
-    for key, value in dict(headers).items():
-        if value and key.lower() == "user-agent":
-            user_agent = value.strip()
-            del headers[key]
-            break
+def get_headers(user_agent):
     user_agent = (
-        f"{user_agent}/Python v{platform.python_version()} "
-        f"Civis v{civis.__version__} "
-        f"python-requests/{requests.__version__}"
+        f"{(user_agent or DEFAULT_USER_AGENT).strip()} "
+        f"(Python {platform.python_version()}; "
+        f"civis-python {civis.__version__}; "
+        f"requests {requests.__version__})"
     )
-    headers = {"User-Agent": user_agent, **headers}
+    headers = {"User-Agent": user_agent}
     job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
     if job_id:
         headers.update({"X-Civis-Job-ID": job_id, "X-Civis-Run-ID": run_id})
@@ -137,7 +129,7 @@ class Endpoint:
         self._return_type = return_type
         self._base_url = get_base_url()
         self._client = client
-        self._headers = get_headers(self._session_kwargs.get("headers", {}))
+        self._headers = get_headers(self._session_kwargs.get("user_agent", {}))
 
     def _build_path(self, path):
         if not path:

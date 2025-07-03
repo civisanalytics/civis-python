@@ -14,7 +14,13 @@ from jsonref import JsonRef
 import requests
 from requests import Request
 
-from civis.base import Endpoint, get_base_url, get_headers, open_session
+from civis.base import (
+    DEFAULT_USER_AGENT,
+    Endpoint,
+    get_base_url,
+    get_headers,
+    open_session,
+)
 from civis._camel_to_snake import camel_to_snake
 from civis._utils import get_api_key, retry_request
 from civis.response import Response
@@ -667,7 +673,7 @@ def parse_api_spec(api_spec, api_version):
     return classes
 
 
-def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
+def get_api_spec(api_key, api_version="1.0", user_agent=DEFAULT_USER_AGENT):
     """Download the Civis API specification.
 
     Parameters
@@ -682,7 +688,7 @@ def get_api_spec(api_key, api_version="1.0", user_agent="civis-python"):
         API client version tag and ``requests`` version tag.
     """
     if api_version == "1.0":
-        with open_session(api_key, get_headers({"User-Agent": user_agent})) as sess:
+        with open_session(api_key, get_headers(user_agent)) as sess:
             request = Request("GET", "{}endpoints".format(get_base_url()))
             pre_request = sess.prepare_request(request)
             response = retry_request("get", pre_request, sess)
@@ -718,15 +724,15 @@ def _get_ttl_hash():
 
 
 @lru_cache(maxsize=4)
-def generate_classes_ttl_cache(api_key, api_version, ttl_hash):
+def generate_classes_ttl_cache(api_key, api_version, user_agent, ttl_hash):
     """Wraps generate_classes with a time-to-live cache.
 
     https://stackoverflow.com/a/55900800
     """
-    return generate_classes(api_key, api_version)
+    return generate_classes(api_key, api_version, user_agent)
 
 
-def generate_classes(api_key, api_version="1.0"):
+def generate_classes(api_key, api_version="1.0", user_agent=DEFAULT_USER_AGENT):
     """Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -743,18 +749,25 @@ def generate_classes(api_key, api_version="1.0"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
+    user_agent : str, optional
+        A custom user agent string to use for requests made by this client.
     """
     if api_version not in API_VERSIONS:
         raise ValueError(
             f"APIClient api_version must be one of {set(API_VERSIONS)}: "
             f"{api_version}"
         )
-    raw_spec = get_api_spec(api_key, api_version)
+    raw_spec = get_api_spec(api_key, api_version, user_agent)
     spec = JsonRef.replace_refs(raw_spec)
     return parse_api_spec(spec, api_version)
 
 
-def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
+def cache_api_spec(
+    cache=CACHED_SPEC_PATH,
+    api_key=None,
+    api_version="1.0",
+    user_agent=DEFAULT_USER_AGENT,
+):
     """Cache a local copy of the Civis Data Science API spec
 
     Parameters
@@ -767,9 +780,11 @@ def cache_api_spec(cache=CACHED_SPEC_PATH, api_key=None, api_version="1.0"):
     api_version : string, optional
         The version of endpoints to call. May instantiate multiple client
         objects with different versions.  Currently only "1.0" is supported.
+    user_agent : str, optional
+        A custom user agent string to use for requests made by this client.
     """
     api_key = get_api_key(api_key)
-    spec = get_api_spec(api_key, api_version=api_version)
+    spec = get_api_spec(api_key, api_version=api_version, user_agent=user_agent)
     with open(cache, "wt") as _fout:
         json.dump(spec, _fout)
 
@@ -779,6 +794,7 @@ def generate_classes_maybe_cached(
     api_key,
     api_version,
     force_refresh_api_spec=False,
+    user_agent=DEFAULT_USER_AGENT,
 ):
     """Generate class objects either from /endpoints or a local cache."""
     if cache and force_refresh_api_spec:
@@ -789,7 +805,9 @@ def generate_classes_maybe_cached(
     if force_refresh_api_spec:
         generate_classes_ttl_cache.cache_clear()
     if cache is None:
-        classes = generate_classes_ttl_cache(api_key, api_version, _get_ttl_hash())
+        classes = generate_classes_ttl_cache(
+            api_key, api_version, user_agent, _get_ttl_hash()
+        )
     else:
         if isinstance(cache, OrderedDict):
             raw_spec = cache

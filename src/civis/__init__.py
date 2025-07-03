@@ -16,6 +16,8 @@ try:
 except NameError:
     _BUILDING_SPHINX_DOC = False
 
+__version__ = version("civis")
+
 
 def _lazy_import(name):
     # https://docs.python.org/3/library/importlib.html#implementing-lazy-imports
@@ -39,7 +41,7 @@ else:
     utils = _lazy_import("civis.utils")
     workflows = _lazy_import("civis.workflows")
 
-__version__ = version("civis")
+
 __all__ = [
     "__version__",
     "APIClient",

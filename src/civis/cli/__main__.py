@@ -170,8 +170,7 @@ def invoke(method, path, op, *args, **kwargs):
         url=get_base_api_url() + path.format(**kwargs),
         method=method,
     )
-    headers = get_headers({"User-Agent": CLI_USER_AGENT})
-    with open_session(get_api_key(), headers) as sess:
+    with open_session(get_api_key(), get_headers(CLI_USER_AGENT)) as sess:
         request = Request(**request_info)
         pre_request = sess.prepare_request(request)
         response = retry_request(method, pre_request, sess)
