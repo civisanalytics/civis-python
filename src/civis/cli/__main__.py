@@ -38,7 +38,7 @@ from civis.cli._cli_commands import (
     notebooks_open,
     sql_cmd,
 )
-from civis.base import open_session
+from civis.base import get_headers, open_session
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
 from civis._utils import retry_request
@@ -170,7 +170,7 @@ def invoke(method, path, op, *args, **kwargs):
         url=get_base_api_url() + path.format(**kwargs),
         method=method,
     )
-    with open_session(get_api_key(), user_agent=CLI_USER_AGENT) as sess:
+    with open_session(get_api_key(), get_headers(CLI_USER_AGENT)) as sess:
         request = Request(**request_info)
         pre_request = sess.prepare_request(request)
         response = retry_request(method, pre_request, sess)

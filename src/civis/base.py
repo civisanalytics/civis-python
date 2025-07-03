@@ -1,5 +1,5 @@
 import os
-import sys
+import platform
 import threading
 import warnings
 from concurrent import futures
@@ -29,6 +29,8 @@ for name in CANCELLED:
 
 
 DEFAULT_API_ENDPOINT = "https://api.civisanalytics.com/"
+
+DEFAULT_USER_AGENT = "civis-python"
 
 
 def tostr_urljoin(*x):
@@ -104,6 +106,20 @@ def get_base_url():
     return base_url
 
 
+def get_headers(user_agent):
+    user_agent = (
+        f"{(user_agent or DEFAULT_USER_AGENT).strip()} "
+        f"(Python {platform.python_version()}; "
+        f"civis-python {civis.__version__}; "
+        f"requests {requests.__version__})"
+    )
+    headers = {"User-Agent": user_agent}
+    job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
+    if job_id:
+        headers.update({"X-Civis-Job-ID": job_id, "X-Civis-Run-ID": run_id})
+    return headers
+
+
 class Endpoint:
 
     _lock = threading.Lock()
@@ -113,6 +129,7 @@ class Endpoint:
         self._return_type = return_type
         self._base_url = get_base_url()
         self._client = client
+        self._headers = get_headers(self._session_kwargs.get("user_agent", {}))
 
     def _build_path(self, path):
         if not path:
@@ -145,7 +162,7 @@ class Endpoint:
             if self._client._retrying is None:
                 retrying = self._session_kwargs.pop("retrying", None)
                 self._client._retrying = retrying if retrying else DEFAULT_RETRYING
-            with open_session(**self._session_kwargs) as sess:
+            with open_session(self._session_kwargs["api_key"], self._headers) as sess:
                 request = requests.Request(
                     method, url, json=data, params=params, **kwargs
                 )
@@ -300,22 +317,9 @@ class CivisAsyncResultBase(futures.Future):
         self._invoke_callbacks()
 
 
-def open_session(api_key, user_agent="civis-python"):
+def open_session(api_key, headers=None):
     """Create a new Session which can connect with the Civis API"""
-    civis_version = civis.__version__
     session = requests.Session()
     session.auth = (api_key, "")
-    session_agent = session.headers.get("User-Agent", "")
-    ver_string = "{}.{}.{}".format(
-        sys.version_info.major, sys.version_info.minor, sys.version_info.micro
-    )
-    user_agent = "{}/Python v{} Civis v{} {}".format(
-        user_agent, ver_string, civis_version, session_agent
-    )
-    headers = {"User-Agent": user_agent.strip()}
-    job_id, run_id = os.getenv("CIVIS_JOB_ID"), os.getenv("CIVIS_RUN_ID")
-    if job_id:
-        headers.update({"X-Civis-Job-ID": job_id, "X-Civis-Run-ID": run_id})
-    session.headers.update(headers)
-
+    session.headers.update(headers or {})
     return session

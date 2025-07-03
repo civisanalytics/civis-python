@@ -9,7 +9,7 @@ import pytest
 from jsonref import JsonRef
 from requests.exceptions import HTTPError
 
-from civis.base import Endpoint
+from civis.base import DEFAULT_USER_AGENT, Endpoint
 from civis.resources import _resources, API_SPEC_PATH
 from civis.resources._client_pyi import generate_client_pyi, CLIENT_PYI_PATH
 from civis.tests import create_client_mock
@@ -648,7 +648,7 @@ def test_generate_classes_maybe_cached(mock_parse, mock_gen, mock_open):
 
     # Calls generate_classes when no cache is passed
     _resources.generate_classes_maybe_cached(None, api_key, api_version)
-    mock_gen.assert_called_once_with(api_key, api_version)
+    mock_gen.assert_called_once_with(api_key, api_version, DEFAULT_USER_AGENT)
     mock_gen.reset_mock()
 
     # Handles OrderedDict
