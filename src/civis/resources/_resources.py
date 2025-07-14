@@ -636,6 +636,18 @@ def parse_path(path, operations, api_version):
     return modified_base_path, methods
 
 
+def endpoint_class_docstring(endpoint, method):
+    """Create a docstring for an endpoint class."""
+    return (
+        f"Civis API ``/{endpoint}`` endpoint:\n\n"
+        ".. code-block:: python\n\n"
+        "    import civis\n"
+        "    client = civis.APIClient()\n"
+        f"    # Call client.{endpoint}.{method}(<arguments>) to make a request, e.g.:\n"  # noqa: E501
+        f"    client.{endpoint}.{method}(...)\n"
+    )
+
+
 def parse_api_spec(api_spec, api_version):
     """Dynamically create classes to interface with the Civis API.
 
@@ -659,14 +671,7 @@ def parse_api_spec(api_spec, api_version):
         class_name = base_path.title()
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
-            cls.__doc__ = (
-                f"Civis API ``/{base_path}`` endpoint:\n\n"
-                ".. code-block:: python\n\n"
-                "    import civis\n"
-                "    client = civis.APIClient()\n"
-                f"    # Call client.{base_path}.<method>(<arguments>) to make a request, e.g.:\n"  # noqa: E501
-                f"    client.{base_path}.{methods[0][0]}(...)\n\n"
-            )
+            cls.__doc__ = endpoint_class_docstring(base_path, methods[0][0])
             classes[base_path] = cls
         for method_name, method in methods:
             setattr(classes[base_path], method_name, method)
