@@ -1749,6 +1749,888 @@ class _Clusters:
         """
         ...
 
+class _Codespaces:
+    """Civis API ``/codespaces`` endpoint:
+
+    .. code-block:: python
+
+        import civis
+        client = civis.APIClient()
+        # Call client.codespaces.post(<arguments>) to make a request, e.g.:
+        client.codespaces.post(...)
+
+    """
+
+    def post(
+        self,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseCodespacesPost:
+        """Create a Codespace
+
+        API URL: ``POST /codespaces``
+
+        Parameters
+        ----------
+        name : str, optional
+            The name of the codespace.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the codespace.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the codespace.
+                Fractional values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the the codespace.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            codespace.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the codespace.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the codespace.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the codespace.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the codespace.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the the codespace.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - codespace_id : int
+                    The ID of the owning Codespace
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                codespace.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def get(
+        self,
+        id: int,
+    ) -> _ResponseCodespacesGet:
+        """Get a Codespace
+
+        API URL: ``GET /codespaces/{id}``
+
+        Parameters
+        ----------
+        id : int
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the codespace.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the codespace.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the codespace.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the codespace.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the the codespace.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - codespace_id : int
+                    The ID of the owning Codespace
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                codespace.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def put(
+        self,
+        id: int,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseCodespacesPut:
+        """Replace all attributes of this Codespace
+
+        API URL: ``PUT /codespaces/{id}``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the codespace.
+        name : str, optional
+            The name of the codespace.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the codespace.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the codespace.
+                Fractional values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the the codespace.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            codespace.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the codespace.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the codespace.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the codespace.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the codespace.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the the codespace.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - codespace_id : int
+                    The ID of the owning Codespace
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                codespace.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def patch(
+        self,
+        id: int,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseCodespacesPatch:
+        """Update some attributes of this Codespace
+
+        API URL: ``PATCH /codespaces/{id}``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the codespace.
+        name : str, optional
+            The name of the codespace.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the codespace.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the codespace.
+                Fractional values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the the codespace.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            codespace.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the codespace.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the codespace.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the codespace.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the codespace.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the the codespace.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - codespace_id : int
+                    The ID of the owning Codespace
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                codespace.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def list_deployments(
+        self,
+        codespace_id: int,
+        *,
+        deployment_id: int | None = ...,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> Iterator[_ResponseCodespacesListDeployments]:
+        """List deployments for a Codespace
+
+        API URL: ``GET /codespaces/{codespace_id}/deployments``
+
+        Parameters
+        ----------
+        codespace_id : int
+            The ID of the owning Codespace
+        deployment_id : int, optional
+            The ID for this deployment
+        limit : int, optional
+            Number of results to return. Defaults to 20. Maximum allowed is 50.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to created_at. Must be
+            one of: created_at.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
+            determined by 'limit'. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - codespace_id : int
+                The ID of the owning Codespace
+        """
+        ...
+
+    def post_deployments(
+        self,
+        codespace_id: int,
+        *,
+        deployment_id: int | None = ...,
+    ) -> _ResponseCodespacesPostDeployments:
+        """Deploy a Codespace
+
+        API URL: ``POST /codespaces/{codespace_id}/deployments``
+
+        Parameters
+        ----------
+        codespace_id : int
+            The ID of the owning Codespace
+        deployment_id : int, optional
+            The ID for this deployment
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - display_url : str
+                A signed URL for viewing the deployed item.
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - codespace_id : int
+                The ID of the owning Codespace
+        """
+        ...
+
+    def get_deployments(
+        self,
+        codespace_id: int,
+        deployment_id: int,
+    ) -> _ResponseCodespacesGetDeployments:
+        """Get details about a Codespace deployment
+
+        API URL: ``GET /codespaces/{codespace_id}/deployments/{deployment_id}``
+
+        Parameters
+        ----------
+        codespace_id : int
+            The ID of the owning Codespace
+        deployment_id : int
+            The ID for this deployment
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - display_url : str
+                A signed URL for viewing the deployed item.
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - codespace_id : int
+                The ID of the owning Codespace
+        """
+        ...
+
+    def delete_deployments(
+        self,
+        codespace_id: int,
+        deployment_id: int,
+    ) -> Response:
+        """Delete a Codespace deployment
+
+        API URL: ``DELETE /codespaces/{codespace_id}/deployments/{deployment_id}``
+
+        Parameters
+        ----------
+        codespace_id : int
+            The ID of the owning Codespace
+        deployment_id : int
+            The ID for this deployment
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def list_deployments_logs(
+        self,
+        id: int,
+        deployment_id: int,
+        *,
+        start_at: str | None = ...,
+        end_at: str | None = ...,
+        limit: int | None = ...,
+    ) -> List[_ResponseCodespacesListDeploymentsLogs]:
+        """Get the logs for a Codespace deployment
+
+        API URL: ``GET /codespaces/{id}/deployments/{deployment_id}/logs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the owning Codespace.
+        deployment_id : int
+            The ID for this deployment.
+        start_at : str, optional
+            Log entries with a lower timestamp will be omitted.
+        end_at : str, optional
+            Log entries with a higher timestamp will be omitted.
+        limit : int, optional
+            The maximum number of log messages to return. Default of 10000.
+
+        Returns
+        -------
+        :class:`civis.ListResponse`
+            - message : str
+                The log message.
+            - stream : str
+                The stream of the log. One of "stdout", "stderr".
+            - created_at : str (date-time)
+                The time the log was created.
+            - source : str
+                The source of the log. One of "system", "user".
+        """
+        ...
+
 class _Credentials:
     """Civis API ``/credentials`` endpoint:
 
@@ -25634,6 +26516,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.notebooks.list_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.notebooks.get_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -25642,6 +26530,44 @@ class _Notebooks:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_git(
+        self,
+        id: int,
+    ) -> _ResponseNotebooksGetGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /notebooks/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -30605,6 +31531,12 @@ class _Reports:
 
         API URL: ``GET /reports/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.reports.list_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.reports.get_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -30613,6 +31545,44 @@ class _Reports:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_git(
+        self,
+        id: int,
+    ) -> _ResponseReportsGetGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /reports/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45132,6 +46102,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/sql/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.scripts.list_sql_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.scripts.get_sql_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -45140,6 +46116,44 @@ class _Scripts:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_sql_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGetSqlGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/sql/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45435,6 +46449,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.scripts.list_javascript_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.scripts.get_javascript_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -45443,6 +46463,44 @@ class _Scripts:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_javascript_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGetJavascriptGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/javascript/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45738,6 +46796,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.scripts.list_python3_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.scripts.get_python3_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -45746,6 +46810,44 @@ class _Scripts:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_python3_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGetPython3Git:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/python3/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -46041,6 +47143,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.scripts.list_r_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.scripts.get_r_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -46049,6 +47157,44 @@ class _Scripts:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_r_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsGetRGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/r/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -55256,13 +56402,15 @@ class _Tables:
         self,
         source_table_id: int,
     ) -> _ResponseTablesPostEnhancementsGeocodings:
-        """.. warning::
+        """Geocode a table
+
+        API URL: ``POST /tables/{source_table_id}/enhancements/geocodings``
+
+
+        .. warning::
 
             Warning: The tables/:source_table_id/enhancements/geocodings endpoint is deprecated and will be removed after January 1, 2021.
 
-        Geocode a table
-
-        API URL: ``POST /tables/{source_table_id}/enhancements/geocodings``
 
         Parameters
         ----------
@@ -55295,13 +56443,15 @@ class _Tables:
         output_level: str | None = ...,
         batch_size: int | None = ...,
     ) -> _ResponseTablesPostEnhancementsCassNcoa:
-        """.. warning::
+        """Standardize addresses in a table
+
+        API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
+
+
+        .. warning::
 
             Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is deprecated and will be removed after January 1, 2021.
 
-        Standardize addresses in a table
-
-        API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
 
         Parameters
         ----------
@@ -55357,13 +56507,15 @@ class _Tables:
         id: int,
         source_table_id: int,
     ) -> _ResponseTablesGetEnhancementsGeocodings:
-        """.. warning::
+        """View the status of a geocoding table enhancement
+
+        API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
+
+
+        .. warning::
 
             Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is deprecated and will be removed after January 1, 2021.
 
-        View the status of a geocoding table enhancement
-
-        API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
 
         Parameters
         ----------
@@ -55394,13 +56546,15 @@ class _Tables:
         id: int,
         source_table_id: int,
     ) -> _ResponseTablesGetEnhancementsCassNcoa:
-        """.. warning::
+        """View the status of a CASS / NCOA table enhancement
+
+        API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
+
+
+        .. warning::
 
             Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is deprecated and will be removed after January 1, 2021.
 
-        View the status of a CASS / NCOA table enhancement
-
-        API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
 
         Parameters
         ----------
@@ -55481,13 +56635,15 @@ class _Tables:
         self,
         id: int,
     ) -> _ResponseTablesPostRefresh:
-        """.. warning::
+        """Request a refresh for column and table statistics
+
+        API URL: ``POST /tables/{id}/refresh``
+
+
+        .. warning::
 
             Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan from now on.
 
-        Request a refresh for column and table statistics
-
-        API URL: ``POST /tables/{id}/refresh``
 
         Parameters
         ----------
@@ -58055,6 +59211,12 @@ class _Usage:
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
 
+
+        .. warning::
+
+            The method name ``<client>.usage.list_llm_organization_summary`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.usage.get_llm_organization_summary`` instead for the same functionality.
+
+
         Parameters
         ----------
         org_id : int
@@ -58071,6 +59233,40 @@ class _Usage:
         Returns
         -------
         :class:`civis.ListResponse`
+            - credits : float (float)
+                The number of credits used.
+            - organization_id : int
+                The organization for which LLM usage statistics are summarized.
+        """
+        ...
+
+    def get_llm_organization_summary(
+        self,
+        org_id: int,
+        *,
+        start_date: str | None = ...,
+        end_date: str | None = ...,
+    ) -> _ResponseUsageGetLlmOrganizationSummary:
+        """Get summarized usage statistics for a given organization
+
+        API URL: ``GET /usage/llm/organization/{org_id}/summary``
+
+        Parameters
+        ----------
+        org_id : int
+            The ID of the organization to get usage statistics for.
+        start_date : str, optional
+            The start date of the range to get usage statistics for."\
+            "Defaults to the start of the current month if neither start_date nor
+            end_date is specified.
+        end_date : str, optional
+            The end date of the range to get usage statistics for."\
+            "Defaults to the end of the current day if neither start_date nor end_date
+            is specified.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - credits : float (float)
                 The number of credits used.
             - organization_id : int
@@ -58500,9 +59696,90 @@ class _Users:
 
         API URL: ``GET /users/me``
 
+
+        .. warning::
+
+            The method name ``<client>.users.list_me`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.users.get_me`` instead for the same functionality.
+
+
         Returns
         -------
         :class:`civis.ListResponse`
+            - id : int
+                The ID of this user.
+            - name : str
+                This user's name.
+            - email : str
+                This user's email address.
+            - username : str
+                This user's username.
+            - initials : str
+                This user's initials.
+            - last_checked_announcements : str (date-time)
+                The date and time at which the user last checked their announcements.
+            - feature_flags : :class:`civis.Response`
+                The feature flag settings for this user.
+            - roles : List[str]
+                The roles this user has, listed by slug.
+            - preferences : :class:`civis.Response`
+                This user's preferences.
+            - custom_branding : str
+                The branding of Platform for this user.
+            - primary_group_id : int
+                The ID of the primary group of this user.
+            - groups : List[:class:`civis.Response`]
+                An array of all the groups this user is in.
+
+                - id : int
+                    The ID of this group.
+                - name : str
+                    The name of this group.
+                - slug : str
+                    The slug of this group.
+                - organization_id : int
+                    The ID of the organization associated with this group.
+                - organization_name : str
+                    The name of the organization associated with this group.
+            - organization_name : str
+                The name of the organization the user belongs to.
+            - organization_slug : str
+                The slug of the organization the user belongs to.
+            - organization_default_theme_id : int
+                The ID of the organizations's default theme.
+            - created_at : str (date-time)
+                The date and time when the user was created.
+            - sign_in_count : int
+                The number of times the user has signed in.
+            - assuming_role : bool
+                Whether the user is assuming this role or not.
+            - assuming_admin : bool
+                Whether the user is assuming admin.
+            - assuming_admin_expiration : str (date-time)
+                When the user's admin role is set to expire.
+            - superadmin_mode_expiration : str (date-time)
+                The user is in superadmin mode when set to a DateTime. The user is not
+                in superadmin mode when set to null.
+            - disable_non_compliant_fedramp_features : bool
+                Whether to disable non-compliant fedramp features.
+            - persona_role : str
+                The high-level role representing the current user's main permissions.
+            - created_by_id : int
+                The ID of the user who created this user.
+            - last_updated_by_id : int
+                The ID of the user who last updated this user.
+        """
+        ...
+
+    def get_me(
+        self,
+    ) -> _ResponseUsersGetMe:
+        """Show info about the logged-in user
+
+        API URL: ``GET /users/me``
+
+        Returns
+        -------
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -61141,6 +62418,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/git``
 
+
+        .. warning::
+
+            The method name ``<client>.workflows.list_git`` is deprecated and will be removed at civis-python v3.0.0 (no release timeline yet). Please update your code to use ``<client>.workflows.get_git`` instead for the same functionality.
+
+
         Parameters
         ----------
         id : int
@@ -61149,6 +62432,44 @@ class _Workflows:
         Returns
         -------
         :class:`civis.ListResponse`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    def get_git(
+        self,
+        id: int,
+    ) -> _ResponseWorkflowsGetGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /workflows/{id}/git``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -62714,6 +64035,292 @@ class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsCapa
 ):
     times: List[int]
     values: List[float]
+
+class _ResponseCodespacesPost(Response):
+    id: int
+    author: _ResponseCodespacesPostAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseCodespacesPostRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseCodespacesPostMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseCodespacesPostParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+
+class _ResponseCodespacesPostAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCodespacesPostRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseCodespacesPostMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesPostParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseCodespacesGet(Response):
+    id: int
+    author: _ResponseCodespacesGetAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseCodespacesGetRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseCodespacesGetMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseCodespacesGetParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+
+class _ResponseCodespacesGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCodespacesGetRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseCodespacesGetMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesGetParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseCodespacesPut(Response):
+    id: int
+    author: _ResponseCodespacesPutAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseCodespacesPutRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseCodespacesPutMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseCodespacesPutParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+
+class _ResponseCodespacesPutAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCodespacesPutRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseCodespacesPutMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesPutParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseCodespacesPatch(Response):
+    id: int
+    author: _ResponseCodespacesPatchAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseCodespacesPatchRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseCodespacesPatchMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseCodespacesPatchParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+
+class _ResponseCodespacesPatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseCodespacesPatchRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseCodespacesPatchMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesPatchParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseCodespacesListDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesPostDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesGetDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    codespace_id: int
+
+class _ResponseCodespacesListDeploymentsLogs(Response):
+    message: str
+    stream: str
+    created_at: str
+    source: str
 
 class _ResponseCredentialsListTypes(Response):
     types: List[str]
@@ -71045,6 +72652,20 @@ class _ResponseNotebooksListGitGitRepo(Response):
     created_at: str
     updated_at: str
 
+class _ResponseNotebooksGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseNotebooksGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseNotebooksGetGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseNotebooksPutGit(Response):
     git_ref: str
     git_branch: str
@@ -73520,6 +75141,20 @@ class _ResponseReportsListGit(Response):
     pull_from_git: bool
 
 class _ResponseReportsListGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseReportsGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseReportsGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseReportsGetGitGitRepo(Response):
     id: int
     repo_url: str
     created_at: str
@@ -78385,6 +80020,20 @@ class _ResponseScriptsListSqlGitGitRepo(Response):
     created_at: str
     updated_at: str
 
+class _ResponseScriptsGetSqlGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetSqlGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetSqlGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseScriptsPutSqlGit(Response):
     git_ref: str
     git_branch: str
@@ -78452,6 +80101,20 @@ class _ResponseScriptsListJavascriptGit(Response):
     pull_from_git: bool
 
 class _ResponseScriptsListJavascriptGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsGetJavascriptGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetJavascriptGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetJavascriptGitGitRepo(Response):
     id: int
     repo_url: str
     created_at: str
@@ -78529,6 +80192,20 @@ class _ResponseScriptsListPython3GitGitRepo(Response):
     created_at: str
     updated_at: str
 
+class _ResponseScriptsGetPython3Git(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetPython3GitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetPython3GitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseScriptsPutPython3Git(Response):
     git_ref: str
     git_branch: str
@@ -78596,6 +80273,20 @@ class _ResponseScriptsListRGit(Response):
     pull_from_git: bool
 
 class _ResponseScriptsListRGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
+class _ResponseScriptsGetRGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetRGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetRGitGitRepo(Response):
     id: int
     repo_url: str
     created_at: str
@@ -83515,6 +85206,10 @@ class _ResponseUsageListLlmOrganizationSummary(Response):
     credits: float
     organization_id: int
 
+class _ResponseUsageGetLlmOrganizationSummary(Response):
+    credits: float
+    organization_id: int
+
 class _ResponseUsageLimitsListMatching(Response):
     id: int
     organization_id: int
@@ -83642,6 +85337,40 @@ class _ResponseUsersListMe(Response):
     last_updated_by_id: int
 
 class _ResponseUsersListMeGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersGetMe(Response):
+    id: int
+    name: str
+    email: str
+    username: str
+    initials: str
+    last_checked_announcements: str
+    feature_flags: dict
+    roles: List[str]
+    preferences: dict
+    custom_branding: str
+    primary_group_id: int
+    groups: List[_ResponseUsersGetMeGroups]
+    organization_name: str
+    organization_slug: str
+    organization_default_theme_id: int
+    created_at: str
+    sign_in_count: int
+    assuming_role: bool
+    assuming_admin: bool
+    assuming_admin_expiration: str
+    superadmin_mode_expiration: str
+    disable_non_compliant_fedramp_features: bool
+    persona_role: str
+    created_by_id: int
+    last_updated_by_id: int
+
+class _ResponseUsersGetMeGroups(Response):
     id: int
     name: str
     slug: str
@@ -84468,6 +86197,20 @@ class _ResponseWorkflowsListGitGitRepo(Response):
     created_at: str
     updated_at: str
 
+class _ResponseWorkflowsGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseWorkflowsGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseWorkflowsGetGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseWorkflowsPutGit(Response):
     git_ref: str
     git_branch: str
@@ -84917,6 +86660,7 @@ class APIClient:
     aliases = _Aliases()
     announcements = _Announcements()
     clusters = _Clusters()
+    codespaces = _Codespaces()
     credentials = _Credentials()
     databases = _Databases()
     endpoints = _Endpoints()
