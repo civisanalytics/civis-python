@@ -69,6 +69,7 @@ def query_civis(
     )
 
 
+# TODO: Update Sphinx links with civis.resources._resources.
 def transfer_table(
     source_db,
     dest_db,

@@ -107,6 +107,7 @@ from civis.response import ListResponse, PaginatedResponse, Response
                         ):
                             method_def += "        *,\n"
                             asterisk_added = True
+                        # TODO: ... shows up as Ellipsis in Sphinx docs -- workaround?
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
                     return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
