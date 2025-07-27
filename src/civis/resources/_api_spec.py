@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import defaultdict
 from inspect import signature, isfunction
 
@@ -35,11 +37,11 @@ def _get_methods(cls) -> dict:
 
 
 def _compare(reference: dict, compared: dict) -> tuple[dict, dict]:
-    new = {
+    new: dict = {
         "endpoints": set(),
         "methods": defaultdict(set),
     }
-    changed = {
+    changed: dict = {
         "method parameters": defaultdict(set),
         "method docstrings": defaultdict(set),
     }

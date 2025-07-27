@@ -1645,7 +1645,7 @@ def _check_column_types(files: List[_File]):
     err_msgs: List[str] = []
 
     for i, cols in enumerate(cols_by_col, 1):
-        col_name = next((c.get("name") for c in cols if c.get("name")), f"column_{i}")
+        col_name = next((c["name"] for c in cols if c.get("name")), f"column_{i}")
 
         sql_base_types = [col["sql_type"].split("(", 1)[0].upper() for col in cols]
         err_msg = _err_msg_if_inconsistent(sql_base_types, files)

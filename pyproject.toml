@@ -46,12 +46,15 @@ dev-core = [
     "black == 25.1.0",
     "build == 1.2.2",
     "flake8 == 7.2.0",
+    "mypy == 1.17.0",
     "pandas == 2.3.0",
     "pip-audit",  # Install the latest version.
     "polars == 1.31.0",
     "pytest == 8.4.0",
     "pytest-cov == 6.2.1",
     "twine == 6.1.0",
+    # Install the latest version for stub packages.
+    "types-jsonschema",
 ]
 dev-civisml = [
     "feather-format == 0.4.1",
@@ -75,3 +78,20 @@ civis = ["resources/*.json", "py.typed", "**/*.pyi"]
 [tool.pytest.ini_options]
 addopts = "--strict-markers -vv --cov=src/civis"
 testpaths = ["tests"]
+
+[tool.mypy]
+exclude = [
+    "docs",
+    "src/civis/ml/",
+    "src/civis/parallel.py",
+    "src/civis/run_joblib_func.py",
+    "src/civis/service_client.py",
+    "tests",
+    "tools",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "jsonref.*",
+]
+ignore_missing_imports = true

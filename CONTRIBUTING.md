@@ -64,7 +64,7 @@ Follow these steps each time you plan to make a pull request to civis-python:
 3. Create a feature branch (`git checkout -b my-new-feature`).
 4. Make your change. Don't forget adding or updating tests (under `tests/`).
 5. Make sure the test suite, including your new tests, passes
-   (`pytest && flake8 src tools tests && black --check src tools tests`).
+   (`pytest && flake8 src tools tests && black --check src tools tests && mypy src`).
 6. Commit your changes (`git commit -am 'Add some feature'`).
 7. Push to a branch on GitHub:
 

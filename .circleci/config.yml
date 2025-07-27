@@ -89,6 +89,11 @@ workflows:
             pip install --progress-bar off -e ".[dev-core]" && \
             flake8 src tools tests docs/conf.py
       - pre-build:
+          name: mypy
+          command-run: |
+            pip install --progress-bar off -e ".[dev-core]" && \
+            mypy src
+      - pre-build:
           name: pip-audit
           command-run: |
             pip install --progress-bar off -r docs/requirements.txt && \
@@ -107,6 +112,7 @@ workflows:
             - bandit
             - black
             - flake8
+            - mypy
             - pip-audit
             - twine
           matrix:
@@ -117,5 +123,6 @@ workflows:
             - bandit
             - black
             - flake8
+            - mypy
             - pip-audit
             - twine

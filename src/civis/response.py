@@ -337,7 +337,7 @@ def _pprint_response(self, object, stream, indent, allowance, context, level):
     write("})")
 
 
-pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response
+pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response  # type: ignore
 
 
 T_Response = TypeVar("T_Response", bound=Response)
