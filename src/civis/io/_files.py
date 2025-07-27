@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 import concurrent.futures as cf
 import io
@@ -11,6 +13,7 @@ import re
 import shutil
 from tempfile import TemporaryDirectory
 import time
+from typing import Any, IO, Literal, overload
 
 import requests
 from requests import HTTPError
@@ -195,7 +198,13 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     return file_response.id
 
 
-def file_to_civis(buf, name=None, expires_at="DEFAULT", description=None, client=None):
+def file_to_civis(
+    buf: IO | str,
+    name: str | None = None,
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
+) -> int:
     """Upload a file to Civis.
 
     Parameters
@@ -336,7 +345,7 @@ def _file_to_civis(buf, name, expires_at, description, client):
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
 
-def civis_to_file(file_id, buf, client=None):
+def civis_to_file(file_id: int, buf: IO | str, client: APIClient | None = None) -> None:
     """Download a file from Civis.
 
     Parameters
@@ -407,7 +416,13 @@ def _civis_to_file(file_id, buf, client=None):
     _download_url_to_buf()
 
 
-def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
+def file_id_from_run_output(
+    name: str,
+    job_id: int,
+    run_id: int,
+    regex: bool = False,
+    client: APIClient | None = None,
+) -> int:
     """Find the file ID of a File run output with the name "name"
 
     The run output is required to have type "File".
@@ -484,9 +499,33 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
     return obj["object_id"]
 
 
+@overload
 def file_to_dataframe(
-    file_id, return_as="pandas", compression="infer", client=None, **read_kwargs
-):
+    file_id: int,
+    return_as: Literal["pandas"],
+    compression: str = "infer",
+    client: APIClient | None = None,
+    **read_kwargs,
+) -> pd.DataFrame: ...
+
+
+@overload
+def file_to_dataframe(
+    file_id: int,
+    return_as: Literal["polars"],
+    compression: str = "infer",
+    client: APIClient | None = None,
+    **read_kwargs,
+) -> pl.DataFrame: ...
+
+
+def file_to_dataframe(
+    file_id: int,
+    return_as: str = "pandas",
+    compression: str = "infer",
+    client: APIClient | None = None,
+    **read_kwargs,
+) -> pd.DataFrame | pl.DataFrame:
     """Load a dataframe from a CSV stored in a Civis File.
 
     The dataframe will be read directly from Civis
@@ -550,19 +589,19 @@ def file_to_dataframe(
             compression = comp_exts[ext]
 
     if return_as == "pandas":
-        return pd.read_csv(file_url, compression=compression, **read_kwargs)
+        return pd.read_csv(file_url, compression=compression, **read_kwargs)  # type: ignore  # noqa: E501
     else:
         return pl.read_csv(file_url, **read_kwargs)
 
 
 def dataframe_to_file(
-    df,
-    name="data.csv",
-    expires_at="DEFAULT",
-    description=None,
-    client=None,
+    df: pd.DataFrame | pl.DataFrame,
+    name: str = "data.csv",
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
     **to_csv_kws,
-):
+) -> int:
     """Store a dataframe as a CSV in Civis Platform.
 
     Parameters
@@ -608,9 +647,9 @@ def dataframe_to_file(
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
         if (df_lib := df.__module__.split(".")[0]) == "pandas":
-            df.to_csv(path, **to_csv_kws)
+            df.to_csv(path, **to_csv_kws)  # type: ignore
         elif df_lib == "polars":
-            df.write_csv(path, **to_csv_kws)
+            df.write_csv(path, **to_csv_kws)  # type: ignore
         else:
             raise ValueError(
                 f"unsuppported dataframe library {df_lib!r} "
@@ -621,7 +660,7 @@ def dataframe_to_file(
     return fid
 
 
-def file_to_json(file_id, client=None, **json_kwargs):
+def file_to_json(file_id: int, client: APIClient | None = None, **json_kwargs) -> Any:
     """Restore JSON stored in a Civis File
 
     Parameters
@@ -652,13 +691,13 @@ def file_to_json(file_id, client=None, **json_kwargs):
 
 
 def json_to_file(
-    obj,
-    name="file.json",
-    expires_at="DEFAULT",
-    description=None,
-    client=None,
+    obj: Any,
+    name: str = "file.json",
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
     **json_kwargs,
-):
+) -> int:
     """Store a JSON-serializable object in a Civis File
 
     Parameters

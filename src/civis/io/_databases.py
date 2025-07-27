@@ -1,21 +1,24 @@
+from __future__ import annotations
+
 import logging
 
 from civis import APIClient
 from civis.io._utils import maybe_get_random_name
 from civis.futures import CivisFuture
 
+
 log = logging.getLogger(__name__)
 
 
 def query_civis(
-    sql,
-    database,
-    client=None,
-    credential_id=None,
-    preview_rows=10,
-    polling_interval=None,
-    hidden=True,
-):
+    sql: str,
+    database: int | str,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    preview_rows: int = 10,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
+) -> CivisFuture:
     """Execute a SQL statement as a Civis query.
 
     Run a query that may return no results or where only a small
@@ -71,17 +74,17 @@ def query_civis(
 
 # TODO: Update Sphinx links with civis.resources._resources.
 def transfer_table(
-    source_db,
-    dest_db,
-    source_table,
-    dest_table,
-    job_name=None,
-    client=None,
-    source_credential_id=None,
-    dest_credential_id=None,
-    polling_interval=None,
+    source_db: int | str,
+    dest_db: int | str,
+    source_table: str,
+    dest_table: str,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    source_credential_id: int | None = None,
+    dest_credential_id: int | None = None,
+    polling_interval: int | float | None = None,
     **advanced_options,
-):
+) -> CivisFuture:
     """Transfer a table from one location to another.
 
     Parameters
