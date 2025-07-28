@@ -53,7 +53,10 @@ dev-core = [
     "pytest-cov == 6.2.1",
     "twine == 6.1.0",
     # Install the latest version for stub packages.
+    "pandas-stubs",
     "types-jsonschema",
+    "types-PyYAML",
+    "types-requests",
 ]
 dev-civisml = [
     "feather-format == 0.4.1",
