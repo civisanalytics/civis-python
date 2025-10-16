@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Updated documentation for the `preview_rows` argument of `civis.io.query_civis` to
+  have the correct maximum of 1000. (#523)
+
 ### Security
 
 ## 2.7.1 - 2025-07-03
