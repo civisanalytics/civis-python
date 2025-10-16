@@ -35,7 +35,7 @@ def query_civis(
         The ID of the database credential. If ``None``, the default
         credential will be used.
     preview_rows : int, optional
-        The maximum number of rows to return. No more than 100 rows can be
+        The maximum number of rows to return. No more than 1000 rows can be
         returned at once.
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
