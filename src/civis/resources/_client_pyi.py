@@ -52,6 +52,8 @@ from collections import OrderedDict
 from collections.abc import Iterator
 from typing import Any, List
 
+import tenacity
+
 from civis.response import Response
 
 """
