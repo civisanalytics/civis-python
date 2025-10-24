@@ -81,6 +81,11 @@ class APIClient:
             )
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
+        if retries is not None and not isinstance(retries, tenacity.Retrying):
+            raise TypeError(
+                "If provided, the `retries` parameter must be "
+                "a tenacity.Retrying instance."
+            )
         self._session_kwargs = {
             "api_key": session_auth_key,
             "retrying": retries,
