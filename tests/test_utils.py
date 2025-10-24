@@ -1,4 +1,3 @@
-import copy
 import concurrent.futures as cf
 from datetime import datetime
 from math import floor
@@ -8,12 +7,12 @@ import tenacity
 from requests import Request
 from requests import ConnectionError
 
-from civis._utils import retry_request, DEFAULT_RETRYING
+from civis._utils import retry_request, _get_default_retrying
 from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 
 def _get_retrying(retries: int):
-    retrying = copy.copy(DEFAULT_RETRYING)
+    retrying = _get_default_retrying()
     stop = tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(retries)
     retrying.stop = stop
     return retrying

@@ -22,13 +22,16 @@ tenacity.Retrying(
 )
 """
 
-# Explicitly set the available globals and locals
-# to mitigate risk of unwanted code execution
-DEFAULT_RETRYING = eval(  # nosec
-    DEFAULT_RETRYING_STR,
-    {"tenacity": tenacity, "__builtins__": {}},  # globals
-    {},  # locals
-)
+
+def _get_default_retrying():
+    """Return a new instance of the default tenacity.Retrying."""
+    # Explicitly set the available globals and locals
+    # to mitigate risk of unwanted code execution
+    return eval(  # nosec
+        DEFAULT_RETRYING_STR,
+        {"tenacity": tenacity, "__builtins__": {}},  # globals
+        {},  # locals
+    )
 
 
 def get_api_key(api_key):
@@ -48,7 +51,10 @@ def get_api_key(api_key):
 
 def retry_request(method, prepared_req, session, retrying=None):
     retry_conditions = None
-    retrying = retrying if retrying else DEFAULT_RETRYING
+
+    # New tenacity.Retrying instance needed, whether it's a copy of the user-provided
+    # one or it's one based on civis-python's default settings.
+    retrying = retrying.copy() if retrying else _get_default_retrying()
 
     def _make_request(req, sess):
         """send the prepared session request"""

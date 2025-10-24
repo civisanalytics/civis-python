@@ -107,11 +107,6 @@ class APIClient:
                 cls(self._session_kwargs, client=self, return_type=return_type),
             )
 
-        # Don't create the `tenacity.Retrying` instance until we make the first
-        # API call with this `APIClient` instance.
-        # Once that happens, we keep re-using this `tenacity.Retrying` instance.
-        self._retrying = None
-
     @property
     def feature_flags(self):
         """The feature flags for the current user.
