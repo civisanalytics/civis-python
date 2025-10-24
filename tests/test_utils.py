@@ -237,3 +237,45 @@ def test_retry_respect_retry_after_headers():
     all_verbs = [v for v in (verbs + [v.lower() for v in verbs])]
     with cf.ThreadPoolExecutor() as executor:
         executor.map(_retry_respect_retry_after_headers, all_verbs)
+
+
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_no_recursion_on_reused_retrying_without_retry_after(m_sleep):
+    """Test that reusing the same retrying object doesn't cause recursion.
+
+    This simulates the real-world scenario where an APIClient reuses the same
+    tenacity.Retrying instance across multiple API calls. Without proper
+    guards, the wait strategy gets wrapped repeatedly, causing infinite
+    recursion when Retry-After header is missing.
+    """
+    max_calls = 3
+    api_response = {"key": "value"}
+    mock_session = mock.MagicMock()
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+    session_context.send.return_value.status_code = 429
+    # No Retry-After header - this triggers the fallback behavior
+    session_context.send.return_value.headers = {}
+
+    # Create a single retrying instance that will be reused
+    retrying = _get_retrying(max_calls)
+
+    # Simulate multiple API calls using the same retrying object
+    # In the real SDK, this happens when APIClient._retrying is reused
+    # We need enough calls to create a deep nesting that exceeds recursion limit
+    for i in range(1000):  # 1000 consecutive API calls to trigger deep recursion
+        request_info = dict(
+            params={"call_number": str(i)},
+            json={},
+            url="https://api.civisanalytics.com/test",
+            method="GET",
+        )
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+
+        # This should not cause recursion even after multiple calls
+        retry_request("GET", pre_request, session_context, retrying)
+
+    # Verify that all calls completed without recursion error
+    # Each call should have attempted max_calls times
+    assert session_context.send.call_count == max_calls * 1000
