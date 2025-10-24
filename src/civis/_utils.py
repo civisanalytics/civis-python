@@ -66,7 +66,11 @@ def retry_request(method, prepared_req, session, retrying=None):
 
     if retry_conditions:
         retrying.retry = retry_conditions
-        retrying.wait = wait_for_retry_after_header(fallback=retrying.wait)
+        # Only wrap the wait strategy if it hasn't been wrapped already.
+        # This prevents infinite recursion when the same retrying object
+        # is reused across multiple API calls (which is the normal case).
+        if not isinstance(retrying.wait, wait_for_retry_after_header):
+            retrying.wait = wait_for_retry_after_header(fallback=retrying.wait)
         response = retrying(_make_request, prepared_req, session)
         return response
 
