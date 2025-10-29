@@ -22,7 +22,7 @@ tenacity.Retrying(
 """
 
 
-def _get_default_retrying():
+def get_default_retrying():
     """Return a new instance of the default tenacity.Retrying."""
     # Explicitly set the available globals and locals
     # to mitigate risk of unwanted code execution
@@ -38,7 +38,7 @@ def retry_request(method, prepared_req, session, retrying=None):
 
     # New tenacity.Retrying instance needed, whether it's a copy of the user-provided
     # one or it's one based on civis-python's default settings.
-    retrying = retrying.copy() if retrying else _get_default_retrying()
+    retrying = retrying.copy() if retrying else get_default_retrying()
 
     def _make_request(req, sess):
         """send the prepared session request"""

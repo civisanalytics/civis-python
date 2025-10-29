@@ -14,6 +14,7 @@ import webbrowser
 import civis
 from civis.io import file_to_civis, civis_to_file
 from civis.utils import job_logs
+from civis._retries import get_default_retrying
 
 
 # From http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=CIVIS
@@ -243,8 +244,10 @@ def notebooks_download_cmd(notebook_id, path):
     """Download a notebook to a specified local path."""
     client = civis.APIClient()
     info = client.notebooks.get(notebook_id)
-    response = requests.get(info["notebook_url"], stream=True, timeout=60)
-    response.raise_for_status()
+    for attempt in get_default_retrying():
+        with attempt:
+            response = requests.get(info["notebook_url"], stream=True, timeout=60)
+            response.raise_for_status()
     chunk_size = 32 * 1024
     chunked = response.iter_content(chunk_size)
     with open(path, "wb") as f:

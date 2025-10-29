@@ -23,6 +23,7 @@ from civis.futures import CivisFuture
 from civis.io import civis_to_file, file_to_civis
 from civis.utils import run_job
 from civis._deprecation import DeprecatedKwargDefault
+from civis._retries import get_default_retrying
 
 import requests
 
@@ -474,8 +475,10 @@ def read_civis_sql(
         kwargs["encoding"] = encoding
         data = pl.read_csv(url, **kwargs)
     else:
-        response = requests.get(url, stream=True, timeout=60)
-        response.raise_for_status()
+        for attempt in get_default_retrying():
+            with attempt:
+                response = requests.get(url, stream=True, timeout=60)
+                response.raise_for_status()
 
         with io.StringIO() as buf:
             _decompress_stream(
@@ -1430,8 +1433,10 @@ def _decompress_stream(response, buf, write_bytes=True, encoding="utf-8"):
 
 
 def _download_file(url, local_path, headers, compression):
-    response = requests.get(url, stream=True, timeout=60)
-    response.raise_for_status()
+    for attempt in get_default_retrying():
+        with attempt:
+            response = requests.get(url, stream=True, timeout=60)
+            response.raise_for_status()
 
     # gzipped buffers can be concatenated so write headers as gzip
     if compression == "gzip":

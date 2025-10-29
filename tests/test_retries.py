@@ -7,12 +7,12 @@ import tenacity
 from requests import Request
 from requests import ConnectionError
 
-from civis._retries import retry_request, _get_default_retrying
+from civis._retries import retry_request, get_default_retrying
 from civis._retries import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 
 def _get_retrying(retries: int):
-    retrying = _get_default_retrying()
+    retrying = get_default_retrying()
     stop = tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(retries)
     retrying.stop = stop
     return retrying
