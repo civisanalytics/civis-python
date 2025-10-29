@@ -116,14 +116,15 @@ def _single_upload(buf, name, client, **kwargs):
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
         # which can't be streamed with using requests-toolbelt anyway
-        for attempt in get_default_retrying():
-            with attempt:
-                response = requests.post(url, files=form_key, timeout=60)
-                if not response.ok:
-                    msg = _get_aws_error_message(response)
-                    raise HTTPError(msg, response=response)
+        response = requests.post(url, files=form_key, timeout=60)
 
-    _post()
+        if not response.ok:
+            msg = _get_aws_error_message(response)
+            raise HTTPError(msg, response=response)
+
+    for attempt in get_default_retrying():
+        with attempt:
+            _post()
 
     log.debug("Uploaded File %d", file_response.id)
     return file_response.id
@@ -159,15 +160,15 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         with open(file_path, "rb") as fin:
             fin.seek(offset)
             partial_buf = _BufferedPartialReader(fin, num_bytes)
+            part_response = requests.put(part_url, data=partial_buf, timeout=60)
 
-            for attempt in get_default_retrying():
-                with attempt:
-                    part_response = requests.put(part_url, data=partial_buf, timeout=60)
-                    if not part_response.ok:
-                        msg = _get_aws_error_message(part_response)
-                        raise HTTPError(msg, response=part_response)
+        if not part_response.ok:
+            msg = _get_aws_error_message(part_response)
+            raise HTTPError(msg, response=part_response)
 
         log.debug("Completed upload of file part %s", part_num)
+
+    _upload_part_base = get_default_retrying().wraps(_upload_part_base)
 
     _upload_part = partial(
         _upload_part_base,
@@ -391,15 +392,15 @@ def _civis_to_file(file_id, buf, client=None):
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
 
-        for attempt in get_default_retrying():
-            with attempt:
-                response = requests.get(url, stream=True, timeout=60)
-                response.raise_for_status()
+        response = requests.get(url, stream=True, timeout=60)
+        response.raise_for_status()
         chunked = response.iter_content(CHUNK_SIZE)
         for lines in chunked:
             buf.write(lines)
 
-    _download_url_to_buf()
+    for attempt in get_default_retrying():
+        with attempt:
+            _download_url_to_buf()
 
 
 def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
