@@ -72,7 +72,7 @@ def retry_request(method, prepared_req, session, retrying=None):
 
     if retry_conditions:
         retrying.retry = retry_conditions
-        retrying.wait = wait_for_retry_after_header(fallback=retrying.wait)
+        retrying.wait = wait_for_retry_after_header(base=retrying.wait)
         response = retrying(_make_request, prepared_req, session)
         return response
 
@@ -81,24 +81,22 @@ def retry_request(method, prepared_req, session, retrying=None):
 
 
 class wait_for_retry_after_header(wait_base):
-    """Wait strategy that first looks for Retry-After header. If not
-    present it uses the fallback strategy as the wait param"""
+    """Wait strategy that adds the Retry-After (if present from response header)
+    to the base wait strategy."""
 
-    def __init__(self, fallback):
-        self.fallback = fallback
+    def __init__(self, base):
+        self.base = base
 
     def __call__(self, retry_state):
         # retry_state is an instance of tenacity.RetryCallState.
         # The .outcome property contains the result/exception
         # that came from the underlying function.
-        result_headers = retry_state.outcome._result.headers
-        retry_after = result_headers.get("Retry-After") or result_headers.get(
-            "retry-after"
-        )
+        headers = retry_state.outcome._result.headers
 
         try:
-            log.info("Retrying after {} seconds".format(retry_after))
-            return int(retry_after)
+            retry_after = float(
+                headers.get("Retry-After") or headers.get("retry-after") or "0.0"
+            )
         except (TypeError, ValueError):
-            pass
-        return self.fallback(retry_state)
+            retry_after = 0.0
+        return retry_after + self.base(retry_state)
