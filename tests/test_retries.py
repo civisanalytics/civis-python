@@ -3,6 +3,7 @@ from datetime import datetime
 from math import floor
 from unittest import mock
 
+import pytest
 import tenacity
 from requests import Request
 from requests import ConnectionError
@@ -236,3 +237,43 @@ def test_retry_respect_retry_after_headers():
     all_verbs = [v for v in (verbs + [v.lower() for v in verbs])]
     with cf.ThreadPoolExecutor() as executor:
         executor.map(_retry_respect_retry_after_headers, all_verbs)
+
+
+@pytest.mark.parametrize(
+    "retrying, max_calls",
+    [
+        # Simulate a user-provided tenacity.Retrying with limited max attempts.
+        (_get_retrying(3), 3),
+        # No user-provided tenacity.Retrying. Use civis-python's default retrying.
+        (None, 10),
+    ],
+)
+@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
+def test_no_recursion_in_retry_request(m_sleep, retrying, max_calls):
+    """Test that retry_request (used inside civis.APIClient) doesn't cause recursion."""
+
+    api_response = {"key": "value"}
+    mock_session = mock.MagicMock()
+    session_context = mock_session.return_value.__enter__.return_value
+    session_context.send.return_value.json.return_value = api_response
+    session_context.send.return_value.status_code = 429
+    session_context.send.return_value.headers = {}
+
+    # Simulate multiple API calls using the same `retrying` object.
+    iterations = 1001  # 1001 consecutive API calls to trigger deep recursion
+    for i in range(iterations):
+        request_info = dict(
+            params={"call_number": str(i)},
+            json={},
+            url="https://api.civisanalytics.com/test",
+            method="GET",
+        )
+        request = Request(**request_info)
+        pre_request = session_context.prepare_request(request)
+
+        # This should not cause recursion even after multiple calls
+        retry_request("GET", pre_request, session_context, retrying)
+
+    # Verify that all calls completed without recursion error
+    # Each call should have attempted max_calls times
+    assert session_context.send.call_count == max_calls * iterations

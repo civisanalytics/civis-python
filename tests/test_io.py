@@ -14,7 +14,6 @@ import zipfile
 
 import pytest
 import requests
-from requests import ConnectionError, ConnectTimeout
 
 try:
     import pandas as pd
@@ -33,7 +32,6 @@ except ImportError:
 import civis
 from civis.io import _files
 from civis._deprecation import DeprecatedKwargDefault
-from civis.io._files import _retry
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name
 from civis.response import Response
@@ -1717,74 +1715,6 @@ def test_read_civis_sql_polars():
             polling_interval=POLL_INTERVAL,
         )
         assert pl.read_csv(io.StringIO(expected_data)).equals(actual_data)
-
-
-def test_io_no_retry():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def succeeds():
-        counter["i"] += 1
-        return "success"
-
-    counter = dict(i=0)
-    test_result = succeeds()
-
-    assert test_result == "success"
-    assert counter["i"] == 1
-
-
-def test_io_retry_once():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def fails_once():
-        counter["i"] += 1
-        if counter["i"] < 2:
-            raise ConnectionError("failed")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = fails_once()
-
-    assert test_result == "success"
-    assert counter["i"] == 2
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_limit_reached(m_sleep):
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def always_fails():
-        counter["i"] += 1
-        raise ConnectionError("failed")
-
-    counter = dict(i=0)
-    pytest.raises(ConnectionError, always_fails)
-    assert counter["i"] == 5
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_multiple_exceptions(m_sleep):
-    @_retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
-    def raise_multiple_exceptions():
-        counter["i"] += 1
-        if counter["i"] == 1:
-            raise ConnectionError("one error")
-        elif counter["i"] == 2:
-            raise requests.ConnectTimeout("another error")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = raise_multiple_exceptions()
-
-    assert test_result == "success"
-    assert counter["i"] == 3
-
-
-def test_io_retry_unexpected_exception():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def raise_unexpected_error():
-        raise ValueError("unexpected error")
-
-    pytest.raises(ValueError, raise_unexpected_error)
 
 
 @mock.patch("civis.io._utils.uuid")
