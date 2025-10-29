@@ -6,17 +6,16 @@ import json
 import logging
 import math
 import os
-from random import random
 import re
 import shutil
 from tempfile import TemporaryDirectory
-import time
 
 import requests
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
+from civis._retries import get_default_retrying
 
 try:
     import pandas as pd
@@ -114,7 +113,6 @@ def _single_upload(buf, name, client, **kwargs):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @_retry(RETRY_EXCEPTIONS)
     def _post():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -123,11 +121,12 @@ def _single_upload(buf, name, client, **kwargs):
         # requests will not stream multipart/form-data, but _single_upload
         # is only used for small file objects or non-seekable file objects
         # which can't be streamed with using requests-toolbelt anyway
-        response = requests.post(url, files=form_key, timeout=60)
-
-        if not response.ok:
-            msg = _get_aws_error_message(response)
-            raise HTTPError(msg, response=response)
+        for attempt in get_default_retrying():
+            with attempt:
+                response = requests.post(url, files=form_key, timeout=60)
+                if not response.ok:
+                    msg = _get_aws_error_message(response)
+                    raise HTTPError(msg, response=response)
 
     _post()
 
@@ -156,8 +155,6 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     if num_parts != len(urls):
         raise ValueError(f"There are {num_parts} file parts but only {len(urls)} urls")
 
-    # upload function wrapped with a retry decorator
-    @_retry(RETRY_EXCEPTIONS)
     def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
         offset = part_size * part_num
@@ -167,11 +164,13 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         with open(file_path, "rb") as fin:
             fin.seek(offset)
             partial_buf = _BufferedPartialReader(fin, num_bytes)
-            part_response = requests.put(part_url, data=partial_buf, timeout=60)
 
-        if not part_response.ok:
-            msg = _get_aws_error_message(part_response)
-            raise HTTPError(msg, response=part_response)
+            for attempt in get_default_retrying():
+                with attempt:
+                    part_response = requests.put(part_url, data=partial_buf, timeout=60)
+                    if not part_response.ok:
+                        msg = _get_aws_error_message(part_response)
+                        raise HTTPError(msg, response=part_response)
 
         log.debug("Completed upload of file part %s", part_num)
 
@@ -393,13 +392,14 @@ def _civis_to_file(file_id, buf, client=None):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @_retry(RETRY_EXCEPTIONS)
     def _download_url_to_buf():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
 
-        response = requests.get(url, stream=True, timeout=60)
-        response.raise_for_status()
+        for attempt in get_default_retrying():
+            with attempt:
+                response = requests.get(url, stream=True, timeout=60)
+                response.raise_for_status()
         chunked = response.iter_content(CHUNK_SIZE)
         for lines in chunked:
             buf.write(lines)
@@ -728,53 +728,3 @@ class _BufferedPartialReader:
         data = self.buf.read(bytes_to_read)
         self.bytes_read += len(data)
         return data
-
-
-def _retry(exceptions, retries=5, delay=0.5, backoff=2):
-    """
-    Retry decorator
-
-    Parameters
-    ----------
-    exceptions: Exception
-        exceptions to trigger retry
-    retries: int, optional
-        number of retries to perform
-    delay: float, optional
-        delay before next retry
-    backoff: int, optional
-        factor used to calculate the exponential increase
-        delay after each retry
-
-    Returns
-    -------
-    retry decorator
-
-    Raises
-    ------
-    exception raised by decorator function
-    """
-
-    def deco_retry(f):
-        def f_retry(*args, **kwargs):
-            n_failed = 0
-            new_delay = delay
-            while True:
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as exc:
-                    if n_failed < retries:
-                        n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
-                        log.debug(msg)
-                        time.sleep(new_delay)
-                        new_delay = min(
-                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
-                            50 + 10 * random(),  # nosec
-                        )
-                    else:
-                        raise exc
-
-        return f_retry
-
-    return deco_retry
