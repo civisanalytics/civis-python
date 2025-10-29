@@ -18,6 +18,7 @@ tenacity.Retrying(
     wait=tenacity.wait_random_exponential(multiplier=2, max=60),
     stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(10)),
     retry_error_callback=lambda retry_state: retry_state.outcome.result(),
+    reraise=True,
 )
 """
 
@@ -39,6 +40,10 @@ def retry_request(method, prepared_req, session, retrying=None):
     # New tenacity.Retrying instance needed, whether it's a copy of the user-provided
     # one or it's one based on civis-python's default settings.
     retrying = retrying.copy() if retrying else get_default_retrying()
+
+    # If retries are exhausted,
+    # raise the last exception encountered, not tenacity's RetryError.
+    retrying.reraise = True
 
     def _make_request(req, sess):
         """send the prepared session request"""
