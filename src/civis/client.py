@@ -60,6 +60,9 @@ class APIClient:
         please note that you should leave the ``retry`` attribute unspecified,
         because the conditions under which retries apply are pre-determined
         -- see :ref:`retries` for details.
+        In addition, the ``reraise`` attribute will be overridden to ``True``
+        to raise the last exception (rather than tenacity's `RetryError`)
+        if all retry attempts are exhausted.
     user_agent : str, optional
         A custom user agent string to use for requests made by this client.
         The user agent string will be appended with the Python version,

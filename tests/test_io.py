@@ -1414,6 +1414,14 @@ def test_civis_to_file_retries(mock_requests):
     )
 
 
+def test_file_single_upload_retries():
+    ...  # TODO
+
+
+def test_file_multipart_upload_retries():
+    ...  # TODO
+
+
 @pytest.mark.parametrize("input_filename", ["newname", None])
 @mock.patch.object(_files, "requests", autospec=True)
 def test_file_to_civis(mock_requests, input_filename):
