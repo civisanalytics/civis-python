@@ -10,7 +10,7 @@ import requests
 
 import civis
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import retry_request
+from civis._retries import retry_request
 
 FINISHED = ["success", "succeeded"]
 FAILED = ["failed"]

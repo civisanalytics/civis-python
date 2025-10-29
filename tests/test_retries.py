@@ -7,8 +7,8 @@ import tenacity
 from requests import Request
 from requests import ConnectionError
 
-from civis._utils import retry_request, _get_default_retrying
-from civis._utils import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
+from civis._retries import retry_request, _get_default_retrying
+from civis._retries import _RETRY_VERBS, _RETRY_CODES, _POST_RETRY_CODES
 
 
 def _get_retrying(retries: int):

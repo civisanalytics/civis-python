@@ -1,5 +1,4 @@
 import logging
-import os
 
 import tenacity
 from tenacity.wait import wait_base
@@ -32,21 +31,6 @@ def _get_default_retrying():
         {"tenacity": tenacity, "__builtins__": {}},  # globals
         {},  # locals
     )
-
-
-def get_api_key(api_key):
-    """Pass-through if `api_key` is not None otherwise tries the CIVIS_API_KEY
-    environment variable.
-    """
-    if api_key is not None:  # always prefer user given one
-        return api_key
-    api_key = os.environ.get("CIVIS_API_KEY", None)
-    if api_key is None:
-        raise EnvironmentError(
-            "No Civis API key found. Please store in "
-            "CIVIS_API_KEY environment variable"
-        )
-    return api_key
 
 
 def retry_request(method, prepared_req, session, retrying=None):

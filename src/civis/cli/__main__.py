@@ -41,7 +41,7 @@ from civis.cli._cli_commands import (
 from civis.base import get_headers, open_session
 from civis.resources import get_api_spec, CACHED_SPEC_PATH
 from civis.resources._resources import parse_method_name
-from civis._utils import retry_request
+from civis._retries import retry_request
 
 
 _REPLACEABLE_COMMAND_CHARS = re.compile(r"[^A-Za-z0-9]+")

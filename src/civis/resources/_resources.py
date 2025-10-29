@@ -22,7 +22,8 @@ from civis.base import (
     open_session,
 )
 from civis._camel_to_snake import camel_to_snake
-from civis._utils import get_api_key, retry_request
+from civis._get_api_key import get_api_key
+from civis._retries import retry_request
 from civis.response import Response
 
 
