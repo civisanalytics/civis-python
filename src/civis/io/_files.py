@@ -39,11 +39,6 @@ MAX_PART_SIZE = 5 * 2**30  # 5GB
 MAX_FILE_SIZE = 5 * 2**40  # 5TB
 MAX_THREADS = 4
 
-RETRY_EXCEPTIONS = (
-    requests.HTTPError,
-    requests.ConnectionError,
-    requests.ConnectTimeout,
-)
 
 log = logging.getLogger(__name__)
 # standard chunk size; provides good performance across various buffer sizes
