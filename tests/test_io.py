@@ -9,7 +9,7 @@ import warnings
 from functools import partial
 from io import StringIO, BytesIO
 from unittest import mock
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, NamedTemporaryFile
 import zipfile
 
 import pytest
@@ -1414,12 +1414,57 @@ def test_civis_to_file_retries(mock_requests):
     )
 
 
-def test_file_single_upload_retries():
-    ...  # TODO
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_single_upload_retries(mock_requests):
+    mock_post_response = mock.Mock()
+    mock_post_response.content = "whatever"
+    failed_attempts = 2
+    type(mock_post_response).ok = mock.PropertyMock(
+        side_effect=[False] * failed_attempts + [True]
+    )
+    type(mock_post_response).status_code = mock.PropertyMock(
+        side_effect=[500] * failed_attempts + [200]
+    )
+    mock_requests.post.return_value = mock_post_response
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_url = "https://fake.upload.url"
+    mock_civis_response.upload_fields.json.return_value = {"key": "value"}
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post.return_value = mock_civis_response
+
+    # Calling _single_upload should retry on failed attempts and eventually succeed.
+    _files._single_upload(io.BytesIO(b"abcdef"), "filename", mock_civis_client)
+    assert mock_requests.post.call_count == failed_attempts + 1
 
 
-def test_file_multipart_upload_retries():
-    ...  # TODO
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_multipart_upload_retries(mock_requests):
+    mock_post_response = mock.Mock()
+    mock_post_response.content = "whatever"
+    failed_attempts = 2
+    type(mock_post_response).ok = mock.PropertyMock(
+        side_effect=[False] * failed_attempts + [True]
+    )
+    type(mock_post_response).status_code = mock.PropertyMock(
+        side_effect=[500] * failed_attempts + [200]
+    )
+    mock_requests.put.return_value = mock_post_response
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_urls = ["https://fake.upload.url"]
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post_multipart.return_value = mock_civis_response
+
+    with NamedTemporaryFile() as buf:
+        buf.write(b"abcdef")
+        buf.flush()
+        buf.seek(0)
+        # _multipart_upload should retry on failed attempts and eventually succeed.
+        _files._multipart_upload(buf, "filename", 6, mock_civis_client)
+    assert mock_requests.put.call_count == failed_attempts + 1
 
 
 @pytest.mark.parametrize("input_filename", ["newname", None])
