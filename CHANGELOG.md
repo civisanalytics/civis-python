@@ -9,13 +9,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Updated retries for Civis API calls under `civis.APIClient`
+  to wait at least the `Retry-After` duration from the response header,
+  instead of potentially less than that. (#525)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-
+- Fixed retries for Civis API calls under `civis.APIClient`
+  that would lead to a recursion error. (#525)
 - Updated documentation for the `preview_rows` argument of `civis.io.query_civis` to
   have the correct maximum of 1000. (#523)
 
