@@ -61,7 +61,7 @@ def retry_request(method, prepared_req, session, retrying=None):
 
     if retry_conditions:
         retrying.retry = retry_conditions
-        retrying.wait = wait_for_retry_after_header(base=retrying.wait)
+        retrying.wait = wait_at_least_retry_after_header(base=retrying.wait)
         response = retrying(_make_request, prepared_req, session)
         return response
 
@@ -69,9 +69,8 @@ def retry_request(method, prepared_req, session, retrying=None):
     return response
 
 
-class wait_for_retry_after_header(wait_base):
-    """Wait strategy that adds the Retry-After (if present from response header)
-    to the base wait strategy."""
+class wait_at_least_retry_after_header(wait_base):
+    """Wait strategy for at least `Retry-After` seconds (if present from header)"""
 
     def __init__(self, base):
         self.base = base
@@ -88,4 +87,5 @@ class wait_for_retry_after_header(wait_base):
             )
         except (TypeError, ValueError):
             retry_after = 0.0
-        return retry_after + self.base(retry_state)
+        # Wait at least retry_after seconds (compared to the user-specified wait).
+        return max(retry_after, self.base(retry_state))
