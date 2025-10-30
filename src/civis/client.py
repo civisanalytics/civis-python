@@ -1,20 +1,18 @@
 from __future__ import annotations
 
+import collections
 from functools import lru_cache
 import logging
 import textwrap
 import warnings
-from typing import TYPE_CHECKING
+
+import tenacity
 
 import civis
 from civis.resources import generate_classes_maybe_cached
 from civis._get_api_key import get_api_key
 from civis._retries import DEFAULT_RETRYING_STR
 from civis.response import _RETURN_TYPES, find, find_one
-
-if TYPE_CHECKING:
-    import collections
-    import tenacity
 
 
 _log = logging.getLogger(__name__)
