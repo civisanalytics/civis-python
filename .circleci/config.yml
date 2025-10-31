@@ -94,7 +94,8 @@ workflows:
             pip install --progress-bar off -r docs/requirements.txt && \
             pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
-            pip-audit --skip-editable
+            pip-audit --skip-editable \
+              --ignore-vuln GHSA-4xh5-x5gv-qwph  # https://github.com/pypa/pip/issues/13607
       - pre-build:
           name: twine
           command-run: |

@@ -1,19 +1,18 @@
 from __future__ import annotations
 
+import collections
 from functools import lru_cache
 import logging
 import textwrap
 import warnings
-from typing import TYPE_CHECKING
+
+import tenacity
 
 import civis
 from civis.resources import generate_classes_maybe_cached
-from civis._utils import get_api_key, DEFAULT_RETRYING_STR
+from civis._get_api_key import get_api_key
+from civis._retries import DEFAULT_RETRYING_STR
 from civis.response import _RETURN_TYPES, find, find_one
-
-if TYPE_CHECKING:
-    import collections
-    import tenacity
 
 
 _log = logging.getLogger(__name__)
@@ -59,6 +58,9 @@ class APIClient:
         please note that you should leave the ``retry`` attribute unspecified,
         because the conditions under which retries apply are pre-determined
         -- see :ref:`retries` for details.
+        In addition, the ``reraise`` attribute will be overridden to ``True``
+        to raise the last exception (rather than tenacity's `RetryError`)
+        if all retry attempts are exhausted.
     user_agent : str, optional
         A custom user agent string to use for requests made by this client.
         The user agent string will be appended with the Python version,
@@ -81,6 +83,11 @@ class APIClient:
             )
         self._feature_flags = ()
         session_auth_key = get_api_key(api_key)
+        if retries is not None and not isinstance(retries, tenacity.Retrying):
+            raise TypeError(
+                "If provided, the `retries` parameter must be "
+                "a tenacity.Retrying instance."
+            )
         self._session_kwargs = {
             "api_key": session_auth_key,
             "retrying": retries,
@@ -101,11 +108,6 @@ class APIClient:
                 class_name,
                 cls(self._session_kwargs, client=self, return_type=return_type),
             )
-
-        # Don't create the `tenacity.Retrying` instance until we make the first
-        # API call with this `APIClient` instance.
-        # Once that happens, we keep re-using this `tenacity.Retrying` instance.
-        self._retrying = None
 
     @property
     def feature_flags(self):

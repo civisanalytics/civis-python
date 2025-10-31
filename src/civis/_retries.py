@@ -1,5 +1,4 @@
 import logging
-import os
 
 import tenacity
 from tenacity.wait import wait_base
@@ -19,36 +18,32 @@ tenacity.Retrying(
     wait=tenacity.wait_random_exponential(multiplier=2, max=60),
     stop=(tenacity.stop_after_delay(600) | tenacity.stop_after_attempt(10)),
     retry_error_callback=lambda retry_state: retry_state.outcome.result(),
+    reraise=True,
 )
 """
 
-# Explicitly set the available globals and locals
-# to mitigate risk of unwanted code execution
-DEFAULT_RETRYING = eval(  # nosec
-    DEFAULT_RETRYING_STR,
-    {"tenacity": tenacity, "__builtins__": {}},  # globals
-    {},  # locals
-)
 
-
-def get_api_key(api_key):
-    """Pass-through if `api_key` is not None otherwise tries the CIVIS_API_KEY
-    environment variable.
-    """
-    if api_key is not None:  # always prefer user given one
-        return api_key
-    api_key = os.environ.get("CIVIS_API_KEY", None)
-    if api_key is None:
-        raise EnvironmentError(
-            "No Civis API key found. Please store in "
-            "CIVIS_API_KEY environment variable"
-        )
-    return api_key
+def get_default_retrying():
+    """Return a new instance of the default tenacity.Retrying."""
+    # Explicitly set the available globals and locals
+    # to mitigate risk of unwanted code execution
+    return eval(  # nosec
+        DEFAULT_RETRYING_STR,
+        {"tenacity": tenacity, "__builtins__": {}},  # globals
+        {},  # locals
+    )
 
 
 def retry_request(method, prepared_req, session, retrying=None):
     retry_conditions = None
-    retrying = retrying if retrying else DEFAULT_RETRYING
+
+    # New tenacity.Retrying instance needed, whether it's a copy of the user-provided
+    # one or it's one based on civis-python's default settings.
+    retrying = retrying.copy() if retrying else get_default_retrying()
+
+    # If retries are exhausted,
+    # raise the last exception encountered, not tenacity's RetryError.
+    retrying.reraise = True
 
     def _make_request(req, sess):
         """send the prepared session request"""
@@ -66,7 +61,7 @@ def retry_request(method, prepared_req, session, retrying=None):
 
     if retry_conditions:
         retrying.retry = retry_conditions
-        retrying.wait = wait_for_retry_after_header(fallback=retrying.wait)
+        retrying.wait = wait_at_least_retry_after_header(base=retrying.wait)
         response = retrying(_make_request, prepared_req, session)
         return response
 
@@ -74,25 +69,23 @@ def retry_request(method, prepared_req, session, retrying=None):
     return response
 
 
-class wait_for_retry_after_header(wait_base):
-    """Wait strategy that first looks for Retry-After header. If not
-    present it uses the fallback strategy as the wait param"""
+class wait_at_least_retry_after_header(wait_base):
+    """Wait strategy for at least `Retry-After` seconds (if present from header)"""
 
-    def __init__(self, fallback):
-        self.fallback = fallback
+    def __init__(self, base):
+        self.base = base
 
     def __call__(self, retry_state):
         # retry_state is an instance of tenacity.RetryCallState.
         # The .outcome property contains the result/exception
         # that came from the underlying function.
-        result_headers = retry_state.outcome._result.headers
-        retry_after = result_headers.get("Retry-After") or result_headers.get(
-            "retry-after"
-        )
+        headers = retry_state.outcome._result.headers
 
         try:
-            log.info("Retrying after {} seconds".format(retry_after))
-            return int(retry_after)
+            retry_after = float(
+                headers.get("Retry-After") or headers.get("retry-after") or "0.0"
+            )
         except (TypeError, ValueError):
-            pass
-        return self.fallback(retry_state)
+            retry_after = 0.0
+        # Wait at least retry_after seconds (compared to the user-specified wait).
+        return max(retry_after, self.base(retry_state))

@@ -14,7 +14,6 @@ import zipfile
 
 import pytest
 import requests
-from requests import ConnectionError, ConnectTimeout
 
 try:
     import pandas as pd
@@ -33,7 +32,6 @@ except ImportError:
 import civis
 from civis.io import _files
 from civis._deprecation import DeprecatedKwargDefault
-from civis.io._files import _retry
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name
 from civis.response import Response
@@ -1416,6 +1414,60 @@ def test_civis_to_file_retries(mock_requests):
     )
 
 
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_single_upload_retries(mock_requests):
+    mock_post_response = mock.Mock()
+    mock_post_response.content = "whatever"
+    failed_attempts = 2
+    type(mock_post_response).ok = mock.PropertyMock(
+        side_effect=[False] * failed_attempts + [True]
+    )
+    type(mock_post_response).status_code = mock.PropertyMock(
+        side_effect=[500] * failed_attempts + [200]
+    )
+    mock_requests.post.return_value = mock_post_response
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_url = "https://fake.upload.url"
+    mock_civis_response.upload_fields.json.return_value = {"key": "value"}
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post.return_value = mock_civis_response
+
+    # Calling _single_upload should retry on failed attempts and eventually succeed.
+    _files._single_upload(io.BytesIO(b"abcdef"), "filename", mock_civis_client)
+    assert mock_requests.post.call_count == failed_attempts + 1
+
+
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_multipart_upload_retries(mock_requests):
+    mock_post_response = mock.Mock()
+    mock_post_response.content = "whatever"
+    failed_attempts = 2
+    type(mock_post_response).ok = mock.PropertyMock(
+        side_effect=[False] * failed_attempts + [True]
+    )
+    type(mock_post_response).status_code = mock.PropertyMock(
+        side_effect=[500] * failed_attempts + [200]
+    )
+    mock_requests.put.return_value = mock_post_response
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_urls = ["https://fake.upload.url"]
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post_multipart.return_value = mock_civis_response
+
+    with TemporaryDirectory() as temp_dir:
+        temp_path = os.path.join(temp_dir, "tempfile")
+        with open(temp_path, "wb") as f:
+            f.write(b"abcdef")
+        with open(temp_path, "rb") as f:
+            # _multipart_upload should retry on failed attempts and eventually succeed.
+            _files._multipart_upload(f, "filename", 6, mock_civis_client)
+    assert mock_requests.put.call_count == failed_attempts + 1
+
+
 @pytest.mark.parametrize("input_filename", ["newname", None])
 @mock.patch.object(_files, "requests", autospec=True)
 def test_file_to_civis(mock_requests, input_filename):
@@ -1717,74 +1769,6 @@ def test_read_civis_sql_polars():
             polling_interval=POLL_INTERVAL,
         )
         assert pl.read_csv(io.StringIO(expected_data)).equals(actual_data)
-
-
-def test_io_no_retry():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def succeeds():
-        counter["i"] += 1
-        return "success"
-
-    counter = dict(i=0)
-    test_result = succeeds()
-
-    assert test_result == "success"
-    assert counter["i"] == 1
-
-
-def test_io_retry_once():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def fails_once():
-        counter["i"] += 1
-        if counter["i"] < 2:
-            raise ConnectionError("failed")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = fails_once()
-
-    assert test_result == "success"
-    assert counter["i"] == 2
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_limit_reached(m_sleep):
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def always_fails():
-        counter["i"] += 1
-        raise ConnectionError("failed")
-
-    counter = dict(i=0)
-    pytest.raises(ConnectionError, always_fails)
-    assert counter["i"] == 5
-
-
-@mock.patch("civis.futures.time.sleep", side_effect=lambda x: None)
-def test_io_retry_multiple_exceptions(m_sleep):
-    @_retry((ConnectionError, ConnectTimeout), retries=4, delay=0.1)
-    def raise_multiple_exceptions():
-        counter["i"] += 1
-        if counter["i"] == 1:
-            raise ConnectionError("one error")
-        elif counter["i"] == 2:
-            raise requests.ConnectTimeout("another error")
-        else:
-            return "success"
-
-    counter = dict(i=0)
-    test_result = raise_multiple_exceptions()
-
-    assert test_result == "success"
-    assert counter["i"] == 3
-
-
-def test_io_retry_unexpected_exception():
-    @_retry(ConnectionError, retries=4, delay=0.1)
-    def raise_unexpected_error():
-        raise ValueError("unexpected error")
-
-    pytest.raises(ValueError, raise_unexpected_error)
 
 
 @mock.patch("civis.io._utils.uuid")

@@ -10,7 +10,7 @@ import requests
 
 import civis
 from civis.response import PaginatedResponse, convert_response_data_type
-from civis._utils import retry_request, DEFAULT_RETRYING
+from civis._retries import retry_request
 
 FINISHED = ["success", "succeeded"]
 FAILED = ["failed"]
@@ -159,16 +159,13 @@ class Endpoint:
         params = self._handle_array_params(params)
 
         with self._lock:
-            if self._client._retrying is None:
-                retrying = self._session_kwargs.pop("retrying", None)
-                self._client._retrying = retrying if retrying else DEFAULT_RETRYING
             with open_session(self._session_kwargs["api_key"], self._headers) as sess:
                 request = requests.Request(
                     method, url, json=data, params=params, **kwargs
                 )
                 pre_request = sess.prepare_request(request)
                 response = retry_request(
-                    method, pre_request, sess, self._client._retrying
+                    method, pre_request, sess, self._session_kwargs["retrying"]
                 )
 
         if response.status_code == 401:

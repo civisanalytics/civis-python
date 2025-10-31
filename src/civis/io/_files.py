@@ -6,17 +6,16 @@ import json
 import logging
 import math
 import os
-from random import random
 import re
 import shutil
 from tempfile import TemporaryDirectory
-import time
 
 import requests
 from requests import HTTPError
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
+from civis._retries import get_default_retrying
 
 try:
     import pandas as pd
@@ -40,11 +39,6 @@ MAX_PART_SIZE = 5 * 2**30  # 5GB
 MAX_FILE_SIZE = 5 * 2**40  # 5TB
 MAX_THREADS = 4
 
-RETRY_EXCEPTIONS = (
-    requests.HTTPError,
-    requests.ConnectionError,
-    requests.ConnectTimeout,
-)
 
 log = logging.getLogger(__name__)
 # standard chunk size; provides good performance across various buffer sizes
@@ -114,7 +108,6 @@ def _single_upload(buf, name, client, **kwargs):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @_retry(RETRY_EXCEPTIONS)
     def _post():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -129,7 +122,9 @@ def _single_upload(buf, name, client, **kwargs):
             msg = _get_aws_error_message(response)
             raise HTTPError(msg, response=response)
 
-    _post()
+    for attempt in get_default_retrying():
+        with attempt:
+            _post()
 
     log.debug("Uploaded File %d", file_response.id)
     return file_response.id
@@ -156,8 +151,6 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     if num_parts != len(urls):
         raise ValueError(f"There are {num_parts} file parts but only {len(urls)} urls")
 
-    # upload function wrapped with a retry decorator
-    @_retry(RETRY_EXCEPTIONS)
     def _upload_part_base(item, file_path, part_size, file_size):
         part_num, part_url = item[0], item[1]
         offset = part_size * part_num
@@ -174,6 +167,8 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
             raise HTTPError(msg, response=part_response)
 
         log.debug("Completed upload of file part %s", part_num)
+
+    _upload_part_base = get_default_retrying().wraps(_upload_part_base)
 
     _upload_part = partial(
         _upload_part_base,
@@ -393,7 +388,6 @@ def _civis_to_file(file_id, buf, client=None):
     # Store the current buffer position in case we need to retry below.
     buf_orig_position = buf.tell()
 
-    @_retry(RETRY_EXCEPTIONS)
     def _download_url_to_buf():
         # Reset the buffer in case we had to retry.
         buf.seek(buf_orig_position)
@@ -404,7 +398,9 @@ def _civis_to_file(file_id, buf, client=None):
         for lines in chunked:
             buf.write(lines)
 
-    _download_url_to_buf()
+    for attempt in get_default_retrying():
+        with attempt:
+            _download_url_to_buf()
 
 
 def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
@@ -728,53 +724,3 @@ class _BufferedPartialReader:
         data = self.buf.read(bytes_to_read)
         self.bytes_read += len(data)
         return data
-
-
-def _retry(exceptions, retries=5, delay=0.5, backoff=2):
-    """
-    Retry decorator
-
-    Parameters
-    ----------
-    exceptions: Exception
-        exceptions to trigger retry
-    retries: int, optional
-        number of retries to perform
-    delay: float, optional
-        delay before next retry
-    backoff: int, optional
-        factor used to calculate the exponential increase
-        delay after each retry
-
-    Returns
-    -------
-    retry decorator
-
-    Raises
-    ------
-    exception raised by decorator function
-    """
-
-    def deco_retry(f):
-        def f_retry(*args, **kwargs):
-            n_failed = 0
-            new_delay = delay
-            while True:
-                try:
-                    return f(*args, **kwargs)
-                except exceptions as exc:
-                    if n_failed < retries:
-                        n_failed += 1
-                        msg = "%s, Retrying in %d seconds..." % (str(exc), new_delay)
-                        log.debug(msg)
-                        time.sleep(new_delay)
-                        new_delay = min(
-                            (pow(2, n_failed) / 4) * (random() + backoff),  # nosec
-                            50 + 10 * random(),  # nosec
-                        )
-                    else:
-                        raise exc
-
-        return f_retry
-
-    return deco_retry

@@ -52,6 +52,8 @@ from collections import OrderedDict
 from collections.abc import Iterator
 from typing import Any, List
 
+import tenacity
+
 from civis.response import Response
 
 """
@@ -150,6 +152,7 @@ class APIClient:
         api_version: str = ...,
         local_api_spec: OrderedDict | str | None = ...,
         force_refresh_api_spec: bool = ...,
+        retries: tenacity.Retrying | None = ...,
         user_agent: str | None = ...,
     ): ...
     def get_aws_credential_id(

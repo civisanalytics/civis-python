@@ -5,6 +5,8 @@ from collections import OrderedDict
 from collections.abc import Iterator
 from typing import Any, List
 
+import tenacity
+
 from civis.response import Response
 
 class _Admin:
@@ -998,6 +1000,8 @@ class _Clusters:
         *,
         base_type: str | None = ...,
         state: str | None = ...,
+        start_date: str | None = ...,
+        end_date: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -1018,6 +1022,14 @@ class _Clusters:
         state : str, optional
             If specified, return deployments in these states. It accepts a comma-
             separated list, possible values are pending, running, terminated, sleeping
+        start_date : str, optional
+            If specified, return deployments created after this date. Must be 31 days
+            or less before end date. Defaults to 7 days prior to end date. The date
+            must be provided in the format YYYY-MM-DD.
+        end_date : str, optional
+            If specified, return deployments created before this date. Defaults to 7
+            days after start date, or today if start date is not specified. The date
+            must be provided in the format YYYY-MM-DD.
         limit : int, optional
             Number of results to return. Defaults to its maximum of 50.
         page_num : int, optional
@@ -58118,6 +58130,8 @@ class _Users:
                 The number of times the user has signed in.
             - assuming_role : bool
                 Whether the user is assuming this role or not.
+            - role_assumer : :class:`civis.Response`
+                Details about the role assumer.
             - assuming_admin : bool
                 Whether the user is assuming admin.
             - assuming_admin_expiration : str (date-time)
@@ -58360,6 +58374,8 @@ class _Users:
                 The number of times the user has signed in.
             - assuming_role : bool
                 Whether the user is assuming this role or not.
+            - role_assumer : :class:`civis.Response`
+                Details about the role assumer.
             - assuming_admin : bool
                 Whether the user is assuming admin.
             - assuming_admin_expiration : str (date-time)
@@ -58449,59 +58465,6 @@ class _Users:
                 Whether this user is online.
             - email : str
                 This user's email address.
-        """
-        ...
-
-    def list_me_themes(
-        self,
-    ) -> List[_ResponseUsersListMeThemes]:
-        """List themes
-
-        API URL: ``GET /users/me/themes``
-
-        Returns
-        -------
-        :class:`civis.ListResponse`
-            - id : int
-                The ID of this theme.
-            - name : str
-                The name of this theme.
-            - created_at : str (date-time)
-            - updated_at : str (date-time)
-        """
-        ...
-
-    def get_me_themes(
-        self,
-        id: int,
-    ) -> _ResponseUsersGetMeThemes:
-        """Show a theme
-
-        API URL: ``GET /users/me/themes/{id}``
-
-        Parameters
-        ----------
-        id : int
-            The ID of this theme.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID of this theme.
-            - name : str
-                The name of this theme.
-            - organization_ids : List[int]
-                List of organization ID's allowed to use this theme.
-            - settings : str
-                The theme configuration object.
-            - logo_file : :class:`civis.Response`
-                - id : int
-                    The ID of the logo image file.
-                - download_url : str
-                    The URL of the logo image file.
-            - created_at : str (date-time)
-            - updated_at : str (date-time)
         """
         ...
 
@@ -83190,6 +83153,7 @@ class _ResponseUsersListMe(Response):
     created_at: str
     sign_in_count: int
     assuming_role: bool
+    role_assumer: dict
     assuming_admin: bool
     assuming_admin_expiration: str
     superadmin_mode_expiration: str
@@ -83224,6 +83188,7 @@ class _ResponseUsersPatchMe(Response):
     created_at: str
     sign_in_count: int
     assuming_role: bool
+    role_assumer: dict
     assuming_admin: bool
     assuming_admin_expiration: str
     superadmin_mode_expiration: str
@@ -83258,25 +83223,6 @@ class _ResponseUsersListMeOrganizationAdmins(Response):
     initials: str
     online: bool
     email: str
-
-class _ResponseUsersListMeThemes(Response):
-    id: int
-    name: str
-    created_at: str
-    updated_at: str
-
-class _ResponseUsersGetMeThemes(Response):
-    id: int
-    name: str
-    organization_ids: List[int]
-    settings: str
-    logo_file: _ResponseUsersGetMeThemesLogoFile
-    created_at: str
-    updated_at: str
-
-class _ResponseUsersGetMeThemesLogoFile(Response):
-    id: int
-    download_url: str
 
 class _ResponseUsersGet(Response):
     id: int
@@ -84391,6 +84337,7 @@ class APIClient:
         api_version: str = ...,
         local_api_spec: OrderedDict | str | None = ...,
         force_refresh_api_spec: bool = ...,
+        retries: tenacity.Retrying | None = ...,
         user_agent: str | None = ...,
     ): ...
     def get_aws_credential_id(
