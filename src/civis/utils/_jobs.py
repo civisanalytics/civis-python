@@ -45,7 +45,7 @@ def run_job(job_id, client=None, polling_interval=None):
     )
 
 
-def run_template(id, arguments, JSONValue=False, client=None):
+def run_template(id, arguments, JSONValue=False, client=None, return_as="files", **kwargs):
     """Run a template and return the results.
 
     Parameters
@@ -55,22 +55,29 @@ def run_template(id, arguments, JSONValue=False, client=None):
     arguments: dict
         Dictionary of arguments to be passed to the template.
     JSONValue: bool, optional
-        If True, will return the JSON output of the template.
-        If False, will return the file ids associated with the
-        output results.
+        Deprecated. Use 'return_as' instead.
+    return_as: str, optional
+        Determines the return type. Options:
+        - "files": returns file ids associated with output results (default for <v3.0.0)
+        - "JSONValue": returns the JSON output of the template
+        - "future": returns the CivisFuture object for the run
+        At civis-python v3.0.0, the default will change to "future".
     client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
+    **kwargs: dict
+        Additional keyword arguments to be passed to post_custom.
 
     Returns
     -------
-    output: dict
-        If JSONValue = False, dictionary of file ids with the keys
+    output: dict or CivisFuture
+        If return_as = "files", dictionary of file ids with the keys
         being their output names.
-        If JSONValue = True, JSON dict containing the results of the
+        If return_as = "JSONValue", JSON dict containing the results of the
         template run. Expects only a single JSON result. Will return
         nothing if either there is no JSON result or there is more
         than 1 JSON result.
+        If return_as = "future", returns the CivisFuture object for the run.
 
     Examples
     --------
@@ -78,17 +85,28 @@ def run_template(id, arguments, JSONValue=False, client=None):
     >>> run_template(my_template_id, arguments=my_dict_of_args)
     {'output': 1234567}
     >>> # Run template to return JSON output
-    >>> run_template(my_template_id, arguments=my_dict_of_args, JSONValue=True)
+    >>> run_template(my_template_id, arguments=my_dict_of_args, return_as="JSONValue")
     {'result1': 'aaa', 'result2': 123}
+    >>> # Run template to return CivisFuture
+    >>> run_template(my_template_id, arguments=my_dict_of_args, return_as="future")
+    <CivisFuture object>
     """
     if client is None:
         client = APIClient()
-    job = client.scripts.post_custom(id, arguments=arguments)
+    job = client.scripts.post_custom(id, arguments=arguments, **kwargs)
     run = client.scripts.post_custom_runs(job.id)
     fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
+
+    # For backward compatibility, JSONValue overrides return_as if set
+    if JSONValue:
+        return_as = "JSONValue"
+
+    if return_as == "future":
+        return fut
+
     fut.result()
     outputs = client.scripts.list_custom_runs_outputs(job.id, run.id)
-    if JSONValue:
+    if return_as == "JSONValue":
         json_output = [o.value for o in outputs if o.object_type == "JSONValue"]
         if len(json_output) == 0:
             log.warning("No JSON output for template {}".format(id))
@@ -101,9 +119,11 @@ def run_template(id, arguments, JSONValue=False, client=None):
         # Note that the cast to a dict is to convert
         # an expected Response object.
         return json_output[0].json()
-    else:
+    elif return_as == "files":
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
+    else:
+        raise ValueError(f"Invalid value for return_as: {return_as}. Must be 'files', 'JSONValue', or 'future'.")
 
 
 def _timestamp_from_iso_str(s):
