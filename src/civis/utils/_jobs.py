@@ -29,7 +29,7 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
         if return_as != "JSONValue":
             log.warning(
                 f"return_as = {return_as} and does not match JSONValue."
-                "Overwriting return_as with JSONValue.".format()
+                "Overwriting return_as with JSONValue."
             )
         return "JSONValue"
     return return_as
@@ -151,8 +151,8 @@ def run_template(
         return file_ids
     else:
         raise ValueError(
-            f"Invalid value for return_as: {return_as}."
-            "Must be 'files', 'JSONValue', or 'future'.".format()
+            f"Invalid value for return_as: {return_as}. "
+            "Must be 'files', 'JSONValue', or 'future'."
         )
 
 
