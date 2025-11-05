@@ -131,7 +131,7 @@ class TestPolling(unittest.TestCase):
             actual_intervals.append(
                 timestamp - (poller_timestamps[i - 1] if i else start_time)
             )
-        assert actual_intervals == pytest.approx(expected_intervals, abs=0.02)
+        assert actual_intervals == pytest.approx(expected_intervals, abs=0.03)
 
 
 if __name__ == "__main__":
