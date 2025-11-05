@@ -111,9 +111,13 @@ def test_run_template_json_output_fileids_returned(mock_client_single_json_outpu
 
     # Test explicit return_as="files"
     result_files = civis.utils.run_template(
-        template_id, arguments=args, client=mock_client_single_json_output, return_as="files"
+        template_id,
+        arguments=args,
+        client=mock_client_single_json_output,
+        return_as="files",
     )
     assert result_files == {"output": 10}
+
 
 def test_run_template_passes_kwargs_to_post_custom():
     template_id = 1
@@ -121,23 +125,26 @@ def test_run_template_passes_kwargs_to_post_custom():
     mock_client = create_mock_client_with_job()
     # Patch post_custom to check kwargs
     called = {}
+
     def fake_post_custom(id, arguments, **kwargs):
-        called['id'] = id
-        called['arguments'] = arguments
-        called['kwargs'] = kwargs
+        called["id"] = id
+        called["arguments"] = arguments
+        called["kwargs"] = kwargs
         # Return a dummy Response with id
         return Response({"id": id})
+
     mock_client.scripts.post_custom.side_effect = fake_post_custom
-    result = civis.utils.run_template(
+    result = civis.utils.run_template(  # noqa
         template_id,
         arguments=args,
         client=mock_client,
         remote_host_id=1,
         credential_id=2,
     )
-    assert called['arguments'] == args
-    assert called['kwargs']['remote_host_id'] == 1
-    assert called['kwargs']['credential_id'] == 2
+    assert called["arguments"] == args
+    assert called["kwargs"]["remote_host_id"] == 1
+    assert called["kwargs"]["credential_id"] == 2
+
 
 def test_run_template_no_json_output_fileids_returned(mock_client_no_json_output):
     template_id = 1
@@ -150,7 +157,10 @@ def test_run_template_no_json_output_fileids_returned(mock_client_no_json_output
 
     # Test explicit return_as="files"
     result_files = civis.utils.run_template(
-        template_id, arguments=args, client=mock_client_no_json_output, return_as="files"
+        template_id,
+        arguments=args,
+        client=mock_client_no_json_output,
+        return_as="files",
     )
     assert result_files == {"output": 10}
 
@@ -167,7 +177,10 @@ def test_run_template_multiple_json_output_fileids_returned(
 
     # Test explicit return_as="files"
     result_files = civis.utils.run_template(
-        template_id, arguments=args, client=mock_client_multiple_json_output, return_as="files"
+        template_id,
+        arguments=args,
+        client=mock_client_multiple_json_output,
+        return_as="files",
     )
     assert result_files == {"output": 10, "output2": 11}
 
@@ -192,6 +205,7 @@ def test_run_template_json_returned(mock_client_single_json_output):
     )
     assert result_json == {"a": 1}
 
+
 # Test return_as="future" returns CivisFuture
 def test_run_template_return_as_future(mock_client_single_json_output):
     template_id = 1
@@ -203,6 +217,7 @@ def test_run_template_return_as_future(mock_client_single_json_output):
         client=mock_client_single_json_output,
     )
     assert isinstance(result, CivisFuture)
+
 
 def test_run_template_many_json_outputs(caplog, mock_client_multiple_json_output):
     template_id = 1
@@ -243,6 +258,7 @@ def test_run_template_many_json_outputs(caplog, mock_client_multiple_json_output
         )
     ]
     assert result_json == {"a": 1}
+
 
 def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
     template_id = 1
