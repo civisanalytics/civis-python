@@ -14,6 +14,27 @@ _LOG_REFETCH_COUNT = 100
 _LOGS_PER_QUERY = 250
 
 
+def _warn_or_raise_for_JSONValue(JSONValue, return_as):
+    """Warn about use of deprecated JSONValue parameter in run_template.
+    When it's time to remove JSONValue at civis-python v3.0.0,
+    remove this helper and all usage of JSONValue.
+    """
+    if not isinstance(JSONValue, bool):
+        return return_as
+    if JSONValue:
+        log.warning(
+            "The 'JSONValue' parameter is deprecated and will be removed "
+            "in civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead."
+        )
+        if return_as != "JSONValue":
+            log.warning(
+                f"return_as = {return_as} and does not match JSONValue."
+                "Overwriting return_as with JSONValue.".format()
+            )
+        return "JSONValue"
+    return return_as
+
+
 def run_job(job_id, client=None, polling_interval=None):
     """Run a job.
 
@@ -105,7 +126,7 @@ def run_template(
 
     # For backward compatibility, JSONValue overrides return_as if set
     if JSONValue:
-        return_as = "JSONValue"
+        return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
 
     if return_as == "future":
         return fut
@@ -129,8 +150,10 @@ def run_template(
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
     else:
-        must_be = "Must be 'files', 'JSONValue', or 'future'."
-        raise ValueError(f"Invalid value for return_as: {return_as}. {must_be}")
+        raise ValueError(
+            f"Invalid value for return_as: {return_as}."
+            "Must be 'files', 'JSONValue', or 'future'.".format()
+        )
 
 
 def _timestamp_from_iso_str(s):

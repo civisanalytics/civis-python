@@ -234,9 +234,21 @@ def test_run_template_many_json_outputs(caplog, mock_client_multiple_json_output
         (
             "civis.utils._jobs",
             logging.WARNING,
+            "The 'JSONValue' parameter is deprecated and will be removed in "
+            + "civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead.",
+        ),
+        (
+            "civis.utils._jobs",
+            logging.WARNING,
+            "return_as = files and does not match JSONValue.Overwriting return_as "
+            "with JSONValue.",
+        ),
+        (
+            "civis.utils._jobs",
+            logging.WARNING,
             "More than 1 JSON output for template {} "
             "-- returning only the first one.".format(template_id),
-        )
+        ),
     ]
     assert result == {"a": 1}
 
@@ -275,8 +287,20 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
         (
             "civis.utils._jobs",
             logging.WARNING,
+            "The 'JSONValue' parameter is deprecated and will be removed in "
+            + "civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead.",
+        ),
+        (
+            "civis.utils._jobs",
+            logging.WARNING,
+            "return_as = files and does not match JSONValue.Overwriting return_as "
+            "with JSONValue.",
+        ),
+        (
+            "civis.utils._jobs",
+            logging.WARNING,
             "No JSON output for template {}".format(template_id),
-        )
+        ),
     ]
     assert result is None
 
@@ -294,7 +318,7 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
             "civis.utils._jobs",
             logging.WARNING,
             "No JSON output for template {}".format(template_id),
-        )
+        ),
     ]
     assert result_json is None
 
