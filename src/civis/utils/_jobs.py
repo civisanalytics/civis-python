@@ -45,7 +45,9 @@ def run_job(job_id, client=None, polling_interval=None):
     )
 
 
-def run_template(id, arguments, JSONValue=False, client=None, return_as="files", **kwargs):
+def run_template(
+    id, arguments, JSONValue=False, client=None, return_as="files", **kwargs
+):
     """Run a template and return the results.
 
     Parameters
@@ -123,7 +125,8 @@ def run_template(id, arguments, JSONValue=False, client=None, return_as="files",
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
     else:
-        raise ValueError(f"Invalid value for return_as: {return_as}. Must be 'files', 'JSONValue', or 'future'.")
+        must_be = "Must be 'files', 'JSONValue', or 'future'."
+        raise ValueError(f"Invalid value for return_as: {return_as}. {must_be}")
 
 
 def _timestamp_from_iso_str(s):
