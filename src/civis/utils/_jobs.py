@@ -92,6 +92,10 @@ def run_template(
     >>> # Run template to return CivisFuture
     >>> run_template(my_template_id, arguments=my_dict_of_args, return_as="future")
     <CivisFuture object>
+    >>> # Run template with kwargs
+    >>> run_template(my_template_id, arguments=my_dict_of_args, remote_host_id=1,
+        credential_id=2)
+    <CivisFuture object>
     """
     if client is None:
         client = APIClient()
