@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
-import warnings
 
 import pytest
 
@@ -186,8 +185,7 @@ def test_run_template_multiple_json_output_fileids_returned(
     assert result_files == {"output": 10, "output2": 11}
 
 
-def test_run_template_JSONValue_conflict(
-        mock_client_single_json_output):
+def test_run_template_JSONValue_conflict(mock_client_single_json_output):
     template_id = 1
     args = {"arg": 1}
     # Test that JSONValue=True raises an error since it conflicts with
@@ -208,7 +206,7 @@ def test_run_template_JSONValue_conflict(
             return_as="future",
             client=mock_client_single_json_output,
         )
-    
+
     with pytest.raises(ValueError):
         civis.utils.run_template(
             template_id,
@@ -283,7 +281,8 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
             client=mock_client_no_json_output,
         )
     assert any(
-        "civis.utils.run_template can return three types of values, so 'JSONValue' is deprecated" in str(w.message)
+        "civis.utils.run_template can return three types of values, so "
+        "'JSONValue' is deprecated" in str(w.message)
         for w in recwarn
     )
     # Check the log message

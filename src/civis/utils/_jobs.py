@@ -78,7 +78,12 @@ def run_job(job_id, client=None, polling_interval=None):
 
 
 def run_template(
-    id, arguments, JSONValue=DeprecatedKwargDefault(), client=None, return_as="files", **kwargs
+    id,
+    arguments,
+    JSONValue=DeprecatedKwargDefault(),
+    client=None,
+    return_as="files",
+    **kwargs,
 ):
     """Run a template and return the results.
 
