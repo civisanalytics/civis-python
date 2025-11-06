@@ -78,7 +78,13 @@ def run_template(
     arguments: dict
         Dictionary of arguments to be passed to the template.
     JSONValue: bool, optional
-        Deprecated. Use 'return_as' instead.
+        If True, will return the JSON output of the template.
+        If False, will return the file ids associated with the
+        output results.
+
+        .. deprecated:: 2.8.0
+            ``JSONValue`` will be removed at civis-python v3.0.0.
+            Please use ``return_as`` instead.
     return_as: str, optional
         Determines the return type. Options:
         - "files": returns file ids associated with output results (default for <v3.0.0)
@@ -116,7 +122,7 @@ def run_template(
     >>> # Run template with kwargs
     >>> run_template(my_template_id, arguments=my_dict_of_args, remote_host_id=1,
         credential_id=2)
-    <CivisFuture object>
+    {'output': 1234567}
     """
     if client is None:
         client = APIClient()
