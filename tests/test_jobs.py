@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
+import warnings
 
 import pytest
 
@@ -185,16 +186,42 @@ def test_run_template_multiple_json_output_fileids_returned(
     assert result_files == {"output": 10, "output2": 11}
 
 
+def test_run_template_JSONValue_conflict(
+        mock_client_single_json_output):
+    template_id = 1
+    args = {"arg": 1}
+    # Test that JSONValue=True raises an error since it conflicts with
+    # the default return_as.
+    with pytest.raises(ValueError):
+        civis.utils.run_template(
+            template_id,
+            arguments=args,
+            JSONValue=True,
+            client=mock_client_single_json_output,
+        )
+    # Test other conflicts
+    with pytest.raises(ValueError):
+        civis.utils.run_template(
+            template_id,
+            arguments=args,
+            JSONValue=True,
+            return_as="future",
+            client=mock_client_single_json_output,
+        )
+    
+    with pytest.raises(ValueError):
+        civis.utils.run_template(
+            template_id,
+            arguments=args,
+            JSONValue=True,
+            return_as="files",
+            client=mock_client_single_json_output,
+        )
+
+
 def test_run_template_json_returned(mock_client_single_json_output):
     template_id = 1
     args = {"arg": 1}
-    result = civis.utils.run_template(
-        template_id,
-        arguments=args,
-        JSONValue=True,
-        client=mock_client_single_json_output,
-    )
-    assert result == {"a": 1}
 
     # Test explicit return_as="JSONValue"
     result_json = civis.utils.run_template(
@@ -222,35 +249,6 @@ def test_run_template_return_as_future(mock_client_single_json_output):
 def test_run_template_many_json_outputs(caplog, mock_client_multiple_json_output):
     template_id = 1
     args = {"arg": 1}
-    # Test deprecated JSONValue argument
-    result = civis.utils.run_template(
-        template_id,
-        arguments=args,
-        JSONValue=True,
-        client=mock_client_multiple_json_output,
-    )
-    log_result = caplog.record_tuples
-    assert log_result == [
-        (
-            "civis.utils._jobs",
-            logging.WARNING,
-            "The 'JSONValue' parameter is deprecated and will be removed in "
-            + "civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead.",
-        ),
-        (
-            "civis.utils._jobs",
-            logging.WARNING,
-            "return_as = files and does not match JSONValue.Overwriting return_as "
-            "with JSONValue.",
-        ),
-        (
-            "civis.utils._jobs",
-            logging.WARNING,
-            "More than 1 JSON output for template {} "
-            "-- returning only the first one.".format(template_id),
-        ),
-    ]
-    assert result == {"a": 1}
 
     # Test explicit return_as="JSONValue"
     caplog.clear()
@@ -276,26 +274,21 @@ def test_run_template_when_no_json_output(caplog, mock_client_no_json_output):
     template_id = 1
     args = {"arg": 1}
     # Test deprecated JSONValue argument
-    result = civis.utils.run_template(
-        template_id,
-        arguments=args,
-        JSONValue=True,
-        client=mock_client_no_json_output,
+    with pytest.warns(FutureWarning) as recwarn:
+        result = civis.utils.run_template(
+            template_id,
+            arguments=args,
+            JSONValue=True,
+            return_as="JSONValue",
+            client=mock_client_no_json_output,
+        )
+    assert any(
+        "civis.utils.run_template can return three types of values, so 'JSONValue' is deprecated" in str(w.message)
+        for w in recwarn
     )
+    # Check the log message
     log_result = caplog.record_tuples
     assert log_result == [
-        (
-            "civis.utils._jobs",
-            logging.WARNING,
-            "The 'JSONValue' parameter is deprecated and will be removed in "
-            + "civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead.",
-        ),
-        (
-            "civis.utils._jobs",
-            logging.WARNING,
-            "return_as = files and does not match JSONValue.Overwriting return_as "
-            "with JSONValue.",
-        ),
         (
             "civis.utils._jobs",
             logging.WARNING,

@@ -2,9 +2,11 @@ import logging
 import operator
 import time
 from datetime import datetime
+import warnings
 
 from civis import APIClient
 from civis.futures import CivisFuture
+from civis._deprecation import DeprecatedKwargDefault
 
 log = logging.getLogger(__name__)
 
@@ -12,6 +14,7 @@ _FOLLOW_POLL_INTERVAL_SEC = 5
 _LOG_REFETCH_CUTOFF_SECONDS = 300
 _LOG_REFETCH_COUNT = 100
 _LOGS_PER_QUERY = 250
+_RETURN_AS_OPTIONS = frozenset(("files", "JSONValue", "future"))
 
 
 def _warn_or_raise_for_JSONValue(JSONValue, return_as):
@@ -19,19 +22,27 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
     When it's time to remove JSONValue at civis-python v3.0.0,
     remove this helper and all usage of JSONValue.
     """
-    if not isinstance(JSONValue, bool):
-        return return_as
-    if JSONValue:
-        log.warning(
-            "The 'JSONValue' parameter is deprecated and will be removed "
-            "in civis-python v3.0.0. Please use 'return_as=\"JSONValue\"' instead."
+    if not isinstance(JSONValue, DeprecatedKwargDefault):
+        warn_msg = (
+            "As of civis-python v2.8.0, civis.utils.run_template can return three "
+            "types of values, so 'JSONValue' is deprecated "
+            "and will be removed in civis-python v3.0.0 "
+            "(no release timeline yet). "
+            "While 'JSONValue' still works for now, you're strongly encouraged to "
+            "update your code to use the new keyword argument 'return_as' instead and "
+            "stop settting 'JSONValue'. "
+        )
+        conflict_msg = (
+            "Update your code so that the 'JSONValue' argument is no longer set, "
+            "and set 'return_as' to one of {'files', 'JSONValue', 'future'}. "
+            "Note that the default return_as value is 'files' as of "
+            "civis-python v2.8.0, but will be 'future' in civis-python v3.0.0."
         )
         if return_as != "JSONValue":
-            log.warning(
-                f"return_as = {return_as} and does not match JSONValue."
-                "Overwriting return_as with JSONValue."
-            )
-        return "JSONValue"
+            conflict_msg += f"return_as = {return_as} and does not match JSONValue."
+            raise ValueError(conflict_msg)
+        else:
+            warnings.warn(warn_msg.strip(), FutureWarning, stacklevel=3)
     return return_as
 
 
@@ -67,7 +78,7 @@ def run_job(job_id, client=None, polling_interval=None):
 
 
 def run_template(
-    id, arguments, JSONValue=False, client=None, return_as="files", **kwargs
+    id, arguments, JSONValue=DeprecatedKwargDefault(), client=None, return_as="files", **kwargs
 ):
     """Run a template and return the results.
 
@@ -124,15 +135,16 @@ def run_template(
         credential_id=2)
     {'output': 1234567}
     """
+    if return_as not in _RETURN_AS_OPTIONS:
+        raise ValueError(f"unsupported return_as option: {return_as}")
     if client is None:
         client = APIClient()
     job = client.scripts.post_custom(id, arguments=arguments, **kwargs)
     run = client.scripts.post_custom_runs(job.id)
     fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
 
-    # For backward compatibility, JSONValue overrides return_as if set
-    if JSONValue:
-        return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
+    # Check if JSONValue conflicts with return_as, warn or raise accordingly
+    return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
 
     if return_as == "future":
         return fut
@@ -152,14 +164,10 @@ def run_template(
         # Note that the cast to a dict is to convert
         # an expected Response object.
         return json_output[0].json()
-    elif return_as == "files":
+    else:
+        # Expecting return_as == "files"
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
-    else:
-        raise ValueError(
-            f"Invalid value for return_as: {return_as}. "
-            "Must be 'files', 'JSONValue', or 'future'."
-        )
 
 
 def _timestamp_from_iso_str(s):
