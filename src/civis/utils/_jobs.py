@@ -28,9 +28,9 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
             "types of values, so 'JSONValue' is deprecated "
             "and will be removed in civis-python v3.0.0 "
             "(no release timeline yet). "
-            "While the arg 'JSONValue' still works for now, you're strongly encouraged to "
-            "update your code to use the new keyword argument 'return_as' instead and "
-            "stop settting 'JSONValue'. "
+            "While the arg 'JSONValue' still works for now, you're strongly encouraged "
+            "to update your code to use the new keyword argument 'return_as' instead "
+            "and stop settting 'JSONValue'. "
         )
         if JSONValue:
             warn_msg += (
