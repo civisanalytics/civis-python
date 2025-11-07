@@ -160,7 +160,6 @@ def run_template(
     run = client.scripts.post_custom_runs(job.id)
     fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
 
-
     if return_as == "future":
         return fut
 
