@@ -152,14 +152,14 @@ def run_template(
     """
     if return_as not in _RETURN_AS_OPTIONS:
         raise ValueError(f"unsupported return_as option: {return_as}")
+    # Check if JSONValue conflicts with return_as, warn or raise accordingly
+    return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
     if client is None:
         client = APIClient()
     job = client.scripts.post_custom(id, arguments=arguments, **kwargs)
     run = client.scripts.post_custom_runs(job.id)
     fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
 
-    # Check if JSONValue conflicts with return_as, warn or raise accordingly
-    return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
 
     if return_as == "future":
         return fut
