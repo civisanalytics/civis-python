@@ -28,19 +28,29 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
             "types of values, so 'JSONValue' is deprecated "
             "and will be removed in civis-python v3.0.0 "
             "(no release timeline yet). "
-            "While 'JSONValue' still works for now, you're strongly encouraged to "
+            "While the arg 'JSONValue' still works for now, you're strongly encouraged to "
             "update your code to use the new keyword argument 'return_as' instead and "
             "stop settting 'JSONValue'. "
         )
+        if JSONValue:
+            warn_msg += (
+                "To return the JSONValue output of the custom script run, "
+                'set return_as="JSONValue".'
+            )
         conflict_msg = (
             "Update your code so that the 'JSONValue' argument is no longer set, "
             "and set 'return_as' to one of {'files', 'JSONValue', 'future'}. "
             "Note that the default return_as value is 'files' as of "
             "civis-python v2.8.0, but will be 'future' in civis-python v3.0.0."
         )
-        if return_as != "JSONValue":
-            conflict_msg += f"return_as = {return_as} and does not match JSONValue."
-            raise ValueError(conflict_msg)
+        if (JSONValue and return_as != "JSONValue") or (
+            not JSONValue and return_as == "JSONValue"
+        ):
+            raise ValueError(
+                "Conflicting argument values: "
+                f"JSONValue={bool(JSONValue)} but return_as={return_as!r}. "
+                + conflict_msg
+            )
         else:
             warnings.warn(warn_msg.strip(), FutureWarning, stacklevel=3)
     return return_as
