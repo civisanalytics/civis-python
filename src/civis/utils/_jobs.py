@@ -2,9 +2,11 @@ import logging
 import operator
 import time
 from datetime import datetime
+import warnings
 
 from civis import APIClient
 from civis.futures import CivisFuture
+from civis._deprecation import DeprecatedKwargDefault
 
 log = logging.getLogger(__name__)
 
@@ -12,6 +14,46 @@ _FOLLOW_POLL_INTERVAL_SEC = 5
 _LOG_REFETCH_CUTOFF_SECONDS = 300
 _LOG_REFETCH_COUNT = 100
 _LOGS_PER_QUERY = 250
+_RETURN_AS_OPTIONS = frozenset(("files", "JSONValue", "future"))
+
+
+def _warn_or_raise_for_JSONValue(JSONValue, return_as):
+    """Warn about use of deprecated JSONValue parameter in run_template.
+    When it's time to remove JSONValue at civis-python v3.0.0,
+    remove this helper and all usage of JSONValue.
+    """
+    if not isinstance(JSONValue, DeprecatedKwargDefault):
+        warn_msg = (
+            "As of civis-python v2.8.0, civis.utils.run_template can return three "
+            "types of values, so 'JSONValue' is deprecated "
+            "and will be removed in civis-python v3.0.0 "
+            "(no release timeline yet). "
+            "While the arg 'JSONValue' still works for now, you're strongly encouraged "
+            "to update your code to use the new keyword argument 'return_as' instead "
+            "and stop settting 'JSONValue'. "
+        )
+        if JSONValue:
+            warn_msg += (
+                "To return the JSONValue output of the custom script run, "
+                'set return_as="JSONValue".'
+            )
+        conflict_msg = (
+            "Update your code so that the 'JSONValue' argument is no longer set, "
+            "and set 'return_as' to one of {'files', 'JSONValue', 'future'}. "
+            "Note that the default return_as value is 'files' as of "
+            "civis-python v2.8.0, but will be 'future' in civis-python v3.0.0."
+        )
+        if (JSONValue and return_as != "JSONValue") or (
+            not JSONValue and return_as == "JSONValue"
+        ):
+            raise ValueError(
+                "Conflicting argument values: "
+                f"JSONValue={bool(JSONValue)} but return_as={return_as!r}. "
+                + conflict_msg
+            )
+        else:
+            warnings.warn(warn_msg.strip(), FutureWarning, stacklevel=3)
+    return return_as
 
 
 def run_job(job_id, client=None, polling_interval=None):
@@ -45,7 +87,14 @@ def run_job(job_id, client=None, polling_interval=None):
     )
 
 
-def run_template(id, arguments, JSONValue=False, client=None):
+def run_template(
+    id,
+    arguments,
+    JSONValue=DeprecatedKwargDefault(),
+    client=None,
+    return_as="files",
+    **kwargs,
+):
     """Run a template and return the results.
 
     Parameters
@@ -58,19 +107,32 @@ def run_template(id, arguments, JSONValue=False, client=None):
         If True, will return the JSON output of the template.
         If False, will return the file ids associated with the
         output results.
+
+        .. deprecated:: 2.8.0
+            ``JSONValue`` will be removed at civis-python v3.0.0.
+            Please use ``return_as`` instead.
+    return_as: str, optional
+        Determines the return type. Options:
+        - "files": returns file ids associated with output results (default for <v3.0.0)
+        - "JSONValue": returns the JSON output of the template
+        - "future": returns the CivisFuture object for the run
+        At civis-python v3.0.0, the default will change to "future".
     client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
+    **kwargs: dict
+        Additional keyword arguments to be passed to post_custom.
 
     Returns
     -------
-    output: dict
-        If JSONValue = False, dictionary of file ids with the keys
+    output: dict or CivisFuture
+        If return_as = "files", dictionary of file ids with the keys
         being their output names.
-        If JSONValue = True, JSON dict containing the results of the
+        If return_as = "JSONValue", JSON dict containing the results of the
         template run. Expects only a single JSON result. Will return
         nothing if either there is no JSON result or there is more
         than 1 JSON result.
+        If return_as = "future", returns the CivisFuture object for the run.
 
     Examples
     --------
@@ -78,17 +140,32 @@ def run_template(id, arguments, JSONValue=False, client=None):
     >>> run_template(my_template_id, arguments=my_dict_of_args)
     {'output': 1234567}
     >>> # Run template to return JSON output
-    >>> run_template(my_template_id, arguments=my_dict_of_args, JSONValue=True)
+    >>> run_template(my_template_id, arguments=my_dict_of_args, return_as="JSONValue")
     {'result1': 'aaa', 'result2': 123}
+    >>> # Run template to return CivisFuture
+    >>> run_template(my_template_id, arguments=my_dict_of_args, return_as="future")
+    <CivisFuture object>
+    >>> # Run template with kwargs
+    >>> run_template(my_template_id, arguments=my_dict_of_args, remote_host_id=1,
+        credential_id=2)
+    {'output': 1234567}
     """
+    if return_as not in _RETURN_AS_OPTIONS:
+        raise ValueError(f"unsupported return_as option: {return_as}")
+    # Check if JSONValue conflicts with return_as, warn or raise accordingly
+    return_as = _warn_or_raise_for_JSONValue(JSONValue, return_as)
     if client is None:
         client = APIClient()
-    job = client.scripts.post_custom(id, arguments=arguments)
+    job = client.scripts.post_custom(id, arguments=arguments, **kwargs)
     run = client.scripts.post_custom_runs(job.id)
     fut = CivisFuture(client.scripts.get_custom_runs, (job.id, run.id), client=client)
+
+    if return_as == "future":
+        return fut
+
     fut.result()
     outputs = client.scripts.list_custom_runs_outputs(job.id, run.id)
-    if JSONValue:
+    if return_as == "JSONValue":
         json_output = [o.value for o in outputs if o.object_type == "JSONValue"]
         if len(json_output) == 0:
             log.warning("No JSON output for template {}".format(id))
@@ -102,6 +179,7 @@ def run_template(id, arguments, JSONValue=False, client=None):
         # an expected Response object.
         return json_output[0].json()
     else:
+        # Expecting return_as == "files"
         file_ids = {o.name: o.object_id for o in outputs}
         return file_ids
 
