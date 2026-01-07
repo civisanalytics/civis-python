@@ -212,9 +212,12 @@ For the public documentation at https://civis-python.readthedocs.io:
 The doc build has its full dependencies listed in ``docs/requirements.txt``.
 To update this file:
 
-* Install the latest version of ``pip-tools``: ``pip install --upgrade pip-tools``.
-* Run the ``pip-compile`` command at the top of ``docs/requirements.txt``, with the flag
-  ``--upgrade`` added to upgrade all transitive dependencies as well.
+* Set up a [uv](https://docs.astral.sh/uv/)-based virtual environment, as documented in
+  [CONTRIBUTING.md](CONTRIBUTING.md).
+* Run the ``uv pip compile`` command at the top of ``docs/requirements.txt``, with the flag
+  ``--upgrade`` added to upgrade all transitive dependencies as well
+  (which is necessary to resolve security vulnerabilities flagged for some of these
+  transitive dependencies from time to time).
 
 To build the documentation locally, for testing and development:
 
