@@ -22,10 +22,18 @@ To file a ticket:
 
 These set-up steps need to be done only once per machine / OS.
 
-1. Locally, create an isolated Python environment and activate it
-   (e.g., using the built-in [venv](https://docs.python.org/3/tutorial/venv.html)).
+1. Locally, create an isolated Python environment and activate it.
    For the Python version, use the latest Python 3.x that civis-python supports,
-   as indicated in `pyproject.toml` at the repo's top level.
+   as indicated by the trove classifiers in  `pyproject.toml` at the repo's top level.
+   For instance, if you use [uv](https://docs.astral.sh/uv/) and the latest Python version
+   supported by civis-python is 3.14:
+
+```bash
+uv python install 3.14
+uv venv .venv --managed-python --python=python3.14
+source .venv/bin/activate
+```
+
 2. [For non-Civis employees only] Fork the civis-python repo ( https://github.com/civisanalytics/civis-python/fork ).
 3. Clone the civis-python repo to your local drive:
 
@@ -51,7 +59,8 @@ git remote rename origin upstream
 
 ```bash
 cd civis-python
-pip install -e ".[dev-core,dev-civisml]"
+# Assuming you've set up uv as exemplied in step 1 above
+uv pip install -e ".[dev-core,dev-civisml]"
 ```
 
 ## Making Changes

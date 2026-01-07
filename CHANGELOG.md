@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added support for Python 3.14. (#527)
 
 ### Changed
 - Updated retries for Civis API calls under `civis.APIClient`
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- Dropped support for Python 3.10. (#527)
 
 ### Fixed
 - Fixed retries for Civis API calls under `civis.APIClient`
