@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added support for Python 3.14. (#527)
 
 ### Changed
+- Updated `civis.utils.run_template` to accept kwargs. (#526)
 - Updated retries for Civis API calls under `civis.APIClient`
   to wait at least the `Retry-After` duration from the response header,
   instead of potentially less than that. (#525)
 
 ### Deprecated
+- Deprecated the JSONValue parameter of `civis.utils.run_template`. (#526)
 
 ### Removed
 - Dropped support for Python 3.10. (#527)
