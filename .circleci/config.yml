@@ -11,9 +11,16 @@ jobs:
         type: string
     docker:
       # Pick the highest Python 3.x version that civis-python is known to support
+      # Use the same major.minor version in the uv virtual env setup step below.
       - image: cimg/python:3.14
     steps:
       - checkout
+      - run:
+          name: Set up uv virtual environment
+          command: |
+            uv python install 3.14
+            uv venv .venv --managed-python --python=python3.14
+            source .venv/bin/activate
       - run:
           command: << parameters.command-run >>
 
@@ -75,31 +82,30 @@ workflows:
       - pre-build:
           name: bandit
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
+            uv pip install --no-progress -e ".[dev-core]" && \
             bandit --version && \
             bandit -r src -x tests
       - pre-build:
           name: black
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
+            uv pip install --no-progress -e ".[dev-core]" && \
             black --check src tools tests docs/conf.py
       - pre-build:
           name: flake8
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
+            uv pip install --no-progress -e ".[dev-core]" && \
             flake8 src tools tests docs/conf.py
       - pre-build:
           name: pip-audit
           command-run: |
-            pip install --progress-bar off -r docs/requirements.txt && \
-            pip install --progress-bar off --upgrade -e ".[dev-core,dev-civisml]" && \
+            uv pip install --no-progress -r docs/requirements.txt && \
+            uv pip install --no-progress -e ".[dev-core,dev-civisml]" && \
             pip-audit --version && \
-            pip-audit --skip-editable \
-              --ignore-vuln GHSA-4xh5-x5gv-qwph  # https://github.com/pypa/pip/issues/13607
+            pip-audit --skip-editable
       - pre-build:
           name: twine
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
+            uv pip install --no-progress -e ".[dev-core]" && \
             python -m build && \
             twine check dist/`ls dist/ | grep .tar.gz` && \
             twine check dist/`ls dist/ | grep .whl`
