@@ -9,17 +9,19 @@ jobs:
     parameters:
       command-run:
         type: string
+      latest-supported-python-version:
+        type: string
+        # Pick the highest Python 3.x version that civis-python is known to support
+        default: "3.14"
     docker:
-      # Pick the highest Python 3.x version that civis-python is known to support
-      # Use the same major.minor version in the uv virtual env setup step below.
-      - image: cimg/python:3.14
+      - image: cimg/python:<< parameters.latest-supported-python-version >>
     steps:
       - checkout
       - run:
           name: Set up uv virtual environment
           command: |
-            uv python install 3.14
-            uv venv .venv --managed-python --python=python3.14
+            uv python install << parameters.latest-supported-python-version >>
+            uv venv .venv --managed-python --python=python<< parameters.latest-supported-python-version >>
             source .venv/bin/activate
       - run:
           command: << parameters.command-run >>
@@ -35,26 +37,33 @@ jobs:
     steps:
       - checkout
       - run:
-          # Intentionally not using CircleCI's "python/install-packages" step,
-          # because we don't want to install packages from any requirements.txt/pyproject.toml
-          # just yet.
-          # Test that we can build a source distribution that can correctly
-          # install from clean slate.
-          # "python -m build" creates dist/civis-x.y.z-py3-none-any.whl
-          name: Build source distribution and install package from it
+          name: Install Python under uv
           command: |
-              pip install --progress-bar off --upgrade pip setuptools build && \
-              python -m build && \
-              pip install dist/`ls dist/ | grep .whl`
+            uv python install << parameters.python-version >>
       - run:
-          name: Install the full development requirements
-          command: pip install --progress-bar off -e ".[dev-core,dev-civisml]"
+          name: Build source distribution, test installing package from it, and clean up
+          command: |
+              uv venv .venv --managed-python --python=python<< parameters.python-version >>
+              source .venv/bin/activate
+              uv pip install --no-progress --upgrade pip setuptools build
+              uv run python -m build
+              uv pip install dist/`ls dist/ | grep .whl`
+              deactivate
+              rm -rf .venv
+      - run:
+          name: Set up uv virtual environment for the test suite
+          command: |
+            uv venv .venv --managed-python --python=python<< parameters.python-version >>
+            source .venv/bin/activate
+            uv pip install --no-progress -e ".[dev-core,dev-civisml]"
       - run:
           name: Show installed Python packages
-          command: pip list -v
+          command: |
+            uv pip list -v
       - run:
           name: Run python tests
-          command: pytest --junitxml=/tmp/testxml/report.xml --durations=0
+          command: |
+            uv run pytest --junitxml=/tmp/testxml/report.xml --durations=0
       - store_test_results:
           path: /tmp/testxml/
 
