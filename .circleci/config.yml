@@ -83,32 +83,32 @@ workflows:
           name: bandit
           command-run: |
             uv pip install --no-progress -e ".[dev-core]" && \
-            bandit --version && \
-            bandit -r src -x tests
+            uv run bandit --version && \
+            uv run bandit -r src -x tests
       - pre-build:
           name: black
           command-run: |
             uv pip install --no-progress -e ".[dev-core]" && \
-            black --check src tools tests docs/conf.py
+            uv run black --check src tools tests docs/conf.py
       - pre-build:
           name: flake8
           command-run: |
             uv pip install --no-progress -e ".[dev-core]" && \
-            flake8 src tools tests docs/conf.py
+            uv run flake8 src tools tests docs/conf.py
       - pre-build:
           name: pip-audit
           command-run: |
             uv pip install --no-progress -r docs/requirements.txt && \
             uv pip install --no-progress -e ".[dev-core,dev-civisml]" && \
-            pip-audit --version && \
-            pip-audit --skip-editable
+            uv run pip-audit --version && \
+            uv run pip-audit --skip-editable
       - pre-build:
           name: twine
           command-run: |
             uv pip install --no-progress -e ".[dev-core]" && \
-            python -m build && \
-            twine check dist/`ls dist/ | grep .tar.gz` && \
-            twine check dist/`ls dist/ | grep .whl`
+            uv run python -m build && \
+            uv run twine check dist/`ls dist/ | grep .tar.gz` && \
+            uv run twine check dist/`ls dist/ | grep .whl`
       - build-python:
           requires:
             - bandit
