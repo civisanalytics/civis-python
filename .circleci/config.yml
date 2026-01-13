@@ -9,11 +9,20 @@ jobs:
     parameters:
       command-run:
         type: string
+      latest-supported-python-version:
+        type: string
+        # Pick the highest Python 3.x version that civis-python is known to support
+        default: "3.14"
     docker:
-      # Pick the highest Python 3.x version that civis-python is known to support
-      - image: cimg/python:3.13
+      - image: cimg/python:<< parameters.latest-supported-python-version >>
     steps:
       - checkout
+      - run:
+          name: Set up uv virtual environment
+          command: |
+            uv python install << parameters.latest-supported-python-version >>
+            uv venv .venv --managed-python --python=python<< parameters.latest-supported-python-version >>
+            source .venv/bin/activate
       - run:
           command: << parameters.command-run >>
 
@@ -28,26 +37,33 @@ jobs:
     steps:
       - checkout
       - run:
-          # Intentionally not using CircleCI's "python/install-packages" step,
-          # because we don't want to install packages from any requirements.txt/pyproject.toml
-          # just yet.
-          # Test that we can build a source distribution that can correctly
-          # install from clean slate.
-          # "python -m build" creates dist/civis-x.y.z-py3-none-any.whl
-          name: Build source distribution and install package from it
+          name: Install Python under uv
           command: |
-              pip install --progress-bar off --upgrade pip setuptools build && \
-              python -m build && \
-              pip install dist/`ls dist/ | grep .whl`
+            uv python install << parameters.python-version >>
       - run:
-          name: Install the full development requirements
-          command: pip install --progress-bar off -e ".[dev-core,dev-civisml]"
+          name: Build source distribution, test installing package from it, and clean up
+          command: |
+              uv venv .venv --managed-python --python=python<< parameters.python-version >>
+              source .venv/bin/activate
+              uv pip install --no-progress --upgrade pip setuptools build
+              uv run python -m build
+              uv pip install dist/`ls dist/ | grep .whl`
+              deactivate
+              rm -rf .venv
+      - run:
+          name: Set up uv virtual environment for the test suite
+          command: |
+            uv venv .venv --managed-python --python=python<< parameters.python-version >>
+            source .venv/bin/activate
+            uv pip install --no-progress -e ".[dev-core,dev-civisml]"
       - run:
           name: Show installed Python packages
-          command: pip list -v
+          command: |
+            uv pip list -v
       - run:
           name: Run python tests
-          command: pytest --junitxml=/tmp/testxml/report.xml --durations=0
+          command: |
+            uv run pytest --junitxml=/tmp/testxml/report.xml --durations=0
       - store_test_results:
           path: /tmp/testxml/
 
@@ -75,34 +91,33 @@ workflows:
       - pre-build:
           name: bandit
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
-            bandit --version && \
-            bandit -r src -x tests
+            uv pip install --no-progress -e ".[dev-core]" && \
+            uv run bandit --version && \
+            uv run bandit -r src -x tests
       - pre-build:
           name: black
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
-            black --check src tools tests docs/conf.py
+            uv pip install --no-progress -e ".[dev-core]" && \
+            uv run black --check src tools tests docs/conf.py
       - pre-build:
           name: flake8
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
-            flake8 src tools tests docs/conf.py
+            uv pip install --no-progress -e ".[dev-core]" && \
+            uv run flake8 src tools tests docs/conf.py
       - pre-build:
           name: pip-audit
           command-run: |
-            pip install --progress-bar off -r docs/requirements.txt && \
-            pip install --progress-bar off -e ".[dev-core,dev-civisml]" && \
-            pip-audit --version && \
-            pip-audit --skip-editable \
-              --ignore-vuln GHSA-4xh5-x5gv-qwph  # https://github.com/pypa/pip/issues/13607
+            uv pip install --no-progress -r docs/requirements.txt && \
+            uv pip install --no-progress -e ".[dev-core,dev-civisml]" && \
+            uv run pip-audit --version && \
+            uv run pip-audit --skip-editable
       - pre-build:
           name: twine
           command-run: |
-            pip install --progress-bar off -e ".[dev-core]" && \
-            python -m build && \
-            twine check dist/`ls dist/ | grep .tar.gz` && \
-            twine check dist/`ls dist/ | grep .whl`
+            uv pip install --no-progress -e ".[dev-core]" && \
+            uv run python -m build && \
+            uv run twine check dist/`ls dist/ | grep .tar.gz` && \
+            uv run twine check dist/`ls dist/ | grep .whl`
       - build-python:
           requires:
             - bandit
@@ -112,7 +127,7 @@ workflows:
             - twine
           matrix:
             parameters:
-              python-version: ["3.10", "3.11", "3.12", "3.13"]
+              python-version: ["3.11", "3.12", "3.13", "3.14"]
       - build-python-win:
           requires:
             - bandit

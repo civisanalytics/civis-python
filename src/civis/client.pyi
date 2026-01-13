@@ -54716,6 +54716,1006 @@ class _Storage_Hosts:
         """
         ...
 
+class _Studios:
+    def post(
+        self,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseStudiosPost:
+        """Create a Studio
+
+        API URL: ``POST /studios``
+
+        Parameters
+        ----------
+        name : str, optional
+            The name of the studio.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the studio.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the studio. Fractional
+                values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the studio.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            studio.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the studio.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the studio.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the studio.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the studio.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the studio.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - studio_id : int
+                    The ID of the owning Studio
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                studio.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def get(
+        self,
+        id: int,
+    ) -> _ResponseStudiosGet:
+        """Get a Studio
+
+        API URL: ``GET /studios/{id}``
+
+        Parameters
+        ----------
+        id : int
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the studio.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the studio.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the studio.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the studio.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the studio.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - studio_id : int
+                    The ID of the owning Studio
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                studio.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def put(
+        self,
+        id: int,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseStudiosPut:
+        """Replace all attributes of this Studio
+
+        API URL: ``PUT /studios/{id}``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the studio.
+        name : str, optional
+            The name of the studio.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the studio.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the studio. Fractional
+                values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the studio.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            studio.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the studio.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the studio.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the studio.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the studio.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the studio.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - studio_id : int
+                    The ID of the owning Studio
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                studio.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def patch(
+        self,
+        id: int,
+        *,
+        name: str | None = ...,
+        docker_image_name: str | None = ...,
+        docker_image_tag: str | None = ...,
+        instance_type: str | None = ...,
+        required_resources: dict | None = ...,
+        git_credential_id: int | None = ...,
+        params: List[dict] | None = ...,
+        git_repo_url: str | None = ...,
+        git_ref: str | None = ...,
+        partition_label: str | None = ...,
+    ) -> _ResponseStudiosPatch:
+        """Update some attributes of this Studio
+
+        API URL: ``PATCH /studios/{id}``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the studio.
+        name : str, optional
+            The name of the studio.
+        docker_image_name : str, optional
+            The name of the docker image to pull from DockerHub.
+        docker_image_tag : str, optional
+            The tag of the docker image to pull from DockerHub (default: latest).
+        instance_type : str, optional
+            The EC2 instance type to deploy to.
+        required_resources : dict, optional
+            - memory : int
+                The amount of memory allocated to the studio.
+            - disk_space : float (float)
+                The amount of disk space, in GB, to allocate for the studio. Fractional
+                values (e.g. 0.25) are supported.
+            - cpu : int
+                The amount of cpu allocated to the studio.
+        git_credential_id : int, optional
+            The id of the git credential to be used when checking out the specified git
+            repo. If not supplied, the first git credential you've submitted will be
+            used.
+        params : List[dict], optional
+            A definition of the parameters to use as environment variables in this
+            studio.
+
+            - name : str
+                The variable's name as used within your code.
+            - description : str
+                A short sentence or fragment describing this parameter.
+            - type : str
+                The type of parameter. Valid options: string, multi_line_string,
+                integer, float, bool, file, table, database, credential_aws,
+                credential_redshift, or credential_custom
+            - value : object
+                The value you would like to set this param to.
+        git_repo_url : str, optional
+            The URL of the git repository (e.g.,
+            https://github.com/organization/repo_name.git).
+        git_ref : str, optional
+            The git reference if git repo is specified
+        partition_label : str, optional
+            The partition label used to run this object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the studio.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the studio.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the studio.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the studio.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the studio.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - studio_id : int
+                    The ID of the owning Studio
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                studio.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
+    def list_deployments(
+        self,
+        studio_id: int,
+        *,
+        deployment_id: int | None = ...,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> Iterator[_ResponseStudiosListDeployments]:
+        """List deployments for a Studio
+
+        API URL: ``GET /studios/{studio_id}/deployments``
+
+        Parameters
+        ----------
+        studio_id : int
+            The ID of the owning Studio
+        deployment_id : int, optional
+            The ID for this deployment
+        limit : int, optional
+            Number of results to return. Defaults to 20. Maximum allowed is 50.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to created_at. Must be
+            one of: created_at.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
+            determined by 'limit'. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - studio_id : int
+                The ID of the owning Studio
+        """
+        ...
+
+    def post_deployments(
+        self,
+        studio_id: int,
+        *,
+        deployment_id: int | None = ...,
+    ) -> _ResponseStudiosPostDeployments:
+        """Deploy a Studio
+
+        API URL: ``POST /studios/{studio_id}/deployments``
+
+        Parameters
+        ----------
+        studio_id : int
+            The ID of the owning Studio
+        deployment_id : int, optional
+            The ID for this deployment
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - display_url : str
+                A signed URL for viewing the deployed item.
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - studio_id : int
+                The ID of the owning Studio
+        """
+        ...
+
+    def get_deployments(
+        self,
+        studio_id: int,
+        deployment_id: int,
+    ) -> _ResponseStudiosGetDeployments:
+        """Get details about a Studio deployment
+
+        API URL: ``GET /studios/{studio_id}/deployments/{deployment_id}``
+
+        Parameters
+        ----------
+        studio_id : int
+            The ID of the owning Studio
+        deployment_id : int
+            The ID for this deployment
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - deployment_id : int
+                The ID for this deployment.
+            - user_id : int
+                The ID of the owner.
+            - host : str
+                Domain of the deployment.
+            - name : str
+                Name of the deployment.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - display_url : str
+                A signed URL for viewing the deployed item.
+            - instance_type : str
+                The EC2 instance type requested for the deployment.
+            - memory : int
+                The memory allocated to the deployment, in MB.
+            - cpu : int
+                The cpu allocated to the deployment, in millicores.
+            - state : str
+                The state of the deployment.
+            - state_message : str
+                A detailed description of the state.
+            - max_memory_usage : float (float)
+                If the deployment has finished, the maximum amount of memory used
+                during the deployment, in MB.
+            - max_cpu_usage : float (float)
+                If the deployment has finished, the maximum amount of cpu used during
+                the deployment, in millicores.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - studio_id : int
+                The ID of the owning Studio
+        """
+        ...
+
+    def delete_deployments(
+        self,
+        studio_id: int,
+        deployment_id: int,
+    ) -> Response:
+        """Delete a Studio deployment
+
+        API URL: ``DELETE /studios/{studio_id}/deployments/{deployment_id}``
+
+        Parameters
+        ----------
+        studio_id : int
+            The ID of the owning Studio
+        deployment_id : int
+            The ID for this deployment
+
+        Returns
+        -------
+        None
+            Response code 204: success
+        """
+        ...
+
+    def list_deployments_logs(
+        self,
+        id: int,
+        deployment_id: int,
+        *,
+        start_at: str | None = ...,
+        end_at: str | None = ...,
+        limit: int | None = ...,
+    ) -> List[_ResponseStudiosListDeploymentsLogs]:
+        """Get the logs for a Studio deployment
+
+        API URL: ``GET /studios/{id}/deployments/{deployment_id}/logs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the owning Studio.
+        deployment_id : int
+            The ID for this deployment.
+        start_at : str, optional
+            Log entries with a lower timestamp will be omitted.
+        end_at : str, optional
+            Log entries with a higher timestamp will be omitted.
+        limit : int, optional
+            The maximum number of log messages to return. Default of 10000.
+
+        Returns
+        -------
+        :class:`civis.ListResponse`
+            - message : str
+                The log message.
+            - stream : str
+                The stream of the log. One of "stdout", "stderr".
+            - created_at : str (date-time)
+                The time the log was created.
+            - source : str
+                The source of the log. One of "system", "user".
+        """
+        ...
+
+    def put_archive(
+        self,
+        id: int,
+        status: bool,
+    ) -> _ResponseStudiosPutArchive:
+        """Update the archive status of this object
+
+        API URL: ``PUT /studios/{id}/archive``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the object.
+        status : bool
+            The desired archived status of the object.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID of the studio.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - name : str
+                The name of the studio.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub (default: latest).
+            - instance_type : str
+                The EC2 instance type to deploy to.
+            - required_resources : :class:`civis.Response`
+                - memory : int
+                    The amount of memory allocated to the studio.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the studio.
+                    Fractional values (e.g. 0.25) are supported.
+                - cpu : int
+                    The amount of cpu allocated to the studio.
+            - created_at : str (time)
+            - updated_at : str (time)
+            - most_recent_deployment : :class:`civis.Response`
+                - deployment_id : int
+                    The ID for this deployment.
+                - user_id : int
+                    The ID of the owner.
+                - host : str
+                    Domain of the deployment.
+                - name : str
+                    Name of the deployment.
+                - docker_image_name : str
+                    The name of the docker image to pull from DockerHub.
+                - docker_image_tag : str
+                    The tag of the docker image to pull from DockerHub (default:
+                    latest).
+                - display_url : str
+                    A signed URL for viewing the deployed item.
+                - instance_type : str
+                    The EC2 instance type requested for the deployment.
+                - memory : int
+                    The memory allocated to the deployment, in MB.
+                - cpu : int
+                    The cpu allocated to the deployment, in millicores.
+                - state : str
+                    The state of the deployment.
+                - state_message : str
+                    A detailed description of the state.
+                - max_memory_usage : float (float)
+                    If the deployment has finished, the maximum amount of memory used
+                    during the deployment, in MB.
+                - max_cpu_usage : float (float)
+                    If the deployment has finished, the maximum amount of cpu used
+                    during the deployment, in millicores.
+                - created_at : str (time)
+                - updated_at : str (time)
+                - studio_id : int
+                    The ID of the owning Studio
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters to use as environment variables in this
+                studio.
+
+                - name : str
+                    The variable's name as used within your code.
+                - description : str
+                    A short sentence or fragment describing this parameter.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - value : object
+                    The value you would like to set this param to.
+            - git_repo_id : int
+                The ID of the git repository.
+            - git_repo_url : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - git_ref : str
+                The git reference if git repo is specified
+            - partition_label : str
+                The partition label used to run this object.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - archived : str
+                The archival status of the requested item(s).
+        """
+        ...
+
 class _Table_Tags:
     def list(
         self,
@@ -81950,6 +82950,353 @@ class _ResponseStorageHostsPutTransferDependencies(Response):
     description: str
     shared: bool
 
+class _ResponseStudiosPost(Response):
+    id: int
+    author: _ResponseStudiosPostAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseStudiosPostRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseStudiosPostMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseStudiosPostParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+    archived: str
+
+class _ResponseStudiosPostAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStudiosPostRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseStudiosPostMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosPostParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseStudiosGet(Response):
+    id: int
+    author: _ResponseStudiosGetAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseStudiosGetRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseStudiosGetMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseStudiosGetParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+    archived: str
+
+class _ResponseStudiosGetAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStudiosGetRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseStudiosGetMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosGetParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseStudiosPut(Response):
+    id: int
+    author: _ResponseStudiosPutAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseStudiosPutRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseStudiosPutMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseStudiosPutParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+    archived: str
+
+class _ResponseStudiosPutAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStudiosPutRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseStudiosPutMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosPutParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseStudiosPatch(Response):
+    id: int
+    author: _ResponseStudiosPatchAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseStudiosPatchRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseStudiosPatchMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseStudiosPatchParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+    archived: str
+
+class _ResponseStudiosPatchAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStudiosPatchRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseStudiosPatchMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosPatchParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
+class _ResponseStudiosListDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosPostDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosGetDeployments(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosListDeploymentsLogs(Response):
+    message: str
+    stream: str
+    created_at: str
+    source: str
+
+class _ResponseStudiosPutArchive(Response):
+    id: int
+    author: _ResponseStudiosPutArchiveAuthor
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    required_resources: _ResponseStudiosPutArchiveRequiredResources
+    created_at: str
+    updated_at: str
+    most_recent_deployment: _ResponseStudiosPutArchiveMostRecentDeployment
+    git_credential_id: int
+    params: List[_ResponseStudiosPutArchiveParams]
+    git_repo_id: int
+    git_repo_url: str
+    git_ref: str
+    partition_label: str
+    my_permission_level: str
+    archived: str
+
+class _ResponseStudiosPutArchiveAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseStudiosPutArchiveRequiredResources(Response):
+    memory: int
+    disk_space: float
+    cpu: int
+
+class _ResponseStudiosPutArchiveMostRecentDeployment(Response):
+    deployment_id: int
+    user_id: int
+    host: str
+    name: str
+    docker_image_name: str
+    docker_image_tag: str
+    display_url: str
+    instance_type: str
+    memory: int
+    cpu: int
+    state: str
+    state_message: str
+    max_memory_usage: float
+    max_cpu_usage: float
+    created_at: str
+    updated_at: str
+    studio_id: int
+
+class _ResponseStudiosPutArchiveParams(Response):
+    name: str
+    description: str
+    type: str
+    value: object
+
 class _ResponseTableTagsList(Response):
     id: int
     name: str
@@ -84396,6 +85743,7 @@ class APIClient:
     search = _Search()
     services = _Services()
     storage_hosts = _Storage_Hosts()
+    studios = _Studios()
     table_tags = _Table_Tags()
     tables = _Tables()
     templates = _Templates()
