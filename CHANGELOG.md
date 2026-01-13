@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
-- Added support for Python 3.14. (#527)
+- Added support for Python 3.14. (#528)
+- Added API endpoint method and path URL in the error message of a `CivisAPIError` exception. (#528)
 
 ### Changed
 - Updated `civis.utils.run_template` to accept kwargs. (#526)
@@ -19,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated the JSONValue parameter of `civis.utils.run_template`. (#526)
 
 ### Removed
-- Dropped support for Python 3.10. (#527)
+- Dropped support for Python 3.10. (#528)
 
 ### Fixed
 - Fixed retries for Civis API calls under `civis.APIClient`
