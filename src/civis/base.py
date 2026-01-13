@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import platform
 import threading
@@ -59,7 +61,7 @@ def _err_msg_with_job_run_ids(err_msg, job_id, run_id) -> str:
 
 
 class CivisAPIError(Exception):
-    def __init__(self, response):
+    def __init__(self, response: requests.Response):
         if response.content:  # the API itself gave an error response
             try:
                 json = response.json()
@@ -82,7 +84,9 @@ class CivisAPIError(Exception):
 
     def __str__(self):
         if self.status_code:
-            return "({}) {}".format(self.status_code, self.error_message)
+            method = self._response.request.method
+            url = self._response.request.path_url
+            return f"({self.status_code}) {self.error_message} ({method} {url})"
         else:
             return self.error_message
 
