@@ -50,11 +50,11 @@ def generate_client_pyi(client_pyi_path, api_spec_path):
 
 from collections import OrderedDict
 from collections.abc import Iterator
-from typing import Any, List
+from typing import List
 
 import tenacity
 
-from civis.response import Response
+from civis.response import Response, ListResponse, PaginatedResponse
 
 """
         )
@@ -97,9 +97,11 @@ from civis.response import Response
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
-                    return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                    # TODO: Do typing overload for iterator=True => PaginatedResponse
+                    #   and iterator=False => ListResponse?
+                    return_str = f"PaginatedResponse[{typing.get_args(return_type)[0].__name__}]"  # noqa: E501
                 elif method_name.startswith("list"):
-                    return_str = f"List[{return_type.__name__}]"
+                    return_str = f"ListResponse[{return_type.__name__}]"
                 else:
                     return_str = return_type.__name__
                 method_def += f"    ) -> {return_str}:\n"
@@ -144,7 +146,7 @@ class APIClient:
     default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
-    last_response: Any
+    last_response: Response | ListResponse | PaginatedResponse | None
     def __init__(
         self,
         api_key: str | None = ...,

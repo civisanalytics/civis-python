@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 import warnings
 
-from civis import APIClient, Response
+from civis import APIClient
 from civis.futures import CivisFuture
 from civis._deprecation import DeprecatedKwargDefault
 
@@ -173,9 +173,7 @@ def run_template(
     fut.result()
     outputs = client.scripts.list_custom_runs_outputs(job.id, run.id)
     if return_as == "JSONValue":
-        json_output: list[Response] = [
-            o.value for o in outputs if o.object_type == "JSONValue"
-        ]
+        json_output = [o.value for o in outputs if o.object_type == "JSONValue"]
         if len(json_output) == 0:
             log.warning("No JSON output for template {}".format(id))
             return None
@@ -184,9 +182,7 @@ def run_template(
                 "More than 1 JSON output for template {}"
                 " -- returning only the first one.".format(id)
             )
-        # Note that the cast to a dict is to convert
-        # an expected Response object.
-        return json_output[0].json()
+        return json_output[0]  # type: ignore[return-value]
     else:
         # Expecting return_as == "files"
         file_ids = {o.name: o.object_id for o in outputs}
@@ -314,6 +310,8 @@ def job_logs(
             last_id=local_max_log_id,
             limit=_LOGS_PER_QUERY,
         )
+        if response.headers is None:
+            raise RuntimeError("No headers in response from job logs endpoint")
         if "civis-max-id" in response.headers:
             remote_max_log_id = int(response.headers["civis-max-id"])
         else:
