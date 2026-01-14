@@ -81,3 +81,12 @@ civis = ["resources/*.json", "py.typed", "**/*.pyi"]
 [tool.pytest.ini_options]
 addopts = "--strict-markers -vv --cov=src/civis"
 testpaths = ["tests"]
+
+[tool.mypy]
+exclude = [
+    '/civis/resources/_',
+]
+
+[[tool.mypy.overrides]]
+module = "civis.parallel"
+ignore_errors = true

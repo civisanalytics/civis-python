@@ -11,7 +11,7 @@ from posixpath import join
 import requests
 
 import civis
-from civis.response import PaginatedResponse, convert_response_data_type
+from civis.response import PaginatedResponse, convert_response_data_type, Response
 from civis._retries import retry_request
 
 FINISHED = ["success", "succeeded"]
@@ -40,7 +40,13 @@ def tostr_urljoin(*x):
 
 
 class CivisJobFailure(Exception):
-    def __init__(self, err_msg, response=None, job_id=None, run_id=None):
+    def __init__(
+        self,
+        err_msg: str,
+        response: Response | None = None,
+        job_id: int | None = None,
+        run_id: int | None = None,
+    ):
         self.job_id = job_id
         self.run_id = run_id
         self._original_err_msg = err_msg

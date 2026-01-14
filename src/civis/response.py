@@ -1,5 +1,8 @@
 import json
 import pprint
+from collections.abc import Callable, Iterator
+
+from typing import Any
 
 import requests
 
@@ -15,7 +18,7 @@ _RESPONSE_KEYS_PRESERVE_CASE = frozenset({"arguments", "environmentVariables"})
 
 
 class CivisClientError(Exception):
-    def __init__(self, message, response):
+    def __init__(self, message: str, response: requests.Response):
         self.status_code = response.status_code
         self.error_message = message
 
@@ -127,7 +130,12 @@ class Response:
     """
 
     def __init__(
-        self, json_data, *, headers=None, snake_case=True, from_json_values=False
+        self,
+        json_data: dict[str, Any] | None,
+        *,
+        headers: dict | None = None,
+        snake_case: bool = True,
+        from_json_values: bool = False,
     ):
         self.json_data = json_data
         self.headers = headers
@@ -167,7 +175,7 @@ class Response:
                 self._data_camel[key] = val
                 self._data_snake[key_snake] = val
 
-    def json(self, snake_case=True):
+    def json(self, snake_case: bool = True) -> dict[str, Any]:
         """Return the JSON data.
 
         Parameters
@@ -364,7 +372,7 @@ class PaginatedResponse:
     ...    print(query['id'])
     """
 
-    def __init__(self, path, initial_params, endpoint):
+    def __init__(self, path: str, initial_params: dict[str, Any], endpoint):
         self._path = path
         self._params = initial_params.copy()
         self._endpoint = endpoint
@@ -416,11 +424,11 @@ class ListResponse(list):
 
     __slots__ = ("headers",)
 
-    def __init__(self, responses, headers=None):
+    def __init__(self, responses: list[Response], headers: dict | None = None):
         super().__init__(responses)
         self.headers = headers
 
-    def json(self, snake_case=True):
+    def json(self, snake_case: bool = True) -> list[dict[str, Any]]:
         """Return the JSON data of all responses in the list.
 
         Parameters
@@ -436,7 +444,9 @@ class ListResponse(list):
         return [r.json(snake_case) for r in self]
 
 
-def find(object_list, filter_func=None, **kwargs):
+def find(
+    object_list: Iterator[Response], filter_func: Callable | None = None, **kwargs
+) -> list[Response]:
     """Filter :class:`civis.Response` objects.
 
     Parameters
@@ -480,10 +490,9 @@ def find(object_list, filter_func=None, **kwargs):
     --------
     civis.find_one
     """
-    _func = filter_func
-    if not filter_func:
+    if filter_func is None:
 
-        def default_filter(o):
+        def filter_func(o):
             for k, v in kwargs.items():
                 if not hasattr(o, k):
                     return False
@@ -497,12 +506,12 @@ def find(object_list, filter_func=None, **kwargs):
                     return False
             return True
 
-        _func = default_filter
-
-    return [o for o in object_list if _func(o)]
+    return [o for o in object_list if filter_func(o)]
 
 
-def find_one(object_list, filter_func=None, **kwargs):
+def find_one(
+    object_list: Iterator[Response], filter_func: Callable | None = None, **kwargs
+) -> Response | None:
     """Return one satisfying :class:`civis.Response` object.
 
     The arguments are the same as those for :func:`civis.find`.

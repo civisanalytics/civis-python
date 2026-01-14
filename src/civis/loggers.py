@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 import sys
@@ -18,7 +20,11 @@ class _LogFilter(logging.Filter):
             return record.levelno > self.level
 
 
-def civis_logger(name=None, level=None, fmt="%(message)s"):
+def civis_logger(
+    name: str | None = None,
+    level: int | str | None = None,
+    fmt: str | logging.Formatter = "%(message)s",
+) -> logging.Logger:
     """Return a logger for Civis Platform jobs.
 
     The logs of Civis Platform jobs format stdout in black and stderr in red.
