@@ -11,8 +11,6 @@ from tempfile import TemporaryDirectory
 import warnings
 import zlib
 
-from typing import Dict, List
-
 import gzip
 import zipfile
 
@@ -110,19 +108,19 @@ def _warn_or_raise_for_use_pandas(use_pandas, return_as):
 
 
 def read_civis(
-    table,
-    database,
-    columns=None,
-    return_as="list",
+    table: str,
+    database: str | int,
+    columns: list[str] | None = None,
+    return_as: str = "list",
     use_pandas=DeprecatedKwargDefault(),
-    encoding=None,
-    job_name=None,
-    client=None,
-    credential_id=None,
-    polling_interval=None,
-    hidden=True,
+    encoding: str | None = None,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
     **kwargs,
-):
+) -> list | pd.DataFrame | pl.DataFrame:
     """Read data from a Civis table.
 
     Parameters
@@ -235,16 +233,16 @@ def read_civis(
 
 
 def export_to_civis_file(
-    sql,
-    database,
-    sql_params_arguments=None,
-    job_name=None,
-    client=None,
-    credential_id=None,
-    polling_interval=None,
-    hidden=True,
-    csv_settings=None,
-):
+    sql: str,
+    database: str | int,
+    sql_params_arguments: dict | None = None,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
+    csv_settings: dict | None = None,
+) -> CivisFuture:
     """Store results of a query to a Civis file
 
     Parameters
@@ -321,19 +319,19 @@ def export_to_civis_file(
 
 
 def read_civis_sql(
-    sql,
-    database,
-    return_as="list",
+    sql: str,
+    database: str | int,
+    return_as: str = "list",
     use_pandas=DeprecatedKwargDefault(),
-    sql_params_arguments=None,
-    encoding=None,
-    job_name=None,
-    client=None,
-    credential_id=None,
-    polling_interval=None,
-    hidden=True,
+    sql_params_arguments: dict | None = None,
+    encoding: str | None = None,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
     **kwargs,
-):
+) -> list | pd.DataFrame | pl.DataFrame:
     """Read data from Civis using a custom SQL string.
 
     If no data is expected to return from the query,
@@ -491,20 +489,20 @@ def read_civis_sql(
 
 
 def civis_to_csv(
-    filename,
-    sql,
-    database,
-    sql_params_arguments=None,
-    job_name=None,
-    client=None,
-    credential_id=None,
-    include_header=True,
-    compression="none",
-    delimiter=",",
-    unquoted=False,
-    hidden=True,
-    polling_interval=None,
-):
+    filename: str,
+    sql: str,
+    database: str | int,
+    sql_params_arguments: dict | None = None,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    include_header: bool = True,
+    compression: str = "none",
+    delimiter: str = ",",
+    unquoted: bool = False,
+    hidden: bool = True,
+    polling_interval: int | float | None = None,
+) -> CivisFuture:
     """Export data from Civis to a local CSV file.
 
     Parameters
@@ -592,8 +590,9 @@ def civis_to_csv(
     # is different which would introduce a breaking change
     headers = b""
 
-    delimiter = DELIMITERS.get(delimiter)
-    if not delimiter:
+    try:
+        delimiter = DELIMITERS[delimiter]
+    except KeyError:
         raise ValueError("delimiter must be one of {}".format(DELIMITERS.keys()))
 
     # always set compression to gzip to reduce I/O
@@ -630,21 +629,21 @@ def civis_to_csv(
 
 
 def civis_to_multifile_csv(
-    sql,
-    database,
-    sql_params_arguments=None,
-    job_name=None,
-    client=None,
-    credential_id=None,
-    include_header=True,
-    compression="none",
-    delimiter="|",
-    max_file_size=None,
-    unquoted=False,
-    prefix=None,
-    polling_interval=None,
-    hidden=True,
-):
+    sql: str,
+    database: str | int,
+    sql_params_arguments: dict | None = None,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    include_header: bool = True,
+    compression: str = "none",
+    delimiter: str = "|",
+    max_file_size: int | None = None,
+    unquoted: bool = False,
+    prefix: str | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
+) -> dict:
     """Unload the result of SQL query and return presigned urls.
 
     This function is intended for unloading large queries/tables from redshift
@@ -752,8 +751,9 @@ def civis_to_multifile_csv(
     """
     if client is None:
         client = APIClient()
-    delimiter = DELIMITERS.get(delimiter)
-    if not delimiter:
+    try:
+        delimiter = DELIMITERS[delimiter]
+    except KeyError:
         raise ValueError(f"delimiter must be one of {DELIMITERS.keys()}: {delimiter}")
 
     csv_settings = dict(
@@ -800,25 +800,25 @@ def civis_to_multifile_csv(
 
 
 def dataframe_to_civis(
-    df,
-    database,
-    table,
-    client=None,
-    max_errors=None,
-    existing_table_rows="fail",
-    diststyle=None,
-    distkey=None,
-    sortkey1=None,
-    sortkey2=None,
-    table_columns=None,
-    credential_id=None,
-    primary_keys=None,
-    last_modified_keys=None,
-    execution="immediate",
-    polling_interval=None,
-    hidden=True,
+    df: pd.DataFrame | pl.DataFrame,
+    database: str | int,
+    table: str,
+    client: APIClient | None = None,
+    max_errors: int | None = None,
+    existing_table_rows: str = "fail",
+    diststyle: str | None = None,
+    distkey: str | None = None,
+    sortkey1: str | None = None,
+    sortkey2: str | None = None,
+    table_columns: list[dict[str, str]] | None = None,
+    credential_id: int | None = None,
+    primary_keys: list[str] | None = None,
+    last_modified_keys: list[str] | None = None,
+    execution: str = "immediate",
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
     **kwargs,
-):
+) -> CivisFuture:
     """Upload a dataframe into a Civis table.
 
     For a pandas dataframe,
@@ -920,15 +920,15 @@ def dataframe_to_civis(
     headers = False if kwargs.get("header") is False else True
     with TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, "dataframe_to_civis.csv")
-        if (df_lib := df.__module__.split(".")[0]) == "pandas":
+        if HAS_PANDAS and isinstance(df, pd.DataFrame):
             to_csv_kwargs = {"encoding": "utf-8", "index": False}
             to_csv_kwargs.update(kwargs)
-            df.to_csv(tmp_path, **to_csv_kwargs)
-        elif df_lib == "polars":
+            df.to_csv(tmp_path, **to_csv_kwargs)  # type: ignore[call-overload]
+        elif HAS_POLARS and isinstance(df, pl.DataFrame):
             df.write_csv(tmp_path, **kwargs)
         else:
             raise ValueError(
-                f"unsuppported dataframe library {df_lib!r} "
+                f"unsuppported dataframe type {type(df)!r} "
                 "-- only pandas and polars are supported"
             )
         _, name = split_schema_tablename(table)
@@ -962,27 +962,27 @@ def dataframe_to_civis(
 
 
 def csv_to_civis(
-    filename,
-    database,
-    table,
-    client=None,
-    max_errors=None,
-    existing_table_rows="fail",
-    diststyle=None,
-    distkey=None,
-    sortkey1=None,
-    sortkey2=None,
-    table_columns=None,
-    delimiter=",",
-    headers=None,
-    primary_keys=None,
-    last_modified_keys=None,
-    escaped=False,
-    execution="immediate",
-    credential_id=None,
-    polling_interval=None,
-    hidden=True,
-):
+    filename: str,
+    database: str | int,
+    table: str,
+    client: APIClient | None = None,
+    max_errors: int | None = None,
+    existing_table_rows: str = "fail",
+    diststyle: str | None = None,
+    distkey: str | None = None,
+    sortkey1: str | None = None,
+    sortkey2: str | None = None,
+    table_columns: list[dict] | None = None,
+    delimiter: str = ",",
+    headers: bool | None = None,
+    primary_keys: list[str] | None = None,
+    last_modified_keys: list[str] | None = None,
+    escaped: bool = False,
+    execution: str = "immediate",
+    credential_id: int | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
+) -> CivisFuture:
     """Upload the contents of a local CSV file to Civis.
 
     Parameters
@@ -1110,27 +1110,27 @@ def csv_to_civis(
 
 
 def civis_file_to_table(
-    file_id,
-    database,
-    table,
-    client=None,
-    max_errors=None,
-    existing_table_rows="fail",
-    diststyle=None,
-    distkey=None,
-    sortkey1=None,
-    sortkey2=None,
-    table_columns=None,
-    primary_keys=None,
-    last_modified_keys=None,
-    escaped=False,
-    execution="immediate",
-    delimiter=None,
-    headers=None,
-    credential_id=None,
-    polling_interval=None,
-    hidden=True,
-):
+    file_id: int | list[int],
+    database: str | int,
+    table: str,
+    client: APIClient | None = None,
+    max_errors: int | None = None,
+    existing_table_rows: str = "fail",
+    diststyle: str | None = None,
+    distkey: str | None = None,
+    sortkey1: str | None = None,
+    sortkey2: str | None = None,
+    table_columns: list[dict[str, str]] | None = None,
+    primary_keys: list[str] | None = None,
+    last_modified_keys: list[str] | None = None,
+    escaped: bool = False,
+    execution: str = "immediate",
+    delimiter: str | None = None,
+    headers: bool | None = None,
+    credential_id: int | None = None,
+    polling_interval: int | float | None = None,
+    hidden: bool = True,
+) -> CivisFuture:
     """Upload the contents of one or more Civis files to a Civis table.
     All provided files will be loaded as an atomic unit in parallel, and
     should share the same columns in the same order, and be in the same
@@ -1488,7 +1488,7 @@ def _download_callback(job_id, run_id, filename, headers, compression):
     return callback
 
 
-def split_schema_tablename(table):
+def split_schema_tablename(table: str) -> tuple[str | None, str]:
     """Split a Redshift 'schema.tablename' string
 
     Remember that special characters (such as '.') can only
@@ -1517,13 +1517,13 @@ def split_schema_tablename(table):
     )
     schema_name_tup = next(reader)
     if len(schema_name_tup) == 1:
-        schema_name_tup = (None, schema_name_tup[0])
+        schema_name_tup = (None, schema_name_tup[0])  # type: ignore[assignment]
     if len(schema_name_tup) != 2:
         raise ValueError(
             "Cannot parse schema and table. "
             "Does '{}' follow the pattern 'schema.table'?".format(table)
         )
-    return tuple(schema_name_tup)
+    return tuple(schema_name_tup)  # type: ignore[return-value]
 
 
 def _run_cleaning(
@@ -1562,7 +1562,7 @@ def _process_cleaning_results(
     cleaning_futures, client, headers, need_table_columns, delimiter
 ):
     futures, _ = concurrent.futures.wait(cleaning_futures)
-    files: List[_File] = []
+    files: list[_File] = []
 
     job_run_ids_no_output = []
     for fut in futures:
@@ -1604,7 +1604,7 @@ def _process_cleaning_results(
     return cleaned_file_ids, headers, compression, delimiter, table_columns
 
 
-def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
+def _check_detected_info(files: list[_File], attr: str, value_from_user=None):
     values_detected = [f.detected_info[attr] for f in files]
     err_msg = _err_msg_if_inconsistent(values_detected, files)
     if err_msg:
@@ -1629,8 +1629,8 @@ def _check_detected_info(files: List[_File], attr: str, value_from_user=None):
         return value_detected
 
 
-def _check_column_types(files: List[_File]):
-    cols_by_file: List[List[Dict[str, str]]]
+def _check_column_types(files: list[_File]):
+    cols_by_file: list[list[dict[str, str]]]
     cols_by_file = [f.detected_info["tableColumns"] for f in files]
 
     col_counts = [len(cols) for cols in cols_by_file]
@@ -1642,15 +1642,15 @@ def _check_column_types(files: List[_File]):
 
     # Transpose cols_by_file to get cols_by_col
     # https://stackoverflow.com/q/6473679
-    cols_by_col: List[List[Dict[str, str]]]
+    cols_by_col: list[list[dict[str, str]]]
     cols_by_col = list(map(list, zip(*cols_by_file)))
 
-    table_columns: List[Dict[str, str]] = []
+    table_columns: list[dict[str, str]] = []
     allow_inconsistent_headers = False
-    err_msgs: List[str] = []
+    err_msgs: list[str] = []
 
     for i, cols in enumerate(cols_by_col, 1):
-        col_name = next((c.get("name") for c in cols if c.get("name")), f"column_{i}")
+        col_name = next((name for c in cols if (name := c.get("name"))), f"column_{i}")
 
         sql_base_types = [col["sql_type"].split("(", 1)[0].upper() for col in cols]
         err_msg = _err_msg_if_inconsistent(sql_base_types, files)
@@ -1685,7 +1685,7 @@ def _check_column_types(files: List[_File]):
     return table_columns, allow_inconsistent_headers
 
 
-def _err_msg_if_inconsistent(items: List, files: List[_File]):
+def _err_msg_if_inconsistent(items: list, files: list[_File]):
     if len(set(items)) <= 1:
         return
     values_to_indices = collections.defaultdict(list)
@@ -1699,6 +1699,6 @@ def _err_msg_if_inconsistent(items: List, files: List[_File]):
     return err_msg
 
 
-def _format_files_for_err_msg(files: List[_File], indices):
+def _format_files_for_err_msg(files: list[_File], indices):
     files_in_str = [f"file {files[i].id} ({files[i].name})" for i in indices]
     return ", ".join(files_in_str)
