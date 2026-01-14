@@ -2,7 +2,7 @@ import json
 import pprint
 from collections.abc import Callable, Iterator
 
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 import requests
 
@@ -343,8 +343,10 @@ def _pprint_response(self, object, stream, indent, allowance, context, level):
 
 pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response  # type: ignore
 
+T_Response = TypeVar("T_Response", bound=Response)
 
-class PaginatedResponse:
+
+class PaginatedResponse(Generic[T_Response]):
     """A generator of :class:`civis.Response` objects, for paginated API calls.
 
     Parameters
@@ -380,12 +382,12 @@ class PaginatedResponse:
         # We are paginating through all items, so start at the beginning.
         self._params["page_num"] = 1
 
-        self._iter = None
+        self._iter: Iterator[T_Response] | None = None
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T_Response]:
         return self
 
-    def _get_iter(self):
+    def _get_iter(self) -> Iterator[T_Response]:
         while True:
             response = self._endpoint._make_request("GET", self._path, self._params)
             page_data = _response_to_json(response)
@@ -403,13 +405,13 @@ class PaginatedResponse:
 
             self._params["page_num"] += 1
 
-    def __next__(self):
+    def __next__(self) -> T_Response:
         if self._iter is None:
             self._iter = self._get_iter()
         return next(self._iter)
 
 
-class ListResponse(list):
+class ListResponse(list[T_Response], Generic[T_Response]):
     """A list of :class:`civis.Response` objects.
 
     Parameters
@@ -424,7 +426,7 @@ class ListResponse(list):
 
     __slots__ = ("headers",)
 
-    def __init__(self, responses: list[Response], headers: dict | None = None):
+    def __init__(self, responses: list[T_Response], headers: dict | None = None):
         super().__init__(responses)
         self.headers = headers
 
