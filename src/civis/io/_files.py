@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 import concurrent.futures as cf
 import io
@@ -9,6 +11,7 @@ import os
 import re
 import shutil
 from tempfile import TemporaryDirectory
+from typing import BinaryIO
 
 import requests
 from requests import HTTPError
@@ -16,6 +19,8 @@ from requests import HTTPError
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
 from civis._retries import get_default_retrying
+from civis.io._utils import TypePathLike
+
 
 try:
     import pandas as pd
@@ -190,12 +195,18 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
     return file_response.id
 
 
-def file_to_civis(buf, name=None, expires_at="DEFAULT", description=None, client=None):
+def file_to_civis(
+    buf: BinaryIO | TypePathLike,
+    name: str | None = None,
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
+) -> int:
     """Upload a file to Civis.
 
     Parameters
     ----------
-    buf : file-like object or str
+    buf : file-like object or path-like object
         Either a file-like object for a buffer or a string for a local file
         path.
         Note that if a file-like object is provided and it's not
@@ -264,8 +275,8 @@ def file_to_civis(buf, name=None, expires_at="DEFAULT", description=None, client
     single post.
     """
     if name is None:
-        if isinstance(buf, str):
-            name = os.path.basename(buf)
+        if isinstance(buf, TypePathLike):
+            name = os.path.basename(buf)  # type: ignore[assignment]
         elif hasattr(buf, "name"):
             name = buf.name
         else:
@@ -275,7 +286,7 @@ def file_to_civis(buf, name=None, expires_at="DEFAULT", description=None, client
             )
             raise TypeError(msg)
 
-    if isinstance(buf, str):
+    if isinstance(buf, TypePathLike):
         with open(buf, "rb") as f:
             return _file_to_civis(f, name, expires_at, description, client)
 
@@ -331,14 +342,16 @@ def _file_to_civis(buf, name, expires_at, description, client):
         return _multipart_upload(buf, name, file_size, client, **kwargs)
 
 
-def civis_to_file(file_id, buf, client=None):
+def civis_to_file(
+    file_id: int, buf: BinaryIO | TypePathLike, client: APIClient | None = None
+) -> None:
     """Download a file from Civis.
 
     Parameters
     ----------
     file_id : int
         The Civis file ID.
-    buf : file-like object or str
+    buf : file-like object or path-like object
         A buffer or path specifying where to write the contents of the Civis
         file. Strings will be treated as paths to local files to open.
     client : :class:`civis.APIClient`, optional
@@ -365,7 +378,7 @@ def civis_to_file(file_id, buf, client=None):
     >>> # Note that s could be converted to a string with s.decode('utf-8').
     >>> s = buf.read()
     """
-    if isinstance(buf, str):
+    if isinstance(buf, TypePathLike):
         with open(buf, "wb") as f:
             _civis_to_file(file_id, f, client=client)
     else:
@@ -403,7 +416,13 @@ def _civis_to_file(file_id, buf, client=None):
             _download_url_to_buf()
 
 
-def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
+def file_id_from_run_output(
+    name: str,
+    job_id: int,
+    run_id: int,
+    regex: bool = False,
+    client: APIClient | None = None,
+) -> int:
     """Find the file ID of a File run output with the name "name"
 
     The run output is required to have type "File".
@@ -481,8 +500,12 @@ def file_id_from_run_output(name, job_id, run_id, regex=False, client=None):
 
 
 def file_to_dataframe(
-    file_id, return_as="pandas", compression="infer", client=None, **read_kwargs
-):
+    file_id: int,
+    return_as: str = "pandas",
+    compression: str = "infer",
+    client: APIClient | None = None,
+    **read_kwargs,
+) -> pd.DataFrame | pl.DataFrame:
     """Load a dataframe from a CSV stored in a Civis File.
 
     The dataframe will be read directly from Civis
@@ -546,17 +569,17 @@ def file_to_dataframe(
             compression = comp_exts[ext]
 
     if return_as == "pandas":
-        return pd.read_csv(file_url, compression=compression, **read_kwargs)
+        return pd.read_csv(file_url, compression=compression, **read_kwargs)  # type: ignore[call-overload]  # noqa: E501
     else:
         return pl.read_csv(file_url, **read_kwargs)
 
 
 def dataframe_to_file(
-    df,
-    name="data.csv",
-    expires_at="DEFAULT",
-    description=None,
-    client=None,
+    df: pd.DataFrame | pl.DataFrame,
+    name: str = "data.csv",
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
     **to_csv_kws,
 ):
     """Store a dataframe as a CSV in Civis Platform.
@@ -603,13 +626,13 @@ def dataframe_to_file(
     """
     with TemporaryDirectory() as tdir:
         path = os.path.join(tdir, name)
-        if (df_lib := df.__module__.split(".")[0]) == "pandas":
+        if HAS_PANDAS and isinstance(df, pd.DataFrame):
             df.to_csv(path, **to_csv_kws)
-        elif df_lib == "polars":
+        elif HAS_POLARS and isinstance(df, pl.DataFrame):
             df.write_csv(path, **to_csv_kws)
         else:
             raise ValueError(
-                f"unsuppported dataframe library {df_lib!r} "
+                f"unsuppported dataframe type {type(df)!r} "
                 "-- only pandas and polars are supported"
             )
         file_kwargs = dict(name=name, expires_at=expires_at, description=description)
@@ -617,7 +640,7 @@ def dataframe_to_file(
     return fid
 
 
-def file_to_json(file_id, client=None, **json_kwargs):
+def file_to_json(file_id: int, client: APIClient | None = None, **json_kwargs):
     """Restore JSON stored in a Civis File
 
     Parameters
@@ -649,12 +672,12 @@ def file_to_json(file_id, client=None, **json_kwargs):
 
 def json_to_file(
     obj,
-    name="file.json",
-    expires_at="DEFAULT",
-    description=None,
-    client=None,
+    name: str | None = "file.json",
+    expires_at: str | None = "DEFAULT",
+    description: str | None = None,
+    client: APIClient | None = None,
     **json_kwargs,
-):
+) -> int:
     """Store a JSON-serializable object in a Civis File
 
     Parameters
