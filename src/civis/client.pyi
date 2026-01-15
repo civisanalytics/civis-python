@@ -7,7 +7,7 @@ from typing import List
 
 import tenacity
 
-from civis.response import Response, ListResponse, PaginatedResponse
+from civis.response import Response, ListResponse, PaginatedResponse, ResponseIter
 
 class _Admin:
     def list_organizations(
@@ -389,7 +389,7 @@ class _Aliases:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseAliasesList]:
+    ) -> ResponseIter[_ResponseAliasesList]:
         """List Aliases
 
         API URL: ``GET /aliases``
@@ -711,7 +711,7 @@ class _Announcements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseAnnouncementsList]:
+    ) -> ResponseIter[_ResponseAnnouncementsList]:
         """List announcements
 
         API URL: ``GET /announcements``
@@ -766,7 +766,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseClustersListKubernetes]:
+    ) -> ResponseIter[_ResponseClustersListKubernetes]:
         """List Kubernetes Clusters
 
         API URL: ``GET /clusters/kubernetes``
@@ -1007,7 +1007,7 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseClustersListKubernetesDeployments]:
+    ) -> ResponseIter[_ResponseClustersListKubernetesDeployments]:
         """List the deployments associated with a Kubernetes Cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/deployments``
@@ -1744,7 +1744,7 @@ class _Credentials:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseCredentialsList]:
+    ) -> ResponseIter[_ResponseCredentialsList]:
         """List credentials
 
         API URL: ``GET /credentials``
@@ -4637,7 +4637,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListCivisDataMatchRuns]:
+    ) -> ResponseIter[_ResponseEnhancementsListCivisDataMatchRuns]:
         """List runs for the given Civis Data Match job
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs``
@@ -4824,7 +4824,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListCivisDataMatchRunsOutputs]:
+    ) -> ResponseIter[_ResponseEnhancementsListCivisDataMatchRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/outputs``
@@ -5430,7 +5430,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListIdentityResolution]:
+    ) -> ResponseIter[_ResponseEnhancementsListIdentityResolution]:
         """List Identity Resolution Enhancements
 
         API URL: ``GET /enhancements/identity-resolution``
@@ -7125,7 +7125,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListIdentityResolutionRuns]:
+    ) -> ResponseIter[_ResponseEnhancementsListIdentityResolutionRuns]:
         """List runs for the given Identity Resolution job
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs``
@@ -7397,7 +7397,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsList]:
+    ) -> ResponseIter[_ResponseEnhancementsList]:
         """List Enhancements
 
         API URL: ``GET /enhancements``
@@ -8449,7 +8449,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListCassNcoaRuns]:
+    ) -> ResponseIter[_ResponseEnhancementsListCassNcoaRuns]:
         """List runs for the given CASS NCOA job
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs``
@@ -8636,7 +8636,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListCassNcoaRunsOutputs]:
+    ) -> ResponseIter[_ResponseEnhancementsListCassNcoaRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/outputs``
@@ -9441,7 +9441,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListGeocodeRuns]:
+    ) -> ResponseIter[_ResponseEnhancementsListGeocodeRuns]:
         """List runs for the given Geocode job
 
         API URL: ``GET /enhancements/geocode/{id}/runs``
@@ -9628,7 +9628,7 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseEnhancementsListGeocodeRunsOutputs]:
+    ) -> ResponseIter[_ResponseEnhancementsListGeocodeRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/outputs``
@@ -11415,7 +11415,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseExportsList]:
+    ) -> ResponseIter[_ResponseExportsList]:
         """List
 
         API URL: ``GET /exports``
@@ -11536,7 +11536,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseExportsListFilesCsvRuns]:
+    ) -> ResponseIter[_ResponseExportsListFilesCsvRuns]:
         """List runs for the given CSV Export job
 
         API URL: ``GET /exports/files/csv/{id}/runs``
@@ -11687,7 +11687,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseExportsListFilesCsvRunsOutputs]:
+    ) -> ResponseIter[_ResponseExportsListFilesCsvRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/outputs``
@@ -13323,7 +13323,7 @@ class _Git_Repos:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseGitReposList]:
+    ) -> ResponseIter[_ResponseGitReposList]:
         """List bookmarked git repositories
 
         API URL: ``GET /git_repos``
@@ -13468,7 +13468,7 @@ class _Groups:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseGroupsList]:
+    ) -> ResponseIter[_ResponseGroupsList]:
         """List Groups
 
         API URL: ``GET /groups``
@@ -14991,7 +14991,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseImportsList]:
+    ) -> ResponseIter[_ResponseImportsList]:
         """List Imports
 
         API URL: ``GET /imports``
@@ -15612,7 +15612,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseImportsListFilesRuns]:
+    ) -> ResponseIter[_ResponseImportsListFilesRuns]:
         """List runs for the given Import job
 
         API URL: ``GET /imports/files/{id}/runs``
@@ -16712,7 +16712,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseImportsListFilesCsvRuns]:
+    ) -> ResponseIter[_ResponseImportsListFilesCsvRuns]:
         """List runs for the given CSV Import job
 
         API URL: ``GET /imports/files/csv/{id}/runs``
@@ -16873,7 +16873,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseImportsListBatches]:
+    ) -> ResponseIter[_ResponseImportsListBatches]:
         """List batch imports
 
         API URL: ``GET /imports/batches``
@@ -18598,7 +18598,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseJobsList]:
+    ) -> ResponseIter[_ResponseJobsList]:
         """List Jobs
 
         API URL: ``GET /jobs``
@@ -18953,7 +18953,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseJobsListRuns]:
+    ) -> ResponseIter[_ResponseJobsListRuns]:
         """List runs for the given job
 
         API URL: ``GET /jobs/{id}/runs``
@@ -19091,7 +19091,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseJobsListRunsOutputs]:
+    ) -> ResponseIter[_ResponseJobsListRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/outputs``
@@ -21315,7 +21315,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseMediaListOptimizations]:
+    ) -> ResponseIter[_ResponseMediaListOptimizations]:
         """List all optimizations
 
         API URL: ``GET /media/optimizations``
@@ -21922,7 +21922,7 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseMediaListOptimizationsRuns]:
+    ) -> ResponseIter[_ResponseMediaListOptimizationsRuns]:
         """List runs for the given Optimization job
 
         API URL: ``GET /media/optimizations/{id}/runs``
@@ -22494,7 +22494,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseModelsList]:
+    ) -> ResponseIter[_ResponseModelsList]:
         """List
 
         API URL: ``GET /models``
@@ -22968,7 +22968,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseModelsListBuilds]:
+    ) -> ResponseIter[_ResponseModelsListBuilds]:
         """List builds for the given Model job
 
         API URL: ``GET /models/{id}/builds``
@@ -23733,7 +23733,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseNotebooksList]:
+    ) -> ResponseIter[_ResponseNotebooksList]:
         """List Notebooks
 
         API URL: ``GET /notebooks``
@@ -25182,7 +25182,7 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseNotebooksListDeployments]:
+    ) -> ResponseIter[_ResponseNotebooksListDeployments]:
         """List deployments for a Notebook
 
         API URL: ``GET /notebooks/{notebook_id}/deployments``
@@ -25740,7 +25740,7 @@ class _Organizations:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseOrganizationsListFavorites]:
+    ) -> ResponseIter[_ResponseOrganizationsListFavorites]:
         """List Favorites
 
         API URL: ``GET /organizations/favorites``
@@ -25894,7 +25894,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponsePermissionSetsList]:
+    ) -> ResponseIter[_ResponsePermissionSetsList]:
         """List Permission Sets
 
         API URL: ``GET /permission_sets``
@@ -26513,7 +26513,7 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponsePermissionSetsListResources]:
+    ) -> ResponseIter[_ResponsePermissionSetsListResources]:
         """List resources in a permission set
 
         API URL: ``GET /permission_sets/{id}/resources``
@@ -27095,7 +27095,7 @@ class _Projects:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseProjectsList]:
+    ) -> ResponseIter[_ResponseProjectsList]:
         """List projects
 
         API URL: ``GET /projects``
@@ -28887,7 +28887,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseQueriesList]:
+    ) -> ResponseIter[_ResponseQueriesList]:
         """List queries
 
         API URL: ``GET /queries``
@@ -29130,7 +29130,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseQueriesListRuns]:
+    ) -> ResponseIter[_ResponseQueriesListRuns]:
         """List runs for the given Query job
 
         API URL: ``GET /queries/{id}/runs``
@@ -30062,7 +30062,7 @@ class _Reports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseReportsList]:
+    ) -> ResponseIter[_ResponseReportsList]:
         """List Reports
 
         API URL: ``GET /reports``
@@ -32985,7 +32985,7 @@ class _Roles:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseRolesList]:
+    ) -> ResponseIter[_ResponseRolesList]:
         """List Roles
 
         API URL: ``GET /roles``
@@ -33350,7 +33350,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsList]:
+    ) -> ResponseIter[_ResponseScriptsList]:
         """List Scripts
 
         API URL: ``GET /scripts``
@@ -41312,7 +41312,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListCustom]:
+    ) -> ResponseIter[_ResponseScriptsListCustom]:
         """List Custom Scripts
 
         API URL: ``GET /scripts/custom``
@@ -42598,7 +42598,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListSqlRuns]:
+    ) -> ResponseIter[_ResponseScriptsListSqlRuns]:
         """List runs for the given SQL job
 
         API URL: ``GET /scripts/sql/{id}/runs``
@@ -42854,7 +42854,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListContainersRuns]:
+    ) -> ResponseIter[_ResponseScriptsListContainersRuns]:
         """List runs for the given Container job
 
         API URL: ``GET /scripts/containers/{id}/runs``
@@ -43030,7 +43030,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListPython3Runs]:
+    ) -> ResponseIter[_ResponseScriptsListPython3Runs]:
         """List runs for the given Python job
 
         API URL: ``GET /scripts/python3/{id}/runs``
@@ -43272,7 +43272,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListRRuns]:
+    ) -> ResponseIter[_ResponseScriptsListRRuns]:
         """List runs for the given R job
 
         API URL: ``GET /scripts/r/{id}/runs``
@@ -43514,7 +43514,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListDbtRuns]:
+    ) -> ResponseIter[_ResponseScriptsListDbtRuns]:
         """List runs for the given dbt job
 
         API URL: ``GET /scripts/dbt/{id}/runs``
@@ -43750,7 +43750,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListJavascriptRuns]:
+    ) -> ResponseIter[_ResponseScriptsListJavascriptRuns]:
         """List runs for the given Javascript job
 
         API URL: ``GET /scripts/javascript/{id}/runs``
@@ -43982,7 +43982,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListCustomRuns]:
+    ) -> ResponseIter[_ResponseScriptsListCustomRuns]:
         """List runs for the given Custom job
 
         API URL: ``GET /scripts/custom/{id}/runs``
@@ -44160,7 +44160,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListSqlRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListSqlRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/outputs``
@@ -44216,7 +44216,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListContainersRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListContainersRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/outputs``
@@ -44311,7 +44311,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListPython3RunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListPython3RunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/outputs``
@@ -44406,7 +44406,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListRRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListRRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/outputs``
@@ -44501,7 +44501,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListDbtRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListDbtRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/outputs``
@@ -44596,7 +44596,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListJavascriptRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListJavascriptRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/outputs``
@@ -44691,7 +44691,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseScriptsListCustomRunsOutputs]:
+    ) -> ResponseIter[_ResponseScriptsListCustomRunsOutputs]:
         """List the outputs for a run
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/outputs``
@@ -52086,7 +52086,7 @@ class _Search:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseSearchListQueries]:
+    ) -> ResponseIter[_ResponseSearchListQueries]:
         """Search queries that are not hidden
 
         API URL: ``GET /search/queries``
@@ -52175,7 +52175,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseServicesList]:
+    ) -> ResponseIter[_ResponseServicesList]:
         """List Services
 
         API URL: ``GET /services``
@@ -53621,7 +53621,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseServicesListDeployments]:
+    ) -> ResponseIter[_ResponseServicesListDeployments]:
         """List deployments for a Service
 
         API URL: ``GET /services/{service_id}/deployments``
@@ -55351,7 +55351,7 @@ class _Studios:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseStudiosListDeployments]:
+    ) -> ResponseIter[_ResponseStudiosListDeployments]:
         """List deployments for a Studio
 
         API URL: ``GET /studios/{studio_id}/deployments``
@@ -55726,7 +55726,7 @@ class _Table_Tags:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseTableTagsList]:
+    ) -> ResponseIter[_ResponseTableTagsList]:
         """List Table Tags
 
         API URL: ``GET /table_tags``
@@ -56317,7 +56317,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseTablesList]:
+    ) -> ResponseIter[_ResponseTablesList]:
         """List tables
 
         API URL: ``GET /tables``
@@ -56729,7 +56729,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseTablesListColumns]:
+    ) -> ResponseIter[_ResponseTablesListColumns]:
         """List columns in the specified table
 
         API URL: ``GET /tables/{id}/columns``
@@ -57279,7 +57279,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseTemplatesListReports]:
+    ) -> ResponseIter[_ResponseTemplatesListReports]:
         """List Report Templates
 
         API URL: ``GET /templates/reports``
@@ -58022,7 +58022,7 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseTemplatesListScripts]:
+    ) -> ResponseIter[_ResponseTemplatesListScripts]:
         """List Script Templates
 
         API URL: ``GET /templates/scripts``
@@ -58825,7 +58825,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseUsersList]:
+    ) -> ResponseIter[_ResponseUsersList]:
         """List users
 
         API URL: ``GET /users``
@@ -59748,7 +59748,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseUsersListApiKeys]:
+    ) -> ResponseIter[_ResponseUsersListApiKeys]:
         """Show API keys belonging to the specified user
 
         API URL: ``GET /users/{id}/api_keys``
@@ -60127,7 +60127,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseUsersListMeFavorites]:
+    ) -> ResponseIter[_ResponseUsersListMeFavorites]:
         """List Favorites
 
         API URL: ``GET /users/me/favorites``
@@ -60515,7 +60515,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseWorkflowsList]:
+    ) -> ResponseIter[_ResponseWorkflowsList]:
         """List Workflows
 
         API URL: ``GET /workflows``
@@ -62040,7 +62040,7 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> PaginatedResponse[_ResponseWorkflowsListExecutions]:
+    ) -> ResponseIter[_ResponseWorkflowsListExecutions]:
         """List workflow executions
 
         API URL: ``GET /workflows/{id}/executions``

@@ -1,6 +1,6 @@
 import json
 import pprint
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 
 from typing import Any, Generic, TypeVar
 
@@ -346,7 +346,21 @@ pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response  # type: ig
 T_Response = TypeVar("T_Response", bound=Response)
 
 
-class PaginatedResponse(Generic[T_Response]):
+class ResponseIter(Iterable[T_Response], Generic[T_Response]):
+    """A base class to type objects that yields :class:`civis.Response` objects."""
+
+    headers: dict | None
+
+    def __iter__(self) -> Iterator[T_Response]:
+        raise NotImplementedError
+
+    def __next__(self) -> T_Response:
+        raise NotImplementedError
+
+    def json(self, snake_case: bool = ...): ...
+
+
+class PaginatedResponse(ResponseIter[T_Response]):
     """A generator of :class:`civis.Response` objects, for paginated API calls.
 
     Parameters
@@ -378,6 +392,7 @@ class PaginatedResponse(Generic[T_Response]):
         self._path = path
         self._params = initial_params.copy()
         self._endpoint = endpoint
+        self.headers = None
 
         # We are paginating through all items, so start at the beginning.
         self._params["page_num"] = 1
@@ -411,7 +426,7 @@ class PaginatedResponse(Generic[T_Response]):
         return next(self._iter)
 
 
-class ListResponse(list[T_Response], Generic[T_Response]):
+class ListResponse(list[T_Response], ResponseIter[T_Response]):
     """A list of :class:`civis.Response` objects.
 
     Parameters

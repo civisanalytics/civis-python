@@ -54,7 +54,7 @@ from typing import List
 
 import tenacity
 
-from civis.response import Response, ListResponse, PaginatedResponse
+from civis.response import Response, ListResponse, PaginatedResponse, ResponseIter
 
 """
         )
@@ -97,9 +97,7 @@ from civis.response import Response, ListResponse, PaginatedResponse
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
-                    # TODO: Do typing overload for iterator=True => PaginatedResponse
-                    #   and iterator=False => ListResponse?
-                    return_str = f"PaginatedResponse[{typing.get_args(return_type)[0].__name__}]"  # noqa: E501
+                    return_str = f"ResponseIter[{typing.get_args(return_type)[0].__name__}]"  # noqa: E501
                 elif method_name.startswith("list"):
                     return_str = f"ListResponse[{return_type.__name__}]"
                 else:

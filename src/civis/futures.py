@@ -11,6 +11,7 @@ import os
 import time
 import threading
 import warnings
+from typing import Sequence
 
 from civis import APIClient, Response
 from civis.base import CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids
@@ -73,7 +74,7 @@ class CivisFuture(PollableResult):
     def __init__(
         self,
         poller: Callable,
-        poller_args: tuple,
+        poller_args: Sequence,
         polling_interval: int | float | None = None,
         client: APIClient | None = None,
         poll_on_creation: bool = True,
@@ -276,7 +277,7 @@ class ContainerFuture(CivisFuture):
 
         super().__init__(
             client.scripts.get_containers_runs,
-            (int(job_id), int(run_id)),
+            [int(job_id), int(run_id)],
             polling_interval=polling_interval,
             client=client,
             poll_on_creation=poll_on_creation,
