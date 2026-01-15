@@ -85,7 +85,7 @@ testpaths = ["tests"]
 [tool.mypy]
 exclude = [
     'civis/resources/_',
-    'civis/service_clients.py',
+    'civis/service_client.py',
     'civis/ml/*',
     'civis/run_joblib_func.py',
     'civis/cli/*',
