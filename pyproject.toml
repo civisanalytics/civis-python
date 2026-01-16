@@ -89,8 +89,5 @@ exclude = [
     'civis/ml/*',
     'civis/run_joblib_func.py',
     'civis/cli/*',
+    'civis/parallel.py'
 ]
-
-[[tool.mypy.overrides]]
-module = "civis.parallel"
-ignore_errors = true

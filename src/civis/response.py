@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import pprint
 from collections.abc import Callable, Iterable, Iterator
@@ -346,21 +348,7 @@ pprint.PrettyPrinter._dispatch[Response.__repr__] = _pprint_response  # type: ig
 T_Response = TypeVar("T_Response", bound=Response)
 
 
-class ResponseIter(Iterable[T_Response], Generic[T_Response]):
-    """A base class to type objects that yields :class:`civis.Response` objects."""
-
-    headers: dict | None
-
-    def __iter__(self) -> Iterator[T_Response]:
-        raise NotImplementedError
-
-    def __next__(self) -> T_Response:
-        raise NotImplementedError
-
-    def json(self, snake_case: bool = ...): ...
-
-
-class PaginatedResponse(ResponseIter[T_Response]):
+class PaginatedResponse(Generic[T_Response]):
     """A generator of :class:`civis.Response` objects, for paginated API calls.
 
     Parameters
@@ -392,7 +380,6 @@ class PaginatedResponse(ResponseIter[T_Response]):
         self._path = path
         self._params = initial_params.copy()
         self._endpoint = endpoint
-        self.headers = None
 
         # We are paginating through all items, so start at the beginning.
         self._params["page_num"] = 1
@@ -425,8 +412,25 @@ class PaginatedResponse(ResponseIter[T_Response]):
             self._iter = self._get_iter()
         return next(self._iter)
 
+    def json(self, snake_case: bool = True) -> list[dict[str, Any]]:
+        """Return the JSON data of all responses.
 
-class ListResponse(list[T_Response], ResponseIter[T_Response]):
+        Parameters
+        ----------
+        snake_case : bool, optional
+            If True (the default), return the keys in snake case.
+            If False, return the keys in camel case.
+
+        Returns
+        -------
+        list[dict]
+        """
+        if self._iter is None:
+            self._iter = self._get_iter()
+        return [r.json(snake_case) for r in self._iter]
+
+
+class ListResponse(list[T_Response], Generic[T_Response]):
     """A list of :class:`civis.Response` objects.
 
     Parameters
@@ -462,7 +466,7 @@ class ListResponse(list[T_Response], ResponseIter[T_Response]):
 
 
 def find(
-    object_list: Iterator[Response], filter_func: Callable | None = None, **kwargs
+    object_list: Iterable[Response], filter_func: Callable | None = None, **kwargs
 ) -> list[Response]:
     """Filter :class:`civis.Response` objects.
 
@@ -527,7 +531,7 @@ def find(
 
 
 def find_one(
-    object_list: Iterator[Response], filter_func: Callable | None = None, **kwargs
+    object_list: Iterable[Response], filter_func: Callable | None = None, **kwargs
 ) -> Response | None:
     """Return one satisfying :class:`civis.Response` object.
 
