@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from abc import ABCMeta, abstractmethod
+from collections.abc import Callable
 from concurrent.futures import Executor
 from concurrent import futures
 import copy
@@ -8,8 +11,9 @@ import os
 import time
 import threading
 import warnings
+from typing import Sequence
 
-from civis import APIClient
+from civis import APIClient, Response
 from civis.base import CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids
 from civis.polling import PollableResult
 
@@ -69,11 +73,11 @@ class CivisFuture(PollableResult):
 
     def __init__(
         self,
-        poller,
-        poller_args,
-        polling_interval=None,
-        client=None,
-        poll_on_creation=True,
+        poller: Callable,
+        poller_args: Sequence,
+        polling_interval: int | float | None = None,
+        client: APIClient | None = None,
+        poll_on_creation: bool = True,
     ):
         if client is None:
             client = APIClient()
@@ -148,7 +152,7 @@ class CivisFuture(PollableResult):
         return exc
 
     @property
-    def job_id(self):
+    def job_id(self) -> int:
         """The job ID for the Civis Platform job that this future is tracking.
 
         Returns
@@ -158,7 +162,7 @@ class CivisFuture(PollableResult):
         return self.poller_args[0]
 
     @property
-    def run_id(self):
+    def run_id(self) -> int | None:
         """The run ID for the Civis Platform job that this future is tracking.
 
         Returns
@@ -172,7 +176,7 @@ class CivisFuture(PollableResult):
             return None
 
     @property
-    def job_url(self):
+    def job_url(self) -> str:
         """The URL for the Civis Platform job that this future is tracking.
 
         Returns
@@ -199,7 +203,7 @@ class CivisFuture(PollableResult):
             return False
         return match
 
-    def outputs(self):
+    def outputs(self) -> list[Response]:
         """Block on job completion and return a list of run outputs.
 
         The method will only return run outputs for successful jobs.
@@ -207,7 +211,7 @@ class CivisFuture(PollableResult):
 
         Returns
         -------
-        list[dict]
+        list[civis.Response]
             List of run outputs from a successfully completed job.
 
         Raises
@@ -259,12 +263,12 @@ class ContainerFuture(CivisFuture):
 
     def __init__(
         self,
-        job_id,
-        run_id,
-        max_n_retries=0,
-        polling_interval=None,
-        client=None,
-        poll_on_creation=True,
+        job_id: int,
+        run_id: int,
+        max_n_retries: int = 0,
+        polling_interval: int | float | None = None,
+        client: APIClient | None = None,
+        poll_on_creation: bool = True,
     ):
         if client is None:
             client = APIClient()
@@ -312,7 +316,7 @@ class ContainerFuture(CivisFuture):
             else:
                 super()._set_api_exception(exc=exc, result=result)
 
-    def cancel(self):
+    def cancel(self) -> bool:
         """Submit a request to cancel the container/script/run.
 
         Returns
@@ -335,16 +339,15 @@ class ContainerFuture(CivisFuture):
                         return False
                     else:
                         warnings.warn(
-                            "Unexpected error when attempting to "
-                            "cancel job ID %d / run ID %d:\n%s"
-                            % (self.job_id, self.run_id, str(exc))
+                            "Unexpected error when attempting to cancel "
+                            f"job ID {self.job_id} / run ID {self.run_id}:\n{str(exc)}"
                         )
                         return False
                 for waiter in self._waiters:
                     waiter.add_cancelled(self)
                 self._condition.notify_all()
                 self.cleanup()
-                self._invoke_callbacks()
+                self._invoke_callbacks()  # type: ignore[attr-defined]
                 return self.cancelled()
             return False
 

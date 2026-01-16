@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from civis import APIClient
@@ -8,14 +10,14 @@ log = logging.getLogger(__name__)
 
 
 def query_civis(
-    sql,
-    database,
-    client=None,
-    credential_id=None,
-    preview_rows=10,
-    polling_interval=None,
+    sql: str,
+    database: str | int,
+    client: APIClient | None = None,
+    credential_id: int | None = None,
+    preview_rows: int = 10,
+    polling_interval: int | float | None = None,
     hidden=True,
-):
+) -> CivisFuture:
     """Execute a SQL statement as a Civis query.
 
     Run a query that may return no results or where only a small
@@ -31,7 +33,7 @@ def query_civis(
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
-    credential_id : str or int, optional
+    credential_id : int, optional
         The ID of the database credential. If ``None``, the default
         credential will be used.
     preview_rows : int, optional
@@ -70,17 +72,17 @@ def query_civis(
 
 
 def transfer_table(
-    source_db,
-    dest_db,
-    source_table,
-    dest_table,
-    job_name=None,
-    client=None,
-    source_credential_id=None,
-    dest_credential_id=None,
-    polling_interval=None,
+    source_db: str | int,
+    dest_db: str | int,
+    source_table: str,
+    dest_table: str,
+    job_name: str | None = None,
+    client: APIClient | None = None,
+    source_credential_id: int | None = None,
+    dest_credential_id: int | None = None,
+    polling_interval: int | float | None = None,
     **advanced_options,
-):
+) -> CivisFuture:
     """Transfer a table from one location to another.
 
     Parameters
@@ -102,10 +104,10 @@ def transfer_table(
     client : :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
-    source_credential_id : str or int, optional
+    source_credential_id : int, optional
         Optional credential ID for the source database. If ``None``, the
         default credential will be used.
-    dest_credential_id : str or int, optional
+    dest_credential_id : int, optional
         Optional credential ID for the destination database. If ``None``,
         the default credential will be used.
     polling_interval : int or float, optional

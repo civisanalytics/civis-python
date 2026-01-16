@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 from collections.abc import Iterator
 from functools import lru_cache
@@ -674,7 +676,9 @@ def parse_api_spec(api_spec, api_version):
     return classes
 
 
-def get_api_spec(api_key, api_version="1.0", user_agent=DEFAULT_USER_AGENT):
+def get_api_spec(
+    api_key: str, api_version: str = "1.0", user_agent: str = DEFAULT_USER_AGENT
+) -> dict:
     """Download the Civis API specification.
 
     Parameters
@@ -733,7 +737,9 @@ def generate_classes_ttl_cache(api_key, api_version, user_agent, ttl_hash):
     return generate_classes(api_key, api_version, user_agent)
 
 
-def generate_classes(api_key, api_version="1.0", user_agent=DEFAULT_USER_AGENT):
+def generate_classes(
+    api_key: str, api_version: str = "1.0", user_agent: str = DEFAULT_USER_AGENT
+) -> dict:
     """Dynamically create classes to interface with the Civis API.
 
     The Civis API documents behavior using an OpenAPI/Swagger specification.
@@ -764,11 +770,11 @@ def generate_classes(api_key, api_version="1.0", user_agent=DEFAULT_USER_AGENT):
 
 
 def cache_api_spec(
-    cache=CACHED_SPEC_PATH,
-    api_key=None,
-    api_version="1.0",
-    user_agent=DEFAULT_USER_AGENT,
-):
+    cache: str = CACHED_SPEC_PATH,
+    api_key: str | None = None,
+    api_version: str = "1.0",
+    user_agent: str = DEFAULT_USER_AGENT,
+) -> None:
     """Cache a local copy of the Civis Data Science API spec
 
     Parameters
@@ -791,12 +797,12 @@ def cache_api_spec(
 
 
 def generate_classes_maybe_cached(
-    cache,
-    api_key,
-    api_version,
-    force_refresh_api_spec=False,
-    user_agent=DEFAULT_USER_AGENT,
-):
+    cache: str | OrderedDict | None,
+    api_key: str,
+    api_version: str,
+    force_refresh_api_spec: bool = False,
+    user_agent: str = DEFAULT_USER_AGENT,
+) -> dict:
     """Generate class objects either from /endpoints or a local cache."""
     if cache and force_refresh_api_spec:
         raise TypeError(

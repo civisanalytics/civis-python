@@ -49,12 +49,11 @@ def generate_client_pyi(client_pyi_path, api_spec_path):
 # Do not edit it by hand.
 
 from collections import OrderedDict
-from collections.abc import Iterator
-from typing import Any, List
+from typing import List
 
 import tenacity
 
-from civis.response import Response
+from civis.response import Response, ListResponse, PaginatedResponse
 
 """
         )
@@ -97,9 +96,16 @@ from civis.response import Response
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
                 if return_type.__name__ == "Iterator":
-                    return_str = f"Iterator[{typing.get_args(return_type)[0].__name__}]"
+                    type_name = typing.get_args(return_type)[0].__name__
+                    list_resp = f"ListResponse[{type_name}]"
+                    paginated_resp = f"PaginatedResponse[{type_name}]"
+                    return_str = f"{list_resp} | {paginated_resp}"
+                    if len(return_str) > 80:
+                        return_str = f"(\n        {list_resp}\n        | {paginated_resp}\n    )"  # noqa: E501
+                    elif len(return_str) > 78:
+                        return_str = f"(\n        {return_str}\n    )"
                 elif method_name.startswith("list"):
-                    return_str = f"List[{return_type.__name__}]"
+                    return_str = f"ListResponse[{return_type.__name__}]"
                 else:
                     return_str = return_type.__name__
                 method_def += f"    ) -> {return_str}:\n"
@@ -144,7 +150,7 @@ class APIClient:
     default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
-    last_response: Any
+    last_response: Response | ListResponse | PaginatedResponse | None
     def __init__(
         self,
         api_key: str | None = ...,

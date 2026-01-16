@@ -2,12 +2,11 @@
 # Do not edit it by hand.
 
 from collections import OrderedDict
-from collections.abc import Iterator
-from typing import Any, List
+from typing import List
 
 import tenacity
 
-from civis.response import Response
+from civis.response import Response, ListResponse, PaginatedResponse
 
 class _Admin:
     def list_organizations(
@@ -15,7 +14,7 @@ class _Admin:
         *,
         status: List[str] | None = ...,
         org_type: List[str] | None = ...,
-    ) -> List[_ResponseAdminListOrganizations]:
+    ) -> ListResponse[_ResponseAdminListOrganizations]:
         """List organizations
 
         API URL: ``GET /admin/organizations``
@@ -81,7 +80,7 @@ class _Aliases:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseAliasesListShares]:
+    ) -> ListResponse[_ResponseAliasesListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /aliases/{id}/shares``
@@ -293,7 +292,7 @@ class _Aliases:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseAliasesListDependencies]:
+    ) -> ListResponse[_ResponseAliasesListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /aliases/{id}/dependencies``
@@ -389,7 +388,7 @@ class _Aliases:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseAliasesList]:
+    ) -> ListResponse[_ResponseAliasesList] | PaginatedResponse[_ResponseAliasesList]:
         """List Aliases
 
         API URL: ``GET /aliases``
@@ -711,7 +710,10 @@ class _Announcements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseAnnouncementsList]:
+    ) -> (
+        ListResponse[_ResponseAnnouncementsList]
+        | PaginatedResponse[_ResponseAnnouncementsList]
+    ):
         """List announcements
 
         API URL: ``GET /announcements``
@@ -766,7 +768,10 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseClustersListKubernetes]:
+    ) -> (
+        ListResponse[_ResponseClustersListKubernetes]
+        | PaginatedResponse[_ResponseClustersListKubernetes]
+    ):
         """List Kubernetes Clusters
 
         API URL: ``GET /clusters/kubernetes``
@@ -969,7 +974,7 @@ class _Clusters:
         id: int,
         *,
         include_usage_stats: bool | None = ...,
-    ) -> List[_ResponseClustersListKubernetesComputeHours]:
+    ) -> ListResponse[_ResponseClustersListKubernetesComputeHours]:
         """List compute hours for a Kubernetes Cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/compute_hours``
@@ -1007,7 +1012,10 @@ class _Clusters:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseClustersListKubernetesDeployments]:
+    ) -> (
+        ListResponse[_ResponseClustersListKubernetesDeployments]
+        | PaginatedResponse[_ResponseClustersListKubernetesDeployments]
+    ):
         """List the deployments associated with a Kubernetes Cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/deployments``
@@ -1095,7 +1103,7 @@ class _Clusters:
     def list_kubernetes_deployment_stats(
         self,
         id: int,
-    ) -> List[_ResponseClustersListKubernetesDeploymentStats]:
+    ) -> ListResponse[_ResponseClustersListKubernetesDeploymentStats]:
         """Get stats about deployments associated with a Kubernetes Cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/deployment_stats``
@@ -1128,7 +1136,7 @@ class _Clusters:
         id: int,
         *,
         include_usage_stats: bool | None = ...,
-    ) -> List[_ResponseClustersListKubernetesPartitions]:
+    ) -> ListResponse[_ResponseClustersListKubernetesPartitions]:
         """List Cluster Partitions for given cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/partitions``
@@ -1524,7 +1532,7 @@ class _Clusters:
         id: int,
         *,
         state: str | None = ...,
-    ) -> List[_ResponseClustersListKubernetesInstanceConfigsActiveWorkloads]:
+    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsActiveWorkloads]:
         """List active workloads in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{id}/active_workloads``
@@ -1591,7 +1599,7 @@ class _Clusters:
         *,
         order: str | None = ...,
         order_dir: str | None = ...,
-    ) -> List[_ResponseClustersListKubernetesInstanceConfigsUserStatistics]:
+    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsUserStatistics]:
         """Get statistics about the current users of an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/user_statistics``
@@ -1642,7 +1650,7 @@ class _Clusters:
         instance_config_id: int,
         *,
         timeframe: str | None = ...,
-    ) -> List[_ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs]:
+    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs]:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
@@ -1670,7 +1678,7 @@ class _Clusters:
         *,
         timeframe: str | None = ...,
         metric: str | None = ...,
-    ) -> List[_ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics]:
+    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics]:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
@@ -1717,7 +1725,7 @@ class _Clusters:
 class _Credentials:
     def list_types(
         self,
-    ) -> List[_ResponseCredentialsListTypes]:
+    ) -> ListResponse[_ResponseCredentialsListTypes]:
         """Get list of Credential Types
 
         API URL: ``GET /credentials/types``
@@ -1744,7 +1752,10 @@ class _Credentials:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseCredentialsList]:
+    ) -> (
+        ListResponse[_ResponseCredentialsList]
+        | PaginatedResponse[_ResponseCredentialsList]
+    ):
         """List credentials
 
         API URL: ``GET /credentials``
@@ -2309,7 +2320,7 @@ class _Credentials:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseCredentialsListShares]:
+    ) -> ListResponse[_ResponseCredentialsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /credentials/{id}/shares``
@@ -2521,7 +2532,7 @@ class _Credentials:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseCredentialsListDependencies]:
+    ) -> ListResponse[_ResponseCredentialsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /credentials/{id}/dependencies``
@@ -2611,7 +2622,7 @@ class _Credentials:
 class _Databases:
     def list(
         self,
-    ) -> List[_ResponseDatabasesList]:
+    ) -> ListResponse[_ResponseDatabasesList]:
         """List databases
 
         API URL: ``GET /databases``
@@ -2679,7 +2690,7 @@ class _Databases:
         *,
         name: str | None = ...,
         credential_id: int | None = ...,
-    ) -> List[_ResponseDatabasesListSchemas]:
+    ) -> ListResponse[_ResponseDatabasesListSchemas]:
         """List schemas in this database
 
         API URL: ``GET /databases/{id}/schemas``
@@ -2709,7 +2720,7 @@ class _Databases:
         schema_name: str,
         *,
         credential_id: int | None = ...,
-    ) -> List[_ResponseDatabasesListSchemasTables]:
+    ) -> ListResponse[_ResponseDatabasesListSchemasTables]:
         """List tables in this schema
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables``
@@ -3166,7 +3177,7 @@ class _Databases:
         table_name: str,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseDatabasesListSchemasTablesProjects]:
+    ) -> ListResponse[_ResponseDatabasesListSchemasTablesProjects]:
         """List the projects a Table belongs to
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects``
@@ -3393,7 +3404,7 @@ class _Databases:
         id: int,
         *,
         active: bool | None = ...,
-    ) -> List[_ResponseDatabasesListUsers]:
+    ) -> ListResponse[_ResponseDatabasesListUsers]:
         """Show list of database users
 
         API URL: ``GET /databases/{id}/users``
@@ -3419,7 +3430,7 @@ class _Databases:
     def list_groups(
         self,
         id: int,
-    ) -> List[_ResponseDatabasesListGroups]:
+    ) -> ListResponse[_ResponseDatabasesListGroups]:
         """List groups in the specified database
 
         API URL: ``GET /databases/{id}/groups``
@@ -3442,7 +3453,7 @@ class _Databases:
     def list_whitelist_ips(
         self,
         id: int,
-    ) -> List[_ResponseDatabasesListWhitelistIps]:
+    ) -> ListResponse[_ResponseDatabasesListWhitelistIps]:
         """List whitelisted IPs for the specified database
 
         API URL: ``GET /databases/{id}/whitelist-ips``
@@ -3511,7 +3522,7 @@ class _Databases:
     def list_advanced_settings(
         self,
         id: int,
-    ) -> List[_ResponseDatabasesListAdvancedSettings]:
+    ) -> ListResponse[_ResponseDatabasesListAdvancedSettings]:
         """Get the advanced settings for this database
 
         API URL: ``GET /databases/{id}/advanced-settings``
@@ -3621,7 +3632,7 @@ class _Databases:
 class _Endpoints:
     def list(
         self,
-    ) -> List[Response]:
+    ) -> ListResponse[Response]:
         """List API endpoints
 
         API URL: ``GET /endpoints``
@@ -4637,7 +4648,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRuns]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListCivisDataMatchRuns]
+        | PaginatedResponse[_ResponseEnhancementsListCivisDataMatchRuns]
+    ):
         """List runs for the given Civis Data Match job
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs``
@@ -4757,7 +4771,7 @@ class _Enhancements:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseEnhancementsListCivisDataMatchRunsLogs]:
+    ) -> ListResponse[_ResponseEnhancementsListCivisDataMatchRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/logs``
@@ -4824,7 +4838,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListCivisDataMatchRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListCivisDataMatchRunsOutputs]
+        | PaginatedResponse[_ResponseEnhancementsListCivisDataMatchRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/outputs``
@@ -4873,7 +4890,7 @@ class _Enhancements:
     def list_civis_data_match_shares(
         self,
         id: int,
-    ) -> List[_ResponseEnhancementsListCivisDataMatchShares]:
+    ) -> ListResponse[_ResponseEnhancementsListCivisDataMatchShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/civis-data-match/{id}/shares``
@@ -5085,7 +5102,7 @@ class _Enhancements:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseEnhancementsListCivisDataMatchDependencies]:
+    ) -> ListResponse[_ResponseEnhancementsListCivisDataMatchDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/civis-data-match/{id}/dependencies``
@@ -5320,7 +5337,7 @@ class _Enhancements:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseEnhancementsListCivisDataMatchProjects]:
+    ) -> ListResponse[_ResponseEnhancementsListCivisDataMatchProjects]:
         """List the projects a Civis Data Match Enhancement belongs to
 
         API URL: ``GET /enhancements/civis-data-match/{id}/projects``
@@ -5430,7 +5447,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListIdentityResolution]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListIdentityResolution]
+        | PaginatedResponse[_ResponseEnhancementsListIdentityResolution]
+    ):
         """List Identity Resolution Enhancements
 
         API URL: ``GET /enhancements/identity-resolution``
@@ -7125,7 +7145,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListIdentityResolutionRuns]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListIdentityResolutionRuns]
+        | PaginatedResponse[_ResponseEnhancementsListIdentityResolutionRuns]
+    ):
         """List runs for the given Identity Resolution job
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs``
@@ -7295,7 +7318,7 @@ class _Enhancements:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseEnhancementsListIdentityResolutionRunsLogs]:
+    ) -> ListResponse[_ResponseEnhancementsListIdentityResolutionRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs/{run_id}/logs``
@@ -7354,7 +7377,7 @@ class _Enhancements:
 
     def list_types(
         self,
-    ) -> List[_ResponseEnhancementsListTypes]:
+    ) -> ListResponse[_ResponseEnhancementsListTypes]:
         """List available enhancement types
 
         API URL: ``GET /enhancements/types``
@@ -7369,7 +7392,7 @@ class _Enhancements:
 
     def list_field_mapping(
         self,
-    ) -> List[_ResponseEnhancementsListFieldMapping]:
+    ) -> ListResponse[_ResponseEnhancementsListFieldMapping]:
         """List the fields in a field mapping for Civis Data Match, Data Unification, and
         Table Deduplication jobs
 
@@ -7397,7 +7420,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsList]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsList]
+        | PaginatedResponse[_ResponseEnhancementsList]
+    ):
         """List Enhancements
 
         API URL: ``GET /enhancements``
@@ -8449,7 +8475,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListCassNcoaRuns]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListCassNcoaRuns]
+        | PaginatedResponse[_ResponseEnhancementsListCassNcoaRuns]
+    ):
         """List runs for the given CASS NCOA job
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs``
@@ -8569,7 +8598,7 @@ class _Enhancements:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseEnhancementsListCassNcoaRunsLogs]:
+    ) -> ListResponse[_ResponseEnhancementsListCassNcoaRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/logs``
@@ -8636,7 +8665,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListCassNcoaRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListCassNcoaRunsOutputs]
+        | PaginatedResponse[_ResponseEnhancementsListCassNcoaRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/outputs``
@@ -9441,7 +9473,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListGeocodeRuns]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListGeocodeRuns]
+        | PaginatedResponse[_ResponseEnhancementsListGeocodeRuns]
+    ):
         """List runs for the given Geocode job
 
         API URL: ``GET /enhancements/geocode/{id}/runs``
@@ -9561,7 +9596,7 @@ class _Enhancements:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseEnhancementsListGeocodeRunsLogs]:
+    ) -> ListResponse[_ResponseEnhancementsListGeocodeRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/logs``
@@ -9628,7 +9663,10 @@ class _Enhancements:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseEnhancementsListGeocodeRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseEnhancementsListGeocodeRunsOutputs]
+        | PaginatedResponse[_ResponseEnhancementsListGeocodeRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/outputs``
@@ -9677,7 +9715,7 @@ class _Enhancements:
     def list_cass_ncoa_shares(
         self,
         id: int,
-    ) -> List[_ResponseEnhancementsListCassNcoaShares]:
+    ) -> ListResponse[_ResponseEnhancementsListCassNcoaShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/shares``
@@ -9889,7 +9927,7 @@ class _Enhancements:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseEnhancementsListCassNcoaDependencies]:
+    ) -> ListResponse[_ResponseEnhancementsListCassNcoaDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/dependencies``
@@ -9981,7 +10019,7 @@ class _Enhancements:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseEnhancementsListCassNcoaProjects]:
+    ) -> ListResponse[_ResponseEnhancementsListCassNcoaProjects]:
         """List the projects a CASS/NCOA Enhancement belongs to
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/projects``
@@ -10241,7 +10279,7 @@ class _Enhancements:
     def list_geocode_shares(
         self,
         id: int,
-    ) -> List[_ResponseEnhancementsListGeocodeShares]:
+    ) -> ListResponse[_ResponseEnhancementsListGeocodeShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/geocode/{id}/shares``
@@ -10453,7 +10491,7 @@ class _Enhancements:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseEnhancementsListGeocodeDependencies]:
+    ) -> ListResponse[_ResponseEnhancementsListGeocodeDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/geocode/{id}/dependencies``
@@ -10545,7 +10583,7 @@ class _Enhancements:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseEnhancementsListGeocodeProjects]:
+    ) -> ListResponse[_ResponseEnhancementsListGeocodeProjects]:
         """List the projects a Geocode Enhancement belongs to
 
         API URL: ``GET /enhancements/geocode/{id}/projects``
@@ -10772,7 +10810,7 @@ class _Enhancements:
     def list_identity_resolution_shares(
         self,
         id: int,
-    ) -> List[_ResponseEnhancementsListIdentityResolutionShares]:
+    ) -> ListResponse[_ResponseEnhancementsListIdentityResolutionShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/identity-resolution/{id}/shares``
@@ -10984,7 +11022,7 @@ class _Enhancements:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseEnhancementsListIdentityResolutionDependencies]:
+    ) -> ListResponse[_ResponseEnhancementsListIdentityResolutionDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/identity-resolution/{id}/dependencies``
@@ -11076,7 +11114,7 @@ class _Enhancements:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseEnhancementsListIdentityResolutionProjects]:
+    ) -> ListResponse[_ResponseEnhancementsListIdentityResolutionProjects]:
         """List the projects an Identity Resolution Enhancement belongs to
 
         API URL: ``GET /enhancements/identity-resolution/{id}/projects``
@@ -11415,7 +11453,7 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseExportsList]:
+    ) -> ListResponse[_ResponseExportsList] | PaginatedResponse[_ResponseExportsList]:
         """List
 
         API URL: ``GET /exports``
@@ -11536,7 +11574,10 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseExportsListFilesCsvRuns]:
+    ) -> (
+        ListResponse[_ResponseExportsListFilesCsvRuns]
+        | PaginatedResponse[_ResponseExportsListFilesCsvRuns]
+    ):
         """List runs for the given CSV Export job
 
         API URL: ``GET /exports/files/csv/{id}/runs``
@@ -11645,7 +11686,7 @@ class _Exports:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseExportsListFilesCsvRunsLogs]:
+    ) -> ListResponse[_ResponseExportsListFilesCsvRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/logs``
@@ -11687,7 +11728,10 @@ class _Exports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseExportsListFilesCsvRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseExportsListFilesCsvRunsOutputs]
+        | PaginatedResponse[_ResponseExportsListFilesCsvRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/outputs``
@@ -12269,7 +12313,7 @@ class _Files:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseFilesListProjects]:
+    ) -> ListResponse[_ResponseFilesListProjects]:
         """List the projects a File belongs to
 
         API URL: ``GET /files/{id}/projects``
@@ -12372,7 +12416,7 @@ class _Files:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseFilesListShares]:
+    ) -> ListResponse[_ResponseFilesListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /files/{id}/shares``
@@ -12584,7 +12628,7 @@ class _Files:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseFilesListDependencies]:
+    ) -> ListResponse[_ResponseFilesListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /files/{id}/dependencies``
@@ -13323,7 +13367,7 @@ class _Git_Repos:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseGitReposList]:
+    ) -> ListResponse[_ResponseGitReposList] | PaginatedResponse[_ResponseGitReposList]:
         """List bookmarked git repositories
 
         API URL: ``GET /git_repos``
@@ -13434,7 +13478,7 @@ class _Git_Repos:
     def list_refs(
         self,
         id: int,
-    ) -> List[_ResponseGitReposListRefs]:
+    ) -> ListResponse[_ResponseGitReposListRefs]:
         """Get all branches and tags of a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}/refs``
@@ -13468,7 +13512,7 @@ class _Groups:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseGroupsList]:
+    ) -> ListResponse[_ResponseGroupsList] | PaginatedResponse[_ResponseGroupsList]:
         """List Groups
 
         API URL: ``GET /groups``
@@ -13937,7 +13981,7 @@ class _Groups:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseGroupsListShares]:
+    ) -> ListResponse[_ResponseGroupsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /groups/{id}/shares``
@@ -14247,7 +14291,7 @@ class _Groups:
     def list_child_groups(
         self,
         id: int,
-    ) -> List[_ResponseGroupsListChildGroups]:
+    ) -> ListResponse[_ResponseGroupsListChildGroups]:
         """Get child groups of this group
 
         API URL: ``GET /groups/{id}/child_groups``
@@ -14276,7 +14320,7 @@ class _Imports:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseImportsListShares]:
+    ) -> ListResponse[_ResponseImportsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /imports/{id}/shares``
@@ -14488,7 +14532,7 @@ class _Imports:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseImportsListDependencies]:
+    ) -> ListResponse[_ResponseImportsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /imports/{id}/dependencies``
@@ -14580,7 +14624,7 @@ class _Imports:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseImportsListProjects]:
+    ) -> ListResponse[_ResponseImportsListProjects]:
         """List the projects an Import belongs to
 
         API URL: ``GET /imports/{id}/projects``
@@ -14991,7 +15035,7 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseImportsList]:
+    ) -> ListResponse[_ResponseImportsList] | PaginatedResponse[_ResponseImportsList]:
         """List Imports
 
         API URL: ``GET /imports``
@@ -15612,7 +15656,10 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseImportsListFilesRuns]:
+    ) -> (
+        ListResponse[_ResponseImportsListFilesRuns]
+        | PaginatedResponse[_ResponseImportsListFilesRuns]
+    ):
         """List runs for the given Import job
 
         API URL: ``GET /imports/files/{id}/runs``
@@ -15732,7 +15779,7 @@ class _Imports:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseImportsListFilesRunsLogs]:
+    ) -> ListResponse[_ResponseImportsListFilesRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /imports/files/{id}/runs/{run_id}/logs``
@@ -15771,7 +15818,7 @@ class _Imports:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseImportsListRunsLogs]:
+    ) -> ListResponse[_ResponseImportsListRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /imports/{id}/runs/{run_id}/logs``
@@ -16712,7 +16759,10 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseImportsListFilesCsvRuns]:
+    ) -> (
+        ListResponse[_ResponseImportsListFilesCsvRuns]
+        | PaginatedResponse[_ResponseImportsListFilesCsvRuns]
+    ):
         """List runs for the given CSV Import job
 
         API URL: ``GET /imports/files/csv/{id}/runs``
@@ -16832,7 +16882,7 @@ class _Imports:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseImportsListFilesCsvRunsLogs]:
+    ) -> ListResponse[_ResponseImportsListFilesCsvRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /imports/files/csv/{id}/runs/{run_id}/logs``
@@ -16873,7 +16923,10 @@ class _Imports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseImportsListBatches]:
+    ) -> (
+        ListResponse[_ResponseImportsListBatches]
+        | PaginatedResponse[_ResponseImportsListBatches]
+    ):
         """List batch imports
 
         API URL: ``GET /imports/batches``
@@ -17699,7 +17752,7 @@ class _Imports:
     def list_runs(
         self,
         id: int,
-    ) -> List[_ResponseImportsListRuns]:
+    ) -> ListResponse[_ResponseImportsListRuns]:
         """Get the run history of this import
 
         API URL: ``GET /imports/{id}/runs``
@@ -18598,7 +18651,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseJobsList]:
+    ) -> ListResponse[_ResponseJobsList] | PaginatedResponse[_ResponseJobsList]:
         """List Jobs
 
         API URL: ``GET /jobs``
@@ -18810,7 +18863,7 @@ class _Jobs:
     def list_parents(
         self,
         id: int,
-    ) -> List[_ResponseJobsListParents]:
+    ) -> ListResponse[_ResponseJobsListParents]:
         """Show chain of parents as a list that this job triggers from
 
         API URL: ``GET /jobs/{id}/parents``
@@ -18898,7 +18951,7 @@ class _Jobs:
     def list_children(
         self,
         id: int,
-    ) -> List[_ResponseJobsListChildren]:
+    ) -> ListResponse[_ResponseJobsListChildren]:
         """Show nested tree of children that this job triggers
 
         API URL: ``GET /jobs/{id}/children``
@@ -18953,7 +19006,7 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseJobsListRuns]:
+    ) -> ListResponse[_ResponseJobsListRuns] | PaginatedResponse[_ResponseJobsListRuns]:
         """List runs for the given job
 
         API URL: ``GET /jobs/{id}/runs``
@@ -19091,7 +19144,10 @@ class _Jobs:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseJobsListRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseJobsListRunsOutputs]
+        | PaginatedResponse[_ResponseJobsListRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/outputs``
@@ -19144,7 +19200,7 @@ class _Jobs:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseJobsListRunsLogs]:
+    ) -> ListResponse[_ResponseJobsListRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/logs``
@@ -19181,7 +19237,7 @@ class _Jobs:
         id: int,
         *,
         archived: str | None = ...,
-    ) -> List[_ResponseJobsListWorkflows]:
+    ) -> ListResponse[_ResponseJobsListWorkflows]:
         """List the workflows a job belongs to
 
         API URL: ``GET /jobs/{id}/workflows``
@@ -19250,7 +19306,7 @@ class _Jobs:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseJobsListShares]:
+    ) -> ListResponse[_ResponseJobsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /jobs/{id}/shares``
@@ -19462,7 +19518,7 @@ class _Jobs:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseJobsListDependencies]:
+    ) -> ListResponse[_ResponseJobsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /jobs/{id}/dependencies``
@@ -19554,7 +19610,7 @@ class _Jobs:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseJobsListProjects]:
+    ) -> ListResponse[_ResponseJobsListProjects]:
         """List the projects a Job belongs to
 
         API URL: ``GET /jobs/{id}/projects``
@@ -19837,7 +19893,7 @@ class _Json_Values:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseJsonValuesListShares]:
+    ) -> ListResponse[_ResponseJsonValuesListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /json_values/{id}/shares``
@@ -20049,7 +20105,7 @@ class _Json_Values:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseJsonValuesListDependencies]:
+    ) -> ListResponse[_ResponseJsonValuesListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /json_values/{id}/dependencies``
@@ -20140,7 +20196,7 @@ class _Match_Targets:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseMatchTargetsListShares]:
+    ) -> ListResponse[_ResponseMatchTargetsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /match_targets/{id}/shares``
@@ -20381,7 +20437,7 @@ class _Match_Targets:
 
     def list(
         self,
-    ) -> List[_ResponseMatchTargetsList]:
+    ) -> ListResponse[_ResponseMatchTargetsList]:
         """List match targets
 
         API URL: ``GET /match_targets``
@@ -20510,7 +20566,7 @@ class _Media:
     def list_spot_orders_shares(
         self,
         id: int,
-    ) -> List[_ResponseMediaListSpotOrdersShares]:
+    ) -> ListResponse[_ResponseMediaListSpotOrdersShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /media/spot_orders/{id}/shares``
@@ -20754,7 +20810,7 @@ class _Media:
     def list_optimizations_shares(
         self,
         id: int,
-    ) -> List[_ResponseMediaListOptimizationsShares]:
+    ) -> ListResponse[_ResponseMediaListOptimizationsShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /media/optimizations/{id}/shares``
@@ -21065,7 +21121,7 @@ class _Media:
     def list_ratecards_shares(
         self,
         id: int,
-    ) -> List[_ResponseMediaListRatecardsShares]:
+    ) -> ListResponse[_ResponseMediaListRatecardsShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /media/ratecards/{id}/shares``
@@ -21315,7 +21371,10 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseMediaListOptimizations]:
+    ) -> (
+        ListResponse[_ResponseMediaListOptimizations]
+        | PaginatedResponse[_ResponseMediaListOptimizations]
+    ):
         """List all optimizations
 
         API URL: ``GET /media/optimizations``
@@ -21922,7 +21981,10 @@ class _Media:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseMediaListOptimizationsRuns]:
+    ) -> (
+        ListResponse[_ResponseMediaListOptimizationsRuns]
+        | PaginatedResponse[_ResponseMediaListOptimizationsRuns]
+    ):
         """List runs for the given Optimization job
 
         API URL: ``GET /media/optimizations/{id}/runs``
@@ -22042,7 +22104,7 @@ class _Media:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseMediaListOptimizationsRunsLogs]:
+    ) -> ListResponse[_ResponseMediaListOptimizationsRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /media/optimizations/{id}/runs/{run_id}/logs``
@@ -22079,7 +22141,7 @@ class _Media:
         *,
         id: int | None = ...,
         archived: str | None = ...,
-    ) -> List[_ResponseMediaListSpotOrders]:
+    ) -> ListResponse[_ResponseMediaListSpotOrders]:
         """List all spot orders
 
         API URL: ``GET /media/spot_orders``
@@ -22205,7 +22267,7 @@ class _Media:
         archived: str | None = ...,
         filename: str | None = ...,
         dma_number: int | None = ...,
-    ) -> List[_ResponseMediaListRatecards]:
+    ) -> ListResponse[_ResponseMediaListRatecards]:
         """List all ratecards
 
         API URL: ``GET /media/ratecards``
@@ -22401,7 +22463,7 @@ class _Media:
         *,
         name: str | None = ...,
         number: int | None = ...,
-    ) -> List[_ResponseMediaListDmas]:
+    ) -> ListResponse[_ResponseMediaListDmas]:
         """List all Designated Market Areas
 
         API URL: ``GET /media/dmas``
@@ -22431,7 +22493,7 @@ class _Media:
         name: str | None = ...,
         identifier: str | None = ...,
         data_source: str | None = ...,
-    ) -> List[_ResponseMediaListTargets]:
+    ) -> ListResponse[_ResponseMediaListTargets]:
         """List all Media Targets
 
         API URL: ``GET /media/targets``
@@ -22460,7 +22522,7 @@ class _Media:
 class _Models:
     def list_types(
         self,
-    ) -> List[_ResponseModelsListTypes]:
+    ) -> ListResponse[_ResponseModelsListTypes]:
         """List all available model types
 
         API URL: ``GET /models/types``
@@ -22494,7 +22556,7 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseModelsList]:
+    ) -> ListResponse[_ResponseModelsList] | PaginatedResponse[_ResponseModelsList]:
         """List
 
         API URL: ``GET /models``
@@ -22968,7 +23030,10 @@ class _Models:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseModelsListBuilds]:
+    ) -> (
+        ListResponse[_ResponseModelsListBuilds]
+        | PaginatedResponse[_ResponseModelsListBuilds]
+    ):
         """List builds for the given Model job
 
         API URL: ``GET /models/{id}/builds``
@@ -23038,7 +23103,7 @@ class _Models:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseModelsListBuildsLogs]:
+    ) -> ListResponse[_ResponseModelsListBuildsLogs]:
         """Get the logs for a build
 
         API URL: ``GET /models/{id}/builds/{build_id}/logs``
@@ -23073,7 +23138,7 @@ class _Models:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseModelsListShares]:
+    ) -> ListResponse[_ResponseModelsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /models/{id}/shares``
@@ -23285,7 +23350,7 @@ class _Models:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseModelsListDependencies]:
+    ) -> ListResponse[_ResponseModelsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /models/{id}/dependencies``
@@ -23377,7 +23442,7 @@ class _Models:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseModelsListProjects]:
+    ) -> ListResponse[_ResponseModelsListProjects]:
         """List the projects a Model belongs to
 
         API URL: ``GET /models/{id}/projects``
@@ -23687,7 +23752,7 @@ class _Models:
     def list_schedules(
         self,
         id: int,
-    ) -> List[_ResponseModelsListSchedules]:
+    ) -> ListResponse[_ResponseModelsListSchedules]:
         """Show the model build schedule
 
         API URL: ``GET /models/{id}/schedules``
@@ -23733,7 +23798,9 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseNotebooksList]:
+    ) -> (
+        ListResponse[_ResponseNotebooksList] | PaginatedResponse[_ResponseNotebooksList]
+    ):
         """List Notebooks
 
         API URL: ``GET /notebooks``
@@ -24498,7 +24565,7 @@ class _Notebooks:
     def list_update_links(
         self,
         id: int,
-    ) -> List[_ResponseNotebooksListUpdateLinks]:
+    ) -> ListResponse[_ResponseNotebooksListUpdateLinks]:
         """Get URLs to update notebook
 
         API URL: ``GET /notebooks/{id}/update-links``
@@ -24643,7 +24710,7 @@ class _Notebooks:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseNotebooksListShares]:
+    ) -> ListResponse[_ResponseNotebooksListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /notebooks/{id}/shares``
@@ -24855,7 +24922,7 @@ class _Notebooks:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseNotebooksListDependencies]:
+    ) -> ListResponse[_ResponseNotebooksListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /notebooks/{id}/dependencies``
@@ -25072,7 +25139,7 @@ class _Notebooks:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseNotebooksListProjects]:
+    ) -> ListResponse[_ResponseNotebooksListProjects]:
         """List the projects a Notebook belongs to
 
         API URL: ``GET /notebooks/{id}/projects``
@@ -25182,7 +25249,10 @@ class _Notebooks:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseNotebooksListDeployments]:
+    ) -> (
+        ListResponse[_ResponseNotebooksListDeployments]
+        | PaginatedResponse[_ResponseNotebooksListDeployments]
+    ):
         """List deployments for a Notebook
 
         API URL: ``GET /notebooks/{notebook_id}/deployments``
@@ -25394,7 +25464,7 @@ class _Notebooks:
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseNotebooksListDeploymentsLogs]:
+    ) -> ListResponse[_ResponseNotebooksListDeploymentsLogs]:
         """Get the logs for a Notebook deployment
 
         API URL: ``GET /notebooks/{id}/deployments/{deployment_id}/logs``
@@ -25429,7 +25499,7 @@ class _Notebooks:
     def list_git(
         self,
         id: int,
-    ) -> List[_ResponseNotebooksListGit]:
+    ) -> ListResponse[_ResponseNotebooksListGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /notebooks/{id}/git``
@@ -25585,7 +25655,7 @@ class _Notebooks:
     def list_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseNotebooksListGitCommits]:
+    ) -> ListResponse[_ResponseNotebooksListGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /notebooks/{id}/git/commits``
@@ -25682,7 +25752,7 @@ class _Notifications:
         last_event_id: str | None = ...,
         r: str | None = ...,
         mock: str | None = ...,
-    ) -> List[Response]:
+    ) -> ListResponse[Response]:
         """Receive a stream of notifications as they come in
 
         API URL: ``GET /notifications``
@@ -25708,7 +25778,7 @@ class _Ontology:
         self,
         *,
         subset: str | None = ...,
-    ) -> List[_ResponseOntologyList]:
+    ) -> ListResponse[_ResponseOntologyList]:
         """List the ontology of column names Civis uses
 
         API URL: ``GET /ontology``
@@ -25740,7 +25810,10 @@ class _Organizations:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseOrganizationsListFavorites]:
+    ) -> (
+        ListResponse[_ResponseOrganizationsListFavorites]
+        | PaginatedResponse[_ResponseOrganizationsListFavorites]
+    ):
         """List Favorites
 
         API URL: ``GET /organizations/favorites``
@@ -25894,7 +25967,10 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponsePermissionSetsList]:
+    ) -> (
+        ListResponse[_ResponsePermissionSetsList]
+        | PaginatedResponse[_ResponsePermissionSetsList]
+    ):
         """List Permission Sets
 
         API URL: ``GET /permission_sets``
@@ -26132,7 +26208,7 @@ class _Permission_Sets:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponsePermissionSetsListShares]:
+    ) -> ListResponse[_ResponsePermissionSetsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /permission_sets/{id}/shares``
@@ -26344,7 +26420,7 @@ class _Permission_Sets:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponsePermissionSetsListDependencies]:
+    ) -> ListResponse[_ResponsePermissionSetsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /permission_sets/{id}/dependencies``
@@ -26478,7 +26554,7 @@ class _Permission_Sets:
         self,
         id: int,
         user_id: int,
-    ) -> List[_ResponsePermissionSetsListUsersPermissions]:
+    ) -> ListResponse[_ResponsePermissionSetsListUsersPermissions]:
         """Get all permissions for a user, in this permission set
 
         API URL: ``GET /permission_sets/{id}/users/{user_id}/permissions``
@@ -26513,7 +26589,10 @@ class _Permission_Sets:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponsePermissionSetsListResources]:
+    ) -> (
+        ListResponse[_ResponsePermissionSetsListResources]
+        | PaginatedResponse[_ResponsePermissionSetsListResources]
+    ):
         """List resources in a permission set
 
         API URL: ``GET /permission_sets/{id}/resources``
@@ -26680,7 +26759,7 @@ class _Permission_Sets:
         self,
         id: int,
         name: str,
-    ) -> List[_ResponsePermissionSetsListResourcesShares]:
+    ) -> ListResponse[_ResponsePermissionSetsListResourcesShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /permission_sets/{id}/resources/{name}/shares``
@@ -26906,7 +26985,7 @@ class _Predictions:
         self,
         *,
         model_id: int | None = ...,
-    ) -> List[_ResponsePredictionsList]:
+    ) -> ListResponse[_ResponsePredictionsList]:
         """List predictions
 
         API URL: ``GET /predictions``
@@ -27045,7 +27124,7 @@ class _Predictions:
     def list_schedules(
         self,
         id: int,
-    ) -> List[_ResponsePredictionsListSchedules]:
+    ) -> ListResponse[_ResponsePredictionsListSchedules]:
         """Show the prediction schedule
 
         API URL: ``GET /predictions/{id}/schedules``
@@ -27095,7 +27174,7 @@ class _Projects:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseProjectsList]:
+    ) -> ListResponse[_ResponseProjectsList] | PaginatedResponse[_ResponseProjectsList]:
         """List projects
 
         API URL: ``GET /projects``
@@ -28251,7 +28330,7 @@ class _Projects:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseProjectsListShares]:
+    ) -> ListResponse[_ResponseProjectsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /projects/{id}/shares``
@@ -28463,7 +28542,7 @@ class _Projects:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseProjectsListDependencies]:
+    ) -> ListResponse[_ResponseProjectsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /projects/{id}/dependencies``
@@ -28766,7 +28845,7 @@ class _Projects:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseProjectsListParentProjects]:
+    ) -> ListResponse[_ResponseProjectsListParentProjects]:
         """List the Parent Projects an item belongs to
 
         API URL: ``GET /projects/{id}/parent_projects``
@@ -28887,7 +28966,7 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseQueriesList]:
+    ) -> ListResponse[_ResponseQueriesList] | PaginatedResponse[_ResponseQueriesList]:
         """List queries
 
         API URL: ``GET /queries``
@@ -29130,7 +29209,10 @@ class _Queries:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseQueriesListRuns]:
+    ) -> (
+        ListResponse[_ResponseQueriesListRuns]
+        | PaginatedResponse[_ResponseQueriesListRuns]
+    ):
         """List runs for the given Query job
 
         API URL: ``GET /queries/{id}/runs``
@@ -29250,7 +29332,7 @@ class _Queries:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseQueriesListRunsLogs]:
+    ) -> ListResponse[_ResponseQueriesListRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /queries/{id}/runs/{run_id}/logs``
@@ -29491,7 +29573,7 @@ class _Remote_Hosts:
         self,
         *,
         type: str | None = ...,
-    ) -> List[_ResponseRemoteHostsList]:
+    ) -> ListResponse[_ResponseRemoteHostsList]:
         """List Remote Hosts
 
         API URL: ``GET /remote_hosts``
@@ -29769,7 +29851,7 @@ class _Remote_Hosts:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseRemoteHostsListShares]:
+    ) -> ListResponse[_ResponseRemoteHostsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /remote_hosts/{id}/shares``
@@ -30016,7 +30098,7 @@ class _Remote_Hosts:
         password: str | None = ...,
         q: str | None = ...,
         s: bool | None = ...,
-    ) -> List[_ResponseRemoteHostsListDataSets]:
+    ) -> ListResponse[_ResponseRemoteHostsListDataSets]:
         """List data sets available from a remote host
 
         API URL: ``GET /remote_hosts/{id}/data_sets``
@@ -30062,7 +30144,7 @@ class _Reports:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseReportsList]:
+    ) -> ListResponse[_ResponseReportsList] | PaginatedResponse[_ResponseReportsList]:
         """List Reports
 
         API URL: ``GET /reports``
@@ -30301,7 +30383,7 @@ class _Reports:
     def list_git(
         self,
         id: int,
-    ) -> List[_ResponseReportsListGit]:
+    ) -> ListResponse[_ResponseReportsListGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /reports/{id}/git``
@@ -30457,7 +30539,7 @@ class _Reports:
     def list_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseReportsListGitCommits]:
+    ) -> ListResponse[_ResponseReportsListGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /reports/{id}/git/commits``
@@ -30922,7 +31004,7 @@ class _Reports:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseReportsListShares]:
+    ) -> ListResponse[_ResponseReportsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /reports/{id}/shares``
@@ -31134,7 +31216,7 @@ class _Reports:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseReportsListDependencies]:
+    ) -> ListResponse[_ResponseReportsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /reports/{id}/dependencies``
@@ -31226,7 +31308,7 @@ class _Reports:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseReportsListProjects]:
+    ) -> ListResponse[_ResponseReportsListProjects]:
         """List the projects a Report belongs to
 
         API URL: ``GET /reports/{id}/projects``
@@ -31630,7 +31712,7 @@ class _Reports:
     def list_services_shares(
         self,
         id: int,
-    ) -> List[_ResponseReportsListServicesShares]:
+    ) -> ListResponse[_ResponseReportsListServicesShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /reports/services/{id}/shares``
@@ -31842,7 +31924,7 @@ class _Reports:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseReportsListServicesDependencies]:
+    ) -> ListResponse[_ResponseReportsListServicesDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /reports/services/{id}/dependencies``
@@ -31934,7 +32016,7 @@ class _Reports:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseReportsListServicesProjects]:
+    ) -> ListResponse[_ResponseReportsListServicesProjects]:
         """List the projects a Service Report belongs to
 
         API URL: ``GET /reports/services/{id}/projects``
@@ -32486,7 +32568,7 @@ class _Reports:
     def list_sql_shares(
         self,
         id: int,
-    ) -> List[_ResponseReportsListSqlShares]:
+    ) -> ListResponse[_ResponseReportsListSqlShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /reports/sql/{id}/shares``
@@ -32698,7 +32780,7 @@ class _Reports:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseReportsListSqlDependencies]:
+    ) -> ListResponse[_ResponseReportsListSqlDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /reports/sql/{id}/dependencies``
@@ -32790,7 +32872,7 @@ class _Reports:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseReportsListSqlProjects]:
+    ) -> ListResponse[_ResponseReportsListSqlProjects]:
         """List the projects a SQL Report belongs to
 
         API URL: ``GET /reports/sql/{id}/projects``
@@ -32985,7 +33067,7 @@ class _Roles:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseRolesList]:
+    ) -> ListResponse[_ResponseRolesList] | PaginatedResponse[_ResponseRolesList]:
         """List Roles
 
         API URL: ``GET /roles``
@@ -33028,7 +33110,7 @@ class _Roles:
 class _Scripts:
     def list_types(
         self,
-    ) -> List[_ResponseScriptsListTypes]:
+    ) -> ListResponse[_ResponseScriptsListTypes]:
         """List available script types
 
         API URL: ``GET /scripts/types``
@@ -33044,7 +33126,7 @@ class _Scripts:
     def list_history(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListHistory]:
+    ) -> ListResponse[_ResponseScriptsListHistory]:
         """Get the run history and outputs of this script
 
         API URL: ``GET /scripts/{id}/history``
@@ -33350,7 +33432,7 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsList]:
+    ) -> ListResponse[_ResponseScriptsList] | PaginatedResponse[_ResponseScriptsList]:
         """List Scripts
 
         API URL: ``GET /scripts``
@@ -35093,7 +35175,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListContainersRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListContainersRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/logs``
@@ -41312,7 +41394,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListCustom]:
+    ) -> (
+        ListResponse[_ResponseScriptsListCustom]
+        | PaginatedResponse[_ResponseScriptsListCustom]
+    ):
         """List Custom Scripts
 
         API URL: ``GET /scripts/custom``
@@ -42598,7 +42683,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListSqlRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListSqlRuns]
+        | PaginatedResponse[_ResponseScriptsListSqlRuns]
+    ):
         """List runs for the given SQL job
 
         API URL: ``GET /scripts/sql/{id}/runs``
@@ -42771,7 +42859,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListSqlRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListSqlRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/logs``
@@ -42854,7 +42942,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListContainersRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListContainersRuns]
+        | PaginatedResponse[_ResponseScriptsListContainersRuns]
+    ):
         """List runs for the given Container job
 
         API URL: ``GET /scripts/containers/{id}/runs``
@@ -43030,7 +43121,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListPython3Runs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListPython3Runs]
+        | PaginatedResponse[_ResponseScriptsListPython3Runs]
+    ):
         """List runs for the given Python job
 
         API URL: ``GET /scripts/python3/{id}/runs``
@@ -43189,7 +43283,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListPython3RunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListPython3RunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/logs``
@@ -43272,7 +43366,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListRRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListRRuns]
+        | PaginatedResponse[_ResponseScriptsListRRuns]
+    ):
         """List runs for the given R job
 
         API URL: ``GET /scripts/r/{id}/runs``
@@ -43431,7 +43528,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListRRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListRRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/logs``
@@ -43514,7 +43611,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListDbtRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListDbtRuns]
+        | PaginatedResponse[_ResponseScriptsListDbtRuns]
+    ):
         """List runs for the given dbt job
 
         API URL: ``GET /scripts/dbt/{id}/runs``
@@ -43673,7 +43773,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListDbtRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListDbtRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/logs``
@@ -43750,7 +43850,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListJavascriptRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListJavascriptRuns]
+        | PaginatedResponse[_ResponseScriptsListJavascriptRuns]
+    ):
         """List runs for the given Javascript job
 
         API URL: ``GET /scripts/javascript/{id}/runs``
@@ -43897,7 +44000,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListJavascriptRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/logs``
@@ -43982,7 +44085,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListCustomRuns]:
+    ) -> (
+        ListResponse[_ResponseScriptsListCustomRuns]
+        | PaginatedResponse[_ResponseScriptsListCustomRuns]
+    ):
         """List runs for the given Custom job
 
         API URL: ``GET /scripts/custom/{id}/runs``
@@ -44118,7 +44224,7 @@ class _Scripts:
         *,
         last_id: int | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseScriptsListCustomRunsLogs]:
+    ) -> ListResponse[_ResponseScriptsListCustomRunsLogs]:
         """Get the logs for a run
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/logs``
@@ -44160,7 +44266,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListSqlRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListSqlRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListSqlRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/outputs``
@@ -44216,7 +44325,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListContainersRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListContainersRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListContainersRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/outputs``
@@ -44311,7 +44423,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListPython3RunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListPython3RunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListPython3RunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/outputs``
@@ -44406,7 +44521,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListRRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListRRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListRRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/outputs``
@@ -44501,7 +44619,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListDbtRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListDbtRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListDbtRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/outputs``
@@ -44596,7 +44717,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListJavascriptRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListJavascriptRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListJavascriptRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/outputs``
@@ -44691,7 +44815,10 @@ class _Scripts:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseScriptsListCustomRunsOutputs]:
+    ) -> (
+        ListResponse[_ResponseScriptsListCustomRunsOutputs]
+        | PaginatedResponse[_ResponseScriptsListCustomRunsOutputs]
+    ):
         """List the outputs for a run
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/outputs``
@@ -44806,7 +44933,7 @@ class _Scripts:
     def list_sql_git(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListSqlGit]:
+    ) -> ListResponse[_ResponseScriptsListSqlGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/sql/{id}/git``
@@ -44962,7 +45089,7 @@ class _Scripts:
     def list_sql_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListSqlGitCommits]:
+    ) -> ListResponse[_ResponseScriptsListSqlGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /scripts/sql/{id}/git/commits``
@@ -45109,7 +45236,7 @@ class _Scripts:
     def list_javascript_git(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListJavascriptGit]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/javascript/{id}/git``
@@ -45265,7 +45392,7 @@ class _Scripts:
     def list_javascript_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListJavascriptGitCommits]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /scripts/javascript/{id}/git/commits``
@@ -45412,7 +45539,7 @@ class _Scripts:
     def list_python3_git(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListPython3Git]:
+    ) -> ListResponse[_ResponseScriptsListPython3Git]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/python3/{id}/git``
@@ -45568,7 +45695,7 @@ class _Scripts:
     def list_python3_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListPython3GitCommits]:
+    ) -> ListResponse[_ResponseScriptsListPython3GitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /scripts/python3/{id}/git/commits``
@@ -45715,7 +45842,7 @@ class _Scripts:
     def list_r_git(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListRGit]:
+    ) -> ListResponse[_ResponseScriptsListRGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/r/{id}/git``
@@ -45871,7 +45998,7 @@ class _Scripts:
     def list_r_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListRGitCommits]:
+    ) -> ListResponse[_ResponseScriptsListRGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /scripts/r/{id}/git/commits``
@@ -46018,7 +46145,7 @@ class _Scripts:
     def list_sql_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListSqlShares]:
+    ) -> ListResponse[_ResponseScriptsListSqlShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/sql/{id}/shares``
@@ -46230,7 +46357,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListSqlDependencies]:
+    ) -> ListResponse[_ResponseScriptsListSqlDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/sql/{id}/dependencies``
@@ -46322,7 +46449,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListSqlProjects]:
+    ) -> ListResponse[_ResponseScriptsListSqlProjects]:
         """List the projects a SQL Script belongs to
 
         API URL: ``GET /scripts/sql/{id}/projects``
@@ -46639,7 +46766,7 @@ class _Scripts:
     def list_containers_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListContainersShares]:
+    ) -> ListResponse[_ResponseScriptsListContainersShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/containers/{id}/shares``
@@ -46851,7 +46978,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListContainersDependencies]:
+    ) -> ListResponse[_ResponseScriptsListContainersDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/containers/{id}/dependencies``
@@ -46943,7 +47070,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListContainersProjects]:
+    ) -> ListResponse[_ResponseScriptsListContainersProjects]:
         """List the projects a Container Script belongs to
 
         API URL: ``GET /scripts/containers/{id}/projects``
@@ -47279,7 +47406,7 @@ class _Scripts:
     def list_python3_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListPython3Shares]:
+    ) -> ListResponse[_ResponseScriptsListPython3Shares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/python3/{id}/shares``
@@ -47491,7 +47618,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListPython3Dependencies]:
+    ) -> ListResponse[_ResponseScriptsListPython3Dependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/python3/{id}/dependencies``
@@ -47583,7 +47710,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListPython3Projects]:
+    ) -> ListResponse[_ResponseScriptsListPython3Projects]:
         """List the projects a Python Script belongs to
 
         API URL: ``GET /scripts/python3/{id}/projects``
@@ -47896,7 +48023,7 @@ class _Scripts:
     def list_r_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListRShares]:
+    ) -> ListResponse[_ResponseScriptsListRShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/r/{id}/shares``
@@ -48108,7 +48235,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListRDependencies]:
+    ) -> ListResponse[_ResponseScriptsListRDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/r/{id}/dependencies``
@@ -48200,7 +48327,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListRProjects]:
+    ) -> ListResponse[_ResponseScriptsListRProjects]:
         """List the projects an R Script belongs to
 
         API URL: ``GET /scripts/r/{id}/projects``
@@ -48513,7 +48640,7 @@ class _Scripts:
     def list_dbt_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListDbtShares]:
+    ) -> ListResponse[_ResponseScriptsListDbtShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/dbt/{id}/shares``
@@ -48725,7 +48852,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListDbtDependencies]:
+    ) -> ListResponse[_ResponseScriptsListDbtDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/dbt/{id}/dependencies``
@@ -48817,7 +48944,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListDbtProjects]:
+    ) -> ListResponse[_ResponseScriptsListDbtProjects]:
         """List the projects a dbt Script belongs to
 
         API URL: ``GET /scripts/dbt/{id}/projects``
@@ -49172,7 +49299,7 @@ class _Scripts:
     def list_javascript_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListJavascriptShares]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/javascript/{id}/shares``
@@ -49384,7 +49511,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListJavascriptDependencies]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/javascript/{id}/dependencies``
@@ -49476,7 +49603,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListJavascriptProjects]:
+    ) -> ListResponse[_ResponseScriptsListJavascriptProjects]:
         """List the projects a JavaScript Script belongs to
 
         API URL: ``GET /scripts/javascript/{id}/projects``
@@ -49769,7 +49896,7 @@ class _Scripts:
     def list_custom_shares(
         self,
         id: int,
-    ) -> List[_ResponseScriptsListCustomShares]:
+    ) -> ListResponse[_ResponseScriptsListCustomShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/custom/{id}/shares``
@@ -49981,7 +50108,7 @@ class _Scripts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseScriptsListCustomDependencies]:
+    ) -> ListResponse[_ResponseScriptsListCustomDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/custom/{id}/dependencies``
@@ -50073,7 +50200,7 @@ class _Scripts:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseScriptsListCustomProjects]:
+    ) -> ListResponse[_ResponseScriptsListCustomProjects]:
         """List the projects a Custom Script belongs to
 
         API URL: ``GET /scripts/custom/{id}/projects``
@@ -51985,7 +52112,7 @@ class _Search:
         limit: int | None = ...,
         archived: str | None = ...,
         last_run_state: str | None = ...,
-    ) -> List[_ResponseSearchList]:
+    ) -> ListResponse[_ResponseSearchList]:
         """Perform a search
 
         API URL: ``GET /search``
@@ -52057,7 +52184,7 @@ class _Search:
 
     def list_types(
         self,
-    ) -> List[_ResponseSearchListTypes]:
+    ) -> ListResponse[_ResponseSearchListTypes]:
         """List available search types
 
         API URL: ``GET /search/types``
@@ -52086,7 +52213,10 @@ class _Search:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseSearchListQueries]:
+    ) -> (
+        ListResponse[_ResponseSearchListQueries]
+        | PaginatedResponse[_ResponseSearchListQueries]
+    ):
         """Search queries that are not hidden
 
         API URL: ``GET /search/queries``
@@ -52175,7 +52305,7 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseServicesList]:
+    ) -> ListResponse[_ResponseServicesList] | PaginatedResponse[_ResponseServicesList]:
         """List Services
 
         API URL: ``GET /services``
@@ -53065,7 +53195,7 @@ class _Services:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseServicesListShares]:
+    ) -> ListResponse[_ResponseServicesListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /services/{id}/shares``
@@ -53277,7 +53407,7 @@ class _Services:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseServicesListDependencies]:
+    ) -> ListResponse[_ResponseServicesListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /services/{id}/dependencies``
@@ -53511,7 +53641,7 @@ class _Services:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseServicesListProjects]:
+    ) -> ListResponse[_ResponseServicesListProjects]:
         """List the projects a Service belongs to
 
         API URL: ``GET /services/{id}/projects``
@@ -53621,7 +53751,10 @@ class _Services:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseServicesListDeployments]:
+    ) -> (
+        ListResponse[_ResponseServicesListDeployments]
+        | PaginatedResponse[_ResponseServicesListDeployments]
+    ):
         """List deployments for a Service
 
         API URL: ``GET /services/{service_id}/deployments``
@@ -53890,7 +54023,7 @@ class _Services:
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseServicesListDeploymentsLogs]:
+    ) -> ListResponse[_ResponseServicesListDeploymentsLogs]:
         """Get the logs for a Service deployment
 
         API URL: ``GET /services/{id}/deployments/{deployment_id}/logs``
@@ -54115,7 +54248,7 @@ class _Services:
     def list_tokens(
         self,
         id: int,
-    ) -> List[_ResponseServicesListTokens]:
+    ) -> ListResponse[_ResponseServicesListTokens]:
         """List tokens
 
         API URL: ``GET /services/{id}/tokens``
@@ -54178,7 +54311,7 @@ class _Services:
 class _Storage_Hosts:
     def list(
         self,
-    ) -> List[_ResponseStorageHostsList]:
+    ) -> ListResponse[_ResponseStorageHostsList]:
         """List the storage hosts
 
         API URL: ``GET /storage_hosts``
@@ -54417,7 +54550,7 @@ class _Storage_Hosts:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseStorageHostsListShares]:
+    ) -> ListResponse[_ResponseStorageHostsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /storage_hosts/{id}/shares``
@@ -54629,7 +54762,7 @@ class _Storage_Hosts:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseStorageHostsListDependencies]:
+    ) -> ListResponse[_ResponseStorageHostsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /storage_hosts/{id}/dependencies``
@@ -55351,7 +55484,10 @@ class _Studios:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseStudiosListDeployments]:
+    ) -> (
+        ListResponse[_ResponseStudiosListDeployments]
+        | PaginatedResponse[_ResponseStudiosListDeployments]
+    ):
         """List deployments for a Studio
 
         API URL: ``GET /studios/{studio_id}/deployments``
@@ -55563,7 +55699,7 @@ class _Studios:
         start_at: str | None = ...,
         end_at: str | None = ...,
         limit: int | None = ...,
-    ) -> List[_ResponseStudiosListDeploymentsLogs]:
+    ) -> ListResponse[_ResponseStudiosListDeploymentsLogs]:
         """Get the logs for a Studio deployment
 
         API URL: ``GET /studios/{id}/deployments/{deployment_id}/logs``
@@ -55726,7 +55862,9 @@ class _Table_Tags:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseTableTagsList]:
+    ) -> (
+        ListResponse[_ResponseTableTagsList] | PaginatedResponse[_ResponseTableTagsList]
+    ):
         """List Table Tags
 
         API URL: ``GET /table_tags``
@@ -56317,7 +56455,7 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseTablesList]:
+    ) -> ListResponse[_ResponseTablesList] | PaginatedResponse[_ResponseTablesList]:
         """List tables
 
         API URL: ``GET /tables``
@@ -56729,7 +56867,10 @@ class _Tables:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseTablesListColumns]:
+    ) -> (
+        ListResponse[_ResponseTablesListColumns]
+        | PaginatedResponse[_ResponseTablesListColumns]
+    ):
         """List columns in the specified table
 
         API URL: ``GET /tables/{id}/columns``
@@ -56865,7 +57006,7 @@ class _Tables:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseTablesListProjects]:
+    ) -> ListResponse[_ResponseTablesListProjects]:
         """List the projects a Table belongs to
 
         API URL: ``GET /tables/{id}/projects``
@@ -56969,7 +57110,7 @@ class _Templates:
     def list_reports_shares(
         self,
         id: int,
-    ) -> List[_ResponseTemplatesListReportsShares]:
+    ) -> ListResponse[_ResponseTemplatesListReportsShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /templates/reports/{id}/shares``
@@ -57181,7 +57322,7 @@ class _Templates:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseTemplatesListReportsDependencies]:
+    ) -> ListResponse[_ResponseTemplatesListReportsDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /templates/reports/{id}/dependencies``
@@ -57279,7 +57420,10 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseTemplatesListReports]:
+    ) -> (
+        ListResponse[_ResponseTemplatesListReports]
+        | PaginatedResponse[_ResponseTemplatesListReports]
+    ):
         """List Report Templates
 
         API URL: ``GET /templates/reports``
@@ -57607,7 +57751,7 @@ class _Templates:
     def list_scripts_shares(
         self,
         id: int,
-    ) -> List[_ResponseTemplatesListScriptsShares]:
+    ) -> ListResponse[_ResponseTemplatesListScriptsShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /templates/scripts/{id}/shares``
@@ -57819,7 +57963,7 @@ class _Templates:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseTemplatesListScriptsDependencies]:
+    ) -> ListResponse[_ResponseTemplatesListScriptsDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /templates/scripts/{id}/dependencies``
@@ -57911,7 +58055,7 @@ class _Templates:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseTemplatesListScriptsProjects]:
+    ) -> ListResponse[_ResponseTemplatesListScriptsProjects]:
         """List the projects a Script Template belongs to
 
         API URL: ``GET /templates/scripts/{id}/projects``
@@ -58022,7 +58166,10 @@ class _Templates:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseTemplatesListScripts]:
+    ) -> (
+        ListResponse[_ResponseTemplatesListScripts]
+        | PaginatedResponse[_ResponseTemplatesListScripts]
+    ):
         """List Script Templates
 
         API URL: ``GET /templates/scripts``
@@ -58514,7 +58661,7 @@ class _Usage:
         task: str | None = ...,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> List[_ResponseUsageListMatching]:
+    ) -> ListResponse[_ResponseUsageListMatching]:
         """Get usage statistics for a given organization
 
         API URL: ``GET /usage/matching``
@@ -58559,7 +58706,7 @@ class _Usage:
         org_id: int | None = ...,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> List[_ResponseUsageListLlm]:
+    ) -> ListResponse[_ResponseUsageListLlm]:
         """Get a list of usage statistics for a given organization
 
         API URL: ``GET /usage/llm``
@@ -58652,7 +58799,7 @@ class _Usage:
         *,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> List[_ResponseUsageListLlmOrganizationSummary]:
+    ) -> ListResponse[_ResponseUsageListLlmOrganizationSummary]:
         """Get summarized usage statistics for a given organization
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
@@ -58685,7 +58832,7 @@ class _Usage_Limits:
         self,
         *,
         task: str | None = ...,
-    ) -> List[_ResponseUsageLimitsListMatching]:
+    ) -> ListResponse[_ResponseUsageLimitsListMatching]:
         """List Matching Usage Limits
 
         API URL: ``GET /usage_limits/matching``
@@ -58754,7 +58901,7 @@ class _Usage_Limits:
         self,
         *,
         organization_id: int | None = ...,
-    ) -> List[_ResponseUsageLimitsListLlm]:
+    ) -> ListResponse[_ResponseUsageLimitsListLlm]:
         """List LLM Usage Limits
 
         API URL: ``GET /usage_limits/llm``
@@ -58825,7 +58972,7 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseUsersList]:
+    ) -> ListResponse[_ResponseUsersList] | PaginatedResponse[_ResponseUsersList]:
         """List users
 
         API URL: ``GET /users``
@@ -59075,7 +59222,7 @@ class _Users:
 
     def list_me(
         self,
-    ) -> List[_ResponseUsersListMe]:
+    ) -> ListResponse[_ResponseUsersListMe]:
         """Show info about the logged-in user
 
         API URL: ``GET /users/me``
@@ -59400,7 +59547,7 @@ class _Users:
         status: str | None = ...,
         author: str | None = ...,
         order: str | None = ...,
-    ) -> List[_ResponseUsersListMeActivity]:
+    ) -> ListResponse[_ResponseUsersListMeActivity]:
         """Get recent activity for logged-in user
 
         API URL: ``GET /users/me/activity``
@@ -59445,7 +59592,7 @@ class _Users:
 
     def list_me_organization_admins(
         self,
-    ) -> List[_ResponseUsersListMeOrganizationAdmins]:
+    ) -> ListResponse[_ResponseUsersListMeOrganizationAdmins]:
         """Get list of organization admins for logged-in user
 
         API URL: ``GET /users/me/organization_admins``
@@ -59748,7 +59895,10 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseUsersListApiKeys]:
+    ) -> (
+        ListResponse[_ResponseUsersListApiKeys]
+        | PaginatedResponse[_ResponseUsersListApiKeys]
+    ):
         """Show API keys belonging to the specified user
 
         API URL: ``GET /users/{id}/api_keys``
@@ -60127,7 +60277,10 @@ class _Users:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseUsersListMeFavorites]:
+    ) -> (
+        ListResponse[_ResponseUsersListMeFavorites]
+        | PaginatedResponse[_ResponseUsersListMeFavorites]
+    ):
         """List Favorites
 
         API URL: ``GET /users/me/favorites``
@@ -60515,7 +60668,9 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseWorkflowsList]:
+    ) -> (
+        ListResponse[_ResponseWorkflowsList] | PaginatedResponse[_ResponseWorkflowsList]
+    ):
         """List Workflows
 
         API URL: ``GET /workflows``
@@ -61151,7 +61306,7 @@ class _Workflows:
     def list_shares(
         self,
         id: int,
-    ) -> List[_ResponseWorkflowsListShares]:
+    ) -> ListResponse[_ResponseWorkflowsListShares]:
         """List users and groups permissioned on this object
 
         API URL: ``GET /workflows/{id}/shares``
@@ -61363,7 +61518,7 @@ class _Workflows:
         id: int,
         *,
         user_id: int | None = ...,
-    ) -> List[_ResponseWorkflowsListDependencies]:
+    ) -> ListResponse[_ResponseWorkflowsListDependencies]:
         """List dependent objects for this object
 
         API URL: ``GET /workflows/{id}/dependencies``
@@ -61553,7 +61708,7 @@ class _Workflows:
         id: int,
         *,
         hidden: bool | None = ...,
-    ) -> List[_ResponseWorkflowsListProjects]:
+    ) -> ListResponse[_ResponseWorkflowsListProjects]:
         """List the projects a Workflow belongs to
 
         API URL: ``GET /workflows/{id}/projects``
@@ -61656,7 +61811,7 @@ class _Workflows:
     def list_git(
         self,
         id: int,
-    ) -> List[_ResponseWorkflowsListGit]:
+    ) -> ListResponse[_ResponseWorkflowsListGit]:
         """Get the git metadata attached to an item
 
         API URL: ``GET /workflows/{id}/git``
@@ -61812,7 +61967,7 @@ class _Workflows:
     def list_git_commits(
         self,
         id: int,
-    ) -> List[_ResponseWorkflowsListGitCommits]:
+    ) -> ListResponse[_ResponseWorkflowsListGitCommits]:
         """Get the git commits for an item on the current branch
 
         API URL: ``GET /workflows/{id}/git/commits``
@@ -62040,7 +62195,10 @@ class _Workflows:
         order: str | None = ...,
         order_dir: str | None = ...,
         iterator: bool | None = ...,
-    ) -> Iterator[_ResponseWorkflowsListExecutions]:
+    ) -> (
+        ListResponse[_ResponseWorkflowsListExecutions]
+        | PaginatedResponse[_ResponseWorkflowsListExecutions]
+    ):
         """List workflow executions
 
         API URL: ``GET /workflows/{id}/executions``
@@ -85676,7 +85834,7 @@ class APIClient:
     default_database_credential_id: int | None
     username: str
     feature_flags: tuple[str]
-    last_response: Any
+    last_response: Response | ListResponse | PaginatedResponse | None
     def __init__(
         self,
         api_key: str | None = ...,

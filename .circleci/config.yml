@@ -105,6 +105,11 @@ workflows:
             uv pip install --no-progress -e ".[dev-core]" && \
             uv run flake8 src tools tests docs/conf.py
       - pre-build:
+          name: mypy
+          command-run: |
+            uv pip install --no-progress -e ".[dev-core]" && \
+            uv run mypy src
+      - pre-build:
           name: pip-audit
           command-run: |
             uv pip install --no-progress -r docs/requirements.txt && \
@@ -123,6 +128,7 @@ workflows:
             - bandit
             - black
             - flake8
+            - mypy
             - pip-audit
             - twine
           matrix:
@@ -133,5 +139,6 @@ workflows:
             - bandit
             - black
             - flake8
+            - mypy
             - pip-audit
             - twine

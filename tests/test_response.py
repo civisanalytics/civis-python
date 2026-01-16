@@ -102,6 +102,20 @@ def test_iterator_interface():
         next(paginator)
 
 
+def test_paginated_response_json():
+    # Test the .json() method of PaginatedResponse
+    paginator, _ = _make_paginated_response("/objects", {"param": "value"})
+    actual = paginator.json()
+    expected = [
+        {"id": 1, "name": "job_1"},
+        {"id": 2, "name": "job_2"},
+        {"id": 3, "name": "job_3"},
+        {"id": 4, "name": "job_4"},
+        {"id": 5, "name": "job_5"},
+    ]
+    assert actual == expected
+
+
 def test_response_to_json_no_error():
     raw_response = _create_mock_response({"key": "value"}, None)
     assert _response_to_json(raw_response) == {"key": "value"}

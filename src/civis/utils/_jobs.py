@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from collections.abc import Iterator
 import logging
 import operator
 import time
@@ -56,12 +59,16 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
     return return_as
 
 
-def run_job(job_id, client=None, polling_interval=None):
+def run_job(
+    job_id: int,
+    client: APIClient | None = None,
+    polling_interval: int | float | None = None,
+) -> CivisFuture:
     """Run a job.
 
     Parameters
     ----------
-    job_id: str or int
+    job_id: int
         The ID of the job.
     client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
@@ -88,13 +95,13 @@ def run_job(job_id, client=None, polling_interval=None):
 
 
 def run_template(
-    id,
-    arguments,
+    id: int,
+    arguments: dict,
     JSONValue=DeprecatedKwargDefault(),
-    client=None,
-    return_as="files",
+    client: APIClient | None = None,
+    return_as: str = "files",
     **kwargs,
-):
+) -> CivisFuture | dict | None:
     """Run a template and return the results.
 
     Parameters
@@ -169,15 +176,13 @@ def run_template(
         json_output = [o.value for o in outputs if o.object_type == "JSONValue"]
         if len(json_output) == 0:
             log.warning("No JSON output for template {}".format(id))
-            return
+            return None
         if len(json_output) > 1:
             log.warning(
                 "More than 1 JSON output for template {}"
                 " -- returning only the first one.".format(id)
             )
-        # Note that the cast to a dict is to convert
-        # an expected Response object.
-        return json_output[0].json()
+        return json_output[0]  # type: ignore[return-value]
     else:
         # Expecting return_as == "files"
         file_ids = {o.name: o.object_id for o in outputs}
@@ -241,7 +246,12 @@ def _job_finished_past_timeout(job_id, run_id, finished_timeout, client):
     return result
 
 
-def job_logs(job_id, run_id=None, finished_timeout=None, client=None):
+def job_logs(
+    job_id: int,
+    run_id: int | None = None,
+    finished_timeout: int | None = None,
+    client: APIClient | None = None,
+) -> Iterator[dict]:
     """Return a generator of log message dictionaries for a given run.
 
     Parameters
@@ -300,6 +310,8 @@ def job_logs(job_id, run_id=None, finished_timeout=None, client=None):
             last_id=local_max_log_id,
             limit=_LOGS_PER_QUERY,
         )
+        if response.headers is None:
+            raise RuntimeError("No headers in response from job logs endpoint")
         if "civis-max-id" in response.headers:
             remote_max_log_id = int(response.headers["civis-max-id"])
         else:

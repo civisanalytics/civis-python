@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added type annotations to public functions and classes. (#529)
+- Enabled static type checks with `mypy` on CI builds. (#529)
+- File-related `civis.io.*` functions that accept a path can now take either a string
+  or a path-like object as the input. (#529)
+- A `PaginatedResponse` object now has the `json()` method. (#529)
 - Added support for Python 3.14. (#528)
 - Added API endpoint method and path URL in the error message of a `CivisAPIError` exception. (#528)
 
@@ -23,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Dropped support for Python 3.10. (#528)
 
 ### Fixed
+- Fixed `civis.utils.run_template` for the return value when `return_as="JSONValue"`. (#529)
 - Fixed retries for Civis API calls under `civis.APIClient`
   that would lead to a recursion error. (#525)
 - Updated documentation for the `preview_rows` argument of `civis.io.query_civis` to
