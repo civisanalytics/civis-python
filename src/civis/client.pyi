@@ -23799,8 +23799,7 @@ class _Notebooks:
         order_dir: str | None = ...,
         iterator: bool | None = ...,
     ) -> (
-        ListResponse[_ResponseNotebooksList]
-        | PaginatedResponse[_ResponseNotebooksList]
+        ListResponse[_ResponseNotebooksList] | PaginatedResponse[_ResponseNotebooksList]
     ):
         """List Notebooks
 
@@ -55864,8 +55863,7 @@ class _Table_Tags:
         order_dir: str | None = ...,
         iterator: bool | None = ...,
     ) -> (
-        ListResponse[_ResponseTableTagsList]
-        | PaginatedResponse[_ResponseTableTagsList]
+        ListResponse[_ResponseTableTagsList] | PaginatedResponse[_ResponseTableTagsList]
     ):
         """List Table Tags
 
@@ -60671,8 +60669,7 @@ class _Workflows:
         order_dir: str | None = ...,
         iterator: bool | None = ...,
     ) -> (
-        ListResponse[_ResponseWorkflowsList]
-        | PaginatedResponse[_ResponseWorkflowsList]
+        ListResponse[_ResponseWorkflowsList] | PaginatedResponse[_ResponseWorkflowsList]
     ):
         """List Workflows
 

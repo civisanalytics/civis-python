@@ -99,10 +99,11 @@ from civis.response import Response, ListResponse, PaginatedResponse
                     type_name = typing.get_args(return_type)[0].__name__
                     list_resp = f"ListResponse[{type_name}]"
                     paginated_resp = f"PaginatedResponse[{type_name}]"
-                    if len(f"    ) -> {list_resp} | {paginated_resp}:") <= 88:
-                        return_str = f"{list_resp} | {paginated_resp}"
-                    else:
+                    return_str = f"{list_resp} | {paginated_resp}"
+                    if len(return_str) > 80:
                         return_str = f"(\n        {list_resp}\n        | {paginated_resp}\n    )"  # noqa: E501
+                    elif len(return_str) > 78:
+                        return_str = f"(\n        {return_str}\n    )"
                 elif method_name.startswith("list"):
                     return_str = f"ListResponse[{return_type.__name__}]"
                 else:
