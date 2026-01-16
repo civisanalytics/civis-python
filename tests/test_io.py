@@ -11,6 +11,7 @@ from io import StringIO, BytesIO
 from unittest import mock
 from tempfile import TemporaryDirectory
 import zipfile
+from pathlib import Path
 
 import pytest
 import requests
@@ -33,7 +34,7 @@ import civis
 from civis.io import _files
 from civis._deprecation import DeprecatedKwargDefault
 from civis.io._tables import _File
-from civis.io._utils import maybe_get_random_name
+from civis.io._utils import maybe_get_random_name, TypePathLike
 from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.tests.mocks import create_client_mock
@@ -1861,3 +1862,17 @@ def test_warns_or_raise_exception_for_deprecated_use_pandas(
             with warnings.catch_warnings():
                 warnings.simplefilter("error")
                 func(**args)
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        ("some/path", True),
+        (b"some/path", True),
+        (12345, False),
+        (12.345, False),
+        (Path("some/path"), True),
+    ],
+)
+def test_type_path_like(path, expected):
+    assert isinstance(path, TypePathLike) == expected
