@@ -67,6 +67,26 @@ DEFAULT_ARG_VALUE = None
 
 _BRACKETED_REGEX = re.compile(r"^{.*}$")
 
+# Civis API says these paths for a GET call should return an object,
+# but they actually return an array.
+# See the internal discussion linked through the pull request that added this list.
+GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
+    """
+    credentials/types
+    databases/{id}/users
+    jobs/{id}/children
+    jobs/{id}/parents
+    notebooks/{id}/git/commits
+    reports/{id}/git/commits
+    scripts/javascript/{id}/git/commits
+    scripts/python3/{id}/git/commits
+    scripts/r/{id}/git/commits
+    scripts/sql/{id}/git/commits
+    scripts/{id}/history
+    workflows/{id}/git/commits
+    """.strip().split()
+)
+
 
 def _snake_to_camel(s):
     return "".join(s.title() for s in s.split("_"))
@@ -158,7 +178,10 @@ def deprecated_notice(deprecation_warning):
     if deprecation_warning is None:
         return ""
 
-    return f"\n.. warning::\n\n    {deprecation_warning}\n"
+    msg = textwrap.fill(
+        deprecation_warning, width=78, initial_indent=" " * 4, subsequent_indent=" " * 4
+    )
+    return f".. warning::\n\n{msg}"
 
 
 def doc_from_responses(responses, is_iterable, is_list):
@@ -413,9 +436,7 @@ def create_method(
     f : function
         A function which will make an API call
     """
-    doc = join_doc_elements(
-        deprecated_notice(deprecation_warning), param_doc, response_doc
-    )
+    doc = join_doc_elements(param_doc, response_doc)
     elements = split_method_params(params)
     sig_args, sig_opt_args, body_params, query_params, path_params = elements
     sig = create_signature(sig_args, sig_opt_args)
@@ -491,7 +512,7 @@ def parse_param(param):
     return args
 
 
-def parse_params(parameters, summary, verb, path):
+def parse_params(parameters, summary, verb, path, deprecation_warning):
     """Parse the parameters of a function specification into a list
     of dictionaries which are used to generate the function at runtime.
     """
@@ -515,6 +536,8 @@ def parse_params(parameters, summary, verb, path):
     else:
         summary_str = ""
     summary_str = f"{summary_str}\nAPI URL: ``{verb.upper()} /{path}``\n"
+    if dep_warn := deprecated_notice(deprecation_warning):
+        summary_str = f"{summary_str}\n{dep_warn}\n"
     if param_docs:
         docs = "{}\nParameters\n----------\n{}".format(summary_str, param_docs)
     elif summary:
@@ -553,7 +576,19 @@ def parse_param_body(parameter):
     return arguments
 
 
-def parse_method_name(verb, path):
+# TODO: Write tests for this function.
+def get_response_is_array(path, operation) -> bool:
+    schema = operation["responses"].get("200", {}).get("schema", {})
+    if schema.get("type") == "array":
+        return True
+
+    if path in GET_PATHS_WITH_ARRAY_RESPONSE:
+        return True
+
+    return False
+
+
+def parse_method_name(verb, path, operation=None, use_legacy_names=True):
     """Create method name from endpoint path
 
     Create method name as the http verb (method) followed by
@@ -582,27 +617,36 @@ def parse_method_name(verb, path):
             name_elems.append(elem)
         elif prev_elem and bracketed(prev_elem):
             name_elems.append(prev_elem.strip("{|}"))
-    final_elem = path_elems[-1] if path_elems else ""
-    verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
+    if use_legacy_names:
+        # When releasing civis-python v3.0.0, this block can be removed.
+        final_elem = path_elems[-1] if path_elems else ""
+        verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
+    else:
+        verb = (
+            "list" if verb == "get" and get_response_is_array(path, operation) else verb
+        )
     path_name = "_".join(name_elems)
     method_name = "_".join((verb, path_name)) if path_name else verb
     return method_name.replace("-", "_")
 
 
-def parse_method(verb, operation, path):
+def parse_method(
+    verb, operation, path, use_legacy_names=True, deprecation_warning=None
+):
     """Generate a python function from a specification of that function."""
     summary = operation["summary"]
-    params = operation.get("parameters", [])
-    responses = operation["responses"]
-    deprecation_warning = operation.get("x-deprecation-warning", None)
     if "deprecated" in summary.lower():
         return None
-
-    args, param_doc = parse_params(params, summary, verb, path)
+    params = operation.get("parameters", [])
+    responses = operation["responses"]
+    deprecation_warning = (
+        (deprecation_warning or "") + (operation.get("x-deprecation-warning") or "")
+    ).strip() or None
+    args, param_doc = parse_params(params, summary, verb, path, deprecation_warning)
     elements = split_method_params(params)
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
-    name = parse_method_name(verb, path)
+    name = parse_method_name(verb, path, operation, use_legacy_names)
     response_doc = doc_from_responses(responses, is_iterable, name.startswith("list"))
     return_annotation = return_annotation_from_responses(
         path.split("/")[0], name, responses, is_iterable
@@ -635,7 +679,29 @@ def parse_path(path, operations, api_version):
         method = parse_method(verb, op, path)
         if method is None:
             continue
-        methods.append(method)
+        name, method = method
+
+        # If the method name starts with "list" and the response is not an array,
+        # then this method name is a legacy name and is deprecated.
+        if name.startswith("list") and not get_response_is_array(path, op):
+            name_preferred, method_preferred = parse_method(
+                verb, op, path, use_legacy_names=False
+            )
+            methods.append((name_preferred, method_preferred))
+
+            warn_msg = (
+                f"The method name ``<client>.{modified_base_path}.{name}`` is "
+                "deprecated and will be removed at civis-python v3.0.0 (no release "
+                "timeline yet). Please update your code to use "
+                f"``<client>.{modified_base_path}.{name_preferred}`` instead "
+                "for the same functionality."
+            )
+            name_deprecated, method_deprecated = parse_method(
+                verb, op, path, deprecation_warning=warn_msg
+            )
+            methods.append((name_deprecated, method_deprecated))
+        else:
+            methods.append((name, method))
     return modified_base_path, methods
 
 
