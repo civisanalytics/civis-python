@@ -518,12 +518,35 @@ def test_parse_method_name():
     a = _resources.parse_method_name("post", "url.com/containers/{id}/runs/{run_id}")
     b = _resources.parse_method_name("get", "url.com/containers/{id}/{run_id}")
     c = _resources.parse_method_name("get", "url.com/containers/{id}/{run_id}/shares")
+    d = _resources.parse_method_name("post", "/containers/{id}/runs/{run_id}")
     assert x == "list_containers"
     assert y == "get_containers"
     assert z == "get_containers_runs"
     assert a == "post_containers_runs"
     assert b == "get_containers_id"
     assert c == "list_containers_id_shares"
+    assert d == "post_containers_runs"
+
+
+@pytest.mark.parametrize(
+    "path, return_type, use_legacy_names, expected",
+    [
+        # If the API spec says the return object is an array, then then method name
+        # should start with "list" regardless of whether legacy names are used.
+        ("/containers/{id}/foo", "array", True, "list_containers_foo"),
+        ("/containers/{id}/foo", "array", False, "list_containers_foo"),
+        # If the API spec says the return object is not an array, then the method name
+        # should be sensitive to the use_legacy_names flag.
+        ("/containers/{id}/foo", "object", True, "list_containers_foo"),
+        ("/containers/{id}/foo", "object", False, "get_containers_foo"),
+    ],
+)
+def test_parse_method_name_distinguish_legacy_or_not(
+    path, return_type, use_legacy_names, expected
+):
+    operation = {"responses": {"200": {"schema": {"type": return_type}}}}
+    result = _resources.parse_method_name("get", path, operation, use_legacy_names)
+    assert result == expected
 
 
 def test_duplicate_names_generated_from_api_spec():

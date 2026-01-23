@@ -605,7 +605,7 @@ def parse_method_name(verb, path, operation=None, use_legacy_names=True):
     get_containers
     >>> parse_method_name("get", "url.com/containers/{id}/runs/{run_id}")
     get_containers_runs
-    >>> parse_method_name("post", "containers/{id}/runs/{run_id}")
+    >>> parse_method_name("post", "/containers/{id}/runs/{run_id}")
     post_containers_runs
     """
     path_elems = path.split("/")[1:]

@@ -39,6 +39,7 @@ def test_feature_flags_memoized(mock_spec):
             client.feature_flags
             assert client.users.get_me.call_count == 1
 
+
 def test_get_table_id():
     client = APIClient(local_api_spec=API_SPEC, api_key="none")
     client.get_database_id = mock.Mock(return_value=123)
