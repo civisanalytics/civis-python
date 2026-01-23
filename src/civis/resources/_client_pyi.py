@@ -1,5 +1,6 @@
 import inspect
 import os
+import re
 import textwrap
 import typing
 
@@ -10,6 +11,12 @@ from civis.response import Response
 CLIENT_PYI_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
     "client.pyi",
+)
+
+_REGEX_DOCSTRING_LEGACY_LIST_METHOD_NAME = re.compile(
+    r"The method name.*?is\s+deprecated.*?Please\s+update\s+your\s+code\s+to\s+use.*?"
+    r"instead\s+for\s+the\s+same\s+functionality",
+    re.DOTALL,
 )
 
 
@@ -36,6 +43,12 @@ def _extract_nested_response_classes(response_classes, return_type):
             typ = typing.get_args(typ)[0]
         response_classes = _extract_nested_response_classes(response_classes, typ)
     return response_classes
+
+
+def _is_using_legacy_method_name(method_name, method):
+    is_list_method = method_name.startswith("list")
+    is_deprecated = _REGEX_DOCSTRING_LEGACY_LIST_METHOD_NAME.search(method.__doc__)
+    return is_list_method and is_deprecated
 
 
 def generate_client_pyi(client_pyi_path, api_spec_path):
@@ -95,7 +108,13 @@ from civis.response import Response, ListResponse, PaginatedResponse
                             method_def += "        *,\n"
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
-                if return_type.__name__ == "Iterator":
+                if _is_using_legacy_method_name(method_name, method):
+                    # When releasing civis-python v3.0.0, this code path can be removed,
+                    # together with the removal of the legacy method names.
+
+                    # Crucially, we don't want ListResponse[...] here.
+                    return_str = return_type.__name__
+                elif return_type.__name__ == "Iterator":
                     type_name = typing.get_args(return_type)[0].__name__
                     list_resp = f"ListResponse[{type_name}]"
                     paginated_resp = f"PaginatedResponse[{type_name}]"

@@ -1677,7 +1677,7 @@ class _Clusters:
         instance_config_id: int,
         *,
         timeframe: str | None = ...,
-    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs]:
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
@@ -1763,7 +1763,7 @@ class _Clusters:
         *,
         timeframe: str | None = ...,
         metric: str | None = ...,
-    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics]:
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
@@ -3637,7 +3637,7 @@ class _Databases:
     def list_advanced_settings(
         self,
         id: int,
-    ) -> ListResponse[_ResponseDatabasesListAdvancedSettings]:
+    ) -> _ResponseDatabasesListAdvancedSettings:
         """Get the advanced settings for this database
 
         API URL: ``GET /databases/{id}/advanced-settings``
@@ -3768,7 +3768,7 @@ class _Endpoints:
 
     def list(
         self,
-    ) -> ListResponse[Response]:
+    ) -> Response:
         """List API endpoints
 
         API URL: ``GET /endpoints``
@@ -13643,7 +13643,7 @@ class _Git_Repos:
     def list_refs(
         self,
         id: int,
-    ) -> ListResponse[_ResponseGitReposListRefs]:
+    ) -> _ResponseGitReposListRefs:
         """Get all branches and tags of a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}/refs``
@@ -14490,7 +14490,7 @@ class _Groups:
     def list_child_groups(
         self,
         id: int,
-    ) -> ListResponse[_ResponseGroupsListChildGroups]:
+    ) -> _ResponseGroupsListChildGroups:
         """Get child groups of this group
 
         API URL: ``GET /groups/{id}/child_groups``
@@ -23993,7 +23993,7 @@ class _Models:
     def list_schedules(
         self,
         id: int,
-    ) -> ListResponse[_ResponseModelsListSchedules]:
+    ) -> _ResponseModelsListSchedules:
         """Show the model build schedule
 
         API URL: ``GET /models/{id}/schedules``
@@ -24836,7 +24836,7 @@ class _Notebooks:
     def list_update_links(
         self,
         id: int,
-    ) -> ListResponse[_ResponseNotebooksListUpdateLinks]:
+    ) -> _ResponseNotebooksListUpdateLinks:
         """Get URLs to update notebook
 
         API URL: ``GET /notebooks/{id}/update-links``
@@ -25814,7 +25814,7 @@ class _Notebooks:
     def list_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseNotebooksListGit]:
+    ) -> _ResponseNotebooksListGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /notebooks/{id}/git``
@@ -26100,7 +26100,7 @@ class _Notifications:
         last_event_id: str | None = ...,
         r: str | None = ...,
         mock: str | None = ...,
-    ) -> ListResponse[Response]:
+    ) -> Response:
         """Receive a stream of notifications as they come in
 
         API URL: ``GET /notifications``
@@ -27517,7 +27517,7 @@ class _Predictions:
     def list_schedules(
         self,
         id: int,
-    ) -> ListResponse[_ResponsePredictionsListSchedules]:
+    ) -> _ResponsePredictionsListSchedules:
         """Show the prediction schedule
 
         API URL: ``GET /predictions/{id}/schedules``
@@ -30820,7 +30820,7 @@ class _Reports:
     def list_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseReportsListGit]:
+    ) -> _ResponseReportsListGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /reports/{id}/git``
@@ -45414,7 +45414,7 @@ class _Scripts:
     def list_sql_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListSqlGit]:
+    ) -> _ResponseScriptsListSqlGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/sql/{id}/git``
@@ -45761,7 +45761,7 @@ class _Scripts:
     def list_javascript_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListJavascriptGit]:
+    ) -> _ResponseScriptsListJavascriptGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/javascript/{id}/git``
@@ -46108,7 +46108,7 @@ class _Scripts:
     def list_python3_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListPython3Git]:
+    ) -> _ResponseScriptsListPython3Git:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/python3/{id}/git``
@@ -46455,7 +46455,7 @@ class _Scripts:
     def list_r_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListRGit]:
+    ) -> _ResponseScriptsListRGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/r/{id}/git``
@@ -59452,7 +59452,7 @@ class _Usage:
         *,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> ListResponse[_ResponseUsageListLlmOrganizationSummary]:
+    ) -> _ResponseUsageListLlmOrganizationSummary:
         """Get summarized usage statistics for a given organization
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
@@ -59959,7 +59959,7 @@ class _Users:
 
     def list_me(
         self,
-    ) -> ListResponse[_ResponseUsersListMe]:
+    ) -> _ResponseUsersListMe:
         """Show info about the logged-in user
 
         API URL: ``GET /users/me``
@@ -62592,7 +62592,7 @@ class _Workflows:
     def list_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseWorkflowsListGit]:
+    ) -> _ResponseWorkflowsListGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /workflows/{id}/git``
