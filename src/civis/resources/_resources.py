@@ -175,13 +175,13 @@ def deprecated_notice(deprecation_warning):
     """Return a doc string element for the deprecation notice. The
     doc string can be an empty string if the warning is None
     """
-    if deprecation_warning is None:
+    if not deprecation_warning:
         return ""
 
     msg = textwrap.fill(
         deprecation_warning, width=78, initial_indent=" " * 4, subsequent_indent=" " * 4
     )
-    return f".. warning::\n\n{msg}"
+    return f".. warning::\n{msg}"
 
 
 def doc_from_responses(responses, is_iterable, is_list):

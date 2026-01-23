@@ -1683,7 +1683,6 @@ class _Clusters:
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
 
         .. warning::
-
             The method name
             ``<client>.clusters.list_kubernetes_instance_configs_historical_graphs``
             is deprecated and will be removed at civis-python v3.0.0 (no release
@@ -1770,7 +1769,6 @@ class _Clusters:
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
 
         .. warning::
-
             The method name
             ``<client>.clusters.list_kubernetes_instance_configs_historical_metrics``
             is deprecated and will be removed at civis-python v3.0.0 (no release
@@ -3645,7 +3643,6 @@ class _Databases:
         API URL: ``GET /databases/{id}/advanced-settings``
 
         .. warning::
-
             The method name ``<client>.databases.list_advanced_settings`` is
             deprecated and will be removed at civis-python v3.0.0 (no release timeline
             yet). Please update your code to use
@@ -3777,7 +3774,6 @@ class _Endpoints:
         API URL: ``GET /endpoints``
 
         .. warning::
-
             The method name ``<client>.endpoints.list`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.endpoints.get`` instead for the same
@@ -13653,7 +13649,6 @@ class _Git_Repos:
         API URL: ``GET /git_repos/{id}/refs``
 
         .. warning::
-
             The method name ``<client>.git_repos.list_refs`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.git_repos.get_refs`` instead for the same
@@ -14501,7 +14496,6 @@ class _Groups:
         API URL: ``GET /groups/{id}/child_groups``
 
         .. warning::
-
             The method name ``<client>.groups.list_child_groups`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
             update your code to use ``<client>.groups.get_child_groups`` instead for
@@ -24005,7 +23999,6 @@ class _Models:
         API URL: ``GET /models/{id}/schedules``
 
         .. warning::
-
             The method name ``<client>.models.list_schedules`` is deprecated and will
             be removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.models.get_schedules`` instead for the same
@@ -24849,7 +24842,6 @@ class _Notebooks:
         API URL: ``GET /notebooks/{id}/update-links``
 
         .. warning::
-
             The method name ``<client>.notebooks.list_update_links`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
             update your code to use ``<client>.notebooks.get_update_links`` instead
@@ -25828,7 +25820,6 @@ class _Notebooks:
         API URL: ``GET /notebooks/{id}/git``
 
         .. warning::
-
             The method name ``<client>.notebooks.list_git`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.notebooks.get_git`` instead for the same
@@ -26115,7 +26106,6 @@ class _Notifications:
         API URL: ``GET /notifications``
 
         .. warning::
-
             The method name ``<client>.notifications.list`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.notifications.get`` instead for the same
@@ -27533,7 +27523,6 @@ class _Predictions:
         API URL: ``GET /predictions/{id}/schedules``
 
         .. warning::
-
             The method name ``<client>.predictions.list_schedules`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
             update your code to use ``<client>.predictions.get_schedules`` instead for
@@ -30837,7 +30826,6 @@ class _Reports:
         API URL: ``GET /reports/{id}/git``
 
         .. warning::
-
             The method name ``<client>.reports.list_git`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.reports.get_git`` instead for the same
@@ -45432,7 +45420,6 @@ class _Scripts:
         API URL: ``GET /scripts/sql/{id}/git``
 
         .. warning::
-
             The method name ``<client>.scripts.list_sql_git`` is deprecated and will
             be removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.scripts.get_sql_git`` instead for the same
@@ -45780,7 +45767,6 @@ class _Scripts:
         API URL: ``GET /scripts/javascript/{id}/git``
 
         .. warning::
-
             The method name ``<client>.scripts.list_javascript_git`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
             update your code to use ``<client>.scripts.get_javascript_git`` instead
@@ -46128,7 +46114,6 @@ class _Scripts:
         API URL: ``GET /scripts/python3/{id}/git``
 
         .. warning::
-
             The method name ``<client>.scripts.list_python3_git`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
             update your code to use ``<client>.scripts.get_python3_git`` instead for
@@ -46476,7 +46461,6 @@ class _Scripts:
         API URL: ``GET /scripts/r/{id}/git``
 
         .. warning::
-
             The method name ``<client>.scripts.list_r_git`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.scripts.get_r_git`` instead for the same
@@ -56658,7 +56642,6 @@ class _Tables:
         API URL: ``POST /tables/{source_table_id}/enhancements/geocodings``
 
         .. warning::
-
             Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
             deprecated and will be removed after January 1, 2021.
 
@@ -56698,7 +56681,6 @@ class _Tables:
         API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
 
         .. warning::
-
             Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
             deprecated and will be removed after January 1, 2021.
 
@@ -56761,7 +56743,6 @@ class _Tables:
         API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
 
         .. warning::
-
             Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint
             is deprecated and will be removed after January 1, 2021.
 
@@ -56799,7 +56780,6 @@ class _Tables:
         API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
 
         .. warning::
-
             Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint
             is deprecated and will be removed after January 1, 2021.
 
@@ -56887,7 +56867,6 @@ class _Tables:
         API URL: ``POST /tables/{id}/refresh``
 
         .. warning::
-
             Warning: The tables/:id/refresh endpoint is deprecated. Please use
             tables/scan from now on.
 
@@ -59479,7 +59458,6 @@ class _Usage:
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
 
         .. warning::
-
             The method name ``<client>.usage.list_llm_organization_summary`` is
             deprecated and will be removed at civis-python v3.0.0 (no release timeline
             yet). Please update your code to use
@@ -59987,7 +59965,6 @@ class _Users:
         API URL: ``GET /users/me``
 
         .. warning::
-
             The method name ``<client>.users.list_me`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.users.get_me`` instead for the same
@@ -62621,7 +62598,6 @@ class _Workflows:
         API URL: ``GET /workflows/{id}/git``
 
         .. warning::
-
             The method name ``<client>.workflows.list_git`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please update
             your code to use ``<client>.workflows.get_git`` instead for the same
