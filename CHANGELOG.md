@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.8.0 - 2026-01-26
+
+### Added
 - Added new API methods `client.<endpoint>.get*` (`client` is a `civis.APIClient` instance)
   which are functionally equivalent to the existing `client.<endpoint>.list*` counterparts
   which are now deprecated.
