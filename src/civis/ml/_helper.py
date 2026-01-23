@@ -61,7 +61,7 @@ def list_models(job_type="train", author=SENTINEL, client=None, **kwargs):
     template_id_str = ", ".join(str(tmp) for tmp in set(template_id_list))
 
     if author is SENTINEL:
-        author = client.users.list_me().id
+        author = client.users.get_me().id
 
     # default to showing most recent models first
     kwargs.setdefault("order_dir", "desc")

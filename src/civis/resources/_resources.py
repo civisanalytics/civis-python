@@ -576,7 +576,6 @@ def parse_param_body(parameter):
     return arguments
 
 
-# TODO: Write tests for this function.
 def get_response_is_array(path, operation) -> bool:
     schema = operation["responses"].get("200", {}).get("schema", {})
     if schema.get("type") == "array":
@@ -618,7 +617,9 @@ def parse_method_name(verb, path, operation=None, use_legacy_names=True):
         elif prev_elem and bracketed(prev_elem):
             name_elems.append(prev_elem.strip("{|}"))
     if use_legacy_names:
-        # When releasing civis-python v3.0.0, this block can be removed.
+        # When releasing civis-python v3.0.0, this `if` block can be removed,
+        # leaving the `else` block as the only code path.
+
         final_elem = path_elems[-1] if path_elems else ""
         verb = "list" if verb == "get" and (not bracketed(final_elem)) else verb
     else:
@@ -684,6 +685,9 @@ def parse_path(path, operations, api_version):
         # If the method name starts with "list" and the response is not an array,
         # then this method name is a legacy name and is deprecated.
         if name.startswith("list") and not get_response_is_array(path, op):
+            # When releasing civis-python v3.0.0, this `if` block can be removed,
+            # leaving the `else` block as the only code path.
+
             name_preferred, method_preferred = parse_method(
                 verb, op, path, use_legacy_names=False
             )

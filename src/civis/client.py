@@ -115,7 +115,7 @@ class APIClient:
 
         .. deprecated:: 2.6.0
             This property is deprecated and will be removed at civis-python v3.0.0.
-            Please use ``client.users.list_me()["feature_flags"]`` instead.
+            Please use ``client.users.get_me()["feature_flags"]`` instead.
 
         Returns
         -------
@@ -124,13 +124,13 @@ class APIClient:
         warnings.warn(
             "The property `feature_flags` is deprecated and will be removed "
             "at civis-python v3.0.0. Please use "
-            "client.users.list_me()['feature_flags'] instead.",
+            "client.users.get_me()['feature_flags'] instead.",
             FutureWarning,
             stacklevel=2,  # Point to the user code that calls this method.
         )
         if self._feature_flags:
             return self._feature_flags
-        me = self.users.list_me()
+        me = self.users.get_me()
         self._feature_flags = tuple(
             flag for flag, value in me["feature_flags"].items() if value
         )
@@ -423,7 +423,7 @@ class APIClient:
     @lru_cache(maxsize=128)
     def username(self):
         """The current user's username."""
-        return self.users.list_me().username
+        return self.users.get_me().username
 
 
 APIClient.__doc__ = APIClient.__doc__.format(
