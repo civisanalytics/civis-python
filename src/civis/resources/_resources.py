@@ -88,6 +88,11 @@ GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
     """.strip().split()
 )
 
+REGEX_DEP_WARN_LEGACY_LIST = re.compile(
+    r"The method name.*?is\s+deprecated.*?Please\s+switch\s+to.*?",
+    re.DOTALL,
+)
+
 
 def _snake_to_camel(s):
     return "".join(s.title() for s in s.split("_"))
@@ -649,7 +654,15 @@ def parse_method(
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
     name = parse_method_name(verb, path, operation, use_legacy_names)
-    response_doc = doc_from_responses(responses, is_iterable, name.startswith("list"))
+    is_list_return_type = name.startswith("list")
+    if (
+        use_legacy_names
+        and is_list_return_type
+        and REGEX_DEP_WARN_LEGACY_LIST.search(deprecation_warning or "")
+    ):
+        # When releasing civis-python v3.0.0, this `if` block can be removed.
+        is_list_return_type = False
+    response_doc = doc_from_responses(responses, is_iterable, is_list_return_type)
     return_annotation = return_annotation_from_responses(
         path.split("/")[0], name, responses, is_iterable
     )

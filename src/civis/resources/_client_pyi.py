@@ -1,21 +1,16 @@
 import inspect
 import os
-import re
 import textwrap
 import typing
 
 from civis.resources import generate_classes_maybe_cached
 from civis.response import Response
+from civis.resources._resources import REGEX_DEP_WARN_LEGACY_LIST
 
 
 CLIENT_PYI_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
     "client.pyi",
-)
-
-_REGEX_DOCSTRING_LEGACY_LIST_METHOD_NAME = re.compile(
-    r"The method name.*?is\s+deprecated.*?Please\s+switch\s+to.*?",
-    re.DOTALL,
 )
 
 
@@ -46,7 +41,7 @@ def _extract_nested_response_classes(response_classes, return_type):
 
 def _is_using_legacy_method_name(method_name, method):
     is_list_method = method_name.startswith("list")
-    is_deprecated = _REGEX_DOCSTRING_LEGACY_LIST_METHOD_NAME.search(method.__doc__)
+    is_deprecated = REGEX_DEP_WARN_LEGACY_LIST.search(method.__doc__)
     return is_list_method and is_deprecated
 
 

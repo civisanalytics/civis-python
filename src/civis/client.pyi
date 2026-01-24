@@ -1710,7 +1710,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - cpu_graph_url : str
                 URL for the graph of historical CPU usage in this instance config.
             - mem_graph_url : str
@@ -1808,7 +1808,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - instance_config_id : int
                 The ID of this instance config.
             - metric : str
@@ -3682,7 +3682,7 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -13699,7 +13699,7 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - branches : List[str]
                 List of branch names of this git repository.
             - tags : List[str]
@@ -14552,7 +14552,7 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - manageable : List[:class:`civis.Response`]
                 - id : int
                 - name : str
@@ -24061,7 +24061,7 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - id : int
                 The ID of the model associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -24909,7 +24909,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - update_url : str
                 Time-limited URL to PUT new contents of the .ipynb file for this
                 notebook.
@@ -25894,7 +25894,7 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -27609,7 +27609,7 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - id : int
                 ID of the prediction associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -30918,7 +30918,7 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45518,7 +45518,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45871,7 +45871,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -46224,7 +46224,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -46577,7 +46577,7 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -59620,7 +59620,7 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - credits : float (float)
                 The number of credits used.
             - organization_id : int
@@ -60119,7 +60119,7 @@ class _Users:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -62763,7 +62763,7 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
