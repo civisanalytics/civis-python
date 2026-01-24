@@ -2,6 +2,12 @@ from functools import wraps
 from inspect import signature
 import warnings
 
+try:
+    from warnings import deprecated  # noqa: F401
+except ImportError:
+    # For Python < 3.13
+    from typing_extensions import deprecated  # noqa: F401
+
 
 class DeprecatedKwargDefault:
     """A stand-in default value of a deprecated keyword argument.

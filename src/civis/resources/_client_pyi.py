@@ -14,8 +14,7 @@ CLIENT_PYI_PATH = os.path.join(
 )
 
 _REGEX_DOCSTRING_LEGACY_LIST_METHOD_NAME = re.compile(
-    r"The method name.*?is\s+deprecated.*?Please\s+update\s+your\s+code\s+to\s+use.*?"
-    r"instead\s+for\s+the\s+same\s+functionality",
+    r"The method name.*?is\s+deprecated.*?Please\s+switch\s+to.*?",
     re.DOTALL,
 )
 
@@ -67,6 +66,7 @@ from typing import List
 import tenacity
 
 from civis.response import Response, ListResponse, PaginatedResponse
+from civis._deprecation import deprecated
 
 """
         )
@@ -108,6 +108,22 @@ from civis.response import Response, ListResponse, PaginatedResponse
                             method_def += "        *,\n"
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
+
+                if hasattr(method, "__deprecated__"):
+                    msg = textwrap.fill(
+                        method.__deprecated__.replace("`", ""),
+                        width=80,
+                        subsequent_indent=" " * 8,
+                    )
+                    method_def = (
+                        "    @deprecated(\n"
+                        '        """\n'
+                        f"        {msg}\n"
+                        '        """\n'
+                        "    )\n"
+                        f"{method_def}"
+                    )
+
                 if _is_using_legacy_method_name(method_name, method):
                     # When releasing civis-python v3.0.0, this code path can be removed,
                     # together with the removal of the legacy method names.

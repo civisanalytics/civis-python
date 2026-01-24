@@ -7,6 +7,7 @@ from typing import List
 import tenacity
 
 from civis.response import Response, ListResponse, PaginatedResponse
+from civis._deprecation import deprecated
 
 class _Admin:
     def list_organizations(
@@ -1672,6 +1673,16 @@ class _Clusters:
         """
         ...
 
+    @deprecated(
+        """
+        The method name
+        <client>.clusters.list_kubernetes_instance_configs_historical_graphs is
+        deprecated and will be removed at civis-python v3.0.0 (no release
+        timeline yet). Please switch to
+        <client>.clusters.get_kubernetes_instance_configs_historical_graphs for
+        the same method.
+        """
+    )
     def list_kubernetes_instance_configs_historical_graphs(
         self,
         instance_config_id: int,
@@ -1684,11 +1695,11 @@ class _Clusters:
 
         .. warning::
             The method name
-            ``<client>.clusters.list_kubernetes_instance_configs_historical_graphs``
-            is deprecated and will be removed at civis-python v3.0.0 (no release
-            timeline yet). Please update your code to use
-            ``<client>.clusters.get_kubernetes_instance_configs_historical_graphs``
-            instead for the same functionality.
+            ``<client>.clusters.list_kubernetes_instance_configs_historical_graphs`` is
+            deprecated and will be removed at civis-python v3.0.0 (no release timeline
+            yet). Please switch to
+            ``<client>.clusters.get_kubernetes_instance_configs_historical_graphs`` for
+            the same method.
 
         Parameters
         ----------
@@ -1757,6 +1768,16 @@ class _Clusters:
         """
         ...
 
+    @deprecated(
+        """
+        The method name
+        <client>.clusters.list_kubernetes_instance_configs_historical_metrics is
+        deprecated and will be removed at civis-python v3.0.0 (no release
+        timeline yet). Please switch to
+        <client>.clusters.get_kubernetes_instance_configs_historical_metrics for
+        the same method.
+        """
+    )
     def list_kubernetes_instance_configs_historical_metrics(
         self,
         instance_config_id: int,
@@ -1770,11 +1791,11 @@ class _Clusters:
 
         .. warning::
             The method name
-            ``<client>.clusters.list_kubernetes_instance_configs_historical_metrics``
-            is deprecated and will be removed at civis-python v3.0.0 (no release
-            timeline yet). Please update your code to use
-            ``<client>.clusters.get_kubernetes_instance_configs_historical_metrics``
-            instead for the same functionality.
+            ``<client>.clusters.list_kubernetes_instance_configs_historical_metrics`` is
+            deprecated and will be removed at civis-python v3.0.0 (no release timeline
+            yet). Please switch to
+            ``<client>.clusters.get_kubernetes_instance_configs_historical_metrics`` for
+            the same method.
 
         Parameters
         ----------
@@ -3634,6 +3655,13 @@ class _Databases:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.databases.list_advanced_settings is deprecated and will
+        be removed at civis-python v3.0.0 (no release timeline yet). Please
+        switch to <client>.databases.get_advanced_settings for the same method.
+        """
+    )
     def list_advanced_settings(
         self,
         id: int,
@@ -3643,11 +3671,9 @@ class _Databases:
         API URL: ``GET /databases/{id}/advanced-settings``
 
         .. warning::
-            The method name ``<client>.databases.list_advanced_settings`` is
-            deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please update your code to use
-            ``<client>.databases.get_advanced_settings`` instead for the same
-            functionality.
+            The method name ``<client>.databases.list_advanced_settings`` is deprecated
+            and will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            switch to ``<client>.databases.get_advanced_settings`` for the same method.
 
         Parameters
         ----------
@@ -3766,6 +3792,13 @@ class _Endpoints:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.endpoints.list is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.endpoints.get for the same method.
+        """
+    )
     def list(
         self,
     ) -> Response:
@@ -3775,9 +3808,8 @@ class _Endpoints:
 
         .. warning::
             The method name ``<client>.endpoints.list`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.endpoints.get`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.endpoints.get`` for the same method.
 
         Returns
         -------
@@ -13640,6 +13672,13 @@ class _Git_Repos:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.git_repos.list_refs is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.git_repos.get_refs for the same method.
+        """
+    )
     def list_refs(
         self,
         id: int,
@@ -13650,9 +13689,8 @@ class _Git_Repos:
 
         .. warning::
             The method name ``<client>.git_repos.list_refs`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.git_repos.get_refs`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.git_repos.get_refs`` for the same method.
 
         Parameters
         ----------
@@ -14487,6 +14525,13 @@ class _Groups:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.groups.list_child_groups is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.groups.get_child_groups for the same method.
+        """
+    )
     def list_child_groups(
         self,
         id: int,
@@ -14496,10 +14541,9 @@ class _Groups:
         API URL: ``GET /groups/{id}/child_groups``
 
         .. warning::
-            The method name ``<client>.groups.list_child_groups`` is deprecated and
-            will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            update your code to use ``<client>.groups.get_child_groups`` instead for
-            the same functionality.
+            The method name ``<client>.groups.list_child_groups`` is deprecated and will
+            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
+            to ``<client>.groups.get_child_groups`` for the same method.
 
         Parameters
         ----------
@@ -23990,6 +24034,13 @@ class _Models:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.models.list_schedules is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.models.get_schedules for the same method.
+        """
+    )
     def list_schedules(
         self,
         id: int,
@@ -23999,10 +24050,9 @@ class _Models:
         API URL: ``GET /models/{id}/schedules``
 
         .. warning::
-            The method name ``<client>.models.list_schedules`` is deprecated and will
-            be removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.models.get_schedules`` instead for the same
-            functionality.
+            The method name ``<client>.models.list_schedules`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.models.get_schedules`` for the same method.
 
         Parameters
         ----------
@@ -24833,6 +24883,13 @@ class _Notebooks:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.notebooks.list_update_links is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.notebooks.get_update_links for the same method.
+        """
+    )
     def list_update_links(
         self,
         id: int,
@@ -24844,8 +24901,7 @@ class _Notebooks:
         .. warning::
             The method name ``<client>.notebooks.list_update_links`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            update your code to use ``<client>.notebooks.get_update_links`` instead
-            for the same functionality.
+            switch to ``<client>.notebooks.get_update_links`` for the same method.
 
         Parameters
         ----------
@@ -25811,6 +25867,13 @@ class _Notebooks:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.notebooks.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.notebooks.get_git for the same method.
+        """
+    )
     def list_git(
         self,
         id: int,
@@ -25821,9 +25884,8 @@ class _Notebooks:
 
         .. warning::
             The method name ``<client>.notebooks.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.notebooks.get_git`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.notebooks.get_git`` for the same method.
 
         Parameters
         ----------
@@ -26094,6 +26156,13 @@ class _Notifications:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.notifications.list is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.notifications.get for the same method.
+        """
+    )
     def list(
         self,
         *,
@@ -26107,9 +26176,8 @@ class _Notifications:
 
         .. warning::
             The method name ``<client>.notifications.list`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.notifications.get`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.notifications.get`` for the same method.
 
         Parameters
         ----------
@@ -27514,6 +27582,13 @@ class _Predictions:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.predictions.list_schedules is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.predictions.get_schedules for the same method.
+        """
+    )
     def list_schedules(
         self,
         id: int,
@@ -27525,8 +27600,7 @@ class _Predictions:
         .. warning::
             The method name ``<client>.predictions.list_schedules`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            update your code to use ``<client>.predictions.get_schedules`` instead for
-            the same functionality.
+            switch to ``<client>.predictions.get_schedules`` for the same method.
 
         Parameters
         ----------
@@ -30817,6 +30891,13 @@ class _Reports:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.reports.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.reports.get_git for the same method.
+        """
+    )
     def list_git(
         self,
         id: int,
@@ -30827,9 +30908,8 @@ class _Reports:
 
         .. warning::
             The method name ``<client>.reports.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.reports.get_git`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.reports.get_git`` for the same method.
 
         Parameters
         ----------
@@ -45411,6 +45491,13 @@ class _Scripts:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.scripts.list_sql_git is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.scripts.get_sql_git for the same method.
+        """
+    )
     def list_sql_git(
         self,
         id: int,
@@ -45420,10 +45507,9 @@ class _Scripts:
         API URL: ``GET /scripts/sql/{id}/git``
 
         .. warning::
-            The method name ``<client>.scripts.list_sql_git`` is deprecated and will
-            be removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.scripts.get_sql_git`` instead for the same
-            functionality.
+            The method name ``<client>.scripts.list_sql_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.scripts.get_sql_git`` for the same method.
 
         Parameters
         ----------
@@ -45758,6 +45844,13 @@ class _Scripts:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.scripts.list_javascript_git is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.scripts.get_javascript_git for the same method.
+        """
+    )
     def list_javascript_git(
         self,
         id: int,
@@ -45769,8 +45862,7 @@ class _Scripts:
         .. warning::
             The method name ``<client>.scripts.list_javascript_git`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            update your code to use ``<client>.scripts.get_javascript_git`` instead
-            for the same functionality.
+            switch to ``<client>.scripts.get_javascript_git`` for the same method.
 
         Parameters
         ----------
@@ -46105,6 +46197,13 @@ class _Scripts:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.scripts.list_python3_git is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.scripts.get_python3_git for the same method.
+        """
+    )
     def list_python3_git(
         self,
         id: int,
@@ -46114,10 +46213,9 @@ class _Scripts:
         API URL: ``GET /scripts/python3/{id}/git``
 
         .. warning::
-            The method name ``<client>.scripts.list_python3_git`` is deprecated and
-            will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            update your code to use ``<client>.scripts.get_python3_git`` instead for
-            the same functionality.
+            The method name ``<client>.scripts.list_python3_git`` is deprecated and will
+            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
+            to ``<client>.scripts.get_python3_git`` for the same method.
 
         Parameters
         ----------
@@ -46452,6 +46550,13 @@ class _Scripts:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.scripts.list_r_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.scripts.get_r_git for the same method.
+        """
+    )
     def list_r_git(
         self,
         id: int,
@@ -46462,9 +46567,8 @@ class _Scripts:
 
         .. warning::
             The method name ``<client>.scripts.list_r_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.scripts.get_r_git`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.scripts.get_r_git`` for the same method.
 
         Parameters
         ----------
@@ -56633,6 +56737,12 @@ class _Table_Tags:
         ...
 
 class _Tables:
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def post_enhancements_geocodings(
         self,
         source_table_id: int,
@@ -56667,6 +56777,12 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def post_enhancements_cass_ncoa(
         self,
         source_table_id: int,
@@ -56733,6 +56849,12 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def get_enhancements_geocodings(
         self,
         id: int,
@@ -56743,8 +56865,8 @@ class _Tables:
         API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
 
         .. warning::
-            Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint
-            is deprecated and will be removed after January 1, 2021.
+            Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56770,6 +56892,12 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def get_enhancements_cass_ncoa(
         self,
         id: int,
@@ -56780,8 +56908,8 @@ class _Tables:
         API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
 
         .. warning::
-            Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint
-            is deprecated and will be removed after January 1, 2021.
+            Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56858,6 +56986,12 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan
+        from now on.
+        """
+    )
     def post_refresh(
         self,
         id: int,
@@ -59446,6 +59580,14 @@ class _Usage:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.usage.list_llm_organization_summary is deprecated and
+        will be removed at civis-python v3.0.0 (no release timeline yet). Please
+        switch to <client>.usage.get_llm_organization_summary for the same
+        method.
+        """
+    )
     def list_llm_organization_summary(
         self,
         org_id: int,
@@ -59460,9 +59602,8 @@ class _Usage:
         .. warning::
             The method name ``<client>.usage.list_llm_organization_summary`` is
             deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please update your code to use
-            ``<client>.usage.get_llm_organization_summary`` instead for the same
-            functionality.
+            yet). Please switch to ``<client>.usage.get_llm_organization_summary`` for
+            the same method.
 
         Parameters
         ----------
@@ -59957,6 +60098,13 @@ class _Users:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.users.list_me is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.users.get_me for the same method.
+        """
+    )
     def list_me(
         self,
     ) -> _ResponseUsersListMe:
@@ -59965,10 +60113,9 @@ class _Users:
         API URL: ``GET /users/me``
 
         .. warning::
-            The method name ``<client>.users.list_me`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.users.get_me`` instead for the same
-            functionality.
+            The method name ``<client>.users.list_me`` is deprecated and will be removed
+            at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.users.get_me`` for the same method.
 
         Returns
         -------
@@ -62589,6 +62736,13 @@ class _Workflows:
         """
         ...
 
+    @deprecated(
+        """
+        The method name <client>.workflows.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.workflows.get_git for the same method.
+        """
+    )
     def list_git(
         self,
         id: int,
@@ -62599,9 +62753,8 @@ class _Workflows:
 
         .. warning::
             The method name ``<client>.workflows.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please update
-            your code to use ``<client>.workflows.get_git`` instead for the same
-            functionality.
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.workflows.get_git`` for the same method.
 
         Parameters
         ----------

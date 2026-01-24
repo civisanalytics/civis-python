@@ -3,7 +3,6 @@ from __future__ import annotations
 import os
 import platform
 import threading
-import warnings
 from concurrent import futures
 from json.decoder import JSONDecodeError
 from posixpath import join
@@ -193,13 +192,8 @@ class Endpoint:
         path=None,
         params=None,
         data=None,
-        deprecation_warning=None,
         **kwargs,
     ):
-        if deprecation_warning:
-            # stacklevel=3 to point to the call just outside civis-python
-            warnings.warn(deprecation_warning, FutureWarning, stacklevel=3)
-
         iterator = kwargs.pop("iterator", False)
 
         if iterator:

@@ -19,6 +19,8 @@ dependencies = [
     "PyYAML >= 3.0",
     "requests >= 2.32.3",
     "tenacity >= 6.2",
+    # For backporting warnings.deprecated in Python >= 3.13
+    "typing-extensions >= 4.5.0 ; python_version < '3.13'",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

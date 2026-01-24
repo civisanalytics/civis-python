@@ -56,7 +56,7 @@ def test_create_method_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -65,7 +65,7 @@ def test_create_method_iterator_kwarg():
 
     method(mock_endpoint, iterator=True)
     mock_endpoint._call_api.assert_called_once_with(
-        "get", "/objects", {}, {}, "deprecation", iterator=True
+        "get", "/objects", {}, {}, iterator=True
     )
 
 
@@ -79,7 +79,7 @@ def test_create_method_no_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -99,7 +99,7 @@ def test_create_method_no_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -591,7 +591,7 @@ def _create_mock_endpoint():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -606,7 +606,7 @@ def test_create_method_unexpected_kwargs():
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
     mock_endpoint._call_api.assert_called_once_with(
-        "get", "/objects", {"foo": 0, "bar": 0}, {}, "deprecation", iterator=False
+        "get", "/objects", {"foo": 0, "bar": 0}, {}, iterator=False
     )
 
     # Method raises TypeError with unexpected kwarg
@@ -651,7 +651,7 @@ def test_create_method_deprecation_warning():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        "custom deprecation warning",
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -659,7 +659,7 @@ def test_create_method_deprecation_warning():
     mock_endpoint = Endpoint({"api_key": "abc"}, client=create_client_mock())
     mock_endpoint._make_request = mock.Mock()
 
-    with pytest.warns(FutureWarning, match="deprecation"):
+    with pytest.warns(FutureWarning, match="custom deprecation warning"):
         method(mock_endpoint, foo=0)
 
 

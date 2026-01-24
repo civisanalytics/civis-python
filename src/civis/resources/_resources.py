@@ -24,6 +24,7 @@ from civis.base import (
     open_session,
 )
 from civis._camel_to_snake import camel_to_snake
+from civis._deprecation import deprecated
 from civis._get_api_key import get_api_key
 from civis._retries import retry_request
 from civis.response import Response
@@ -179,7 +180,7 @@ def deprecated_notice(deprecation_warning):
         return ""
 
     msg = textwrap.fill(
-        deprecation_warning, width=78, initial_indent=" " * 4, subsequent_indent=" " * 4
+        deprecation_warning, width=80, initial_indent=" " * 4, subsequent_indent=" " * 4
     )
     return f".. warning::\n{msg}"
 
@@ -455,9 +456,7 @@ def create_method(
         query = {x: arguments[x] for x in query_params if x in arguments}
         path_vals = {x: arguments[x] for x in path_params if x in arguments}
         url = path.format(**path_vals) if path_vals else path
-        return self._call_api(
-            verb, url, query, body, deprecation_warning, iterator=iterator
-        )
+        return self._call_api(verb, url, query, body, iterator=iterator)
 
     # Add signature to function, including 'self' for class method
     sig_self = create_signature(
@@ -466,6 +465,8 @@ def create_method(
     f.__signature__ = sig_self
     f.__doc__ = doc
     f.__name__ = str(method_name)
+    if deprecation_warning:
+        f = deprecated(deprecation_warning, category=FutureWarning)(f)
     return f
 
 
@@ -696,9 +697,9 @@ def parse_path(path, operations, api_version):
             warn_msg = (
                 f"The method name ``<client>.{modified_base_path}.{name}`` is "
                 "deprecated and will be removed at civis-python v3.0.0 (no release "
-                "timeline yet). Please update your code to use "
-                f"``<client>.{modified_base_path}.{name_preferred}`` instead "
-                "for the same functionality."
+                "timeline yet). Please switch to "
+                f"``<client>.{modified_base_path}.{name_preferred}`` "
+                "for the same method."
             )
             name_deprecated, method_deprecated = parse_method(
                 verb, op, path, deprecation_warning=warn_msg
