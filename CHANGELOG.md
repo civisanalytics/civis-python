@@ -16,9 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.8.0 - 2026-01-26
 
 ### Added
-- Added new API methods `client.<endpoint>.get*` (`client` is a `civis.APIClient` instance)
+- Added new API methods `client.<endpoint>.get*`
   which are functionally equivalent to the existing `client.<endpoint>.list*` counterparts
-  which are now deprecated.
+  that are now deprecated.
   For the complete list of these new `get*` methods, see the "Deprecated" section below. (#530)
 - Added type annotations to public functions and classes. (#529)
 - Enabled static type checks with `mypy` on CI builds. (#529)
@@ -37,11 +37,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Deprecated the JSONValue parameter of `civis.utils.run_template`. (#526)
 - Some of the `list*` methods from various Civis API endpoints should have been named
-  `get*`, because they return a singleton response object, as opposed to an array
+  `get*`, because they return a singleton `civis.Response` object, as opposed to an array
   of such objects. These `list*` methods are now deprecated. The corresponding
   equivalent `get*` methods are available and should be preferred. The following
-  is the full list of these `list*` methods and their preferred `get*` counterparts
-  (#530; `client` is a placeholder of a `civis.APIClient` instance):
+  is the full list of these `list*` methods and their preferred `get*` counterparts (#530):
    * `client.clusters.list_kubernetes_instance_configs_historical_graphs` -> `client.clusters.get_kubernetes_instance_configs_historical_graphs`
    * `client.clusters.list_kubernetes_instance_configs_historical_metrics` -> `client.clusters.get_kubernetes_instance_configs_historical_metrics`
    * `client.databases.list_advanced_settings` -> `client.databases.get_advanced_settings`
@@ -67,10 +66,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed the return type annotations for some of the `list*` API methods,
-  i.e., those whose method names are in the form of `client.<endpoint>.list*`
-  (`client` is a `civis.APIClient` instance), which return a singleton `civis.Response`
-  object but previously had the incorrect return annotation for an array of `civis.Response`
-  objects.
+  i.e., those whose method names are in the form of `client.<endpoint>.list*`, which return a singleton `civis.Response`
+  object but previously had the incorrect return annotation for an array of `civis.Response` objects.
   For the complete list of these `list*` methods, see the "Deprecated" section above. (#530)
 - Fixed `civis.utils.run_template` for the return value when `return_as="JSONValue"`. (#529)
 - Fixed retries for Civis API calls under `civis.APIClient`
