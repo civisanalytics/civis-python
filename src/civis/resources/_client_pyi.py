@@ -104,6 +104,9 @@ from civis._deprecation import deprecated
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
 
+                # warnings.deprecated / typing_extensions.deprecated adds
+                # the __deprecated__ attribute to a deprecated method.
+                # See https://peps.python.org/pep-0702/ for __deprecated__.
                 if hasattr(method, "__deprecated__"):
                     msg = textwrap.fill(
                         method.__deprecated__.replace("`", ""),
