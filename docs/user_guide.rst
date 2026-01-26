@@ -122,7 +122,7 @@ your user information:
 
 .. code:: python
 
-   >>> client.users.list_me()
+   >>> client.users.get_me()
    Response({'email': 'user@email.com',
              'feature_flags': Response({'left_nav_basic': True,
                                         'results': True,

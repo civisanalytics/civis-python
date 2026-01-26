@@ -5,6 +5,7 @@ import typing
 
 from civis.resources import generate_classes_maybe_cached
 from civis.response import Response
+from civis.resources._resources import REGEX_DEP_WARN_LEGACY_LIST
 
 
 CLIENT_PYI_PATH = os.path.join(
@@ -38,6 +39,12 @@ def _extract_nested_response_classes(response_classes, return_type):
     return response_classes
 
 
+def _is_using_legacy_method_name(method_name, method):
+    is_list_method = method_name.startswith("list")
+    is_deprecated = REGEX_DEP_WARN_LEGACY_LIST.search(method.__doc__)
+    return is_list_method and is_deprecated
+
+
 def generate_client_pyi(client_pyi_path, api_spec_path):
     classes = generate_classes_maybe_cached(
         api_spec_path, api_key="not_needed", api_version="1.0"
@@ -54,6 +61,7 @@ from typing import List
 import tenacity
 
 from civis.response import Response, ListResponse, PaginatedResponse
+from civis._deprecation import deprecated
 
 """
         )
@@ -95,7 +103,32 @@ from civis.response import Response, ListResponse, PaginatedResponse
                             method_def += "        *,\n"
                             asterisk_added = True
                         method_def += f"        {param_name}: {annotation} = ...,\n"
-                if return_type.__name__ == "Iterator":
+
+                # warnings.deprecated / typing_extensions.deprecated adds
+                # the __deprecated__ attribute to a deprecated method.
+                # See https://peps.python.org/pep-0702/ for __deprecated__.
+                if hasattr(method, "__deprecated__"):
+                    msg = textwrap.fill(
+                        method.__deprecated__.replace("`", ""),
+                        width=80,
+                        subsequent_indent=" " * 8,
+                    )
+                    method_def = (
+                        "    @deprecated(\n"
+                        '        """\n'
+                        f"        {msg}\n"
+                        '        """\n'
+                        "    )\n"
+                        f"{method_def}"
+                    )
+
+                if _is_using_legacy_method_name(method_name, method):
+                    # When releasing civis-python v3.0.0, this code path can be removed,
+                    # together with the removal of the legacy method names.
+
+                    # Crucially, we don't want ListResponse[...] here.
+                    return_str = return_type.__name__
+                elif return_type.__name__ == "Iterator":
                     type_name = typing.get_args(return_type)[0].__name__
                     list_resp = f"ListResponse[{type_name}]"
                     paginated_resp = f"PaginatedResponse[{type_name}]"

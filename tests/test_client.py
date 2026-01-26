@@ -14,7 +14,7 @@ with open(API_SPEC_PATH) as f:
 
 
 class FakeUsersEndpoint:
-    def list_me(self):
+    def get_me(self):
         return {"feature_flags": {"foo": True, "bar": True, "baz": False}}
 
 
@@ -33,11 +33,11 @@ def test_feature_flags_memoized(mock_spec):
     client = APIClient()
     setattr(client, "users", FakeUsersEndpoint())
     with warnings.catch_warnings():
-        with mock.patch.object(client.users, "list_me", wraps=client.users.list_me):
+        with mock.patch.object(client.users, "get_me", wraps=client.users.get_me):
             warnings.simplefilter("ignore")
             client.feature_flags
             client.feature_flags
-            assert client.users.list_me.call_count == 1
+            assert client.users.get_me.call_count == 1
 
 
 def test_get_table_id():

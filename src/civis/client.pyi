@@ -7,6 +7,7 @@ from typing import List
 import tenacity
 
 from civis.response import Response, ListResponse, PaginatedResponse
+from civis._deprecation import deprecated
 
 class _Admin:
     def list_organizations(
@@ -1645,12 +1646,12 @@ class _Clusters:
         """
         ...
 
-    def list_kubernetes_instance_configs_historical_graphs(
+    def get_kubernetes_instance_configs_historical_graphs(
         self,
         instance_config_id: int,
         *,
         timeframe: str | None = ...,
-    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs]:
+    ) -> _ResponseClustersGetKubernetesInstanceConfigsHistoricalGraphs:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
@@ -1664,7 +1665,7 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
             - cpu_graph_url : str
                 URL for the graph of historical CPU usage in this instance config.
             - mem_graph_url : str
@@ -1672,13 +1673,58 @@ class _Clusters:
         """
         ...
 
-    def list_kubernetes_instance_configs_historical_metrics(
+    @deprecated(
+        """
+        The method name
+        <client>.clusters.list_kubernetes_instance_configs_historical_graphs is
+        deprecated and will be removed at civis-python v3.0.0 (no release
+        timeline yet). Please switch to
+        <client>.clusters.get_kubernetes_instance_configs_historical_graphs for
+        the same method.
+        """
+    )
+    def list_kubernetes_instance_configs_historical_graphs(
+        self,
+        instance_config_id: int,
+        *,
+        timeframe: str | None = ...,
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs:
+        """Get graphs of historical resource usage in an Instance Config
+
+        API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
+
+        .. warning::
+            The method name
+            ``<client>.clusters.list_kubernetes_instance_configs_historical_graphs`` is
+            deprecated and will be removed at civis-python v3.0.0 (no release timeline
+            yet). Please switch to
+            ``<client>.clusters.get_kubernetes_instance_configs_historical_graphs`` for
+            the same method.
+
+        Parameters
+        ----------
+        instance_config_id : int
+            The ID of this instance config.
+        timeframe : str, optional
+            The span of time that the graphs cover. Must be one of 1_day, 1_week.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - cpu_graph_url : str
+                URL for the graph of historical CPU usage in this instance config.
+            - mem_graph_url : str
+                URL for the graph of historical memory usage in this instance config.
+        """
+        ...
+
+    def get_kubernetes_instance_configs_historical_metrics(
         self,
         instance_config_id: int,
         *,
         timeframe: str | None = ...,
         metric: str | None = ...,
-    ) -> ListResponse[_ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics]:
+    ) -> _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetrics:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
@@ -1694,7 +1740,75 @@ class _Clusters:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - instance_config_id : int
+                The ID of this instance config.
+            - metric : str
+                URL for the graph of historical CPU usage in this instance config.
+            - timeframe : str
+                The span of time that the graphs cover. Must be one of 1_day, 1_week.
+            - unit : str
+                The unit of the values.
+            - metrics : :class:`civis.Response`
+                - used : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+                - requested : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+                - capacity : :class:`civis.Response`
+                    - times : List[int]
+                        The times associated with data points, in seconds since epoch.
+                    - values : List[float]
+                        The values of the data points.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name
+        <client>.clusters.list_kubernetes_instance_configs_historical_metrics is
+        deprecated and will be removed at civis-python v3.0.0 (no release
+        timeline yet). Please switch to
+        <client>.clusters.get_kubernetes_instance_configs_historical_metrics for
+        the same method.
+        """
+    )
+    def list_kubernetes_instance_configs_historical_metrics(
+        self,
+        instance_config_id: int,
+        *,
+        timeframe: str | None = ...,
+        metric: str | None = ...,
+    ) -> _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics:
+        """Get graphs of historical resource usage in an Instance Config
+
+        API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
+
+        .. warning::
+            The method name
+            ``<client>.clusters.list_kubernetes_instance_configs_historical_metrics`` is
+            deprecated and will be removed at civis-python v3.0.0 (no release timeline
+            yet). Please switch to
+            ``<client>.clusters.get_kubernetes_instance_configs_historical_metrics`` for
+            the same method.
+
+        Parameters
+        ----------
+        instance_config_id : int
+            The ID of this instance config.
+        timeframe : str, optional
+            The span of time that the graphs cover. Must be one of 1_day, 1_week.
+        metric : str, optional
+            The metric to retrieve. Must be one of cpu, memory.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - instance_config_id : int
                 The ID of this instance config.
             - metric : str
@@ -3519,10 +3633,10 @@ class _Databases:
         """
         ...
 
-    def list_advanced_settings(
+    def get_advanced_settings(
         self,
         id: int,
-    ) -> ListResponse[_ResponseDatabasesListAdvancedSettings]:
+    ) -> _ResponseDatabasesGetAdvancedSettings:
         """Get the advanced settings for this database
 
         API URL: ``GET /databases/{id}/advanced-settings``
@@ -3534,7 +3648,41 @@ class _Databases:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - export_caching_enabled : bool
+                Whether or not caching is enabled for export jobs run on this database
+                server.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.databases.list_advanced_settings is deprecated and will
+        be removed at civis-python v3.0.0 (no release timeline yet). Please
+        switch to <client>.databases.get_advanced_settings for the same method.
+        """
+    )
+    def list_advanced_settings(
+        self,
+        id: int,
+    ) -> _ResponseDatabasesListAdvancedSettings:
+        """Get the advanced settings for this database
+
+        API URL: ``GET /databases/{id}/advanced-settings``
+
+        .. warning::
+            The method name ``<client>.databases.list_advanced_settings`` is deprecated
+            and will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            switch to ``<client>.databases.get_advanced_settings`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the database this advanced settings object belongs to.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - export_caching_enabled : bool
                 Whether or not caching is enabled for export jobs run on this database
                 server.
@@ -3630,12 +3778,38 @@ class _Databases:
         ...
 
 class _Endpoints:
-    def list(
+    def get(
         self,
-    ) -> ListResponse[Response]:
+    ) -> Response:
         """List API endpoints
 
         API URL: ``GET /endpoints``
+
+        Returns
+        -------
+        None
+            Response code 200: success
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.endpoints.list is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.endpoints.get for the same method.
+        """
+    )
+    def list(
+        self,
+    ) -> Response:
+        """List API endpoints
+
+        API URL: ``GET /endpoints``
+
+        .. warning::
+            The method name ``<client>.endpoints.list`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.endpoints.get`` for the same method.
 
         Returns
         -------
@@ -13475,10 +13649,10 @@ class _Git_Repos:
         """
         ...
 
-    def list_refs(
+    def get_refs(
         self,
         id: int,
-    ) -> ListResponse[_ResponseGitReposListRefs]:
+    ) -> _ResponseGitReposGetRefs:
         """Get all branches and tags of a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}/refs``
@@ -13490,7 +13664,42 @@ class _Git_Repos:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - branches : List[str]
+                List of branch names of this git repository.
+            - tags : List[str]
+                List of tag names of this git repository.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.git_repos.list_refs is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.git_repos.get_refs for the same method.
+        """
+    )
+    def list_refs(
+        self,
+        id: int,
+    ) -> _ResponseGitReposListRefs:
+        """Get all branches and tags of a bookmarked git repository
+
+        API URL: ``GET /git_repos/{id}/refs``
+
+        .. warning::
+            The method name ``<client>.git_repos.list_refs`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.git_repos.get_refs`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID for this git repository.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - branches : List[str]
                 List of branch names of this git repository.
             - tags : List[str]
@@ -14288,10 +14497,10 @@ class _Groups:
         """
         ...
 
-    def list_child_groups(
+    def get_child_groups(
         self,
         id: int,
-    ) -> ListResponse[_ResponseGroupsListChildGroups]:
+    ) -> _ResponseGroupsGetChildGroups:
         """Get child groups of this group
 
         API URL: ``GET /groups/{id}/child_groups``
@@ -14303,7 +14512,47 @@ class _Groups:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - manageable : List[:class:`civis.Response`]
+                - id : int
+                - name : str
+            - writeable : List[:class:`civis.Response`]
+                - id : int
+                - name : str
+            - readable : List[:class:`civis.Response`]
+                - id : int
+                - name : str
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.groups.list_child_groups is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.groups.get_child_groups for the same method.
+        """
+    )
+    def list_child_groups(
+        self,
+        id: int,
+    ) -> _ResponseGroupsListChildGroups:
+        """Get child groups of this group
+
+        API URL: ``GET /groups/{id}/child_groups``
+
+        .. warning::
+            The method name ``<client>.groups.list_child_groups`` is deprecated and will
+            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
+            to ``<client>.groups.get_child_groups`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of this group.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - manageable : List[:class:`civis.Response`]
                 - id : int
                 - name : str
@@ -23749,10 +23998,10 @@ class _Models:
         """
         ...
 
-    def list_schedules(
+    def get_schedules(
         self,
         id: int,
-    ) -> ListResponse[_ResponseModelsListSchedules]:
+    ) -> _ResponseModelsGetSchedules:
         """Show the model build schedule
 
         API URL: ``GET /models/{id}/schedules``
@@ -23764,7 +24013,55 @@ class _Models:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - id : int
+                The ID of the model associated with this schedule.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.models.list_schedules is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.models.get_schedules for the same method.
+        """
+    )
+    def list_schedules(
+        self,
+        id: int,
+    ) -> _ResponseModelsListSchedules:
+        """Show the model build schedule
+
+        API URL: ``GET /models/{id}/schedules``
+
+        .. warning::
+            The method name ``<client>.models.list_schedules`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.models.get_schedules`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the model associated with this schedule.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - id : int
                 The ID of the model associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -24562,10 +24859,10 @@ class _Notebooks:
         """
         ...
 
-    def list_update_links(
+    def get_update_links(
         self,
         id: int,
-    ) -> ListResponse[_ResponseNotebooksListUpdateLinks]:
+    ) -> _ResponseNotebooksGetUpdateLinks:
         """Get URLs to update notebook
 
         API URL: ``GET /notebooks/{id}/update-links``
@@ -24576,7 +24873,43 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - update_url : str
+                Time-limited URL to PUT new contents of the .ipynb file for this
+                notebook.
+            - update_preview_url : str
+                Time-limited URL to PUT new contents of the .htm preview file for this
+                notebook.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.notebooks.list_update_links is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.notebooks.get_update_links for the same method.
+        """
+    )
+    def list_update_links(
+        self,
+        id: int,
+    ) -> _ResponseNotebooksListUpdateLinks:
+        """Get URLs to update notebook
+
+        API URL: ``GET /notebooks/{id}/update-links``
+
+        .. warning::
+            The method name ``<client>.notebooks.list_update_links`` is deprecated and
+            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            switch to ``<client>.notebooks.get_update_links`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+
+        Returns
+        -------
+        :class:`civis.Response`
             - update_url : str
                 Time-limited URL to PUT new contents of the .ipynb file for this
                 notebook.
@@ -25496,10 +25829,10 @@ class _Notebooks:
         """
         ...
 
-    def list_git(
+    def get_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseNotebooksListGit]:
+    ) -> _ResponseNotebooksGetGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /notebooks/{id}/git``
@@ -25511,7 +25844,57 @@ class _Notebooks:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.notebooks.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.notebooks.get_git for the same method.
+        """
+    )
+    def list_git(
+        self,
+        id: int,
+    ) -> _ResponseNotebooksListGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /notebooks/{id}/git``
+
+        .. warning::
+            The method name ``<client>.notebooks.list_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.notebooks.get_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -25746,16 +26129,55 @@ class _Notebooks:
         ...
 
 class _Notifications:
+    def get(
+        self,
+        *,
+        last_event_id: str | None = ...,
+        r: str | None = ...,
+        mock: str | None = ...,
+    ) -> Response:
+        """Receive a stream of notifications as they come in
+
+        API URL: ``GET /notifications``
+
+        Parameters
+        ----------
+        last_event_id : str, optional
+            allows browser to keep track of last event fired
+        r : str, optional
+            specifies retry/reconnect timeout
+        mock : str, optional
+            used for testing
+
+        Returns
+        -------
+        None
+            Response code 200: success
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.notifications.list is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.notifications.get for the same method.
+        """
+    )
     def list(
         self,
         *,
         last_event_id: str | None = ...,
         r: str | None = ...,
         mock: str | None = ...,
-    ) -> ListResponse[Response]:
+    ) -> Response:
         """Receive a stream of notifications as they come in
 
         API URL: ``GET /notifications``
+
+        .. warning::
+            The method name ``<client>.notifications.list`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.notifications.get`` for the same method.
 
         Parameters
         ----------
@@ -27121,10 +27543,10 @@ class _Predictions:
         """
         ...
 
-    def list_schedules(
+    def get_schedules(
         self,
         id: int,
-    ) -> ListResponse[_ResponsePredictionsListSchedules]:
+    ) -> _ResponsePredictionsGetSchedules:
         """Show the prediction schedule
 
         API URL: ``GET /predictions/{id}/schedules``
@@ -27136,7 +27558,58 @@ class _Predictions:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - id : int
+                ID of the prediction associated with this schedule.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - score_on_model_build : bool
+                Whether the prediction will run after a rebuild of the associated
+                model.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.predictions.list_schedules is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.predictions.get_schedules for the same method.
+        """
+    )
+    def list_schedules(
+        self,
+        id: int,
+    ) -> _ResponsePredictionsListSchedules:
+        """Show the prediction schedule
+
+        API URL: ``GET /predictions/{id}/schedules``
+
+        .. warning::
+            The method name ``<client>.predictions.list_schedules`` is deprecated and
+            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            switch to ``<client>.predictions.get_schedules`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            ID of the prediction associated with this schedule.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - id : int
                 ID of the prediction associated with this schedule.
             - schedule : :class:`civis.Response`
@@ -30380,10 +30853,10 @@ class _Reports:
         """
         ...
 
-    def list_git(
+    def get_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseReportsListGit]:
+    ) -> _ResponseReportsGetGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /reports/{id}/git``
@@ -30395,7 +30868,57 @@ class _Reports:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.reports.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.reports.get_git for the same method.
+        """
+    )
+    def list_git(
+        self,
+        id: int,
+    ) -> _ResponseReportsListGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /reports/{id}/git``
+
+        .. warning::
+            The method name ``<client>.reports.list_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.reports.get_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -44930,10 +45453,10 @@ class _Scripts:
         """
         ...
 
-    def list_sql_git(
+    def get_sql_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListSqlGit]:
+    ) -> _ResponseScriptsGetSqlGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/sql/{id}/git``
@@ -44945,7 +45468,57 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.scripts.list_sql_git is deprecated and will be removed
+        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.scripts.get_sql_git for the same method.
+        """
+    )
+    def list_sql_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsListSqlGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/sql/{id}/git``
+
+        .. warning::
+            The method name ``<client>.scripts.list_sql_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.scripts.get_sql_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45233,10 +45806,10 @@ class _Scripts:
         """
         ...
 
-    def list_javascript_git(
+    def get_javascript_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListJavascriptGit]:
+    ) -> _ResponseScriptsGetJavascriptGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/javascript/{id}/git``
@@ -45248,7 +45821,57 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.scripts.list_javascript_git is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.scripts.get_javascript_git for the same method.
+        """
+    )
+    def list_javascript_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsListJavascriptGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/javascript/{id}/git``
+
+        .. warning::
+            The method name ``<client>.scripts.list_javascript_git`` is deprecated and
+            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            switch to ``<client>.scripts.get_javascript_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45536,10 +46159,10 @@ class _Scripts:
         """
         ...
 
-    def list_python3_git(
+    def get_python3_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListPython3Git]:
+    ) -> _ResponseScriptsGetPython3Git:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/python3/{id}/git``
@@ -45551,7 +46174,57 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.scripts.list_python3_git is deprecated and will be
+        removed at civis-python v3.0.0 (no release timeline yet). Please switch
+        to <client>.scripts.get_python3_git for the same method.
+        """
+    )
+    def list_python3_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsListPython3Git:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/python3/{id}/git``
+
+        .. warning::
+            The method name ``<client>.scripts.list_python3_git`` is deprecated and will
+            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
+            to ``<client>.scripts.get_python3_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -45839,10 +46512,10 @@ class _Scripts:
         """
         ...
 
-    def list_r_git(
+    def get_r_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseScriptsListRGit]:
+    ) -> _ResponseScriptsGetRGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/r/{id}/git``
@@ -45854,7 +46527,57 @@ class _Scripts:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.scripts.list_r_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.scripts.get_r_git for the same method.
+        """
+    )
+    def list_r_git(
+        self,
+        id: int,
+    ) -> _ResponseScriptsListRGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /scripts/r/{id}/git``
+
+        .. warning::
+            The method name ``<client>.scripts.list_r_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.scripts.get_r_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -56014,17 +56737,23 @@ class _Table_Tags:
         ...
 
 class _Tables:
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def post_enhancements_geocodings(
         self,
         source_table_id: int,
     ) -> _ResponseTablesPostEnhancementsGeocodings:
-        """.. warning::
-
-            Warning: The tables/:source_table_id/enhancements/geocodings endpoint is deprecated and will be removed after January 1, 2021.
-
-        Geocode a table
+        """Geocode a table
 
         API URL: ``POST /tables/{source_table_id}/enhancements/geocodings``
+
+        .. warning::
+            Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56048,6 +56777,12 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def post_enhancements_cass_ncoa(
         self,
         source_table_id: int,
@@ -56057,13 +56792,13 @@ class _Tables:
         output_level: str | None = ...,
         batch_size: int | None = ...,
     ) -> _ResponseTablesPostEnhancementsCassNcoa:
-        """.. warning::
-
-            Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is deprecated and will be removed after January 1, 2021.
-
-        Standardize addresses in a table
+        """Standardize addresses in a table
 
         API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
+
+        .. warning::
+            Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56114,18 +56849,24 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def get_enhancements_geocodings(
         self,
         id: int,
         source_table_id: int,
     ) -> _ResponseTablesGetEnhancementsGeocodings:
-        """.. warning::
-
-            Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is deprecated and will be removed after January 1, 2021.
-
-        View the status of a geocoding table enhancement
+        """View the status of a geocoding table enhancement
 
         API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
+
+        .. warning::
+            Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56151,18 +56892,24 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
+        deprecated and will be removed after January 1, 2021.
+        """
+    )
     def get_enhancements_cass_ncoa(
         self,
         id: int,
         source_table_id: int,
     ) -> _ResponseTablesGetEnhancementsCassNcoa:
-        """.. warning::
-
-            Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is deprecated and will be removed after January 1, 2021.
-
-        View the status of a CASS / NCOA table enhancement
+        """View the status of a CASS / NCOA table enhancement
 
         API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
+
+        .. warning::
+            Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
+            deprecated and will be removed after January 1, 2021.
 
         Parameters
         ----------
@@ -56239,17 +56986,23 @@ class _Tables:
         """
         ...
 
+    @deprecated(
+        """
+        Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan
+        from now on.
+        """
+    )
     def post_refresh(
         self,
         id: int,
     ) -> _ResponseTablesPostRefresh:
-        """.. warning::
-
-            Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan from now on.
-
-        Request a refresh for column and table statistics
+        """Request a refresh for column and table statistics
 
         API URL: ``POST /tables/{id}/refresh``
+
+        .. warning::
+            Warning: The tables/:id/refresh endpoint is deprecated. Please use
+            tables/scan from now on.
 
         Parameters
         ----------
@@ -58793,13 +59546,13 @@ class _Usage:
         """
         ...
 
-    def list_llm_organization_summary(
+    def get_llm_organization_summary(
         self,
         org_id: int,
         *,
         start_date: str | None = ...,
         end_date: str | None = ...,
-    ) -> ListResponse[_ResponseUsageListLlmOrganizationSummary]:
+    ) -> _ResponseUsageGetLlmOrganizationSummary:
         """Get summarized usage statistics for a given organization
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
@@ -58819,7 +59572,55 @@ class _Usage:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - credits : float (float)
+                The number of credits used.
+            - organization_id : int
+                The organization for which LLM usage statistics are summarized.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.usage.list_llm_organization_summary is deprecated and
+        will be removed at civis-python v3.0.0 (no release timeline yet). Please
+        switch to <client>.usage.get_llm_organization_summary for the same
+        method.
+        """
+    )
+    def list_llm_organization_summary(
+        self,
+        org_id: int,
+        *,
+        start_date: str | None = ...,
+        end_date: str | None = ...,
+    ) -> _ResponseUsageListLlmOrganizationSummary:
+        """Get summarized usage statistics for a given organization
+
+        API URL: ``GET /usage/llm/organization/{org_id}/summary``
+
+        .. warning::
+            The method name ``<client>.usage.list_llm_organization_summary`` is
+            deprecated and will be removed at civis-python v3.0.0 (no release timeline
+            yet). Please switch to ``<client>.usage.get_llm_organization_summary`` for
+            the same method.
+
+        Parameters
+        ----------
+        org_id : int
+            The ID of the organization to get usage statistics for.
+        start_date : str, optional
+            The start date of the range to get usage statistics for."\
+            "Defaults to the start of the current month if neither start_date nor
+            end_date is specified.
+        end_date : str, optional
+            The end date of the range to get usage statistics for."\
+            "Defaults to the end of the current day if neither start_date nor end_date
+            is specified.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - credits : float (float)
                 The number of credits used.
             - organization_id : int
@@ -59220,16 +60021,105 @@ class _Users:
         """
         ...
 
-    def list_me(
+    def get_me(
         self,
-    ) -> ListResponse[_ResponseUsersListMe]:
+    ) -> _ResponseUsersGetMe:
         """Show info about the logged-in user
 
         API URL: ``GET /users/me``
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - id : int
+                The ID of this user.
+            - name : str
+                This user's name.
+            - email : str
+                This user's email address.
+            - username : str
+                This user's username.
+            - initials : str
+                This user's initials.
+            - last_checked_announcements : str (date-time)
+                The date and time at which the user last checked their announcements.
+            - feature_flags : :class:`civis.Response`
+                The feature flag settings for this user.
+            - roles : List[str]
+                The roles this user has, listed by slug.
+            - preferences : :class:`civis.Response`
+                This user's preferences.
+            - custom_branding : str
+                The branding of Platform for this user.
+            - primary_group_id : int
+                The ID of the primary group of this user.
+            - groups : List[:class:`civis.Response`]
+                An array of all the groups this user is in.
+
+                - id : int
+                    The ID of this group.
+                - name : str
+                    The name of this group.
+                - slug : str
+                    The slug of this group.
+                - organization_id : int
+                    The ID of the organization associated with this group.
+                - organization_name : str
+                    The name of the organization associated with this group.
+            - organization_name : str
+                The name of the organization the user belongs to.
+            - organization_slug : str
+                The slug of the organization the user belongs to.
+            - organization_default_theme_id : int
+                The ID of the organizations's default theme.
+            - created_at : str (date-time)
+                The date and time when the user was created.
+            - sign_in_count : int
+                The number of times the user has signed in.
+            - assuming_role : bool
+                Whether the user is assuming this role or not.
+            - role_assumer : :class:`civis.Response`
+                Details about the role assumer.
+            - assuming_admin : bool
+                Whether the user is assuming admin.
+            - assuming_admin_expiration : str (date-time)
+                When the user's admin role is set to expire.
+            - superadmin_mode_expiration : str (date-time)
+                The user is in superadmin mode when set to a DateTime. The user is not
+                in superadmin mode when set to null.
+            - disable_non_compliant_fedramp_features : bool
+                Whether to disable non-compliant fedramp features.
+            - persona_role : str
+                The high-level role representing the current user's main permissions.
+            - created_by_id : int
+                The ID of the user who created this user.
+            - last_updated_by_id : int
+                The ID of the user who last updated this user.
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.users.list_me is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.users.get_me for the same method.
+        """
+    )
+    def list_me(
+        self,
+    ) -> _ResponseUsersListMe:
+        """Show info about the logged-in user
+
+        API URL: ``GET /users/me``
+
+        .. warning::
+            The method name ``<client>.users.list_me`` is deprecated and will be removed
+            at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.users.get_me`` for the same method.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - id : int
                 The ID of this user.
             - name : str
@@ -61808,10 +62698,10 @@ class _Workflows:
         """
         ...
 
-    def list_git(
+    def get_git(
         self,
         id: int,
-    ) -> ListResponse[_ResponseWorkflowsListGit]:
+    ) -> _ResponseWorkflowsGetGit:
         """Get the git metadata attached to an item
 
         API URL: ``GET /workflows/{id}/git``
@@ -61823,7 +62713,57 @@ class _Workflows:
 
         Returns
         -------
-        :class:`civis.ListResponse`
+        :class:`civis.Response`
+            - git_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, tag or the full or shortened SHA of a commit.
+            - git_branch : str
+                The git branch that the file is on.
+            - git_path : str
+                The path of the file in the repository.
+            - git_repo : :class:`civis.Response`
+                - id : int
+                    The ID for this git repository.
+                - repo_url : str
+                    The URL for this git repository.
+                - created_at : str (time)
+                - updated_at : str (time)
+            - git_ref_type : str
+                Specifies if the file is versioned by branch or tag.
+            - pull_from_git : bool
+                Automatically pull latest commit from git. Only works for scripts and
+                workflows (assuming you have the feature enabled)
+        """
+        ...
+
+    @deprecated(
+        """
+        The method name <client>.workflows.list_git is deprecated and will be removed at
+        civis-python v3.0.0 (no release timeline yet). Please switch to
+        <client>.workflows.get_git for the same method.
+        """
+    )
+    def list_git(
+        self,
+        id: int,
+    ) -> _ResponseWorkflowsListGit:
+        """Get the git metadata attached to an item
+
+        API URL: ``GET /workflows/{id}/git``
+
+        .. warning::
+            The method name ``<client>.workflows.list_git`` is deprecated and will be
+            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
+            ``<client>.workflows.get_git`` for the same method.
+
+        Parameters
+        ----------
+        id : int
+            The ID of the item.
+
+        Returns
+        -------
+        :class:`civis.Response`
             - git_ref : str
                 A git reference specifying an unambiguous version of the file. Can be a
                 branch name, tag or the full or shortened SHA of a commit.
@@ -63355,9 +64295,47 @@ class _ResponseClustersListKubernetesInstanceConfigsUserStatistics(Response):
     running_memory_requested: int
     running_cpu_requested: int
 
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalGraphs(Response):
+    cpu_graph_url: str
+    mem_graph_url: str
+
 class _ResponseClustersListKubernetesInstanceConfigsHistoricalGraphs(Response):
     cpu_graph_url: str
     mem_graph_url: str
+
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetrics(Response):
+    instance_config_id: int
+    metric: str
+    timeframe: str
+    unit: str
+    metrics: _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetrics
+
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetrics(Response):
+    used: _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsUsed
+    requested: (
+        _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsRequested
+    )
+    capacity: (
+        _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsCapacity
+    )
+
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsUsed(
+    Response
+):
+    times: List[int]
+    values: List[float]
+
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsRequested(
+    Response
+):
+    times: List[int]
+    values: List[float]
+
+class _ResponseClustersGetKubernetesInstanceConfigsHistoricalMetricsMetricsCapacity(
+    Response
+):
+    times: List[int]
+    values: List[float]
 
 class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetrics(Response):
     instance_config_id: int
@@ -64036,6 +65014,9 @@ class _ResponseDatabasesGetWhitelistIps(Response):
     is_active: bool
     created_at: str
     updated_at: str
+
+class _ResponseDatabasesGetAdvancedSettings(Response):
+    export_caching_enabled: bool
 
 class _ResponseDatabasesListAdvancedSettings(Response):
     export_caching_enabled: bool
@@ -67483,6 +68464,10 @@ class _ResponseGitReposGet(Response):
     created_at: str
     updated_at: str
 
+class _ResponseGitReposGetRefs(Response):
+    branches: List[str]
+    tags: List[str]
+
 class _ResponseGitReposListRefs(Response):
     branches: List[str]
     tags: List[str]
@@ -67782,6 +68767,23 @@ class _ResponseGroupsPutMembersMembers(Response):
     email: str
     primary_group_id: int
     active: bool
+
+class _ResponseGroupsGetChildGroups(Response):
+    manageable: List[_ResponseGroupsGetChildGroupsManageable]
+    writeable: List[_ResponseGroupsGetChildGroupsWriteable]
+    readable: List[_ResponseGroupsGetChildGroupsReadable]
+
+class _ResponseGroupsGetChildGroupsManageable(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsGetChildGroupsWriteable(Response):
+    id: int
+    name: str
+
+class _ResponseGroupsGetChildGroupsReadable(Response):
+    id: int
+    name: str
 
 class _ResponseGroupsListChildGroups(Response):
     manageable: List[_ResponseGroupsListChildGroupsManageable]
@@ -71078,6 +72080,18 @@ class _ResponseModelsPutArchivePredictionsSchedule(Response):
     scheduled_runs_per_hour: int
     scheduled_days_of_month: List[int]
 
+class _ResponseModelsGetSchedules(Response):
+    id: int
+    schedule: _ResponseModelsGetSchedulesSchedule
+
+class _ResponseModelsGetSchedulesSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
 class _ResponseModelsListSchedules(Response):
     id: int
     schedule: _ResponseModelsListSchedulesSchedule
@@ -71353,6 +72367,10 @@ class _ResponseNotebooksPatchMostRecentDeployment(Response):
     created_at: str
     updated_at: str
     notebook_id: int
+
+class _ResponseNotebooksGetUpdateLinks(Response):
+    update_url: str
+    update_preview_url: str
 
 class _ResponseNotebooksListUpdateLinks(Response):
     update_url: str
@@ -71708,6 +72726,20 @@ class _ResponseNotebooksListDeploymentsLogs(Response):
     stream: str
     created_at: str
     source: str
+
+class _ResponseNotebooksGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseNotebooksGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseNotebooksGetGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
 
 class _ResponseNotebooksListGit(Response):
     git_ref: str
@@ -72276,6 +73308,19 @@ class _ResponsePredictionsGetScoredTablesScoreStats(Response):
     max_score: float
 
 class _ResponsePredictionsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponsePredictionsGetSchedules(Response):
+    id: int
+    schedule: _ResponsePredictionsGetSchedulesSchedule
+    score_on_model_build: bool
+
+class _ResponsePredictionsGetSchedulesSchedule(Response):
     scheduled: bool
     scheduled_days: List[int]
     scheduled_hours: List[int]
@@ -74188,6 +75233,20 @@ class _ResponseReportsPostLastRun(Response):
     started_at: str
     finished_at: str
     error: str
+
+class _ResponseReportsGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseReportsGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseReportsGetGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
 
 class _ResponseReportsListGit(Response):
     git_ref: str
@@ -79049,6 +80108,20 @@ class _ResponseScriptsPostCustomRunsOutputs(Response):
     link: str
     value: object
 
+class _ResponseScriptsGetSqlGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetSqlGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetSqlGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseScriptsListSqlGit(Response):
     git_ref: str
     git_branch: str
@@ -79120,6 +80193,20 @@ class _ResponseScriptsPostSqlGitCheckout(Response):
     type: str
     size: int
     file_hash: str
+
+class _ResponseScriptsGetJavascriptGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetJavascriptGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetJavascriptGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
 
 class _ResponseScriptsListJavascriptGit(Response):
     git_ref: str
@@ -79193,6 +80280,20 @@ class _ResponseScriptsPostJavascriptGitCheckout(Response):
     size: int
     file_hash: str
 
+class _ResponseScriptsGetPython3Git(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetPython3GitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetPython3GitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
+
 class _ResponseScriptsListPython3Git(Response):
     git_ref: str
     git_branch: str
@@ -79264,6 +80365,20 @@ class _ResponseScriptsPostPython3GitCheckout(Response):
     type: str
     size: int
     file_hash: str
+
+class _ResponseScriptsGetRGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseScriptsGetRGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseScriptsGetRGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
 
 class _ResponseScriptsListRGit(Response):
     git_ref: str
@@ -84536,6 +85651,10 @@ class _ResponseUsageGetLlm(Response):
     output_tokens: int
     model_id: str
 
+class _ResponseUsageGetLlmOrganizationSummary(Response):
+    credits: float
+    organization_id: int
+
 class _ResponseUsageListLlmOrganizationSummary(Response):
     credits: float
     organization_id: int
@@ -84633,6 +85752,41 @@ class _ResponseUsersPost(Response):
     account_status: str
 
 class _ResponseUsersPostGroups(Response):
+    id: int
+    name: str
+    slug: str
+    organization_id: int
+    organization_name: str
+
+class _ResponseUsersGetMe(Response):
+    id: int
+    name: str
+    email: str
+    username: str
+    initials: str
+    last_checked_announcements: str
+    feature_flags: dict
+    roles: List[str]
+    preferences: dict
+    custom_branding: str
+    primary_group_id: int
+    groups: List[_ResponseUsersGetMeGroups]
+    organization_name: str
+    organization_slug: str
+    organization_default_theme_id: int
+    created_at: str
+    sign_in_count: int
+    assuming_role: bool
+    role_assumer: dict
+    assuming_admin: bool
+    assuming_admin_expiration: str
+    superadmin_mode_expiration: str
+    disable_non_compliant_fedramp_features: bool
+    persona_role: str
+    created_by_id: int
+    last_updated_by_id: int
+
+class _ResponseUsersGetMeGroups(Response):
     id: int
     name: str
     slug: str
@@ -85461,6 +86615,20 @@ class _ResponseWorkflowsListProjectsUsers(Response):
     username: str
     initials: str
     online: bool
+
+class _ResponseWorkflowsGetGit(Response):
+    git_ref: str
+    git_branch: str
+    git_path: str
+    git_repo: _ResponseWorkflowsGetGitGitRepo
+    git_ref_type: str
+    pull_from_git: bool
+
+class _ResponseWorkflowsGetGitGitRepo(Response):
+    id: int
+    repo_url: str
+    created_at: str
+    updated_at: str
 
 class _ResponseWorkflowsListGit(Response):
     git_ref: str

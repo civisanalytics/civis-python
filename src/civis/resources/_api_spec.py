@@ -18,8 +18,12 @@ def download_latest_api_spec(path):
         else:
             raise
     fut = civis.utils.run_job(job.id, client=client, polling_interval=5)
+    print(
+        "created custom script run https://platform.civisanalytics.com/"
+        f"spa/#/scripts/custom/{fut.job_id}?runId={fut.run_id}"
+    )
     fut.result()
-    print(f"custom script {fut.job_id} run {fut.run_id} has succeeded")
+    print("custom script run has succeeded")
     outputs = client.scripts.list_custom_runs_outputs(fut.job_id, fut.run_id)
     file_id = civis.find_one(outputs, name="civis_api_spec.json").object_id
     with open(path, "wb") as f:

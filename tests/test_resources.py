@@ -56,7 +56,7 @@ def test_create_method_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -65,7 +65,7 @@ def test_create_method_iterator_kwarg():
 
     method(mock_endpoint, iterator=True)
     mock_endpoint._call_api.assert_called_once_with(
-        "get", "/objects", {}, {}, "deprecation", iterator=True
+        "get", "/objects", {}, {}, iterator=True
     )
 
 
@@ -79,7 +79,7 @@ def test_create_method_no_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -99,7 +99,7 @@ def test_create_method_no_iterator_kwarg():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -446,7 +446,7 @@ def test_parse_params():
         "description": "nah!",
         "type": "integer",
     }
-    x, y = _resources.parse_params([param, param2], "summary!", "get", "objects")
+    x, y = _resources.parse_params([param, param2], "summary!", "get", "objects", "no!")
     expect_x = [
         {
             "in": "query",
@@ -467,6 +467,7 @@ def test_parse_params():
     expect_y = (
         "summary!\n\n"
         "API URL: ``GET /objects``\n\n"
+        ".. warning::\n    no!\n\n"
         "Parameters\n"
         "----------\n"
         "b : int\n"
@@ -517,12 +518,35 @@ def test_parse_method_name():
     a = _resources.parse_method_name("post", "url.com/containers/{id}/runs/{run_id}")
     b = _resources.parse_method_name("get", "url.com/containers/{id}/{run_id}")
     c = _resources.parse_method_name("get", "url.com/containers/{id}/{run_id}/shares")
+    d = _resources.parse_method_name("post", "/containers/{id}/runs/{run_id}")
     assert x == "list_containers"
     assert y == "get_containers"
     assert z == "get_containers_runs"
     assert a == "post_containers_runs"
     assert b == "get_containers_id"
     assert c == "list_containers_id_shares"
+    assert d == "post_containers_runs"
+
+
+@pytest.mark.parametrize(
+    "path, return_type, use_legacy_names, expected",
+    [
+        # If the API spec says the return object is an array, then then method name
+        # should start with "list" regardless of whether legacy names are used.
+        ("/containers/{id}/foo", "array", True, "list_containers_foo"),
+        ("/containers/{id}/foo", "array", False, "list_containers_foo"),
+        # If the API spec says the return object is not an array, then the method name
+        # should be sensitive to the use_legacy_names flag.
+        ("/containers/{id}/foo", "object", True, "list_containers_foo"),
+        ("/containers/{id}/foo", "object", False, "get_containers_foo"),
+    ],
+)
+def test_parse_method_name_distinguish_legacy_or_not(
+    path, return_type, use_legacy_names, expected
+):
+    operation = {"responses": {"200": {"schema": {"type": return_type}}}}
+    result = _resources.parse_method_name("get", path, operation, use_legacy_names)
+    assert result == expected
 
 
 def test_duplicate_names_generated_from_api_spec():
@@ -567,7 +591,7 @@ def _create_mock_endpoint():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        None,  # no deprecation
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -582,7 +606,7 @@ def test_create_method_unexpected_kwargs():
     # Method works without unexpected kwarg
     method(mock_endpoint, foo=0, bar=0)
     mock_endpoint._call_api.assert_called_once_with(
-        "get", "/objects", {"foo": 0, "bar": 0}, {}, "deprecation", iterator=False
+        "get", "/objects", {"foo": 0, "bar": 0}, {}, iterator=False
     )
 
     # Method raises TypeError with unexpected kwarg
@@ -627,7 +651,7 @@ def test_create_method_deprecation_warning():
         "get",
         "mock_name",
         "/objects",
-        "deprecation",
+        "custom deprecation warning",
         "param_doc",
         "resp_doc",
         "return_annotation",
@@ -635,7 +659,7 @@ def test_create_method_deprecation_warning():
     mock_endpoint = Endpoint({"api_key": "abc"}, client=create_client_mock())
     mock_endpoint._make_request = mock.Mock()
 
-    with pytest.warns(FutureWarning, match="deprecation"):
+    with pytest.warns(FutureWarning, match="custom deprecation warning"):
         method(mock_endpoint, foo=0)
 
 

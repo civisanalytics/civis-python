@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.8.0 - 2026-01-26
+
+### Added
 - Added type annotations to public functions and classes. (#529)
 - Enabled static type checks with `mypy` on CI builds. (#529)
 - File-related `civis.io.*` functions that accept a path can now take either a string
@@ -23,6 +32,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Deprecated the JSONValue parameter of `civis.utils.run_template`. (#526)
+- Some of the `list*` methods from various Civis API endpoints should have been named
+  `get*`, because they return a singleton `civis.Response` object, as opposed to an array
+  of such objects. These `list*` methods are now deprecated. The corresponding
+  equivalent `get*` methods are available and should be preferred. The following
+  is the full list of these `list*` methods and their preferred `get*` counterparts (#530):
+   * `client.clusters.list_kubernetes_instance_configs_historical_graphs` -> `client.clusters.get_kubernetes_instance_configs_historical_graphs`
+   * `client.clusters.list_kubernetes_instance_configs_historical_metrics` -> `client.clusters.get_kubernetes_instance_configs_historical_metrics`
+   * `client.databases.list_advanced_settings` -> `client.databases.get_advanced_settings`
+   * `client.endpoints.list` -> `client.endpoints.get`
+   * `client.git_repos.list_refs` -> `client.git_repos.get_refs`
+   * `client.groups.list_child_groups` -> `client.groups.get_child_groups`
+   * `client.models.list_schedules` -> `client.models.get_schedules`
+   * `client.notebooks.list_update_links` -> `client.notebooks.get_update_links`
+   * `client.notebooks.list_git` -> `client.notebooks.get_git`
+   * `client.notifications.list` -> `client.notifications.get`
+   * `client.predictions.list_schedules` -> `client.predictions.get_schedules`
+   * `client.reports.list_git` -> `client.reports.get_git`
+   * `client.scripts.list_sql_git` -> `client.scripts.get_sql_git`
+   * `client.scripts.list_javascript_git` -> `client.scripts.get_javascript_git`
+   * `client.scripts.list_python3_git` -> `client.scripts.get_python3_git`
+   * `client.scripts.list_r_git` -> `client.scripts.get_r_git`
+   * `client.usage.list_llm_organization_summary` -> `client.usage.get_llm_organization_summary`
+   * `client.users.list_me` -> `client.users.get_me`
+   * `client.workflows.list_git` -> `client.workflows.get_git`
 
 ### Removed
 - Dropped support for Python 3.10. (#528)
