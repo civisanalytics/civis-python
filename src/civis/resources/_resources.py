@@ -88,6 +88,36 @@ GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
     """.strip().split()
 )
 
+# GET endpoints that existed before the "list" vs "get" naming fix
+# (https://github.com/civisanalytics/civis-python/pull/530) and need
+# both a preferred "get_*" method and a deprecated "list_*" alias for backward
+# compatibility. New endpoints should NOT be added here — they will
+# automatically get only the correct non-legacy name.
+# When releasing civis-python v3.0.0, this frozenset can be removed.
+LEGACY_PATHS_WITH_LIST_NAME = frozenset(
+    """
+    clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs
+    clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics
+    databases/{id}/advanced-settings
+    endpoints
+    git_repos/{id}/refs
+    groups/{id}/child_groups
+    models/{id}/schedules
+    notebooks/{id}/git
+    notebooks/{id}/update-links
+    notifications
+    predictions/{id}/schedules
+    reports/{id}/git
+    scripts/javascript/{id}/git
+    scripts/python3/{id}/git
+    scripts/r/{id}/git
+    scripts/sql/{id}/git
+    usage/llm/organization/{org_id}/summary
+    users/me
+    workflows/{id}/git
+    """.strip().split()
+)
+
 REGEX_DEP_WARN_LEGACY_LIST = re.compile(
     r"The method name.*?is\s+deprecated.*?Please\s+switch\s+to.*?",
     re.DOTALL,
@@ -707,17 +737,18 @@ def parse_path(path, operations, api_version):
             )
             methods.append((name_preferred, method_preferred))
 
-            warn_msg = (
-                f"The method name ``<client>.{modified_base_path}.{name}`` is "
-                "deprecated and will be removed at civis-python v3.0.0 (no release "
-                "timeline yet). Please switch to "
-                f"``<client>.{modified_base_path}.{name_preferred}`` "
-                "for the same method."
-            )
-            name_deprecated, method_deprecated = parse_method(
-                verb, op, path, deprecation_warning=warn_msg
-            )
-            methods.append((name_deprecated, method_deprecated))
+            if path in LEGACY_PATHS_WITH_LIST_NAME:
+                warn_msg = (
+                    f"The method name ``<client>.{modified_base_path}.{name}`` is "
+                    "deprecated and will be removed at civis-python v3.0.0 (no release "
+                    "timeline yet). Please switch to "
+                    f"``<client>.{modified_base_path}.{name_preferred}`` "
+                    "for the same method."
+                )
+                name_deprecated, method_deprecated = parse_method(
+                    verb, op, path, deprecation_warning=warn_msg
+                )
+                methods.append((name_deprecated, method_deprecated))
         else:
             methods.append((name, method))
     return modified_base_path, methods

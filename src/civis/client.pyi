@@ -1870,54 +1870,6 @@ class _Clusters:
         """
         ...
 
-    @deprecated(
-        """
-        The method name <client>.clusters.list_kubernetes_compute_metrics is deprecated
-        and will be removed at civis-python v3.0.0 (no release timeline yet).
-        Please switch to <client>.clusters.get_kubernetes_compute_metrics for
-        the same method.
-        """
-    )
-    def list_kubernetes_compute_metrics(
-        self,
-        id: int,
-        *,
-        start_date: str | None = ...,
-        end_date: str | None = ...,
-        type: List[str] | None = ...,
-    ) -> _ResponseClustersListKubernetesComputeMetrics:
-        """Get historical compute metrics for a Kubernetes Cluster
-
-        API URL: ``GET /clusters/kubernetes/{id}/compute_metrics``
-
-        .. warning::
-            The method name ``<client>.clusters.list_kubernetes_compute_metrics`` is
-            deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please switch to ``<client>.clusters.get_kubernetes_compute_metrics``
-            for the same method.
-
-        Parameters
-        ----------
-        id : int
-            The ID of the Kubernetes cluster.
-        start_date : str, optional
-            UTC start date in YYYY-MM-DD format (inclusive).
-        end_date : str, optional
-            UTC end date in YYYY-MM-DD format (inclusive). Must be within 31 days of
-            start_date.
-        type : List[str], optional
-            Compute metric types to retrieve. Allowed values are: ["Jobs"]. Defaults to
-            returning metrics for all available types. The default may change as
-            support for additional types is added.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - url : str
-                Presigned URL to download the compute metrics CSV file from S3.
-        """
-        ...
-
 class _Credentials:
     def list_types(
         self,
@@ -64467,9 +64419,6 @@ class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsCapa
     values: List[float]
 
 class _ResponseClustersGetKubernetesComputeMetrics(Response):
-    url: str
-
-class _ResponseClustersListKubernetesComputeMetrics(Response):
     url: str
 
 class _ResponseCredentialsListTypes(Response):
