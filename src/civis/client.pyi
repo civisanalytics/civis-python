@@ -1836,6 +1836,40 @@ class _Clusters:
         """
         ...
 
+    def get_kubernetes_compute_metrics(
+        self,
+        id: int,
+        *,
+        start_date: str | None = ...,
+        end_date: str | None = ...,
+        type: List[str] | None = ...,
+    ) -> _ResponseClustersGetKubernetesComputeMetrics:
+        """Get historical compute metrics for a Kubernetes Cluster
+
+        API URL: ``GET /clusters/kubernetes/{id}/compute_metrics``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the Kubernetes cluster.
+        start_date : str, optional
+            UTC start date in YYYY-MM-DD format (inclusive).
+        end_date : str, optional
+            UTC end date in YYYY-MM-DD format (inclusive). Must be within 31 days of
+            start_date.
+        type : List[str], optional
+            Compute metric types to retrieve. Allowed values are: ["Jobs"]. Defaults to
+            returning metrics for all available types. The default may change as
+            support for additional types is added.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - url : str
+                Presigned URL to download the compute metrics CSV file from S3.
+        """
+        ...
+
 class _Credentials:
     def list_types(
         self,
@@ -26248,8 +26282,8 @@ class _Organizations:
         object_type : str, optional
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
-            Report, Service Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Table,
+            Tableau Report, Service Report, HTML Report, SQL Report
         limit : int, optional
             Number of results to return. Defaults to 50. Maximum allowed is 1000.
         page_num : int, optional
@@ -26281,7 +26315,8 @@ class _Organizations:
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
                 Script, JavaScript Script, SQL Script, Template Script, Project,
-                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+                Workflow, Table, Tableau Report, Service Report, HTML Report, SQL
+                Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
@@ -26322,8 +26357,8 @@ class _Organizations:
         object_type : str
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
-            Report, Service Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Table,
+            Tableau Report, Service Report, HTML Report, SQL Report
 
         Returns
         -------
@@ -26337,7 +26372,8 @@ class _Organizations:
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
                 Script, JavaScript Script, SQL Script, Template Script, Project,
-                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+                Workflow, Table, Tableau Report, Service Report, HTML Report, SQL
+                Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
@@ -53203,7 +53239,8 @@ class _Services:
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
         credentials : List[int], optional
-            A list of credential IDs to pass to the Service.
+            The credentials attached to the service. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
         git_repo_url : str, optional
@@ -53282,7 +53319,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -53420,7 +53458,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -53556,7 +53595,8 @@ class _Services:
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
         credentials : List[int], optional
-            A list of credential IDs to pass to the Service.
+            The credentials attached to the service. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
         git_repo_url : str, optional
@@ -53633,7 +53673,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -53769,7 +53810,8 @@ class _Services:
         cpu : int, optional
             The amount of cpu allocated to each replica of the the Service.
         credentials : List[int], optional
-            A list of credential IDs to pass to the Service.
+            The credentials attached to the service. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         permission_set_id : int, optional
             The ID of the associated permission set, if any.
         git_repo_url : str, optional
@@ -53846,7 +53888,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -54290,7 +54333,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -54847,7 +54891,8 @@ class _Services:
             - created_at : str (time)
             - updated_at : str (time)
             - credentials : List[int]
-                A list of credential IDs to pass to the Service.
+                The credentials attached to the service. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -61183,8 +61228,8 @@ class _Users:
         object_type : str, optional
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
-            Report, Service Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Table,
+            Tableau Report, Service Report, HTML Report, SQL Report
         limit : int, optional
             Number of results to return. Defaults to 50. Maximum allowed is 1000.
         page_num : int, optional
@@ -61216,7 +61261,8 @@ class _Users:
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
                 Script, JavaScript Script, SQL Script, Template Script, Project,
-                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+                Workflow, Table, Tableau Report, Service Report, HTML Report, SQL
+                Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
@@ -61257,8 +61303,8 @@ class _Users:
         object_type : str
             The type of the object that is favorited. Valid options: Container Script,
             Identity Resolution, Import, Python Script, R Script, dbt Script,
-            JavaScript Script, SQL Script, Template Script, Project, Workflow, Tableau
-            Report, Service Report, HTML Report, SQL Report
+            JavaScript Script, SQL Script, Template Script, Project, Workflow, Table,
+            Tableau Report, Service Report, HTML Report, SQL Report
 
         Returns
         -------
@@ -61272,7 +61318,8 @@ class _Users:
                 The type of the object that is favorited. Valid options: Container
                 Script, Identity Resolution, Import, Python Script, R Script, dbt
                 Script, JavaScript Script, SQL Script, Template Script, Project,
-                Workflow, Tableau Report, Service Report, HTML Report, SQL Report
+                Workflow, Table, Tableau Report, Service Report, HTML Report, SQL
+                Report
             - object_name : str
                 The name of the object that is favorited.
             - created_at : str (time)
@@ -64370,6 +64417,9 @@ class _ResponseClustersListKubernetesInstanceConfigsHistoricalMetricsMetricsCapa
 ):
     times: List[int]
     values: List[float]
+
+class _ResponseClustersGetKubernetesComputeMetrics(Response):
+    url: str
 
 class _ResponseCredentialsListTypes(Response):
     types: List[str]

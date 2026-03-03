@@ -96,7 +96,7 @@ You can test your installation by running
 
     import civis
     client = civis.APIClient()
-    print(client.users.list_me()['username'])
+    print(client.users.get_me()['username'])
 
 If ``civis`` was installed correctly, this will print your Civis
 Platform username.

@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.8.1 - 2026-03-02
+
+### Changed
+- Updated the Civis API spec in order to refresh the Sphinx docs on the Read The Docs site. (#531)
+
 ## 2.8.0 - 2026-01-26
 
 ### Added
