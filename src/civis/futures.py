@@ -17,7 +17,6 @@ from civis import APIClient, Response
 from civis.base import CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids
 from civis.polling import PollableResult
 
-
 log = logging.getLogger(__name__)
 
 
@@ -184,6 +183,21 @@ class CivisFuture(PollableResult):
         str
         """
         return f"https://platform.civisanalytics.com/spa/#/jobs/{self.job_id}"
+
+    @property
+    def job_run_url(self) -> str | None:
+        """The URL for the run of the Civis Platform job that this future is tracking.
+
+        Returns
+        -------
+        str | None
+        """
+        if self.run_id is None:
+            return None
+        return (
+            f"https://platform.civisanalytics.com/spa/#/jobs/{self.job_id}"
+            f"?runId={self.run_id}"
+        )
 
     def _check_message(self, message):
         try:

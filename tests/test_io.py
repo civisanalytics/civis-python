@@ -39,7 +39,6 @@ from civis.response import Response
 from civis.base import CivisAPIError, CivisImportError, EmptyResultError
 from civis.tests.mocks import create_client_mock
 
-
 POLL_INTERVAL = 0.00001
 
 # https://circleci.com/docs/variables/#built-in-environment-variables

@@ -29,7 +29,6 @@ from civis._get_api_key import get_api_key
 from civis._retries import retry_request
 from civis.response import Response
 
-
 API_VERSIONS = frozenset({"1.0"})
 
 # civis_api_spec.json can be updated
@@ -71,8 +70,7 @@ _BRACKETED_REGEX = re.compile(r"^{.*}$")
 # Civis API says these paths for a GET call should return an object,
 # but they actually return an array.
 # See the internal discussion linked through the pull request that added this list.
-GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
-    """
+GET_PATHS_WITH_ARRAY_RESPONSE = frozenset("""
     credentials/types
     databases/{id}/users
     jobs/{id}/children
@@ -85,8 +83,7 @@ GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
     scripts/sql/{id}/git/commits
     scripts/{id}/history
     workflows/{id}/git/commits
-    """.strip().split()
-)
+    """.strip().split())
 
 # GET endpoints that existed before the "list" vs "get" naming fix
 # (https://github.com/civisanalytics/civis-python/pull/530) and need
@@ -94,8 +91,7 @@ GET_PATHS_WITH_ARRAY_RESPONSE = frozenset(
 # compatibility. New endpoints should NOT be added here — they will
 # automatically get only the correct non-legacy name.
 # When releasing civis-python v3.0.0, this frozenset can be removed.
-LEGACY_PATHS_WITH_LIST_NAME = frozenset(
-    """
+LEGACY_PATHS_WITH_LIST_NAME = frozenset("""
     clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs
     clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics
     databases/{id}/advanced-settings
@@ -115,8 +111,7 @@ LEGACY_PATHS_WITH_LIST_NAME = frozenset(
     usage/llm/organization/{org_id}/summary
     users/me
     workflows/{id}/git
-    """.strip().split()
-)
+    """.strip().split())
 
 REGEX_DEP_WARN_LEGACY_LIST = re.compile(
     r"The method name.*?is\s+deprecated.*?Please\s+switch\s+to.*?",

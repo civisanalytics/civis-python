@@ -4,13 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "civis"
-version = "2.8.1"
+version = "2.9.0"
 description = "Civis API Python Client"
 readme = "README.rst"
 requires-python = ">= 3.11"
 authors = [ { name = "Civis Analytics", email = "opensource@civisanalytics.com" } ]
-license = { text = "BSD-3-Clause" }
+license = "BSD-3-Clause"
 dependencies = [
+    # This is a public package that can be used in environments we don't control.
+    # Therefore we don't set version upper bounds (i.e., don't use <= or <)
+    # to avoid dependency version conflicts. If a particular dependency version
+    # is known to be incompatible with civis-python, enumerate the version with !=.
     "click >= 6.0",
     "cloudpickle >= 0.2",
     "joblib >= 1.5.0",
@@ -24,7 +28,6 @@ dependencies = [
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -43,35 +46,37 @@ civis = "civis.cli.__main__:main"
 civis_joblib_worker = "civis.run_joblib_func:main"
 
 [project.optional-dependencies]
+# Not pinning versions for dev dependencies, so that we always install their
+# latest versions on CI builds for forward compatibility.
 dev-core = [
-    "bandit",  # Install the latest version.
-    "black == 25.12.0",
-    "build == 1.3.0",
-    "flake8 == 7.3.0",
-    "mypy == 1.19.1",
-    "pandas == 2.3.3",
-    "pip-audit",  # Install the latest version.
-    "polars == 1.36.1",
-    "pytest == 9.0.2",
-    "pytest-cov == 7.0.0",
-    "twine == 6.2.0",
-    # The stub packages are used by mypy, so just get their latest versions.
+    "bandit",
+    "black",
+    "build",
+    "flake8",
+    "mypy",
+    "pandas",
+    "pip-audit",
+    "polars",
+    "pytest",
+    "pytest-cov",
+    "twine",
+    # The stub packages are used by mypy.
     "pandas-stubs",
     "types-jsonschema",
     "types-PyYAML",
     "types-requests",
 ]
 dev-civisml = [
-    "feather-format == 0.4.1",
-    "numpy == 2.4.0",
-    "scikit-learn == 1.8.0",
-    "scipy == 1.16.3",
+    "feather-format",
+    "numpy",
+    "scikit-learn",
+    "scipy",
 ]
 docs = [
     # docs/requirements.txt pins all transitive dependencies for a reproducible doc build.
-    "numpydoc == 1.8.0",
-    "Sphinx == 8.2.3",
-    "sphinx-rtd-theme == 3.0.2",
+    "numpydoc",
+    "Sphinx",
+    "sphinx-rtd-theme",
 ]
 
 [tool.setuptools.packages.find]

@@ -10,7 +10,6 @@ import requests
 
 from civis._camel_to_snake import camel_to_snake
 
-
 _RETURN_TYPES = frozenset({"snake", "raw"})
 
 # "arguments": Script arguments are often environment variables in

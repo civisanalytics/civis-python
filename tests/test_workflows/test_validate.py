@@ -7,7 +7,6 @@ import pytest
 
 from civis.workflows import validate_workflow_yaml, WorkflowValidationError
 
-
 _VALID_WORKFLOW_YAML = """
 version: "2.0"
 workflow:

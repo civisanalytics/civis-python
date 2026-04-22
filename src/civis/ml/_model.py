@@ -31,7 +31,6 @@ import civis.io as cio
 from civis.futures import ContainerFuture
 from civis.response import Response
 
-
 __all__ = ["ModelFuture", "ModelError", "ModelPipeline"]
 log = logging.getLogger(__name__)
 

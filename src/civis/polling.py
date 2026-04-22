@@ -4,7 +4,6 @@ import threading
 from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
 from civis.response import Response
 
-
 _MAX_POLLING_INTERVAL = 15
 
 

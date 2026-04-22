@@ -3,7 +3,6 @@ import logging
 import tenacity
 from tenacity.wait import wait_base
 
-
 log = logging.getLogger(__name__)
 
 _RETRY_CODES = [429, 502, 503, 504]
