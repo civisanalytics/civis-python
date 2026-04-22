@@ -9,7 +9,6 @@ from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
 from civis.resources._resources import parse_method
 
-
 _TO_CAMELCASE_REGEX = re.compile(r"(^|_)([a-zA-Z])")
 
 

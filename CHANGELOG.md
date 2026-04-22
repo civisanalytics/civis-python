@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.9.0 - 2026-04-22
+
+### Added
+- Added the `job_run_url` property to `civis.futures.CivisFuture`
+  for the URL of the specific run of the Civis Platform job being tracked. (#534)
+- Added GitHub Actions workflow for PyPI releases. (#534)
+
+### Changed
+- Updated the API spec. (#534)
+- Suppressed all pull requests by GitHub's Dependabot for docs/requirements.txt. (#534)
+
 ## 2.8.1 - 2026-03-02
 
 ### Changed

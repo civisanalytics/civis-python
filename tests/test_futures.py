@@ -160,6 +160,13 @@ def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
     assert result.job_url == (
         f"https://platform.civisanalytics.com/spa/#/jobs/{expected_job_id}"
     )
+    if expected_run_id is None:
+        assert result.job_run_url is None
+    else:
+        assert result.job_run_url == (
+            f"https://platform.civisanalytics.com/spa/#/jobs/{expected_job_id}"
+            f"?runId={expected_run_id}"
+        )
 
 
 def test_container_future_job_id_run_id():
@@ -172,6 +179,9 @@ def test_container_future_job_id_run_id():
     assert result.job_id == job_id
     assert result.run_id == run_id
     assert result.job_url == f"https://platform.civisanalytics.com/spa/#/jobs/{job_id}"
+    assert result.job_run_url == (
+        f"https://platform.civisanalytics.com/spa/#/jobs/{job_id}?runId={run_id}"
+    )
 
 
 def test_container_scripts():

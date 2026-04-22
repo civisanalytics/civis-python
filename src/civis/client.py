@@ -14,7 +14,6 @@ from civis._get_api_key import get_api_key
 from civis._retries import DEFAULT_RETRYING_STR
 from civis.response import _RETURN_TYPES, find, find_one
 
-
 _log = logging.getLogger(__name__)
 
 

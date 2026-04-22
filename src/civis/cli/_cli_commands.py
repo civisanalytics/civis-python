@@ -3,6 +3,7 @@
 """
 Additional commands to add to the CLI beyond the OpenAPI spec.
 """
+
 import functools
 import os
 import sys
@@ -15,7 +16,6 @@ import civis
 from civis.io import file_to_civis, civis_to_file
 from civis.utils import job_logs
 from civis._retries import get_default_retrying
-
 
 # From http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=CIVIS
 _CIVIS_ASCII_ART = r"""

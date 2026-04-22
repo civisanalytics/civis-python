@@ -4,7 +4,6 @@
 
 import re
 
-
 UNDERSCORER1 = re.compile(r"(.)([A-Z][a-z]+)")
 UNDERSCORER2 = re.compile("([a-z0-9])([A-Z])")
 

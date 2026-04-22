@@ -13,7 +13,6 @@ from civis.response import Response
 from civis.futures import ContainerFuture
 from civis.tests import create_client_mock, create_client_mock_for_container_tests
 
-
 _MOCK_JOB_KWARGS = dict(
     from_template_id=None,
     id="42",

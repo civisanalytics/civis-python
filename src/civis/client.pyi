@@ -1673,16 +1673,14 @@ class _Clusters:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name
         <client>.clusters.list_kubernetes_instance_configs_historical_graphs is
         deprecated and will be removed at civis-python v3.0.0 (no release
         timeline yet). Please switch to
         <client>.clusters.get_kubernetes_instance_configs_historical_graphs for
         the same method.
-        """
-    )
+        """)
     def list_kubernetes_instance_configs_historical_graphs(
         self,
         instance_config_id: int,
@@ -1768,16 +1766,14 @@ class _Clusters:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name
         <client>.clusters.list_kubernetes_instance_configs_historical_metrics is
         deprecated and will be removed at civis-python v3.0.0 (no release
         timeline yet). Please switch to
         <client>.clusters.get_kubernetes_instance_configs_historical_metrics for
         the same method.
-        """
-    )
+        """)
     def list_kubernetes_instance_configs_historical_metrics(
         self,
         instance_config_id: int,
@@ -3689,13 +3685,11 @@ class _Databases:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.databases.list_advanced_settings is deprecated and will
         be removed at civis-python v3.0.0 (no release timeline yet). Please
         switch to <client>.databases.get_advanced_settings for the same method.
-        """
-    )
+        """)
     def list_advanced_settings(
         self,
         id: int,
@@ -3814,10 +3808,18 @@ class _Databases:
 class _Endpoints:
     def get(
         self,
+        *,
+        openapi_version: str | None = ...,
     ) -> Response:
         """List API endpoints
 
         API URL: ``GET /endpoints``
+
+        Parameters
+        ----------
+        openapi_version : str, optional
+            If specified, return the spec in the given OpenAPI version format instead
+            of Swagger 2.0. Supported value: '3.0'.
 
         Returns
         -------
@@ -3826,15 +3828,15 @@ class _Endpoints:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.endpoints.list is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.endpoints.get for the same method.
-        """
-    )
+        """)
     def list(
         self,
+        *,
+        openapi_version: str | None = ...,
     ) -> Response:
         """List API endpoints
 
@@ -3844,6 +3846,12 @@ class _Endpoints:
             The method name ``<client>.endpoints.list`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please switch to
             ``<client>.endpoints.get`` for the same method.
+
+        Parameters
+        ----------
+        openapi_version : str, optional
+            If specified, return the spec in the given OpenAPI version format instead
+            of Swagger 2.0. Supported value: '3.0'.
 
         Returns
         -------
@@ -13706,13 +13714,11 @@ class _Git_Repos:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.git_repos.list_refs is deprecated and will be removed
         at civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.git_repos.get_refs for the same method.
-        """
-    )
+        """)
     def list_refs(
         self,
         id: int,
@@ -14559,13 +14565,11 @@ class _Groups:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.groups.list_child_groups is deprecated and will be
         removed at civis-python v3.0.0 (no release timeline yet). Please switch
         to <client>.groups.get_child_groups for the same method.
-        """
-    )
+        """)
     def list_child_groups(
         self,
         id: int,
@@ -16133,6 +16137,99 @@ class _Imports:
         """
         ...
 
+    def get_files_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseImportsGetFilesRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /imports/files/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the Import.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the import.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
+            - source : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for specific imports.
+                    For DB Syncs, the first element is an SSL private key credential
+                    id, and the second element is the corresponding public key
+                    credential id.
+                - name : str
+            - destination : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for specific imports.
+                    For DB Syncs, the first element is an SSL private key credential
+                    id, and the second element is the corresponding public key
+                    credential id.
+                - name : str
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - parent_id : int
+                Parent id to trigger this import from
+            - is_outbound : bool
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this import.
+            - hidden : bool
+                The hidden status of the item.
+        """
+        ...
+
     def post_files_csv(
         self,
         source: dict,
@@ -17194,6 +17291,117 @@ class _Imports:
                 The log message.
             - level : str
                 The level of the log. One of unknown,fatal,error,warn,info,debug.
+        """
+        ...
+
+    def get_files_csv_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseImportsGetFilesCsvRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /imports/files/csv/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the CSV Import.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the import.
+            - source : :class:`civis.Response`
+                - file_ids : List[int]
+                    The file ID(s) to import, if importing Civis file(s).
+                - storage_path : :class:`civis.Response`
+                    - storage_host_id : int
+                        The ID of the source storage host.
+                    - credential_id : int
+                        The ID of the credentials for the source storage host.
+                    - file_paths : List[str]
+                        The file or directory path(s) within the bucket from which to
+                        import.  E.g. the file_path for "s3://mybucket/files/all/"
+                        would be "/files/all/"If specifying a directory path, the job
+                        will import every file found under that path. All files must
+                        have the same column layout and file format (e.g., compression,
+                        columnDelimiter, etc.).
+            - destination : :class:`civis.Response`
+                - schema : str
+                    The destination schema name.
+                - table : str
+                    The destination table name.
+                - remote_host_id : int
+                    The ID of the destination database host.
+                - credential_id : int
+                    The ID of the credentials for the destination database.
+                - primary_keys : List[str]
+                    A list of column(s) which together uniquely identify a row in the
+                    destination table.These columns must not contain NULL values. If
+                    the import mode is "upsert", this field is required;see the Civis
+                    Helpdesk article on "Advanced CSV Imports via the Civis API" for
+                    more information.
+                - last_modified_keys : List[str]
+                    A list of the columns indicating a record has been updated.If the
+                    destination table does not exist, and the import mode is "upsert",
+                    this field is required.
+            - first_row_is_header : bool
+                A boolean value indicating whether or not the first row of the source
+                file is a header row.
+            - column_delimiter : str
+                The column delimiter for the file. Valid arguments are "comma", "tab",
+                and "pipe". Defaults to "comma".
+            - escaped : bool
+                A boolean value indicating whether or not the source file has quotes
+                escaped with a backslash.Defaults to false.
+            - compression : str
+                The type of compression of the source file. Valid arguments are "gzip"
+                and "none". Defaults to "none".
+            - existing_table_rows : str
+                The behavior if a destination table with the requested name already
+                exists.  One of "fail", "truncate", "append", "drop", or
+                "upsert".Defaults to "fail".
+            - max_errors : int
+                The maximum number of rows with errors to ignore before failing. This
+                option is not supported for Postgres databases.
+            - table_columns : List[:class:`civis.Response`]
+                An array of hashes corresponding to the columns in the order they
+                appear in the source file. Each hash should have keys for database
+                column "name" and "sqlType".This parameter is required if the table
+                does not exist, the table is being dropped, or the columns in the
+                source file do not appear in the same order as in the destination
+                table.The "sqlType" key is not required when appending to an existing
+                table.
+
+                - name : str
+                    The column name.
+                - sql_type : str
+                    The SQL type of the column.
+            - loosen_types : bool
+                If true, SQL types with precisions/lengths will have these values
+                increased to accommodate data growth in future loads. Type loosening
+                only occurs on table creation. Defaults to false.
+            - execution : str
+                In upsert mode, controls the movement of data in upsert mode. If set to
+                "delayed", the data will be moved after a brief delay. If set to
+                "immediate", the data will be moved immediately. In non-upsert modes,
+                controls the speed at which detailed column stats appear in the data
+                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
+                the same table and speedier non-upsert imports.
+            - redshift_destination_options : :class:`civis.Response`
+                - diststyle : str
+                    The diststyle to use for the table. One of "even", "all", or "key".
+                - distkey : str
+                    Distkey for this table in Redshift
+                - sortkeys : List[str]
+                    Sortkeys for this table in Redshift. Please provide a maximum of
+                    two.
+            - hidden : bool
+                The hidden status of the item.
         """
         ...
 
@@ -19473,6 +19681,30 @@ class _Jobs:
             - link : str
                 The hypermedia link to the output.
             - value : object
+        """
+        ...
+
+    def get_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseJobsGetRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /jobs/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the job.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - values : :class:`civis.Response`
+                The inputs of the job at the time of the run.
         """
         ...
 
@@ -24068,13 +24300,11 @@ class _Models:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.models.list_schedules is deprecated and will be removed
         at civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.models.get_schedules for the same method.
-        """
-    )
+        """)
     def list_schedules(
         self,
         id: int,
@@ -24917,13 +25147,11 @@ class _Notebooks:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.notebooks.list_update_links is deprecated and will be
         removed at civis-python v3.0.0 (no release timeline yet). Please switch
         to <client>.notebooks.get_update_links for the same method.
-        """
-    )
+        """)
     def list_update_links(
         self,
         id: int,
@@ -25901,13 +26129,11 @@ class _Notebooks:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.notebooks.list_git is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.notebooks.get_git for the same method.
-        """
-    )
+        """)
     def list_git(
         self,
         id: int,
@@ -26190,13 +26416,11 @@ class _Notifications:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.notifications.list is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.notifications.get for the same method.
-        """
-    )
+        """)
     def list(
         self,
         *,
@@ -27618,13 +27842,11 @@ class _Predictions:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.predictions.list_schedules is deprecated and will be
         removed at civis-python v3.0.0 (no release timeline yet). Please switch
         to <client>.predictions.get_schedules for the same method.
-        """
-    )
+        """)
     def list_schedules(
         self,
         id: int,
@@ -30927,13 +31149,11 @@ class _Reports:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.reports.list_git is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.reports.get_git for the same method.
-        """
-    )
+        """)
     def list_git(
         self,
         id: int,
@@ -32756,6 +32976,9 @@ class _Reports:
         :class:`civis.Response`
             - id : int
                 The ID of this report.
+            - tableau_refresh_job_id : str
+                The Tableau extract refresh job ID. Use with GET
+                /reports/:id/refresh/:job_id to poll status.
             - organization : :class:`civis.Response`
                 - id : int
                     The ID of this organization.
@@ -32766,6 +32989,35 @@ class _Reports:
                     organization.
                 - tableau_refresh_history : List[:class:`civis.Response`]
                     The number of tableau refreshes used this month.
+        """
+        ...
+
+    def get_refresh(
+        self,
+        id: int,
+        job_id: str,
+    ) -> _ResponseReportsGetRefresh:
+        """Get the status of a Tableau extract refresh job
+
+        API URL: ``GET /reports/{id}/refresh/{job_id}``
+
+        Parameters
+        ----------
+        id : int
+            The ID of this report.
+        job_id : str
+            The Tableau extract refresh job ID.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - job_id : str
+                The Tableau extract refresh job ID.
+            - state : str
+                Current state of the refresh job: queued, running, succeeded, or
+                failed.
+            - error : str
+                Error message from Tableau when status is failed.
         """
         ...
 
@@ -45462,6 +45714,882 @@ class _Scripts:
         """
         ...
 
+    def get_sql_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetSqlRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/sql/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the sql script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - sql : str
+                The raw SQL query for the script.
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+            - csv_settings : :class:`civis.Response`
+                - include_header : bool
+                    Whether or not to include headers in the output data. Default: true
+                - compression : str
+                    The type of compression to use, if any, one of "none", "zip", or
+                    "gzip". Default: gzip
+                - column_delimiter : str
+                    Which delimiter to use, one of "comma", "tab", or "pipe". Default:
+                    comma
+                - unquoted : bool
+                    Whether or not to quote fields. Default: false
+                - force_multifile : bool
+                    Whether or not the csv should be split into multiple files.
+                    Default: false
+                - filename_prefix : str
+                    A user specified filename prefix for the output file to have.
+                    Default: null
+                - max_file_size : int
+                    The max file size, in MB, created files will be. Only available
+                    when force_multifile is true.
+            - running_as_id : int
+                The ID of the runner of this script.
+        """
+        ...
+
+    def get_containers_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetContainersRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/containers/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the container script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the container.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - repo_http_uri : str
+                The location of a github repo to clone into the container, e.g.
+                github.com/my-user/my-repo.git.
+            - repo_ref : str
+                The tag or branch of the github repo to clone into the container.
+            - remote_host_credential_id : int
+                The id of the database credentials to pass into the environment of the
+                container.
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used. Unnecessary if no git repo is specified or the git repo
+                is public.
+            - docker_command : str
+                The command to run on the container. Will be run via sh as: ["sh",
+                "-c", dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - time_zone : str
+                The time zone of this script.
+            - partition_label : str
+                The partition label used to run this object.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - running_as_id : int
+                The ID of the runner of this script.
+        """
+        ...
+
+    def get_python3_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetPython3RunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/python3/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the python script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
+        """
+        ...
+
+    def get_r_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetRRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/r/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the r script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - source : str
+                The body/text of the script.
+        """
+        ...
+
+    def get_dbt_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetDbtRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the dbt script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - partition_label : str
+                The partition label used to run this object.
+            - running_as_id : int
+                The ID of the runner of this script.
+            - dbt_project : :class:`civis.Response`
+                - target : str
+                    Which profile target to use. Ignored when used in conjunction with
+                    generate_profiles.
+                - schema : str
+                    The output schema for dbt to use.
+                - project_dir : str
+                    The path to dbt_project.yml. Defaults to the root of the
+                    repository. Generates 'DBT_PROJECT_DIR' environment variable.
+                - profiles_dir : str
+                    The path to the profiles.yml file to be used by dbt. Ignored when
+                    used in conjunction with generate_profiles. Generates
+                    'DBT_PROFILES_DIR' environment variable.
+                - dbt_version : str
+                    The version of dbt to use. Generates 'DBT_VERSION' environment
+                    variable.
+                - dbt_command : str
+                    The primary dbt command to run. Valid commands are build, run,
+                    test, compile, and retry.
+                - dbt_command_line_args : str
+                    Additional command line arguments to pass to dbt. Ignored when dbt
+                    retry command is selected.
+                - docs_report_id : str
+                    The ID of the HTML report hosting the static dbt docs for this job.
+                    Updates every time a run succeeds. This report will be
+                    automatically shared with all users who are shared on the job.
+                - skip_docs_generation : bool
+                    Whether to skip dbt docs generation. If true, the linked docs
+                    report will not be updated when the script runs. Defaults to false.
+                - generate_profiles : bool
+                    Whether to generate the profiles.yml file when running the script.
+                    Defaults to false.
+            - repo_http_uri : str
+                The URL of the git repository (e.g.,
+                https://github.com/organization/repo_name.git).
+            - repo_ref : str
+                A git reference specifying an unambiguous version of the file. Can be a
+                branch name, a tag, or the full or shortened SHA of a commit. Defaults
+                to 'main'.
+            - target_database : :class:`civis.Response`
+                - remote_host_id : int
+                    The remote host ID that this script will connect to.
+                - credential_id : int
+                    The credential that this script will use.
+        """
+        ...
+
+    def get_javascript_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetJavascriptRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the javascript script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - source : str
+                The body/text of the script.
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+            - running_as_id : int
+                The ID of the runner of this script.
+        """
+        ...
+
+    def get_custom_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseScriptsGetCustomRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /scripts/custom/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the custom script.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - values : :class:`civis.Response`
+                The inputs of the job at the time of the run.
+        """
+        ...
+
     def patch_container_runs(
         self,
         id: int,
@@ -45527,13 +46655,11 @@ class _Scripts:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.scripts.list_sql_git is deprecated and will be removed
         at civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.scripts.get_sql_git for the same method.
-        """
-    )
+        """)
     def list_sql_git(
         self,
         id: int,
@@ -45880,13 +47006,11 @@ class _Scripts:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.scripts.list_javascript_git is deprecated and will be
         removed at civis-python v3.0.0 (no release timeline yet). Please switch
         to <client>.scripts.get_javascript_git for the same method.
-        """
-    )
+        """)
     def list_javascript_git(
         self,
         id: int,
@@ -46233,13 +47357,11 @@ class _Scripts:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.scripts.list_python3_git is deprecated and will be
         removed at civis-python v3.0.0 (no release timeline yet). Please switch
         to <client>.scripts.get_python3_git for the same method.
-        """
-    )
+        """)
     def list_python3_git(
         self,
         id: int,
@@ -46586,13 +47708,11 @@ class _Scripts:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.scripts.list_r_git is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.scripts.get_r_git for the same method.
-        """
-    )
+        """)
     def list_r_git(
         self,
         id: int,
@@ -56782,12 +57902,10 @@ class _Table_Tags:
         ...
 
 class _Tables:
-    @deprecated(
-        """
+    @deprecated("""
         Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
         deprecated and will be removed after January 1, 2021.
-        """
-    )
+        """)
     def post_enhancements_geocodings(
         self,
         source_table_id: int,
@@ -56822,12 +57940,10 @@ class _Tables:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
         deprecated and will be removed after January 1, 2021.
-        """
-    )
+        """)
     def post_enhancements_cass_ncoa(
         self,
         source_table_id: int,
@@ -56894,12 +58010,10 @@ class _Tables:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
         deprecated and will be removed after January 1, 2021.
-        """
-    )
+        """)
     def get_enhancements_geocodings(
         self,
         id: int,
@@ -56937,12 +58051,10 @@ class _Tables:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
         deprecated and will be removed after January 1, 2021.
-        """
-    )
+        """)
     def get_enhancements_cass_ncoa(
         self,
         id: int,
@@ -57031,12 +58143,10 @@ class _Tables:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         Warning: The tables/:id/refresh endpoint is deprecated. Please use tables/scan
         from now on.
-        """
-    )
+        """)
     def post_refresh(
         self,
         id: int,
@@ -59625,14 +60735,12 @@ class _Usage:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.usage.list_llm_organization_summary is deprecated and
         will be removed at civis-python v3.0.0 (no release timeline yet). Please
         switch to <client>.usage.get_llm_organization_summary for the same
         method.
-        """
-    )
+        """)
     def list_llm_organization_summary(
         self,
         org_id: int,
@@ -60143,13 +61251,11 @@ class _Users:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.users.list_me is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.users.get_me for the same method.
-        """
-    )
+        """)
     def list_me(
         self,
     ) -> _ResponseUsersListMe:
@@ -61804,6 +62910,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -61898,6 +63006,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -62044,6 +63154,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -62190,6 +63302,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -62590,6 +63704,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -62783,13 +63899,11 @@ class _Workflows:
         """
         ...
 
-    @deprecated(
-        """
+    @deprecated("""
         The method name <client>.workflows.list_git is deprecated and will be removed at
         civis-python v3.0.0 (no release timeline yet). Please switch to
         <client>.workflows.get_git for the same method.
-        """
-    )
+        """)
     def list_git(
         self,
         id: int,
@@ -63123,6 +64237,8 @@ class _Workflows:
             - state : str
                 The state of the workflow. State is "running" if any execution is
                 running, otherwise reflects most recent execution state.
+            - last_execution_id : int
+                The ID of the most recent execution of this workflow, if any.
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -69439,6 +70555,51 @@ class _ResponseImportsListRunsLogs(Response):
     message: str
     level: str
 
+class _ResponseImportsGetFilesRunsInputs(Response):
+    name: str
+    sync_type: str
+    source: _ResponseImportsGetFilesRunsInputsSource
+    destination: _ResponseImportsGetFilesRunsInputsDestination
+    schedule: _ResponseImportsGetFilesRunsInputsSchedule
+    notifications: _ResponseImportsGetFilesRunsInputsNotifications
+    parent_id: int
+    is_outbound: bool
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+
+class _ResponseImportsGetFilesRunsInputsSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsGetFilesRunsInputsDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsGetFilesRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsGetFilesRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
 class _ResponseImportsPostFilesCsv(Response):
     id: int
     name: str
@@ -69698,6 +70859,50 @@ class _ResponseImportsListFilesCsvRunsLogs(Response):
     created_at: str
     message: str
     level: str
+
+class _ResponseImportsGetFilesCsvRunsInputs(Response):
+    name: str
+    source: _ResponseImportsGetFilesCsvRunsInputsSource
+    destination: _ResponseImportsGetFilesCsvRunsInputsDestination
+    first_row_is_header: bool
+    column_delimiter: str
+    escaped: bool
+    compression: str
+    existing_table_rows: str
+    max_errors: int
+    table_columns: List[_ResponseImportsGetFilesCsvRunsInputsTableColumns]
+    loosen_types: bool
+    execution: str
+    redshift_destination_options: (
+        _ResponseImportsGetFilesCsvRunsInputsRedshiftDestinationOptions
+    )
+    hidden: bool
+
+class _ResponseImportsGetFilesCsvRunsInputsSource(Response):
+    file_ids: List[int]
+    storage_path: _ResponseImportsGetFilesCsvRunsInputsSourceStoragePath
+
+class _ResponseImportsGetFilesCsvRunsInputsSourceStoragePath(Response):
+    storage_host_id: int
+    credential_id: int
+    file_paths: List[str]
+
+class _ResponseImportsGetFilesCsvRunsInputsDestination(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    primary_keys: List[str]
+    last_modified_keys: List[str]
+
+class _ResponseImportsGetFilesCsvRunsInputsTableColumns(Response):
+    name: str
+    sql_type: str
+
+class _ResponseImportsGetFilesCsvRunsInputsRedshiftDestinationOptions(Response):
+    diststyle: str
+    distkey: str
+    sortkeys: List[str]
 
 class _ResponseImportsListBatches(Response):
     id: int
@@ -70328,6 +71533,9 @@ class _ResponseJobsListRunsOutputs(Response):
     name: str
     link: str
     value: object
+
+class _ResponseJobsGetRunsInputs(Response):
+    values: dict
 
 class _ResponseJobsListRunsLogs(Response):
     id: int
@@ -76015,6 +77223,7 @@ class _ResponseReportsPutServicesArchiveUser(Response):
 
 class _ResponseReportsPostRefresh(Response):
     id: int
+    tableau_refresh_job_id: str
     organization: _ResponseReportsPostRefreshOrganization
 
 class _ResponseReportsPostRefreshOrganization(Response):
@@ -76022,6 +77231,11 @@ class _ResponseReportsPostRefreshOrganization(Response):
     tableau_refresh_usage: int
     tableau_refresh_limit: int
     tableau_refresh_history: List
+
+class _ResponseReportsGetRefresh(Response):
+    job_id: str
+    state: str
+    error: str
 
 class _ResponseReportsPostSql(Response):
     id: int
@@ -80157,6 +81371,356 @@ class _ResponseScriptsPostCustomRunsOutputs(Response):
     name: str
     link: str
     value: object
+
+class _ResponseScriptsGetSqlRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetSqlRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetSqlRunsInputsSchedule
+    notifications: _ResponseScriptsGetSqlRunsInputsNotifications
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    sql: str
+    remote_host_id: int
+    credential_id: int
+    csv_settings: _ResponseScriptsGetSqlRunsInputsCsvSettings
+    running_as_id: int
+
+class _ResponseScriptsGetSqlRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetSqlRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetSqlRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetSqlRunsInputsCsvSettings(Response):
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    unquoted: bool
+    force_multifile: bool
+    filename_prefix: str
+    max_file_size: int
+
+class _ResponseScriptsGetContainersRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetContainersRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetContainersRunsInputsSchedule
+    notifications: _ResponseScriptsGetContainersRunsInputsNotifications
+    required_resources: _ResponseScriptsGetContainersRunsInputsRequiredResources
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    time_zone: str
+    partition_label: str
+    hidden: bool
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseScriptsGetContainersRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetContainersRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetContainersRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetContainersRunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetPython3RunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetPython3RunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetPython3RunsInputsSchedule
+    notifications: _ResponseScriptsGetPython3RunsInputsNotifications
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    required_resources: _ResponseScriptsGetPython3RunsInputsRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsGetPython3RunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetPython3RunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetPython3RunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetPython3RunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetRRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetRRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetRRunsInputsSchedule
+    notifications: _ResponseScriptsGetRRunsInputsNotifications
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    required_resources: _ResponseScriptsGetRRunsInputsRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    source: str
+
+class _ResponseScriptsGetRRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetRRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetRRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetRRunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetDbtRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetDbtRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetDbtRunsInputsSchedule
+    notifications: _ResponseScriptsGetDbtRunsInputsNotifications
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    required_resources: _ResponseScriptsGetDbtRunsInputsRequiredResources
+    instance_type: str
+    cancel_timeout: int
+    docker_image_tag: str
+    partition_label: str
+    running_as_id: int
+    dbt_project: _ResponseScriptsGetDbtRunsInputsDbtProject
+    repo_http_uri: str
+    repo_ref: str
+    target_database: _ResponseScriptsGetDbtRunsInputsTargetDatabase
+
+class _ResponseScriptsGetDbtRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetDbtRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetDbtRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetDbtRunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
+class _ResponseScriptsGetDbtRunsInputsDbtProject(Response):
+    target: str
+    schema: str
+    project_dir: str
+    profiles_dir: str
+    dbt_version: str
+    dbt_command: str
+    dbt_command_line_args: str
+    docs_report_id: str
+    skip_docs_generation: bool
+    generate_profiles: bool
+
+class _ResponseScriptsGetDbtRunsInputsTargetDatabase(Response):
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseScriptsGetJavascriptRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseScriptsGetJavascriptRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseScriptsGetJavascriptRunsInputsSchedule
+    notifications: _ResponseScriptsGetJavascriptRunsInputsNotifications
+    next_run_at: str
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    source: str
+    remote_host_id: int
+    credential_id: int
+    running_as_id: int
+
+class _ResponseScriptsGetJavascriptRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseScriptsGetJavascriptRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetJavascriptRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetCustomRunsInputs(Response):
+    values: dict
 
 class _ResponseScriptsGetSqlGit(Response):
     git_ref: str
@@ -86271,6 +87835,7 @@ class _ResponseWorkflowsPost(Response):
     file_id: str
     user: _ResponseWorkflowsPostUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsPostSchedule
     allow_concurrent_executions: bool
     time_zone: str
@@ -86317,6 +87882,7 @@ class _ResponseWorkflowsGet(Response):
     file_id: str
     user: _ResponseWorkflowsGetUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsGetSchedule
     allow_concurrent_executions: bool
     time_zone: str
@@ -86363,6 +87929,7 @@ class _ResponseWorkflowsPut(Response):
     file_id: str
     user: _ResponseWorkflowsPutUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsPutSchedule
     allow_concurrent_executions: bool
     time_zone: str
@@ -86409,6 +87976,7 @@ class _ResponseWorkflowsPatch(Response):
     file_id: str
     user: _ResponseWorkflowsPatchUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsPatchSchedule
     allow_concurrent_executions: bool
     time_zone: str
@@ -86605,6 +88173,7 @@ class _ResponseWorkflowsPutArchive(Response):
     file_id: str
     user: _ResponseWorkflowsPutArchiveUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsPutArchiveSchedule
     allow_concurrent_executions: bool
     time_zone: str
@@ -86756,6 +88325,7 @@ class _ResponseWorkflowsPostClone(Response):
     file_id: str
     user: _ResponseWorkflowsPostCloneUser
     state: str
+    last_execution_id: int
     schedule: _ResponseWorkflowsPostCloneSchedule
     allow_concurrent_executions: bool
     time_zone: str

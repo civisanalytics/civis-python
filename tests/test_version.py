@@ -3,7 +3,6 @@ import re
 
 import civis
 
-
 _REPO_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 

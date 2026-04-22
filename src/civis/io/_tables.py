@@ -1317,7 +1317,7 @@ def civis_file_to_table(
         file_id, client, need_table_columns, headers, delimiter, hidden
     )
 
-    (cleaned_file_ids, headers, compression, delimiter, cleaned_table_columns) = (
+    cleaned_file_ids, headers, compression, delimiter, cleaned_table_columns = (
         _process_cleaning_results(
             cleaning_futures, client, headers, need_table_columns, delimiter
         )

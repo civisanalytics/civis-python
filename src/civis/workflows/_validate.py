@@ -9,7 +9,6 @@ import yaml
 
 from ._schemas import WORKFLOW_SCHEMA
 
-
 _TASK_TRANSITION_ENGINE_COMMANDS = frozenset(["pause", "succeed", "fail"])
 
 

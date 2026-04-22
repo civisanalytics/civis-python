@@ -21,7 +21,6 @@ from civis.base import CivisAPIError, EmptyResultError
 from civis._retries import get_default_retrying
 from civis.io._utils import TypePathLike
 
-
 try:
     import pandas as pd
 

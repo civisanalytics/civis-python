@@ -8,7 +8,6 @@ from civis.loggers import civis_logger
 from civis.response import find, find_one, ListResponse, Response, PaginatedResponse
 from civis.service_client import ServiceClient
 
-
 try:
     # __sphinx_build__ is injected into bulitins in docs/conf.py.
     if __sphinx_build__:  # type: ignore[name-defined]

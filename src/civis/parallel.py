@@ -18,7 +18,6 @@ import civis
 from civis.base import CivisAPIError
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
 
-
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 _DEFAULT_SETUP_CMD = ":"  # An sh command that does nothing.

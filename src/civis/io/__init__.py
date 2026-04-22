@@ -20,7 +20,6 @@ from civis.io._tables import (
     split_schema_tablename,
 )
 
-
 __all__ = [
     # from _databases.py
     "query_civis",

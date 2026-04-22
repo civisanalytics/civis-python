@@ -4,7 +4,6 @@ import os
 import uuid
 from typing import TypeAlias
 
-
 TypePathLike: TypeAlias = str | bytes | os.PathLike
 
 

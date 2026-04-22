@@ -8,7 +8,6 @@ import pytest
 from civis import APIClient
 from civis.resources import API_SPEC_PATH
 
-
 with open(API_SPEC_PATH) as f:
     API_SPEC = json.load(f, object_pairs_hook=OrderedDict)
 

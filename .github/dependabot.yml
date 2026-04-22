@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/docs"
+    schedule:
+      interval: "monthly"
+    # Never open PRs, as docs/requirements.txt is only used in Read The Docs builds,
+    # has low security risks in general, and we manually update it with uv.
+    # open-pull-requests-limit: 0 blocks version-update PRs; the catch-all ignore
+    # rule additionally blocks security-update PRs (which bypass the limit).
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "*"
