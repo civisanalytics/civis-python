@@ -8,11 +8,11 @@ attrs==26.1.0
     #   referencing
 babel==2.18.0
     # via sphinx
-certifi==2026.2.25
+certifi==2026.4.22
     # via requests
 charset-normalizer==3.4.7
     # via requests
-click==8.3.2
+click==8.3.3
     # via civis (pyproject.toml)
 cloudpickle==3.1.2
     # via civis (pyproject.toml)
@@ -20,7 +20,7 @@ docutils==0.22.4
     # via
     #   sphinx
     #   sphinx-rtd-theme
-idna==3.11
+idna==3.12
     # via requests
 imagesize==2.0.0
     # via sphinx
