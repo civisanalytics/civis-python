@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated the API spec. (#534)
-- Suppressed all pull requests by GitHub's dependabot for docs/requirements.txt. (534)
+- Suppressed all pull requests by GitHub's Dependabot for docs/requirements.txt. (#534)
 
 ## 2.8.1 - 2026-03-02
 
