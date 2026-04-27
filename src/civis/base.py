@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import platform
 import threading
@@ -12,6 +13,8 @@ import requests
 import civis
 from civis.response import PaginatedResponse, convert_response_data_type, Response
 from civis._retries import retry_request
+
+log = logging.getLogger(__name__)
 
 FINISHED = ["success", "succeeded"]
 FAILED = ["failed"]
@@ -221,6 +224,23 @@ class CivisAsyncResultBase(futures.Future):
     overwritten to change how the state of the object is returned.
     """
 
+    def __init__(self):
+        super().__init__()
+        # `concurrent.futures.Future._invoke_callbacks` silently swallows
+        # exceptions raised by done-callbacks (it only logs them). That
+        # hides real failures in post-processing steps attached via
+        # `add_done_callback` — e.g., a download step that runs out of
+        # disk space after the underlying Civis job succeeded. We capture
+        # the first such exception here so `.result()` and `.exception()`
+        # can surface it to callers.
+        self._callback_exception: BaseException | None = None
+        self._callbacks_complete = threading.Event()
+        # Track the thread currently running a done-callback so that a
+        # callback calling `.result()` on its own future doesn't deadlock
+        # waiting on `_callbacks_complete` (the event it is itself
+        # responsible for setting).
+        self._invoking_callbacks_thread: int | None = None
+
     def __repr__(self):
         # Almost the same as the superclass's __repr__, except we use
         # the `_civis_state` rather than the `_state`.
@@ -316,6 +336,65 @@ class CivisAsyncResultBase(futures.Future):
                 waiter.add_exception(self)
             self._condition.notify_all()
         self._invoke_callbacks()
+
+    def _run_done_callback(self, fn):
+        prev_thread = self._invoking_callbacks_thread
+        self._invoking_callbacks_thread = threading.get_ident()
+        try:
+            fn(self)
+        except BaseException as exc:
+            if self._callback_exception is None:
+                self._callback_exception = exc
+            log.exception("exception calling callback for %r", self)
+        finally:
+            self._invoking_callbacks_thread = prev_thread
+
+    def _invoke_callbacks(self):
+        try:
+            for callback in self._done_callbacks:
+                self._run_done_callback(callback)
+        finally:
+            self._callbacks_complete.set()
+
+    def add_done_callback(self, fn):
+        # Mirrors `concurrent.futures.Future.add_done_callback` but funnels
+        # the already-done case through `_run_done_callback` so exceptions
+        # raised during immediate-fire are captured the same way as those
+        # raised during `_invoke_callbacks`.
+        with self._condition:
+            if self._state not in (
+                futures._base.CANCELLED,
+                futures._base.CANCELLED_AND_NOTIFIED,
+                futures._base.FINISHED,
+            ):
+                self._done_callbacks.append(fn)
+                return
+        try:
+            self._run_done_callback(fn)
+        finally:
+            self._callbacks_complete.set()
+
+    def result(self, timeout=None):
+        result = super().result(timeout=timeout)
+        # `concurrent.futures.Future` notifies waiters before running
+        # done-callbacks, so super().result() can return before callbacks
+        # have finished in another thread. Block until they complete so
+        # callers don't miss a callback-driven side effect or a captured
+        # callback exception. The thread-ident check lets a callback call
+        # `.result()` on its own future without deadlocking.
+        if threading.get_ident() != self._invoking_callbacks_thread:
+            self._callbacks_complete.wait(timeout=timeout)
+        if self._callback_exception is not None:
+            raise self._callback_exception
+        return result
+
+    def exception(self, timeout=None):
+        exc = super().exception(timeout=timeout)
+        if exc is not None:
+            return exc
+        if threading.get_ident() != self._invoking_callbacks_thread:
+            self._callbacks_complete.wait(timeout=timeout)
+        return self._callback_exception
 
 
 def open_session(api_key, headers=None):

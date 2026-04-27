@@ -10,8 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Deprecated
 ### Removed
-### Fixed
 ### Security
+
+## 2.9.1 - 2026-04-27
+
+### Fixed
+- Exceptions raised by `add_done_callback` callbacks on a `CivisFuture`
+  (and any other `CivisAsyncResultBase` subclass) are now captured onto
+  the future and surfaced through `.result()` and `.exception()`, instead
+  of being silently swallowed by `concurrent.futures.Future._invoke_callbacks`. (#537)
 
 ## 2.9.0 - 2026-04-22
 

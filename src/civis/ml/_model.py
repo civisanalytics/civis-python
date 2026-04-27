@@ -548,6 +548,9 @@ class ModelFuture(ContainerFuture):
         del state["client"]
         del state["poller"]
         del state["_condition"]
+        # `_callbacks_complete` is a threading.Event (holds a lock) and is
+        # not picklable; recreate it in __setstate__.
+        del state["_callbacks_complete"]
         state["_done_callbacks"] = []
         state["_self_polling_executor"] = None
 
@@ -556,6 +559,7 @@ class ModelFuture(ContainerFuture):
     def __setstate__(self, state):
         self.__dict__ = state
         self._condition = threading.Condition()
+        self._callbacks_complete = threading.Event()
         self.client = APIClient()
         self.poller = self.client.scripts.get_containers_runs
         self._next_polling_interval = 1
