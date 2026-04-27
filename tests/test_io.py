@@ -1188,6 +1188,64 @@ def test_download_file(m_download_file):
     assert data == expected
 
 
+def _make_succeeded_civis_future():
+    # Build a CivisFuture and drive it to a succeeded state synchronously.
+    # A poller that returns "succeeded" on first call finishes the future
+    # inside __init__ (poll_on_creation=True); the Response carries the
+    # `output` list that _download_callback reads.
+    mock_client = create_client_mock()
+    api_result = Response(
+        {
+            "state": "succeeded",
+            "output": [{"path": "http://example.com/f", "file_id": 99}],
+        }
+    )
+    poller = mock.Mock(return_value=api_result)
+    return civis.futures.CivisFuture(
+        poller, (1, 2), client=mock_client, poll_on_creation=True
+    )
+
+
+def test_civis_to_csv_propagates_download_exception():
+    # Regression test for civisanalytics/civis-python#536: when the Civis
+    # unload job succeeds but the client-side download/decompression fails
+    # (e.g., out of disk space), the exception should surface through
+    # .result() and .exception() rather than being silently swallowed by
+    # concurrent.futures._invoke_callbacks.
+    fut = _make_succeeded_civis_future()
+    assert fut.done()
+
+    boom = OSError("[Errno 28] No space left on device")
+    with mock.patch(
+        "civis.io._tables._download_file", side_effect=boom
+    ) as m_download_file:
+        callback = civis.io._tables._download_callback(1, 2, "out.csv", b"", "none")
+        # concurrent.futures.Future._invoke_callbacks swallows and only
+        # logs exceptions raised by done-callbacks; the CivisAsyncResultBase
+        # wrapper captures them onto the future instead.
+        fut.add_done_callback(callback)
+        m_download_file.assert_called_once()
+
+    assert fut._callback_exception is boom
+    assert fut._callbacks_complete.is_set()
+    with pytest.raises(OSError, match="No space left"):
+        fut.result()
+    assert fut.exception() is boom
+
+
+def test_civis_to_csv_download_success():
+    fut = _make_succeeded_civis_future()
+
+    with mock.patch("civis.io._tables._download_file", return_value=None):
+        callback = civis.io._tables._download_callback(1, 2, "out.csv", b"", "none")
+        fut.add_done_callback(callback)
+
+    assert fut._callback_exception is None
+    assert fut._callbacks_complete.is_set()
+    assert fut.exception() is None
+    assert fut.result().state == "succeeded"
+
+
 def test_get_sql_select(*mocks):
     x = "select * from schema.table"
     y = "select a, b, c from schema.table"
