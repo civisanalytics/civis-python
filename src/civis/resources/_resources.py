@@ -92,25 +92,62 @@ GET_PATHS_WITH_ARRAY_RESPONSE = frozenset("""
 # automatically get only the correct non-legacy name.
 # When releasing civis-python v3.0.0, this frozenset can be removed.
 LEGACY_PATHS_WITH_LIST_NAME = frozenset("""
+    aliases/{id}/shares
     clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs
     clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics
+    credentials/{id}/shares
     databases/{id}/advanced-settings
     endpoints
+    enhancements/cass-ncoa/{id}/shares
+    enhancements/civis-data-match/{id}/shares
+    enhancements/geocode/{id}/shares
+    enhancements/identity-resolution/{id}/shares
+    files/{id}/shares
     git_repos/{id}/refs
     groups/{id}/child_groups
+    groups/{id}/shares
+    imports/{id}/shares
+    jobs/{id}/shares
+    json_values/{id}/shares
+    match_targets/{id}/shares
+    media/optimizations/{id}/shares
+    media/ratecards/{id}/shares
+    media/spot_orders/{id}/shares
     models/{id}/schedules
+    models/{id}/shares
     notebooks/{id}/git
+    notebooks/{id}/shares
     notebooks/{id}/update-links
     notifications
+    permission_sets/{id}/resources/{name}/shares
+    permission_sets/{id}/shares
     predictions/{id}/schedules
+    projects/{id}/shares
+    remote_hosts/{id}/shares
     reports/{id}/git
+    reports/{id}/shares
+    reports/services/{id}/shares
+    reports/sql/{id}/shares
+    scripts/containers/{id}/shares
+    scripts/custom/{id}/shares
+    scripts/dbt/{id}/shares
     scripts/javascript/{id}/git
+    scripts/javascript/{id}/shares
     scripts/python3/{id}/git
+    scripts/python3/{id}/shares
     scripts/r/{id}/git
+    scripts/r/{id}/shares
     scripts/sql/{id}/git
+    scripts/sql/{id}/shares
+    search
+    services/{id}/shares
+    storage_hosts/{id}/shares
+    templates/reports/{id}/shares
+    templates/scripts/{id}/shares
     usage/llm/organization/{org_id}/summary
     users/me
     workflows/{id}/git
+    workflows/{id}/shares
     """.strip().split())
 
 REGEX_DEP_WARN_LEGACY_LIST = re.compile(

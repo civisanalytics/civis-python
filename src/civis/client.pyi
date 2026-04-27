@@ -3322,7 +3322,7 @@ class _Databases:
         *,
         hidden: bool | None = ...,
     ) -> ListResponse[_ResponseDatabasesListSchemasTablesProjects]:
-        """List the projects a Table belongs to
+        """List the projects a Database Table belongs to
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects``
 
@@ -3386,7 +3386,7 @@ class _Databases:
         schema_name: str,
         table_name: str,
     ) -> Response:
-        """Add a Table to a project
+        """Add a Database Table to a project
 
         API URL: ``PUT /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
 
@@ -3415,7 +3415,7 @@ class _Databases:
         schema_name: str,
         table_name: str,
     ) -> Response:
-        """Remove a Table from a project
+        """Remove a Database Table from a project
 
         API URL: ``DELETE /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
 
@@ -5100,6 +5100,156 @@ class _Enhancements:
             - link : str
                 The hypermedia link to the output.
             - value : object
+        """
+        ...
+
+    def get_civis_data_match_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseEnhancementsGetCivisDataMatchRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the Civis Data Match.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the container.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - user_context : str
+                "runner" or "author", who to execute the script as when run as a
+                template.
+            - params : List[:class:`civis.Response`]
+                A definition of the parameters this script accepts in the arguments
+                field.
+
+                - name : str
+                    The variable's name as used within your code.
+                - label : str
+                    The label to present to users when asking them for the value.
+                - description : str
+                    A short sentence or fragment describing this parameter to the end
+                    user.
+                - type : str
+                    The type of parameter. Valid options: string, multi_line_string,
+                    integer, float, bool, file, table, database, credential_aws,
+                    credential_redshift, or credential_custom
+                - required : bool
+                    Whether this param is required.
+                - value : object
+                    The value you would like to set this param to. Setting this value
+                    makes this parameter a fixed param.
+                - default : str
+                    If an argument for this parameter is not defined, it will use this
+                    default value. Use true, True, t, y, yes, or 1 for true bool's or
+                    false, False, f, n, no, or 0 for false bool's. Cannot be used for
+                    parameters that are required or a credential type.
+                - allowed_values : List[:class:`civis.Response`]
+                    The possible values this parameter can take, effectively making
+                    this an enumerable parameter. Allowed values is an array of hashes
+                    of the following format: `{label: 'Import', 'value': 'import'}`
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares. Must be at least 2 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB). Must be at
+                    least 4 MB.
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - repo_http_uri : str
+                The location of a github repo to clone into the container, e.g.
+                github.com/my-user/my-repo.git.
+            - repo_ref : str
+                The tag or branch of the github repo to clone into the container.
+            - remote_host_credential_id : int
+                The id of the database credentials to pass into the environment of the
+                container.
+            - git_credential_id : int
+                The id of the git credential to be used when checking out the specified
+                git repo. If not supplied, the first git credential you've submitted
+                will be used. Unnecessary if no git repo is specified or the git repo
+                is public.
+            - docker_command : str
+                The command to run on the container. Will be run via sh as: ["sh",
+                "-c", dockerCommand]. Defaults to the Docker image's ENTRYPOINT/CMD.
+            - docker_image_name : str
+                The name of the docker image to pull from DockerHub.
+            - docker_image_tag : str
+                The tag of the docker image to pull from DockerHub.
+            - instance_type : str
+                The EC2 instance type to deploy to. Only available for jobs running on
+                kubernetes.
+            - cancel_timeout : int
+                The amount of time (in seconds) to wait before forcibly terminating the
+                script. When the script is cancelled, it is first sent a TERM signal.
+                If the script is still running after the timeout, it is sent a KILL
+                signal. Defaults to 0.
+            - time_zone : str
+                The time zone of this script.
+            - partition_label : str
+                The partition label used to run this object.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - running_as_id : int
+                The ID of the runner of this script.
         """
         ...
 
@@ -8930,6 +9080,126 @@ class _Enhancements:
         """
         ...
 
+    def get_cass_ncoa_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseEnhancementsGetCassNcoaRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the CASS NCOA.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the enhancement job.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - source : :class:`civis.Response`
+                - database_table : :class:`civis.Response`
+                    - schema : str
+                        The schema name of the source table.
+                    - table : str
+                        The name of the source table.
+                    - remote_host_id : int
+                        The ID of the database host for the table.
+                    - credential_id : int
+                        The id of the credentials to be used when performing the
+                        enhancement.
+                    - multipart_key : List[str]
+                        The source table primary key.
+            - destination : :class:`civis.Response`
+                - database_table : :class:`civis.Response`
+                    - schema : str
+                        The schema name for the output data.
+                    - table : str
+                        The table name for the output data.
+            - column_mapping : :class:`civis.Response`
+                - address1 : str
+                    The first address line.
+                - address2 : str
+                    The second address line.
+                - city : str
+                    The city of an address.
+                - state : str
+                    The state of an address.
+                - zip : str
+                    The zip code of an address.
+                - name : str
+                    The full name of the resident at this address. If needed, separate
+                    multiple columns with `+`, e.g. `first_name+last_name`
+                - company : str
+                    The name of the company located at this address.
+            - use_default_column_mapping : bool
+                Defaults to true, where the existing column mapping on the input table
+                will be used. If false, a custom column mapping must be provided.
+            - perform_ncoa : bool
+                Whether to update addresses for records matching the National Change of
+                Address (NCOA) database.
+            - ncoa_credential_id : int
+                Credential to use when performing NCOA updates. Required if
+                'performNcoa' is true.
+            - output_level : str
+                The set of fields persisted by a CASS or NCOA enhancement.For CASS
+                enhancements, one of 'cass' or 'all.'For NCOA enhancements, one of
+                'cass', 'ncoa' , 'coalesced' or 'all'.By default, all fields will be
+                returned.
+            - limiting_sql : str
+                The limiting SQL for the source table. "WHERE" should be omitted (e.g.
+                state='IL').
+            - batch_size : int
+                The maximum number of records processed at a time. Note that this
+                parameter is not available to all users.
+            - parent_id : int
+                Parent ID that triggers this enhancement.
+        """
+        ...
+
     def post_geocode(
         self,
         name: str,
@@ -9925,6 +10195,93 @@ class _Enhancements:
             - link : str
                 The hypermedia link to the output.
             - value : object
+        """
+        ...
+
+    def get_geocode_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseEnhancementsGetGeocodeRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the Geocode.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of the enhancement job.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - remote_host_id : int
+                The ID of the remote host.
+            - credential_id : int
+                The ID of the remote host credential.
+            - source_schema_and_table : str
+                The source database schema and table.
+            - multipart_key : List[str]
+                The source table primary key.
+            - limiting_sql : str
+                The limiting SQL for the source table. "WHERE" should be omitted (e.g.
+                state='IL').
+            - target_schema : str
+                The output table schema.
+            - target_table : str
+                The output table name.
+            - country : str
+                The country of the addresses to be geocoded; either 'us' or 'ca'.
+            - provider : str
+                The geocoding provider; one of postgis and geocoder_ca.
+            - output_address : bool
+                Whether to output the parsed address. Only guaranteed for the 'postgis'
+                provider.
+            - parent_id : int
+                Parent ID that triggers this enhancement.
         """
         ...
 
@@ -11990,6 +12347,76 @@ class _Exports:
             - link : str
                 The hypermedia link to the output.
             - value : object
+        """
+        ...
+
+    def get_files_csv_runs_inputs(
+        self,
+        id: int,
+        run_id: int,
+    ) -> _ResponseExportsGetFilesCsvRunsInputs:
+        """Get the inputs for a run
+
+        API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/inputs``
+
+        Parameters
+        ----------
+        id : int
+            The ID of the CSV Export.
+        run_id : int
+            The ID of the run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - name : str
+                The name of this Csv Export job.
+            - source : :class:`civis.Response`
+                - sql : str
+                    The SQL query for this Csv Export job
+                - remote_host_id : int
+                    The ID of the destination database host.
+                - credential_id : int
+                    The ID of the credentials for the destination database.
+            - destination : :class:`civis.Response`
+                - filename_prefix : str
+                    The prefix of the name of the file returned to the user.
+                - storage_path : :class:`civis.Response`
+                    - file_path : str
+                        The path within the bucket where the exported file will be
+                        saved. E.g. the file_path for "s3://mybucket/files/all/" would
+                        be "/files/all/"
+                    - storage_host_id : int
+                        The ID of the destination storage host.
+                    - credential_id : int
+                        The ID of the credentials for the destination storage host.
+                    - existing_files : str
+                        Notifies the job of what to do in the case that the exported
+                        file already exists at the provided path.One of: fail, append,
+                        overwrite. Default: fail. If "append" is specified,the new file
+                        will always be added to the provided path. If "overwrite" is
+                        specifiedall existing files at the provided path will be
+                        deleted and the new file will be added.By default, or if "fail"
+                        is specified, the export will fail if a file exists at the
+                        provided path.
+            - include_header : bool
+                A boolean value indicating whether or not the header should be
+                included. Defaults to true.
+            - compression : str
+                The compression of the output file. Valid arguments are "gzip" and
+                "none". Defaults to "gzip".
+            - column_delimiter : str
+                The column delimiter for the output file. Valid arguments are "comma",
+                "tab", and "pipe". Defaults to "comma".
+            - hidden : bool
+                A boolean value indicating whether or not this request should be
+                hidden. Defaults to false.
+            - force_multifile : bool
+                Whether or not the csv should be split into multiple files. Default:
+                false
+            - max_file_size : int
+                The max file size, in MB, created files will be. Only available when
+                force_multifile is true.
         """
         ...
 
@@ -15131,9 +15558,6 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                    - salesforce : :class:`civis.Response`
-                        - object_name : str
-                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -15639,9 +16063,6 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                    - salesforce : :class:`civis.Response`
-                        - object_name : str
-                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -16113,7 +16534,7 @@ class _Imports:
         Parameters
         ----------
         id : int
-            The ID of the import job.
+            The ID of the Import job.
         run_id : int
             The ID of the run.
         last_id : int, optional
@@ -17697,9 +18118,6 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                    - salesforce : :class:`civis.Response`
-                        - object_name : str
-                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -18064,9 +18482,6 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                    - salesforce : :class:`civis.Response`
-                        - object_name : str
-                            This parameter is deprecated
                 - destination : :class:`civis.Response`
                     - path : str
                         The schema.tablename to sync to. If you are doing a Google
@@ -18353,9 +18768,6 @@ class _Imports:
                     The worksheet tab name.
                 - worksheet_id : int
                     The worksheet tab id.
-            - salesforce : dict
-                - object_name : str
-                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -18504,9 +18916,6 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
-                - salesforce : :class:`civis.Response`
-                    - object_name : str
-                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -18672,9 +19081,6 @@ class _Imports:
                     The worksheet tab name.
                 - worksheet_id : int
                     The worksheet tab id.
-            - salesforce : dict
-                - object_name : str
-                    This parameter is deprecated
         destination : dict
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
@@ -18823,9 +19229,6 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
-                - salesforce : :class:`civis.Response`
-                    - object_name : str
-                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -19000,9 +19403,6 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
-                - salesforce : :class:`civis.Response`
-                    - object_name : str
-                        This parameter is deprecated
             - destination : :class:`civis.Response`
                 - path : str
                     The schema.tablename to sync to. If you are doing a Google Sheet
@@ -66619,6 +67019,67 @@ class _ResponseEnhancementsListCivisDataMatchRunsOutputs(Response):
     link: str
     value: object
 
+class _ResponseEnhancementsGetCivisDataMatchRunsInputs(Response):
+    name: str
+    parent_id: int
+    user_context: str
+    params: List[_ResponseEnhancementsGetCivisDataMatchRunsInputsParams]
+    arguments: dict
+    schedule: _ResponseEnhancementsGetCivisDataMatchRunsInputsSchedule
+    notifications: _ResponseEnhancementsGetCivisDataMatchRunsInputsNotifications
+    required_resources: (
+        _ResponseEnhancementsGetCivisDataMatchRunsInputsRequiredResources
+    )
+    repo_http_uri: str
+    repo_ref: str
+    remote_host_credential_id: int
+    git_credential_id: int
+    docker_command: str
+    docker_image_name: str
+    docker_image_tag: str
+    instance_type: str
+    cancel_timeout: int
+    time_zone: str
+    partition_label: str
+    hidden: bool
+    target_project_id: int
+    running_as_id: int
+
+class _ResponseEnhancementsGetCivisDataMatchRunsInputsParams(Response):
+    name: str
+    label: str
+    description: str
+    type: str
+    required: bool
+    value: object
+    default: str
+    allowed_values: List
+
+class _ResponseEnhancementsGetCivisDataMatchRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseEnhancementsGetCivisDataMatchRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetCivisDataMatchRunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
+
 class _ResponseEnhancementsListCivisDataMatchShares(Response):
     readers: _ResponseEnhancementsListCivisDataMatchSharesReaders
     writers: _ResponseEnhancementsListCivisDataMatchSharesWriters
@@ -68000,6 +68461,67 @@ class _ResponseEnhancementsListCassNcoaRunsOutputs(Response):
     link: str
     value: object
 
+class _ResponseEnhancementsGetCassNcoaRunsInputs(Response):
+    name: str
+    schedule: _ResponseEnhancementsGetCassNcoaRunsInputsSchedule
+    notifications: _ResponseEnhancementsGetCassNcoaRunsInputsNotifications
+    source: _ResponseEnhancementsGetCassNcoaRunsInputsSource
+    destination: _ResponseEnhancementsGetCassNcoaRunsInputsDestination
+    column_mapping: _ResponseEnhancementsGetCassNcoaRunsInputsColumnMapping
+    use_default_column_mapping: bool
+    perform_ncoa: bool
+    ncoa_credential_id: int
+    output_level: str
+    limiting_sql: str
+    batch_size: int
+    parent_id: int
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsSource(Response):
+    database_table: _ResponseEnhancementsGetCassNcoaRunsInputsSourceDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    remote_host_id: int
+    credential_id: int
+    multipart_key: List[str]
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsDestination(Response):
+    database_table: _ResponseEnhancementsGetCassNcoaRunsInputsDestinationDatabaseTable
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+
+class _ResponseEnhancementsGetCassNcoaRunsInputsColumnMapping(Response):
+    address1: str
+    address2: str
+    city: str
+    state: str
+    zip: str
+    name: str
+    company: str
+
 class _ResponseEnhancementsPostGeocode(Response):
     id: int
     name: str
@@ -68283,6 +68805,42 @@ class _ResponseEnhancementsListGeocodeRunsOutputs(Response):
     name: str
     link: str
     value: object
+
+class _ResponseEnhancementsGetGeocodeRunsInputs(Response):
+    name: str
+    schedule: _ResponseEnhancementsGetGeocodeRunsInputsSchedule
+    notifications: _ResponseEnhancementsGetGeocodeRunsInputsNotifications
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List[str]
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    parent_id: int
+
+class _ResponseEnhancementsGetGeocodeRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseEnhancementsGetGeocodeRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
 
 class _ResponseEnhancementsListCassNcoaShares(Response):
     readers: _ResponseEnhancementsListCassNcoaSharesReaders
@@ -69136,6 +69694,32 @@ class _ResponseExportsListFilesCsvRunsOutputs(Response):
     name: str
     link: str
     value: object
+
+class _ResponseExportsGetFilesCsvRunsInputs(Response):
+    name: str
+    source: _ResponseExportsGetFilesCsvRunsInputsSource
+    destination: _ResponseExportsGetFilesCsvRunsInputsDestination
+    include_header: bool
+    compression: str
+    column_delimiter: str
+    hidden: bool
+    force_multifile: bool
+    max_file_size: int
+
+class _ResponseExportsGetFilesCsvRunsInputsSource(Response):
+    sql: str
+    remote_host_id: int
+    credential_id: int
+
+class _ResponseExportsGetFilesCsvRunsInputsDestination(Response):
+    filename_prefix: str
+    storage_path: _ResponseExportsGetFilesCsvRunsInputsDestinationStoragePath
+
+class _ResponseExportsGetFilesCsvRunsInputsDestinationStoragePath(Response):
+    file_path: str
+    storage_host_id: int
+    credential_id: int
+    existing_files: str
 
 class _ResponseExportsPostFilesCsv(Response):
     id: int
@@ -70211,7 +70795,6 @@ class _ResponseImportsPutArchiveSyncsSource(Response):
     database_table: _ResponseImportsPutArchiveSyncsSourceDatabaseTable
     file: _ResponseImportsPutArchiveSyncsSourceFile
     google_worksheet: _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet
-    salesforce: _ResponseImportsPutArchiveSyncsSourceSalesforce
 
 class _ResponseImportsPutArchiveSyncsSourceDatabaseTable(Response):
     schema: str
@@ -70226,9 +70809,6 @@ class _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet(Response):
     spreadsheet_id: str
     worksheet: str
     worksheet_id: int
-
-class _ResponseImportsPutArchiveSyncsSourceSalesforce(Response):
-    object_name: str
 
 class _ResponseImportsPutArchiveSyncsDestination(Response):
     path: str
@@ -70419,7 +70999,6 @@ class _ResponseImportsPostSyncsSource(Response):
     database_table: _ResponseImportsPostSyncsSourceDatabaseTable
     file: _ResponseImportsPostSyncsSourceFile
     google_worksheet: _ResponseImportsPostSyncsSourceGoogleWorksheet
-    salesforce: _ResponseImportsPostSyncsSourceSalesforce
 
 class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
     schema: str
@@ -70434,9 +71013,6 @@ class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
     spreadsheet_id: str
     worksheet: str
     worksheet_id: int
-
-class _ResponseImportsPostSyncsSourceSalesforce(Response):
-    object_name: str
 
 class _ResponseImportsPostSyncsDestination(Response):
     path: str
@@ -71004,7 +71580,6 @@ class _ResponseImportsGetSyncsSource(Response):
     database_table: _ResponseImportsGetSyncsSourceDatabaseTable
     file: _ResponseImportsGetSyncsSourceFile
     google_worksheet: _ResponseImportsGetSyncsSourceGoogleWorksheet
-    salesforce: _ResponseImportsGetSyncsSourceSalesforce
 
 class _ResponseImportsGetSyncsSourceDatabaseTable(Response):
     schema: str
@@ -71019,9 +71594,6 @@ class _ResponseImportsGetSyncsSourceGoogleWorksheet(Response):
     spreadsheet_id: str
     worksheet: str
     worksheet_id: int
-
-class _ResponseImportsGetSyncsSourceSalesforce(Response):
-    object_name: str
 
 class _ResponseImportsGetSyncsDestination(Response):
     path: str
@@ -71160,7 +71732,6 @@ class _ResponseImportsPutSyncsSource(Response):
     database_table: _ResponseImportsPutSyncsSourceDatabaseTable
     file: _ResponseImportsPutSyncsSourceFile
     google_worksheet: _ResponseImportsPutSyncsSourceGoogleWorksheet
-    salesforce: _ResponseImportsPutSyncsSourceSalesforce
 
 class _ResponseImportsPutSyncsSourceDatabaseTable(Response):
     schema: str
@@ -71175,9 +71746,6 @@ class _ResponseImportsPutSyncsSourceGoogleWorksheet(Response):
     spreadsheet_id: str
     worksheet: str
     worksheet_id: int
-
-class _ResponseImportsPutSyncsSourceSalesforce(Response):
-    object_name: str
 
 class _ResponseImportsPutSyncsDestination(Response):
     path: str
@@ -71276,7 +71844,6 @@ class _ResponseImportsPutSyncsArchiveSource(Response):
     database_table: _ResponseImportsPutSyncsArchiveSourceDatabaseTable
     file: _ResponseImportsPutSyncsArchiveSourceFile
     google_worksheet: _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet
-    salesforce: _ResponseImportsPutSyncsArchiveSourceSalesforce
 
 class _ResponseImportsPutSyncsArchiveSourceDatabaseTable(Response):
     schema: str
@@ -71291,9 +71858,6 @@ class _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet(Response):
     spreadsheet_id: str
     worksheet: str
     worksheet_id: int
-
-class _ResponseImportsPutSyncsArchiveSourceSalesforce(Response):
-    object_name: str
 
 class _ResponseImportsPutSyncsArchiveDestination(Response):
     path: str
