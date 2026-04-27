@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.9.1 - 2026-04-27
 
 ### Fixed
+- Handled legacy list_* endpoints for shares and search. This is in preparation for
+  an upcoming Civis API spec update where the endpoints in question will
+  result in the (preferred) get_* endpoint methods in the auto-generated client. (538)
 - Exceptions raised by `add_done_callback` callbacks on a `CivisFuture`
   (and any other `CivisAsyncResultBase` subclass) are now captured onto
   the future and surfaced through `.result()` and `.exception()`, instead
