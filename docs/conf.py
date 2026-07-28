@@ -14,6 +14,7 @@
 # serve to show the default.
 
 import builtins
+import glob
 import inspect
 import os
 import datetime
@@ -128,7 +129,10 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
-# Suppress irrelevant warnings during doc builds.
+# Keep numpydoc from adding ":toctree:" to the "Methods" summary tables it generates.
+# Besides being noisy, that would make it ask sphinx.ext.autosummary for ~900 stub
+# pages that autosummary can't generate: its stub generator scans rst *source* for
+# ".. autosummary::" and never sees the directives numpydoc injects at build time.
 numpydoc_class_members_toctree = False
 
 # -- Options for HTML output ----------------------------------------------
@@ -138,7 +142,16 @@ html_theme = "sphinx_rtd_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-# html_theme_options = {}
+html_theme_options = {
+    # Stop the sidebar navigation one level above the individual endpoint method
+    # pages. The theme's default of 4 puts a copy of the endpoint's entire method
+    # list (219 entries for /scripts) into the sidebar of every one of that
+    # endpoint's method pages, which is more than half of the built HTML and swamps
+    # the content on pages that exist precisely to be small. The methods are still
+    # reachable from the "Methods" table on the endpoint page, and breadcrumbs and
+    # prev/next links are unaffected.
+    "navigation_depth": 3,
+}
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -368,45 +381,157 @@ def _attach_classes_to_module(module, class_data):
         setattr(module, class_name.title(), klass)
 
 
-_autodoc_fmt = (
-    ".. autoclass:: {}\n"
-    "   :members:\n"
-    "   :exclude-members: __init__\n\n"
-    "   .. generatedautosummary:: {}\n\n"
+_API_RESOURCES_HEADER = (
+    ".. _api_resources:\n\n"
+    "API Resources\n"
+    "=============\n\n"
+    ".. note::\n\n"
+    "   The API resources listed in this documentation are those for "
+    "   a standard Civis Platform user. "
+    "   Particular users may have access to resources and/or "
+    "   methods that are featured-flagged or still under development and "
+    "   therefore do not appear in this documentation. "
+    "   For the exact API resources and methods available to a given "
+    "   Civis Platform user, log on as that user and go to "
+    "   https://api.civisanalytics.com.\n\n"
+    ".. toctree::\n"
+    "   :titlesonly:\n\n"
 )
 
+# Each endpoint page is only an index: the class docstring plus the "Methods" summary
+# table that numpydoc injects (because numpydoc_show_class_members is on). Deliberately
+# *no* ``:members:`` here -- the full documentation of every method lives on its own
+# page, so that e.g. the /scripts endpoint page stays a few dozen KB instead of the
+# 2 MB it used to be with all 200+ methods inlined.
+_ENDPOINT_FMT = (
+    ".. _{label}:\n\n"
+    "{title}\n"
+    "{underline}\n\n"
+    ".. autoclass:: {full_path}\n"
+    "   :exclude-members: __init__\n\n"
+    ".. toctree::\n"
+    "   :hidden:\n\n"
+    "{toctree_entries}\n"
+)
 
-def _write_resources_rst(class_names, filename, civis_module):
-    with open(filename, "w") as resources_rst_file:
-        resources_rst_file.write(
-            ".. _api_resources:\n\n"
-            "API Resources\n"
-            "=============\n\n"
-            ".. note::\n\n"
-            "   The API resources listed in this documentation are those for "
-            "   a standard Civis Platform user. "
-            "   Particular users may have access to resources and/or "
-            "   methods that are featured-flagged or still under development and "
-            "   therefore do not appear in this documentation. "
-            "   For the exact API resources and methods available to a given "
-            "   Civis Platform user, log on as that user and go to "
-            "   https://api.civisanalytics.com.\n\n"
-            ".. toctree::\n"
-            "   :titlesonly:\n\n"
+# One page per endpoint method. The title is what a user actually types, and the
+# ``automethod`` keeps the cross-reference target at
+# ``civis.resources._resources.<Endpoint>.<method>`` so that the summary table on the
+# endpoint page (and any other cross-reference) resolves to this page.
+_METHOD_FMT = (
+    ".. _{label}:\n\n"
+    "{title}\n"
+    "{underline}\n\n"
+    "A method of the :ref:`{endpoint_label}` endpoint.\n\n"
+    ".. automethod:: {full_path}.{method_name}\n"
+)
+
+_DOCS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def _method_names(klass):
+    """Public method names of an auto-generated endpoint class.
+
+    This must match numpydoc's own introspection
+    (``numpydoc.docscrape.ClassDoc.methods``, i.e. ``sorted(inspect.getmembers(cls))``
+    filtered down to public callables), because numpydoc -- not this file -- renders
+    the "Methods" summary table on the endpoint page, and every row of that table
+    needs a per-method page to link to.
+    """
+    return sorted(
+        name
+        for name, member in inspect.getmembers(klass)
+        if not name.startswith("_") and callable(member)
+    )
+
+
+def _method_dir(base_path):
+    return os.path.join(_DOCS_DIR, f"api_{base_path}")
+
+
+def _write_if_changed(path, content):
+    """Write ``content`` to ``path``, but only if that would change the file.
+
+    This file generates ~950 rst files. Rewriting them all unconditionally would bump
+    their mtimes and force Sphinx to re-read every document on every build, so an
+    incremental rebuild would never be cheap.
+    """
+    try:
+        with open(path) as existing_file:
+            if existing_file.read() == content:
+                return
+    except FileNotFoundError:
+        pass
+    with open(path, "w") as new_file:
+        new_file.write(content)
+
+
+def _remove_stale_method_rst(expected_paths):
+    """Delete per-method rst files left over from an earlier doc build.
+
+    An API spec update can remove or rename methods, and a leftover page for a method
+    that no longer exists would still be picked up by Sphinx, which would then warn
+    about a missing attribute. Only ``*.rst`` files and then-empty directories are
+    removed, so an unrelated directory that happens to match ``api_*`` is left alone.
+    """
+    for dir_path in glob.glob(os.path.join(_DOCS_DIR, "api_*")):
+        if not os.path.isdir(dir_path):
+            continue
+        for rst_path in glob.glob(os.path.join(dir_path, "*.rst")):
+            if rst_path not in expected_paths:
+                os.remove(rst_path)
+        if not os.listdir(dir_path):
+            os.rmdir(dir_path)
+
+
+def _write_method_rst(base_path, endpoint_name, method_name, civis_module):
+    title = f"client.{base_path}.{method_name}"
+    path = os.path.join(_method_dir(base_path), f"{method_name}.rst")
+    _write_if_changed(
+        path,
+        _METHOD_FMT.format(
+            label=f"api_{base_path}_{method_name}",
+            title=title,
+            underline="=" * len(title),
+            endpoint_label=f"api_{base_path}_endpoint",
+            full_path=".".join((civis_module, endpoint_name)),
+            method_name=method_name,
+        ),
+    )
+    return path
+
+
+def _write_resources_rst(class_names, filename, civis_module, class_data):
+    resources_rst = _API_RESOURCES_HEADER
+    expected_method_rst = set()
+    for class_name in class_names:
+        endpoint_rst_filename_no_ext = f"api_{class_name.lower()}_endpoint"
+        resources_rst += f"   {endpoint_rst_filename_no_ext}\n"
+        endpoint_name = class_name.title()
+        title = endpoint_name.replace("Json", "JSON").replace("_", " ")
+        method_names = _method_names(class_data[class_name])
+        os.makedirs(_method_dir(class_name), exist_ok=True)
+        _write_if_changed(
+            os.path.join(_DOCS_DIR, f"{endpoint_rst_filename_no_ext}.rst"),
+            _ENDPOINT_FMT.format(
+                label=endpoint_rst_filename_no_ext,
+                title=title,
+                # The heading text isn't the class name, so the underline has to be
+                # as long as the text (e.g. "JSON Values"), not as long as
+                # "Json_Values".
+                underline="=" * len(title),
+                full_path=".".join((civis_module, endpoint_name)),
+                toctree_entries="\n".join(
+                    f"   api_{class_name}/{method_name}" for method_name in method_names
+                ),
+            ),
         )
-        for class_name in class_names:
-            endpoint_rst_filename_no_ext = f"api_{class_name.lower()}_endpoint"
-            endpoint_rst_filename = f"{endpoint_rst_filename_no_ext}.rst"
-            resources_rst_file.write(f"   {endpoint_rst_filename_no_ext}\n")
-            with open(endpoint_rst_filename, "w") as endpoint_rst_file:
-                endpoint_rst_file.write(f".. _{endpoint_rst_filename_no_ext}:\n\n")
-                endpoint_name = class_name.title()
-                full_path = ".".join((civis_module, endpoint_name))
-                endpoint_rst_file.write(
-                    f"{endpoint_name.replace('Json', 'JSON').replace('_', ' ')}\n"
-                    f"{'=' * len(endpoint_name)}\n\n"
-                )
-                endpoint_rst_file.write(_autodoc_fmt.format(full_path, full_path))
+        for method_name in method_names:
+            expected_method_rst.add(
+                _write_method_rst(class_name, endpoint_name, method_name, civis_module)
+            )
+    _write_if_changed(os.path.join(_DOCS_DIR, filename), resources_rst)
+    _remove_stale_method_rst(expected_method_rst)
 
 
 def _write_hide_endpoint_class_sig_css(class_names):
@@ -455,43 +580,10 @@ civis.APIClient.__doc__ += _make_attr_docs(sorted_class_names, _generated_attach
 #   we can consider using civis/client.pyi to document the API endpoints
 #   instead of having to fake-attach the endpoint classes to a module.
 _attach_classes_to_module(_generated_attach_point, extra_classes)
-_write_resources_rst(sorted_class_names, _rst_basename, _generated_attach_path)
+_write_resources_rst(
+    sorted_class_names, _rst_basename, _generated_attach_path, extra_classes
+)
 _write_hide_endpoint_class_sig_css(sorted_class_names)
-
-# The following directive makes all (public) methods of an Endpoint
-# auto-discoverable. See https://stackoverflow.com/a/30783465
-from sphinx.ext.autosummary import Autosummary, get_documenter  # noqa: E402
-from sphinx.util.inspect import safe_getattr  # noqa: E402
-
-
-class GeneratedAutosummary(Autosummary):
-    """Helper for documenting all methods of an auto-generated endpoint."""
-
-    required_arguments = 1
-
-    @staticmethod
-    def get_members(obj, typ, public_only=True):
-        items = []
-        for name in dir(obj):
-            if public_only and name.startswith("_"):
-                continue
-            try:
-                documenter = get_documenter(None, safe_getattr(obj, name), obj)
-            except AttributeError:
-                continue
-            if documenter.objtype == typ:
-                items.append(name)
-        return items
-
-    def run(self):
-        input_name = self.arguments[0]
-        module_name, class_name = input_name.rsplit(".", 1)
-        module = __import__(module_name, globals(), locals(), [class_name])
-        klass = getattr(module, class_name)
-        methods = self.get_members(klass, "method")
-        self.content = ["~{}.{}".format(input_name, method) for method in methods]
-        return super().run()
-
 
 # We fake-attached all of the autogenerated classes to
 # civis.resources._resources, but we don't want them to appear in the docs with
@@ -499,7 +591,8 @@ class GeneratedAutosummary(Autosummary):
 # There is a global `add_module_name` parameter that we want to set to False
 # for the autogenerated classes only. This needs to be done at the `Domain`
 # level since that is where the rst is actually parsed into nodes.
-from sphinx.domains.python import PythonDomain, PyClasslike  # noqa: E402
+from sphinx import addnodes  # noqa: E402
+from sphinx.domains.python import PythonDomain, PyClasslike, PyMethod  # noqa: E402
 
 _extra_class_titles = [klass.title() for klass in extra_classes.keys()]
 
@@ -524,7 +617,31 @@ class MaybeHiddenModulePyClasslike(PyClasslike):
 PythonDomain.directives["class"] = MaybeHiddenModulePyClasslike
 
 
+# The same problem as above, one level down. Now that each endpoint method has its own
+# page, its `automethod` is no longer nested inside the endpoint's `autoclass`, so
+# Sphinx no longer strips the class name from the signature and renders
+# "Scripts.get(...)" instead of "get(...)". That prefix is misleading (again, the class
+# can't be imported from that module) and it disagrees with the page title,
+# "client.scripts.get", so drop the node. The cross-reference target is built from the
+# directive's `:module:` option and the signature text rather than from what gets
+# rendered, so it stays civis.resources._resources.Scripts.get.
+class MaybeHiddenClassPyMethod(PyMethod):
+
+    def handle_signature(self, sig, signode):
+        result = super().handle_signature(sig, signode)
+        # Is this a method of an autogenerated endpoint class?
+        toggle = self.options.get("module") == _generated_attach_path and any(
+            sig.startswith(f"{title}.") for title in _extra_class_titles
+        )
+        if toggle:
+            for node in list(signode.findall(addnodes.desc_addname)):
+                signode.remove(node)
+        return result
+
+
+PythonDomain.directives["method"] = MaybeHiddenClassPyMethod
+
+
 def setup(app):
-    app.add_directive("generatedautosummary", GeneratedAutosummary)
     app.add_css_file("custom.css")
     app.add_css_file("hide_endpoint_class_sig.css")

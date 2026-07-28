@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Changed
+- In the Sphinx docs, each API endpoint method now has its own page
+  (e.g., `api_scripts/get.html` for `client.scripts.get`), instead of every method of an
+  endpoint being documented on a single page. The per-endpoint pages
+  (e.g., `api_scripts_endpoint.html`) keep their URLs and are now compact indexes whose
+  "Methods" tables link to the new per-method pages. This keeps individual pages small
+  enough for LLM-based tools to consume -- the `/scripts` endpoint page, which documented
+  218 methods inline, shrank from 2.1 MB to 103 KB. The sidebar navigation depth is also
+  capped at 3 so that an endpoint's method list isn't repeated on each of its method
+  pages. (#539)
+
 ### Deprecated
 ### Removed
 ### Security
