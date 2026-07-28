@@ -20,6 +20,12 @@ class _Admin:
 
         API URL: ``GET /admin/organizations``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.admin.list_organizations(...)
+
         Parameters
         ----------
         status : List[str], optional
@@ -86,6 +92,12 @@ class _Aliases:
 
         API URL: ``GET /aliases/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -136,6 +148,12 @@ class _Aliases:
         """Set the permissions users have on this object
 
         API URL: ``PUT /aliases/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.put_shares_users(...)
 
         Parameters
         ----------
@@ -192,6 +210,12 @@ class _Aliases:
 
         API URL: ``DELETE /aliases/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -218,6 +242,12 @@ class _Aliases:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /aliases/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.put_shares_groups(...)
 
         Parameters
         ----------
@@ -274,6 +304,12 @@ class _Aliases:
 
         API URL: ``DELETE /aliases/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -297,6 +333,12 @@ class _Aliases:
         """List dependent objects for this object
 
         API URL: ``GET /aliases/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.list_dependencies(...)
 
         Parameters
         ----------
@@ -340,6 +382,12 @@ class _Aliases:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /aliases/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.put_transfer(...)
 
         Parameters
         ----------
@@ -393,6 +441,12 @@ class _Aliases:
         """List Aliases
 
         API URL: ``GET /aliases``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.list(...)
 
         Parameters
         ----------
@@ -457,6 +511,12 @@ class _Aliases:
 
         API URL: ``POST /aliases``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.post(...)
+
         Parameters
         ----------
         object_id : int
@@ -504,6 +564,12 @@ class _Aliases:
 
         API URL: ``GET /aliases/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.get(...)
+
         Parameters
         ----------
         id : int
@@ -543,6 +609,12 @@ class _Aliases:
         """Replace all attributes of this Alias
 
         API URL: ``PUT /aliases/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.put(...)
 
         Parameters
         ----------
@@ -598,6 +670,12 @@ class _Aliases:
 
         API URL: ``PATCH /aliases/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.patch(...)
+
         Parameters
         ----------
         id : int
@@ -647,6 +725,12 @@ class _Aliases:
 
         API URL: ``DELETE /aliases/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.delete(...)
+
         Parameters
         ----------
         id : int
@@ -667,6 +751,12 @@ class _Aliases:
         """Get details about an alias within an FCO type
 
         API URL: ``GET /aliases/{object_type}/{alias}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.aliases.get_object_type(...)
 
         Parameters
         ----------
@@ -718,6 +808,12 @@ class _Announcements:
         """List announcements
 
         API URL: ``GET /announcements``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.announcements.list(...)
 
         Parameters
         ----------
@@ -776,6 +872,12 @@ class _Clusters:
         """List Kubernetes Clusters
 
         API URL: ``GET /clusters/kubernetes``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes(...)
 
         Parameters
         ----------
@@ -890,6 +992,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes(...)
+
         Parameters
         ----------
         id : int
@@ -980,6 +1088,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/{id}/compute_hours``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_compute_hours(...)
+
         Parameters
         ----------
         id : int
@@ -1020,6 +1134,12 @@ class _Clusters:
         """List the deployments associated with a Kubernetes Cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/deployments``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_deployments(...)
 
         Parameters
         ----------
@@ -1109,6 +1229,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/{id}/deployment_stats``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_deployment_stats(...)
+
         Parameters
         ----------
         id : int
@@ -1141,6 +1267,12 @@ class _Clusters:
         """List Cluster Partitions for given cluster
 
         API URL: ``GET /clusters/kubernetes/{id}/partitions``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_partitions(...)
 
         Parameters
         ----------
@@ -1211,6 +1343,12 @@ class _Clusters:
         """Create a Cluster Partition for given cluster
 
         API URL: ``POST /clusters/kubernetes/{id}/partitions``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.post_kubernetes_partitions(...)
 
         Parameters
         ----------
@@ -1296,6 +1434,12 @@ class _Clusters:
 
         API URL: ``PATCH /clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.patch_kubernetes_partitions(...)
+
         Parameters
         ----------
         id : int
@@ -1378,6 +1522,12 @@ class _Clusters:
 
         API URL: ``DELETE /clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.delete_kubernetes_partitions(...)
+
         Parameters
         ----------
         id : int
@@ -1402,6 +1552,12 @@ class _Clusters:
         """Describe a Cluster Partition
 
         API URL: ``GET /clusters/kubernetes/{id}/partitions/{cluster_partition_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes_partitions(...)
 
         Parameters
         ----------
@@ -1475,6 +1631,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes_instance_configs(...)
+
         Parameters
         ----------
         instance_config_id : int
@@ -1537,6 +1699,12 @@ class _Clusters:
         """List active workloads in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{id}/active_workloads``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_instance_configs_active_workloads(...)
 
         Parameters
         ----------
@@ -1605,6 +1773,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/user_statistics``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_instance_configs_user_statistics(...)
+
         Parameters
         ----------
         instance_config_id : int
@@ -1656,6 +1830,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes_instance_configs_historical_graphs(...)
+
         Parameters
         ----------
         instance_config_id : int
@@ -1690,6 +1870,12 @@ class _Clusters:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_graphs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_instance_configs_historical_graphs(...)
 
         .. warning::
             The method name
@@ -1726,6 +1912,12 @@ class _Clusters:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes_instance_configs_historical_metrics(...)
 
         Parameters
         ----------
@@ -1784,6 +1976,12 @@ class _Clusters:
         """Get graphs of historical resource usage in an Instance Config
 
         API URL: ``GET /clusters/kubernetes/instance_configs/{instance_config_id}/historical_metrics``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.list_kubernetes_instance_configs_historical_metrics(...)
 
         .. warning::
             The method name
@@ -1844,6 +2042,12 @@ class _Clusters:
 
         API URL: ``GET /clusters/kubernetes/{id}/compute_metrics``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.clusters.get_kubernetes_compute_metrics(...)
+
         Parameters
         ----------
         id : int
@@ -1874,6 +2078,12 @@ class _Credentials:
 
         API URL: ``GET /credentials/types``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.list_types(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -1891,6 +2101,7 @@ class _Credentials:
         system_credentials: bool | None = ...,
         users: str | None = ...,
         name: str | None = ...,
+        provider: str | None = ...,
         limit: int | None = ...,
         page_num: int | None = ...,
         order: str | None = ...,
@@ -1904,13 +2115,19 @@ class _Credentials:
 
         API URL: ``GET /credentials``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.list(...)
+
         Parameters
         ----------
         type : str, optional
             The type (or types) of credentials to return. One or more of: Amazon Web
             Services S3, Bitbucket, CASS/NCOA PAF, Certificate, Civis Platform, Custom,
-            Database, Google, Github, Salesforce User, Salesforce Client, and
-            TableauUser. Specify multiple values as a comma-separated list (e.g.,
+            Database, Google, Github, OAuth User, Salesforce User, Salesforce Client,
+            and TableauUser. Specify multiple values as a comma-separated list (e.g.,
             "A,B").
         remote_host_id : int, optional
             The ID of the remote host associated with the credentials to return.
@@ -1927,6 +2144,9 @@ class _Credentials:
         name : str, optional
             If specified, will be used to filter the credentials returned. Will search
             across name and will return any full name containing the search string.
+        provider : str, optional
+            If specified, only return OAuth User credentials for this OAuth provider
+            (e.g. "salesforce").
         limit : int, optional
             Number of results to return. Defaults to its maximum of 1000.
         page_num : int, optional
@@ -1988,6 +2208,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2009,6 +2234,12 @@ class _Credentials:
         """Create a credential
 
         API URL: ``POST /credentials``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.post(...)
 
         Parameters
         ----------
@@ -2083,6 +2314,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2105,6 +2341,12 @@ class _Credentials:
         """Update an existing credential
 
         API URL: ``PUT /credentials/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.put(...)
 
         Parameters
         ----------
@@ -2181,6 +2423,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2203,6 +2450,12 @@ class _Credentials:
         """Update some attributes of a credential
 
         API URL: ``PATCH /credentials/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.patch(...)
 
         Parameters
         ----------
@@ -2279,6 +2532,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2289,6 +2547,12 @@ class _Credentials:
         """Get a credential
 
         API URL: ``GET /credentials/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.get(...)
 
         Parameters
         ----------
@@ -2337,6 +2601,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2347,6 +2616,12 @@ class _Credentials:
         """Delete a credential
 
         API URL: ``DELETE /credentials/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.delete(...)
 
         Parameters
         ----------
@@ -2370,6 +2645,12 @@ class _Credentials:
         """Authenticate against a remote host
 
         API URL: ``POST /credentials/authenticate``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.post_authenticate(...)
 
         Parameters
         ----------
@@ -2428,6 +2709,11 @@ class _Credentials:
                 credentials.
             - oauth : bool
                 Whether or not the credential is an OAuth credential.
+            - provider : str
+                For OAuth User credentials: the OAuth provider (e.g. "salesforce").
+            - provider_metadata : :class:`civis.Response`
+                For OAuth User credentials: non-secret provider metadata, e.g. the
+                instance_url and granted scopes for Salesforce. Never contains tokens.
         """
         ...
 
@@ -2440,6 +2726,12 @@ class _Credentials:
         """Generate a temporary credential for accessing S3
 
         API URL: ``POST /credentials/{id}/temporary``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.post_temporary(...)
 
         Parameters
         ----------
@@ -2468,6 +2760,12 @@ class _Credentials:
         """List users and groups permissioned on this object
 
         API URL: ``GET /credentials/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.list_shares(...)
 
         Parameters
         ----------
@@ -2519,6 +2817,12 @@ class _Credentials:
         """Set the permissions users have on this object
 
         API URL: ``PUT /credentials/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.put_shares_users(...)
 
         Parameters
         ----------
@@ -2575,6 +2879,12 @@ class _Credentials:
 
         API URL: ``DELETE /credentials/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -2601,6 +2911,12 @@ class _Credentials:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /credentials/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.put_shares_groups(...)
 
         Parameters
         ----------
@@ -2657,6 +2973,12 @@ class _Credentials:
 
         API URL: ``DELETE /credentials/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -2680,6 +3002,12 @@ class _Credentials:
         """List dependent objects for this object
 
         API URL: ``GET /credentials/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.list_dependencies(...)
 
         Parameters
         ----------
@@ -2723,6 +3051,12 @@ class _Credentials:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /credentials/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.credentials.put_transfer(...)
 
         Parameters
         ----------
@@ -2771,6 +3105,12 @@ class _Databases:
 
         API URL: ``GET /databases``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -2800,6 +3140,12 @@ class _Databases:
         """Show database information
 
         API URL: ``GET /databases/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get(...)
 
         Parameters
         ----------
@@ -2839,6 +3185,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/schemas``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_schemas(...)
+
         Parameters
         ----------
         id : int
@@ -2868,6 +3220,12 @@ class _Databases:
         """List tables in this schema
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_schemas_tables(...)
 
         Parameters
         ----------
@@ -2904,6 +3262,12 @@ class _Databases:
         """Show basic table info
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables/{table_name}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_schemas_tables(...)
 
         Parameters
         ----------
@@ -3070,6 +3434,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
+                    - last_run_updated_at : str (date-time)
                     - runs : List[:class:`civis.Response`]
                         Information about the most recent runs of the job.
 
@@ -3114,6 +3479,12 @@ class _Databases:
         """Update a table
 
         API URL: ``PATCH /databases/{id}/schemas/{schema_name}/tables/{table_name}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.patch_schemas_tables(...)
 
         Parameters
         ----------
@@ -3282,6 +3653,7 @@ class _Databases:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
+                    - last_run_updated_at : str (date-time)
                     - runs : List[:class:`civis.Response`]
                         Information about the most recent runs of the job.
 
@@ -3325,6 +3697,12 @@ class _Databases:
         """List the projects a Database Table belongs to
 
         API URL: ``GET /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_schemas_tables_projects(...)
 
         Parameters
         ----------
@@ -3390,6 +3768,12 @@ class _Databases:
 
         API URL: ``PUT /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.put_schemas_tables_projects(...)
+
         Parameters
         ----------
         id : int
@@ -3419,6 +3803,12 @@ class _Databases:
 
         API URL: ``DELETE /databases/{id}/schemas/{schema_name}/tables/{table_name}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.delete_schemas_tables_projects(...)
+
         Parameters
         ----------
         id : int
@@ -3447,6 +3837,12 @@ class _Databases:
         """Creates and enqueues a schema scanner job
 
         API URL: ``POST /databases/{id}/schemas/scan``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.post_schemas_scan(...)
 
         Parameters
         ----------
@@ -3484,6 +3880,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/table_privileges/{schema_name}/{table_name}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_table_privileges_schema_name(...)
+
         Parameters
         ----------
         id : int
@@ -3520,6 +3922,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/schema_privileges/{schema_name}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_schema_privileges(...)
+
         Parameters
         ----------
         id : int
@@ -3553,6 +3961,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/users``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_users(...)
+
         Parameters
         ----------
         id : int
@@ -3579,6 +3993,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/groups``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_groups(...)
+
         Parameters
         ----------
         id : int
@@ -3601,6 +4021,12 @@ class _Databases:
         """List whitelisted IPs for the specified database
 
         API URL: ``GET /databases/{id}/whitelist-ips``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_whitelist_ips(...)
 
         Parameters
         ----------
@@ -3633,6 +4059,12 @@ class _Databases:
         """View details about a whitelisted IP
 
         API URL: ``GET /databases/{id}/whitelist-ips/{whitelisted_ip_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_whitelist_ips(...)
 
         Parameters
         ----------
@@ -3671,6 +4103,12 @@ class _Databases:
 
         API URL: ``GET /databases/{id}/advanced-settings``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_advanced_settings(...)
+
         Parameters
         ----------
         id : int
@@ -3697,6 +4135,12 @@ class _Databases:
         """Get the advanced settings for this database
 
         API URL: ``GET /databases/{id}/advanced-settings``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.list_advanced_settings(...)
 
         .. warning::
             The method name ``<client>.databases.list_advanced_settings`` is deprecated
@@ -3727,6 +4171,12 @@ class _Databases:
 
         API URL: ``PATCH /databases/{id}/advanced-settings``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.patch_advanced_settings(...)
+
         Parameters
         ----------
         id : int
@@ -3753,6 +4203,12 @@ class _Databases:
 
         API URL: ``PUT /databases/{id}/advanced-settings``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.put_advanced_settings(...)
+
         Parameters
         ----------
         id : int
@@ -3778,6 +4234,12 @@ class _Databases:
         """Get the status graphs for this database
 
         API URL: ``GET /databases/{id}/status_graphs/timeframe/{timeframe}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.databases.get_status_graphs_timeframe(...)
 
         Parameters
         ----------
@@ -3815,6 +4277,12 @@ class _Endpoints:
 
         API URL: ``GET /endpoints``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.endpoints.get(...)
+
         Parameters
         ----------
         openapi_version : str, optional
@@ -3841,6 +4309,12 @@ class _Endpoints:
         """List API endpoints
 
         API URL: ``GET /endpoints``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.endpoints.list(...)
 
         .. warning::
             The method name ``<client>.endpoints.list`` is deprecated and will be
@@ -3879,6 +4353,12 @@ class _Enhancements:
         """Create a Civis Data Match Enhancement
 
         API URL: ``POST /enhancements/civis-data-match``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_civis_data_match(...)
 
         Parameters
         ----------
@@ -4090,6 +4570,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/civis-data-match/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_civis_data_match(...)
+
         Parameters
         ----------
         id : int
@@ -4240,6 +4726,12 @@ class _Enhancements:
         """Replace all attributes of this Civis Data Match Enhancement
 
         API URL: ``PUT /enhancements/civis-data-match/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match(...)
 
         Parameters
         ----------
@@ -4465,6 +4957,12 @@ class _Enhancements:
 
         API URL: ``PATCH /enhancements/civis-data-match/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.patch_civis_data_match(...)
+
         Parameters
         ----------
         id : int
@@ -4681,6 +5179,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/civis-data-match/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_civis_data_match_clone(...)
+
         Parameters
         ----------
         id : int
@@ -4827,6 +5331,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/civis-data-match/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_civis_data_match_runs(...)
+
         Parameters
         ----------
         id : int
@@ -4871,6 +5381,12 @@ class _Enhancements:
         """List runs for the given Civis Data Match job
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_runs(...)
 
         Parameters
         ----------
@@ -4927,6 +5443,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_civis_data_match_runs(...)
+
         Parameters
         ----------
         id : int
@@ -4966,6 +5488,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/civis-data-match/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_civis_data_match_runs(...)
+
         Parameters
         ----------
         id : int
@@ -4991,6 +5519,12 @@ class _Enhancements:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_runs_logs(...)
 
         Parameters
         ----------
@@ -5027,6 +5561,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/civis-data-match/{id}/cancel``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_civis_data_match_cancel(...)
+
         Parameters
         ----------
         id : int
@@ -5061,6 +5601,12 @@ class _Enhancements:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_runs_outputs(...)
 
         Parameters
         ----------
@@ -5111,6 +5657,12 @@ class _Enhancements:
         """Get the inputs for a run
 
         API URL: ``GET /enhancements/civis-data-match/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_civis_data_match_runs_inputs(...)
 
         Parameters
         ----------
@@ -5261,6 +5813,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/civis-data-match/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_shares(...)
+
         Parameters
         ----------
         id : int
@@ -5311,6 +5869,12 @@ class _Enhancements:
         """Set the permissions users have on this object
 
         API URL: ``PUT /enhancements/civis-data-match/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match_shares_users(...)
 
         Parameters
         ----------
@@ -5367,6 +5931,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/civis-data-match/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_civis_data_match_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -5393,6 +5963,12 @@ class _Enhancements:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /enhancements/civis-data-match/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match_shares_groups(...)
 
         Parameters
         ----------
@@ -5449,6 +6025,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/civis-data-match/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_civis_data_match_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -5472,6 +6054,12 @@ class _Enhancements:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/civis-data-match/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_dependencies(...)
 
         Parameters
         ----------
@@ -5515,6 +6103,12 @@ class _Enhancements:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /enhancements/civis-data-match/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match_transfer(...)
 
         Parameters
         ----------
@@ -5563,6 +6157,12 @@ class _Enhancements:
         """Update the archive status of this object
 
         API URL: ``PUT /enhancements/civis-data-match/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match_archive(...)
 
         Parameters
         ----------
@@ -5708,6 +6308,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/civis-data-match/{id}/projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_civis_data_match_projects(...)
+
         Parameters
         ----------
         id : int
@@ -5766,6 +6372,12 @@ class _Enhancements:
 
         API URL: ``PUT /enhancements/civis-data-match/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_civis_data_match_projects(...)
+
         Parameters
         ----------
         id : int
@@ -5788,6 +6400,12 @@ class _Enhancements:
         """Remove a Civis Data Match Enhancement from a project
 
         API URL: ``DELETE /enhancements/civis-data-match/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_civis_data_match_projects(...)
 
         Parameters
         ----------
@@ -5820,6 +6438,12 @@ class _Enhancements:
         """List Identity Resolution Enhancements
 
         API URL: ``GET /enhancements/identity-resolution``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution(...)
 
         Parameters
         ----------
@@ -5935,6 +6559,12 @@ class _Enhancements:
         """Create an Identity Resolution Enhancement
 
         API URL: ``POST /enhancements/identity-resolution``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_identity_resolution(...)
 
         Parameters
         ----------
@@ -6290,6 +6920,12 @@ class _Enhancements:
 
         API URL: ``PUT /enhancements/identity-resolution/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution(...)
+
         Parameters
         ----------
         id : int
@@ -6644,6 +7280,12 @@ class _Enhancements:
 
         API URL: ``PATCH /enhancements/identity-resolution/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.patch_identity_resolution(...)
+
         Parameters
         ----------
         id : int
@@ -6989,6 +7631,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/identity-resolution/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_identity_resolution(...)
+
         Parameters
         ----------
         id : int
@@ -7218,6 +7866,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/identity-resolution/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_identity_resolution_clone(...)
+
         Parameters
         ----------
         id : int
@@ -7446,6 +8100,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/identity-resolution/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_identity_resolution_runs(...)
+
         Parameters
         ----------
         id : int
@@ -7518,6 +8178,12 @@ class _Enhancements:
         """List runs for the given Identity Resolution job
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution_runs(...)
 
         Parameters
         ----------
@@ -7596,6 +8262,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_identity_resolution_runs(...)
+
         Parameters
         ----------
         id : int
@@ -7663,6 +8335,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/identity-resolution/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_identity_resolution_runs(...)
+
         Parameters
         ----------
         id : int
@@ -7688,6 +8366,12 @@ class _Enhancements:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/identity-resolution/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution_runs_logs(...)
 
         Parameters
         ----------
@@ -7724,6 +8408,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/identity-resolution/{id}/cancel``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_identity_resolution_cancel(...)
+
         Parameters
         ----------
         id : int
@@ -7748,6 +8438,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/types``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_types(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -7763,6 +8459,12 @@ class _Enhancements:
         Table Deduplication jobs
 
         API URL: ``GET /enhancements/field-mapping``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_field_mapping(...)
 
         Returns
         -------
@@ -7793,6 +8495,12 @@ class _Enhancements:
         """List Enhancements
 
         API URL: ``GET /enhancements``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list(...)
 
         Parameters
         ----------
@@ -7877,6 +8585,12 @@ class _Enhancements:
         """Create a CASS/NCOA Enhancement
 
         API URL: ``POST /enhancements/cass-ncoa``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_cass_ncoa(...)
 
         Parameters
         ----------
@@ -8125,6 +8839,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/cass-ncoa/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_cass_ncoa(...)
+
         Parameters
         ----------
         id : int
@@ -8291,6 +9011,12 @@ class _Enhancements:
         """Replace all attributes of this CASS/NCOA Enhancement
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa(...)
 
         Parameters
         ----------
@@ -8555,6 +9281,12 @@ class _Enhancements:
 
         API URL: ``PATCH /enhancements/cass-ncoa/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.patch_cass_ncoa(...)
+
         Parameters
         ----------
         id : int
@@ -8804,6 +9536,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/cass-ncoa/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_cass_ncoa_runs(...)
+
         Parameters
         ----------
         id : int
@@ -8848,6 +9586,12 @@ class _Enhancements:
         """List runs for the given CASS NCOA job
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_runs(...)
 
         Parameters
         ----------
@@ -8904,6 +9648,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_cass_ncoa_runs(...)
+
         Parameters
         ----------
         id : int
@@ -8943,6 +9693,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/cass-ncoa/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_cass_ncoa_runs(...)
+
         Parameters
         ----------
         id : int
@@ -8968,6 +9724,12 @@ class _Enhancements:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_runs_logs(...)
 
         Parameters
         ----------
@@ -9004,6 +9766,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/cass-ncoa/{id}/cancel``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_cass_ncoa_cancel(...)
+
         Parameters
         ----------
         id : int
@@ -9038,6 +9806,12 @@ class _Enhancements:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_runs_outputs(...)
 
         Parameters
         ----------
@@ -9088,6 +9862,12 @@ class _Enhancements:
         """Get the inputs for a run
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_cass_ncoa_runs_inputs(...)
 
         Parameters
         ----------
@@ -9216,11 +9996,18 @@ class _Enhancements:
         country: str | None = ...,
         provider: str | None = ...,
         output_address: bool | None = ...,
+        existing_table_rows: str | None = ...,
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPostGeocode:
         """Create a Geocode Enhancement
 
         API URL: ``POST /enhancements/geocode``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_geocode(...)
 
         Parameters
         ----------
@@ -9285,6 +10072,10 @@ class _Enhancements:
         output_address : bool, optional
             Whether to output the parsed address. Only guaranteed for the 'postgis'
             provider.
+        existing_table_rows : str, optional
+            The behavior if an output table with the requested name already exists. One
+            of "fail", "truncate", "append", or "drop". If null or omitted, the output
+            table name is auto-incremented to avoid conflicts.
         parent_id : int, optional
             Parent ID that triggers this enhancement.
 
@@ -9389,6 +10180,10 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
             - archived : str
                 The archival status of the requested item(s).
             - parent_id : int
@@ -9403,6 +10198,12 @@ class _Enhancements:
         """Get a Geocode Enhancement
 
         API URL: ``GET /enhancements/geocode/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_geocode(...)
 
         Parameters
         ----------
@@ -9509,6 +10310,10 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
             - archived : str
                 The archival status of the requested item(s).
             - parent_id : int
@@ -9533,11 +10338,18 @@ class _Enhancements:
         country: str | None = ...,
         provider: str | None = ...,
         output_address: bool | None = ...,
+        existing_table_rows: str | None = ...,
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPutGeocode:
         """Replace all attributes of this Geocode Enhancement
 
         API URL: ``PUT /enhancements/geocode/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode(...)
 
         Parameters
         ----------
@@ -9604,6 +10416,10 @@ class _Enhancements:
         output_address : bool, optional
             Whether to output the parsed address. Only guaranteed for the 'postgis'
             provider.
+        existing_table_rows : str, optional
+            The behavior if an output table with the requested name already exists. One
+            of "fail", "truncate", "append", or "drop". If null or omitted, the output
+            table name is auto-incremented to avoid conflicts.
         parent_id : int, optional
             Parent ID that triggers this enhancement.
 
@@ -9708,6 +10524,10 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
             - archived : str
                 The archival status of the requested item(s).
             - parent_id : int
@@ -9732,11 +10552,18 @@ class _Enhancements:
         country: str | None = ...,
         provider: str | None = ...,
         output_address: bool | None = ...,
+        existing_table_rows: str | None = ...,
         parent_id: int | None = ...,
     ) -> _ResponseEnhancementsPatchGeocode:
         """Update some attributes of this Geocode Enhancement
 
         API URL: ``PATCH /enhancements/geocode/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.patch_geocode(...)
 
         Parameters
         ----------
@@ -9803,6 +10630,10 @@ class _Enhancements:
         output_address : bool, optional
             Whether to output the parsed address. Only guaranteed for the 'postgis'
             provider.
+        existing_table_rows : str, optional
+            The behavior if an output table with the requested name already exists. One
+            of "fail", "truncate", "append", or "drop". If null or omitted, the output
+            table name is auto-incremented to avoid conflicts.
         parent_id : int, optional
             Parent ID that triggers this enhancement.
 
@@ -9907,6 +10738,10 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
             - archived : str
                 The archival status of the requested item(s).
             - parent_id : int
@@ -9921,6 +10756,12 @@ class _Enhancements:
         """Start a run
 
         API URL: ``POST /enhancements/geocode/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_geocode_runs(...)
 
         Parameters
         ----------
@@ -9966,6 +10807,12 @@ class _Enhancements:
         """List runs for the given Geocode job
 
         API URL: ``GET /enhancements/geocode/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_runs(...)
 
         Parameters
         ----------
@@ -10022,6 +10869,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_geocode_runs(...)
+
         Parameters
         ----------
         id : int
@@ -10061,6 +10914,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/geocode/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_geocode_runs(...)
+
         Parameters
         ----------
         id : int
@@ -10086,6 +10945,12 @@ class _Enhancements:
         """Get the logs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_runs_logs(...)
 
         Parameters
         ----------
@@ -10122,6 +10987,12 @@ class _Enhancements:
 
         API URL: ``POST /enhancements/geocode/{id}/cancel``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_geocode_cancel(...)
+
         Parameters
         ----------
         id : int
@@ -10156,6 +11027,12 @@ class _Enhancements:
         """List the outputs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_runs_outputs(...)
 
         Parameters
         ----------
@@ -10206,6 +11083,12 @@ class _Enhancements:
         """Get the inputs for a run
 
         API URL: ``GET /enhancements/geocode/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.get_geocode_runs_inputs(...)
 
         Parameters
         ----------
@@ -10280,6 +11163,148 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
+            - parent_id : int
+                Parent ID that triggers this enhancement.
+        """
+        ...
+
+    def post_geocode_clone(
+        self,
+        id: int,
+        *,
+        clone_schedule: bool | None = ...,
+        clone_notifications: bool | None = ...,
+    ) -> _ResponseEnhancementsPostGeocodeClone:
+        """Clone this Geocode Enhancement
+
+        API URL: ``POST /enhancements/geocode/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.post_geocode_clone(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the enhancement.
+        clone_schedule : bool, optional
+            If true, also copy the schedule to the new enhancement.
+        clone_notifications : bool, optional
+            If true, also copy the notifications to the new enhancement.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID for the enhancement.
+            - name : str
+                The name of the enhancement job.
+            - type : str
+                The type of the enhancement (e.g CASS-NCOA)
+            - created_at : str (time)
+                The time this enhancement was created.
+            - updated_at : str (time)
+                The time the enhancement was last updated.
+            - author : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - state : str
+                The status of the enhancement's last run
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - running_as : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+            - remote_host_id : int
+                The ID of the remote host.
+            - credential_id : int
+                The ID of the remote host credential.
+            - source_schema_and_table : str
+                The source database schema and table.
+            - multipart_key : List[str]
+                The source table primary key.
+            - limiting_sql : str
+                The limiting SQL for the source table. "WHERE" should be omitted (e.g.
+                state='IL').
+            - target_schema : str
+                The output table schema.
+            - target_table : str
+                The output table name.
+            - country : str
+                The country of the addresses to be geocoded; either 'us' or 'ca'.
+            - provider : str
+                The geocoding provider; one of postgis and geocoder_ca.
+            - output_address : bool
+                Whether to output the parsed address. Only guaranteed for the 'postgis'
+                provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
+            - archived : str
+                The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
         """
@@ -10292,6 +11317,12 @@ class _Enhancements:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_shares(...)
 
         Parameters
         ----------
@@ -10343,6 +11374,12 @@ class _Enhancements:
         """Set the permissions users have on this object
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa_shares_users(...)
 
         Parameters
         ----------
@@ -10399,6 +11436,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/cass-ncoa/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_cass_ncoa_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -10425,6 +11468,12 @@ class _Enhancements:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa_shares_groups(...)
 
         Parameters
         ----------
@@ -10481,6 +11530,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/cass-ncoa/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_cass_ncoa_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -10504,6 +11559,12 @@ class _Enhancements:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_dependencies(...)
 
         Parameters
         ----------
@@ -10547,6 +11608,12 @@ class _Enhancements:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa_transfer(...)
 
         Parameters
         ----------
@@ -10596,6 +11663,12 @@ class _Enhancements:
         """List the projects a CASS/NCOA Enhancement belongs to
 
         API URL: ``GET /enhancements/cass-ncoa/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_cass_ncoa_projects(...)
 
         Parameters
         ----------
@@ -10655,6 +11728,12 @@ class _Enhancements:
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa_projects(...)
+
         Parameters
         ----------
         id : int
@@ -10678,6 +11757,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/cass-ncoa/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_cass_ncoa_projects(...)
+
         Parameters
         ----------
         id : int
@@ -10700,6 +11785,12 @@ class _Enhancements:
         """Update the archive status of this object
 
         API URL: ``PUT /enhancements/cass-ncoa/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_cass_ncoa_archive(...)
 
         Parameters
         ----------
@@ -10857,6 +11948,12 @@ class _Enhancements:
 
         API URL: ``GET /enhancements/geocode/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_shares(...)
+
         Parameters
         ----------
         id : int
@@ -10907,6 +12004,12 @@ class _Enhancements:
         """Set the permissions users have on this object
 
         API URL: ``PUT /enhancements/geocode/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode_shares_users(...)
 
         Parameters
         ----------
@@ -10963,6 +12066,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/geocode/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_geocode_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -10989,6 +12098,12 @@ class _Enhancements:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /enhancements/geocode/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode_shares_groups(...)
 
         Parameters
         ----------
@@ -11045,6 +12160,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/geocode/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_geocode_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -11068,6 +12189,12 @@ class _Enhancements:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/geocode/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_dependencies(...)
 
         Parameters
         ----------
@@ -11111,6 +12238,12 @@ class _Enhancements:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /enhancements/geocode/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode_transfer(...)
 
         Parameters
         ----------
@@ -11160,6 +12293,12 @@ class _Enhancements:
         """List the projects a Geocode Enhancement belongs to
 
         API URL: ``GET /enhancements/geocode/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_geocode_projects(...)
 
         Parameters
         ----------
@@ -11219,6 +12358,12 @@ class _Enhancements:
 
         API URL: ``PUT /enhancements/geocode/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode_projects(...)
+
         Parameters
         ----------
         id : int
@@ -11242,6 +12387,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/geocode/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_geocode_projects(...)
+
         Parameters
         ----------
         id : int
@@ -11264,6 +12415,12 @@ class _Enhancements:
         """Update the archive status of this object
 
         API URL: ``PUT /enhancements/geocode/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_geocode_archive(...)
 
         Parameters
         ----------
@@ -11373,6 +12530,10 @@ class _Enhancements:
             - output_address : bool
                 Whether to output the parsed address. Only guaranteed for the 'postgis'
                 provider.
+            - existing_table_rows : str
+                The behavior if an output table with the requested name already exists.
+                One of "fail", "truncate", "append", or "drop". If null or omitted, the
+                output table name is auto-incremented to avoid conflicts.
             - archived : str
                 The archival status of the requested item(s).
             - parent_id : int
@@ -11387,6 +12548,12 @@ class _Enhancements:
         """List users and groups permissioned on this object
 
         API URL: ``GET /enhancements/identity-resolution/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution_shares(...)
 
         Parameters
         ----------
@@ -11438,6 +12605,12 @@ class _Enhancements:
         """Set the permissions users have on this object
 
         API URL: ``PUT /enhancements/identity-resolution/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution_shares_users(...)
 
         Parameters
         ----------
@@ -11494,6 +12667,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/identity-resolution/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_identity_resolution_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -11520,6 +12699,12 @@ class _Enhancements:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /enhancements/identity-resolution/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution_shares_groups(...)
 
         Parameters
         ----------
@@ -11576,6 +12761,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/identity-resolution/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_identity_resolution_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -11599,6 +12790,12 @@ class _Enhancements:
         """List dependent objects for this object
 
         API URL: ``GET /enhancements/identity-resolution/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution_dependencies(...)
 
         Parameters
         ----------
@@ -11642,6 +12839,12 @@ class _Enhancements:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /enhancements/identity-resolution/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution_transfer(...)
 
         Parameters
         ----------
@@ -11691,6 +12894,12 @@ class _Enhancements:
         """List the projects an Identity Resolution Enhancement belongs to
 
         API URL: ``GET /enhancements/identity-resolution/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.list_identity_resolution_projects(...)
 
         Parameters
         ----------
@@ -11750,6 +12959,12 @@ class _Enhancements:
 
         API URL: ``PUT /enhancements/identity-resolution/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution_projects(...)
+
         Parameters
         ----------
         id : int
@@ -11773,6 +12988,12 @@ class _Enhancements:
 
         API URL: ``DELETE /enhancements/identity-resolution/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.delete_identity_resolution_projects(...)
+
         Parameters
         ----------
         id : int
@@ -11795,6 +13016,12 @@ class _Enhancements:
         """Update the archive status of this object
 
         API URL: ``PUT /enhancements/identity-resolution/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.enhancements.put_identity_resolution_archive(...)
 
         Parameters
         ----------
@@ -12031,6 +13258,12 @@ class _Exports:
 
         API URL: ``GET /exports``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.list(...)
+
         Parameters
         ----------
         type : str, optional
@@ -12114,6 +13347,12 @@ class _Exports:
 
         API URL: ``POST /exports/files/csv/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.post_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -12154,6 +13393,12 @@ class _Exports:
         """List runs for the given CSV Export job
 
         API URL: ``GET /exports/files/csv/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.list_files_csv_runs(...)
 
         Parameters
         ----------
@@ -12203,6 +13448,12 @@ class _Exports:
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.get_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -12238,6 +13489,12 @@ class _Exports:
 
         API URL: ``DELETE /exports/files/csv/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.delete_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -12263,6 +13520,12 @@ class _Exports:
         """Get the logs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.list_files_csv_runs_logs(...)
 
         Parameters
         ----------
@@ -12308,6 +13571,12 @@ class _Exports:
         """List the outputs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.list_files_csv_runs_outputs(...)
 
         Parameters
         ----------
@@ -12358,6 +13627,12 @@ class _Exports:
         """Get the inputs for a run
 
         API URL: ``GET /exports/files/csv/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.get_files_csv_runs_inputs(...)
 
         Parameters
         ----------
@@ -12436,6 +13711,12 @@ class _Exports:
         """Create a CSV Export
 
         API URL: ``POST /exports/files/csv``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.post_files_csv(...)
 
         Parameters
         ----------
@@ -12554,6 +13835,12 @@ class _Exports:
 
         API URL: ``GET /exports/files/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.get_files_csv(...)
+
         Parameters
         ----------
         id : int
@@ -12634,6 +13921,12 @@ class _Exports:
         """Replace all attributes of this CSV Export
 
         API URL: ``PUT /exports/files/csv/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.put_files_csv(...)
 
         Parameters
         ----------
@@ -12764,6 +14057,12 @@ class _Exports:
 
         API URL: ``PATCH /exports/files/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.patch_files_csv(...)
+
         Parameters
         ----------
         id : int
@@ -12884,6 +14183,12 @@ class _Exports:
 
         API URL: ``PUT /exports/files/csv/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.exports.put_files_csv_archive(...)
+
         Parameters
         ----------
         id : int
@@ -12961,6 +14266,12 @@ class _Files:
 
         API URL: ``GET /files/{id}/projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.list_projects(...)
+
         Parameters
         ----------
         id : int
@@ -13019,6 +14330,12 @@ class _Files:
 
         API URL: ``PUT /files/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -13042,6 +14359,12 @@ class _Files:
 
         API URL: ``DELETE /files/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.delete_projects(...)
+
         Parameters
         ----------
         id : int
@@ -13063,6 +14386,12 @@ class _Files:
         """List users and groups permissioned on this object
 
         API URL: ``GET /files/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.list_shares(...)
 
         Parameters
         ----------
@@ -13114,6 +14443,12 @@ class _Files:
         """Set the permissions users have on this object
 
         API URL: ``PUT /files/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_shares_users(...)
 
         Parameters
         ----------
@@ -13170,6 +14505,12 @@ class _Files:
 
         API URL: ``DELETE /files/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -13196,6 +14537,12 @@ class _Files:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /files/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_shares_groups(...)
 
         Parameters
         ----------
@@ -13252,6 +14599,12 @@ class _Files:
 
         API URL: ``DELETE /files/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -13275,6 +14628,12 @@ class _Files:
         """List dependent objects for this object
 
         API URL: ``GET /files/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.list_dependencies(...)
 
         Parameters
         ----------
@@ -13318,6 +14677,12 @@ class _Files:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /files/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_transfer(...)
 
         Parameters
         ----------
@@ -13369,6 +14734,12 @@ class _Files:
 
         API URL: ``POST /files``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.post(...)
+
         Parameters
         ----------
         name : str
@@ -13419,6 +14790,12 @@ class _Files:
 
         API URL: ``POST /files/multipart``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.post_multipart(...)
+
         Parameters
         ----------
         name : str
@@ -13462,6 +14839,12 @@ class _Files:
 
         API URL: ``POST /files/multipart/{id}/complete``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.post_multipart_complete(...)
+
         Parameters
         ----------
         id : int
@@ -13484,6 +14867,12 @@ class _Files:
         """Get details about a file
 
         API URL: ``GET /files/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.get(...)
 
         Parameters
         ----------
@@ -13560,6 +14949,12 @@ class _Files:
         """Update details about a file
 
         API URL: ``PUT /files/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put(...)
 
         Parameters
         ----------
@@ -13638,6 +15033,12 @@ class _Files:
 
         API URL: ``PATCH /files/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.patch(...)
+
         Parameters
         ----------
         id : int
@@ -13703,6 +15104,55 @@ class _Files:
         """
         ...
 
+    def get_preview(
+        self,
+        id: int,
+        *,
+        column_delimiter: str | None = ...,
+        include_header: bool | None = ...,
+    ) -> _ResponseFilesGetPreview:
+        """Get a column and row preview of a file
+
+        API URL: ``GET /files/{id}/preview``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.get_preview(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID of the file.
+        column_delimiter : str, optional
+            The column delimiter for the file. One of "comma", "tab", or "pipe". If
+            omitted, the delimiter will be auto-detected.
+        include_header : bool, optional
+            Whether the first row of the file is a header row. If omitted, header
+            presence will be auto-detected.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - columns : List[:class:`civis.Response`]
+                The columns detected in the file.
+
+                - name : str
+                    The column name.
+                - sql_type : str
+                    The detected SQL type of the column.
+            - rows : List[List]
+                A preview of rows from the file. When a header row is present it is
+                reflected in "columns" and excluded from this array.
+            - column_delimiter : str
+                The column delimiter for the file. One of "comma", "tab", or "pipe".
+                Null when the file is empty.
+            - include_header : bool
+                Whether the first row of the file is a header row.
+        """
+        ...
+
     def post_preprocess_csv(
         self,
         file_id: int,
@@ -13717,6 +15167,12 @@ class _Files:
         """Create a Preprocess CSV
 
         API URL: ``POST /files/preprocess/csv``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.post_preprocess_csv(...)
 
         Parameters
         ----------
@@ -13781,6 +15237,12 @@ class _Files:
 
         API URL: ``GET /files/preprocess/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.get_preprocess_csv(...)
+
         Parameters
         ----------
         id : int
@@ -13829,6 +15291,12 @@ class _Files:
         """Replace all attributes of this Preprocess CSV
 
         API URL: ``PUT /files/preprocess/csv/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_preprocess_csv(...)
 
         Parameters
         ----------
@@ -13900,6 +15368,12 @@ class _Files:
 
         API URL: ``PATCH /files/preprocess/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.patch_preprocess_csv(...)
+
         Parameters
         ----------
         id : int
@@ -13964,6 +15438,12 @@ class _Files:
 
         API URL: ``PUT /files/preprocess/csv/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.files.put_preprocess_csv_archive(...)
+
         Parameters
         ----------
         id : int
@@ -14015,6 +15495,12 @@ class _Git_Repos:
 
         API URL: ``GET /git_repos``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.list(...)
+
         Parameters
         ----------
         limit : int, optional
@@ -14056,6 +15542,12 @@ class _Git_Repos:
 
         API URL: ``POST /git_repos``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.post(...)
+
         Parameters
         ----------
         repo_url : str
@@ -14080,6 +15572,12 @@ class _Git_Repos:
         """Get a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.get(...)
 
         Parameters
         ----------
@@ -14106,6 +15604,12 @@ class _Git_Repos:
 
         API URL: ``DELETE /git_repos/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.delete(...)
+
         Parameters
         ----------
         id : int
@@ -14125,6 +15629,12 @@ class _Git_Repos:
         """Get all branches and tags of a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}/refs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.get_refs(...)
 
         Parameters
         ----------
@@ -14153,6 +15663,12 @@ class _Git_Repos:
         """Get all branches and tags of a bookmarked git repository
 
         API URL: ``GET /git_repos/{id}/refs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.git_repos.list_refs(...)
 
         .. warning::
             The method name ``<client>.git_repos.list_refs`` is deprecated and will be
@@ -14192,6 +15708,12 @@ class _Groups:
         """List Groups
 
         API URL: ``GET /groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.list(...)
 
         Parameters
         ----------
@@ -14287,6 +15809,12 @@ class _Groups:
 
         API URL: ``POST /groups``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.post(...)
+
         Parameters
         ----------
         name : str
@@ -14379,6 +15907,12 @@ class _Groups:
 
         API URL: ``GET /groups/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.get(...)
+
         Parameters
         ----------
         id : int
@@ -14462,6 +15996,12 @@ class _Groups:
         """Replace all attributes of this Group
 
         API URL: ``PUT /groups/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.put(...)
 
         Parameters
         ----------
@@ -14568,6 +16108,12 @@ class _Groups:
 
         API URL: ``PATCH /groups/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.patch(...)
+
         Parameters
         ----------
         id : int
@@ -14662,6 +16208,12 @@ class _Groups:
 
         API URL: ``GET /groups/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -14712,6 +16264,12 @@ class _Groups:
         """Set the permissions users have on this object
 
         API URL: ``PUT /groups/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.put_shares_users(...)
 
         Parameters
         ----------
@@ -14768,6 +16326,12 @@ class _Groups:
 
         API URL: ``DELETE /groups/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -14794,6 +16358,12 @@ class _Groups:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /groups/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.put_shares_groups(...)
 
         Parameters
         ----------
@@ -14850,6 +16420,12 @@ class _Groups:
 
         API URL: ``DELETE /groups/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -14872,6 +16448,12 @@ class _Groups:
         """Add a user to a group
 
         API URL: ``PUT /groups/{id}/members/{user_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.put_members(...)
 
         Parameters
         ----------
@@ -14950,6 +16532,12 @@ class _Groups:
 
         API URL: ``DELETE /groups/{id}/members/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.delete_members(...)
+
         Parameters
         ----------
         id : int
@@ -14971,6 +16559,12 @@ class _Groups:
         """Get child groups of this group
 
         API URL: ``GET /groups/{id}/child_groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.get_child_groups(...)
 
         Parameters
         ----------
@@ -15005,6 +16599,12 @@ class _Groups:
 
         API URL: ``GET /groups/{id}/child_groups``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.groups.list_child_groups(...)
+
         .. warning::
             The method name ``<client>.groups.list_child_groups`` is deprecated and will
             be removed at civis-python v3.0.0 (no release timeline yet). Please switch
@@ -15038,6 +16638,12 @@ class _Imports:
         """List users and groups permissioned on this object
 
         API URL: ``GET /imports/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_shares(...)
 
         Parameters
         ----------
@@ -15089,6 +16695,12 @@ class _Imports:
         """Set the permissions users have on this object
 
         API URL: ``PUT /imports/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_shares_users(...)
 
         Parameters
         ----------
@@ -15145,6 +16757,12 @@ class _Imports:
 
         API URL: ``DELETE /imports/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -15171,6 +16789,12 @@ class _Imports:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /imports/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_shares_groups(...)
 
         Parameters
         ----------
@@ -15227,6 +16851,12 @@ class _Imports:
 
         API URL: ``DELETE /imports/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -15250,6 +16880,12 @@ class _Imports:
         """List dependent objects for this object
 
         API URL: ``GET /imports/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_dependencies(...)
 
         Parameters
         ----------
@@ -15293,6 +16929,12 @@ class _Imports:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /imports/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_transfer(...)
 
         Parameters
         ----------
@@ -15342,6 +16984,12 @@ class _Imports:
         """List the projects an Import belongs to
 
         API URL: ``GET /imports/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_projects(...)
 
         Parameters
         ----------
@@ -15401,6 +17049,12 @@ class _Imports:
 
         API URL: ``PUT /imports/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -15423,6 +17077,12 @@ class _Imports:
         """Remove an Import from a project
 
         API URL: ``DELETE /imports/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.delete_projects(...)
 
         Parameters
         ----------
@@ -15447,6 +17107,12 @@ class _Imports:
 
         API URL: ``PUT /imports/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_archive(...)
+
         Parameters
         ----------
         id : int
@@ -15457,72 +17123,31 @@ class _Imports:
         Returns
         -------
         :class:`civis.Response`
+            - id : int
+                The ID for the import.
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
             - parent_id : int
                 Parent id to trigger this import from
-            - id : int
-                The ID for the import.
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
@@ -15533,11 +17158,6 @@ class _Imports:
                 - source : :class:`civis.Response`
                     - id : int
                         The ID of the table or file, if available.
-                    - path : str
-                        The path of the dataset to sync from; for a database source,
-                        schema.tablename. If you are doing a Google Sheet export, this
-                        can be blank. This is a legacy parameter, it is recommended you
-                        use one of the following: databaseTable, file, googleWorksheet
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -15549,6 +17169,8 @@ class _Imports:
                     - file : :class:`civis.Response`
                         - id : int
                             The file id.
+                        - name : str
+                            The file name.
                     - google_worksheet : :class:`civis.Response`
                         - spreadsheet : str
                             The spreadsheet document name.
@@ -15558,15 +17180,12 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                - destination : :class:`civis.Response`
                     - path : str
-                        The schema.tablename to sync to. If you are doing a Google
-                        Sheet export, this is the spreadsheet and sheet name separated
-                        by a period. i.e. if you have a spreadsheet named
-                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
-                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
-                        recommended you use one of the following: databaseTable,
-                        googleWorksheet
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -15584,6 +17203,14 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
                         For Google Doc and Auto Imports. The maximum number of errors
@@ -15717,8 +17344,47 @@ class _Imports:
                     This user's initials.
                 - online : bool
                     Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
             - next_run_at : str (time)
                 The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
             - time_zone : str
                 The time zone of this import.
             - hidden : bool
@@ -15750,6 +17416,12 @@ class _Imports:
         """List Imports
 
         API URL: ``GET /imports``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list(...)
 
         Parameters
         ----------
@@ -15797,46 +17469,29 @@ class _Imports:
         Returns
         -------
         :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
+            - id : int
+                The ID for the import.
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - id : int
-                The ID for the import.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
@@ -15865,6 +17520,21 @@ class _Imports:
                     This user's initials.
                 - online : bool
                     Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
             - time_zone : str
                 The time zone of this import.
             - archived : str
@@ -15880,16 +17550,22 @@ class _Imports:
         *,
         source: dict | None = ...,
         destination: dict | None = ...,
-        schedule: dict | None = ...,
-        notifications: dict | None = ...,
         parent_id: int | None = ...,
+        schedule: dict | None = ...,
         next_run_at: str | None = ...,
+        notifications: dict | None = ...,
         time_zone: str | None = ...,
         hidden: bool | None = ...,
     ) -> _ResponseImportsPost:
         """Create a new import configuration
 
         API URL: ``POST /imports``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post(...)
 
         Parameters
         ----------
@@ -15903,16 +17579,18 @@ class _Imports:
             - remote_host_id : int
             - credential_id : int
             - additional_credentials : List[int]
-                Array that holds additional credentials used for specific imports. For
-                DB Syncs, the first element is an SSL private key credential id, and
-                the second element is the corresponding public key credential id.
+                Array that holds additional credentials used for DB Syncs. The first
+                element is an SSL private key credential id, and the second element is
+                the corresponding public key credential id.
         destination : dict, optional
             - remote_host_id : int
             - credential_id : int
             - additional_credentials : List[int]
-                Array that holds additional credentials used for specific imports. For
-                DB Syncs, the first element is an SSL private key credential id, and
-                the second element is the corresponding public key credential id.
+                Array that holds additional credentials used for DB Syncs. The first
+                element is an SSL private key credential id, and the second element is
+                the corresponding public key credential id.
+        parent_id : int, optional
+            Parent id to trigger this import from
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
@@ -15928,6 +17606,8 @@ class _Imports:
             - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
         notifications : dict, optional
             - urls : List[str]
                 URLs to receive a POST request at job completion
@@ -15950,10 +17630,6 @@ class _Imports:
                 If success email notifications are on. Defaults to user's preferences.
             - failure_on : bool
                 If failure email notifications are on. Defaults to user's preferences.
-        parent_id : int, optional
-            Parent id to trigger this import from
-        next_run_at : str (time), optional
-            The time of the next scheduled run.
         time_zone : str, optional
             The time zone of this import.
         hidden : bool, optional
@@ -15962,72 +17638,31 @@ class _Imports:
         Returns
         -------
         :class:`civis.Response`
+            - id : int
+                The ID for the import.
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
             - parent_id : int
                 Parent id to trigger this import from
-            - id : int
-                The ID for the import.
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
@@ -16038,11 +17673,6 @@ class _Imports:
                 - source : :class:`civis.Response`
                     - id : int
                         The ID of the table or file, if available.
-                    - path : str
-                        The path of the dataset to sync from; for a database source,
-                        schema.tablename. If you are doing a Google Sheet export, this
-                        can be blank. This is a legacy parameter, it is recommended you
-                        use one of the following: databaseTable, file, googleWorksheet
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -16054,6 +17684,8 @@ class _Imports:
                     - file : :class:`civis.Response`
                         - id : int
                             The file id.
+                        - name : str
+                            The file name.
                     - google_worksheet : :class:`civis.Response`
                         - spreadsheet : str
                             The spreadsheet document name.
@@ -16063,15 +17695,12 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                - destination : :class:`civis.Response`
                     - path : str
-                        The schema.tablename to sync to. If you are doing a Google
-                        Sheet export, this is the spreadsheet and sheet name separated
-                        by a period. i.e. if you have a spreadsheet named
-                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
-                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
-                        recommended you use one of the following: databaseTable,
-                        googleWorksheet
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -16089,6 +17718,14 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
                         For Google Doc and Auto Imports. The maximum number of errors
@@ -16222,8 +17859,350 @@ class _Imports:
                     This user's initials.
                 - online : bool
                     Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
             - next_run_at : str (time)
                 The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - time_zone : str
+                The time zone of this import.
+            - hidden : bool
+                The hidden status of the item.
+            - archived : str
+                The archival status of the requested item(s).
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def post_clone(
+        self,
+        id: int,
+        *,
+        clone_schedule: bool | None = ...,
+        clone_notifications: bool | None = ...,
+    ) -> _ResponseImportsPostClone:
+        """Clone this Import
+
+        API URL: ``POST /imports/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_clone(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the import.
+        clone_schedule : bool, optional
+            If true, also copy the schedule to the new import.
+        clone_notifications : bool, optional
+            If true, also copy the notifications to the new import.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID for the import.
+            - name : str
+                The name of the import.
+            - source : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
+                - name : str
+            - destination : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
+                - name : str
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
+            - parent_id : int
+                Parent id to trigger this import from
+            - is_outbound : bool
+            - job_type : str
+                The job type of this import.
+            - syncs : List[:class:`civis.Response`]
+                List of syncs.
+
+                - id : int
+                - source : :class:`civis.Response`
+                    - id : int
+                        The ID of the table or file, if available.
+                    - database_table : :class:`civis.Response`
+                        - schema : str
+                            The database schema name.
+                        - table : str
+                            The database table name.
+                        - use_without_schema : bool
+                            This attribute is no longer available; defaults to false
+                            but cannot be used.
+                    - file : :class:`civis.Response`
+                        - id : int
+                            The file id.
+                        - name : str
+                            The file name.
+                    - google_worksheet : :class:`civis.Response`
+                        - spreadsheet : str
+                            The spreadsheet document name.
+                        - spreadsheet_id : str
+                            The spreadsheet document id.
+                        - worksheet : str
+                            The worksheet tab name.
+                        - worksheet_id : int
+                            The worksheet tab id.
+                    - path : str
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
+                    - database_table : :class:`civis.Response`
+                        - schema : str
+                            The database schema name.
+                        - table : str
+                            The database table name.
+                        - use_without_schema : bool
+                            This attribute is no longer available; defaults to false
+                            but cannot be used.
+                    - google_worksheet : :class:`civis.Response`
+                        - spreadsheet : str
+                            The spreadsheet document name.
+                        - spreadsheet_id : str
+                            The spreadsheet document id.
+                        - worksheet : str
+                            The worksheet tab name.
+                        - worksheet_id : int
+                            The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
+                - advanced_options : :class:`civis.Response`
+                    - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
+                    - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop". Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
+                    - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
+                    - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
+                    - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
+                    - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
+                    - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
+                    - column_overrides : :class:`civis.Response`
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
+                    - escaped : bool
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
+                    - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
+                    - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
+                    - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
+                    - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
+                    - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
+                    - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
+                    - partition_column_name : str
+                        This parameter is deprecated
+                    - partition_schema_name : str
+                        This parameter is deprecated
+                    - partition_table_name : str
+                        This parameter is deprecated
+                    - partition_table_partition_column_min_name : str
+                        This parameter is deprecated
+                    - partition_table_partition_column_max_name : str
+                        This parameter is deprecated
+                    - mysql_catalog_matches_schema : bool
+                        This attribute is no longer available; defaults to true but
+                        cannot be used.
+                    - chunking_method : str
+                        This parameter is deprecated
+                    - export_action : str
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
+                    - sql_query : str
+                        For Google Doc Exports. The SQL query for the export.
+                    - contact_lists : str
+                        This parameter is deprecated
+                    - soql_query : str
+                        This parameter is deprecated
+                    - include_deleted_records : bool
+                        This parameter is deprecated
+            - state : str
+            - created_at : str (date-time)
+            - updated_at : str (date-time)
+            - last_run : :class:`civis.Response`
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - user : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - running_as : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
             - time_zone : str
                 The time zone of this import.
             - hidden : bool
@@ -16258,6 +18237,12 @@ class _Imports:
         """Initate an import of a tabular file into the platform
 
         API URL: ``POST /imports/files``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_files(...)
 
         Parameters
         ----------
@@ -16327,6 +18312,12 @@ class _Imports:
 
         API URL: ``POST /imports/files/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_files_runs(...)
+
         Parameters
         ----------
         id : int
@@ -16371,6 +18362,12 @@ class _Imports:
         """List runs for the given Import job
 
         API URL: ``GET /imports/files/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_files_runs(...)
 
         Parameters
         ----------
@@ -16427,6 +18424,12 @@ class _Imports:
 
         API URL: ``GET /imports/files/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_files_runs(...)
+
         Parameters
         ----------
         id : int
@@ -16466,6 +18469,12 @@ class _Imports:
 
         API URL: ``DELETE /imports/files/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.delete_files_runs(...)
+
         Parameters
         ----------
         id : int
@@ -16491,6 +18500,12 @@ class _Imports:
         """Get the logs for a run
 
         API URL: ``GET /imports/files/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_files_runs_logs(...)
 
         Parameters
         ----------
@@ -16531,6 +18546,12 @@ class _Imports:
 
         API URL: ``GET /imports/{id}/runs/{run_id}/logs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_runs_logs(...)
+
         Parameters
         ----------
         id : int
@@ -16567,6 +18588,12 @@ class _Imports:
 
         API URL: ``GET /imports/files/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_files_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -16579,27 +18606,28 @@ class _Imports:
         :class:`civis.Response`
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
+            - parent_id : int
+                Parent id to trigger this import from
+            - is_outbound : bool
             - schedule : :class:`civis.Response`
                 - scheduled : bool
                     If the item is scheduled.
@@ -16615,6 +18643,8 @@ class _Imports:
                 - scheduled_days_of_month : List[int]
                     Days of the month it is scheduled on, mutually exclusive with
                     scheduledDays.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
             - notifications : :class:`civis.Response`
                 - urls : List[str]
                     URLs to receive a POST request at job completion
@@ -16639,11 +18669,6 @@ class _Imports:
                 - failure_on : bool
                     If failure email notifications are on. Defaults to user's
                     preferences.
-            - parent_id : int
-                Parent id to trigger this import from
-            - is_outbound : bool
-            - next_run_at : str (time)
-                The time of the next scheduled run.
             - time_zone : str
                 The time zone of this import.
             - hidden : bool
@@ -16672,6 +18697,12 @@ class _Imports:
         """Create a CSV Import
 
         API URL: ``POST /imports/files/csv``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_files_csv(...)
 
         Parameters
         ----------
@@ -16871,6 +18902,12 @@ class _Imports:
 
         API URL: ``GET /imports/files/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_files_csv(...)
+
         Parameters
         ----------
         id : int
@@ -16996,6 +19033,12 @@ class _Imports:
         """Replace all attributes of this CSV Import
 
         API URL: ``PUT /imports/files/csv/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_files_csv(...)
 
         Parameters
         ----------
@@ -17209,6 +19252,12 @@ class _Imports:
 
         API URL: ``PATCH /imports/files/csv/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.patch_files_csv(...)
+
         Parameters
         ----------
         id : int
@@ -17408,6 +19457,12 @@ class _Imports:
 
         API URL: ``PUT /imports/files/csv/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_files_csv_archive(...)
+
         Parameters
         ----------
         id : int
@@ -17523,6 +19578,12 @@ class _Imports:
 
         API URL: ``POST /imports/files/csv/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -17567,6 +19628,12 @@ class _Imports:
         """List runs for the given CSV Import job
 
         API URL: ``GET /imports/files/csv/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_files_csv_runs(...)
 
         Parameters
         ----------
@@ -17623,6 +19690,12 @@ class _Imports:
 
         API URL: ``GET /imports/files/csv/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -17662,6 +19735,12 @@ class _Imports:
 
         API URL: ``DELETE /imports/files/csv/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.delete_files_csv_runs(...)
+
         Parameters
         ----------
         id : int
@@ -17687,6 +19766,12 @@ class _Imports:
         """Get the logs for a run
 
         API URL: ``GET /imports/files/csv/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_files_csv_runs_logs(...)
 
         Parameters
         ----------
@@ -17723,6 +19808,12 @@ class _Imports:
         """Get the inputs for a run
 
         API URL: ``GET /imports/files/csv/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_files_csv_runs_inputs(...)
 
         Parameters
         ----------
@@ -17843,6 +19934,12 @@ class _Imports:
 
         API URL: ``GET /imports/batches``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_batches(...)
+
         Parameters
         ----------
         hidden : bool, optional
@@ -17909,6 +20006,12 @@ class _Imports:
 
         API URL: ``POST /imports/batches``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_batches(...)
+
         Parameters
         ----------
         file_ids : List[int]
@@ -17969,6 +20072,12 @@ class _Imports:
 
         API URL: ``GET /imports/batches/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get_batches(...)
+
         Parameters
         ----------
         id : int
@@ -18009,6 +20118,12 @@ class _Imports:
 
         API URL: ``GET /imports/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.get(...)
+
         Parameters
         ----------
         id : int
@@ -18017,72 +20132,31 @@ class _Imports:
         Returns
         -------
         :class:`civis.Response`
+            - id : int
+                The ID for the import.
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
             - parent_id : int
                 Parent id to trigger this import from
-            - id : int
-                The ID for the import.
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
@@ -18093,11 +20167,6 @@ class _Imports:
                 - source : :class:`civis.Response`
                     - id : int
                         The ID of the table or file, if available.
-                    - path : str
-                        The path of the dataset to sync from; for a database source,
-                        schema.tablename. If you are doing a Google Sheet export, this
-                        can be blank. This is a legacy parameter, it is recommended you
-                        use one of the following: databaseTable, file, googleWorksheet
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -18109,6 +20178,8 @@ class _Imports:
                     - file : :class:`civis.Response`
                         - id : int
                             The file id.
+                        - name : str
+                            The file name.
                     - google_worksheet : :class:`civis.Response`
                         - spreadsheet : str
                             The spreadsheet document name.
@@ -18118,15 +20189,12 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                - destination : :class:`civis.Response`
                     - path : str
-                        The schema.tablename to sync to. If you are doing a Google
-                        Sheet export, this is the spreadsheet and sheet name separated
-                        by a period. i.e. if you have a spreadsheet named
-                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
-                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
-                        recommended you use one of the following: databaseTable,
-                        googleWorksheet
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -18144,6 +20212,14 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
                         For Google Doc and Auto Imports. The maximum number of errors
@@ -18277,8 +20353,47 @@ class _Imports:
                     This user's initials.
                 - online : bool
                     Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
             - next_run_at : str (time)
                 The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
             - time_zone : str
                 The time zone of this import.
             - hidden : bool
@@ -18300,15 +20415,21 @@ class _Imports:
         *,
         source: dict | None = ...,
         destination: dict | None = ...,
-        schedule: dict | None = ...,
-        notifications: dict | None = ...,
         parent_id: int | None = ...,
+        schedule: dict | None = ...,
         next_run_at: str | None = ...,
+        notifications: dict | None = ...,
         time_zone: str | None = ...,
     ) -> _ResponseImportsPut:
         """Update an import
 
         API URL: ``PUT /imports/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put(...)
 
         Parameters
         ----------
@@ -18324,16 +20445,18 @@ class _Imports:
             - remote_host_id : int
             - credential_id : int
             - additional_credentials : List[int]
-                Array that holds additional credentials used for specific imports. For
-                DB Syncs, the first element is an SSL private key credential id, and
-                the second element is the corresponding public key credential id.
+                Array that holds additional credentials used for DB Syncs. The first
+                element is an SSL private key credential id, and the second element is
+                the corresponding public key credential id.
         destination : dict, optional
             - remote_host_id : int
             - credential_id : int
             - additional_credentials : List[int]
-                Array that holds additional credentials used for specific imports. For
-                DB Syncs, the first element is an SSL private key credential id, and
-                the second element is the corresponding public key credential id.
+                Array that holds additional credentials used for DB Syncs. The first
+                element is an SSL private key credential id, and the second element is
+                the corresponding public key credential id.
+        parent_id : int, optional
+            Parent id to trigger this import from
         schedule : dict, optional
             - scheduled : bool
                 If the item is scheduled.
@@ -18349,6 +20472,8 @@ class _Imports:
             - scheduled_days_of_month : List[int]
                 Days of the month it is scheduled on, mutually exclusive with
                 scheduledDays.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
         notifications : dict, optional
             - urls : List[str]
                 URLs to receive a POST request at job completion
@@ -18371,82 +20496,37 @@ class _Imports:
                 If success email notifications are on. Defaults to user's preferences.
             - failure_on : bool
                 If failure email notifications are on. Defaults to user's preferences.
-        parent_id : int, optional
-            Parent id to trigger this import from
-        next_run_at : str (time), optional
-            The time of the next scheduled run.
         time_zone : str, optional
             The time zone of this import.
 
         Returns
         -------
         :class:`civis.Response`
+            - id : int
+                The ID for the import.
             - name : str
                 The name of the import.
-            - sync_type : str
-                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
-                GdocExport.
             - source : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
             - destination : :class:`civis.Response`
                 - remote_host_id : int
                 - credential_id : int
                 - additional_credentials : List[int]
-                    Array that holds additional credentials used for specific imports.
-                    For DB Syncs, the first element is an SSL private key credential
-                    id, and the second element is the corresponding public key
-                    credential id.
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
                 - name : str
-            - schedule : :class:`civis.Response`
-                - scheduled : bool
-                    If the item is scheduled.
-                - scheduled_days : List[int]
-                    Days of the week, based on numeric value starting at 0 for Sunday.
-                    Mutually exclusive with scheduledDaysOfMonth
-                - scheduled_hours : List[int]
-                    Hours of the day it is scheduled on.
-                - scheduled_minutes : List[int]
-                    Minutes of the day it is scheduled on.
-                - scheduled_runs_per_hour : int
-                    Deprecated in favor of scheduled minutes.
-                - scheduled_days_of_month : List[int]
-                    Days of the month it is scheduled on, mutually exclusive with
-                    scheduledDays.
-            - notifications : :class:`civis.Response`
-                - urls : List[str]
-                    URLs to receive a POST request at job completion
-                - success_email_subject : str
-                    Custom subject line for success e-mail.
-                - success_email_body : str
-                    Custom body text for success e-mail, written in Markdown.
-                - success_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job completes successfully.
-                - success_email_from_name : str
-                    Name from which success emails are sent; defaults to "Civis."
-                - success_email_reply_to : str
-                    Address for replies to success emails; defaults to the author of
-                    the job.
-                - failure_email_addresses : List[str]
-                    Addresses to notify by e-mail when the job fails.
-                - stall_warning_minutes : int
-                    Stall warning emails will be sent after this amount of minutes.
-                - success_on : bool
-                    If success email notifications are on. Defaults to user's
-                    preferences.
-                - failure_on : bool
-                    If failure email notifications are on. Defaults to user's
-                    preferences.
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
             - parent_id : int
                 Parent id to trigger this import from
-            - id : int
-                The ID for the import.
             - is_outbound : bool
             - job_type : str
                 The job type of this import.
@@ -18457,11 +20537,6 @@ class _Imports:
                 - source : :class:`civis.Response`
                     - id : int
                         The ID of the table or file, if available.
-                    - path : str
-                        The path of the dataset to sync from; for a database source,
-                        schema.tablename. If you are doing a Google Sheet export, this
-                        can be blank. This is a legacy parameter, it is recommended you
-                        use one of the following: databaseTable, file, googleWorksheet
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -18473,6 +20548,8 @@ class _Imports:
                     - file : :class:`civis.Response`
                         - id : int
                             The file id.
+                        - name : str
+                            The file name.
                     - google_worksheet : :class:`civis.Response`
                         - spreadsheet : str
                             The spreadsheet document name.
@@ -18482,15 +20559,12 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
-                - destination : :class:`civis.Response`
                     - path : str
-                        The schema.tablename to sync to. If you are doing a Google
-                        Sheet export, this is the spreadsheet and sheet name separated
-                        by a period. i.e. if you have a spreadsheet named
-                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
-                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
-                        recommended you use one of the following: databaseTable,
-                        googleWorksheet
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
                     - database_table : :class:`civis.Response`
                         - schema : str
                             The database schema name.
@@ -18508,6 +20582,14 @@ class _Imports:
                             The worksheet tab name.
                         - worksheet_id : int
                             The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
                 - advanced_options : :class:`civis.Response`
                     - max_errors : int
                         For Google Doc and Auto Imports. The maximum number of errors
@@ -18641,8 +20723,411 @@ class _Imports:
                     This user's initials.
                 - online : bool
                     Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
             - next_run_at : str (time)
                 The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - time_zone : str
+                The time zone of this import.
+            - hidden : bool
+                The hidden status of the item.
+            - archived : str
+                The archival status of the requested item(s).
+            - my_permission_level : str
+                Your permission level on the object. One of "read", "write", or
+                "manage".
+        """
+        ...
+
+    def patch(
+        self,
+        id: int,
+        *,
+        name: str | None = ...,
+        source: dict | None = ...,
+        destination: dict | None = ...,
+        running_as_id: int | None = ...,
+        schedule: dict | None = ...,
+        next_run_at: str | None = ...,
+        notifications: dict | None = ...,
+        time_zone: str | None = ...,
+    ) -> _ResponseImportsPatch:
+        """Update some attributes of this import
+
+        API URL: ``PATCH /imports/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.patch(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the import.
+        name : str, optional
+            The name of the import.
+        source : dict, optional
+            - remote_host_id : int
+            - credential_id : int
+            - additional_credentials : List[int]
+                Array that holds additional credentials used for specific imports. For
+                DB Syncs, the first element is an SSL private key credential id, and
+                the second element is the corresponding public key credential id.
+        destination : dict, optional
+            - remote_host_id : int
+            - credential_id : int
+            - additional_credentials : List[int]
+                Array that holds additional credentials used for specific imports. For
+                DB Syncs, the first element is an SSL private key credential id, and
+                the second element is the corresponding public key credential id.
+        running_as_id : int, optional
+            The ID of the runner of this import.
+        schedule : dict, optional
+            - scheduled : bool
+                If the item is scheduled.
+            - scheduled_days : List[int]
+                Days of the week, based on numeric value starting at 0 for Sunday.
+                Mutually exclusive with scheduledDaysOfMonth
+            - scheduled_hours : List[int]
+                Hours of the day it is scheduled on.
+            - scheduled_minutes : List[int]
+                Minutes of the day it is scheduled on.
+            - scheduled_runs_per_hour : int
+                Deprecated in favor of scheduled minutes.
+            - scheduled_days_of_month : List[int]
+                Days of the month it is scheduled on, mutually exclusive with
+                scheduledDays.
+        next_run_at : str (time), optional
+            The time of the next scheduled run.
+        notifications : dict, optional
+            - urls : List[str]
+                URLs to receive a POST request at job completion
+            - success_email_subject : str
+                Custom subject line for success e-mail.
+            - success_email_body : str
+                Custom body text for success e-mail, written in Markdown.
+            - success_email_addresses : List[str]
+                Addresses to notify by e-mail when the job completes successfully.
+            - success_email_from_name : str
+                Name from which success emails are sent; defaults to "Civis."
+            - success_email_reply_to : str
+                Address for replies to success emails; defaults to the author of the
+                job.
+            - failure_email_addresses : List[str]
+                Addresses to notify by e-mail when the job fails.
+            - stall_warning_minutes : int
+                Stall warning emails will be sent after this amount of minutes.
+            - success_on : bool
+                If success email notifications are on. Defaults to user's preferences.
+            - failure_on : bool
+                If failure email notifications are on. Defaults to user's preferences.
+        time_zone : str, optional
+            The time zone of this import.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+                The ID for the import.
+            - name : str
+                The name of the import.
+            - source : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
+                - name : str
+            - destination : :class:`civis.Response`
+                - remote_host_id : int
+                - credential_id : int
+                - additional_credentials : List[int]
+                    Array that holds additional credentials used for DB Syncs. The
+                    first element is an SSL private key credential id, and the second
+                    element is the corresponding public key credential id.
+                - name : str
+            - sync_type : str
+                The type of sync to perform; one of Dbsync, AutoImport, GdocImport, and
+                GdocExport.
+            - parent_id : int
+                Parent id to trigger this import from
+            - is_outbound : bool
+            - job_type : str
+                The job type of this import.
+            - syncs : List[:class:`civis.Response`]
+                List of syncs.
+
+                - id : int
+                - source : :class:`civis.Response`
+                    - id : int
+                        The ID of the table or file, if available.
+                    - database_table : :class:`civis.Response`
+                        - schema : str
+                            The database schema name.
+                        - table : str
+                            The database table name.
+                        - use_without_schema : bool
+                            This attribute is no longer available; defaults to false
+                            but cannot be used.
+                    - file : :class:`civis.Response`
+                        - id : int
+                            The file id.
+                        - name : str
+                            The file name.
+                    - google_worksheet : :class:`civis.Response`
+                        - spreadsheet : str
+                            The spreadsheet document name.
+                        - spreadsheet_id : str
+                            The spreadsheet document id.
+                        - worksheet : str
+                            The worksheet tab name.
+                        - worksheet_id : int
+                            The worksheet tab id.
+                    - path : str
+                        The path of the dataset to sync from; for a database source,
+                        schema.tablename. If you are doing a Google Sheet export, this
+                        can be blank. This is a legacy parameter, it is recommended you
+                        use one of the following: databaseTable, file, googleWorksheet
+                - destination : :class:`civis.Response`
+                    - database_table : :class:`civis.Response`
+                        - schema : str
+                            The database schema name.
+                        - table : str
+                            The database table name.
+                        - use_without_schema : bool
+                            This attribute is no longer available; defaults to false
+                            but cannot be used.
+                    - google_worksheet : :class:`civis.Response`
+                        - spreadsheet : str
+                            The spreadsheet document name.
+                        - spreadsheet_id : str
+                            The spreadsheet document id.
+                        - worksheet : str
+                            The worksheet tab name.
+                        - worksheet_id : int
+                            The worksheet tab id.
+                    - path : str
+                        The schema.tablename to sync to. If you are doing a Google
+                        Sheet export, this is the spreadsheet and sheet name separated
+                        by a period. i.e. if you have a spreadsheet named
+                        "MySpreadsheet" and a sheet called "Sheet1" this field would be
+                        "MySpreadsheet.Sheet1". This is a legacy parameter, it is
+                        recommended you use one of the following: databaseTable,
+                        googleWorksheet
+                - advanced_options : :class:`civis.Response`
+                    - max_errors : int
+                        For Google Doc and Auto Imports. The maximum number of errors
+                        that can occur without the job failing.
+                    - existing_table_rows : str
+                        For Google Doc and Auto Imports. The behavior if a table with
+                        the requested name already exists.  One of "fail", "truncate",
+                        "append", or "drop". Defaults to "fail".
+                    - first_row_is_header : bool
+                        For Google Doc and Auto Imports. A boolean value indicating
+                        whether or not the first row is a header row.
+                    - diststyle : str
+                        For Auto Imports. The diststyle to use for a Redshift table.
+                    - distkey : str
+                        For Auto Imports. The distkey to use for a Redshift table.
+                    - sortkey1 : str
+                        For Auto Imports. The first sortkey to use for a Redshift
+                        table.
+                    - sortkey2 : str
+                        For Auto Imports. The second sortkey to use for a Redshift
+                        table.
+                    - column_delimiter : str
+                        For Auto Imports. The column delimiter for the file. Valid
+                        arguments are "comma", "tab", and "pipe". If column_delimiter
+                        is null or omitted, it will be auto-detected.
+                    - column_overrides : :class:`civis.Response`
+                        For Auto Imports. Hash used for overriding auto-detected names
+                        and types, with keys being the index of the column being
+                        overridden.
+                    - escaped : bool
+                        For Auto Imports. If true, escape quotes with a backslash;
+                        otherwise, escape quotes by double-quoting. Defaults to false.
+                    - identity_column : str
+                        For DB Syncs. The column or columns to use as primary key for
+                        incremental syncs. Should be a unique identifier. If blank,
+                        primary key columns will be auto-detected. If more than one
+                        identity column is specified, an identity column must be
+                        specified for each table. We recommend the primary key be a
+                        sequential data type such as an integer, double, timestamp,
+                        date, or float. If using a primary key that is a string data
+                        type, we recommend having a last_modified_column to ensure all
+                        data is synced to the destination table.
+                    - last_modified_column : str
+                        For DB Syncs. The column to use to detect recently modified
+                        data for incremental syncs. Defaults to "Auto-Detect", which
+                        will use the first column it finds containing either "modif" or
+                        "update" in the name. When specified, only rows where
+                        last_modified_column in the source >= last_modified_column in
+                        the destination will be synced.
+                    - row_chunk_size : int
+                        For DB Syncs. If specified, will split the sync into chunks of
+                        this size.
+                    - wipe_destination_table : bool
+                        For DB Syncs. If true, will perform a full table refresh.
+                    - truncate_long_lines : bool
+                        For DB Syncs to Redshift. When true, truncates column data to
+                        fit the column specification.
+                    - invalid_char_replacement : str
+                        For DB Syncs to Redshift. If specified, will replace each
+                        invalid UTF-8 character with this character. Must be a single
+                        ASCII character.
+                    - verify_table_row_counts : bool
+                        For DB Syncs. When true, an error will be raised if the
+                        destination table does not have the same number of rows as the
+                        source table after the sync.
+                    - partition_column_name : str
+                        This parameter is deprecated
+                    - partition_schema_name : str
+                        This parameter is deprecated
+                    - partition_table_name : str
+                        This parameter is deprecated
+                    - partition_table_partition_column_min_name : str
+                        This parameter is deprecated
+                    - partition_table_partition_column_max_name : str
+                        This parameter is deprecated
+                    - mysql_catalog_matches_schema : bool
+                        This attribute is no longer available; defaults to true but
+                        cannot be used.
+                    - chunking_method : str
+                        This parameter is deprecated
+                    - export_action : str
+                        For Google Doc Exports. The kind of export action you want to
+                        have the export execute. Set to "newsprsht" if you want a new
+                        worksheet inside a new spreadsheet. Set to "newwksht" if you
+                        want a new worksheet inside an existing spreadsheet. Set to
+                        "updatewksht" if you want to overwrite an existing worksheet
+                        inside an existing spreadsheet. Set to "appendwksht" if you
+                        want to append to the end of an existing worksheet inside an
+                        existing spreadsheet. Default is set to "newsprsht"
+                    - sql_query : str
+                        For Google Doc Exports. The SQL query for the export.
+                    - contact_lists : str
+                        This parameter is deprecated
+                    - soql_query : str
+                        This parameter is deprecated
+                    - include_deleted_records : bool
+                        This parameter is deprecated
+            - state : str
+            - created_at : str (date-time)
+            - updated_at : str (date-time)
+            - last_run : :class:`civis.Response`
+                - id : int
+                - state : str
+                - created_at : str (time)
+                    The time that the run was queued.
+                - started_at : str (time)
+                    The time that the run started.
+                - finished_at : str (time)
+                    The time that the run completed.
+                - error : str
+                    The error message for this run, if present.
+            - user : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - running_as : :class:`civis.Response`
+                - id : int
+                    The ID of this user.
+                - name : str
+                    This user's name.
+                - username : str
+                    This user's username.
+                - initials : str
+                    This user's initials.
+                - online : bool
+                    Whether this user is online.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - next_run_at : str (time)
+                The time of the next scheduled run.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
             - time_zone : str
                 The time zone of this import.
             - hidden : bool
@@ -18662,6 +21147,12 @@ class _Imports:
         """Get the run history of this import
 
         API URL: ``GET /imports/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_runs(...)
 
         Parameters
         ----------
@@ -18691,6 +21182,12 @@ class _Imports:
 
         API URL: ``POST /imports/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_runs(...)
+
         Parameters
         ----------
         id : int
@@ -18711,6 +21208,12 @@ class _Imports:
         """Cancel a run
 
         API URL: ``POST /imports/{id}/cancel``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_cancel(...)
 
         Parameters
         ----------
@@ -18741,15 +21244,16 @@ class _Imports:
 
         API URL: ``POST /imports/{id}/syncs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_syncs(...)
+
         Parameters
         ----------
         id : int
         source : dict
-            - path : str
-                The path of the dataset to sync from; for a database source,
-                schema.tablename. If you are doing a Google Sheet export, this can be
-                blank. This is a legacy parameter, it is recommended you use one of the
-                following: databaseTable, file, googleWorksheet
             - database_table : dict
                 - schema : str
                     The database schema name.
@@ -18768,7 +21272,29 @@ class _Imports:
                     The worksheet tab name.
                 - worksheet_id : int
                     The worksheet tab id.
+            - path : str
+                The path of the dataset to sync from; for a database source,
+                schema.tablename. If you are doing a Google Sheet export, this can be
+                blank. This is a legacy parameter, it is recommended you use one of the
+                following: databaseTable, file, googleWorksheet
         destination : dict
+            - database_table : dict
+                - schema : str
+                    The database schema name.
+                - table : str
+                    The database table name.
+                - use_without_schema : bool
+                    This attribute is no longer available; defaults to false but cannot
+                    be used.
+            - google_worksheet : dict
+                - spreadsheet : str
+                    The spreadsheet document name.
+                - spreadsheet_id : str
+                    The spreadsheet document id.
+                - worksheet : str
+                    The worksheet tab name.
+                - worksheet_id : int
+                    The worksheet tab id.
             - path : str
                 The schema.tablename to sync to. If you are doing a Google Sheet
                 export, this is the spreadsheet and sheet name separated by a period.
@@ -18776,6 +21302,298 @@ class _Imports:
                 "Sheet1" this field would be "MySpreadsheet.Sheet1". This is a legacy
                 parameter, it is recommended you use one of the following:
                 databaseTable, googleWorksheet
+        advanced_options : dict, optional
+            - max_errors : int
+                For Google Doc and Auto Imports. The maximum number of errors that can
+                occur without the job failing.
+            - existing_table_rows : str
+                For Google Doc and Auto Imports. The behavior if a table with the
+                requested name already exists.  One of "fail", "truncate", "append", or
+                "drop". Defaults to "fail".
+            - first_row_is_header : bool
+                For Google Doc and Auto Imports. A boolean value indicating whether or
+                not the first row is a header row.
+            - diststyle : str
+                For Auto Imports. The diststyle to use for a Redshift table.
+            - distkey : str
+                For Auto Imports. The distkey to use for a Redshift table.
+            - sortkey1 : str
+                For Auto Imports. The first sortkey to use for a Redshift table.
+            - sortkey2 : str
+                For Auto Imports. The second sortkey to use for a Redshift table.
+            - column_delimiter : str
+                For Auto Imports. The column delimiter for the file. Valid arguments
+                are "comma", "tab", and "pipe". If column_delimiter is null or omitted,
+                it will be auto-detected.
+            - column_overrides : dict
+                For Auto Imports. Hash used for overriding auto-detected names and
+                types, with keys being the index of the column being overridden.
+            - escaped : bool
+                For Auto Imports. If true, escape quotes with a backslash; otherwise,
+                escape quotes by double-quoting. Defaults to false.
+            - identity_column : str
+                For DB Syncs. The column or columns to use as primary key for
+                incremental syncs. Should be a unique identifier. If blank, primary key
+                columns will be auto-detected. If more than one identity column is
+                specified, an identity column must be specified for each table. We
+                recommend the primary key be a sequential data type such as an integer,
+                double, timestamp, date, or float. If using a primary key that is a
+                string data type, we recommend having a last_modified_column to ensure
+                all data is synced to the destination table.
+            - last_modified_column : str
+                For DB Syncs. The column to use to detect recently modified data for
+                incremental syncs. Defaults to "Auto-Detect", which will use the first
+                column it finds containing either "modif" or "update" in the name. When
+                specified, only rows where last_modified_column in the source >=
+                last_modified_column in the destination will be synced.
+            - row_chunk_size : int
+                For DB Syncs. If specified, will split the sync into chunks of this
+                size.
+            - wipe_destination_table : bool
+                For DB Syncs. If true, will perform a full table refresh.
+            - truncate_long_lines : bool
+                For DB Syncs to Redshift. When true, truncates column data to fit the
+                column specification.
+            - invalid_char_replacement : str
+                For DB Syncs to Redshift. If specified, will replace each invalid UTF-8
+                character with this character. Must be a single ASCII character.
+            - verify_table_row_counts : bool
+                For DB Syncs. When true, an error will be raised if the destination
+                table does not have the same number of rows as the source table after
+                the sync.
+            - partition_column_name : str
+                This parameter is deprecated
+            - partition_schema_name : str
+                This parameter is deprecated
+            - partition_table_name : str
+                This parameter is deprecated
+            - partition_table_partition_column_min_name : str
+                This parameter is deprecated
+            - partition_table_partition_column_max_name : str
+                This parameter is deprecated
+            - mysql_catalog_matches_schema : bool
+                This attribute is no longer available; defaults to true but cannot be
+                used.
+            - chunking_method : str
+                This parameter is deprecated
+            - export_action : str
+                For Google Doc Exports. The kind of export action you want to have the
+                export execute. Set to "newsprsht" if you want a new worksheet inside a
+                new spreadsheet. Set to "newwksht" if you want a new worksheet inside
+                an existing spreadsheet. Set to "updatewksht" if you want to overwrite
+                an existing worksheet inside an existing spreadsheet. Set to
+                "appendwksht" if you want to append to the end of an existing worksheet
+                inside an existing spreadsheet. Default is set to "newsprsht"
+            - sql_query : str
+                For Google Doc Exports. The SQL query for the export.
+            - contact_lists : str
+                This parameter is deprecated
+            - soql_query : str
+                This parameter is deprecated
+            - include_deleted_records : bool
+                This parameter is deprecated
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - id : int
+            - source : :class:`civis.Response`
+                - id : int
+                    The ID of the table or file, if available.
+                - database_table : :class:`civis.Response`
+                    - schema : str
+                        The database schema name.
+                    - table : str
+                        The database table name.
+                    - use_without_schema : bool
+                        This attribute is no longer available; defaults to false but
+                        cannot be used.
+                - file : :class:`civis.Response`
+                    - id : int
+                        The file id.
+                    - name : str
+                        The file name.
+                - google_worksheet : :class:`civis.Response`
+                    - spreadsheet : str
+                        The spreadsheet document name.
+                    - spreadsheet_id : str
+                        The spreadsheet document id.
+                    - worksheet : str
+                        The worksheet tab name.
+                    - worksheet_id : int
+                        The worksheet tab id.
+                - path : str
+                    The path of the dataset to sync from; for a database source,
+                    schema.tablename. If you are doing a Google Sheet export, this can
+                    be blank. This is a legacy parameter, it is recommended you use one
+                    of the following: databaseTable, file, googleWorksheet
+            - destination : :class:`civis.Response`
+                - database_table : :class:`civis.Response`
+                    - schema : str
+                        The database schema name.
+                    - table : str
+                        The database table name.
+                    - use_without_schema : bool
+                        This attribute is no longer available; defaults to false but
+                        cannot be used.
+                - google_worksheet : :class:`civis.Response`
+                    - spreadsheet : str
+                        The spreadsheet document name.
+                    - spreadsheet_id : str
+                        The spreadsheet document id.
+                    - worksheet : str
+                        The worksheet tab name.
+                    - worksheet_id : int
+                        The worksheet tab id.
+                - path : str
+                    The schema.tablename to sync to. If you are doing a Google Sheet
+                    export, this is the spreadsheet and sheet name separated by a
+                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
+                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
+                    This is a legacy parameter, it is recommended you use one of the
+                    following: databaseTable, googleWorksheet
+            - advanced_options : :class:`civis.Response`
+                - max_errors : int
+                    For Google Doc and Auto Imports. The maximum number of errors that
+                    can occur without the job failing.
+                - existing_table_rows : str
+                    For Google Doc and Auto Imports. The behavior if a table with the
+                    requested name already exists.  One of "fail", "truncate",
+                    "append", or "drop". Defaults to "fail".
+                - first_row_is_header : bool
+                    For Google Doc and Auto Imports. A boolean value indicating whether
+                    or not the first row is a header row.
+                - diststyle : str
+                    For Auto Imports. The diststyle to use for a Redshift table.
+                - distkey : str
+                    For Auto Imports. The distkey to use for a Redshift table.
+                - sortkey1 : str
+                    For Auto Imports. The first sortkey to use for a Redshift table.
+                - sortkey2 : str
+                    For Auto Imports. The second sortkey to use for a Redshift table.
+                - column_delimiter : str
+                    For Auto Imports. The column delimiter for the file. Valid
+                    arguments are "comma", "tab", and "pipe". If column_delimiter is
+                    null or omitted, it will be auto-detected.
+                - column_overrides : :class:`civis.Response`
+                    For Auto Imports. Hash used for overriding auto-detected names and
+                    types, with keys being the index of the column being overridden.
+                - escaped : bool
+                    For Auto Imports. If true, escape quotes with a backslash;
+                    otherwise, escape quotes by double-quoting. Defaults to false.
+                - identity_column : str
+                    For DB Syncs. The column or columns to use as primary key for
+                    incremental syncs. Should be a unique identifier. If blank, primary
+                    key columns will be auto-detected. If more than one identity column
+                    is specified, an identity column must be specified for each table.
+                    We recommend the primary key be a sequential data type such as an
+                    integer, double, timestamp, date, or float. If using a primary key
+                    that is a string data type, we recommend having a
+                    last_modified_column to ensure all data is synced to the
+                    destination table.
+                - last_modified_column : str
+                    For DB Syncs. The column to use to detect recently modified data
+                    for incremental syncs. Defaults to "Auto-Detect", which will use
+                    the first column it finds containing either "modif" or "update" in
+                    the name. When specified, only rows where last_modified_column in
+                    the source >= last_modified_column in the destination will be
+                    synced.
+                - row_chunk_size : int
+                    For DB Syncs. If specified, will split the sync into chunks of this
+                    size.
+                - wipe_destination_table : bool
+                    For DB Syncs. If true, will perform a full table refresh.
+                - truncate_long_lines : bool
+                    For DB Syncs to Redshift. When true, truncates column data to fit
+                    the column specification.
+                - invalid_char_replacement : str
+                    For DB Syncs to Redshift. If specified, will replace each invalid
+                    UTF-8 character with this character. Must be a single ASCII
+                    character.
+                - verify_table_row_counts : bool
+                    For DB Syncs. When true, an error will be raised if the destination
+                    table does not have the same number of rows as the source table
+                    after the sync.
+                - partition_column_name : str
+                    This parameter is deprecated
+                - partition_schema_name : str
+                    This parameter is deprecated
+                - partition_table_name : str
+                    This parameter is deprecated
+                - partition_table_partition_column_min_name : str
+                    This parameter is deprecated
+                - partition_table_partition_column_max_name : str
+                    This parameter is deprecated
+                - mysql_catalog_matches_schema : bool
+                    This attribute is no longer available; defaults to true but cannot
+                    be used.
+                - chunking_method : str
+                    This parameter is deprecated
+                - export_action : str
+                    For Google Doc Exports. The kind of export action you want to have
+                    the export execute. Set to "newsprsht" if you want a new worksheet
+                    inside a new spreadsheet. Set to "newwksht" if you want a new
+                    worksheet inside an existing spreadsheet. Set to "updatewksht" if
+                    you want to overwrite an existing worksheet inside an existing
+                    spreadsheet. Set to "appendwksht" if you want to append to the end
+                    of an existing worksheet inside an existing spreadsheet. Default is
+                    set to "newsprsht"
+                - sql_query : str
+                    For Google Doc Exports. The SQL query for the export.
+                - contact_lists : str
+                    This parameter is deprecated
+                - soql_query : str
+                    This parameter is deprecated
+                - include_deleted_records : bool
+                    This parameter is deprecated
+        """
+        ...
+
+    def patch_syncs(
+        self,
+        id: int,
+        sync_id: int,
+        *,
+        source: dict | None = ...,
+        destination: dict | None = ...,
+        advanced_options: dict | None = ...,
+    ) -> _ResponseImportsPatchSyncs:
+        """Update some attributes of this sync
+
+        API URL: ``PATCH /imports/{id}/syncs/{sync_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.patch_syncs(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID for the import.
+        sync_id : int
+            The ID of the sync to fetch.
+        source : dict, optional
+            - database_table : dict
+                - schema : str
+                    The database schema name.
+                - table : str
+                    The database table name.
+                - use_without_schema : bool
+                    This attribute is no longer available; defaults to false but cannot
+                    be used.
+            - file : dict
+            - google_worksheet : dict
+                - spreadsheet : str
+                    The spreadsheet document name.
+                - spreadsheet_id : str
+                    The spreadsheet document id.
+                - worksheet : str
+                    The worksheet tab name.
+                - worksheet_id : int
+                    The worksheet tab id.
+        destination : dict, optional
             - database_table : dict
                 - schema : str
                     The database schema name.
@@ -18891,11 +21709,6 @@ class _Imports:
             - source : :class:`civis.Response`
                 - id : int
                     The ID of the table or file, if available.
-                - path : str
-                    The path of the dataset to sync from; for a database source,
-                    schema.tablename. If you are doing a Google Sheet export, this can
-                    be blank. This is a legacy parameter, it is recommended you use one
-                    of the following: databaseTable, file, googleWorksheet
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -18907,6 +21720,8 @@ class _Imports:
                 - file : :class:`civis.Response`
                     - id : int
                         The file id.
+                    - name : str
+                        The file name.
                 - google_worksheet : :class:`civis.Response`
                     - spreadsheet : str
                         The spreadsheet document name.
@@ -18917,13 +21732,6 @@ class _Imports:
                     - worksheet_id : int
                         The worksheet tab id.
             - destination : :class:`civis.Response`
-                - path : str
-                    The schema.tablename to sync to. If you are doing a Google Sheet
-                    export, this is the spreadsheet and sheet name separated by a
-                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
-                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
-                    This is a legacy parameter, it is recommended you use one of the
-                    following: databaseTable, googleWorksheet
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -19047,22 +21855,23 @@ class _Imports:
         *,
         advanced_options: dict | None = ...,
     ) -> _ResponseImportsPutSyncs:
-        """Update a sync
+        """Replace all attributes of this sync
 
         API URL: ``PUT /imports/{id}/syncs/{sync_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_syncs(...)
 
         Parameters
         ----------
         id : int
-            The ID of the import to fetch.
+            The ID for the import.
         sync_id : int
             The ID of the sync to fetch.
         source : dict
-            - path : str
-                The path of the dataset to sync from; for a database source,
-                schema.tablename. If you are doing a Google Sheet export, this can be
-                blank. This is a legacy parameter, it is recommended you use one of the
-                following: databaseTable, file, googleWorksheet
             - database_table : dict
                 - schema : str
                     The database schema name.
@@ -19081,14 +21890,12 @@ class _Imports:
                     The worksheet tab name.
                 - worksheet_id : int
                     The worksheet tab id.
-        destination : dict
             - path : str
-                The schema.tablename to sync to. If you are doing a Google Sheet
-                export, this is the spreadsheet and sheet name separated by a period.
-                i.e. if you have a spreadsheet named "MySpreadsheet" and a sheet called
-                "Sheet1" this field would be "MySpreadsheet.Sheet1". This is a legacy
-                parameter, it is recommended you use one of the following:
-                databaseTable, googleWorksheet
+                The path of the dataset to sync from; for a database source,
+                schema.tablename. If you are doing a Google Sheet export, this can be
+                blank. This is a legacy parameter, it is recommended you use one of the
+                following: databaseTable, file, googleWorksheet
+        destination : dict
             - database_table : dict
                 - schema : str
                     The database schema name.
@@ -19106,6 +21913,13 @@ class _Imports:
                     The worksheet tab name.
                 - worksheet_id : int
                     The worksheet tab id.
+            - path : str
+                The schema.tablename to sync to. If you are doing a Google Sheet
+                export, this is the spreadsheet and sheet name separated by a period.
+                i.e. if you have a spreadsheet named "MySpreadsheet" and a sheet called
+                "Sheet1" this field would be "MySpreadsheet.Sheet1". This is a legacy
+                parameter, it is recommended you use one of the following:
+                databaseTable, googleWorksheet
         advanced_options : dict, optional
             - max_errors : int
                 For Google Doc and Auto Imports. The maximum number of errors that can
@@ -19204,11 +22018,6 @@ class _Imports:
             - source : :class:`civis.Response`
                 - id : int
                     The ID of the table or file, if available.
-                - path : str
-                    The path of the dataset to sync from; for a database source,
-                    schema.tablename. If you are doing a Google Sheet export, this can
-                    be blank. This is a legacy parameter, it is recommended you use one
-                    of the following: databaseTable, file, googleWorksheet
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -19220,6 +22029,8 @@ class _Imports:
                 - file : :class:`civis.Response`
                     - id : int
                         The file id.
+                    - name : str
+                        The file name.
                 - google_worksheet : :class:`civis.Response`
                     - spreadsheet : str
                         The spreadsheet document name.
@@ -19229,14 +22040,12 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
-            - destination : :class:`civis.Response`
                 - path : str
-                    The schema.tablename to sync to. If you are doing a Google Sheet
-                    export, this is the spreadsheet and sheet name separated by a
-                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
-                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
-                    This is a legacy parameter, it is recommended you use one of the
-                    following: databaseTable, googleWorksheet
+                    The path of the dataset to sync from; for a database source,
+                    schema.tablename. If you are doing a Google Sheet export, this can
+                    be blank. This is a legacy parameter, it is recommended you use one
+                    of the following: databaseTable, file, googleWorksheet
+            - destination : :class:`civis.Response`
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -19254,6 +22063,13 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
+                - path : str
+                    The schema.tablename to sync to. If you are doing a Google Sheet
+                    export, this is the spreadsheet and sheet name separated by a
+                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
+                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
+                    This is a legacy parameter, it is recommended you use one of the
+                    following: databaseTable, googleWorksheet
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
                     For Google Doc and Auto Imports. The maximum number of errors that
@@ -19362,6 +22178,12 @@ class _Imports:
 
         API URL: ``PUT /imports/{id}/syncs/{sync_id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.put_syncs_archive(...)
+
         Parameters
         ----------
         id : int
@@ -19378,11 +22200,6 @@ class _Imports:
             - source : :class:`civis.Response`
                 - id : int
                     The ID of the table or file, if available.
-                - path : str
-                    The path of the dataset to sync from; for a database source,
-                    schema.tablename. If you are doing a Google Sheet export, this can
-                    be blank. This is a legacy parameter, it is recommended you use one
-                    of the following: databaseTable, file, googleWorksheet
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -19394,6 +22211,8 @@ class _Imports:
                 - file : :class:`civis.Response`
                     - id : int
                         The file id.
+                    - name : str
+                        The file name.
                 - google_worksheet : :class:`civis.Response`
                     - spreadsheet : str
                         The spreadsheet document name.
@@ -19403,14 +22222,12 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
-            - destination : :class:`civis.Response`
                 - path : str
-                    The schema.tablename to sync to. If you are doing a Google Sheet
-                    export, this is the spreadsheet and sheet name separated by a
-                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
-                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
-                    This is a legacy parameter, it is recommended you use one of the
-                    following: databaseTable, googleWorksheet
+                    The path of the dataset to sync from; for a database source,
+                    schema.tablename. If you are doing a Google Sheet export, this can
+                    be blank. This is a legacy parameter, it is recommended you use one
+                    of the following: databaseTable, file, googleWorksheet
+            - destination : :class:`civis.Response`
                 - database_table : :class:`civis.Response`
                     - schema : str
                         The database schema name.
@@ -19428,6 +22245,13 @@ class _Imports:
                         The worksheet tab name.
                     - worksheet_id : int
                         The worksheet tab id.
+                - path : str
+                    The schema.tablename to sync to. If you are doing a Google Sheet
+                    export, this is the spreadsheet and sheet name separated by a
+                    period. i.e. if you have a spreadsheet named "MySpreadsheet" and a
+                    sheet called "Sheet1" this field would be "MySpreadsheet.Sheet1".
+                    This is a legacy parameter, it is recommended you use one of the
+                    following: databaseTable, googleWorksheet
             - advanced_options : :class:`civis.Response`
                 - max_errors : int
                     For Google Doc and Auto Imports. The maximum number of errors that
@@ -19547,6 +22371,12 @@ class _Jobs:
 
         API URL: ``GET /jobs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list(...)
+
         Parameters
         ----------
         state : str, optional
@@ -19576,7 +22406,7 @@ class _Jobs:
             Page number of the results to return. Defaults to the first page, 1.
         order : str, optional
             The field on which to order the result set. Defaults to updated_at. Must be
-            one of: updated_at.
+            one of: updated_at, last_run_updated_at.
         order_dir : str, optional
             Direction in which to sort, either asc (ascending) or desc (descending)
             defaulting to desc.
@@ -19600,6 +22430,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
+            - last_run_updated_at : str (date-time)
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
@@ -19650,6 +22481,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.get(...)
+
         Parameters
         ----------
         id : int
@@ -19666,6 +22503,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
+            - last_run_updated_at : str (date-time)
             - runs : List[:class:`civis.Response`]
                 Information about the most recent runs of the job.
 
@@ -19738,6 +22576,12 @@ class _Jobs:
 
         API URL: ``POST /jobs/{id}/trigger_email``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.post_trigger_email(...)
+
         Parameters
         ----------
         id : int
@@ -19759,6 +22603,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}/parents``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_parents(...)
+
         Parameters
         ----------
         id : int
@@ -19775,6 +22625,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
+            - last_run_updated_at : str (date-time)
             - runs : List[:class:`civis.Response`]
                 Information about the most recent runs of the job.
 
@@ -19847,6 +22698,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}/children``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_children(...)
+
         Parameters
         ----------
         id : int
@@ -19902,6 +22759,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_runs(...)
+
         Parameters
         ----------
         id : int
@@ -19949,6 +22812,12 @@ class _Jobs:
 
         API URL: ``POST /jobs/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.post_runs(...)
+
         Parameters
         ----------
         id : int
@@ -19978,6 +22847,12 @@ class _Jobs:
         """Check status of a job
 
         API URL: ``GET /jobs/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.get_runs(...)
 
         Parameters
         ----------
@@ -20011,6 +22886,12 @@ class _Jobs:
 
         API URL: ``DELETE /jobs/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.delete_runs(...)
+
         Parameters
         ----------
         id : int
@@ -20042,6 +22923,12 @@ class _Jobs:
         """List the outputs for a run
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_runs_outputs(...)
 
         Parameters
         ----------
@@ -20093,6 +22980,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.get_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -20119,6 +23012,12 @@ class _Jobs:
         """Get the logs for a run
 
         API URL: ``GET /jobs/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_runs_logs(...)
 
         Parameters
         ----------
@@ -20156,6 +23055,12 @@ class _Jobs:
         """List the workflows a job belongs to
 
         API URL: ``GET /jobs/{id}/workflows``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_workflows(...)
 
         Parameters
         ----------
@@ -20226,6 +23131,12 @@ class _Jobs:
 
         API URL: ``GET /jobs/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -20276,6 +23187,12 @@ class _Jobs:
         """Set the permissions users have on this object
 
         API URL: ``PUT /jobs/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.put_shares_users(...)
 
         Parameters
         ----------
@@ -20332,6 +23249,12 @@ class _Jobs:
 
         API URL: ``DELETE /jobs/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -20358,6 +23281,12 @@ class _Jobs:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /jobs/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.put_shares_groups(...)
 
         Parameters
         ----------
@@ -20414,6 +23343,12 @@ class _Jobs:
 
         API URL: ``DELETE /jobs/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -20437,6 +23372,12 @@ class _Jobs:
         """List dependent objects for this object
 
         API URL: ``GET /jobs/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_dependencies(...)
 
         Parameters
         ----------
@@ -20480,6 +23421,12 @@ class _Jobs:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /jobs/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.put_transfer(...)
 
         Parameters
         ----------
@@ -20529,6 +23476,12 @@ class _Jobs:
         """List the projects a Job belongs to
 
         API URL: ``GET /jobs/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.list_projects(...)
 
         Parameters
         ----------
@@ -20588,6 +23541,12 @@ class _Jobs:
 
         API URL: ``PUT /jobs/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -20610,6 +23569,12 @@ class _Jobs:
         """Remove a Job from a project
 
         API URL: ``DELETE /jobs/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.delete_projects(...)
 
         Parameters
         ----------
@@ -20634,6 +23599,12 @@ class _Jobs:
 
         API URL: ``PUT /jobs/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.jobs.put_archive(...)
+
         Parameters
         ----------
         id : int
@@ -20652,6 +23623,7 @@ class _Jobs:
                 Whether the job is idle, queued, running, cancelled, or failed.
             - created_at : str (date-time)
             - updated_at : str (date-time)
+            - last_run_updated_at : str (date-time)
             - runs : List[:class:`civis.Response`]
                 Information about the most recent runs of the job.
 
@@ -20727,6 +23699,12 @@ class _Json_Values:
 
         API URL: ``POST /json_values``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.post(...)
+
         Parameters
         ----------
         value_str : str
@@ -20755,6 +23733,12 @@ class _Json_Values:
 
         API URL: ``GET /json_values/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.get(...)
+
         Parameters
         ----------
         id : int
@@ -20782,6 +23766,12 @@ class _Json_Values:
         """Update some attributes of this JSON Value
 
         API URL: ``PATCH /json_values/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.patch(...)
 
         Parameters
         ----------
@@ -20812,6 +23802,12 @@ class _Json_Values:
         """List users and groups permissioned on this object
 
         API URL: ``GET /json_values/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.list_shares(...)
 
         Parameters
         ----------
@@ -20863,6 +23859,12 @@ class _Json_Values:
         """Set the permissions users have on this object
 
         API URL: ``PUT /json_values/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.put_shares_users(...)
 
         Parameters
         ----------
@@ -20919,6 +23921,12 @@ class _Json_Values:
 
         API URL: ``DELETE /json_values/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -20945,6 +23953,12 @@ class _Json_Values:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /json_values/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.put_shares_groups(...)
 
         Parameters
         ----------
@@ -21001,6 +24015,12 @@ class _Json_Values:
 
         API URL: ``DELETE /json_values/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -21024,6 +24044,12 @@ class _Json_Values:
         """List dependent objects for this object
 
         API URL: ``GET /json_values/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.list_dependencies(...)
 
         Parameters
         ----------
@@ -21067,6 +24093,12 @@ class _Json_Values:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /json_values/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.json_values.put_transfer(...)
 
         Parameters
         ----------
@@ -21115,6 +24147,12 @@ class _Match_Targets:
         """List users and groups permissioned on this object
 
         API URL: ``GET /match_targets/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.list_shares(...)
 
         Parameters
         ----------
@@ -21166,6 +24204,12 @@ class _Match_Targets:
         """Set the permissions users have on this object
 
         API URL: ``PUT /match_targets/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.put_shares_users(...)
 
         Parameters
         ----------
@@ -21222,6 +24266,12 @@ class _Match_Targets:
 
         API URL: ``DELETE /match_targets/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -21248,6 +24298,12 @@ class _Match_Targets:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /match_targets/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.put_shares_groups(...)
 
         Parameters
         ----------
@@ -21304,6 +24360,12 @@ class _Match_Targets:
 
         API URL: ``DELETE /match_targets/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -21326,6 +24388,12 @@ class _Match_Targets:
         """Update the archive status of this object
 
         API URL: ``PUT /match_targets/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.put_archive(...)
 
         Parameters
         ----------
@@ -21357,6 +24425,12 @@ class _Match_Targets:
 
         API URL: ``GET /match_targets``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.list(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -21383,6 +24457,12 @@ class _Match_Targets:
         """Create a new match target
 
         API URL: ``POST /match_targets``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.post(...)
 
         Parameters
         ----------
@@ -21417,6 +24497,12 @@ class _Match_Targets:
 
         API URL: ``GET /match_targets/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.get(...)
+
         Parameters
         ----------
         id : int
@@ -21449,6 +24535,12 @@ class _Match_Targets:
         """Update a match target
 
         API URL: ``PATCH /match_targets/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.match_targets.patch(...)
 
         Parameters
         ----------
@@ -21485,6 +24577,12 @@ class _Media:
         """List users and groups permissioned on this object
 
         API URL: ``GET /media/spot_orders/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_spot_orders_shares(...)
 
         Parameters
         ----------
@@ -21536,6 +24634,12 @@ class _Media:
         """Set the permissions users have on this object
 
         API URL: ``PUT /media/spot_orders/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_spot_orders_shares_users(...)
 
         Parameters
         ----------
@@ -21592,6 +24696,12 @@ class _Media:
 
         API URL: ``DELETE /media/spot_orders/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_spot_orders_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -21618,6 +24728,12 @@ class _Media:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /media/spot_orders/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_spot_orders_shares_groups(...)
 
         Parameters
         ----------
@@ -21674,6 +24790,12 @@ class _Media:
 
         API URL: ``DELETE /media/spot_orders/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_spot_orders_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -21696,6 +24818,12 @@ class _Media:
         """Update the archive status of this object
 
         API URL: ``PUT /media/spot_orders/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_spot_orders_archive(...)
 
         Parameters
         ----------
@@ -21729,6 +24857,12 @@ class _Media:
         """List users and groups permissioned on this object
 
         API URL: ``GET /media/optimizations/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_optimizations_shares(...)
 
         Parameters
         ----------
@@ -21780,6 +24914,12 @@ class _Media:
         """Set the permissions users have on this object
 
         API URL: ``PUT /media/optimizations/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_optimizations_shares_users(...)
 
         Parameters
         ----------
@@ -21836,6 +24976,12 @@ class _Media:
 
         API URL: ``DELETE /media/optimizations/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_optimizations_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -21862,6 +25008,12 @@ class _Media:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /media/optimizations/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_optimizations_shares_groups(...)
 
         Parameters
         ----------
@@ -21918,6 +25070,12 @@ class _Media:
 
         API URL: ``DELETE /media/optimizations/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_optimizations_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -21940,6 +25098,12 @@ class _Media:
         """Update the archive status of this object
 
         API URL: ``PUT /media/optimizations/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_optimizations_archive(...)
 
         Parameters
         ----------
@@ -22041,6 +25205,12 @@ class _Media:
 
         API URL: ``GET /media/ratecards/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_ratecards_shares(...)
+
         Parameters
         ----------
         id : int
@@ -22091,6 +25261,12 @@ class _Media:
         """Set the permissions users have on this object
 
         API URL: ``PUT /media/ratecards/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_ratecards_shares_users(...)
 
         Parameters
         ----------
@@ -22147,6 +25323,12 @@ class _Media:
 
         API URL: ``DELETE /media/ratecards/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_ratecards_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -22173,6 +25355,12 @@ class _Media:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /media/ratecards/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_ratecards_shares_groups(...)
 
         Parameters
         ----------
@@ -22229,6 +25417,12 @@ class _Media:
 
         API URL: ``DELETE /media/ratecards/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_ratecards_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -22251,6 +25445,12 @@ class _Media:
         """Update the archive status of this object
 
         API URL: ``PUT /media/ratecards/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_ratecards_archive(...)
 
         Parameters
         ----------
@@ -22293,6 +25493,12 @@ class _Media:
         """List all optimizations
 
         API URL: ``GET /media/optimizations``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_optimizations(...)
 
         Parameters
         ----------
@@ -22364,6 +25570,12 @@ class _Media:
         """Create a new optimization
 
         API URL: ``POST /media/optimizations``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.post_optimizations(...)
 
         Parameters
         ----------
@@ -22509,6 +25721,12 @@ class _Media:
 
         API URL: ``GET /media/optimizations/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.get_optimizations(...)
+
         Parameters
         ----------
         id : int
@@ -22614,6 +25832,12 @@ class _Media:
         """Edit an existing optimization
 
         API URL: ``PATCH /media/optimizations/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.patch_optimizations(...)
 
         Parameters
         ----------
@@ -22761,6 +25985,12 @@ class _Media:
 
         API URL: ``POST /media/optimizations/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.post_optimizations_clone(...)
+
         Parameters
         ----------
         id : int
@@ -22859,6 +26089,12 @@ class _Media:
 
         API URL: ``POST /media/optimizations/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.post_optimizations_runs(...)
+
         Parameters
         ----------
         id : int
@@ -22903,6 +26139,12 @@ class _Media:
         """List runs for the given Optimization job
 
         API URL: ``GET /media/optimizations/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_optimizations_runs(...)
 
         Parameters
         ----------
@@ -22959,6 +26201,12 @@ class _Media:
 
         API URL: ``GET /media/optimizations/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.get_optimizations_runs(...)
+
         Parameters
         ----------
         id : int
@@ -22998,6 +26246,12 @@ class _Media:
 
         API URL: ``DELETE /media/optimizations/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.delete_optimizations_runs(...)
+
         Parameters
         ----------
         id : int
@@ -23023,6 +26277,12 @@ class _Media:
         """Get the logs for a run
 
         API URL: ``GET /media/optimizations/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_optimizations_runs_logs(...)
 
         Parameters
         ----------
@@ -23061,6 +26321,12 @@ class _Media:
 
         API URL: ``GET /media/spot_orders``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_spot_orders(...)
+
         Parameters
         ----------
         id : int, optional
@@ -23086,6 +26352,12 @@ class _Media:
         """Create a spot order
 
         API URL: ``POST /media/spot_orders``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.post_spot_orders(...)
 
         Parameters
         ----------
@@ -23117,6 +26389,12 @@ class _Media:
         """Show a single spot order
 
         API URL: ``GET /media/spot_orders/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.get_spot_orders(...)
 
         Parameters
         ----------
@@ -23150,6 +26428,12 @@ class _Media:
         """Edit the specified spot order
 
         API URL: ``PUT /media/spot_orders/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_spot_orders(...)
 
         Parameters
         ----------
@@ -23186,6 +26470,12 @@ class _Media:
         """List all ratecards
 
         API URL: ``GET /media/ratecards``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_ratecards(...)
 
         Parameters
         ----------
@@ -23227,6 +26517,12 @@ class _Media:
 
         API URL: ``POST /media/ratecards``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.post_ratecards(...)
+
         Parameters
         ----------
         filename : str
@@ -23264,6 +26560,12 @@ class _Media:
 
         API URL: ``GET /media/ratecards/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.get_ratecards(...)
+
         Parameters
         ----------
         id : int
@@ -23297,6 +26599,12 @@ class _Media:
         """Replace all attributes of this Ratecard
 
         API URL: ``PUT /media/ratecards/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.put_ratecards(...)
 
         Parameters
         ----------
@@ -23342,6 +26650,12 @@ class _Media:
 
         API URL: ``PATCH /media/ratecards/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.patch_ratecards(...)
+
         Parameters
         ----------
         id : int
@@ -23383,6 +26697,12 @@ class _Media:
 
         API URL: ``GET /media/dmas``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_dmas(...)
+
         Parameters
         ----------
         name : str, optional
@@ -23413,6 +26733,12 @@ class _Media:
 
         API URL: ``GET /media/targets``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.media.list_targets(...)
+
         Parameters
         ----------
         name : str, optional
@@ -23441,6 +26767,12 @@ class _Models:
         """List all available model types
 
         API URL: ``GET /models/types``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_types(...)
 
         Returns
         -------
@@ -23475,6 +26807,12 @@ class _Models:
         """List
 
         API URL: ``GET /models``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list(...)
 
         Parameters
         ----------
@@ -23665,6 +27003,12 @@ class _Models:
         """Retrieve model configuration
 
         API URL: ``GET /models/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.get(...)
 
         Parameters
         ----------
@@ -23871,6 +27215,12 @@ class _Models:
 
         API URL: ``GET /models/{id}/builds/{build_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.get_builds(...)
+
         Parameters
         ----------
         id : int
@@ -23922,6 +27272,12 @@ class _Models:
 
         API URL: ``DELETE /models/{id}/builds/{build_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.delete_builds(...)
+
         Parameters
         ----------
         id : int
@@ -23952,6 +27308,12 @@ class _Models:
         """List builds for the given Model job
 
         API URL: ``GET /models/{id}/builds``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_builds(...)
 
         Parameters
         ----------
@@ -24023,6 +27385,12 @@ class _Models:
 
         API URL: ``GET /models/{id}/builds/{build_id}/logs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_builds_logs(...)
+
         Parameters
         ----------
         id : int
@@ -24057,6 +27425,12 @@ class _Models:
         """List users and groups permissioned on this object
 
         API URL: ``GET /models/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_shares(...)
 
         Parameters
         ----------
@@ -24108,6 +27482,12 @@ class _Models:
         """Set the permissions users have on this object
 
         API URL: ``PUT /models/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.put_shares_users(...)
 
         Parameters
         ----------
@@ -24164,6 +27544,12 @@ class _Models:
 
         API URL: ``DELETE /models/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -24190,6 +27576,12 @@ class _Models:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /models/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.put_shares_groups(...)
 
         Parameters
         ----------
@@ -24246,6 +27638,12 @@ class _Models:
 
         API URL: ``DELETE /models/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -24269,6 +27667,12 @@ class _Models:
         """List dependent objects for this object
 
         API URL: ``GET /models/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_dependencies(...)
 
         Parameters
         ----------
@@ -24312,6 +27716,12 @@ class _Models:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /models/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.put_transfer(...)
 
         Parameters
         ----------
@@ -24361,6 +27771,12 @@ class _Models:
         """List the projects a Model belongs to
 
         API URL: ``GET /models/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_projects(...)
 
         Parameters
         ----------
@@ -24420,6 +27836,12 @@ class _Models:
 
         API URL: ``PUT /models/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -24443,6 +27865,12 @@ class _Models:
 
         API URL: ``DELETE /models/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.delete_projects(...)
+
         Parameters
         ----------
         id : int
@@ -24465,6 +27893,12 @@ class _Models:
         """Update the archive status of this object
 
         API URL: ``PUT /models/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.put_archive(...)
 
         Parameters
         ----------
@@ -24672,6 +28106,12 @@ class _Models:
 
         API URL: ``GET /models/{id}/schedules``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.get_schedules(...)
+
         Parameters
         ----------
         id : int
@@ -24712,6 +28152,12 @@ class _Models:
         """Show the model build schedule
 
         API URL: ``GET /models/{id}/schedules``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.models.list_schedules(...)
 
         .. warning::
             The method name ``<client>.models.list_schedules`` is deprecated and will be
@@ -24765,6 +28211,12 @@ class _Notebooks:
         """List Notebooks
 
         API URL: ``GET /notebooks``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list(...)
 
         Parameters
         ----------
@@ -24888,6 +28340,12 @@ class _Notebooks:
         """Create a Notebook
 
         API URL: ``POST /notebooks``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.post(...)
 
         Parameters
         ----------
@@ -25050,6 +28508,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.get(...)
+
         Parameters
         ----------
         id : int
@@ -25189,6 +28653,12 @@ class _Notebooks:
         """Replace all attributes of this Notebook
 
         API URL: ``PUT /notebooks/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put(...)
 
         Parameters
         ----------
@@ -25370,6 +28840,12 @@ class _Notebooks:
 
         API URL: ``PATCH /notebooks/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.patch(...)
+
         Parameters
         ----------
         id : int
@@ -25531,6 +29007,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/update-links``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.get_update_links(...)
+
         Parameters
         ----------
         id : int
@@ -25560,6 +29042,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/update-links``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_update_links(...)
+
         .. warning::
             The method name ``<client>.notebooks.list_update_links`` is deprecated and
             will be removed at civis-python v3.0.0 (no release timeline yet). Please
@@ -25588,6 +29076,12 @@ class _Notebooks:
         """Clone this Notebook
 
         API URL: ``POST /notebooks/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.post_clone(...)
 
         Parameters
         ----------
@@ -25710,6 +29204,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -25760,6 +29260,12 @@ class _Notebooks:
         """Set the permissions users have on this object
 
         API URL: ``PUT /notebooks/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_shares_users(...)
 
         Parameters
         ----------
@@ -25816,6 +29322,12 @@ class _Notebooks:
 
         API URL: ``DELETE /notebooks/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -25842,6 +29354,12 @@ class _Notebooks:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /notebooks/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_shares_groups(...)
 
         Parameters
         ----------
@@ -25898,6 +29416,12 @@ class _Notebooks:
 
         API URL: ``DELETE /notebooks/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -25921,6 +29445,12 @@ class _Notebooks:
         """List dependent objects for this object
 
         API URL: ``GET /notebooks/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_dependencies(...)
 
         Parameters
         ----------
@@ -25964,6 +29494,12 @@ class _Notebooks:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /notebooks/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_transfer(...)
 
         Parameters
         ----------
@@ -26012,6 +29548,12 @@ class _Notebooks:
         """Update the archive status of this object
 
         API URL: ``PUT /notebooks/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_archive(...)
 
         Parameters
         ----------
@@ -26139,6 +29681,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_projects(...)
+
         Parameters
         ----------
         id : int
@@ -26197,6 +29745,12 @@ class _Notebooks:
 
         API URL: ``PUT /notebooks/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -26219,6 +29773,12 @@ class _Notebooks:
         """Remove a Notebook from a project
 
         API URL: ``DELETE /notebooks/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.delete_projects(...)
 
         Parameters
         ----------
@@ -26251,6 +29811,12 @@ class _Notebooks:
         """List deployments for a Notebook
 
         API URL: ``GET /notebooks/{notebook_id}/deployments``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_deployments(...)
 
         Parameters
         ----------
@@ -26325,6 +29891,12 @@ class _Notebooks:
 
         API URL: ``POST /notebooks/{notebook_id}/deployments``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.post_deployments(...)
+
         Parameters
         ----------
         notebook_id : int
@@ -26380,6 +29952,12 @@ class _Notebooks:
         """Get details about a Notebook deployment
 
         API URL: ``GET /notebooks/{notebook_id}/deployments/{deployment_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.get_deployments(...)
 
         Parameters
         ----------
@@ -26437,6 +30015,12 @@ class _Notebooks:
 
         API URL: ``DELETE /notebooks/{notebook_id}/deployments/{deployment_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.delete_deployments(...)
+
         Parameters
         ----------
         notebook_id : int
@@ -26463,6 +30047,12 @@ class _Notebooks:
         """Get the logs for a Notebook deployment
 
         API URL: ``GET /notebooks/{id}/deployments/{deployment_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_deployments_logs(...)
 
         Parameters
         ----------
@@ -26498,6 +30088,12 @@ class _Notebooks:
         """Get the git metadata attached to an item
 
         API URL: ``GET /notebooks/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.get_git(...)
 
         Parameters
         ----------
@@ -26541,6 +30137,12 @@ class _Notebooks:
         """Get the git metadata attached to an item
 
         API URL: ``GET /notebooks/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_git(...)
 
         .. warning::
             The method name ``<client>.notebooks.list_git`` is deprecated and will be
@@ -26591,6 +30193,12 @@ class _Notebooks:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /notebooks/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.put_git(...)
 
         Parameters
         ----------
@@ -26651,6 +30259,12 @@ class _Notebooks:
 
         API URL: ``PATCH /notebooks/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.patch_git(...)
+
         Parameters
         ----------
         id : int
@@ -26703,6 +30317,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.list_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -26732,6 +30352,12 @@ class _Notebooks:
         """Commit and push a new version of the file
 
         API URL: ``POST /notebooks/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.post_git_commits(...)
 
         Parameters
         ----------
@@ -26767,6 +30393,12 @@ class _Notebooks:
 
         API URL: ``GET /notebooks/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notebooks.get_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -26800,6 +30432,12 @@ class _Notifications:
 
         API URL: ``GET /notifications``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notifications.get(...)
+
         Parameters
         ----------
         last_event_id : str, optional
@@ -26832,6 +30470,12 @@ class _Notifications:
 
         API URL: ``GET /notifications``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.notifications.list(...)
+
         .. warning::
             The method name ``<client>.notifications.list`` is deprecated and will be
             removed at civis-python v3.0.0 (no release timeline yet). Please switch to
@@ -26862,6 +30506,12 @@ class _Ontology:
         """List the ontology of column names Civis uses
 
         API URL: ``GET /ontology``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.ontology.list(...)
 
         Parameters
         ----------
@@ -26897,6 +30547,12 @@ class _Organizations:
         """List Favorites
 
         API URL: ``GET /organizations/favorites``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.organizations.list_favorites(...)
 
         Parameters
         ----------
@@ -26973,6 +30629,12 @@ class _Organizations:
 
         API URL: ``POST /organizations/favorites``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.organizations.post_favorites(...)
+
         Parameters
         ----------
         object_id : int
@@ -27026,6 +30688,12 @@ class _Organizations:
 
         API URL: ``DELETE /organizations/favorites/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.organizations.delete_favorites(...)
+
         Parameters
         ----------
         id : int
@@ -27056,6 +30724,12 @@ class _Permission_Sets:
         """List Permission Sets
 
         API URL: ``GET /permission_sets``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list(...)
 
         Parameters
         ----------
@@ -27120,6 +30794,12 @@ class _Permission_Sets:
 
         API URL: ``POST /permission_sets``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.post(...)
+
         Parameters
         ----------
         name : str
@@ -27162,6 +30842,12 @@ class _Permission_Sets:
 
         API URL: ``GET /permission_sets/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.get(...)
+
         Parameters
         ----------
         id : int
@@ -27203,6 +30889,12 @@ class _Permission_Sets:
         """Replace all attributes of this Permission Set
 
         API URL: ``PUT /permission_sets/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put(...)
 
         Parameters
         ----------
@@ -27251,6 +30943,12 @@ class _Permission_Sets:
 
         API URL: ``PATCH /permission_sets/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.patch(...)
+
         Parameters
         ----------
         id : int
@@ -27294,6 +30992,12 @@ class _Permission_Sets:
         """List users and groups permissioned on this object
 
         API URL: ``GET /permission_sets/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list_shares(...)
 
         Parameters
         ----------
@@ -27345,6 +31049,12 @@ class _Permission_Sets:
         """Set the permissions users have on this object
 
         API URL: ``PUT /permission_sets/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_shares_users(...)
 
         Parameters
         ----------
@@ -27401,6 +31111,12 @@ class _Permission_Sets:
 
         API URL: ``DELETE /permission_sets/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -27427,6 +31143,12 @@ class _Permission_Sets:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /permission_sets/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_shares_groups(...)
 
         Parameters
         ----------
@@ -27483,6 +31205,12 @@ class _Permission_Sets:
 
         API URL: ``DELETE /permission_sets/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -27506,6 +31234,12 @@ class _Permission_Sets:
         """List dependent objects for this object
 
         API URL: ``GET /permission_sets/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list_dependencies(...)
 
         Parameters
         ----------
@@ -27549,6 +31283,12 @@ class _Permission_Sets:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /permission_sets/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_transfer(...)
 
         Parameters
         ----------
@@ -27598,6 +31338,12 @@ class _Permission_Sets:
 
         API URL: ``PUT /permission_sets/{id}/archive``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_archive(...)
+
         Parameters
         ----------
         id : int
@@ -27641,6 +31387,12 @@ class _Permission_Sets:
 
         API URL: ``GET /permission_sets/{id}/users/{user_id}/permissions``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list_users_permissions(...)
+
         Parameters
         ----------
         id : int
@@ -27678,6 +31430,12 @@ class _Permission_Sets:
         """List resources in a permission set
 
         API URL: ``GET /permission_sets/{id}/resources``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list_resources(...)
 
         Parameters
         ----------
@@ -27727,6 +31485,12 @@ class _Permission_Sets:
 
         API URL: ``POST /permission_sets/{id}/resources``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.post_resources(...)
+
         Parameters
         ----------
         id : int
@@ -27758,6 +31522,12 @@ class _Permission_Sets:
         """Get a resource in a permission set
 
         API URL: ``GET /permission_sets/{id}/resources/{name}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.get_resources(...)
 
         Parameters
         ----------
@@ -27791,6 +31561,12 @@ class _Permission_Sets:
 
         API URL: ``PATCH /permission_sets/{id}/resources/{name}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.patch_resources(...)
+
         Parameters
         ----------
         id : int
@@ -27823,6 +31599,12 @@ class _Permission_Sets:
 
         API URL: ``DELETE /permission_sets/{id}/resources/{name}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.delete_resources(...)
+
         Parameters
         ----------
         id : int
@@ -27845,6 +31627,12 @@ class _Permission_Sets:
         """List users and groups permissioned on this object
 
         API URL: ``GET /permission_sets/{id}/resources/{name}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.list_resources_shares(...)
 
         Parameters
         ----------
@@ -27899,6 +31687,12 @@ class _Permission_Sets:
         """Set the permissions users have on this object
 
         API URL: ``PUT /permission_sets/{id}/resources/{name}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_resources_shares_users(...)
 
         Parameters
         ----------
@@ -27958,6 +31752,12 @@ class _Permission_Sets:
 
         API URL: ``DELETE /permission_sets/{id}/resources/{name}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.delete_resources_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -27987,6 +31787,12 @@ class _Permission_Sets:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /permission_sets/{id}/resources/{name}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.put_resources_shares_groups(...)
 
         Parameters
         ----------
@@ -28046,6 +31852,12 @@ class _Permission_Sets:
 
         API URL: ``DELETE /permission_sets/{id}/resources/{name}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.permission_sets.delete_resources_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -28071,6 +31883,12 @@ class _Predictions:
         """List predictions
 
         API URL: ``GET /predictions``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.predictions.list(...)
 
         Parameters
         ----------
@@ -28119,6 +31937,12 @@ class _Predictions:
         """Show the specified prediction
 
         API URL: ``GET /predictions/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.predictions.get(...)
 
         Parameters
         ----------
@@ -28211,6 +32035,12 @@ class _Predictions:
 
         API URL: ``GET /predictions/{id}/schedules``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.predictions.get_schedules(...)
+
         Parameters
         ----------
         id : int
@@ -28254,6 +32084,12 @@ class _Predictions:
         """Show the prediction schedule
 
         API URL: ``GET /predictions/{id}/schedules``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.predictions.list_schedules(...)
 
         .. warning::
             The method name ``<client>.predictions.list_schedules`` is deprecated and
@@ -28309,6 +32145,12 @@ class _Projects:
         """List projects
 
         API URL: ``GET /projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.list(...)
 
         Parameters
         ----------
@@ -28398,6 +32240,12 @@ class _Projects:
         """Create a project
 
         API URL: ``POST /projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.post(...)
 
         Parameters
         ----------
@@ -28619,6 +32467,12 @@ class _Projects:
 
         API URL: ``POST /projects/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.post_clone(...)
+
         Parameters
         ----------
         id : int
@@ -28831,6 +32685,12 @@ class _Projects:
 
         API URL: ``GET /projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.get(...)
+
         Parameters
         ----------
         project_id : int
@@ -29041,6 +32901,12 @@ class _Projects:
         """Update a project
 
         API URL: ``PUT /projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put(...)
 
         Parameters
         ----------
@@ -29256,6 +33122,12 @@ class _Projects:
 
         API URL: ``PUT /projects/{project_id}/auto_share``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_auto_share(...)
+
         Parameters
         ----------
         project_id : int
@@ -29466,6 +33338,12 @@ class _Projects:
 
         API URL: ``GET /projects/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -29516,6 +33394,12 @@ class _Projects:
         """Set the permissions users have on this object
 
         API URL: ``PUT /projects/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_shares_users(...)
 
         Parameters
         ----------
@@ -29572,6 +33456,12 @@ class _Projects:
 
         API URL: ``DELETE /projects/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -29598,6 +33488,12 @@ class _Projects:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /projects/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_shares_groups(...)
 
         Parameters
         ----------
@@ -29654,6 +33550,12 @@ class _Projects:
 
         API URL: ``DELETE /projects/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -29677,6 +33579,12 @@ class _Projects:
         """List dependent objects for this object
 
         API URL: ``GET /projects/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.list_dependencies(...)
 
         Parameters
         ----------
@@ -29720,6 +33628,12 @@ class _Projects:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /projects/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_transfer(...)
 
         Parameters
         ----------
@@ -29768,6 +33682,12 @@ class _Projects:
         """Update the archive status of this object
 
         API URL: ``PUT /projects/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_archive(...)
 
         Parameters
         ----------
@@ -29981,6 +33901,12 @@ class _Projects:
 
         API URL: ``GET /projects/{id}/parent_projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.list_parent_projects(...)
+
         Parameters
         ----------
         id : int
@@ -30039,6 +33965,12 @@ class _Projects:
 
         API URL: ``PUT /projects/{id}/parent_projects/{parent_project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.put_parent_projects(...)
+
         Parameters
         ----------
         id : int
@@ -30061,6 +33993,12 @@ class _Projects:
         """Remove an item from a Parent Project
 
         API URL: ``DELETE /projects/{id}/parent_projects/{parent_project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.projects.delete_parent_projects(...)
 
         Parameters
         ----------
@@ -30101,6 +34039,12 @@ class _Queries:
         """List queries
 
         API URL: ``GET /queries``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.list(...)
 
         Parameters
         ----------
@@ -30212,6 +34156,12 @@ class _Queries:
 
         API URL: ``POST /queries``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.post(...)
+
         Parameters
         ----------
         database : int
@@ -30303,6 +34253,12 @@ class _Queries:
 
         API URL: ``POST /queries/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.post_runs(...)
+
         Parameters
         ----------
         id : int
@@ -30347,6 +34303,12 @@ class _Queries:
         """List runs for the given Query job
 
         API URL: ``GET /queries/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.list_runs(...)
 
         Parameters
         ----------
@@ -30403,6 +34365,12 @@ class _Queries:
 
         API URL: ``GET /queries/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.get_runs(...)
+
         Parameters
         ----------
         id : int
@@ -30442,6 +34410,12 @@ class _Queries:
 
         API URL: ``DELETE /queries/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.delete_runs(...)
+
         Parameters
         ----------
         id : int
@@ -30467,6 +34441,12 @@ class _Queries:
         """Get the logs for a run
 
         API URL: ``GET /queries/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.list_runs_logs(...)
 
         Parameters
         ----------
@@ -30503,6 +34483,12 @@ class _Queries:
         """Update the query's associated script
 
         API URL: ``PUT /queries/{id}/scripts/{script_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.put_scripts(...)
 
         Parameters
         ----------
@@ -30573,6 +34559,12 @@ class _Queries:
 
         API URL: ``GET /queries/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.get(...)
+
         Parameters
         ----------
         id : int
@@ -30639,6 +34631,12 @@ class _Queries:
         """Sets Query Hidden to true
 
         API URL: ``DELETE /queries/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.queries.delete(...)
 
         Parameters
         ----------
@@ -30709,6 +34707,12 @@ class _Remote_Hosts:
 
         API URL: ``GET /remote_hosts``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.list(...)
+
         Parameters
         ----------
         type : str, optional
@@ -30746,6 +34750,12 @@ class _Remote_Hosts:
         """Create a Remote Host
 
         API URL: ``POST /remote_hosts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.post(...)
 
         Parameters
         ----------
@@ -30805,6 +34815,12 @@ class _Remote_Hosts:
 
         API URL: ``GET /remote_hosts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.get(...)
+
         Parameters
         ----------
         id : int
@@ -30857,6 +34873,12 @@ class _Remote_Hosts:
         """Replace all attributes of this Remote Host
 
         API URL: ``PUT /remote_hosts/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.put(...)
 
         Parameters
         ----------
@@ -30925,6 +34947,12 @@ class _Remote_Hosts:
 
         API URL: ``PATCH /remote_hosts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.patch(...)
+
         Parameters
         ----------
         id : int
@@ -30987,6 +35015,12 @@ class _Remote_Hosts:
 
         API URL: ``GET /remote_hosts/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -31037,6 +35071,12 @@ class _Remote_Hosts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /remote_hosts/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.put_shares_users(...)
 
         Parameters
         ----------
@@ -31093,6 +35133,12 @@ class _Remote_Hosts:
 
         API URL: ``DELETE /remote_hosts/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -31119,6 +35165,12 @@ class _Remote_Hosts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /remote_hosts/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.put_shares_groups(...)
 
         Parameters
         ----------
@@ -31175,6 +35227,12 @@ class _Remote_Hosts:
 
         API URL: ``DELETE /remote_hosts/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -31201,6 +35259,12 @@ class _Remote_Hosts:
         password
 
         API URL: ``POST /remote_hosts/{id}/authenticate``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.post_authenticate(...)
 
         Parameters
         ----------
@@ -31233,6 +35297,12 @@ class _Remote_Hosts:
         """List data sets available from a remote host
 
         API URL: ``GET /remote_hosts/{id}/data_sets``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.remote_hosts.list_data_sets(...)
 
         Parameters
         ----------
@@ -31279,6 +35349,12 @@ class _Reports:
         """List Reports
 
         API URL: ``GET /reports``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list(...)
 
         Parameters
         ----------
@@ -31338,7 +35414,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - archived : str
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
@@ -31398,6 +35475,12 @@ class _Reports:
 
         API URL: ``POST /reports``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post(...)
+
         Parameters
         ----------
         script_id : int, optional
@@ -31441,7 +35524,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -31519,6 +35603,12 @@ class _Reports:
 
         API URL: ``GET /reports/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get_git(...)
+
         Parameters
         ----------
         id : int
@@ -31561,6 +35651,12 @@ class _Reports:
         """Get the git metadata attached to an item
 
         API URL: ``GET /reports/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_git(...)
 
         .. warning::
             The method name ``<client>.reports.list_git`` is deprecated and will be
@@ -31611,6 +35707,12 @@ class _Reports:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /reports/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_git(...)
 
         Parameters
         ----------
@@ -31671,6 +35773,12 @@ class _Reports:
 
         API URL: ``PATCH /reports/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.patch_git(...)
+
         Parameters
         ----------
         id : int
@@ -31723,6 +35831,12 @@ class _Reports:
 
         API URL: ``GET /reports/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -31752,6 +35866,12 @@ class _Reports:
         """Commit and push a new version of the file
 
         API URL: ``POST /reports/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_git_commits(...)
 
         Parameters
         ----------
@@ -31787,6 +35907,12 @@ class _Reports:
 
         API URL: ``GET /reports/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -31815,6 +35941,12 @@ class _Reports:
         """Get a single report
 
         API URL: ``GET /reports/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get(...)
 
         Parameters
         ----------
@@ -31845,7 +35977,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -31933,6 +36066,12 @@ class _Reports:
 
         API URL: ``PATCH /reports/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.patch(...)
+
         Parameters
         ----------
         id : int
@@ -31981,7 +36120,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32060,6 +36200,12 @@ class _Reports:
 
         API URL: ``POST /reports/{id}/grants``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_grants(...)
+
         Parameters
         ----------
         id : int
@@ -32089,7 +36235,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32168,6 +36315,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/{id}/grants``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_grants(...)
+
         Parameters
         ----------
         id : int
@@ -32187,6 +36340,12 @@ class _Reports:
         """List users and groups permissioned on this object
 
         API URL: ``GET /reports/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_shares(...)
 
         Parameters
         ----------
@@ -32238,6 +36397,12 @@ class _Reports:
         """Set the permissions users have on this object
 
         API URL: ``PUT /reports/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_shares_users(...)
 
         Parameters
         ----------
@@ -32294,6 +36459,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -32320,6 +36491,12 @@ class _Reports:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /reports/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_shares_groups(...)
 
         Parameters
         ----------
@@ -32376,6 +36553,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -32399,6 +36582,12 @@ class _Reports:
         """List dependent objects for this object
 
         API URL: ``GET /reports/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_dependencies(...)
 
         Parameters
         ----------
@@ -32442,6 +36631,12 @@ class _Reports:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /reports/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_transfer(...)
 
         Parameters
         ----------
@@ -32491,6 +36686,12 @@ class _Reports:
         """List the projects a Report belongs to
 
         API URL: ``GET /reports/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_projects(...)
 
         Parameters
         ----------
@@ -32550,6 +36751,12 @@ class _Reports:
 
         API URL: ``PUT /reports/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -32573,6 +36780,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_projects(...)
+
         Parameters
         ----------
         id : int
@@ -32595,6 +36808,12 @@ class _Reports:
         """Update the archive status of this object
 
         API URL: ``PUT /reports/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_archive(...)
 
         Parameters
         ----------
@@ -32627,7 +36846,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32705,6 +36925,12 @@ class _Reports:
 
         API URL: ``GET /reports/services/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get_services(...)
+
         Parameters
         ----------
         id : int
@@ -32734,7 +36960,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32767,6 +36994,12 @@ class _Reports:
         """Update some attributes of this service report
 
         API URL: ``PATCH /reports/services/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.patch_services(...)
 
         Parameters
         ----------
@@ -32801,7 +37034,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32834,6 +37068,12 @@ class _Reports:
 
         API URL: ``POST /reports/services``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_services(...)
+
         Parameters
         ----------
         service_id : int
@@ -32865,7 +37105,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -32895,6 +37136,12 @@ class _Reports:
         """List users and groups permissioned on this object
 
         API URL: ``GET /reports/services/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_services_shares(...)
 
         Parameters
         ----------
@@ -32946,6 +37193,12 @@ class _Reports:
         """Set the permissions users have on this object
 
         API URL: ``PUT /reports/services/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_services_shares_users(...)
 
         Parameters
         ----------
@@ -33002,6 +37255,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/services/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_services_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -33028,6 +37287,12 @@ class _Reports:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /reports/services/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_services_shares_groups(...)
 
         Parameters
         ----------
@@ -33084,6 +37349,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/services/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_services_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -33107,6 +37378,12 @@ class _Reports:
         """List dependent objects for this object
 
         API URL: ``GET /reports/services/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_services_dependencies(...)
 
         Parameters
         ----------
@@ -33150,6 +37427,12 @@ class _Reports:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /reports/services/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_services_transfer(...)
 
         Parameters
         ----------
@@ -33199,6 +37482,12 @@ class _Reports:
         """List the projects a Service Report belongs to
 
         API URL: ``GET /reports/services/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_services_projects(...)
 
         Parameters
         ----------
@@ -33258,6 +37547,12 @@ class _Reports:
 
         API URL: ``PUT /reports/services/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_services_projects(...)
+
         Parameters
         ----------
         id : int
@@ -33281,6 +37576,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/services/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_services_projects(...)
+
         Parameters
         ----------
         id : int
@@ -33303,6 +37604,12 @@ class _Reports:
         """Update the archive status of this object
 
         API URL: ``PUT /reports/services/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_services_archive(...)
 
         Parameters
         ----------
@@ -33335,7 +37642,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -33365,6 +37673,12 @@ class _Reports:
         """Refresh the data in this Tableau report
 
         API URL: ``POST /reports/{id}/refresh``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_refresh(...)
 
         Parameters
         ----------
@@ -33401,6 +37715,12 @@ class _Reports:
 
         API URL: ``GET /reports/{id}/refresh/{job_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get_refresh(...)
+
         Parameters
         ----------
         id : int
@@ -33432,6 +37752,12 @@ class _Reports:
         """Create a SQL report
 
         API URL: ``POST /reports/sql``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_sql(...)
 
         Parameters
         ----------
@@ -33468,7 +37794,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -33522,6 +37849,12 @@ class _Reports:
 
         API URL: ``GET /reports/sql/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.get_sql(...)
+
         Parameters
         ----------
         id : int
@@ -33551,7 +37884,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -33610,6 +37944,12 @@ class _Reports:
 
         API URL: ``PATCH /reports/sql/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.patch_sql(...)
+
         Parameters
         ----------
         id : int
@@ -33647,7 +37987,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -33701,6 +38042,12 @@ class _Reports:
 
         API URL: ``POST /reports/sql/{id}/refresh``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.post_sql_refresh(...)
+
         Parameters
         ----------
         id : int
@@ -33730,7 +38077,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -33784,6 +38132,12 @@ class _Reports:
 
         API URL: ``GET /reports/sql/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_sql_shares(...)
+
         Parameters
         ----------
         id : int
@@ -33834,6 +38188,12 @@ class _Reports:
         """Set the permissions users have on this object
 
         API URL: ``PUT /reports/sql/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_sql_shares_users(...)
 
         Parameters
         ----------
@@ -33890,6 +38250,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/sql/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_sql_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -33916,6 +38282,12 @@ class _Reports:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /reports/sql/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_sql_shares_groups(...)
 
         Parameters
         ----------
@@ -33972,6 +38344,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/sql/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_sql_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -33995,6 +38373,12 @@ class _Reports:
         """List dependent objects for this object
 
         API URL: ``GET /reports/sql/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_sql_dependencies(...)
 
         Parameters
         ----------
@@ -34038,6 +38422,12 @@ class _Reports:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /reports/sql/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_sql_transfer(...)
 
         Parameters
         ----------
@@ -34087,6 +38477,12 @@ class _Reports:
         """List the projects a SQL Report belongs to
 
         API URL: ``GET /reports/sql/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.list_sql_projects(...)
 
         Parameters
         ----------
@@ -34146,6 +38542,12 @@ class _Reports:
 
         API URL: ``PUT /reports/sql/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_sql_projects(...)
+
         Parameters
         ----------
         id : int
@@ -34169,6 +38571,12 @@ class _Reports:
 
         API URL: ``DELETE /reports/sql/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.delete_sql_projects(...)
+
         Parameters
         ----------
         id : int
@@ -34191,6 +38599,12 @@ class _Reports:
         """Update the archive status of this object
 
         API URL: ``PUT /reports/sql/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.reports.put_sql_archive(...)
 
         Parameters
         ----------
@@ -34223,7 +38637,8 @@ class _Reports:
                 The last updated at time for this report.
             - type : str
                 The type of the report. One of: ReportTypes::HTML,
-                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL
+                ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
+                ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
             - description : str
                 The user-defined description of the report.
             - my_permission_level : str
@@ -34283,6 +38698,12 @@ class _Roles:
 
         API URL: ``GET /roles``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.roles.list(...)
+
         Parameters
         ----------
         limit : int, optional
@@ -34326,6 +38747,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/types``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_types(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -34341,6 +38768,12 @@ class _Scripts:
         """Get the run history and outputs of this script
 
         API URL: ``GET /scripts/{id}/history``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_history(...)
 
         Parameters
         ----------
@@ -34391,6 +38824,12 @@ class _Scripts:
         """Create a script (legacy)
 
         API URL: ``POST /scripts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post(...)
 
         Parameters
         ----------
@@ -34648,6 +39087,12 @@ class _Scripts:
 
         API URL: ``GET /scripts``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list(...)
+
         Parameters
         ----------
         type : str, optional
@@ -34761,6 +39206,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/{id}/run``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_run(...)
+
         Parameters
         ----------
         id : int
@@ -34780,6 +39231,12 @@ class _Scripts:
         """Cancel a run
 
         API URL: ``POST /scripts/{id}/cancel``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_cancel(...)
 
         Parameters
         ----------
@@ -34805,6 +39262,12 @@ class _Scripts:
         """Get details about a SQL script (legacy)
 
         API URL: ``GET /scripts/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get(...)
 
         Parameters
         ----------
@@ -35012,6 +39475,12 @@ class _Scripts:
         """Create a container
 
         API URL: ``POST /scripts/containers``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_containers(...)
 
         Parameters
         ----------
@@ -35363,6 +39832,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/containers/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_containers(...)
+
         Parameters
         ----------
         id : int
@@ -35614,6 +40089,12 @@ class _Scripts:
         """Edit a container
 
         API URL: ``PUT /scripts/containers/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers(...)
 
         Parameters
         ----------
@@ -35987,6 +40468,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/containers/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_containers(...)
+
         Parameters
         ----------
         id : int
@@ -36343,6 +40830,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/containers/{id}/runs/{run_id}/logs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_containers_runs_logs(...)
+
         Parameters
         ----------
         id : int
@@ -36390,6 +40883,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_runs_logs(...)
 
         Parameters
         ----------
@@ -36441,6 +40940,12 @@ class _Scripts:
         """Create a SQL Script
 
         API URL: ``POST /scripts/sql``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql(...)
 
         Parameters
         ----------
@@ -36760,6 +41265,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/sql/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_sql(...)
+
         Parameters
         ----------
         id : int
@@ -36985,6 +41496,12 @@ class _Scripts:
         """Replace all attributes of this SQL Script
 
         API URL: ``PUT /scripts/sql/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql(...)
 
         Parameters
         ----------
@@ -37319,6 +41836,12 @@ class _Scripts:
         """Update some attributes of this SQL Script
 
         API URL: ``PATCH /scripts/sql/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_sql(...)
 
         Parameters
         ----------
@@ -37656,6 +42179,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/python3``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3(...)
+
         Parameters
         ----------
         name : str
@@ -37970,6 +42499,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_python3(...)
+
         Parameters
         ----------
         id : int
@@ -38193,6 +42728,12 @@ class _Scripts:
         """Replace all attributes of this Python Script
 
         API URL: ``PUT /scripts/python3/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3(...)
 
         Parameters
         ----------
@@ -38526,6 +43067,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/python3/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_python3(...)
+
         Parameters
         ----------
         id : int
@@ -38858,6 +43405,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/r``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r(...)
+
         Parameters
         ----------
         name : str
@@ -39172,6 +43725,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_r(...)
+
         Parameters
         ----------
         id : int
@@ -39395,6 +43954,12 @@ class _Scripts:
         """Replace all attributes of this R Script
 
         API URL: ``PUT /scripts/r/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r(...)
 
         Parameters
         ----------
@@ -39727,6 +44292,12 @@ class _Scripts:
         """Update some attributes of this R Script
 
         API URL: ``PATCH /scripts/r/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_r(...)
 
         Parameters
         ----------
@@ -40062,6 +44633,12 @@ class _Scripts:
         """Create a dbt Script
 
         API URL: ``POST /scripts/dbt``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_dbt(...)
 
         Parameters
         ----------
@@ -40461,6 +45038,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/dbt/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_dbt(...)
+
         Parameters
         ----------
         id : int
@@ -40729,6 +45312,12 @@ class _Scripts:
         """Replace all attributes of this dbt Script
 
         API URL: ``PUT /scripts/dbt/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt(...)
 
         Parameters
         ----------
@@ -41149,6 +45738,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/dbt/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_dbt(...)
+
         Parameters
         ----------
         id : int
@@ -41562,6 +46157,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/javascript``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript(...)
+
         Parameters
         ----------
         name : str
@@ -41836,6 +46437,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_javascript(...)
+
         Parameters
         ----------
         id : int
@@ -42036,6 +46643,12 @@ class _Scripts:
         """Replace all attributes of this JavaScript Script
 
         API URL: ``PUT /scripts/javascript/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript(...)
 
         Parameters
         ----------
@@ -42326,6 +46939,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/javascript/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_javascript(...)
+
         Parameters
         ----------
         id : int
@@ -42613,6 +47232,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/custom``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom(...)
+
         Parameters
         ----------
         from_template_id : str, optional
@@ -42740,6 +47365,12 @@ class _Scripts:
         """Create a Custom Script
 
         API URL: ``POST /scripts/custom``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_custom(...)
 
         Parameters
         ----------
@@ -43029,6 +47660,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/custom/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_custom(...)
+
         Parameters
         ----------
         id : int
@@ -43258,6 +47895,12 @@ class _Scripts:
         """Replace all attributes of this Custom Script
 
         API URL: ``PUT /scripts/custom/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom(...)
 
         Parameters
         ----------
@@ -43558,6 +48201,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/custom/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_custom(...)
+
         Parameters
         ----------
         id : int
@@ -43844,6 +48493,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/sql/{id}/runs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql_runs(...)
+
         Parameters
         ----------
         id : int
@@ -43901,6 +48556,12 @@ class _Scripts:
         """List runs for the given SQL job
 
         API URL: ``GET /scripts/sql/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_runs(...)
 
         Parameters
         ----------
@@ -43970,6 +48631,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_sql_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44022,6 +48689,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/sql/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_sql_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44046,6 +48719,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/sql/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_sql_runs(...)
 
         Parameters
         ----------
@@ -44074,6 +48753,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_runs_logs(...)
 
         Parameters
         ----------
@@ -44109,6 +48794,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/containers/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_containers_runs(...)
 
         Parameters
         ----------
@@ -44160,6 +48851,12 @@ class _Scripts:
         """List runs for the given Container job
 
         API URL: ``GET /scripts/containers/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_runs(...)
 
         Parameters
         ----------
@@ -44222,6 +48919,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_containers_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44267,6 +48970,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/containers/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_containers_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44288,6 +48997,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/python3/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_runs(...)
 
         Parameters
         ----------
@@ -44339,6 +49054,12 @@ class _Scripts:
         """List runs for the given Python job
 
         API URL: ``GET /scripts/python3/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_runs(...)
 
         Parameters
         ----------
@@ -44401,6 +49122,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_python3_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44446,6 +49173,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/python3/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_python3_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44470,6 +49203,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/python3/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_python3_runs(...)
 
         Parameters
         ----------
@@ -44498,6 +49237,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_runs_logs(...)
 
         Parameters
         ----------
@@ -44533,6 +49278,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/r/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_runs(...)
 
         Parameters
         ----------
@@ -44584,6 +49335,12 @@ class _Scripts:
         """List runs for the given R job
 
         API URL: ``GET /scripts/r/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_runs(...)
 
         Parameters
         ----------
@@ -44646,6 +49403,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_r_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44691,6 +49454,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/r/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_r_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44715,6 +49484,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/r/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_r_runs(...)
 
         Parameters
         ----------
@@ -44743,6 +49518,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_runs_logs(...)
 
         Parameters
         ----------
@@ -44778,6 +49559,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/dbt/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_dbt_runs(...)
 
         Parameters
         ----------
@@ -44829,6 +49616,12 @@ class _Scripts:
         """List runs for the given dbt job
 
         API URL: ``GET /scripts/dbt/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_runs(...)
 
         Parameters
         ----------
@@ -44891,6 +49684,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_dbt_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44936,6 +49735,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/dbt/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_dbt_runs(...)
+
         Parameters
         ----------
         id : int
@@ -44960,6 +49765,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/dbt/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_dbt_runs(...)
 
         Parameters
         ----------
@@ -44988,6 +49799,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_runs_logs(...)
 
         Parameters
         ----------
@@ -45023,6 +49840,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/javascript/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_runs(...)
 
         Parameters
         ----------
@@ -45068,6 +49891,12 @@ class _Scripts:
         """List runs for the given Javascript job
 
         API URL: ``GET /scripts/javascript/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_runs(...)
 
         Parameters
         ----------
@@ -45124,6 +49953,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_javascript_runs(...)
+
         Parameters
         ----------
         id : int
@@ -45163,6 +49998,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/javascript/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_javascript_runs(...)
+
         Parameters
         ----------
         id : int
@@ -45187,6 +50028,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/javascript/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_javascript_runs(...)
 
         Parameters
         ----------
@@ -45215,6 +50062,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_runs_logs(...)
 
         Parameters
         ----------
@@ -45250,6 +50103,12 @@ class _Scripts:
         """Start a run
 
         API URL: ``POST /scripts/custom/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_custom_runs(...)
 
         Parameters
         ----------
@@ -45303,6 +50162,12 @@ class _Scripts:
         """List runs for the given Custom job
 
         API URL: ``GET /scripts/custom/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_runs(...)
 
         Parameters
         ----------
@@ -45367,6 +50232,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_custom_runs(...)
+
         Parameters
         ----------
         id : int
@@ -45414,6 +50285,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/custom/{id}/runs/{run_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_custom_runs(...)
+
         Parameters
         ----------
         id : int
@@ -45439,6 +50316,12 @@ class _Scripts:
         """Get the logs for a run
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_runs_logs(...)
 
         Parameters
         ----------
@@ -45484,6 +50367,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_runs_outputs(...)
 
         Parameters
         ----------
@@ -45544,6 +50433,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -45596,6 +50491,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/containers/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_containers_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -45641,6 +50542,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_runs_outputs(...)
 
         Parameters
         ----------
@@ -45694,6 +50601,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/python3/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -45739,6 +50652,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_runs_outputs(...)
 
         Parameters
         ----------
@@ -45792,6 +50711,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/r/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -45837,6 +50762,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_runs_outputs(...)
 
         Parameters
         ----------
@@ -45890,6 +50821,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/dbt/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_dbt_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -45935,6 +50872,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_runs_outputs(...)
 
         Parameters
         ----------
@@ -45988,6 +50931,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/javascript/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -46033,6 +50982,12 @@ class _Scripts:
         """List the outputs for a run
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/outputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_runs_outputs(...)
 
         Parameters
         ----------
@@ -46086,6 +51041,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/custom/{id}/runs/{run_id}/outputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_custom_runs_outputs(...)
+
         Parameters
         ----------
         id : int
@@ -46122,6 +51083,12 @@ class _Scripts:
         """Get the inputs for a run
 
         API URL: ``GET /scripts/sql/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_sql_runs_inputs(...)
 
         Parameters
         ----------
@@ -46258,6 +51225,12 @@ class _Scripts:
         """Get the inputs for a run
 
         API URL: ``GET /scripts/containers/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_containers_runs_inputs(...)
 
         Parameters
         ----------
@@ -46409,6 +51382,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_python3_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -46545,6 +51524,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_r_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -46680,6 +51665,12 @@ class _Scripts:
         """Get the inputs for a run
 
         API URL: ``GET /scripts/dbt/{id}/runs/{run_id}/inputs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_dbt_runs_inputs(...)
 
         Parameters
         ----------
@@ -46859,6 +51850,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_javascript_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -46975,6 +51972,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/custom/{id}/runs/{run_id}/inputs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_custom_runs_inputs(...)
+
         Parameters
         ----------
         id : int
@@ -46985,8 +51988,80 @@ class _Scripts:
         Returns
         -------
         :class:`civis.Response`
-            - values : :class:`civis.Response`
-                The inputs of the job at the time of the run.
+            - name : str
+                The name of the script.
+            - parent_id : int
+                The ID of the parent job that will trigger this script
+            - arguments : :class:`civis.Response`
+                Parameter-value pairs to use when running this script. Only settable if
+                this script has defined parameters.
+            - from_template_id : int
+                The ID of the template script.
+            - remote_host_id : int
+                The remote host ID that this script will connect to.
+            - credential_id : int
+                The credential that this script will use.
+            - schedule : :class:`civis.Response`
+                - scheduled : bool
+                    If the item is scheduled.
+                - scheduled_days : List[int]
+                    Days of the week, based on numeric value starting at 0 for Sunday.
+                    Mutually exclusive with scheduledDaysOfMonth
+                - scheduled_hours : List[int]
+                    Hours of the day it is scheduled on.
+                - scheduled_minutes : List[int]
+                    Minutes of the day it is scheduled on.
+                - scheduled_runs_per_hour : int
+                    Deprecated in favor of scheduled minutes.
+                - scheduled_days_of_month : List[int]
+                    Days of the month it is scheduled on, mutually exclusive with
+                    scheduledDays.
+            - notifications : :class:`civis.Response`
+                - urls : List[str]
+                    URLs to receive a POST request at job completion
+                - success_email_subject : str
+                    Custom subject line for success e-mail.
+                - success_email_body : str
+                    Custom body text for success e-mail, written in Markdown.
+                - success_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job completes successfully.
+                - success_email_from_name : str
+                    Name from which success emails are sent; defaults to "Civis."
+                - success_email_reply_to : str
+                    Address for replies to success emails; defaults to the author of
+                    the job.
+                - failure_email_addresses : List[str]
+                    Addresses to notify by e-mail when the job fails.
+                - stall_warning_minutes : int
+                    Stall warning emails will be sent after this amount of minutes.
+                - success_on : bool
+                    If success email notifications are on. Defaults to user's
+                    preferences.
+                - failure_on : bool
+                    If failure email notifications are on. Defaults to user's
+                    preferences.
+            - time_zone : str
+                The time zone of this script.
+            - hidden : bool
+                The hidden status of the item.
+            - target_project_id : int
+                Target project to which script outputs will be added.
+            - required_resources : :class:`civis.Response`
+                - cpu : int
+                    The number of CPU shares to allocate for the container. Each core
+                    has 1000 shares.
+                - memory : int
+                    The amount of RAM to allocate for the container (in MB).
+                - disk_space : float (float)
+                    The amount of disk space, in GB, to allocate for the container.
+                    This space will be used to hold the git repo configured for the
+                    container and anything your container writes to /tmp or /data.
+                    Fractional values (e.g. 0.25) are supported.
+            - partition_label : str
+                The partition label used to run this object. Only applicable for jobs
+                using Docker.
+            - running_as_id : int
+                The ID of the runner of this script.
         """
         ...
 
@@ -47000,6 +52075,12 @@ class _Scripts:
         """Update the given run
 
         API URL: ``PATCH /scripts/container/{id}/runs/{run_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_container_runs(...)
 
         Parameters
         ----------
@@ -47024,6 +52105,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/sql/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_sql_git(...)
 
         Parameters
         ----------
@@ -47067,6 +52154,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/sql/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_git(...)
 
         .. warning::
             The method name ``<client>.scripts.list_sql_git`` is deprecated and will be
@@ -47117,6 +52210,12 @@ class _Scripts:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /scripts/sql/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_git(...)
 
         Parameters
         ----------
@@ -47177,6 +52276,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/sql/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_sql_git(...)
+
         Parameters
         ----------
         id : int
@@ -47229,6 +52334,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/sql/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -47258,6 +52369,12 @@ class _Scripts:
         """Commit and push a new version of the file
 
         API URL: ``POST /scripts/sql/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql_git_commits(...)
 
         Parameters
         ----------
@@ -47293,6 +52410,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/sql/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_sql_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -47322,6 +52445,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/sql/{id}/git/checkout-latest``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql_git_checkout_latest(...)
+
         Parameters
         ----------
         id : int
@@ -47349,6 +52478,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/sql/{id}/git/checkout``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql_git_checkout(...)
+
         Parameters
         ----------
         id : int
@@ -47375,6 +52510,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/javascript/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_javascript_git(...)
 
         Parameters
         ----------
@@ -47418,6 +52559,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/javascript/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_git(...)
 
         .. warning::
             The method name ``<client>.scripts.list_javascript_git`` is deprecated and
@@ -47468,6 +52615,12 @@ class _Scripts:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /scripts/javascript/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_git(...)
 
         Parameters
         ----------
@@ -47528,6 +52681,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/javascript/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_javascript_git(...)
+
         Parameters
         ----------
         id : int
@@ -47580,6 +52739,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -47609,6 +52774,12 @@ class _Scripts:
         """Commit and push a new version of the file
 
         API URL: ``POST /scripts/javascript/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_git_commits(...)
 
         Parameters
         ----------
@@ -47644,6 +52815,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_javascript_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -47673,6 +52850,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/javascript/{id}/git/checkout-latest``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_git_checkout_latest(...)
+
         Parameters
         ----------
         id : int
@@ -47700,6 +52883,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/javascript/{id}/git/checkout``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_git_checkout(...)
+
         Parameters
         ----------
         id : int
@@ -47726,6 +52915,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/python3/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_python3_git(...)
 
         Parameters
         ----------
@@ -47769,6 +52964,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/python3/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_git(...)
 
         .. warning::
             The method name ``<client>.scripts.list_python3_git`` is deprecated and will
@@ -47819,6 +53020,12 @@ class _Scripts:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /scripts/python3/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_git(...)
 
         Parameters
         ----------
@@ -47879,6 +53086,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/python3/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_python3_git(...)
+
         Parameters
         ----------
         id : int
@@ -47931,6 +53144,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -47960,6 +53179,12 @@ class _Scripts:
         """Commit and push a new version of the file
 
         API URL: ``POST /scripts/python3/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_git_commits(...)
 
         Parameters
         ----------
@@ -47995,6 +53220,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_python3_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -48024,6 +53255,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/python3/{id}/git/checkout-latest``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_git_checkout_latest(...)
+
         Parameters
         ----------
         id : int
@@ -48051,6 +53288,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/python3/{id}/git/checkout``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_git_checkout(...)
+
         Parameters
         ----------
         id : int
@@ -48077,6 +53320,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/r/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_r_git(...)
 
         Parameters
         ----------
@@ -48120,6 +53369,12 @@ class _Scripts:
         """Get the git metadata attached to an item
 
         API URL: ``GET /scripts/r/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_git(...)
 
         .. warning::
             The method name ``<client>.scripts.list_r_git`` is deprecated and will be
@@ -48170,6 +53425,12 @@ class _Scripts:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /scripts/r/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_git(...)
 
         Parameters
         ----------
@@ -48230,6 +53491,12 @@ class _Scripts:
 
         API URL: ``PATCH /scripts/r/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.patch_r_git(...)
+
         Parameters
         ----------
         id : int
@@ -48282,6 +53549,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -48311,6 +53584,12 @@ class _Scripts:
         """Commit and push a new version of the file
 
         API URL: ``POST /scripts/r/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_git_commits(...)
 
         Parameters
         ----------
@@ -48346,6 +53625,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.get_r_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -48375,6 +53660,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/r/{id}/git/checkout-latest``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_git_checkout_latest(...)
+
         Parameters
         ----------
         id : int
@@ -48402,6 +53693,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/r/{id}/git/checkout``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_git_checkout(...)
+
         Parameters
         ----------
         id : int
@@ -48428,6 +53725,12 @@ class _Scripts:
         """List users and groups permissioned on this object
 
         API URL: ``GET /scripts/sql/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_shares(...)
 
         Parameters
         ----------
@@ -48479,6 +53782,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/sql/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_shares_users(...)
 
         Parameters
         ----------
@@ -48535,6 +53844,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/sql/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_sql_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -48561,6 +53876,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/sql/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_shares_groups(...)
 
         Parameters
         ----------
@@ -48617,6 +53938,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/sql/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_sql_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -48640,6 +53967,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/sql/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_dependencies(...)
 
         Parameters
         ----------
@@ -48683,6 +54016,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/sql/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_transfer(...)
 
         Parameters
         ----------
@@ -48732,6 +54071,12 @@ class _Scripts:
         """List the projects a SQL Script belongs to
 
         API URL: ``GET /scripts/sql/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_sql_projects(...)
 
         Parameters
         ----------
@@ -48791,6 +54136,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/sql/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_projects(...)
+
         Parameters
         ----------
         id : int
@@ -48814,6 +54165,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/sql/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_sql_projects(...)
+
         Parameters
         ----------
         id : int
@@ -48836,6 +54193,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/sql/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_sql_archive(...)
 
         Parameters
         ----------
@@ -49050,6 +54413,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/containers/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_shares(...)
+
         Parameters
         ----------
         id : int
@@ -49100,6 +54469,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/containers/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers_shares_users(...)
 
         Parameters
         ----------
@@ -49156,6 +54531,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/containers/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_containers_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -49182,6 +54563,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/containers/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers_shares_groups(...)
 
         Parameters
         ----------
@@ -49238,6 +54625,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/containers/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_containers_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -49261,6 +54654,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/containers/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_dependencies(...)
 
         Parameters
         ----------
@@ -49304,6 +54703,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/containers/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers_transfer(...)
 
         Parameters
         ----------
@@ -49353,6 +54758,12 @@ class _Scripts:
         """List the projects a Container Script belongs to
 
         API URL: ``GET /scripts/containers/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_containers_projects(...)
 
         Parameters
         ----------
@@ -49412,6 +54823,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/containers/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers_projects(...)
+
         Parameters
         ----------
         id : int
@@ -49435,6 +54852,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/containers/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_containers_projects(...)
+
         Parameters
         ----------
         id : int
@@ -49457,6 +54880,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/containers/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_containers_archive(...)
 
         Parameters
         ----------
@@ -49690,6 +55119,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/python3/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_shares(...)
+
         Parameters
         ----------
         id : int
@@ -49740,6 +55175,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/python3/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_shares_users(...)
 
         Parameters
         ----------
@@ -49796,6 +55237,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/python3/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_python3_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -49822,6 +55269,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/python3/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_shares_groups(...)
 
         Parameters
         ----------
@@ -49878,6 +55331,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/python3/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_python3_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -49901,6 +55360,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/python3/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_dependencies(...)
 
         Parameters
         ----------
@@ -49944,6 +55409,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/python3/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_transfer(...)
 
         Parameters
         ----------
@@ -49993,6 +55464,12 @@ class _Scripts:
         """List the projects a Python Script belongs to
 
         API URL: ``GET /scripts/python3/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_python3_projects(...)
 
         Parameters
         ----------
@@ -50052,6 +55529,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/python3/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_projects(...)
+
         Parameters
         ----------
         id : int
@@ -50075,6 +55558,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/python3/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_python3_projects(...)
+
         Parameters
         ----------
         id : int
@@ -50097,6 +55586,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/python3/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_python3_archive(...)
 
         Parameters
         ----------
@@ -50307,6 +55802,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/r/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_shares(...)
+
         Parameters
         ----------
         id : int
@@ -50357,6 +55858,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/r/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_shares_users(...)
 
         Parameters
         ----------
@@ -50413,6 +55920,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/r/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_r_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -50439,6 +55952,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/r/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_shares_groups(...)
 
         Parameters
         ----------
@@ -50495,6 +56014,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/r/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_r_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -50518,6 +56043,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/r/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_dependencies(...)
 
         Parameters
         ----------
@@ -50561,6 +56092,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/r/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_transfer(...)
 
         Parameters
         ----------
@@ -50610,6 +56147,12 @@ class _Scripts:
         """List the projects an R Script belongs to
 
         API URL: ``GET /scripts/r/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_r_projects(...)
 
         Parameters
         ----------
@@ -50669,6 +56212,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/r/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_projects(...)
+
         Parameters
         ----------
         id : int
@@ -50692,6 +56241,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/r/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_r_projects(...)
+
         Parameters
         ----------
         id : int
@@ -50714,6 +56269,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/r/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_r_archive(...)
 
         Parameters
         ----------
@@ -50924,6 +56485,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/dbt/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_shares(...)
+
         Parameters
         ----------
         id : int
@@ -50974,6 +56541,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/dbt/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt_shares_users(...)
 
         Parameters
         ----------
@@ -51030,6 +56603,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/dbt/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_dbt_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -51056,6 +56635,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/dbt/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt_shares_groups(...)
 
         Parameters
         ----------
@@ -51112,6 +56697,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/dbt/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_dbt_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -51135,6 +56726,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/dbt/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_dependencies(...)
 
         Parameters
         ----------
@@ -51178,6 +56775,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/dbt/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt_transfer(...)
 
         Parameters
         ----------
@@ -51227,6 +56830,12 @@ class _Scripts:
         """List the projects a dbt Script belongs to
 
         API URL: ``GET /scripts/dbt/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_dbt_projects(...)
 
         Parameters
         ----------
@@ -51286,6 +56895,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/dbt/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt_projects(...)
+
         Parameters
         ----------
         id : int
@@ -51309,6 +56924,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/dbt/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_dbt_projects(...)
+
         Parameters
         ----------
         id : int
@@ -51331,6 +56952,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/dbt/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_dbt_archive(...)
 
         Parameters
         ----------
@@ -51583,6 +57210,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/javascript/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_shares(...)
+
         Parameters
         ----------
         id : int
@@ -51633,6 +57266,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/javascript/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_shares_users(...)
 
         Parameters
         ----------
@@ -51689,6 +57328,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/javascript/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_javascript_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -51715,6 +57360,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/javascript/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_shares_groups(...)
 
         Parameters
         ----------
@@ -51771,6 +57422,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/javascript/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_javascript_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -51794,6 +57451,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/javascript/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_dependencies(...)
 
         Parameters
         ----------
@@ -51837,6 +57500,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/javascript/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_transfer(...)
 
         Parameters
         ----------
@@ -51886,6 +57555,12 @@ class _Scripts:
         """List the projects a JavaScript Script belongs to
 
         API URL: ``GET /scripts/javascript/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_javascript_projects(...)
 
         Parameters
         ----------
@@ -51945,6 +57620,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/javascript/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_projects(...)
+
         Parameters
         ----------
         id : int
@@ -51968,6 +57649,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/javascript/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_javascript_projects(...)
+
         Parameters
         ----------
         id : int
@@ -51990,6 +57677,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/javascript/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_javascript_archive(...)
 
         Parameters
         ----------
@@ -52180,6 +57873,12 @@ class _Scripts:
 
         API URL: ``GET /scripts/custom/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_shares(...)
+
         Parameters
         ----------
         id : int
@@ -52230,6 +57929,12 @@ class _Scripts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /scripts/custom/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom_shares_users(...)
 
         Parameters
         ----------
@@ -52286,6 +57991,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/custom/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_custom_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -52312,6 +58023,12 @@ class _Scripts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /scripts/custom/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom_shares_groups(...)
 
         Parameters
         ----------
@@ -52368,6 +58085,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/custom/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_custom_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -52391,6 +58114,12 @@ class _Scripts:
         """List dependent objects for this object
 
         API URL: ``GET /scripts/custom/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_dependencies(...)
 
         Parameters
         ----------
@@ -52434,6 +58163,12 @@ class _Scripts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /scripts/custom/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom_transfer(...)
 
         Parameters
         ----------
@@ -52483,6 +58218,12 @@ class _Scripts:
         """List the projects a Custom Script belongs to
 
         API URL: ``GET /scripts/custom/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.list_custom_projects(...)
 
         Parameters
         ----------
@@ -52542,6 +58283,12 @@ class _Scripts:
 
         API URL: ``PUT /scripts/custom/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom_projects(...)
+
         Parameters
         ----------
         id : int
@@ -52565,6 +58312,12 @@ class _Scripts:
 
         API URL: ``DELETE /scripts/custom/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.delete_custom_projects(...)
+
         Parameters
         ----------
         id : int
@@ -52587,6 +58340,12 @@ class _Scripts:
         """Update the archive status of this object
 
         API URL: ``PUT /scripts/custom/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.put_custom_archive(...)
 
         Parameters
         ----------
@@ -52812,6 +58571,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/sql/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_sql_clone(...)
+
         Parameters
         ----------
         id : int
@@ -53033,6 +58798,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/javascript/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_javascript_clone(...)
+
         Parameters
         ----------
         id : int
@@ -53229,6 +59000,12 @@ class _Scripts:
         """Clone this Python Script
 
         API URL: ``POST /scripts/python3/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_python3_clone(...)
 
         Parameters
         ----------
@@ -53447,6 +59224,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/r/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_r_clone(...)
+
         Parameters
         ----------
         id : int
@@ -53663,6 +59446,12 @@ class _Scripts:
         """Clone this Container Script
 
         API URL: ``POST /scripts/containers/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_containers_clone(...)
 
         Parameters
         ----------
@@ -53903,6 +59692,12 @@ class _Scripts:
         """Clone this dbt Script
 
         API URL: ``POST /scripts/dbt/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_dbt_clone(...)
 
         Parameters
         ----------
@@ -54163,6 +59958,12 @@ class _Scripts:
 
         API URL: ``POST /scripts/custom/{id}/clone``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.scripts.post_custom_clone(...)
+
         Parameters
         ----------
         id : int
@@ -54396,6 +60197,12 @@ class _Search:
 
         API URL: ``GET /search``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.search.list(...)
+
         Parameters
         ----------
         query : str, optional
@@ -54468,6 +60275,12 @@ class _Search:
 
         API URL: ``GET /search/types``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.search.list_types(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -54499,6 +60312,12 @@ class _Search:
         """Search queries that are not hidden
 
         API URL: ``GET /search/queries``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.search.list_queries(...)
 
         Parameters
         ----------
@@ -54588,6 +60407,12 @@ class _Services:
         """List Services
 
         API URL: ``GET /services``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list(...)
 
         Parameters
         ----------
@@ -54718,6 +60543,12 @@ class _Services:
         """Create a Service
 
         API URL: ``POST /services``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.post(...)
 
         Parameters
         ----------
@@ -54917,6 +60748,12 @@ class _Services:
 
         API URL: ``GET /services/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.get(...)
+
         Parameters
         ----------
         id : int
@@ -55074,6 +60911,12 @@ class _Services:
         """Replace all attributes of this Service
 
         API URL: ``PUT /services/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put(...)
 
         Parameters
         ----------
@@ -55290,6 +61133,12 @@ class _Services:
 
         API URL: ``PATCH /services/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.patch(...)
+
         Parameters
         ----------
         id : int
@@ -55486,6 +61335,12 @@ class _Services:
 
         API URL: ``GET /services/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -55536,6 +61391,12 @@ class _Services:
         """Set the permissions users have on this object
 
         API URL: ``PUT /services/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put_shares_users(...)
 
         Parameters
         ----------
@@ -55592,6 +61453,12 @@ class _Services:
 
         API URL: ``DELETE /services/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -55618,6 +61485,12 @@ class _Services:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /services/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put_shares_groups(...)
 
         Parameters
         ----------
@@ -55674,6 +61547,12 @@ class _Services:
 
         API URL: ``DELETE /services/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -55697,6 +61576,12 @@ class _Services:
         """List dependent objects for this object
 
         API URL: ``GET /services/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_dependencies(...)
 
         Parameters
         ----------
@@ -55740,6 +61625,12 @@ class _Services:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /services/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put_transfer(...)
 
         Parameters
         ----------
@@ -55788,6 +61679,12 @@ class _Services:
         """Update the archive status of this object
 
         API URL: ``PUT /services/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put_archive(...)
 
         Parameters
         ----------
@@ -55933,6 +61830,12 @@ class _Services:
 
         API URL: ``GET /services/{id}/projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_projects(...)
+
         Parameters
         ----------
         id : int
@@ -55991,6 +61894,12 @@ class _Services:
 
         API URL: ``PUT /services/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -56013,6 +61922,12 @@ class _Services:
         """Remove a Service from a project
 
         API URL: ``DELETE /services/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.delete_projects(...)
 
         Parameters
         ----------
@@ -56045,6 +61960,12 @@ class _Services:
         """List deployments for a Service
 
         API URL: ``GET /services/{service_id}/deployments``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_deployments(...)
 
         Parameters
         ----------
@@ -56119,6 +62040,12 @@ class _Services:
 
         API URL: ``POST /services/{service_id}/deployments``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.post_deployments(...)
+
         Parameters
         ----------
         service_id : int
@@ -56174,6 +62101,12 @@ class _Services:
         """Get details about a Service deployment
 
         API URL: ``GET /services/{service_id}/deployments/{deployment_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.get_deployments(...)
 
         Parameters
         ----------
@@ -56231,6 +62164,12 @@ class _Services:
 
         API URL: ``DELETE /services/{service_id}/deployments/{deployment_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.delete_deployments(...)
+
         Parameters
         ----------
         service_id : int
@@ -56254,6 +62193,12 @@ class _Services:
         """Redeploy a Service
 
         API URL: ``POST /services/{service_id}/redeploy``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.post_redeploy(...)
 
         Parameters
         ----------
@@ -56315,6 +62260,12 @@ class _Services:
 
         API URL: ``GET /services/{id}/deployments/{deployment_id}/logs``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_deployments_logs(...)
+
         Parameters
         ----------
         id : int
@@ -56349,6 +62300,12 @@ class _Services:
         """Clone this Service
 
         API URL: ``POST /services/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.post_clone(...)
 
         Parameters
         ----------
@@ -56493,6 +62450,12 @@ class _Services:
 
         API URL: ``POST /services/{id}/tokens``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.post_tokens(...)
+
         Parameters
         ----------
         id : int
@@ -56541,6 +62504,12 @@ class _Services:
 
         API URL: ``GET /services/{id}/tokens``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.list_tokens(...)
+
         Parameters
         ----------
         id : int
@@ -56582,6 +62551,12 @@ class _Services:
 
         API URL: ``DELETE /services/{id}/tokens/{token_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.services.delete_tokens(...)
+
         Parameters
         ----------
         id : int
@@ -56603,6 +62578,12 @@ class _Storage_Hosts:
         """List the storage hosts
 
         API URL: ``GET /storage_hosts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.list(...)
 
         Returns
         -------
@@ -56643,6 +62624,12 @@ class _Storage_Hosts:
         """Create a new storage host
 
         API URL: ``POST /storage_hosts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.post(...)
 
         Parameters
         ----------
@@ -56692,6 +62679,12 @@ class _Storage_Hosts:
 
         API URL: ``GET /storage_hosts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.get(...)
+
         Parameters
         ----------
         id : int
@@ -56737,6 +62730,12 @@ class _Storage_Hosts:
         """Replace all attributes of this storage host
 
         API URL: ``PUT /storage_hosts/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.put(...)
 
         Parameters
         ----------
@@ -56793,6 +62792,12 @@ class _Storage_Hosts:
 
         API URL: ``PATCH /storage_hosts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.patch(...)
+
         Parameters
         ----------
         id : int
@@ -56842,6 +62847,12 @@ class _Storage_Hosts:
         """List users and groups permissioned on this object
 
         API URL: ``GET /storage_hosts/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.list_shares(...)
 
         Parameters
         ----------
@@ -56893,6 +62904,12 @@ class _Storage_Hosts:
         """Set the permissions users have on this object
 
         API URL: ``PUT /storage_hosts/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.put_shares_users(...)
 
         Parameters
         ----------
@@ -56949,6 +62966,12 @@ class _Storage_Hosts:
 
         API URL: ``DELETE /storage_hosts/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -56975,6 +62998,12 @@ class _Storage_Hosts:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /storage_hosts/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.put_shares_groups(...)
 
         Parameters
         ----------
@@ -57031,6 +63060,12 @@ class _Storage_Hosts:
 
         API URL: ``DELETE /storage_hosts/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -57054,6 +63089,12 @@ class _Storage_Hosts:
         """List dependent objects for this object
 
         API URL: ``GET /storage_hosts/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.list_dependencies(...)
 
         Parameters
         ----------
@@ -57097,6 +63138,12 @@ class _Storage_Hosts:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /storage_hosts/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.storage_hosts.put_transfer(...)
 
         Parameters
         ----------
@@ -57155,6 +63202,12 @@ class _Studios:
         """Create a Studio
 
         API URL: ``POST /studios``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.post(...)
 
         Parameters
         ----------
@@ -57313,6 +63366,12 @@ class _Studios:
 
         API URL: ``GET /studios/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.get(...)
+
         Parameters
         ----------
         id : int
@@ -57440,6 +63499,12 @@ class _Studios:
         """Replace all attributes of this Studio
 
         API URL: ``PUT /studios/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.put(...)
 
         Parameters
         ----------
@@ -57611,6 +63676,12 @@ class _Studios:
 
         API URL: ``PATCH /studios/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.patch(...)
+
         Parameters
         ----------
         id : int
@@ -57780,6 +63851,12 @@ class _Studios:
 
         API URL: ``GET /studios/{studio_id}/deployments``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.list_deployments(...)
+
         Parameters
         ----------
         studio_id : int
@@ -57853,6 +63930,12 @@ class _Studios:
 
         API URL: ``POST /studios/{studio_id}/deployments``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.post_deployments(...)
+
         Parameters
         ----------
         studio_id : int
@@ -57908,6 +63991,12 @@ class _Studios:
         """Get details about a Studio deployment
 
         API URL: ``GET /studios/{studio_id}/deployments/{deployment_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.get_deployments(...)
 
         Parameters
         ----------
@@ -57965,6 +64054,12 @@ class _Studios:
 
         API URL: ``DELETE /studios/{studio_id}/deployments/{deployment_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.delete_deployments(...)
+
         Parameters
         ----------
         studio_id : int
@@ -57991,6 +64086,12 @@ class _Studios:
         """Get the logs for a Studio deployment
 
         API URL: ``GET /studios/{id}/deployments/{deployment_id}/logs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.list_deployments_logs(...)
 
         Parameters
         ----------
@@ -58027,6 +64128,12 @@ class _Studios:
         """Update the archive status of this object
 
         API URL: ``PUT /studios/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.studios.put_archive(...)
 
         Parameters
         ----------
@@ -58157,6 +64264,12 @@ class _Table_Tags:
 
         API URL: ``GET /table_tags``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.table_tags.list(...)
+
         Parameters
         ----------
         name : str, optional
@@ -58211,6 +64324,12 @@ class _Table_Tags:
 
         API URL: ``POST /table_tags``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.table_tags.post(...)
+
         Parameters
         ----------
         name : str
@@ -58251,6 +64370,12 @@ class _Table_Tags:
 
         API URL: ``GET /table_tags/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.table_tags.get(...)
+
         Parameters
         ----------
         id : int
@@ -58290,6 +64415,12 @@ class _Table_Tags:
 
         API URL: ``DELETE /table_tags/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.table_tags.delete(...)
+
         Parameters
         ----------
         id : int
@@ -58302,44 +64433,6 @@ class _Table_Tags:
         ...
 
 class _Tables:
-    @deprecated("""
-        Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
-        deprecated and will be removed after January 1, 2021.
-        """)
-    def post_enhancements_geocodings(
-        self,
-        source_table_id: int,
-    ) -> _ResponseTablesPostEnhancementsGeocodings:
-        """Geocode a table
-
-        API URL: ``POST /tables/{source_table_id}/enhancements/geocodings``
-
-        .. warning::
-            Warning: The tables/:source_table_id/enhancements/geocodings endpoint is
-            deprecated and will be removed after January 1, 2021.
-
-        Parameters
-        ----------
-        source_table_id : int
-            The ID of the table to be enhanced.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID of the enhancement.
-            - source_table_id : int
-                The ID of the table that was enhanced.
-            - state : str
-                The state of the enhancement, one of 'queued' 'running' 'succeeded'
-                'failed' or 'cancelled'.
-            - enhanced_table_schema : str
-                The schema name of the table created by the enhancement.
-            - enhanced_table_name : str
-                The name of the table created by the enhancement.
-        """
-        ...
-
     @deprecated("""
         Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
         deprecated and will be removed after January 1, 2021.
@@ -58356,6 +64449,12 @@ class _Tables:
         """Standardize addresses in a table
 
         API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.post_enhancements_cass_ncoa(...)
 
         .. warning::
             Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
@@ -58410,102 +64509,6 @@ class _Tables:
         """
         ...
 
-    @deprecated("""
-        Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
-        deprecated and will be removed after January 1, 2021.
-        """)
-    def get_enhancements_geocodings(
-        self,
-        id: int,
-        source_table_id: int,
-    ) -> _ResponseTablesGetEnhancementsGeocodings:
-        """View the status of a geocoding table enhancement
-
-        API URL: ``GET /tables/{source_table_id}/enhancements/geocodings/{id}``
-
-        .. warning::
-            Warning: The tables/:source_table_id/enhancements/geocodings/:id endpoint is
-            deprecated and will be removed after January 1, 2021.
-
-        Parameters
-        ----------
-        id : int
-            The ID of the enhancement.
-        source_table_id : int
-            The ID of the table that was enhanced.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID of the enhancement.
-            - source_table_id : int
-                The ID of the table that was enhanced.
-            - state : str
-                The state of the enhancement, one of 'queued' 'running' 'succeeded'
-                'failed' or 'cancelled'.
-            - enhanced_table_schema : str
-                The schema name of the table created by the enhancement.
-            - enhanced_table_name : str
-                The name of the table created by the enhancement.
-        """
-        ...
-
-    @deprecated("""
-        Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
-        deprecated and will be removed after January 1, 2021.
-        """)
-    def get_enhancements_cass_ncoa(
-        self,
-        id: int,
-        source_table_id: int,
-    ) -> _ResponseTablesGetEnhancementsCassNcoa:
-        """View the status of a CASS / NCOA table enhancement
-
-        API URL: ``GET /tables/{source_table_id}/enhancements/cass-ncoa/{id}``
-
-        .. warning::
-            Warning: The tables/:source_table_id/enhancements/cass-ncoa/:id endpoint is
-            deprecated and will be removed after January 1, 2021.
-
-        Parameters
-        ----------
-        id : int
-            The ID of the enhancement.
-        source_table_id : int
-            The ID of the table that was enhanced.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID of the enhancement.
-            - source_table_id : int
-                The ID of the table that was enhanced.
-            - state : str
-                The state of the enhancement, one of 'queued' 'running' 'succeeded'
-                'failed' or 'cancelled'.
-            - enhanced_table_schema : str
-                The schema name of the table created by the enhancement.
-            - enhanced_table_name : str
-                The name of the table created by the enhancement.
-            - perform_ncoa : bool
-                Whether to update addresses for records matching the National Change of
-                Address (NCOA) database.
-            - ncoa_credential_id : int
-                Credential to use when performing NCOA updates. Required if
-                'performNcoa' is true.
-            - output_level : str
-                The set of fields persisted by a CASS or NCOA enhancement.For CASS
-                enhancements, one of 'cass' or 'all.'For NCOA enhancements, one of
-                'cass', 'ncoa' , 'coalesced' or 'all'.By default, all fields will be
-                returned.
-            - batch_size : int
-                The maximum number of records processed at a time. Note that this
-                parameter is not available to all users.
-        """
-        ...
-
     def post_scan(
         self,
         database_id: int,
@@ -58517,6 +64520,12 @@ class _Tables:
         """Creates and enqueues a single table scanner job on a new table
 
         API URL: ``POST /tables/scan``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.post_scan(...)
 
         Parameters
         ----------
@@ -58554,6 +64563,12 @@ class _Tables:
         """Request a refresh for column and table statistics
 
         API URL: ``POST /tables/{id}/refresh``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.post_refresh(...)
 
         .. warning::
             Warning: The tables/:id/refresh endpoint is deprecated. Please use
@@ -58717,6 +64732,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
+                    - last_run_updated_at : str (date-time)
                     - runs : List[:class:`civis.Response`]
                         Information about the most recent runs of the job.
 
@@ -58767,6 +64783,12 @@ class _Tables:
         """List tables
 
         API URL: ``GET /tables``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.list(...)
 
         Parameters
         ----------
@@ -58874,6 +64896,12 @@ class _Tables:
         """Show basic table info
 
         API URL: ``GET /tables/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.get(...)
 
         Parameters
         ----------
@@ -59033,6 +65061,7 @@ class _Tables:
                         Whether the job is idle, queued, running, cancelled, or failed.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
+                    - last_run_updated_at : str (date-time)
                     - runs : List[:class:`civis.Response`]
                         Information about the most recent runs of the job.
 
@@ -59077,6 +65106,12 @@ class _Tables:
         """Update a table
 
         API URL: ``PATCH /tables/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.patch(...)
 
         Parameters
         ----------
@@ -59183,6 +65218,12 @@ class _Tables:
 
         API URL: ``GET /tables/{id}/columns``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.list_columns(...)
+
         Parameters
         ----------
         id : int
@@ -59269,6 +65310,12 @@ class _Tables:
 
         API URL: ``PUT /tables/{id}/tags/{table_tag_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.put_tags(...)
+
         Parameters
         ----------
         id : int
@@ -59295,6 +65342,12 @@ class _Tables:
 
         API URL: ``DELETE /tables/{id}/tags/{table_tag_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.delete_tags(...)
+
         Parameters
         ----------
         id : int
@@ -59318,6 +65371,12 @@ class _Tables:
         """List the projects a Table belongs to
 
         API URL: ``GET /tables/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.list_projects(...)
 
         Parameters
         ----------
@@ -59377,6 +65436,12 @@ class _Tables:
 
         API URL: ``PUT /tables/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -59400,6 +65465,12 @@ class _Tables:
 
         API URL: ``DELETE /tables/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.tables.delete_projects(...)
+
         Parameters
         ----------
         id : int
@@ -59422,6 +65493,12 @@ class _Templates:
         """List users and groups permissioned on this object
 
         API URL: ``GET /templates/reports/{id}/shares``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_reports_shares(...)
 
         Parameters
         ----------
@@ -59473,6 +65550,12 @@ class _Templates:
         """Set the permissions users have on this object
 
         API URL: ``PUT /templates/reports/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_reports_shares_users(...)
 
         Parameters
         ----------
@@ -59529,6 +65612,12 @@ class _Templates:
 
         API URL: ``DELETE /templates/reports/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.delete_reports_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -59555,6 +65644,12 @@ class _Templates:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /templates/reports/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_reports_shares_groups(...)
 
         Parameters
         ----------
@@ -59611,6 +65706,12 @@ class _Templates:
 
         API URL: ``DELETE /templates/reports/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.delete_reports_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -59634,6 +65735,12 @@ class _Templates:
         """List dependent objects for this object
 
         API URL: ``GET /templates/reports/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_reports_dependencies(...)
 
         Parameters
         ----------
@@ -59677,6 +65784,12 @@ class _Templates:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /templates/reports/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_reports_transfer(...)
 
         Parameters
         ----------
@@ -59735,6 +65848,12 @@ class _Templates:
         """List Report Templates
 
         API URL: ``GET /templates/reports``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_reports(...)
 
         Parameters
         ----------
@@ -59811,6 +65930,12 @@ class _Templates:
 
         API URL: ``POST /templates/reports``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.post_reports(...)
+
         Parameters
         ----------
         name : str
@@ -59875,6 +66000,12 @@ class _Templates:
 
         API URL: ``GET /templates/reports/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.get_reports(...)
+
         Parameters
         ----------
         id : int
@@ -59931,6 +66062,12 @@ class _Templates:
         """Replace all attributes of this Report Template
 
         API URL: ``PUT /templates/reports/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_reports(...)
 
         Parameters
         ----------
@@ -60001,6 +66138,12 @@ class _Templates:
 
         API URL: ``PATCH /templates/reports/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.patch_reports(...)
+
         Parameters
         ----------
         id : int
@@ -60064,6 +66207,12 @@ class _Templates:
 
         API URL: ``GET /templates/scripts/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_scripts_shares(...)
+
         Parameters
         ----------
         id : int
@@ -60114,6 +66263,12 @@ class _Templates:
         """Set the permissions users have on this object
 
         API URL: ``PUT /templates/scripts/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_scripts_shares_users(...)
 
         Parameters
         ----------
@@ -60170,6 +66325,12 @@ class _Templates:
 
         API URL: ``DELETE /templates/scripts/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.delete_scripts_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -60196,6 +66357,12 @@ class _Templates:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /templates/scripts/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_scripts_shares_groups(...)
 
         Parameters
         ----------
@@ -60252,6 +66419,12 @@ class _Templates:
 
         API URL: ``DELETE /templates/scripts/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.delete_scripts_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -60275,6 +66448,12 @@ class _Templates:
         """List dependent objects for this object
 
         API URL: ``GET /templates/scripts/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_scripts_dependencies(...)
 
         Parameters
         ----------
@@ -60318,6 +66497,12 @@ class _Templates:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /templates/scripts/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_scripts_transfer(...)
 
         Parameters
         ----------
@@ -60367,6 +66552,12 @@ class _Templates:
         """List the projects a Script Template belongs to
 
         API URL: ``GET /templates/scripts/{id}/projects``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_scripts_projects(...)
 
         Parameters
         ----------
@@ -60426,6 +66617,12 @@ class _Templates:
 
         API URL: ``PUT /templates/scripts/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_scripts_projects(...)
+
         Parameters
         ----------
         id : int
@@ -60448,6 +66645,12 @@ class _Templates:
         """Remove a Script Template from a project
 
         API URL: ``DELETE /templates/scripts/{id}/projects/{project_id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.delete_scripts_projects(...)
 
         Parameters
         ----------
@@ -60481,6 +66684,12 @@ class _Templates:
         """List Script Templates
 
         API URL: ``GET /templates/scripts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.list_scripts(...)
 
         Parameters
         ----------
@@ -60564,6 +66773,12 @@ class _Templates:
         """Create a Script Template
 
         API URL: ``POST /templates/scripts``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.post_scripts(...)
 
         Parameters
         ----------
@@ -60668,6 +66883,12 @@ class _Templates:
 
         API URL: ``GET /templates/scripts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.get_scripts(...)
+
         Parameters
         ----------
         id : int
@@ -60763,6 +66984,12 @@ class _Templates:
         """Replace all attributes of this Script Template
 
         API URL: ``PUT /templates/scripts/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.put_scripts(...)
 
         Parameters
         ----------
@@ -60869,6 +67096,12 @@ class _Templates:
 
         API URL: ``PATCH /templates/scripts/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.templates.patch_scripts(...)
+
         Parameters
         ----------
         id : int
@@ -60974,6 +67207,12 @@ class _Usage:
 
         API URL: ``GET /usage/matching``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage.list_matching(...)
+
         Parameters
         ----------
         org_id : int, optional
@@ -61018,6 +67257,12 @@ class _Usage:
         """Get a list of usage statistics for a given organization
 
         API URL: ``GET /usage/llm``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage.list_llm(...)
 
         Parameters
         ----------
@@ -61068,6 +67313,12 @@ class _Usage:
 
         API URL: ``GET /usage/llm/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage.get_llm(...)
+
         Parameters
         ----------
         id : int
@@ -61112,6 +67363,12 @@ class _Usage:
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage.get_llm_organization_summary(...)
+
         Parameters
         ----------
         org_id : int
@@ -61152,6 +67409,12 @@ class _Usage:
 
         API URL: ``GET /usage/llm/organization/{org_id}/summary``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage.list_llm_organization_summary(...)
+
         .. warning::
             The method name ``<client>.usage.list_llm_organization_summary`` is
             deprecated and will be removed at civis-python v3.0.0 (no release timeline
@@ -61191,6 +67454,12 @@ class _Usage_Limits:
 
         API URL: ``GET /usage_limits/matching``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage_limits.list_matching(...)
+
         Parameters
         ----------
         task : str, optional
@@ -61224,6 +67493,12 @@ class _Usage_Limits:
         """Get a Matching Usage Limit
 
         API URL: ``GET /usage_limits/matching/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage_limits.get_matching(...)
 
         Parameters
         ----------
@@ -61260,6 +67535,12 @@ class _Usage_Limits:
 
         API URL: ``GET /usage_limits/llm``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage_limits.list_llm(...)
+
         Parameters
         ----------
         organization_id : int, optional
@@ -61288,6 +67569,12 @@ class _Usage_Limits:
         """Get a LLM Usage Limit
 
         API URL: ``GET /usage_limits/llm/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.usage_limits.get_llm(...)
 
         Parameters
         ----------
@@ -61330,6 +67617,12 @@ class _Users:
         """List users
 
         API URL: ``GET /users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list(...)
 
         Parameters
         ----------
@@ -61440,6 +67733,12 @@ class _Users:
         """Create a new user (must be a team or org admin)
 
         API URL: ``POST /users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.post(...)
 
         Parameters
         ----------
@@ -61581,6 +67880,12 @@ class _Users:
 
         API URL: ``GET /users/me``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.get_me(...)
+
         Returns
         -------
         :class:`civis.Response`
@@ -61662,6 +67967,12 @@ class _Users:
         """Show info about the logged-in user
 
         API URL: ``GET /users/me``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list_me(...)
 
         .. warning::
             The method name ``<client>.users.list_me`` is deprecated and will be removed
@@ -61747,6 +68058,12 @@ class _Users:
         """Update info about the logged-in user
 
         API URL: ``PATCH /users/me``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch_me(...)
 
         Parameters
         ----------
@@ -61993,6 +68310,12 @@ class _Users:
 
         API URL: ``GET /users/me/activity``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list_me_activity(...)
+
         Parameters
         ----------
         status : str, optional
@@ -62038,6 +68361,12 @@ class _Users:
 
         API URL: ``GET /users/me/organization_admins``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list_me_organization_admins(...)
+
         Returns
         -------
         :class:`civis.ListResponse`
@@ -62063,6 +68392,12 @@ class _Users:
         """Show info about a user
 
         API URL: ``GET /users/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.get(...)
 
         Parameters
         ----------
@@ -62188,6 +68523,12 @@ class _Users:
         """Update info about a user (must be a team or org admin)
 
         API URL: ``PATCH /users/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch(...)
 
         Parameters
         ----------
@@ -62344,6 +68685,12 @@ class _Users:
 
         API URL: ``GET /users/{id}/api_keys``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list_api_keys(...)
+
         Parameters
         ----------
         id : str
@@ -62406,6 +68753,12 @@ class _Users:
         """Create a new API key belonging to the logged-in user
 
         API URL: ``POST /users/{id}/api_keys``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.post_api_keys(...)
 
         Parameters
         ----------
@@ -62491,6 +68844,12 @@ class _Users:
 
         API URL: ``GET /users/{id}/api_keys/{key_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.get_api_keys(...)
+
         Parameters
         ----------
         id : str
@@ -62552,6 +68911,12 @@ class _Users:
 
         API URL: ``DELETE /users/{id}/api_keys/{key_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.delete_api_keys(...)
+
         Parameters
         ----------
         id : str
@@ -62611,6 +68976,12 @@ class _Users:
         """Terminate all of the user's active sessions (must be a team or org admin)
 
         API URL: ``DELETE /users/{id}/sessions``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.delete_sessions(...)
 
         Parameters
         ----------
@@ -62726,6 +69097,12 @@ class _Users:
 
         API URL: ``GET /users/me/favorites``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.list_me_favorites(...)
+
         Parameters
         ----------
         object_id : int, optional
@@ -62801,6 +69178,12 @@ class _Users:
 
         API URL: ``POST /users/me/favorites``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.post_me_favorites(...)
+
         Parameters
         ----------
         object_id : int
@@ -62854,6 +69237,12 @@ class _Users:
 
         API URL: ``DELETE /users/me/favorites/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.delete_me_favorites(...)
+
         Parameters
         ----------
         id : int
@@ -62873,6 +69262,12 @@ class _Users:
         """Move a favorite to the top of the list
 
         API URL: ``PATCH /users/me/favorites/{id}/ranking/top``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch_me_favorites_ranking_top(...)
 
         Parameters
         ----------
@@ -62894,6 +69289,12 @@ class _Users:
 
         API URL: ``PATCH /users/me/favorites/{id}/ranking/bottom``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch_me_favorites_ranking_bottom(...)
+
         Parameters
         ----------
         id : int
@@ -62913,6 +69314,12 @@ class _Users:
         """Move a favorite one position closer to the top of the list
 
         API URL: ``PATCH /users/me/favorites/{id}/ranking/higher``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch_me_favorites_ranking_higher(...)
 
         Parameters
         ----------
@@ -62934,6 +69341,12 @@ class _Users:
 
         API URL: ``PATCH /users/me/favorites/{id}/ranking/lower``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.patch_me_favorites_ranking_lower(...)
+
         Parameters
         ----------
         id : int
@@ -62953,6 +69366,12 @@ class _Users:
         """Unsuspends user
 
         API URL: ``POST /users/{id}/unsuspend``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.post_unsuspend(...)
 
         Parameters
         ----------
@@ -62979,6 +69398,12 @@ class _Users:
         login
 
         API URL: ``DELETE /users/{id}/2fa``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.delete_2fa(...)
 
         Parameters
         ----------
@@ -63085,6 +69510,12 @@ class _Users:
 
         API URL: ``POST /users/{id}/access_email``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.users.post_access_email(...)
+
         Parameters
         ----------
         id : int
@@ -63117,6 +69548,12 @@ class _Workflows:
         """List Workflows
 
         API URL: ``GET /workflows``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list(...)
 
         Parameters
         ----------
@@ -63226,6 +69663,12 @@ class _Workflows:
         """Create a Workflow
 
         API URL: ``POST /workflows``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post(...)
 
         Parameters
         ----------
@@ -63370,6 +69813,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.get(...)
+
         Parameters
         ----------
         id : int
@@ -63473,6 +69922,12 @@ class _Workflows:
         """Replace all attributes of this Workflow
 
         API URL: ``PUT /workflows/{id}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put(...)
 
         Parameters
         ----------
@@ -63622,6 +70077,12 @@ class _Workflows:
 
         API URL: ``PATCH /workflows/{id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.patch(...)
+
         Parameters
         ----------
         id : int
@@ -63762,6 +70223,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/shares``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_shares(...)
+
         Parameters
         ----------
         id : int
@@ -63812,6 +70279,12 @@ class _Workflows:
         """Set the permissions users have on this object
 
         API URL: ``PUT /workflows/{id}/shares/users``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_shares_users(...)
 
         Parameters
         ----------
@@ -63868,6 +70341,12 @@ class _Workflows:
 
         API URL: ``DELETE /workflows/{id}/shares/users/{user_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.delete_shares_users(...)
+
         Parameters
         ----------
         id : int
@@ -63894,6 +70373,12 @@ class _Workflows:
         """Set the permissions groups has on this object
 
         API URL: ``PUT /workflows/{id}/shares/groups``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_shares_groups(...)
 
         Parameters
         ----------
@@ -63950,6 +70435,12 @@ class _Workflows:
 
         API URL: ``DELETE /workflows/{id}/shares/groups/{group_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.delete_shares_groups(...)
+
         Parameters
         ----------
         id : int
@@ -63973,6 +70464,12 @@ class _Workflows:
         """List dependent objects for this object
 
         API URL: ``GET /workflows/{id}/dependencies``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_dependencies(...)
 
         Parameters
         ----------
@@ -64016,6 +70513,12 @@ class _Workflows:
         """Transfer ownership of this object to another user
 
         API URL: ``PUT /workflows/{id}/transfer``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_transfer(...)
 
         Parameters
         ----------
@@ -64064,6 +70567,12 @@ class _Workflows:
         """Update the archive status of this object
 
         API URL: ``PUT /workflows/{id}/archive``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_archive(...)
 
         Parameters
         ----------
@@ -64166,6 +70675,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/projects``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_projects(...)
+
         Parameters
         ----------
         id : int
@@ -64224,6 +70739,12 @@ class _Workflows:
 
         API URL: ``PUT /workflows/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_projects(...)
+
         Parameters
         ----------
         id : int
@@ -64247,6 +70768,12 @@ class _Workflows:
 
         API URL: ``DELETE /workflows/{id}/projects/{project_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.delete_projects(...)
+
         Parameters
         ----------
         id : int
@@ -64268,6 +70795,12 @@ class _Workflows:
         """Get the git metadata attached to an item
 
         API URL: ``GET /workflows/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.get_git(...)
 
         Parameters
         ----------
@@ -64311,6 +70844,12 @@ class _Workflows:
         """Get the git metadata attached to an item
 
         API URL: ``GET /workflows/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_git(...)
 
         .. warning::
             The method name ``<client>.workflows.list_git`` is deprecated and will be
@@ -64361,6 +70900,12 @@ class _Workflows:
         """Attach an item to a file in a git repo
 
         API URL: ``PUT /workflows/{id}/git``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.put_git(...)
 
         Parameters
         ----------
@@ -64421,6 +70966,12 @@ class _Workflows:
 
         API URL: ``PATCH /workflows/{id}/git``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.patch_git(...)
+
         Parameters
         ----------
         id : int
@@ -64473,6 +71024,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/git/commits``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -64502,6 +71059,12 @@ class _Workflows:
         """Commit and push a new version of the file
 
         API URL: ``POST /workflows/{id}/git/commits``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_git_commits(...)
 
         Parameters
         ----------
@@ -64537,6 +71100,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/git/commits/{commit_hash}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.get_git_commits(...)
+
         Parameters
         ----------
         id : int
@@ -64565,6 +71134,12 @@ class _Workflows:
         """Checkout latest commit on the current branch of a script or workflow
 
         API URL: ``POST /workflows/{id}/git/checkout-latest``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_git_checkout_latest(...)
 
         Parameters
         ----------
@@ -64595,6 +71170,12 @@ class _Workflows:
         """Clone this Workflow
 
         API URL: ``POST /workflows/{id}/clone``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_clone(...)
 
         Parameters
         ----------
@@ -64706,6 +71287,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/executions``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.list_executions(...)
+
         Parameters
         ----------
         id : int
@@ -64774,6 +71361,12 @@ class _Workflows:
         """Execute a workflow
 
         API URL: ``POST /workflows/{id}/executions``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_executions(...)
 
         Parameters
         ----------
@@ -64882,6 +71475,12 @@ class _Workflows:
 
         API URL: ``GET /workflows/{id}/executions/{execution_id}``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.get_executions(...)
+
         Parameters
         ----------
         id : int
@@ -64984,6 +71583,12 @@ class _Workflows:
 
         API URL: ``POST /workflows/{id}/executions/{execution_id}/cancel``
 
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_executions_cancel(...)
+
         Parameters
         ----------
         id : int
@@ -65085,6 +71690,12 @@ class _Workflows:
         """Resume a paused workflow execution
 
         API URL: ``POST /workflows/{id}/executions/{execution_id}/resume``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_executions_resume(...)
 
         Parameters
         ----------
@@ -65189,6 +71800,12 @@ class _Workflows:
         """Retry a failed task, or all failed tasks in an execution
 
         API URL: ``POST /workflows/{id}/executions/{execution_id}/retry``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.post_executions_retry(...)
 
         Parameters
         ----------
@@ -65295,6 +71912,12 @@ class _Workflows:
         """Get a task of a workflow execution
 
         API URL: ``GET /workflows/{id}/executions/{execution_id}/tasks/{task_name}``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.workflows.get_executions_tasks(...)
 
         Parameters
         ----------
@@ -65955,6 +72578,8 @@ class _ResponseCredentialsList(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsListUser(Response):
     id: int
@@ -65978,6 +72603,8 @@ class _ResponseCredentialsPost(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsPostUser(Response):
     id: int
@@ -66001,6 +72628,8 @@ class _ResponseCredentialsPut(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsPutUser(Response):
     id: int
@@ -66024,6 +72653,8 @@ class _ResponseCredentialsPatch(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsPatchUser(Response):
     id: int
@@ -66047,6 +72678,8 @@ class _ResponseCredentialsGet(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsGetUser(Response):
     id: int
@@ -66070,6 +72703,8 @@ class _ResponseCredentialsPostAuthenticate(Response):
     updated_at: str
     default: bool
     oauth: bool
+    provider: str
+    provider_metadata: dict
 
 class _ResponseCredentialsPostAuthenticateUser(Response):
     id: int
@@ -66361,6 +72996,7 @@ class _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobRuns]
     last_run: _ResponseDatabasesGetSchemasTablesOutgoingTableMatchesJobLastRun
     hidden: bool
@@ -66487,6 +73123,7 @@ class _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobRuns]
     last_run: _ResponseDatabasesPatchSchemasTablesOutgoingTableMatchesJobLastRun
     hidden: bool
@@ -68544,6 +75181,7 @@ class _ResponseEnhancementsPostGeocode(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     archived: str
     parent_id: int
 
@@ -68603,6 +75241,7 @@ class _ResponseEnhancementsGetGeocode(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     archived: str
     parent_id: int
 
@@ -68662,6 +75301,7 @@ class _ResponseEnhancementsPutGeocode(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     archived: str
     parent_id: int
 
@@ -68721,6 +75361,7 @@ class _ResponseEnhancementsPatchGeocode(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     archived: str
     parent_id: int
 
@@ -68820,6 +75461,7 @@ class _ResponseEnhancementsGetGeocodeRunsInputs(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     parent_id: int
 
 class _ResponseEnhancementsGetGeocodeRunsInputsSchedule(Response):
@@ -68841,6 +75483,66 @@ class _ResponseEnhancementsGetGeocodeRunsInputsNotifications(Response):
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
+
+class _ResponseEnhancementsPostGeocodeClone(Response):
+    id: int
+    name: str
+    type: str
+    created_at: str
+    updated_at: str
+    author: _ResponseEnhancementsPostGeocodeCloneAuthor
+    state: str
+    schedule: _ResponseEnhancementsPostGeocodeCloneSchedule
+    notifications: _ResponseEnhancementsPostGeocodeCloneNotifications
+    running_as: _ResponseEnhancementsPostGeocodeCloneRunningAs
+    my_permission_level: str
+    remote_host_id: int
+    credential_id: int
+    source_schema_and_table: str
+    multipart_key: List[str]
+    limiting_sql: str
+    target_schema: str
+    target_table: str
+    country: str
+    provider: str
+    output_address: bool
+    existing_table_rows: str
+    archived: str
+    parent_id: int
+
+class _ResponseEnhancementsPostGeocodeCloneAuthor(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseEnhancementsPostGeocodeCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseEnhancementsPostGeocodeCloneNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseEnhancementsPostGeocodeCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
 
 class _ResponseEnhancementsListCassNcoaShares(Response):
     readers: _ResponseEnhancementsListCassNcoaSharesReaders
@@ -69298,6 +76000,7 @@ class _ResponseEnhancementsPutGeocodeArchive(Response):
     country: str
     provider: str
     output_address: bool
+    existing_table_rows: str
     archived: str
     parent_id: int
 
@@ -70146,6 +76849,16 @@ class _ResponseFilesPatchDetectedInfoTableColumns(Response):
     name: str
     sql_type: str
 
+class _ResponseFilesGetPreview(Response):
+    columns: List[_ResponseFilesGetPreviewColumns]
+    rows: List[List]
+    column_delimiter: str
+    include_header: bool
+
+class _ResponseFilesGetPreviewColumns(Response):
+    name: str
+    sql_type: str
+
 class _ResponseFilesPostPreprocessCsv(Response):
     id: int
     file_id: int
@@ -70728,14 +77441,12 @@ class _ResponseImportsListProjectsUsers(Response):
     online: bool
 
 class _ResponseImportsPutArchive(Response):
+    id: int
     name: str
-    sync_type: str
     source: _ResponseImportsPutArchiveSource
     destination: _ResponseImportsPutArchiveDestination
-    schedule: _ResponseImportsPutArchiveSchedule
-    notifications: _ResponseImportsPutArchiveNotifications
+    sync_type: str
     parent_id: int
-    id: int
     is_outbound: bool
     job_type: str
     syncs: List[_ResponseImportsPutArchiveSyncs]
@@ -70745,7 +77456,9 @@ class _ResponseImportsPutArchive(Response):
     last_run: _ResponseImportsPutArchiveLastRun
     user: _ResponseImportsPutArchiveUser
     running_as: _ResponseImportsPutArchiveRunningAs
+    schedule: _ResponseImportsPutArchiveSchedule
     next_run_at: str
+    notifications: _ResponseImportsPutArchiveNotifications
     time_zone: str
     hidden: bool
     archived: str
@@ -70763,26 +77476,6 @@ class _ResponseImportsPutArchiveDestination(Response):
     additional_credentials: List[int]
     name: str
 
-class _ResponseImportsPutArchiveSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
-
-class _ResponseImportsPutArchiveNotifications(Response):
-    urls: List[str]
-    success_email_subject: str
-    success_email_body: str
-    success_email_addresses: List[str]
-    success_email_from_name: str
-    success_email_reply_to: str
-    failure_email_addresses: List[str]
-    stall_warning_minutes: int
-    success_on: bool
-    failure_on: bool
-
 class _ResponseImportsPutArchiveSyncs(Response):
     id: int
     source: _ResponseImportsPutArchiveSyncsSource
@@ -70791,10 +77484,10 @@ class _ResponseImportsPutArchiveSyncs(Response):
 
 class _ResponseImportsPutArchiveSyncsSource(Response):
     id: int
-    path: str
     database_table: _ResponseImportsPutArchiveSyncsSourceDatabaseTable
     file: _ResponseImportsPutArchiveSyncsSourceFile
     google_worksheet: _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutArchiveSyncsSourceDatabaseTable(Response):
     schema: str
@@ -70803,6 +77496,7 @@ class _ResponseImportsPutArchiveSyncsSourceDatabaseTable(Response):
 
 class _ResponseImportsPutArchiveSyncsSourceFile(Response):
     id: int
+    name: str
 
 class _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet(Response):
     spreadsheet: str
@@ -70811,9 +77505,9 @@ class _ResponseImportsPutArchiveSyncsSourceGoogleWorksheet(Response):
     worksheet_id: int
 
 class _ResponseImportsPutArchiveSyncsDestination(Response):
-    path: str
     database_table: _ResponseImportsPutArchiveSyncsDestinationDatabaseTable
     google_worksheet: _ResponseImportsPutArchiveSyncsDestinationGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutArchiveSyncsDestinationDatabaseTable(Response):
     schema: str
@@ -70879,13 +77573,32 @@ class _ResponseImportsPutArchiveRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseImportsPutArchiveSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsPutArchiveNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
 class _ResponseImportsList(Response):
+    id: int
     name: str
-    sync_type: str
     source: _ResponseImportsListSource
     destination: _ResponseImportsListDestination
-    schedule: _ResponseImportsListSchedule
-    id: int
+    sync_type: str
     is_outbound: bool
     job_type: str
     state: str
@@ -70893,6 +77606,7 @@ class _ResponseImportsList(Response):
     updated_at: str
     last_run: _ResponseImportsListLastRun
     user: _ResponseImportsListUser
+    schedule: _ResponseImportsListSchedule
     time_zone: str
     archived: str
 
@@ -70907,14 +77621,6 @@ class _ResponseImportsListDestination(Response):
     credential_id: int
     additional_credentials: List[int]
     name: str
-
-class _ResponseImportsListSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
 
 class _ResponseImportsListLastRun(Response):
     id: int
@@ -70931,15 +77637,21 @@ class _ResponseImportsListUser(Response):
     initials: str
     online: bool
 
+class _ResponseImportsListSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
 class _ResponseImportsPost(Response):
+    id: int
     name: str
-    sync_type: str
     source: _ResponseImportsPostSource
     destination: _ResponseImportsPostDestination
-    schedule: _ResponseImportsPostSchedule
-    notifications: _ResponseImportsPostNotifications
+    sync_type: str
     parent_id: int
-    id: int
     is_outbound: bool
     job_type: str
     syncs: List[_ResponseImportsPostSyncs]
@@ -70949,7 +77661,9 @@ class _ResponseImportsPost(Response):
     last_run: _ResponseImportsPostLastRun
     user: _ResponseImportsPostUser
     running_as: _ResponseImportsPostRunningAs
+    schedule: _ResponseImportsPostSchedule
     next_run_at: str
+    notifications: _ResponseImportsPostNotifications
     time_zone: str
     hidden: bool
     archived: str
@@ -70967,26 +77681,6 @@ class _ResponseImportsPostDestination(Response):
     additional_credentials: List[int]
     name: str
 
-class _ResponseImportsPostSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
-
-class _ResponseImportsPostNotifications(Response):
-    urls: List[str]
-    success_email_subject: str
-    success_email_body: str
-    success_email_addresses: List[str]
-    success_email_from_name: str
-    success_email_reply_to: str
-    failure_email_addresses: List[str]
-    stall_warning_minutes: int
-    success_on: bool
-    failure_on: bool
-
 class _ResponseImportsPostSyncs(Response):
     id: int
     source: _ResponseImportsPostSyncsSource
@@ -70995,10 +77689,10 @@ class _ResponseImportsPostSyncs(Response):
 
 class _ResponseImportsPostSyncsSource(Response):
     id: int
-    path: str
     database_table: _ResponseImportsPostSyncsSourceDatabaseTable
     file: _ResponseImportsPostSyncsSourceFile
     google_worksheet: _ResponseImportsPostSyncsSourceGoogleWorksheet
+    path: str
 
 class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
     schema: str
@@ -71007,6 +77701,7 @@ class _ResponseImportsPostSyncsSourceDatabaseTable(Response):
 
 class _ResponseImportsPostSyncsSourceFile(Response):
     id: int
+    name: str
 
 class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
     spreadsheet: str
@@ -71015,9 +77710,9 @@ class _ResponseImportsPostSyncsSourceGoogleWorksheet(Response):
     worksheet_id: int
 
 class _ResponseImportsPostSyncsDestination(Response):
-    path: str
     database_table: _ResponseImportsPostSyncsDestinationDatabaseTable
     google_worksheet: _ResponseImportsPostSyncsDestinationGoogleWorksheet
+    path: str
 
 class _ResponseImportsPostSyncsDestinationDatabaseTable(Response):
     schema: str
@@ -71083,6 +77778,179 @@ class _ResponseImportsPostRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseImportsPostSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsPostNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsPostClone(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPostCloneSource
+    destination: _ResponseImportsPostCloneDestination
+    sync_type: str
+    parent_id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List[_ResponseImportsPostCloneSyncs]
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsPostCloneLastRun
+    user: _ResponseImportsPostCloneUser
+    running_as: _ResponseImportsPostCloneRunningAs
+    schedule: _ResponseImportsPostCloneSchedule
+    next_run_at: str
+    notifications: _ResponseImportsPostCloneNotifications
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsPostCloneSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsPostCloneDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsPostCloneSyncs(Response):
+    id: int
+    source: _ResponseImportsPostCloneSyncsSource
+    destination: _ResponseImportsPostCloneSyncsDestination
+    advanced_options: _ResponseImportsPostCloneSyncsAdvancedOptions
+
+class _ResponseImportsPostCloneSyncsSource(Response):
+    id: int
+    database_table: _ResponseImportsPostCloneSyncsSourceDatabaseTable
+    file: _ResponseImportsPostCloneSyncsSourceFile
+    google_worksheet: _ResponseImportsPostCloneSyncsSourceGoogleWorksheet
+    path: str
+
+class _ResponseImportsPostCloneSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostCloneSyncsSourceFile(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPostCloneSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPostCloneSyncsDestination(Response):
+    database_table: _ResponseImportsPostCloneSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPostCloneSyncsDestinationGoogleWorksheet
+    path: str
+
+class _ResponseImportsPostCloneSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPostCloneSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPostCloneSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    first_row_is_header: bool
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    last_modified_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
+class _ResponseImportsPostCloneLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPostCloneUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPostCloneRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPostCloneSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsPostCloneNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
 class _ResponseImportsPostFiles(Response):
     id: int
     upload_uri: str
@@ -71133,14 +78001,14 @@ class _ResponseImportsListRunsLogs(Response):
 
 class _ResponseImportsGetFilesRunsInputs(Response):
     name: str
-    sync_type: str
     source: _ResponseImportsGetFilesRunsInputsSource
     destination: _ResponseImportsGetFilesRunsInputsDestination
-    schedule: _ResponseImportsGetFilesRunsInputsSchedule
-    notifications: _ResponseImportsGetFilesRunsInputsNotifications
+    sync_type: str
     parent_id: int
     is_outbound: bool
+    schedule: _ResponseImportsGetFilesRunsInputsSchedule
     next_run_at: str
+    notifications: _ResponseImportsGetFilesRunsInputsNotifications
     time_zone: str
     hidden: bool
 
@@ -71513,14 +78381,12 @@ class _ResponseImportsGetBatches(Response):
     hidden: bool
 
 class _ResponseImportsGet(Response):
+    id: int
     name: str
-    sync_type: str
     source: _ResponseImportsGetSource
     destination: _ResponseImportsGetDestination
-    schedule: _ResponseImportsGetSchedule
-    notifications: _ResponseImportsGetNotifications
+    sync_type: str
     parent_id: int
-    id: int
     is_outbound: bool
     job_type: str
     syncs: List[_ResponseImportsGetSyncs]
@@ -71530,7 +78396,9 @@ class _ResponseImportsGet(Response):
     last_run: _ResponseImportsGetLastRun
     user: _ResponseImportsGetUser
     running_as: _ResponseImportsGetRunningAs
+    schedule: _ResponseImportsGetSchedule
     next_run_at: str
+    notifications: _ResponseImportsGetNotifications
     time_zone: str
     hidden: bool
     archived: str
@@ -71548,26 +78416,6 @@ class _ResponseImportsGetDestination(Response):
     additional_credentials: List[int]
     name: str
 
-class _ResponseImportsGetSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
-
-class _ResponseImportsGetNotifications(Response):
-    urls: List[str]
-    success_email_subject: str
-    success_email_body: str
-    success_email_addresses: List[str]
-    success_email_from_name: str
-    success_email_reply_to: str
-    failure_email_addresses: List[str]
-    stall_warning_minutes: int
-    success_on: bool
-    failure_on: bool
-
 class _ResponseImportsGetSyncs(Response):
     id: int
     source: _ResponseImportsGetSyncsSource
@@ -71576,10 +78424,10 @@ class _ResponseImportsGetSyncs(Response):
 
 class _ResponseImportsGetSyncsSource(Response):
     id: int
-    path: str
     database_table: _ResponseImportsGetSyncsSourceDatabaseTable
     file: _ResponseImportsGetSyncsSourceFile
     google_worksheet: _ResponseImportsGetSyncsSourceGoogleWorksheet
+    path: str
 
 class _ResponseImportsGetSyncsSourceDatabaseTable(Response):
     schema: str
@@ -71588,6 +78436,7 @@ class _ResponseImportsGetSyncsSourceDatabaseTable(Response):
 
 class _ResponseImportsGetSyncsSourceFile(Response):
     id: int
+    name: str
 
 class _ResponseImportsGetSyncsSourceGoogleWorksheet(Response):
     spreadsheet: str
@@ -71596,9 +78445,9 @@ class _ResponseImportsGetSyncsSourceGoogleWorksheet(Response):
     worksheet_id: int
 
 class _ResponseImportsGetSyncsDestination(Response):
-    path: str
     database_table: _ResponseImportsGetSyncsDestinationDatabaseTable
     google_worksheet: _ResponseImportsGetSyncsDestinationGoogleWorksheet
+    path: str
 
 class _ResponseImportsGetSyncsDestinationDatabaseTable(Response):
     schema: str
@@ -71664,15 +78513,33 @@ class _ResponseImportsGetRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseImportsGetSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsGetNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
 class _ResponseImportsPut(Response):
+    id: int
     name: str
-    sync_type: str
     source: _ResponseImportsPutSource
     destination: _ResponseImportsPutDestination
-    schedule: _ResponseImportsPutSchedule
-    notifications: _ResponseImportsPutNotifications
+    sync_type: str
     parent_id: int
-    id: int
     is_outbound: bool
     job_type: str
     syncs: List[_ResponseImportsPutSyncs]
@@ -71682,7 +78549,9 @@ class _ResponseImportsPut(Response):
     last_run: _ResponseImportsPutLastRun
     user: _ResponseImportsPutUser
     running_as: _ResponseImportsPutRunningAs
+    schedule: _ResponseImportsPutSchedule
     next_run_at: str
+    notifications: _ResponseImportsPutNotifications
     time_zone: str
     hidden: bool
     archived: str
@@ -71700,26 +78569,6 @@ class _ResponseImportsPutDestination(Response):
     additional_credentials: List[int]
     name: str
 
-class _ResponseImportsPutSchedule(Response):
-    scheduled: bool
-    scheduled_days: List[int]
-    scheduled_hours: List[int]
-    scheduled_minutes: List[int]
-    scheduled_runs_per_hour: int
-    scheduled_days_of_month: List[int]
-
-class _ResponseImportsPutNotifications(Response):
-    urls: List[str]
-    success_email_subject: str
-    success_email_body: str
-    success_email_addresses: List[str]
-    success_email_from_name: str
-    success_email_reply_to: str
-    failure_email_addresses: List[str]
-    stall_warning_minutes: int
-    success_on: bool
-    failure_on: bool
-
 class _ResponseImportsPutSyncs(Response):
     id: int
     source: _ResponseImportsPutSyncsSource
@@ -71728,10 +78577,10 @@ class _ResponseImportsPutSyncs(Response):
 
 class _ResponseImportsPutSyncsSource(Response):
     id: int
-    path: str
     database_table: _ResponseImportsPutSyncsSourceDatabaseTable
     file: _ResponseImportsPutSyncsSourceFile
     google_worksheet: _ResponseImportsPutSyncsSourceGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutSyncsSourceDatabaseTable(Response):
     schema: str
@@ -71740,6 +78589,7 @@ class _ResponseImportsPutSyncsSourceDatabaseTable(Response):
 
 class _ResponseImportsPutSyncsSourceFile(Response):
     id: int
+    name: str
 
 class _ResponseImportsPutSyncsSourceGoogleWorksheet(Response):
     spreadsheet: str
@@ -71748,9 +78598,9 @@ class _ResponseImportsPutSyncsSourceGoogleWorksheet(Response):
     worksheet_id: int
 
 class _ResponseImportsPutSyncsDestination(Response):
-    path: str
     database_table: _ResponseImportsPutSyncsDestinationDatabaseTable
     google_worksheet: _ResponseImportsPutSyncsDestinationGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutSyncsDestinationDatabaseTable(Response):
     schema: str
@@ -71816,6 +78666,177 @@ class _ResponseImportsPutRunningAs(Response):
     initials: str
     online: bool
 
+class _ResponseImportsPutSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsPutNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseImportsPatch(Response):
+    id: int
+    name: str
+    source: _ResponseImportsPatchSource
+    destination: _ResponseImportsPatchDestination
+    sync_type: str
+    parent_id: int
+    is_outbound: bool
+    job_type: str
+    syncs: List[_ResponseImportsPatchSyncs]
+    state: str
+    created_at: str
+    updated_at: str
+    last_run: _ResponseImportsPatchLastRun
+    user: _ResponseImportsPatchUser
+    running_as: _ResponseImportsPatchRunningAs
+    schedule: _ResponseImportsPatchSchedule
+    next_run_at: str
+    notifications: _ResponseImportsPatchNotifications
+    time_zone: str
+    hidden: bool
+    archived: str
+    my_permission_level: str
+
+class _ResponseImportsPatchSource(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsPatchDestination(Response):
+    remote_host_id: int
+    credential_id: int
+    additional_credentials: List[int]
+    name: str
+
+class _ResponseImportsPatchSyncs(Response):
+    id: int
+    source: _ResponseImportsPatchSyncsSource
+    destination: _ResponseImportsPatchSyncsDestination
+    advanced_options: _ResponseImportsPatchSyncsAdvancedOptions
+
+class _ResponseImportsPatchSyncsSource(Response):
+    id: int
+    database_table: _ResponseImportsPatchSyncsSourceDatabaseTable
+    file: _ResponseImportsPatchSyncsSourceFile
+    google_worksheet: _ResponseImportsPatchSyncsSourceGoogleWorksheet
+
+class _ResponseImportsPatchSyncsSourceDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPatchSyncsSourceFile(Response):
+    id: int
+    name: str
+
+class _ResponseImportsPatchSyncsSourceGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPatchSyncsDestination(Response):
+    database_table: _ResponseImportsPatchSyncsDestinationDatabaseTable
+    google_worksheet: _ResponseImportsPatchSyncsDestinationGoogleWorksheet
+
+class _ResponseImportsPatchSyncsDestinationDatabaseTable(Response):
+    schema: str
+    table: str
+    use_without_schema: bool
+
+class _ResponseImportsPatchSyncsDestinationGoogleWorksheet(Response):
+    spreadsheet: str
+    spreadsheet_id: str
+    worksheet: str
+    worksheet_id: int
+
+class _ResponseImportsPatchSyncsAdvancedOptions(Response):
+    max_errors: int
+    existing_table_rows: str
+    first_row_is_header: bool
+    diststyle: str
+    distkey: str
+    sortkey1: str
+    sortkey2: str
+    column_delimiter: str
+    column_overrides: dict
+    escaped: bool
+    identity_column: str
+    last_modified_column: str
+    row_chunk_size: int
+    wipe_destination_table: bool
+    truncate_long_lines: bool
+    invalid_char_replacement: str
+    verify_table_row_counts: bool
+    partition_column_name: str
+    partition_schema_name: str
+    partition_table_name: str
+    partition_table_partition_column_min_name: str
+    partition_table_partition_column_max_name: str
+    mysql_catalog_matches_schema: bool
+    chunking_method: str
+    export_action: str
+    sql_query: str
+    contact_lists: str
+    soql_query: str
+    include_deleted_records: bool
+
+class _ResponseImportsPatchLastRun(Response):
+    id: int
+    state: str
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPatchUser(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPatchRunningAs(Response):
+    id: int
+    name: str
+    username: str
+    initials: str
+    online: bool
+
+class _ResponseImportsPatchSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseImportsPatchNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
 class _ResponseImportsListRuns(Response):
     id: int
     state: str
@@ -71840,10 +78861,10 @@ class _ResponseImportsPutSyncsArchive(Response):
 
 class _ResponseImportsPutSyncsArchiveSource(Response):
     id: int
-    path: str
     database_table: _ResponseImportsPutSyncsArchiveSourceDatabaseTable
     file: _ResponseImportsPutSyncsArchiveSourceFile
     google_worksheet: _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutSyncsArchiveSourceDatabaseTable(Response):
     schema: str
@@ -71852,6 +78873,7 @@ class _ResponseImportsPutSyncsArchiveSourceDatabaseTable(Response):
 
 class _ResponseImportsPutSyncsArchiveSourceFile(Response):
     id: int
+    name: str
 
 class _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet(Response):
     spreadsheet: str
@@ -71860,9 +78882,9 @@ class _ResponseImportsPutSyncsArchiveSourceGoogleWorksheet(Response):
     worksheet_id: int
 
 class _ResponseImportsPutSyncsArchiveDestination(Response):
-    path: str
     database_table: _ResponseImportsPutSyncsArchiveDestinationDatabaseTable
     google_worksheet: _ResponseImportsPutSyncsArchiveDestinationGoogleWorksheet
+    path: str
 
 class _ResponseImportsPutSyncsArchiveDestinationDatabaseTable(Response):
     schema: str
@@ -71914,6 +78936,7 @@ class _ResponseJobsList(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     last_run: _ResponseJobsListLastRun
     archived: str
     author: _ResponseJobsListAuthor
@@ -71950,6 +78973,7 @@ class _ResponseJobsGet(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseJobsGetRuns]
     last_run: _ResponseJobsGetLastRun
     hidden: bool
@@ -72004,6 +79028,7 @@ class _ResponseJobsListParents(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseJobsListParentsRuns]
     last_run: _ResponseJobsListParentsLastRun
     hidden: bool
@@ -72321,6 +79346,7 @@ class _ResponseJobsPutArchive(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseJobsPutArchiveRuns]
     last_run: _ResponseJobsPutArchiveLastRun
     hidden: bool
@@ -82284,7 +89310,45 @@ class _ResponseScriptsGetJavascriptRunsInputsNotifications(Response):
     failure_on: bool
 
 class _ResponseScriptsGetCustomRunsInputs(Response):
-    values: dict
+    name: str
+    parent_id: int
+    arguments: dict
+    from_template_id: int
+    remote_host_id: int
+    credential_id: int
+    schedule: _ResponseScriptsGetCustomRunsInputsSchedule
+    notifications: _ResponseScriptsGetCustomRunsInputsNotifications
+    time_zone: str
+    hidden: bool
+    target_project_id: int
+    required_resources: _ResponseScriptsGetCustomRunsInputsRequiredResources
+    partition_label: str
+    running_as_id: int
+
+class _ResponseScriptsGetCustomRunsInputsSchedule(Response):
+    scheduled: bool
+    scheduled_days: List[int]
+    scheduled_hours: List[int]
+    scheduled_minutes: List[int]
+    scheduled_runs_per_hour: int
+    scheduled_days_of_month: List[int]
+
+class _ResponseScriptsGetCustomRunsInputsNotifications(Response):
+    urls: List[str]
+    success_email_subject: str
+    success_email_body: str
+    success_email_addresses: List[str]
+    success_email_from_name: str
+    success_email_reply_to: str
+    failure_email_addresses: List[str]
+    stall_warning_minutes: int
+    success_on: bool
+    failure_on: bool
+
+class _ResponseScriptsGetCustomRunsInputsRequiredResources(Response):
+    cpu: int
+    memory: int
+    disk_space: float
 
 class _ResponseScriptsGetSqlGit(Response):
     git_ref: str
@@ -86791,32 +93855,7 @@ class _ResponseTableTagsGetUser(Response):
     initials: str
     online: bool
 
-class _ResponseTablesPostEnhancementsGeocodings(Response):
-    id: int
-    source_table_id: int
-    state: str
-    enhanced_table_schema: str
-    enhanced_table_name: str
-
 class _ResponseTablesPostEnhancementsCassNcoa(Response):
-    id: int
-    source_table_id: int
-    state: str
-    enhanced_table_schema: str
-    enhanced_table_name: str
-    perform_ncoa: bool
-    ncoa_credential_id: int
-    output_level: str
-    batch_size: int
-
-class _ResponseTablesGetEnhancementsGeocodings(Response):
-    id: int
-    source_table_id: int
-    state: str
-    enhanced_table_schema: str
-    enhanced_table_name: str
-
-class _ResponseTablesGetEnhancementsCassNcoa(Response):
     id: int
     source_table_id: int
     state: str
@@ -86930,6 +93969,7 @@ class _ResponseTablesPostRefreshOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseTablesPostRefreshOutgoingTableMatchesJobRuns]
     last_run: _ResponseTablesPostRefreshOutgoingTableMatchesJobLastRun
     hidden: bool
@@ -87085,6 +94125,7 @@ class _ResponseTablesGetOutgoingTableMatchesJob(Response):
     state: str
     created_at: str
     updated_at: str
+    last_run_updated_at: str
     runs: List[_ResponseTablesGetOutgoingTableMatchesJobRuns]
     last_run: _ResponseTablesGetOutgoingTableMatchesJobLastRun
     hidden: bool

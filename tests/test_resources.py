@@ -445,7 +445,9 @@ def test_parse_params():
         "description": "nah!",
         "type": "integer",
     }
-    x, y = _resources.parse_params([param, param2], "summary!", "get", "objects", "no!")
+    x, y = _resources.parse_params(
+        [param, param2], "summary!", "get", "objects", "no!", "get_objects"
+    )
     expect_x = [
         {
             "in": "query",
@@ -466,6 +468,10 @@ def test_parse_params():
     expect_y = (
         "summary!\n\n"
         "API URL: ``GET /objects``\n\n"
+        ".. code-block:: python\n\n"
+        "    import civis\n"
+        "    client = civis.APIClient()\n"
+        "    response = client.objects.get_objects(...)\n\n"
         ".. warning::\n    no!\n\n"
         "Parameters\n"
         "----------\n"

@@ -580,7 +580,7 @@ def parse_param(param):
     return args
 
 
-def parse_params(parameters, summary, verb, path, deprecation_warning):
+def parse_params(parameters, summary, verb, path, deprecation_warning, method_name):
     """Parse the parameters of a function specification into a list
     of dictionaries which are used to generate the function at runtime.
     """
@@ -604,6 +604,13 @@ def parse_params(parameters, summary, verb, path, deprecation_warning):
     else:
         summary_str = ""
     summary_str = f"{summary_str}\nAPI URL: ``{verb.upper()} /{path}``\n"
+    base_path = path.split("/")[0].lower().replace("-", "_")
+    summary_str += (
+        "\n.. code-block:: python\n\n"
+        "    import civis\n"
+        "    client = civis.APIClient()\n"
+        f"    response = client.{base_path}.{method_name}(...)\n"
+    )
     if dep_warn := deprecated_notice(deprecation_warning):
         summary_str = f"{summary_str}\n{dep_warn}\n"
     if param_docs:
@@ -711,11 +718,13 @@ def parse_method(
     deprecation_warning = (
         (deprecation_warning or "") + (operation.get("x-deprecation-warning") or "")
     ).strip() or None
-    args, param_doc = parse_params(params, summary, verb, path, deprecation_warning)
+    name = parse_method_name(verb, path, operation, use_legacy_names)
+    args, param_doc = parse_params(
+        params, summary, verb, path, deprecation_warning, name
+    )
     elements = split_method_params(params)
     _, _, _, query_params, _ = elements
     is_iterable = iterable_method(verb, query_params)
-    name = parse_method_name(verb, path, operation, use_legacy_names)
     is_list_return_type = name.startswith("list")
     if (
         use_legacy_names
@@ -809,14 +818,7 @@ def parse_api_spec(api_spec, api_version):
         class_name = base_path.title()
         if methods and classes.get(base_path) is None:
             cls = type(class_name, (Endpoint,), {})
-            cls.__doc__ = (
-                f"Civis API ``/{base_path}`` endpoint:\n\n"
-                ".. code-block:: python\n\n"
-                "    import civis\n"
-                "    client = civis.APIClient()\n"
-                f"    # Call client.{base_path}.<method>(<arguments>) to make a request, e.g.:\n"  # noqa: E501
-                f"    client.{base_path}.{methods[0][0]}(...)\n\n"
-            )
+            cls.__doc__ = f"Civis API ``/{base_path}`` endpoint."
             classes[base_path] = cls
         for method_name, method in methods:
             setattr(classes[base_path], method_name, method)
