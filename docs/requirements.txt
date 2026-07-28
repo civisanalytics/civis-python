@@ -8,11 +8,11 @@ attrs==26.1.0
     #   referencing
 babel==2.18.0
     # via sphinx
-certifi==2026.4.22
+certifi==2026.7.22
     # via requests
-charset-normalizer==3.4.7
+charset-normalizer==3.4.9
     # via requests
-click==8.3.3
+click==8.4.2
     # via civis (pyproject.toml)
 cloudpickle==3.1.2
     # via civis (pyproject.toml)
@@ -20,7 +20,7 @@ docutils==0.21.2
     # via
     #   sphinx
     #   sphinx-rtd-theme
-idna==3.13
+idna==3.18
     # via requests
 imagesize==2.0.0
     # via sphinx
@@ -38,7 +38,7 @@ markupsafe==3.0.3
     # via jinja2
 numpydoc==1.10.0
     # via civis (pyproject.toml)
-packaging==26.1
+packaging==26.2
     # via sphinx
 pygments==2.20.0
     # via sphinx
@@ -48,7 +48,7 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.33.1
+requests==2.34.2
     # via
     #   civis (pyproject.toml)
     #   sphinx
@@ -56,11 +56,11 @@ roman-numerals==4.1.0
     # via roman-numerals-py
 roman-numerals-py==4.1.0
     # via sphinx
-rpds-py==0.30.0
+rpds-py==2026.6.3
     # via
     #   jsonschema
     #   referencing
-snowballstemmer==3.0.1
+snowballstemmer==3.1.1
     # via sphinx
 sphinx==8.2.3
     # via
@@ -86,5 +86,5 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tenacity==9.1.4
     # via civis (pyproject.toml)
-urllib3==2.6.3
+urllib3==2.7.0
     # via requests
