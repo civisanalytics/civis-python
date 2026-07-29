@@ -228,6 +228,12 @@ To build the documentation locally, for testing and development:
   (rather than use the available ``civis_api_spec.json`` for a standard Civis Platform user),
   set the environment variable ``CIVIS_API_KEY`` to this user's key
   and prepend this command with ``FETCH_REMOTE_RESOURCES=true``.
+* Note that ``docs/conf.py`` generates the API reference source files as part of the
+  build: one page per endpoint (``docs/api_<endpoint>_endpoint.rst``) and one page per
+  endpoint method (``docs/api_<endpoint>/<method>.rst``, roughly 900 of them).
+  They are all gitignored. If you switch between branches that generate different
+  sets of pages, delete ``docs/build`` first so that Sphinx doesn't leave stale
+  HTML behind.
 
 
 Command-line Interface (CLI)
