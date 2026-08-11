@@ -113,7 +113,8 @@ class APIClient:
         """The feature flags for the current user.
 
         .. deprecated:: 2.6.0
-            This property is deprecated and will be removed at civis-python v3.0.0.
+            This property is deprecated and will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Please use ``client.users.get_me()["feature_flags"]`` instead.
 
         Returns
@@ -122,7 +123,7 @@ class APIClient:
         """
         warnings.warn(
             "The property `feature_flags` is deprecated and will be removed "
-            "at civis-python v3.0.0. Please use "
+            "at civis-python v3.0.0 (scheduled for February 2027). Please use "
             "client.users.get_me()['feature_flags'] instead.",
             FutureWarning,
             stacklevel=2,  # Point to the user code that calls this method.
@@ -171,7 +172,8 @@ class APIClient:
         """Return the credential ID for a given username in a given database.
 
         .. deprecated:: 2.4.0
-            This method is deprecated and will be removed at civis-python v3.0.0.
+            This method is deprecated and will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Its continued usage is strongly discouraged. Given the way Civis
             Platform has evolved over the years, there's currently no reliable
             way to get a database credential ID from a username and database name.
@@ -212,7 +214,8 @@ class APIClient:
         """
         warnings.warn(
             "The method `get_database_credential_id` is deprecated and will be removed "
-            "at civis-python v3.0.0. Its continued usage is strongly discouraged. "
+            "at civis-python v3.0.0 (scheduled for February 2027). "
+            "Its continued usage is strongly discouraged. "
             "Given the way Civis Platform has evolved over the years, "
             "there's currently no reliable way to get a database credential ID "
             "from a username and database name. No replacement for this method is "
@@ -395,13 +398,14 @@ class APIClient:
         """The current user's default credential.
 
         .. deprecated:: 2.4.0
-            This property is deprecated and will be removed at civis-python v3.0.0.
+            This property is deprecated and will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Please use :py:attr:`~civis.APIClient.default_database_credential_id`
             instead.
         """
         warnings.warn(
             "The property `default_credential` is deprecated and will be removed "
-            "at civis-python v3.0.0. "
+            "at civis-python v3.0.0 (scheduled for February 2027). "
             "Please use `default_database_credential_id` instead.",
             FutureWarning,
             stacklevel=2,  # Point to the user code that calls this method.

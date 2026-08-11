@@ -1856,8 +1856,8 @@ class _Clusters:
     @deprecated("""
         The method name
         <client>.clusters.list_kubernetes_instance_configs_historical_graphs is
-        deprecated and will be removed at civis-python v3.0.0 (no release
-        timeline yet). Please switch to
+        deprecated and will be removed at civis-python v3.0.0 (scheduled for
+        February 2027). Please switch to
         <client>.clusters.get_kubernetes_instance_configs_historical_graphs for
         the same method.
         """)
@@ -1880,8 +1880,8 @@ class _Clusters:
         .. warning::
             The method name
             ``<client>.clusters.list_kubernetes_instance_configs_historical_graphs`` is
-            deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please switch to
+            deprecated and will be removed at civis-python v3.0.0 (scheduled for
+            February 2027). Please switch to
             ``<client>.clusters.get_kubernetes_instance_configs_historical_graphs`` for
             the same method.
 
@@ -1961,8 +1961,8 @@ class _Clusters:
     @deprecated("""
         The method name
         <client>.clusters.list_kubernetes_instance_configs_historical_metrics is
-        deprecated and will be removed at civis-python v3.0.0 (no release
-        timeline yet). Please switch to
+        deprecated and will be removed at civis-python v3.0.0 (scheduled for
+        February 2027). Please switch to
         <client>.clusters.get_kubernetes_instance_configs_historical_metrics for
         the same method.
         """)
@@ -1986,8 +1986,8 @@ class _Clusters:
         .. warning::
             The method name
             ``<client>.clusters.list_kubernetes_instance_configs_historical_metrics`` is
-            deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please switch to
+            deprecated and will be removed at civis-python v3.0.0 (scheduled for
+            February 2027). Please switch to
             ``<client>.clusters.get_kubernetes_instance_configs_historical_metrics`` for
             the same method.
 
@@ -3327,6 +3327,8 @@ class _Databases:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -3431,7 +3433,8 @@ class _Databases:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is idle, queued, running, cancelled, or failed.
+                        Whether the job is queued, running, succeeded, failed,
+                        cancelled, idle or scheduled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -3440,6 +3443,8 @@ class _Databases:
 
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -3451,6 +3456,8 @@ class _Databases:
                     - last_run : :class:`civis.Response`
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -3546,6 +3553,8 @@ class _Databases:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -3650,7 +3659,8 @@ class _Databases:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is idle, queued, running, cancelled, or failed.
+                        Whether the job is queued, running, succeeded, failed,
+                        cancelled, idle or scheduled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -3659,6 +3669,8 @@ class _Databases:
 
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -3670,6 +3682,8 @@ class _Databases:
                     - last_run : :class:`civis.Response`
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -3752,7 +3766,7 @@ class _Databases:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -4125,7 +4139,7 @@ class _Databases:
 
     @deprecated("""
         The method name <client>.databases.list_advanced_settings is deprecated and will
-        be removed at civis-python v3.0.0 (no release timeline yet). Please
+        be removed at civis-python v3.0.0 (scheduled for February 2027). Please
         switch to <client>.databases.get_advanced_settings for the same method.
         """)
     def list_advanced_settings(
@@ -4144,8 +4158,9 @@ class _Databases:
 
         .. warning::
             The method name ``<client>.databases.list_advanced_settings`` is deprecated
-            and will be removed at civis-python v3.0.0 (no release timeline yet). Please
-            switch to ``<client>.databases.get_advanced_settings`` for the same method.
+            and will be removed at civis-python v3.0.0 (scheduled for February 2027).
+            Please switch to ``<client>.databases.get_advanced_settings`` for the same
+            method.
 
         Parameters
         ----------
@@ -4298,7 +4313,7 @@ class _Endpoints:
 
     @deprecated("""
         The method name <client>.endpoints.list is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.endpoints.get for the same method.
         """)
     def list(
@@ -4318,8 +4333,8 @@ class _Endpoints:
 
         .. warning::
             The method name ``<client>.endpoints.list`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.endpoints.get`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.endpoints.get`` for the same method.
 
         Parameters
         ----------
@@ -4549,6 +4564,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -4694,6 +4711,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -4924,6 +4943,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -5154,6 +5175,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -5310,6 +5333,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -6285,6 +6310,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -6358,7 +6385,7 @@ class _Enhancements:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -6448,7 +6475,8 @@ class _Enhancements:
         Parameters
         ----------
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         status : str, optional
             If specified, returns items with one of these statuses. It accepts a comma-
             separated list, possible values are 'running', 'failed', 'succeeded',
@@ -6498,7 +6526,7 @@ class _Enhancements:
                     Whether this user is online.
             - state : str
                 The status of the enhancement's last run
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sources : List[:class:`civis.Response`]
                 The source(s) to resolve via a run of this job.
@@ -6508,6 +6536,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -6771,7 +6801,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -6862,6 +6892,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -7131,7 +7163,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -7222,6 +7254,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -7491,7 +7525,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -7582,6 +7616,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -7724,7 +7760,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -7815,6 +7851,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -7962,7 +8000,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -8053,6 +8091,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -8514,7 +8554,8 @@ class _Enhancements:
             separated list, possible values are 'running', 'failed', 'succeeded',
             'idle', 'scheduled'.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -8560,7 +8601,7 @@ class _Enhancements:
                     Whether this user is online.
             - state : str
                 The status of the enhancement's last run
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -8824,7 +8865,7 @@ class _Enhancements:
             - batch_size : int
                 The maximum number of records processed at a time. Note that this
                 parameter is not available to all users.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -8983,7 +9024,7 @@ class _Enhancements:
             - batch_size : int
                 The maximum number of records processed at a time. Note that this
                 parameter is not available to all users.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -9252,7 +9293,7 @@ class _Enhancements:
             - batch_size : int
                 The maximum number of records processed at a time. Note that this
                 parameter is not available to all users.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -9521,7 +9562,7 @@ class _Enhancements:
             - batch_size : int
                 The maximum number of records processed at a time. Note that this
                 parameter is not available to all users.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -10184,7 +10225,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -10314,7 +10355,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -10528,7 +10569,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -10742,7 +10783,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -11303,7 +11344,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -11714,7 +11755,7 @@ class _Enhancements:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -11933,7 +11974,7 @@ class _Enhancements:
             - batch_size : int
                 The maximum number of records processed at a time. Note that this
                 parameter is not available to all users.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -12344,7 +12385,7 @@ class _Enhancements:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -12534,7 +12575,7 @@ class _Enhancements:
                 The behavior if an output table with the requested name already exists.
                 One of "fail", "truncate", "append", or "drop". If null or omitted, the
                 output table name is auto-incremented to avoid conflicts.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_id : int
                 Parent ID that triggers this enhancement.
@@ -12945,7 +12986,7 @@ class _Enhancements:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -13109,7 +13150,7 @@ class _Enhancements:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - threshold : float (float)
                 A value that determines the extent to which similar records get
@@ -13200,6 +13241,8 @@ class _Enhancements:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -13280,7 +13323,8 @@ class _Exports:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -13317,6 +13361,8 @@ class _Exports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -13363,6 +13409,8 @@ class _Exports:
         :class:`civis.Response`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -13428,6 +13476,8 @@ class _Exports:
         :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -13466,6 +13516,8 @@ class _Exports:
         :class:`civis.Response`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -13678,8 +13730,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -13754,7 +13806,7 @@ class _Exports:
             A boolean value indicating whether or not the header should be included.
             Defaults to true.
         compression : str, optional
-            The compression of the output file. Valid arguments are "gzip" and "none".
+            The compression of the output file. Valid arguments are gzip, zip or none.
             Defaults to "gzip".
         column_delimiter : str, optional
             The column delimiter for the output file. Valid arguments are "comma",
@@ -13807,8 +13859,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -13884,8 +13936,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -13966,7 +14018,7 @@ class _Exports:
             A boolean value indicating whether or not the header should be included.
             Defaults to true.
         compression : str, optional
-            The compression of the output file. Valid arguments are "gzip" and "none".
+            The compression of the output file. Valid arguments are gzip, zip or none.
             Defaults to "gzip".
         column_delimiter : str, optional
             The column delimiter for the output file. Valid arguments are "comma",
@@ -14019,8 +14071,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -14101,7 +14153,7 @@ class _Exports:
             A boolean value indicating whether or not the header should be included.
             Defaults to true.
         compression : str, optional
-            The compression of the output file. Valid arguments are "gzip" and "none".
+            The compression of the output file. Valid arguments are gzip, zip or none.
             Defaults to "gzip".
         column_delimiter : str, optional
             The column delimiter for the output file. Valid arguments are "comma",
@@ -14154,8 +14206,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -14235,8 +14287,8 @@ class _Exports:
                 A boolean value indicating whether or not the header should be
                 included. Defaults to true.
             - compression : str
-                The compression of the output file. Valid arguments are "gzip" and
-                "none". Defaults to "gzip".
+                The compression of the output file. Valid arguments are gzip, zip or
+                none. Defaults to "gzip".
             - column_delimiter : str
                 The column delimiter for the output file. Valid arguments are "comma",
                 "tab", and "pipe". Defaults to "comma".
@@ -14316,7 +14368,7 @@ class _Files:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -15653,7 +15705,7 @@ class _Git_Repos:
 
     @deprecated("""
         The method name <client>.git_repos.list_refs is deprecated and will be removed
-        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        at civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.git_repos.get_refs for the same method.
         """)
     def list_refs(
@@ -15672,8 +15724,8 @@ class _Git_Repos:
 
         .. warning::
             The method name ``<client>.git_repos.list_refs`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.git_repos.get_refs`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.git_repos.get_refs`` for the same method.
 
         Parameters
         ----------
@@ -16588,8 +16640,8 @@ class _Groups:
 
     @deprecated("""
         The method name <client>.groups.list_child_groups is deprecated and will be
-        removed at civis-python v3.0.0 (no release timeline yet). Please switch
-        to <client>.groups.get_child_groups for the same method.
+        removed at civis-python v3.0.0 (scheduled for February 2027). Please
+        switch to <client>.groups.get_child_groups for the same method.
         """)
     def list_child_groups(
         self,
@@ -16607,8 +16659,8 @@ class _Groups:
 
         .. warning::
             The method name ``<client>.groups.list_child_groups`` is deprecated and will
-            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
-            to ``<client>.groups.get_child_groups`` for the same method.
+            be removed at civis-python v3.0.0 (scheduled for February 2027). Please
+            switch to ``<client>.groups.get_child_groups`` for the same method.
 
         Parameters
         ----------
@@ -17035,7 +17087,7 @@ class _Imports:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -17314,6 +17366,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -17389,7 +17443,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -17446,7 +17500,8 @@ class _Imports:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -17501,6 +17556,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -17537,7 +17594,7 @@ class _Imports:
                     scheduledDays.
             - time_zone : str
                 The time zone of this import.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -17829,6 +17886,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -17904,7 +17963,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -18132,6 +18191,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -18207,7 +18268,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -20323,6 +20384,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -20398,7 +20461,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -20693,6 +20756,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -20768,7 +20833,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -21057,6 +21122,8 @@ class _Imports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -21132,7 +21199,7 @@ class _Imports:
                 The time zone of this import.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -21163,6 +21230,8 @@ class _Imports:
         :class:`civis.ListResponse`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -22396,7 +22465,8 @@ class _Jobs:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
@@ -22427,13 +22497,16 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is idle, queued, running, cancelled, or failed.
+                Whether the job is queued, running, succeeded, failed, cancelled, idle
+                or scheduled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22442,7 +22515,7 @@ class _Jobs:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - author : :class:`civis.Response`
                 - id : int
@@ -22500,7 +22573,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is idle, queued, running, cancelled, or failed.
+                Whether the job is queued, running, succeeded, failed, cancelled, idle
+                or scheduled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -22509,6 +22583,8 @@ class _Jobs:
 
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22520,6 +22596,8 @@ class _Jobs:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22530,7 +22608,7 @@ class _Jobs:
                     The error message for this run, if present.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - author : :class:`civis.Response`
                 - id : int
@@ -22622,7 +22700,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is idle, queued, running, cancelled, or failed.
+                Whether the job is queued, running, succeeded, failed, cancelled, idle
+                or scheduled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -22631,6 +22710,8 @@ class _Jobs:
 
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22642,6 +22723,8 @@ class _Jobs:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22652,7 +22735,7 @@ class _Jobs:
                     The error message for this run, if present.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - author : :class:`civis.Response`
                 - id : int
@@ -22717,11 +22800,15 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
+                Whether the job is queued, running, succeeded, failed, cancelled, idle
+                or scheduled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - runs : List[:class:`civis.Response`]
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22733,6 +22820,8 @@ class _Jobs:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -22793,6 +22882,8 @@ class _Jobs:
         :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -22828,6 +22919,8 @@ class _Jobs:
         :class:`civis.Response`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -22866,6 +22959,8 @@ class _Jobs:
         :class:`civis.Response`
             - id : int
             - state : str
+                The state of the run. One of queued, running, succeeded, failed or
+                cancelled.
             - created_at : str (time)
                 The time that the run was queued.
             - started_at : str (time)
@@ -23065,8 +23160,10 @@ class _Jobs:
         Parameters
         ----------
         id : int
+            The ID for this job.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
 
         Returns
         -------
@@ -23116,7 +23213,7 @@ class _Jobs:
                 The time zone of this workflow.
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - created_at : str (time)
             - updated_at : str (time)
@@ -23527,7 +23624,7 @@ class _Jobs:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -23620,7 +23717,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is idle, queued, running, cancelled, or failed.
+                Whether the job is queued, running, succeeded, failed, cancelled, idle
+                or scheduled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -23629,6 +23727,8 @@ class _Jobs:
 
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -23640,6 +23740,8 @@ class _Jobs:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -23650,7 +23752,7 @@ class _Jobs:
                     The error message for this run, if present.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - author : :class:`civis.Response`
                 - id : int
@@ -24837,7 +24939,7 @@ class _Media:
         :class:`civis.Response`
             - id : int
                 The ID for the spot order.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - csv_s3_uri : str
                 S3 URI for the spot order CSV file.
@@ -25140,7 +25242,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - report_link : str
                 A link to the visual report for the optimization.
@@ -25472,7 +25574,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -25503,7 +25605,8 @@ class _Media:
         Parameters
         ----------
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -25551,7 +25654,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -25656,7 +25759,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - report_link : str
                 A link to the visual report for the optimization.
@@ -25760,7 +25863,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - report_link : str
                 A link to the visual report for the optimization.
@@ -25920,7 +26023,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - report_link : str
                 A link to the visual report for the optimization.
@@ -26024,7 +26127,7 @@ class _Media:
                 The ID of the last run.
             - spot_order_id : int
                 The ID for the spot order produced by the optimization.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - report_link : str
                 A link to the visual report for the optimization.
@@ -26332,14 +26435,15 @@ class _Media:
         id : int, optional
             The ID for the spot order.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
 
         Returns
         -------
         :class:`civis.ListResponse`
             - id : int
                 The ID for the spot order.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26369,7 +26473,7 @@ class _Media:
         :class:`civis.Response`
             - id : int
                 The ID for the spot order.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - csv_s3_uri : str
                 S3 URI for the spot order CSV file.
@@ -26406,7 +26510,7 @@ class _Media:
         :class:`civis.Response`
             - id : int
                 The ID for the spot order.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - csv_s3_uri : str
                 S3 URI for the spot order CSV file.
@@ -26447,7 +26551,7 @@ class _Media:
         :class:`civis.Response`
             - id : int
                 The ID for the spot order.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - csv_s3_uri : str
                 S3 URI for the spot order CSV file.
@@ -26480,7 +26584,8 @@ class _Media:
         Parameters
         ----------
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         filename : str, optional
             If specified, will be used to filter the ratecards returned. Substring
             matching is supported with "%" and "*" wildcards (e.g.,
@@ -26501,7 +26606,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26547,7 +26652,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26583,7 +26688,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26632,7 +26737,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26682,7 +26787,7 @@ class _Media:
                 Last day to which the ratecard applies.
             - dma_number : int
                 Number of the DMA associated with the ratecard.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -26840,7 +26945,8 @@ class _Models:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to its maximum of 50.
         page_num : int, optional
@@ -26925,6 +27031,8 @@ class _Models:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -26991,7 +27099,7 @@ class _Models:
                     "queued", or "running,"or "idle", if no build has been attempted.
             - last_output_location : str
                 The output JSON for the last build.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -27118,6 +27226,8 @@ class _Models:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -27201,7 +27311,7 @@ class _Models:
                     "queued", or "running,"or "idle", if no build has been attempted.
             - last_output_location : str
                 The output JSON for the last build.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -27822,7 +27932,7 @@ class _Models:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -28010,6 +28120,8 @@ class _Models:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -28093,7 +28205,7 @@ class _Models:
                     "queued", or "running,"or "idle", if no build has been attempted.
             - last_output_location : str
                 The output JSON for the last build.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -28142,7 +28254,7 @@ class _Models:
 
     @deprecated("""
         The method name <client>.models.list_schedules is deprecated and will be removed
-        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        at civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.models.get_schedules for the same method.
         """)
     def list_schedules(
@@ -28161,8 +28273,8 @@ class _Models:
 
         .. warning::
             The method name ``<client>.models.list_schedules`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.models.get_schedules`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.models.get_schedules`` for the same method.
 
         Parameters
         ----------
@@ -28224,7 +28336,8 @@ class _Notebooks:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
@@ -28296,7 +28409,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -28309,7 +28423,7 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -28373,7 +28487,8 @@ class _Notebooks:
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
         credentials : List[int], optional
-            A list of credential IDs to pass to the notebook.
+            The credentials attached to the notebook. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
         idle_timeout : int, optional
@@ -28459,7 +28574,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -28472,8 +28588,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -28493,7 +28615,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -28586,7 +28708,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -28599,8 +28722,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -28620,7 +28749,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -28688,7 +28817,8 @@ class _Notebooks:
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
         credentials : List[int], optional
-            A list of credential IDs to pass to the notebook.
+            The credentials attached to the notebook. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
         idle_timeout : int, optional
@@ -28772,7 +28902,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -28785,8 +28916,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -28806,7 +28943,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -28874,7 +29011,8 @@ class _Notebooks:
         cpu : int, optional
             The amount of cpu allocated to the the notebook.
         credentials : List[int], optional
-            A list of credential IDs to pass to the notebook.
+            The credentials attached to the notebook. Accepts a list of credential IDs
+            and returns a list of id, name pairs.
         environment_variables : dict, optional
             Environment variables to be passed into the Notebook.
         idle_timeout : int, optional
@@ -28958,7 +29096,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -28971,8 +29110,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -28992,7 +29137,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -29031,8 +29176,8 @@ class _Notebooks:
 
     @deprecated("""
         The method name <client>.notebooks.list_update_links is deprecated and will be
-        removed at civis-python v3.0.0 (no release timeline yet). Please switch
-        to <client>.notebooks.get_update_links for the same method.
+        removed at civis-python v3.0.0 (scheduled for February 2027). Please
+        switch to <client>.notebooks.get_update_links for the same method.
         """)
     def list_update_links(
         self,
@@ -29050,7 +29195,7 @@ class _Notebooks:
 
         .. warning::
             The method name ``<client>.notebooks.list_update_links`` is deprecated and
-            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            will be removed at civis-python v3.0.0 (scheduled for February 2027). Please
             switch to ``<client>.notebooks.get_update_links`` for the same method.
 
         Parameters
@@ -29155,7 +29300,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -29168,8 +29314,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -29189,7 +29341,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -29630,7 +29782,8 @@ class _Notebooks:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -29643,8 +29796,14 @@ class _Notebooks:
                 - updated_at : str (time)
                 - notebook_id : int
                     The ID of the owning Notebook
-            - credentials : List[int]
-                A list of credential IDs to pass to the notebook.
+            - credentials : List[:class:`civis.Response`]
+                The credentials attached to the notebook. Accepts a list of credential
+                IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - environment_variables : :class:`civis.Response`
                 Environment variables to be passed into the Notebook.
             - idle_timeout : int
@@ -29664,7 +29823,7 @@ class _Notebooks:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -29731,7 +29890,7 @@ class _Notebooks:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -29865,7 +30024,8 @@ class _Notebooks:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -29928,7 +30088,8 @@ class _Notebooks:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -29990,7 +30151,8 @@ class _Notebooks:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -30127,7 +30289,7 @@ class _Notebooks:
 
     @deprecated("""
         The method name <client>.notebooks.list_git is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.notebooks.get_git for the same method.
         """)
     def list_git(
@@ -30146,8 +30308,8 @@ class _Notebooks:
 
         .. warning::
             The method name ``<client>.notebooks.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.notebooks.get_git`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.notebooks.get_git`` for the same method.
 
         Parameters
         ----------
@@ -30456,7 +30618,7 @@ class _Notifications:
 
     @deprecated("""
         The method name <client>.notifications.list is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.notifications.get for the same method.
         """)
     def list(
@@ -30478,8 +30640,8 @@ class _Notifications:
 
         .. warning::
             The method name ``<client>.notifications.list`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.notifications.get`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.notifications.get`` for the same method.
 
         Parameters
         ----------
@@ -30734,7 +30896,8 @@ class _Permission_Sets:
         Parameters
         ----------
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
@@ -30779,7 +30942,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -30829,7 +30992,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -30874,7 +31037,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -30927,7 +31090,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -30980,7 +31143,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -31373,7 +31536,7 @@ class _Permission_Sets:
                     Whether this user is online.
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -31919,6 +32082,8 @@ class _Predictions:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -31973,6 +32138,8 @@ class _Predictions:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -32074,8 +32241,8 @@ class _Predictions:
 
     @deprecated("""
         The method name <client>.predictions.list_schedules is deprecated and will be
-        removed at civis-python v3.0.0 (no release timeline yet). Please switch
-        to <client>.predictions.get_schedules for the same method.
+        removed at civis-python v3.0.0 (scheduled for February 2027). Please
+        switch to <client>.predictions.get_schedules for the same method.
         """)
     def list_schedules(
         self,
@@ -32093,7 +32260,7 @@ class _Predictions:
 
         .. warning::
             The method name ``<client>.predictions.list_schedules`` is deprecated and
-            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            will be removed at civis-python v3.0.0 (scheduled for February 2027). Please
             switch to ``<client>.predictions.get_schedules`` for the same method.
 
         Parameters
@@ -32167,7 +32334,8 @@ class _Projects:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 1000.
         page_num : int, optional
@@ -32223,7 +32391,7 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -32430,7 +32598,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -32443,7 +32611,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -32651,7 +32819,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -32664,7 +32832,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -32864,7 +33032,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -32877,7 +33045,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -33087,7 +33255,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -33100,7 +33268,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -33304,7 +33472,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -33317,7 +33485,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -33865,7 +34033,7 @@ class _Projects:
                 - author : str
                 - updated_at : str (time)
                 - auto_share : bool
-                - archived : str
+                - archived : bool
                     The archival status of the requested item(s).
                 - hidden : bool
                     The hidden status of the item.
@@ -33878,7 +34046,7 @@ class _Projects:
                 project.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - parent_project : :class:`civis.Response`
                 - id : int
@@ -33951,7 +34119,7 @@ class _Projects:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -34068,15 +34236,15 @@ class _Queries:
             A lower bound for the start date of the last run.
         state : List[str], optional
             The state of the last run. One or more of queued, running, succeeded,
-            failed, and cancelled. Specify multiple values as a comma-separated list
-            (e.g., "A,B").
+            failed or cancelled.
         exclude_results : bool, optional
             If true, does not return cached query results.
         hidden : bool, optional
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -34118,8 +34286,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed,
-                and cancelled.
+                The state of the last run. One of queued, running, succeeded, failed or
+                cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34128,7 +34296,7 @@ class _Queries:
             - updated_at : str (time)
             - last_run_id : int
                 The ID of the last run.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - preview_rows : int
                 The number of rows to save from the query's result (maximum: 1000).
@@ -34209,8 +34377,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed,
-                and cancelled.
+                The state of the last run. One of queued, running, succeeded, failed or
+                cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34221,7 +34389,7 @@ class _Queries:
                 The ID of the last run.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
@@ -34519,8 +34687,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed,
-                and cancelled.
+                The state of the last run. One of queued, running, succeeded, failed or
+                cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34531,7 +34699,7 @@ class _Queries:
                 The ID of the last run.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
@@ -34592,8 +34760,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed,
-                and cancelled.
+                The state of the last run. One of queued, running, succeeded, failed or
+                cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34604,7 +34772,7 @@ class _Queries:
                 The ID of the last run.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
@@ -34665,8 +34833,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed,
-                and cancelled.
+                The state of the last run. One of queued, running, succeeded, failed or
+                cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34677,7 +34845,7 @@ class _Queries:
                 The ID of the last run.
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
@@ -35370,7 +35538,8 @@ class _Reports:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -35416,7 +35585,7 @@ class _Reports:
                 The type of the report. One of: ReportTypes::HTML,
                 ReportTypes::Tableau, ReportTypes::ShinyApp, ReportTypes::SQL,
                 ReportTypes::QuickAnalysis, ReportTypes::QuickDashboard
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -35448,6 +35617,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -35531,7 +35702,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -35563,6 +35734,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -35641,7 +35814,7 @@ class _Reports:
 
     @deprecated("""
         The method name <client>.reports.list_git is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.reports.get_git for the same method.
         """)
     def list_git(
@@ -35660,8 +35833,8 @@ class _Reports:
 
         .. warning::
             The method name ``<client>.reports.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.reports.get_git`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.reports.get_git`` for the same method.
 
         Parameters
         ----------
@@ -35984,7 +36157,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -36016,6 +36189,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -36127,7 +36302,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -36159,6 +36334,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -36242,7 +36419,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -36274,6 +36451,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -36737,7 +36916,7 @@ class _Reports:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -36853,7 +37032,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - projects : List[:class:`civis.Response`]
                 A list of projects containing the report.
@@ -36885,6 +37064,8 @@ class _Reports:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -36967,7 +37148,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - host : str
                 The host for the service report
@@ -37041,7 +37222,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - host : str
                 The host for the service report
@@ -37112,7 +37293,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - host : str
                 The host for the service report
@@ -37533,7 +37714,7 @@ class _Reports:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -37649,7 +37830,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - host : str
                 The host for the service report
@@ -37801,7 +37982,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - config : str
                 The configuration of the report visualization.
@@ -37826,7 +38007,7 @@ class _Reports:
                     The end time of the last run.
                 - state : str
                     The state of the last run. One of queued, running, succeeded,
-                    failed, and cancelled.
+                    failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -37891,7 +38072,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - config : str
                 The configuration of the report visualization.
@@ -37916,7 +38097,7 @@ class _Reports:
                     The end time of the last run.
                 - state : str
                     The state of the last run. One of queued, running, succeeded,
-                    failed, and cancelled.
+                    failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -37994,7 +38175,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - config : str
                 The configuration of the report visualization.
@@ -38019,7 +38200,7 @@ class _Reports:
                     The end time of the last run.
                 - state : str
                     The state of the last run. One of queued, running, succeeded,
-                    failed, and cancelled.
+                    failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38084,7 +38265,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - config : str
                 The configuration of the report visualization.
@@ -38109,7 +38290,7 @@ class _Reports:
                     The end time of the last run.
                 - state : str
                     The state of the last run. One of queued, running, succeeded,
-                    failed, and cancelled.
+                    failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38528,7 +38709,7 @@ class _Reports:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -38644,7 +38825,7 @@ class _Reports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - config : str
                 The configuration of the report visualization.
@@ -38669,7 +38850,7 @@ class _Reports:
                     The end time of the last run.
                 - state : str
                     The state of the last run. One of queued, running, succeeded,
-                    failed, and cancelled.
+                    failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -39046,6 +39227,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -39061,7 +39244,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - template_script_id : int
                 The ID of the template script, if any.
@@ -39112,7 +39295,8 @@ class _Scripts:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to 20. Maximum allowed is 50.
         page_num : int, optional
@@ -39183,6 +39367,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -39191,7 +39377,7 @@ class _Scripts:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - template_script_id : int
                 The ID of the template script, if any.
@@ -39420,6 +39606,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -39435,7 +39623,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -39798,6 +39986,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -39815,7 +40005,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -40034,6 +40224,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -40051,7 +40243,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -40412,6 +40604,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -40429,7 +40623,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -40790,6 +40984,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -40807,7 +41003,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -41205,6 +41401,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -41220,7 +41418,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -41421,6 +41619,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -41436,7 +41636,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -41761,6 +41961,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -41776,7 +41978,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -42101,6 +42303,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -42116,7 +42320,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -42443,6 +42647,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -42458,7 +42664,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -42655,6 +42861,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -42670,7 +42878,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -42993,6 +43201,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -43008,7 +43218,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -43331,6 +43541,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -43346,7 +43558,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -43669,6 +43881,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -43684,7 +43898,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -43881,6 +44095,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -43896,7 +44112,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -44219,6 +44435,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -44234,7 +44452,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -44557,6 +44775,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -44572,7 +44792,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -44940,6 +45160,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -44955,7 +45177,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -45194,6 +45416,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -45209,7 +45433,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -45619,6 +45843,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -45634,7 +45860,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -46044,6 +46270,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -46059,7 +46287,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -46401,6 +46629,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -46416,7 +46646,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -46593,6 +46823,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -46608,7 +46840,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -46888,6 +47120,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -46903,7 +47137,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -47183,6 +47417,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47198,7 +47434,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -47254,7 +47490,8 @@ class _Scripts:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         limit : int, optional
             Number of results to return. Defaults to its maximum of 50.
         page_num : int, optional
@@ -47320,6 +47557,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47328,11 +47567,13 @@ class _Scripts:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47605,6 +47846,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47618,13 +47861,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47828,6 +48073,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -47841,13 +48088,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -48133,6 +48382,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -48146,13 +48397,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -48438,6 +48691,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -48451,13 +48706,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -52144,7 +52401,7 @@ class _Scripts:
 
     @deprecated("""
         The method name <client>.scripts.list_sql_git is deprecated and will be removed
-        at civis-python v3.0.0 (no release timeline yet). Please switch to
+        at civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.scripts.get_sql_git for the same method.
         """)
     def list_sql_git(
@@ -52163,8 +52420,8 @@ class _Scripts:
 
         .. warning::
             The method name ``<client>.scripts.list_sql_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.scripts.get_sql_git`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.scripts.get_sql_git`` for the same method.
 
         Parameters
         ----------
@@ -52549,8 +52806,8 @@ class _Scripts:
 
     @deprecated("""
         The method name <client>.scripts.list_javascript_git is deprecated and will be
-        removed at civis-python v3.0.0 (no release timeline yet). Please switch
-        to <client>.scripts.get_javascript_git for the same method.
+        removed at civis-python v3.0.0 (scheduled for February 2027). Please
+        switch to <client>.scripts.get_javascript_git for the same method.
         """)
     def list_javascript_git(
         self,
@@ -52568,7 +52825,7 @@ class _Scripts:
 
         .. warning::
             The method name ``<client>.scripts.list_javascript_git`` is deprecated and
-            will be removed at civis-python v3.0.0 (no release timeline yet). Please
+            will be removed at civis-python v3.0.0 (scheduled for February 2027). Please
             switch to ``<client>.scripts.get_javascript_git`` for the same method.
 
         Parameters
@@ -52954,8 +53211,8 @@ class _Scripts:
 
     @deprecated("""
         The method name <client>.scripts.list_python3_git is deprecated and will be
-        removed at civis-python v3.0.0 (no release timeline yet). Please switch
-        to <client>.scripts.get_python3_git for the same method.
+        removed at civis-python v3.0.0 (scheduled for February 2027). Please
+        switch to <client>.scripts.get_python3_git for the same method.
         """)
     def list_python3_git(
         self,
@@ -52973,8 +53230,8 @@ class _Scripts:
 
         .. warning::
             The method name ``<client>.scripts.list_python3_git`` is deprecated and will
-            be removed at civis-python v3.0.0 (no release timeline yet). Please switch
-            to ``<client>.scripts.get_python3_git`` for the same method.
+            be removed at civis-python v3.0.0 (scheduled for February 2027). Please
+            switch to ``<client>.scripts.get_python3_git`` for the same method.
 
         Parameters
         ----------
@@ -53359,7 +53616,7 @@ class _Scripts:
 
     @deprecated("""
         The method name <client>.scripts.list_r_git is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.scripts.get_r_git for the same method.
         """)
     def list_r_git(
@@ -53378,8 +53635,8 @@ class _Scripts:
 
         .. warning::
             The method name ``<client>.scripts.list_r_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.scripts.get_r_git`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.scripts.get_r_git`` for the same method.
 
         Parameters
         ----------
@@ -54122,7 +54379,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -54353,6 +54610,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -54368,7 +54627,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -54809,7 +55068,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -55085,6 +55344,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -55102,7 +55363,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -55515,7 +55776,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -55746,6 +56007,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -55761,7 +56024,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -56198,7 +56461,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -56429,6 +56692,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -56444,7 +56709,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -56881,7 +57146,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -57112,6 +57377,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -57127,7 +57394,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -57606,7 +57873,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -57837,6 +58104,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -57852,7 +58121,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -58269,7 +58538,7 @@ class _Scripts:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -58512,6 +58781,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -58525,13 +58796,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -58734,6 +59007,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -58749,7 +59024,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
@@ -58961,6 +59236,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -58976,7 +59253,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - source : str
                 The body/text of the script.
@@ -59164,6 +59441,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -59179,7 +59458,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -59387,6 +59666,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -59402,7 +59683,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -59655,6 +59936,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -59672,7 +59955,7 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
@@ -59856,6 +60139,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -59871,7 +60156,7 @@ class _Scripts:
                 The hidden status of the item.
             - target_project_id : int
                 Target project to which script outputs will be added.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - required_resources : :class:`civis.Response`
                 - cpu : int
@@ -60133,6 +60418,8 @@ class _Scripts:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -60146,13 +60433,15 @@ class _Scripts:
                 "manage".
             - hidden : bool
                 The hidden status of the item.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - target_project_id : int
                 Target project to which script outputs will be added.
             - last_successful_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -60335,7 +60624,7 @@ class _Search:
             The archival status of the requested item(s). Defaults to false.
         state : List[str], optional
             The state of the last run. One or more of queued, running, succeeded,
-            failed, and cancelled.
+            failed or cancelled.
         started_before : str, optional
             An upper bound for the start date of the last run.
         started_after : str, optional
@@ -60379,8 +60668,8 @@ class _Search:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
-                    The state of the run. One of queued, running, succeeded, failed,
-                    and cancelled.
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - started_at : str (time)
                     The time that the run started.
                 - finished_at : str (time)
@@ -60420,7 +60709,8 @@ class _Services:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
@@ -60498,7 +60788,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -60511,7 +60802,7 @@ class _Services:
                 - updated_at : str (time)
                 - service_id : int
                     The ID of owning Service
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -60669,9 +60960,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -60706,7 +61002,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -60733,7 +61030,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -60814,9 +61111,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -60851,7 +61153,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -60878,7 +61181,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -61035,9 +61338,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -61072,7 +61380,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -61099,7 +61408,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -61256,9 +61565,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -61293,7 +61607,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -61320,7 +61635,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -61749,9 +62064,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -61786,7 +62106,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -61813,7 +62134,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -61880,7 +62201,7 @@ class _Services:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -62014,7 +62335,8 @@ class _Services:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -62077,7 +62399,8 @@ class _Services:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -62139,7 +62462,8 @@ class _Services:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -62231,7 +62555,8 @@ class _Services:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -62367,9 +62692,14 @@ class _Services:
                 The amount of cpu allocated to each replica of the the Service.
             - created_at : str (time)
             - updated_at : str (time)
-            - credentials : List[int]
+            - credentials : List[:class:`civis.Response`]
                 The credentials attached to the service. Accepts a list of credential
                 IDs and returns a list of id, name pairs.
+
+                - id : int
+                    The ID of the credential.
+                - name : str
+                    The name of the credential.
             - permission_set_id : int
                 The ID of the associated permission set, if any.
             - git_repo_url : str
@@ -62404,7 +62734,8 @@ class _Services:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -62431,7 +62762,7 @@ class _Services:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -63310,7 +63641,8 @@ class _Studios:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -63353,7 +63685,7 @@ class _Studios:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -63433,7 +63765,8 @@ class _Studios:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -63476,7 +63809,7 @@ class _Studios:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -63609,7 +63942,8 @@ class _Studios:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -63652,7 +63986,7 @@ class _Studios:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -63785,7 +64119,8 @@ class _Studios:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -63828,7 +64163,7 @@ class _Studios:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -63904,7 +64239,8 @@ class _Studios:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -63967,7 +64303,8 @@ class _Studios:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -64029,7 +64366,8 @@ class _Studios:
             - cpu : int
                 The cpu allocated to the deployment, in millicores.
             - state : str
-                The state of the deployment.
+                The state of the deployment. One of pending, running, terminated or
+                sleeping.
             - state_message : str
                 A detailed description of the state.
             - max_memory_usage : float (float)
@@ -64199,7 +64537,8 @@ class _Studios:
                 - cpu : int
                     The cpu allocated to the deployment, in millicores.
                 - state : str
-                    The state of the deployment.
+                    The state of the deployment. One of pending, running, terminated or
+                    sleeping.
                 - state_message : str
                     A detailed description of the state.
                 - max_memory_usage : float (float)
@@ -64242,7 +64581,7 @@ class _Studios:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -64433,82 +64772,6 @@ class _Table_Tags:
         ...
 
 class _Tables:
-    @deprecated("""
-        Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
-        deprecated and will be removed after January 1, 2021.
-        """)
-    def post_enhancements_cass_ncoa(
-        self,
-        source_table_id: int,
-        *,
-        perform_ncoa: bool | None = ...,
-        ncoa_credential_id: int | None = ...,
-        output_level: str | None = ...,
-        batch_size: int | None = ...,
-    ) -> _ResponseTablesPostEnhancementsCassNcoa:
-        """Standardize addresses in a table
-
-        API URL: ``POST /tables/{source_table_id}/enhancements/cass-ncoa``
-
-        .. code-block:: python
-
-            import civis
-            client = civis.APIClient()
-            response = client.tables.post_enhancements_cass_ncoa(...)
-
-        .. warning::
-            Warning: The tables/:source_table_id/enhancements/cass-ncoa endpoint is
-            deprecated and will be removed after January 1, 2021.
-
-        Parameters
-        ----------
-        source_table_id : int
-            The ID of the table to be enhanced.
-        perform_ncoa : bool, optional
-            Whether to update addresses for records matching the National Change of
-            Address (NCOA) database.
-        ncoa_credential_id : int, optional
-            Credential to use when performing NCOA updates. Required if 'performNcoa'
-            is true.
-        output_level : str, optional
-            The set of fields persisted by a CASS or NCOA enhancement.For CASS
-            enhancements, one of 'cass' or 'all.'For NCOA enhancements, one of 'cass',
-            'ncoa' , 'coalesced' or 'all'.By default, all fields will be returned.
-        batch_size : int, optional
-            The maximum number of records processed at a time. Note that this parameter
-            is not available to all users.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - id : int
-                The ID of the enhancement.
-            - source_table_id : int
-                The ID of the table that was enhanced.
-            - state : str
-                The state of the enhancement, one of 'queued' 'running' 'succeeded'
-                'failed' or 'cancelled'.
-            - enhanced_table_schema : str
-                The schema name of the table created by the enhancement.
-            - enhanced_table_name : str
-                The name of the table created by the enhancement.
-            - perform_ncoa : bool
-                Whether to update addresses for records matching the National Change of
-                Address (NCOA) database.
-            - ncoa_credential_id : int
-                Credential to use when performing NCOA updates. Required if
-                'performNcoa' is true.
-            - output_level : str
-                The set of fields persisted by a CASS or NCOA enhancement.For CASS
-                enhancements, one of 'cass' or 'all.'For NCOA enhancements, one of
-                'cass', 'ncoa' , 'coalesced' or 'all'.By default, all fields will be
-                returned.
-            - batch_size : int
-                The maximum number of records processed at a time. Note that this
-                parameter is not available to all users.
-        """
-        ...
-
     def post_scan(
         self,
         database_id: int,
@@ -64625,6 +64888,8 @@ class _Tables:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -64729,7 +64994,8 @@ class _Tables:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is idle, queued, running, cancelled, or failed.
+                        Whether the job is queued, running, succeeded, failed,
+                        cancelled, idle or scheduled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -64738,6 +65004,8 @@ class _Tables:
 
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -64749,6 +65017,8 @@ class _Tables:
                     - last_run : :class:`civis.Response`
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -64871,6 +65141,8 @@ class _Tables:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -64954,6 +65226,8 @@ class _Tables:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -65058,7 +65332,8 @@ class _Tables:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is idle, queued, running, cancelled, or failed.
+                        Whether the job is queued, running, succeeded, failed,
+                        cancelled, idle or scheduled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -65067,6 +65342,8 @@ class _Tables:
 
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -65078,6 +65355,8 @@ class _Tables:
                     - last_run : :class:`civis.Response`
                         - id : int
                         - state : str
+                            The state of the run. One of queued, running, succeeded,
+                            failed or cancelled.
                         - created_at : str (time)
                             The time that the run was queued.
                         - started_at : str (time)
@@ -65175,6 +65454,8 @@ class _Tables:
             - last_run : :class:`civis.Response`
                 - id : int
                 - state : str
+                    The state of the run. One of queued, running, succeeded, failed or
+                    cancelled.
                 - created_at : str (time)
                     The time that the run was queued.
                 - started_at : str (time)
@@ -65422,7 +65703,7 @@ class _Tables:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -66603,7 +66884,7 @@ class _Templates:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -66700,8 +66981,8 @@ class _Templates:
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
         category : str, optional
-            A category to filter results by, one of: import, export, enhancement,
-            model, and script
+            A category to filter results by, one of: import, export, enhancement, model
+            or script
         limit : int, optional
             Number of results to return. Defaults to 50. Maximum allowed is 1000.
         page_num : int, optional
@@ -67394,9 +67675,9 @@ class _Usage:
 
     @deprecated("""
         The method name <client>.usage.list_llm_organization_summary is deprecated and
-        will be removed at civis-python v3.0.0 (no release timeline yet). Please
-        switch to <client>.usage.get_llm_organization_summary for the same
-        method.
+        will be removed at civis-python v3.0.0 (scheduled for February 2027).
+        Please switch to <client>.usage.get_llm_organization_summary for the
+        same method.
         """)
     def list_llm_organization_summary(
         self,
@@ -67417,9 +67698,9 @@ class _Usage:
 
         .. warning::
             The method name ``<client>.usage.list_llm_organization_summary`` is
-            deprecated and will be removed at civis-python v3.0.0 (no release timeline
-            yet). Please switch to ``<client>.usage.get_llm_organization_summary`` for
-            the same method.
+            deprecated and will be removed at civis-python v3.0.0 (scheduled for
+            February 2027). Please switch to
+            ``<client>.usage.get_llm_organization_summary`` for the same method.
 
         Parameters
         ----------
@@ -67958,7 +68239,7 @@ class _Users:
 
     @deprecated("""
         The method name <client>.users.list_me is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.users.get_me for the same method.
         """)
     def list_me(
@@ -67976,7 +68257,7 @@ class _Users:
 
         .. warning::
             The method name ``<client>.users.list_me`` is deprecated and will be removed
-            at civis-python v3.0.0 (no release timeline yet). Please switch to
+            at civis-python v3.0.0 (scheduled for February 2027). Please switch to
             ``<client>.users.get_me`` for the same method.
 
         Returns
@@ -69561,16 +69842,17 @@ class _Workflows:
             If specified to be true, returns hidden items. Defaults to false, returning
             non-hidden items.
         archived : str, optional
-            The archival status of the requested item(s).
+            The archival status of the items to return. One of: true, false, all. A
+            blank value is read as 'false', which is also the default.
         author : str, optional
             If specified, return items from any of these authors. It accepts a comma-
             separated list of user IDs.
         state : List[str], optional
             State of the most recent execution. One or more of queued, running,
-            succeeded, failed, cancelled, idle, and scheduled. Note that the
-            "scheduled" state applies only to scheduled workflows which have never been
-            run. If you want to see all scheduled workflows, please use the "scheduled"
-            filter instead.
+            succeeded, failed, cancelled, idle or scheduled. Note that the "scheduled"
+            state applies only to scheduled workflows which have never been run. If you
+            want to see all scheduled workflows, please use the "scheduled" filter
+            instead.
         scheduled : bool, optional
             If the workflow is scheduled.
         limit : int, optional
@@ -69640,7 +69922,7 @@ class _Workflows:
                 The time zone of this workflow.
             - next_execution_at : str (time)
                 The time of the next scheduled execution.
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - created_at : str (time)
             - updated_at : str (time)
@@ -69793,7 +70075,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -69895,7 +70177,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -70049,7 +70331,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -70203,7 +70485,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -70653,7 +70935,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -70725,7 +71007,7 @@ class _Workflows:
             - auto_share : bool
             - created_at : str (time)
             - updated_at : str (time)
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
         """
         ...
@@ -70834,7 +71116,7 @@ class _Workflows:
 
     @deprecated("""
         The method name <client>.workflows.list_git is deprecated and will be removed at
-        civis-python v3.0.0 (no release timeline yet). Please switch to
+        civis-python v3.0.0 (scheduled for February 2027). Please switch to
         <client>.workflows.get_git for the same method.
         """)
     def list_git(
@@ -70853,8 +71135,8 @@ class _Workflows:
 
         .. warning::
             The method name ``<client>.workflows.list_git`` is deprecated and will be
-            removed at civis-python v3.0.0 (no release timeline yet). Please switch to
-            ``<client>.workflows.get_git`` for the same method.
+            removed at civis-python v3.0.0 (scheduled for February 2027). Please switch
+            to ``<client>.workflows.get_git`` for the same method.
 
         Parameters
         ----------
@@ -71258,7 +71540,7 @@ class _Workflows:
                     If success email notifications are on
                 - failure_on : bool
                     If failure email notifications are on
-            - archived : str
+            - archived : bool
                 The archival status of the requested item(s).
             - hidden : bool
                 The hidden status of the item.
@@ -73160,7 +73442,7 @@ class _ResponseDatabasesListSchemasTablesProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseDatabasesListSchemasTablesProjectsAuthor(Response):
     id: int
@@ -73950,7 +74232,7 @@ class _ResponseEnhancementsListCivisDataMatchProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseEnhancementsListCivisDataMatchProjectsAuthor(Response):
     id: int
@@ -73974,7 +74256,7 @@ class _ResponseEnhancementsListIdentityResolution(Response):
     updated_at: str
     author: _ResponseEnhancementsListIdentityResolutionAuthor
     state: str
-    archived: str
+    archived: bool
     sources: List[_ResponseEnhancementsListIdentityResolutionSources]
     last_run: _ResponseEnhancementsListIdentityResolutionLastRun
 
@@ -74019,7 +74301,7 @@ class _ResponseEnhancementsPostIdentityResolution(Response):
     notifications: _ResponseEnhancementsPostIdentityResolutionNotifications
     running_as: _ResponseEnhancementsPostIdentityResolutionRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsPostIdentityResolutionSources]
     match_target_id: int
@@ -74140,7 +74422,7 @@ class _ResponseEnhancementsPutIdentityResolution(Response):
     notifications: _ResponseEnhancementsPutIdentityResolutionNotifications
     running_as: _ResponseEnhancementsPutIdentityResolutionRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsPutIdentityResolutionSources]
     match_target_id: int
@@ -74261,7 +74543,7 @@ class _ResponseEnhancementsPatchIdentityResolution(Response):
     notifications: _ResponseEnhancementsPatchIdentityResolutionNotifications
     running_as: _ResponseEnhancementsPatchIdentityResolutionRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsPatchIdentityResolutionSources]
     match_target_id: int
@@ -74382,7 +74664,7 @@ class _ResponseEnhancementsGetIdentityResolution(Response):
     notifications: _ResponseEnhancementsGetIdentityResolutionNotifications
     running_as: _ResponseEnhancementsGetIdentityResolutionRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsGetIdentityResolutionSources]
     match_target_id: int
@@ -74503,7 +74785,7 @@ class _ResponseEnhancementsPostIdentityResolutionClone(Response):
     notifications: _ResponseEnhancementsPostIdentityResolutionCloneNotifications
     running_as: _ResponseEnhancementsPostIdentityResolutionCloneRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsPostIdentityResolutionCloneSources]
     match_target_id: int
@@ -74705,7 +74987,7 @@ class _ResponseEnhancementsList(Response):
     updated_at: str
     author: _ResponseEnhancementsListAuthor
     state: str
-    archived: str
+    archived: bool
 
 class _ResponseEnhancementsListAuthor(Response):
     id: int
@@ -74735,7 +75017,7 @@ class _ResponseEnhancementsPostCassNcoa(Response):
     output_level: str
     limiting_sql: str
     batch_size: int
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPostCassNcoaAuthor(Response):
@@ -74819,7 +75101,7 @@ class _ResponseEnhancementsGetCassNcoa(Response):
     output_level: str
     limiting_sql: str
     batch_size: int
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsGetCassNcoaAuthor(Response):
@@ -74903,7 +75185,7 @@ class _ResponseEnhancementsPutCassNcoa(Response):
     output_level: str
     limiting_sql: str
     batch_size: int
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPutCassNcoaAuthor(Response):
@@ -74987,7 +75269,7 @@ class _ResponseEnhancementsPatchCassNcoa(Response):
     output_level: str
     limiting_sql: str
     batch_size: int
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPatchCassNcoaAuthor(Response):
@@ -75182,7 +75464,7 @@ class _ResponseEnhancementsPostGeocode(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPostGeocodeAuthor(Response):
@@ -75242,7 +75524,7 @@ class _ResponseEnhancementsGetGeocode(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsGetGeocodeAuthor(Response):
@@ -75302,7 +75584,7 @@ class _ResponseEnhancementsPutGeocode(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPutGeocodeAuthor(Response):
@@ -75362,7 +75644,7 @@ class _ResponseEnhancementsPatchGeocode(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPatchGeocodeAuthor(Response):
@@ -75507,7 +75789,7 @@ class _ResponseEnhancementsPostGeocodeClone(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPostGeocodeCloneAuthor(Response):
@@ -75703,7 +75985,7 @@ class _ResponseEnhancementsListCassNcoaProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseEnhancementsListCassNcoaProjectsAuthor(Response):
     id: int
@@ -75740,7 +76022,7 @@ class _ResponseEnhancementsPutCassNcoaArchive(Response):
     output_level: str
     limiting_sql: str
     batch_size: int
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPutCassNcoaArchiveAuthor(Response):
@@ -75962,7 +76244,7 @@ class _ResponseEnhancementsListGeocodeProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseEnhancementsListGeocodeProjectsAuthor(Response):
     id: int
@@ -76001,7 +76283,7 @@ class _ResponseEnhancementsPutGeocodeArchive(Response):
     provider: str
     output_address: bool
     existing_table_rows: str
-    archived: str
+    archived: bool
     parent_id: int
 
 class _ResponseEnhancementsPutGeocodeArchiveAuthor(Response):
@@ -76197,7 +76479,7 @@ class _ResponseEnhancementsListIdentityResolutionProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseEnhancementsListIdentityResolutionProjectsAuthor(Response):
     id: int
@@ -76225,7 +76507,7 @@ class _ResponseEnhancementsPutIdentityResolutionArchive(Response):
     notifications: _ResponseEnhancementsPutIdentityResolutionArchiveNotifications
     running_as: _ResponseEnhancementsPutIdentityResolutionArchiveRunningAs
     my_permission_level: str
-    archived: str
+    archived: bool
     threshold: float
     sources: List[_ResponseEnhancementsPutIdentityResolutionArchiveSources]
     match_target_id: int
@@ -76573,7 +76855,7 @@ class _ResponseFilesListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseFilesListProjectsAuthor(Response):
     id: int
@@ -77424,7 +77706,7 @@ class _ResponseImportsListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseImportsListProjectsAuthor(Response):
     id: int
@@ -77461,7 +77743,7 @@ class _ResponseImportsPutArchive(Response):
     notifications: _ResponseImportsPutArchiveNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsPutArchiveSource(Response):
@@ -77608,7 +77890,7 @@ class _ResponseImportsList(Response):
     user: _ResponseImportsListUser
     schedule: _ResponseImportsListSchedule
     time_zone: str
-    archived: str
+    archived: bool
 
 class _ResponseImportsListSource(Response):
     remote_host_id: int
@@ -77666,7 +77948,7 @@ class _ResponseImportsPost(Response):
     notifications: _ResponseImportsPostNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsPostSource(Response):
@@ -77819,7 +78101,7 @@ class _ResponseImportsPostClone(Response):
     notifications: _ResponseImportsPostCloneNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsPostCloneSource(Response):
@@ -78401,7 +78683,7 @@ class _ResponseImportsGet(Response):
     notifications: _ResponseImportsGetNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsGetSource(Response):
@@ -78554,7 +78836,7 @@ class _ResponseImportsPut(Response):
     notifications: _ResponseImportsPutNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsPutSource(Response):
@@ -78707,7 +78989,7 @@ class _ResponseImportsPatch(Response):
     notifications: _ResponseImportsPatchNotifications
     time_zone: str
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
 
 class _ResponseImportsPatchSource(Response):
@@ -78938,7 +79220,7 @@ class _ResponseJobsList(Response):
     updated_at: str
     last_run_updated_at: str
     last_run: _ResponseJobsListLastRun
-    archived: str
+    archived: bool
     author: _ResponseJobsListAuthor
     schedule: _ResponseJobsListSchedule
 
@@ -78977,7 +79259,7 @@ class _ResponseJobsGet(Response):
     runs: List[_ResponseJobsGetRuns]
     last_run: _ResponseJobsGetLastRun
     hidden: bool
-    archived: str
+    archived: bool
     author: _ResponseJobsGetAuthor
     my_permission_level: str
     success_email_subject: str
@@ -79032,7 +79314,7 @@ class _ResponseJobsListParents(Response):
     runs: List[_ResponseJobsListParentsRuns]
     last_run: _ResponseJobsListParentsLastRun
     hidden: bool
-    archived: str
+    archived: bool
     author: _ResponseJobsListParentsAuthor
     my_permission_level: str
     success_email_subject: str
@@ -79144,7 +79426,7 @@ class _ResponseJobsListWorkflows(Response):
     allow_concurrent_executions: bool
     time_zone: str
     next_execution_at: str
-    archived: str
+    archived: bool
     created_at: str
     updated_at: str
 
@@ -79322,7 +79604,7 @@ class _ResponseJobsListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseJobsListProjectsAuthor(Response):
     id: int
@@ -79350,7 +79632,7 @@ class _ResponseJobsPutArchive(Response):
     runs: List[_ResponseJobsPutArchiveRuns]
     last_run: _ResponseJobsPutArchiveLastRun
     hidden: bool
-    archived: str
+    archived: bool
     author: _ResponseJobsPutArchiveAuthor
     my_permission_level: str
     success_email_subject: str
@@ -79855,7 +80137,7 @@ class _ResponseMediaPutSpotOrdersSharesGroupsOwnersGroups(Response):
 
 class _ResponseMediaPutSpotOrdersArchive(Response):
     id: int
-    archived: str
+    archived: bool
     csv_s3_uri: str
     json_s3_uri: str
     xml_archive_s3_uri: str
@@ -80000,7 +80282,7 @@ class _ResponseMediaPutOptimizationsArchive(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
     report_link: str
     spot_order_link: str
     file_links: List[str]
@@ -80168,7 +80450,7 @@ class _ResponseMediaPutRatecardsArchive(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaListOptimizations(Response):
     id: int
@@ -80180,7 +80462,7 @@ class _ResponseMediaListOptimizations(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaListOptimizationsAuthor(Response):
     id: int
@@ -80199,7 +80481,7 @@ class _ResponseMediaPostOptimizations(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
     report_link: str
     spot_order_link: str
     file_links: List[str]
@@ -80242,7 +80524,7 @@ class _ResponseMediaGetOptimizations(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
     report_link: str
     spot_order_link: str
     file_links: List[str]
@@ -80285,7 +80567,7 @@ class _ResponseMediaPatchOptimizations(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
     report_link: str
     spot_order_link: str
     file_links: List[str]
@@ -80328,7 +80610,7 @@ class _ResponseMediaPostOptimizationsClone(Response):
     state: str
     last_run_id: int
     spot_order_id: int
-    archived: str
+    archived: bool
     report_link: str
     spot_order_link: str
     file_links: List[str]
@@ -80379,11 +80661,11 @@ class _ResponseMediaListOptimizationsRunsLogs(Response):
 
 class _ResponseMediaListSpotOrders(Response):
     id: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaPostSpotOrders(Response):
     id: int
-    archived: str
+    archived: bool
     csv_s3_uri: str
     json_s3_uri: str
     xml_archive_s3_uri: str
@@ -80391,7 +80673,7 @@ class _ResponseMediaPostSpotOrders(Response):
 
 class _ResponseMediaGetSpotOrders(Response):
     id: int
-    archived: str
+    archived: bool
     csv_s3_uri: str
     json_s3_uri: str
     xml_archive_s3_uri: str
@@ -80399,7 +80681,7 @@ class _ResponseMediaGetSpotOrders(Response):
 
 class _ResponseMediaPutSpotOrders(Response):
     id: int
-    archived: str
+    archived: bool
     csv_s3_uri: str
     json_s3_uri: str
     xml_archive_s3_uri: str
@@ -80411,7 +80693,7 @@ class _ResponseMediaListRatecards(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaPostRatecards(Response):
     id: int
@@ -80419,7 +80701,7 @@ class _ResponseMediaPostRatecards(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaGetRatecards(Response):
     id: int
@@ -80427,7 +80709,7 @@ class _ResponseMediaGetRatecards(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaPutRatecards(Response):
     id: int
@@ -80435,7 +80717,7 @@ class _ResponseMediaPutRatecards(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaPatchRatecards(Response):
     id: int
@@ -80443,7 +80725,7 @@ class _ResponseMediaPatchRatecards(Response):
     start_on: str
     end_on: str
     dma_number: int
-    archived: str
+    archived: bool
 
 class _ResponseMediaListDmas(Response):
     name: str
@@ -80489,7 +80771,7 @@ class _ResponseModelsList(Response):
     builds: List[_ResponseModelsListBuilds]
     predictions: List[_ResponseModelsListPredictions]
     last_output_location: str
-    archived: str
+    archived: bool
 
 class _ResponseModelsListSchedule(Response):
     scheduled: bool
@@ -80569,7 +80851,7 @@ class _ResponseModelsGet(Response):
     builds: List[_ResponseModelsGetBuilds]
     predictions: List[_ResponseModelsGetPredictions]
     last_output_location: str
-    archived: str
+    archived: bool
 
 class _ResponseModelsGetNotifications(Response):
     urls: List[str]
@@ -80809,7 +81091,7 @@ class _ResponseModelsListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseModelsListProjectsAuthor(Response):
     id: int
@@ -80858,7 +81140,7 @@ class _ResponseModelsPutArchive(Response):
     builds: List[_ResponseModelsPutArchiveBuilds]
     predictions: List[_ResponseModelsPutArchivePredictions]
     last_output_location: str
-    archived: str
+    archived: bool
 
 class _ResponseModelsPutArchiveNotifications(Response):
     urls: List[str]
@@ -80961,7 +81243,7 @@ class _ResponseNotebooksList(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksListMostRecentDeployment
-    archived: str
+    archived: bool
 
 class _ResponseNotebooksListUser(Response):
     id: int
@@ -81007,7 +81289,7 @@ class _ResponseNotebooksPost(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPostMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksPostCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81016,7 +81298,7 @@ class _ResponseNotebooksPost(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksPostUser(Response):
@@ -81045,6 +81327,10 @@ class _ResponseNotebooksPostMostRecentDeployment(Response):
     updated_at: str
     notebook_id: int
 
+class _ResponseNotebooksPostCredentials(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksGet(Response):
     id: int
     name: str
@@ -81064,7 +81350,7 @@ class _ResponseNotebooksGet(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksGetMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksGetCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81073,7 +81359,7 @@ class _ResponseNotebooksGet(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksGetUser(Response):
@@ -81102,6 +81388,10 @@ class _ResponseNotebooksGetMostRecentDeployment(Response):
     updated_at: str
     notebook_id: int
 
+class _ResponseNotebooksGetCredentials(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPut(Response):
     id: int
     name: str
@@ -81121,7 +81411,7 @@ class _ResponseNotebooksPut(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPutMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksPutCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81130,7 +81420,7 @@ class _ResponseNotebooksPut(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksPutUser(Response):
@@ -81159,6 +81449,10 @@ class _ResponseNotebooksPutMostRecentDeployment(Response):
     updated_at: str
     notebook_id: int
 
+class _ResponseNotebooksPutCredentials(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksPatch(Response):
     id: int
     name: str
@@ -81178,7 +81472,7 @@ class _ResponseNotebooksPatch(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPatchMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksPatchCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81187,7 +81481,7 @@ class _ResponseNotebooksPatch(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksPatchUser(Response):
@@ -81216,6 +81510,10 @@ class _ResponseNotebooksPatchMostRecentDeployment(Response):
     updated_at: str
     notebook_id: int
 
+class _ResponseNotebooksPatchCredentials(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksGetUpdateLinks(Response):
     update_url: str
     update_preview_url: str
@@ -81243,7 +81541,7 @@ class _ResponseNotebooksPostClone(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPostCloneMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksPostCloneCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81252,7 +81550,7 @@ class _ResponseNotebooksPostClone(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksPostCloneUser(Response):
@@ -81280,6 +81578,10 @@ class _ResponseNotebooksPostCloneMostRecentDeployment(Response):
     created_at: str
     updated_at: str
     notebook_id: int
+
+class _ResponseNotebooksPostCloneCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseNotebooksListShares(Response):
     readers: _ResponseNotebooksListSharesReaders
@@ -81450,7 +81752,7 @@ class _ResponseNotebooksPutArchive(Response):
     created_at: str
     updated_at: str
     most_recent_deployment: _ResponseNotebooksPutArchiveMostRecentDeployment
-    credentials: List[int]
+    credentials: List[_ResponseNotebooksPutArchiveCredentials]
     environment_variables: dict
     idle_timeout: int
     partition_label: str
@@ -81459,7 +81761,7 @@ class _ResponseNotebooksPutArchive(Response):
     git_ref: str
     git_path: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseNotebooksPutArchiveUser(Response):
@@ -81488,6 +81790,10 @@ class _ResponseNotebooksPutArchiveMostRecentDeployment(Response):
     updated_at: str
     notebook_id: int
 
+class _ResponseNotebooksPutArchiveCredentials(Response):
+    id: int
+    name: str
+
 class _ResponseNotebooksListProjects(Response):
     id: int
     author: _ResponseNotebooksListProjectsAuthor
@@ -81497,7 +81803,7 @@ class _ResponseNotebooksListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseNotebooksListProjectsAuthor(Response):
     id: int
@@ -81695,7 +82001,7 @@ class _ResponsePermissionSetsList(Response):
     author: _ResponsePermissionSetsListAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsListAuthor(Response):
     id: int
@@ -81711,7 +82017,7 @@ class _ResponsePermissionSetsPost(Response):
     author: _ResponsePermissionSetsPostAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsPostAuthor(Response):
     id: int
@@ -81727,7 +82033,7 @@ class _ResponsePermissionSetsGet(Response):
     author: _ResponsePermissionSetsGetAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsGetAuthor(Response):
     id: int
@@ -81743,7 +82049,7 @@ class _ResponsePermissionSetsPut(Response):
     author: _ResponsePermissionSetsPutAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsPutAuthor(Response):
     id: int
@@ -81759,7 +82065,7 @@ class _ResponsePermissionSetsPatch(Response):
     author: _ResponsePermissionSetsPatchAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsPatchAuthor(Response):
     id: int
@@ -81925,7 +82231,7 @@ class _ResponsePermissionSetsPutArchive(Response):
     author: _ResponsePermissionSetsPutArchiveAuthor
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponsePermissionSetsPutArchiveAuthor(Response):
     id: int
@@ -82198,7 +82504,7 @@ class _ResponseProjectsList(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseProjectsListAuthor(Response):
     id: int
@@ -82241,7 +82547,7 @@ class _ResponseProjectsPost(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsPostParentProject
     my_permission_level: str
 
@@ -82407,7 +82713,7 @@ class _ResponseProjectsPostAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -82442,7 +82748,7 @@ class _ResponseProjectsPostClone(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsPostCloneParentProject
     my_permission_level: str
 
@@ -82608,7 +82914,7 @@ class _ResponseProjectsPostCloneAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -82643,7 +82949,7 @@ class _ResponseProjectsGet(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsGetParentProject
     my_permission_level: str
 
@@ -82809,7 +83115,7 @@ class _ResponseProjectsGetAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -82844,7 +83150,7 @@ class _ResponseProjectsPut(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsPutParentProject
     my_permission_level: str
 
@@ -83010,7 +83316,7 @@ class _ResponseProjectsPutAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -83045,7 +83351,7 @@ class _ResponseProjectsPutAutoShare(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsPutAutoShareParentProject
     my_permission_level: str
 
@@ -83211,7 +83517,7 @@ class _ResponseProjectsPutAutoShareAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -83396,7 +83702,7 @@ class _ResponseProjectsPutArchive(Response):
     note: str
     can_current_user_enable_auto_share: bool
     hidden: bool
-    archived: str
+    archived: bool
     parent_project: _ResponseProjectsPutArchiveParentProject
     my_permission_level: str
 
@@ -83562,7 +83868,7 @@ class _ResponseProjectsPutArchiveAllObjects(Response):
     author: str
     updated_at: str
     auto_share: bool
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
 
@@ -83579,7 +83885,7 @@ class _ResponseProjectsListParentProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseProjectsListParentProjectsAuthor(Response):
     id: int
@@ -83611,7 +83917,7 @@ class _ResponseQueriesList(Response):
     created_at: str
     updated_at: str
     last_run_id: int
-    archived: str
+    archived: bool
     preview_rows: int
     report_id: int
 
@@ -83632,7 +83938,7 @@ class _ResponseQueriesPost(Response):
     updated_at: str
     last_run_id: int
     hidden: bool
-    archived: str
+    archived: bool
     my_permission_level: str
     interactive: bool
     preview_rows: int
@@ -83696,7 +84002,7 @@ class _ResponseQueriesPutScripts(Response):
     updated_at: str
     last_run_id: int
     hidden: bool
-    archived: str
+    archived: bool
     name: str
     author: _ResponseQueriesPutScriptsAuthor
     report_id: int
@@ -83725,7 +84031,7 @@ class _ResponseQueriesGet(Response):
     updated_at: str
     last_run_id: int
     hidden: bool
-    archived: str
+    archived: bool
     name: str
     author: _ResponseQueriesGetAuthor
     report_id: int
@@ -83754,7 +84060,7 @@ class _ResponseQueriesDelete(Response):
     updated_at: str
     last_run_id: int
     hidden: bool
-    archived: str
+    archived: bool
     name: str
     author: _ResponseQueriesDeleteAuthor
     report_id: int
@@ -83984,7 +84290,7 @@ class _ResponseReportsList(Response):
     created_at: str
     updated_at: str
     type: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsListProjects]
     state: str
     finished_at: str
@@ -84012,7 +84318,7 @@ class _ResponseReportsListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseReportsListScript(Response):
     id: int
@@ -84036,7 +84342,7 @@ class _ResponseReportsPost(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsPostProjects]
     state: str
     finished_at: str
@@ -84165,7 +84471,7 @@ class _ResponseReportsGet(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsGetProjects]
     state: str
     finished_at: str
@@ -84220,7 +84526,7 @@ class _ResponseReportsPatch(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsPatchProjects]
     state: str
     finished_at: str
@@ -84275,7 +84581,7 @@ class _ResponseReportsPostGrants(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsPostGrantsProjects]
     state: str
     finished_at: str
@@ -84494,7 +84800,7 @@ class _ResponseReportsPutArchive(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     projects: List[_ResponseReportsPutArchiveProjects]
     state: str
     finished_at: str
@@ -84549,7 +84855,7 @@ class _ResponseReportsGetServices(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     host: str
     display_url: str
     service_id: int
@@ -84573,7 +84879,7 @@ class _ResponseReportsPatchServices(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     host: str
     display_url: str
     service_id: int
@@ -84597,7 +84903,7 @@ class _ResponseReportsPostServices(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     host: str
     display_url: str
     service_id: int
@@ -84771,7 +85077,7 @@ class _ResponseReportsListServicesProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseReportsListServicesProjectsAuthor(Response):
     id: int
@@ -84796,7 +85102,7 @@ class _ResponseReportsPutServicesArchive(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     host: str
     display_url: str
     service_id: int
@@ -84836,7 +85142,7 @@ class _ResponseReportsPostSql(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     config: str
     query: _ResponseReportsPostSqlQuery
 
@@ -84876,7 +85182,7 @@ class _ResponseReportsGetSql(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     config: str
     query: _ResponseReportsGetSqlQuery
 
@@ -84916,7 +85222,7 @@ class _ResponseReportsPatchSql(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     config: str
     query: _ResponseReportsPatchSqlQuery
 
@@ -84956,7 +85262,7 @@ class _ResponseReportsPostSqlRefresh(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     config: str
     query: _ResponseReportsPostSqlRefreshQuery
 
@@ -85146,7 +85452,7 @@ class _ResponseReportsListSqlProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseReportsListSqlProjectsAuthor(Response):
     id: int
@@ -85171,7 +85477,7 @@ class _ResponseReportsPutSqlArchive(Response):
     type: str
     description: str
     my_permission_level: str
-    archived: str
+    archived: bool
     config: str
     query: _ResponseReportsPutSqlArchiveQuery
 
@@ -85255,7 +85561,7 @@ class _ResponseScriptsPost(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     template_script_id: int
 
 class _ResponseScriptsPostAuthor(Response):
@@ -85334,7 +85640,7 @@ class _ResponseScriptsList(Response):
     links: _ResponseScriptsListLinks
     time_zone: str
     last_run: _ResponseScriptsListLastRun
-    archived: str
+    archived: bool
     template_script_id: int
 
 class _ResponseScriptsListAuthor(Response):
@@ -85395,7 +85701,7 @@ class _ResponseScriptsGet(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     template_script_id: int
@@ -85500,7 +85806,7 @@ class _ResponseScriptsPostContainers(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -85614,7 +85920,7 @@ class _ResponseScriptsGetContainers(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -85728,7 +86034,7 @@ class _ResponseScriptsPutContainers(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -85842,7 +86148,7 @@ class _ResponseScriptsPatchContainers(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -85952,7 +86258,7 @@ class _ResponseScriptsPostSql(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -86060,7 +86366,7 @@ class _ResponseScriptsGetSql(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -86168,7 +86474,7 @@ class _ResponseScriptsPutSql(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -86276,7 +86582,7 @@ class _ResponseScriptsPatchSql(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -86384,7 +86690,7 @@ class _ResponseScriptsPostPython3(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostPython3RequiredResources
     instance_type: str
     cancel_timeout: int
@@ -86488,7 +86794,7 @@ class _ResponseScriptsGetPython3(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsGetPython3RequiredResources
     instance_type: str
     cancel_timeout: int
@@ -86592,7 +86898,7 @@ class _ResponseScriptsPutPython3(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutPython3RequiredResources
     instance_type: str
     cancel_timeout: int
@@ -86696,7 +87002,7 @@ class _ResponseScriptsPatchPython3(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPatchPython3RequiredResources
     instance_type: str
     cancel_timeout: int
@@ -86800,7 +87106,7 @@ class _ResponseScriptsPostR(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostRRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -86904,7 +87210,7 @@ class _ResponseScriptsGetR(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsGetRRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87008,7 +87314,7 @@ class _ResponseScriptsPutR(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutRRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87112,7 +87418,7 @@ class _ResponseScriptsPatchR(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPatchRRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87216,7 +87522,7 @@ class _ResponseScriptsPostDbt(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostDbtRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87339,7 +87645,7 @@ class _ResponseScriptsGetDbt(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsGetDbtRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87462,7 +87768,7 @@ class _ResponseScriptsPutDbt(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutDbtRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87585,7 +87891,7 @@ class _ResponseScriptsPatchDbt(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPatchDbtRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -87708,7 +88014,7 @@ class _ResponseScriptsPostJavascript(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -87804,7 +88110,7 @@ class _ResponseScriptsGetJavascript(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -87900,7 +88206,7 @@ class _ResponseScriptsPutJavascript(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -87996,7 +88302,7 @@ class _ResponseScriptsPatchJavascript(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -88077,7 +88383,7 @@ class _ResponseScriptsListCustom(Response):
     from_template_id: int
     time_zone: str
     last_run: _ResponseScriptsListCustomLastRun
-    archived: str
+    archived: bool
     last_successful_run: _ResponseScriptsListCustomLastSuccessfulRun
 
 class _ResponseScriptsListCustomAuthor(Response):
@@ -88096,7 +88402,7 @@ class _ResponseScriptsListCustomProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListCustomLastRun(Response):
     id: int
@@ -88148,7 +88454,7 @@ class _ResponseScriptsPostCustom(Response):
     last_run: _ResponseScriptsPostCustomLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsPostCustomLastSuccessfulRun
     required_resources: _ResponseScriptsPostCustomRequiredResources
@@ -88263,7 +88569,7 @@ class _ResponseScriptsGetCustom(Response):
     last_run: _ResponseScriptsGetCustomLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsGetCustomLastSuccessfulRun
     required_resources: _ResponseScriptsGetCustomRequiredResources
@@ -88378,7 +88684,7 @@ class _ResponseScriptsPutCustom(Response):
     last_run: _ResponseScriptsPutCustomLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsPutCustomLastSuccessfulRun
     required_resources: _ResponseScriptsPutCustomRequiredResources
@@ -88493,7 +88799,7 @@ class _ResponseScriptsPatchCustom(Response):
     last_run: _ResponseScriptsPatchCustomLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsPatchCustomLastSuccessfulRun
     required_resources: _ResponseScriptsPatchCustomRequiredResources
@@ -89853,7 +90159,7 @@ class _ResponseScriptsListSqlProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListSqlProjectsAuthor(Response):
     id: int
@@ -89899,7 +90205,7 @@ class _ResponseScriptsPutSqlArchive(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -90136,7 +90442,7 @@ class _ResponseScriptsListContainersProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListContainersProjectsAuthor(Response):
     id: int
@@ -90192,7 +90498,7 @@ class _ResponseScriptsPutContainersArchive(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -90425,7 +90731,7 @@ class _ResponseScriptsListPython3Projects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListPython3ProjectsAuthor(Response):
     id: int
@@ -90471,7 +90777,7 @@ class _ResponseScriptsPutPython3Archive(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutPython3ArchiveRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -90704,7 +91010,7 @@ class _ResponseScriptsListRProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListRProjectsAuthor(Response):
     id: int
@@ -90750,7 +91056,7 @@ class _ResponseScriptsPutRArchive(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutRArchiveRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -90983,7 +91289,7 @@ class _ResponseScriptsListDbtProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListDbtProjectsAuthor(Response):
     id: int
@@ -91029,7 +91335,7 @@ class _ResponseScriptsPutDbtArchive(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPutDbtArchiveRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -91281,7 +91587,7 @@ class _ResponseScriptsListJavascriptProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseScriptsListJavascriptProjectsAuthor(Response):
     id: int
@@ -91327,7 +91633,7 @@ class _ResponseScriptsPutJavascriptArchive(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -91591,7 +91897,7 @@ class _ResponseScriptsPutCustomArchive(Response):
     last_run: _ResponseScriptsPutCustomArchiveLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsPutCustomArchiveLastSuccessfulRun
     required_resources: _ResponseScriptsPutCustomArchiveRequiredResources
@@ -91702,7 +92008,7 @@ class _ResponseScriptsPostSqlClone(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     sql: str
     expanded_arguments: dict
     remote_host_id: int
@@ -91810,7 +92116,7 @@ class _ResponseScriptsPostJavascriptClone(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     source: str
     remote_host_id: int
     credential_id: int
@@ -91906,7 +92212,7 @@ class _ResponseScriptsPostPython3Clone(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostPython3CloneRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -92010,7 +92316,7 @@ class _ResponseScriptsPostRClone(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostRCloneRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -92124,7 +92430,7 @@ class _ResponseScriptsPostContainersClone(Response):
     partition_label: str
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     running_as_id: int
 
@@ -92228,7 +92534,7 @@ class _ResponseScriptsPostDbtClone(Response):
     my_permission_level: str
     hidden: bool
     target_project_id: int
-    archived: str
+    archived: bool
     required_resources: _ResponseScriptsPostDbtCloneRequiredResources
     instance_type: str
     cancel_timeout: int
@@ -92355,7 +92661,7 @@ class _ResponseScriptsPostCustomClone(Response):
     last_run: _ResponseScriptsPostCustomCloneLastRun
     my_permission_level: str
     hidden: bool
-    archived: str
+    archived: bool
     target_project_id: int
     last_successful_run: _ResponseScriptsPostCustomCloneLastSuccessfulRun
     required_resources: _ResponseScriptsPostCustomCloneRequiredResources
@@ -92491,7 +92797,7 @@ class _ResponseServicesList(Response):
     git_repo_ref: str
     git_path_dir: str
     current_deployment: _ResponseServicesListCurrentDeployment
-    archived: str
+    archived: bool
 
 class _ResponseServicesListUser(Response):
     id: int
@@ -92535,7 +92841,7 @@ class _ResponseServicesPost(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesPostCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -92547,7 +92853,7 @@ class _ResponseServicesPost(Response):
     notifications: _ResponseServicesPostNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesPostUser(Response):
@@ -92564,6 +92870,10 @@ class _ResponseServicesPostSchedule(Response):
 class _ResponseServicesPostScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesPostCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPostCurrentDeployment(Response):
     deployment_id: int
@@ -92605,7 +92915,7 @@ class _ResponseServicesGet(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesGetCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -92617,7 +92927,7 @@ class _ResponseServicesGet(Response):
     notifications: _ResponseServicesGetNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesGetUser(Response):
@@ -92634,6 +92944,10 @@ class _ResponseServicesGetSchedule(Response):
 class _ResponseServicesGetScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesGetCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesGetCurrentDeployment(Response):
     deployment_id: int
@@ -92675,7 +92989,7 @@ class _ResponseServicesPut(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesPutCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -92687,7 +93001,7 @@ class _ResponseServicesPut(Response):
     notifications: _ResponseServicesPutNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesPutUser(Response):
@@ -92704,6 +93018,10 @@ class _ResponseServicesPutSchedule(Response):
 class _ResponseServicesPutScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesPutCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPutCurrentDeployment(Response):
     deployment_id: int
@@ -92745,7 +93063,7 @@ class _ResponseServicesPatch(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesPatchCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -92757,7 +93075,7 @@ class _ResponseServicesPatch(Response):
     notifications: _ResponseServicesPatchNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesPatchUser(Response):
@@ -92774,6 +93092,10 @@ class _ResponseServicesPatchSchedule(Response):
 class _ResponseServicesPatchScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesPatchCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPatchCurrentDeployment(Response):
     deployment_id: int
@@ -92965,7 +93287,7 @@ class _ResponseServicesPutArchive(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesPutArchiveCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -92977,7 +93299,7 @@ class _ResponseServicesPutArchive(Response):
     notifications: _ResponseServicesPutArchiveNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesPutArchiveUser(Response):
@@ -92994,6 +93316,10 @@ class _ResponseServicesPutArchiveSchedule(Response):
 class _ResponseServicesPutArchiveScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesPutArchiveCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPutArchiveCurrentDeployment(Response):
     deployment_id: int
@@ -93027,7 +93353,7 @@ class _ResponseServicesListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseServicesListProjectsAuthor(Response):
     id: int
@@ -93141,7 +93467,7 @@ class _ResponseServicesPostClone(Response):
     cpu: int
     created_at: str
     updated_at: str
-    credentials: List[int]
+    credentials: List[_ResponseServicesPostCloneCredentials]
     permission_set_id: int
     git_repo_url: str
     git_repo_ref: str
@@ -93153,7 +93479,7 @@ class _ResponseServicesPostClone(Response):
     notifications: _ResponseServicesPostCloneNotifications
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
     hidden: bool
 
 class _ResponseServicesPostCloneUser(Response):
@@ -93170,6 +93496,10 @@ class _ResponseServicesPostCloneSchedule(Response):
 class _ResponseServicesPostCloneScheduleRecurrences(Response):
     scheduled_days: List[int]
     scheduled_hours: List[int]
+
+class _ResponseServicesPostCloneCredentials(Response):
+    id: int
+    name: str
 
 class _ResponseServicesPostCloneCurrentDeployment(Response):
     deployment_id: int
@@ -93483,7 +93813,7 @@ class _ResponseStudiosPost(Response):
     git_ref: str
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
 
 class _ResponseStudiosPostAuthor(Response):
     id: int
@@ -93540,7 +93870,7 @@ class _ResponseStudiosGet(Response):
     git_ref: str
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
 
 class _ResponseStudiosGetAuthor(Response):
     id: int
@@ -93597,7 +93927,7 @@ class _ResponseStudiosPut(Response):
     git_ref: str
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
 
 class _ResponseStudiosPutAuthor(Response):
     id: int
@@ -93654,7 +93984,7 @@ class _ResponseStudiosPatch(Response):
     git_ref: str
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
 
 class _ResponseStudiosPatchAuthor(Response):
     id: int
@@ -93773,7 +94103,7 @@ class _ResponseStudiosPutArchive(Response):
     git_ref: str
     partition_label: str
     my_permission_level: str
-    archived: str
+    archived: bool
 
 class _ResponseStudiosPutArchiveAuthor(Response):
     id: int
@@ -93854,17 +94184,6 @@ class _ResponseTableTagsGetUser(Response):
     username: str
     initials: str
     online: bool
-
-class _ResponseTablesPostEnhancementsCassNcoa(Response):
-    id: int
-    source_table_id: int
-    state: str
-    enhanced_table_schema: str
-    enhanced_table_name: str
-    perform_ncoa: bool
-    ncoa_credential_id: int
-    output_level: str
-    batch_size: int
 
 class _ResponseTablesPostScan(Response):
     job_id: int
@@ -94221,7 +94540,7 @@ class _ResponseTablesListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseTablesListProjectsAuthor(Response):
     id: int
@@ -94648,7 +94967,7 @@ class _ResponseTemplatesListScriptsProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseTemplatesListScriptsProjectsAuthor(Response):
     id: int
@@ -95411,7 +95730,7 @@ class _ResponseWorkflowsList(Response):
     allow_concurrent_executions: bool
     time_zone: str
     next_execution_at: str
-    archived: str
+    archived: bool
     created_at: str
     updated_at: str
 
@@ -95446,7 +95765,7 @@ class _ResponseWorkflowsPost(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsPostNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str
@@ -95493,7 +95812,7 @@ class _ResponseWorkflowsGet(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsGetNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str
@@ -95540,7 +95859,7 @@ class _ResponseWorkflowsPut(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsPutNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str
@@ -95587,7 +95906,7 @@ class _ResponseWorkflowsPatch(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsPatchNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str
@@ -95784,7 +96103,7 @@ class _ResponseWorkflowsPutArchive(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsPutArchiveNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str
@@ -95824,7 +96143,7 @@ class _ResponseWorkflowsListProjects(Response):
     auto_share: bool
     created_at: str
     updated_at: str
-    archived: str
+    archived: bool
 
 class _ResponseWorkflowsListProjectsAuthor(Response):
     id: int
@@ -95936,7 +96255,7 @@ class _ResponseWorkflowsPostClone(Response):
     time_zone: str
     next_execution_at: str
     notifications: _ResponseWorkflowsPostCloneNotifications
-    archived: str
+    archived: bool
     hidden: bool
     my_permission_level: str
     created_at: str

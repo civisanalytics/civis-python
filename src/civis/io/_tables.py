@@ -76,7 +76,7 @@ def _warn_or_raise_for_use_pandas(use_pandas, return_as):
             "To support multiple dataframe libraries, the keyword argument "
             "'use_pandas' is deprecated since civis-python v2.6.0 "
             "and will be removed in civis-python v3.0.0 "
-            "(no release timeline yet). "
+            "(scheduled for February 2027). "
             "While 'use_pandas' still works for now, you're strongly encouraged to "
             "update your code to use the new keyword argument 'return_as' instead and "
             "stop settting 'use_pandas'. "
@@ -145,7 +145,8 @@ def read_civis(
         return a list of results from :func:`python:csv.reader`.
 
         .. deprecated:: 2.6.0
-            ``use_pandas`` will be removed at civis-python v3.0.0.
+            ``use_pandas`` will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Please use ``return_as`` instead.
     encoding : str, optional
         If ``return_as`` is ``"pandas"`` or ``"polars"``, this parameter is passed to
@@ -355,7 +356,8 @@ def read_civis_sql(
         return a list of results from :func:`python:csv.reader`.
 
         .. deprecated:: 2.6.0
-            ``use_pandas`` will be removed at civis-python v3.0.0.
+            ``use_pandas`` will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Please use ``return_as`` instead.
     sql_params_arguments : dict, optional
         A dictionary of SQL query parameters to pass directly to

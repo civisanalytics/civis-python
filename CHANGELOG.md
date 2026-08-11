@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.9.3 - 2026-08-11
+
+### Changed
+- Updated the API spec. Note that the endpoint method
+  `client.tables.post_enhancements_cass_ncoa` no longer exists,
+  as it has been removed from Civis Platform's API. (#540)
+
+### Deprecated
+- civis-python v3.0.0, which will remove the features deprecated so far,
+  is now scheduled for February 2027. All user-facing deprecation messages
+  (docstrings, `FutureWarning` messages, etc.) now state this timeline. (#540)
+
 ## 2.9.2 - 2026-07-29
 
 ### Changed

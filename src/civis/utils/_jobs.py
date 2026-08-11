@@ -30,7 +30,7 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
             "As of civis-python v2.8.0, civis.utils.run_template can return three "
             "types of values, so 'JSONValue' is deprecated "
             "and will be removed in civis-python v3.0.0 "
-            "(no release timeline yet). "
+            "(scheduled for February 2027). "
             "While the arg 'JSONValue' still works for now, you're strongly encouraged "
             "to update your code to use the new keyword argument 'return_as' instead "
             "and stop settting 'JSONValue'. "
@@ -44,7 +44,8 @@ def _warn_or_raise_for_JSONValue(JSONValue, return_as):
             "Update your code so that the 'JSONValue' argument is no longer set, "
             "and set 'return_as' to one of {'files', 'JSONValue', 'future'}. "
             "Note that the default return_as value is 'files' as of "
-            "civis-python v2.8.0, but will be 'future' in civis-python v3.0.0."
+            "civis-python v2.8.0, but will be 'future' in civis-python v3.0.0 "
+            "(scheduled for February 2027)."
         )
         if (JSONValue and return_as != "JSONValue") or (
             not JSONValue and return_as == "JSONValue"
@@ -116,14 +117,18 @@ def run_template(
         output results.
 
         .. deprecated:: 2.8.0
-            ``JSONValue`` will be removed at civis-python v3.0.0.
+            ``JSONValue`` will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
             Please use ``return_as`` instead.
     return_as: str, optional
         Determines the return type. Options:
+
         - "files": returns file ids associated with output results (default for <v3.0.0)
         - "JSONValue": returns the JSON output of the template
         - "future": returns the CivisFuture object for the run
-        At civis-python v3.0.0, the default will change to "future".
+
+        At civis-python v3.0.0 (scheduled for February 2027), the default will
+        change to "future".
     client: :class:`civis.APIClient`, optional
         If not provided, an :class:`civis.APIClient` object will be
         created from the :envvar:`CIVIS_API_KEY`.
