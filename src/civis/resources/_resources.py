@@ -781,8 +781,8 @@ def parse_path(path, operations, api_version):
             if path in LEGACY_PATHS_WITH_LIST_NAME:
                 warn_msg = (
                     f"The method name ``<client>.{modified_base_path}.{name}`` is "
-                    "deprecated and will be removed at civis-python v3.0.0 (no release "
-                    "timeline yet). Please switch to "
+                    "deprecated and will be removed at civis-python v3.0.0 "
+                    "(scheduled for February 2027). Please switch to "
                     f"``<client>.{modified_base_path}.{name_preferred}`` "
                     "for the same method."
                 )
