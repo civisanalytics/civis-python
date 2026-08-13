@@ -15,12 +15,12 @@ from typing import Sequence
 
 from civis import APIClient, Response
 from civis.base import CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids
-from civis.polling import PollableResult
+from civis.polling import _PollableResult
 
 log = logging.getLogger(__name__)
 
 
-class CivisFuture(PollableResult):
+class CivisFuture(_PollableResult):
     """A class for tracking future results.
 
     This is a subclass of :class:`python:concurrent.futures.Future` from the

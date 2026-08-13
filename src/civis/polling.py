@@ -1,8 +1,9 @@
 import time
 import threading
 
-from civis.base import CivisJobFailure, CivisAsyncResultBase, FAILED, DONE
+from civis.base import CivisJobFailure, _CivisAsyncResultBase, FAILED, DONE
 from civis.response import Response
+from civis._deprecation import deprecated
 
 _MAX_POLLING_INTERVAL = 15
 
@@ -37,7 +38,7 @@ class _ResultPollingThread(threading.Thread):
                 self.finished.set()
 
 
-class PollableResult(CivisAsyncResultBase):
+class _PollableResult(_CivisAsyncResultBase):
     """A class for tracking pollable results.
 
     This class will begin polling immediately upon creation, and poll for
@@ -233,3 +234,15 @@ class PollableResult(CivisAsyncResultBase):
             self._polling_thread = _ResultPollingThread(self)
             if start_thread:
                 self._polling_thread.start()
+
+
+_DEPRECATED_MSG = (
+    "The PollableResult class is deprecated since civis-python v2.10.0. "
+    "In civis-python v3.0.0 (scheduled for February 2027), it will be renamed "
+    "as _PollableResult intended for private use only within civis-python."
+)
+
+
+@deprecated(_DEPRECATED_MSG, category=FutureWarning)
+class PollableResult(_PollableResult):
+    pass

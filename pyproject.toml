@@ -89,6 +89,9 @@ civis = ["resources/*.json", "py.typed", "**/*.pyi"]
 [tool.pytest.ini_options]
 addopts = "--strict-markers -vv --cov=src/civis"
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:The ServiceClient class.*:FutureWarning",
+]
 
 [tool.mypy]
 exclude = [

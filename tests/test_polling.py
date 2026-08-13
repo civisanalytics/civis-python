@@ -6,7 +6,7 @@ import unittest
 from unittest import mock
 
 from civis.response import Response
-from civis.polling import PollableResult, _ResultPollingThread
+from civis.polling import _PollableResult, _ResultPollingThread
 
 import pytest
 
@@ -17,7 +17,7 @@ class State:
 
 
 def create_pollable_result(state, exception=None, result=None):
-    f = PollableResult(State, (state,), polling_interval=0.001)
+    f = _PollableResult(State, (state,), polling_interval=0.001)
     f._exception = exception
     f._result = result
     return f
@@ -46,19 +46,19 @@ class TestPolling(unittest.TestCase):
         self.assertEqual(set([QUEUED_RESULT]), not_done)
 
     def test_error_passthrough(self):
-        pollable = PollableResult(
+        pollable = _PollableResult(
             mock.Mock(side_effect=[ZeroDivisionError()]), (), polling_interval=0.1
         )
         pytest.raises(ZeroDivisionError, pollable.result)
 
     def test_error_setting(self):
-        pollable = PollableResult(
+        pollable = _PollableResult(
             mock.Mock(side_effect=[ZeroDivisionError()]), (), polling_interval=0.1
         )
         assert isinstance(pollable.exception(), ZeroDivisionError)
 
     def test_timeout(self):
-        pollable = PollableResult(
+        pollable = _PollableResult(
             mock.Mock(return_value=Response({"state": "running"})),
             poller_args=(),
             polling_interval=0.1,
@@ -67,7 +67,7 @@ class TestPolling(unittest.TestCase):
 
     def test_poll_on_creation(self):
         poller = mock.Mock(return_value=Response({"state": "running"}))
-        pollable = PollableResult(
+        pollable = _PollableResult(
             poller, (), polling_interval=0.01, poll_on_creation=False
         )
         pollable.done()  # Check status once to start the polling thread
@@ -87,7 +87,7 @@ class TestPolling(unittest.TestCase):
         assert check_result.call_count == 3
 
     def test_reset_polling_thread(self):
-        pollable = PollableResult(
+        pollable = _PollableResult(
             mock.Mock(return_value=Response({"state": "running"})),
             poller_args=(),
             polling_interval=0.1,
@@ -120,7 +120,7 @@ class TestPolling(unittest.TestCase):
         poller = mock.Mock()
         poller.side_effect = append_new_timestamp
 
-        pollable = PollableResult(poller, (), poll_on_creation=False)
+        pollable = _PollableResult(poller, (), poll_on_creation=False)
         start_time = time.time()
         pollable.result()
 

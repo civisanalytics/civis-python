@@ -8,6 +8,7 @@ import requests
 from civis import APIClient
 from civis.base import CivisAPIError, Endpoint, tostr_urljoin
 from civis.resources._resources import parse_method
+from civis._deprecation import deprecated
 
 _TO_CAMELCASE_REGEX = re.compile(r"(^|_)([a-zA-Z])")
 
@@ -104,6 +105,14 @@ class ServiceEndpoint(Endpoint):
         return response
 
 
+_DEPRECATED_MSG = (
+    "The ServiceClient class is deprecated since civis-python v2.10.0 and "
+    "will be removed in civis-python v3.0.0 (scheduled for February 2027). "
+    "No replacement is planned for it."
+)
+
+
+@deprecated(_DEPRECATED_MSG, category=FutureWarning)
 class ServiceClient:
 
     def __init__(

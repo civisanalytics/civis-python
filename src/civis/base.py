@@ -12,6 +12,7 @@ import requests
 
 import civis
 from civis.response import PaginatedResponse, convert_response_data_type, Response
+from civis._deprecation import deprecated
 from civis._retries import retry_request
 
 log = logging.getLogger(__name__)
@@ -212,7 +213,7 @@ class Endpoint:
         return resp
 
 
-class CivisAsyncResultBase(futures.Future):
+class _CivisAsyncResultBase(futures.Future):
     """A base class for tracking asynchronous results.
 
     Sub-classes needs to call either the `set_result` method to set a result
@@ -395,6 +396,18 @@ class CivisAsyncResultBase(futures.Future):
         if threading.get_ident() != self._invoking_callbacks_thread:
             self._callbacks_complete.wait(timeout=timeout)
         return self._callback_exception
+
+
+_DEPRECATED_MSG = (
+    "The CivisAsyncResultBase class is deprecated since civis-python v2.10.0. "
+    "In civis-python v3.0.0 (scheduled for February 2027), it will be renamed "
+    "as _CivisAsyncResultBase intended for private use only within civis-python."
+)
+
+
+@deprecated(_DEPRECATED_MSG, category=FutureWarning)
+class CivisAsyncResultBase(_CivisAsyncResultBase):
+    pass
 
 
 def open_session(api_key, headers=None):
