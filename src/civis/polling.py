@@ -81,7 +81,7 @@ class _PollableResult(_CivisAsyncResultBase):
     >>> poller = client.queries.get
     >>> poller_args = (job_id, ) # (job_id, run_id) if poller requires run_id
     >>> polling_interval = 10
-    >>> poll = PollableResult(poller, poller_args, polling_interval)
+    >>> poll = _PollableResult(poller, poller_args, polling_interval)
     """
 
     # this may not be friendly to a rate-limited api
