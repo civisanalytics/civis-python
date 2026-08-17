@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - civis-python v3.0.0, which will remove the features deprecated so far,
   is now scheduled for February 2027. All user-facing deprecation messages
   (docstrings, `FutureWarning` messages, etc.) now state this timeline. (#540)
+- Deprecated `ServiceClient`, `PollableResult`, and `CivisAsyncResultBase`. (#541)
 
 ## 2.9.2 - 2026-07-29
 
