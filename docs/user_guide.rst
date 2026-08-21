@@ -41,8 +41,8 @@ Civis Futures
 
 In the code above, :func:`~civis.io.dataframe_to_civis` returns a special
 :class:`~civis.futures.CivisFuture` object. Making a request to the Civis
-API usually results in a long running job. To account for this, various
-functions in the ``civis`` namespace return a
+API sometimes results in a long running job. To account for this, various
+functions in the ``civis.io`` namespace return a
 :class:`CivisFuture <civis.futures.CivisFuture>` to allow you to
 process multiple long running jobs simultaneously. For instance, you may
 want to start many jobs in parallel and wait for them all to finish rather
@@ -96,6 +96,8 @@ it, and then wait for it to finish.
    >>> # function `civis.utils.run_job`:
    >>> future2 = civis.utils.run_job(script_id)
    >>> future2.result()
+
+For more examples, see :ref:`civis_futures_parallel`.
 
 Working Directly with the Client
 ================================

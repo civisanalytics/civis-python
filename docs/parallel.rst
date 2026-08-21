@@ -12,8 +12,11 @@ and :mod:`civis.parallel` modules.
     For parallel computation via Civis Platform, please migrate to
     :class:`~civis.futures.CivisFuture`, as described in `Civis futures`_ below.
 
+.. _civis_futures_parallel:
+
 Civis futures
 =============
+
 A :class:`~civis.futures.CivisFuture` is a
 :class:`python:concurrent.futures.Future` that tracks a job running in
 Civis Platform. Because it follows the standard library's ``Future`` API,
@@ -22,16 +25,11 @@ the usual :mod:`python:concurrent.futures` helpers, such as
 :func:`python:concurrent.futures.as_completed` and
 :func:`python:concurrent.futures.wait`.
 
-For an introduction to :class:`~civis.futures.CivisFuture` itself, including
-how to create a future for a single job, see :ref:`civis_futures` in the user
-guide. The rest of this section shows how to use futures for the fan-out
-workloads that :mod:`civis.parallel` used to handle.
-
 Fanning out many jobs
 ---------------------
+
 Submit one job per chunk of work, keep the futures around, and consume them as
-they finish. The example below is the :mod:`civis.parallel` example further
-down this page, rewritten without joblib. It starts seven Civis Platform
+they finish. It starts several Civis Platform
 container scripts, each computing ``2 * num1 + num2`` for a different pair of
 arguments:
 
@@ -66,27 +64,23 @@ arguments:
         print(f"({num1}, {num2}) finished with state {run.state}")
 
 :func:`~civis.utils.run_job` is a convenience wrapper that starts a run for an
-existing job and hands back a :class:`~civis.futures.CivisFuture`. Iterating
-with :func:`python:concurrent.futures.as_completed` gives you the behavior of
-joblib's ``return_as='generator_unordered'``: each result is available as soon
-as its job finishes, rather than after every job has finished. If you want the
+existing job and hands back a :class:`~civis.futures.CivisFuture`.
+:func:`python:concurrent.futures.as_completed` gives you
+each result as soon
+as its job finishes, rather than after all jobs have finished. If you want the
 results in submission order instead, iterate over the futures directly and call
 ``.result()`` on each one.
 
 Passing inputs and outputs
 --------------------------
-:mod:`civis.parallel` used
-`cloudpickle <https://github.com/cloudpipe/cloudpickle>`_ to ship your
-function, its arguments, and its return value between the parent process and
-the child jobs. :class:`~civis.futures.CivisFuture` does not do this for you,
-which has two consequences:
+
+:class:`~civis.futures.CivisFuture` does not ship a function, its arguments,
+or its return value between the parent process and a child job. Instead:
 
 - The code you want to run must already exist in the child job's environment,
   either baked into the Docker image or cloned from GitHub via the
   ``repo_http_uri`` and ``repo_ref`` parameters of
-  :func:`~civis.resources._resources.Scripts.post_containers`. Dynamically
-  defined functions, lambdas, and closures can no longer be sent to
-  Civis Platform.
+  :func:`~civis.resources._resources.Scripts.post_containers`.
 - You are responsible for moving data. Small inputs can go directly into the
   ``docker_command``. Larger inputs, and all outputs, should travel through
   Civis Files.
@@ -140,13 +134,60 @@ a run output. Inside ``my_script.py``, that looks like:
 
 A child job can also read the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` environment
 variables to identify itself, and you can pass the parent's own job and run IDs
-down to it if the child needs to communicate back to the parent.
+down to it if the child needs to communicate back to the parent:
+
+.. code-block:: python
+
+    import os
+
+    import civis
+
+    client = civis.APIClient()
+
+    # The parent job's own identity, forwarded to the child.
+    parent_job_id = os.environ["CIVIS_JOB_ID"]
+    parent_run_id = os.environ["CIVIS_RUN_ID"]
+
+    script = client.scripts.post_containers(
+        required_resources={"cpu": 512, "memory": 256},
+        docker_image_name="civisanalytics/datascience-python",
+        docker_command=(
+            f"python /app/my_script.py {parent_job_id} {parent_run_id}"
+        ),
+        repo_http_uri="github.com/my-org/my-repo.git",
+    )
+    future = civis.utils.run_job(script.id, client=client)
+    future.result()
+
+Inside ``my_script.py``, the child job reads those IDs from its arguments
+and can use them to, for example, attach one of its own outputs to the
+parent's run instead of its own:
+
+.. code-block:: python
+
+    import sys
+
+    import civis
+
+    parent_job_id, parent_run_id = sys.argv[1], sys.argv[2]
+
+    client = civis.APIClient()
+    output_file_id = civis.io.file_to_civis(
+        buf, name="status-from-child", client=client
+    )
+    client.scripts.post_containers_runs_outputs(
+        parent_job_id,
+        parent_run_id,
+        "File",
+        output_file_id,
+    )
 
 Errors, retries, and concurrency
 --------------------------------
+
 Calling ``.result()`` on a future for a job that failed raises a
-``civis.base.CivisJobFailure``. Unlike the joblib backend, a failing child job
-does not automatically abort the others, so you choose how to handle failures:
+``civis.base.CivisJobFailure``.
+You may catch failures and choose how to handle them:
 
 .. code-block:: python
 
@@ -161,33 +202,6 @@ To stop as soon as anything fails, use
 ``return_when=concurrent.futures.FIRST_EXCEPTION``, and then cancel the runs
 that are still going by calling ``.cancel()`` on each remaining
 :class:`~civis.futures.CivisFuture`.
-
-For the equivalent of the joblib backend's ``max_job_retries``, pass
-``max_retries`` when creating the :class:`~civis.futures.CivisFuture` in
-place of :func:`~civis.utils.run_job`. It automatically re-runs the job from
-scratch if it fails, up to ``max_retries`` times. As with ``max_job_retries``,
-only do this for idempotent work:
-
-.. code-block:: python
-
-    run = client.scripts.post_containers_runs(script.id)
-    future = civis.futures.CivisFuture(
-        client.scripts.get_containers_runs,
-        (script.id, run.id),
-        max_retries=3,
-        client=client,
-    )
-
-There is no equivalent of ``n_jobs`` or ``pre_dispatch``, though. Every job you
-submit starts immediately, so if you need to cap how many run at once, submit
-in batches or guard submission with your own
-:class:`python:threading.Semaphore`.
-
-Finally, note that :class:`~civis.futures.CivisFuture` is not a joblib backend,
-so there is no replacement for using ``parallel_config('civis')`` to
-transparently distribute the internals of a library such as ``scikit-learn``
-(see the last example under `Joblib backend`_). That use case goes away with
-:mod:`civis.parallel`.
 
 Joblib backend
 ==============
