@@ -28,7 +28,7 @@ from civis import APIClient, find, find_one
 from civis._camel_to_snake import camel_to_snake
 from civis.base import CivisAPIError, CivisJobFailure
 import civis.io as cio
-from civis.futures import ContainerFuture
+from civis.futures import _ContainerFuture
 from civis.response import Response
 
 __all__ = ["ModelFuture", "ModelError", "ModelPipeline"]
@@ -367,7 +367,7 @@ def _get_template_ids(civisml_version, client):
     return ids["training"], ids["prediction"], ids["registration"]
 
 
-class ModelFuture(ContainerFuture):
+class ModelFuture(_ContainerFuture):
     """Encapsulates asynchronous execution of a CivisML job
 
     This object knows where to find modeling outputs

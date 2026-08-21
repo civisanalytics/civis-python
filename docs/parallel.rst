@@ -159,21 +159,23 @@ does not automatically abort the others, so you choose how to handle failures:
 To stop as soon as anything fails, use
 :func:`python:concurrent.futures.wait` with
 ``return_when=concurrent.futures.FIRST_EXCEPTION``, and then cancel the runs
-that are still going with
-:func:`~civis.resources._resources.Scripts.delete_containers_runs`.
-(``CivisFuture.cancel`` itself raises :exc:`python:NotImplementedError`.)
+that are still going by calling ``.cancel()`` on each remaining
+:class:`~civis.futures.CivisFuture`.
 
-For the equivalent of the joblib backend's ``max_job_retries``, use
-``civis.futures.ContainerFuture`` in place of :func:`~civis.utils.run_job`.
-It automatically re-runs a container script that fails, up to
-``max_n_retries`` times. As with ``max_job_retries``, only do this for
-idempotent work:
+For the equivalent of the joblib backend's ``max_job_retries``, pass
+``max_retries`` when creating the :class:`~civis.futures.CivisFuture` in
+place of :func:`~civis.utils.run_job`. It automatically re-runs the job from
+scratch if it fails, up to ``max_retries`` times. As with ``max_job_retries``,
+only do this for idempotent work:
 
 .. code-block:: python
 
     run = client.scripts.post_containers_runs(script.id)
-    future = civis.futures.ContainerFuture(
-        script.id, run.id, max_n_retries=3, client=client
+    future = civis.futures.CivisFuture(
+        client.scripts.get_containers_runs,
+        (script.id, run.id),
+        max_retries=3,
+        client=client,
     )
 
 There is no equivalent of ``n_jobs`` or ``pre_dispatch``, though. Every job you

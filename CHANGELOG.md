@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- `CivisFuture` now supports job cancellation via `.cancel()` and automatic
+  retries of failed runs via the `max_retries` parameter. (#542)
+
 ### Changed
 
 ### Deprecated
@@ -14,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Civis Platform, please migrate to `CivisFuture`. (#542)
 - Deprecated the `civis.ml` submodule. The CivisML script templates in
   Civis Platform are unaffected. (#542)
+- Deprecated `ContainerFuture`. `CivisFuture` now supports job cancellation
+  and automatic retries -- please migrate to it. (#542)
 
 ### Removed
 ### Fixed
