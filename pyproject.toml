@@ -91,6 +91,8 @@ addopts = "--strict-markers -vv --cov=src/civis"
 testpaths = ["tests"]
 filterwarnings = [
     "ignore:The ServiceClient class.*:FutureWarning",
+    "ignore:`civis.ml` is deprecated.*:FutureWarning",
+    "ignore:`civis.parallel` is deprecated.*:FutureWarning",
 ]
 
 [tool.mypy]

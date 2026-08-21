@@ -1,4 +1,11 @@
-"""Parallel computations using the Civis Platform infrastructure"""
+"""Parallel computations using the Civis Platform infrastructure
+
+.. deprecated:: 2.10.0
+    ``civis.parallel`` will be removed at civis-python v3.0.0
+    (scheduled for release in February 2027).
+    For parallel computation via Civis Platform, please migrate to
+    :class:`civis.futures.CivisFuture`.
+"""
 
 from concurrent.futures import wait
 from datetime import datetime, timedelta
@@ -8,6 +15,7 @@ import os
 import pickle  # nosec
 from tempfile import TemporaryDirectory
 import time
+import warnings
 
 import cloudpickle
 from joblib.parallel import ParallelBackendBase
@@ -17,6 +25,16 @@ import requests
 import civis
 from civis.base import CivisAPIError
 from civis.futures import _ContainerShellExecutor, CustomScriptExecutor
+
+_DEPRECATED_MSG = (
+    "`civis.parallel` is deprecated since civis-python v2.10.0 and will be "
+    "removed at civis-python v3.0.0 (scheduled for release in February 2027). "
+    "For parallel computation via Civis Platform, please migrate to "
+    "`CivisFuture`. For details, please see "
+    "https://civis-python.readthedocs.io/en/stable/parallel.html"
+)
+
+warnings.warn(_DEPRECATED_MSG, FutureWarning)
 
 log = logging.getLogger(__name__)
 _THIS_DIR = os.path.dirname(os.path.realpath(__file__))

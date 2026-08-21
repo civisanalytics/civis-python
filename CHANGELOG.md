@@ -8,7 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Changed
+
 ### Deprecated
+- Deprecated the `civis.parallel` submodule. For parallel computation via
+  Civis Platform, please migrate to `CivisFuture`. (#542)
+- Deprecated the `civis.ml` submodule. The CivisML script templates in
+  Civis Platform are unaffected. (#542)
+
 ### Removed
 ### Fixed
 ### Security

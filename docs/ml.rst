@@ -2,6 +2,12 @@
 Machine Learning
 ****************
 
+.. warning::
+    :mod:`civis.ml` is deprecated since civis-python v2.10.0 and will be
+    removed at civis-python v3.0.0 (scheduled for release in February 2027).
+    The CivisML script templates in Civis Platform are unaffected.
+    If you need :mod:`civis.ml`, pin civis-python to v2.x.x.
+
 CivisML uses the Civis Platform to train machine learning models
 and parallelize their predictions over large datasets.
 It contains best-practice models for general-purpose classification
