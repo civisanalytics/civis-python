@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "civis"
-version = "2.9.3"
+version = "2.10.0"
 description = "Civis API Python Client"
 readme = "README.rst"
 requires-python = ">= 3.11"
