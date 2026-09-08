@@ -13,16 +13,22 @@ from io import BytesIO
 import os
 import pickle  # nosec
 import sys
+import warnings
 
 import civis
 import cloudpickle
 from joblib import parallel_config
 
-from civis.parallel import (
-    _robust_pickle_download,
-    _robust_file_to_civis,
-    _setup_remote_backend,
-)
+with warnings.catch_warnings():
+    # `civis.parallel` is deprecated, but this worker is an internal part of
+    # the joblib backend rather than user code. Don't emit the deprecation
+    # warning into the log of every child job the backend starts.
+    warnings.simplefilter("ignore", FutureWarning)
+    from civis.parallel import (
+        _robust_pickle_download,
+        _robust_file_to_civis,
+        _setup_remote_backend,
+    )
 
 
 def worker_func(func_file_id):

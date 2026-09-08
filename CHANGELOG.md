@@ -13,6 +13,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.10.0 - 2026-09-08
+
+### Added
+- `CivisFuture` now supports job cancellation via `.cancel()` and automatic
+  retries of failed runs via the `max_retries` parameter. (#542)
+
+### Deprecated
+- Deprecated the `civis.parallel` submodule. For parallel computation via
+  Civis Platform, please migrate to `CivisFuture`. (#542)
+- Deprecated the `civis.ml` submodule. The CivisML script templates in
+  Civis Platform are unaffected. (#542)
+- Deprecated `ContainerFuture`. `CivisFuture` now supports job cancellation
+  and automatic retries -- please migrate to it. (#542)
+- Deprecated `ServiceClient`, `PollableResult`, and `CivisAsyncResultBase`. (#541)
+
 ## 2.9.3 - 2026-08-11
 
 ### Changed
@@ -24,7 +39,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - civis-python v3.0.0, which will remove the features deprecated so far,
   is now scheduled for February 2027. All user-facing deprecation messages
   (docstrings, `FutureWarning` messages, etc.) now state this timeline. (#540)
-- Deprecated `ServiceClient`, `PollableResult`, and `CivisAsyncResultBase`. (#541)
 
 ## 2.9.2 - 2026-07-29
 

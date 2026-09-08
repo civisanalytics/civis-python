@@ -13,9 +13,18 @@ import threading
 import warnings
 from typing import Sequence
 
+import tenacity
+
 from civis import APIClient, Response
-from civis.base import CivisAPIError, CivisJobFailure, DONE, _err_msg_with_job_run_ids
-from civis.polling import _PollableResult
+from civis._deprecation import deprecated
+from civis.base import (
+    CivisAPIError,
+    CivisJobFailure,
+    DONE,
+    FAILED,
+    _err_msg_with_job_run_ids,
+)
+from civis.polling import _PollableResult, _MAX_POLLING_INTERVAL
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +55,13 @@ class CivisFuture(_PollableResult):
         If ``True`` (the default), it will poll upon calling ``result()`` the
         first time. If ``False``, it will wait the number of seconds specified
         in `polling_interval` from object creation before polling.
+    max_retries : int, optional
+        If the job errors or finishes in a failed state, restart it with an
+        entirely new run, up to this many times. If ``None`` or ``0`` (the
+        default), do not retry. Retries should only be used for idempotent
+        jobs which might fail because of network or other random failures --
+        e.g., do not set this for non-idempotent jobs such as data processes
+        that are not safe to run more than once.
 
     Examples
     --------
@@ -77,9 +93,19 @@ class CivisFuture(_PollableResult):
         polling_interval: int | float | None = None,
         client: APIClient | None = None,
         poll_on_creation: bool = True,
+        max_retries: int | None = None,
     ):
         if client is None:
             client = APIClient()
+
+        if max_retries is not None and max_retries < 0:
+            raise ValueError("max_retries must not be negative.")
+        if max_retries and len(poller_args) < 2:
+            raise ValueError(
+                "max_retries requires a poller that tracks a specific run "
+                "(i.e., poller_args must include a run ID)."
+            )
+        self._max_retries = max_retries or 0
 
         super().__init__(
             poller=poller,
@@ -237,8 +263,91 @@ class CivisFuture(_PollableResult):
         outputs = self.client.jobs.list_runs_outputs(self.job_id, self.run_id)
         return outputs
 
+    def cancel(self) -> bool:
+        """Submit a request to cancel the job/run.
 
-class ContainerFuture(CivisFuture):
+        Returns
+        -------
+        bool
+            Whether or not the job is in a cancelled state.
+        """
+        with self._condition:
+            if self.cancelled():
+                return True
+            elif not self.done():
+                try:
+                    self._result = self.client.jobs.delete_runs(
+                        self.job_id, self.run_id
+                    )
+                except CivisAPIError as exc:
+                    if exc.status_code == 404:
+                        # The most likely way to get this error
+                        # is for the job to already be completed.
+                        return False
+                    else:
+                        warnings.warn(
+                            "Unexpected error when attempting to cancel "
+                            f"job ID {self.job_id} / run ID {self.run_id}:\n{str(exc)}"
+                        )
+                        return False
+                for waiter in self._waiters:
+                    waiter.add_cancelled(self)
+                self._condition.notify_all()
+                self.cleanup()
+                self._invoke_callbacks()  # type: ignore[attr-defined]
+                return self.cancelled()
+            return False
+
+    def _poll_until_done(self) -> Response:
+        """Block the calling (polling) thread until the current run is done."""
+        interval = self.polling_interval or 1
+        while True:
+            result = self.poller(*self.poller_args)
+            if result is not None and result.state in DONE:
+                return result
+            time.sleep(interval)
+            if self.polling_interval is None:
+                interval = min(interval * 1.2, _MAX_POLLING_INTERVAL)
+
+    def _retry_run_once(self) -> Response:
+        """Start a new run of the job and block until it's done.
+
+        Raises a `CivisJobFailure` if the new run also fails, so that
+        `tenacity.Retrying` treats it as a retryable attempt.
+        """
+        self.poller_args = list(self.poller_args)
+        self._last_result = self.client.jobs.post_runs(self.job_id)
+        self.poller_args[1] = self._last_result.id
+        self._last_polled = time.time()
+        result = self._poll_until_done()
+        if result.state in FAILED:
+            try:
+                err_msg = str(result["error"])
+            except Exception:  # NOQA
+                err_msg = str(result)
+            raise CivisJobFailure(err_msg, result, self.job_id, self.run_id)
+        return result
+
+    def _set_api_exception(self, exc, result=None):
+        with self._condition:
+            if self._max_retries > 0:
+                retrying = tenacity.Retrying(
+                    stop=tenacity.stop_after_attempt(self._max_retries),
+                    wait=tenacity.wait_none(),
+                    retry=tenacity.retry_if_exception_type(Exception),
+                    reraise=True,
+                )
+                try:
+                    final_result = retrying(self._retry_run_once)
+                except Exception as final_exc:
+                    super()._set_api_exception(exc=final_exc, result=result)
+                else:
+                    self._set_api_result(final_result)
+            else:
+                super()._set_api_exception(exc=exc, result=result)
+
+
+class _ContainerFuture(CivisFuture):
     """Encapsulates asynchronous execution of a Civis Container Script
 
     This object includes the ability to cancel a run in progress,
@@ -366,6 +475,20 @@ class ContainerFuture(CivisFuture):
             return False
 
 
+_DEPRECATED_CONTAINER_FUTURE_MSG = (
+    "The ContainerFuture class is deprecated since civis-python v2.10.0. "
+    "In civis-python v3.0.0 (scheduled for February 2027), it will be removed. "
+    "CivisFuture now supports job cancellation (the .cancel() method) and "
+    "automatic retries (the `max_retries` parameter); please migrate to "
+    "CivisFuture."
+)
+
+
+@deprecated(_DEPRECATED_CONTAINER_FUTURE_MSG, category=FutureWarning)
+class ContainerFuture(_ContainerFuture):
+    pass
+
+
 def _create_docker_command(*args, **kwargs):
     """
     Returns a string with the ordered arguments args in order,
@@ -414,7 +537,7 @@ class _CivisExecutor(Executor, metaclass=ABCMeta):
         adds it to the internal list of futures, and returns it.
         This is a helper method for :func:`submit`.
         """
-        future = ContainerFuture(
+        future = _ContainerFuture(
             job_id,
             run_id,
             polling_interval=self.polling_interval,

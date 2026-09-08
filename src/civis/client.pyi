@@ -2244,10 +2244,11 @@ class _Credentials:
         Parameters
         ----------
         type : str
-            The type of credential. Note: only these credentials can be created or
-            edited via this API ["Amazon Web Services S3", "CASS/NCOA PAF",
-            "Certificate", "Civis Platform", "Custom", "Database", "Google",
-            "Salesforce User", "Salesforce Client", "TableauUser"]
+            The type of credential. These types can be created and fully edited via
+            this API: Amazon Web Services S3, CASS/NCOA PAF, Certificate, Civis
+            Platform, Custom, Database, Google, Salesforce User, Salesforce Client, and
+            TableauUser. Other credential types cannot be created here, and accept
+            edits to name and description only.
         username : str
             The username for the credential.
         password : str
@@ -2353,10 +2354,11 @@ class _Credentials:
         id : int
             The ID of the credential.
         type : str
-            The type of credential. Note: only these credentials can be created or
-            edited via this API ["Amazon Web Services S3", "CASS/NCOA PAF",
-            "Certificate", "Civis Platform", "Custom", "Database", "Google",
-            "Salesforce User", "Salesforce Client", "TableauUser"]
+            The type of credential. These types can be created and fully edited via
+            this API: Amazon Web Services S3, CASS/NCOA PAF, Certificate, Civis
+            Platform, Custom, Database, Google, Salesforce User, Salesforce Client, and
+            TableauUser. Other credential types cannot be created here, and accept
+            edits to name and description only.
         username : str
             The username for the credential.
         password : str
@@ -2464,10 +2466,11 @@ class _Credentials:
         name : str, optional
             The name identifying the credential.
         type : str, optional
-            The type of credential. Note: only these credentials can be created or
-            edited via this API ["Amazon Web Services S3", "CASS/NCOA PAF",
-            "Certificate", "Civis Platform", "Custom", "Database", "Google",
-            "Salesforce User", "Salesforce Client", "TableauUser"]
+            The type of credential. These types can be created and fully edited via
+            this API: Amazon Web Services S3, CASS/NCOA PAF, Certificate, Civis
+            Platform, Custom, Database, Google, Salesforce User, Salesforce Client, and
+            TableauUser. Other credential types cannot be created here, and accept
+            edits to name and description only.
         description : str, optional
             A long description of the credential.
         username : str, optional
@@ -3433,8 +3436,8 @@ class _Databases:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is queued, running, succeeded, failed,
-                        cancelled, idle or scheduled.
+                        Whether the job is idle, pending, scheduled, queued, running,
+                        succeeded, failed or cancelled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -3659,8 +3662,8 @@ class _Databases:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is queued, running, succeeded, failed,
-                        cancelled, idle or scheduled.
+                        Whether the job is idle, pending, scheduled, queued, running,
+                        succeeded, failed or cancelled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -18640,6 +18643,102 @@ class _Imports:
         """
         ...
 
+    def list_runs(
+        self,
+        id: int,
+        *,
+        limit: int | None = ...,
+        page_num: int | None = ...,
+        order: str | None = ...,
+        order_dir: str | None = ...,
+        iterator: bool | None = ...,
+    ) -> (
+        ListResponse[_ResponseImportsListRuns]
+        | PaginatedResponse[_ResponseImportsListRuns]
+    ):
+        """List runs for the given Import job
+
+        API URL: ``GET /imports/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.list_runs(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID of the Import job.
+        limit : int, optional
+            Number of results to return. Defaults to 20. Maximum allowed is 100.
+        page_num : int, optional
+            Page number of the results to return. Defaults to the first page, 1.
+        order : str, optional
+            The field on which to order the result set. Defaults to id. Must be one of:
+            id.
+        order_dir : str, optional
+            Direction in which to sort, either asc (ascending) or desc (descending)
+            defaulting to desc.
+        iterator : bool, optional
+            If True, return a generator (specifically, a
+            :class:`civis.PaginatedResponse` object) to iterate over all responses.
+            Use it when more results than the maximum allowed by 'limit' are needed.
+            When True, 'page_num' is ignored.
+            If False, return a :class:`civis.ListResponse` object
+            (= a list of :class:`civis.Response` objects), whose size is
+            determined by 'limit'. Defaults to False.
+
+        Returns
+        -------
+        :class:`civis.ListResponse` | :class:`civis.PaginatedResponse`
+            - id : int
+                The ID of the run.
+            - import_id : int
+                The ID of the Import job.
+            - state : str
+                The state of the run, one of 'queued' 'running' 'succeeded' 'failed' or
+                'cancelled'.
+            - is_cancel_requested : bool
+                True if run cancel requested, else false.
+            - created_at : str (time)
+                The time the run was created.
+            - started_at : str (time)
+                The time the run started at.
+            - finished_at : str (time)
+                The time the run completed.
+            - error : str
+                The error, if any, returned by the run.
+        """
+        ...
+
+    def post_runs(
+        self,
+        id: int,
+    ) -> _ResponseImportsPostRuns:
+        """Run an import
+
+        API URL: ``POST /imports/{id}/runs``
+
+        .. code-block:: python
+
+            import civis
+            client = civis.APIClient()
+            response = client.imports.post_runs(...)
+
+        Parameters
+        ----------
+        id : int
+            The ID of the import to run.
+
+        Returns
+        -------
+        :class:`civis.Response`
+            - run_id : int
+                The ID of the new run triggered.
+        """
+        ...
+
     def get_files_runs_inputs(
         self,
         id: int,
@@ -20039,8 +20138,8 @@ class _Imports:
             - remote_host_id : int
                 The ID of the destination database host.
             - state : str
-                The state of the run; one of "queued", "running", "succeeded",
-                "failed", or "cancelled".
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - started_at : str (time)
                 The time the last run started at.
             - finished_at : str (time)
@@ -20112,8 +20211,8 @@ class _Imports:
             - remote_host_id : int
                 The ID of the destination database host.
             - state : str
-                The state of the run; one of "queued", "running", "succeeded",
-                "failed", or "cancelled".
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - started_at : str (time)
                 The time the last run started at.
             - finished_at : str (time)
@@ -20158,8 +20257,8 @@ class _Imports:
             - remote_host_id : int
                 The ID of the destination database host.
             - state : str
-                The state of the run; one of "queued", "running", "succeeded",
-                "failed", or "cancelled".
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - started_at : str (time)
                 The time the last run started at.
             - finished_at : str (time)
@@ -21204,69 +21303,6 @@ class _Imports:
             - my_permission_level : str
                 Your permission level on the object. One of "read", "write", or
                 "manage".
-        """
-        ...
-
-    def list_runs(
-        self,
-        id: int,
-    ) -> ListResponse[_ResponseImportsListRuns]:
-        """Get the run history of this import
-
-        API URL: ``GET /imports/{id}/runs``
-
-        .. code-block:: python
-
-            import civis
-            client = civis.APIClient()
-            response = client.imports.list_runs(...)
-
-        Parameters
-        ----------
-        id : int
-
-        Returns
-        -------
-        :class:`civis.ListResponse`
-            - id : int
-            - state : str
-                The state of the run. One of queued, running, succeeded, failed or
-                cancelled.
-            - created_at : str (time)
-                The time that the run was queued.
-            - started_at : str (time)
-                The time that the run started.
-            - finished_at : str (time)
-                The time that the run completed.
-            - error : str
-                The error message for this run, if present.
-        """
-        ...
-
-    def post_runs(
-        self,
-        id: int,
-    ) -> _ResponseImportsPostRuns:
-        """Run an import
-
-        API URL: ``POST /imports/{id}/runs``
-
-        .. code-block:: python
-
-            import civis
-            client = civis.APIClient()
-            response = client.imports.post_runs(...)
-
-        Parameters
-        ----------
-        id : int
-            The ID of the import to run.
-
-        Returns
-        -------
-        :class:`civis.Response`
-            - run_id : int
-                The ID of the new run triggered.
         """
         ...
 
@@ -22497,8 +22533,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is queued, running, succeeded, failed, cancelled, idle
-                or scheduled.
+                Whether the job is idle, pending, scheduled, queued, running,
+                succeeded, failed or cancelled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -22573,8 +22609,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is queued, running, succeeded, failed, cancelled, idle
-                or scheduled.
+                Whether the job is idle, pending, scheduled, queued, running,
+                succeeded, failed or cancelled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -22700,8 +22736,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is queued, running, succeeded, failed, cancelled, idle
-                or scheduled.
+                Whether the job is idle, pending, scheduled, queued, running,
+                succeeded, failed or cancelled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -22800,8 +22836,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is queued, running, succeeded, failed, cancelled, idle
-                or scheduled.
+                Whether the job is idle, pending, scheduled, queued, running,
+                succeeded, failed or cancelled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - runs : List[:class:`civis.Response`]
@@ -23717,8 +23753,8 @@ class _Jobs:
             - type : str
             - from_template_id : int
             - state : str
-                Whether the job is queued, running, succeeded, failed, cancelled, idle
-                or scheduled.
+                Whether the job is idle, pending, scheduled, queued, running,
+                succeeded, failed or cancelled.
             - created_at : str (date-time)
             - updated_at : str (date-time)
             - last_run_updated_at : str (date-time)
@@ -32072,7 +32108,8 @@ class _Predictions:
             - output_table_name : str
                 The name of the output table for this prediction.
             - state : str
-                The state of the last run of this prediction.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - error : str
                 The error, if any, of the last run of this prediction.
             - started_at : str (date-time)
@@ -32128,7 +32165,8 @@ class _Predictions:
             - output_table_name : str
                 The name of the output table for this prediction.
             - state : str
-                The state of the last run of this prediction.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - error : str
                 The error, if any, of the last run of this prediction.
             - started_at : str (date-time)
@@ -34286,8 +34324,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed or
-                cancelled.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34377,8 +34415,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed or
-                cancelled.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34687,8 +34725,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed or
-                cancelled.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34760,8 +34798,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed or
-                cancelled.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -34833,8 +34871,8 @@ class _Queries:
             - finished_at : str (date-time)
                 The end time of the last run.
             - state : str
-                The state of the last run. One of queued, running, succeeded, failed or
-                cancelled.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - script_id : int
                 The ID of the script associated with this query.
             - exception : str
@@ -38006,8 +38044,8 @@ class _Reports:
                 - finished_at : str (date-time)
                     The end time of the last run.
                 - state : str
-                    The state of the last run. One of queued, running, succeeded,
-                    failed or cancelled.
+                    The state of the last run. One of idle, pending, scheduled, queued,
+                    running, succeeded, failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38096,8 +38134,8 @@ class _Reports:
                 - finished_at : str (date-time)
                     The end time of the last run.
                 - state : str
-                    The state of the last run. One of queued, running, succeeded,
-                    failed or cancelled.
+                    The state of the last run. One of idle, pending, scheduled, queued,
+                    running, succeeded, failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38199,8 +38237,8 @@ class _Reports:
                 - finished_at : str (date-time)
                     The end time of the last run.
                 - state : str
-                    The state of the last run. One of queued, running, succeeded,
-                    failed or cancelled.
+                    The state of the last run. One of idle, pending, scheduled, queued,
+                    running, succeeded, failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38289,8 +38327,8 @@ class _Reports:
                 - finished_at : str (date-time)
                     The end time of the last run.
                 - state : str
-                    The state of the last run. One of queued, running, succeeded,
-                    failed or cancelled.
+                    The state of the last run. One of idle, pending, scheduled, queued,
+                    running, succeeded, failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38849,8 +38887,8 @@ class _Reports:
                 - finished_at : str (date-time)
                     The end time of the last run.
                 - state : str
-                    The state of the last run. One of queued, running, succeeded,
-                    failed or cancelled.
+                    The state of the last run. One of idle, pending, scheduled, queued,
+                    running, succeeded, failed or cancelled.
                 - running_as : :class:`civis.Response`
                     - id : int
                         The ID of this user.
@@ -38939,53 +38977,6 @@ class _Scripts:
         :class:`civis.ListResponse`
             - name : str
                 The name of the type.
-        """
-        ...
-
-    def list_history(
-        self,
-        id: int,
-    ) -> ListResponse[_ResponseScriptsListHistory]:
-        """Get the run history and outputs of this script
-
-        API URL: ``GET /scripts/{id}/history``
-
-        .. code-block:: python
-
-            import civis
-            client = civis.APIClient()
-            response = client.scripts.list_history(...)
-
-        Parameters
-        ----------
-        id : int
-            The ID for the script.
-
-        Returns
-        -------
-        :class:`civis.ListResponse`
-            - id : int
-                The ID of this run.
-            - sql_id : int
-                The ID of this sql.
-            - state : str
-                The state of this run.
-            - is_cancel_requested : bool
-                True if run cancel requested, else false.
-            - finished_at : str (time)
-                The time that this run finished.
-            - error : str
-                The error message for this run, if present.
-            - output : List[:class:`civis.Response`]
-                A list of the outputs of this script.
-
-                - output_name : str
-                    The name of the output file.
-                - file_id : int
-                    The unique ID of the output file.
-                - path : str
-                    The temporary link to download this output file, valid for 36
-                    hours.
         """
         ...
 
@@ -39106,7 +39097,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -39341,7 +39333,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - projects : List[:class:`civis.Response`]
@@ -39485,7 +39478,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -39829,7 +39823,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -40067,7 +40062,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -40447,7 +40443,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -40827,7 +40824,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -41280,7 +41278,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -41498,7 +41497,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -41840,7 +41840,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -42182,7 +42183,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -42526,7 +42528,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -42740,7 +42743,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -43080,7 +43084,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -43420,7 +43425,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -43760,7 +43766,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -43974,7 +43981,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -44314,7 +44322,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -44654,7 +44663,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -45039,7 +45049,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -45295,7 +45306,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -45722,7 +45734,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -46149,7 +46162,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -46508,7 +46522,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -46702,7 +46717,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -46999,7 +47015,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -47296,7 +47313,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -47538,7 +47556,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - projects : List[:class:`civis.Response`]
@@ -47724,7 +47743,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -47951,7 +47971,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -48260,7 +48281,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -48569,7 +48591,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -54489,7 +54512,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -55187,7 +55211,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -55886,7 +55911,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -56571,7 +56597,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -57256,7 +57283,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -57983,7 +58011,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -58659,7 +58688,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -58886,7 +58916,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -59115,7 +59146,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -59320,7 +59352,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -59545,7 +59578,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -59779,7 +59813,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -60018,7 +60053,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -60296,7 +60332,8 @@ class _Scripts:
                 - online : bool
                     Whether this user is online.
             - state : str
-                The status of the script's last run.
+                The state of the last run. One of idle, pending, scheduled, queued,
+                running, succeeded, failed or cancelled.
             - finished_at : str (time)
                 The time that the script's last run finished.
             - category : str
@@ -64994,8 +65031,8 @@ class _Tables:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is queued, running, succeeded, failed,
-                        cancelled, idle or scheduled.
+                        Whether the job is idle, pending, scheduled, queued, running,
+                        succeeded, failed or cancelled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -65332,8 +65369,8 @@ class _Tables:
                     - type : str
                     - from_template_id : int
                     - state : str
-                        Whether the job is queued, running, succeeded, failed,
-                        cancelled, idle or scheduled.
+                        Whether the job is idle, pending, scheduled, queued, running,
+                        succeeded, failed or cancelled.
                     - created_at : str (date-time)
                     - updated_at : str (date-time)
                     - last_run_updated_at : str (date-time)
@@ -78281,6 +78318,19 @@ class _ResponseImportsListRunsLogs(Response):
     message: str
     level: str
 
+class _ResponseImportsListRuns(Response):
+    id: int
+    import_id: int
+    state: str
+    is_cancel_requested: bool
+    created_at: str
+    started_at: str
+    finished_at: str
+    error: str
+
+class _ResponseImportsPostRuns(Response):
+    run_id: int
+
 class _ResponseImportsGetFilesRunsInputs(Response):
     name: str
     source: _ResponseImportsGetFilesRunsInputsSource
@@ -79118,17 +79168,6 @@ class _ResponseImportsPatchNotifications(Response):
     stall_warning_minutes: int
     success_on: bool
     failure_on: bool
-
-class _ResponseImportsListRuns(Response):
-    id: int
-    state: str
-    created_at: str
-    started_at: str
-    finished_at: str
-    error: str
-
-class _ResponseImportsPostRuns(Response):
-    run_id: int
 
 class _ResponseImportsPostCancel(Response):
     id: int
@@ -85516,20 +85555,6 @@ class _ResponseRolesList(Response):
 
 class _ResponseScriptsListTypes(Response):
     name: str
-
-class _ResponseScriptsListHistory(Response):
-    id: int
-    sql_id: int
-    state: str
-    is_cancel_requested: bool
-    finished_at: str
-    error: str
-    output: List[_ResponseScriptsListHistoryOutput]
-
-class _ResponseScriptsListHistoryOutput(Response):
-    output_name: str
-    file_id: int
-    path: str
 
 class _ResponseScriptsPost(Response):
     id: int

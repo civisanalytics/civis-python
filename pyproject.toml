@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "civis"
-version = "2.9.3"
+version = "2.10.0"
 description = "Civis API Python Client"
 readme = "README.rst"
 requires-python = ">= 3.11"
@@ -91,6 +91,9 @@ addopts = "--strict-markers -vv --cov=src/civis"
 testpaths = ["tests"]
 filterwarnings = [
     "ignore:The ServiceClient class.*:FutureWarning",
+    "ignore:The ContainerFuture class.*:FutureWarning",
+    "ignore:`civis.ml` is deprecated.*:FutureWarning",
+    "ignore:`civis.parallel` is deprecated.*:FutureWarning",
 ]
 
 [tool.mypy]

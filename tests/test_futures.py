@@ -9,7 +9,7 @@ import requests
 from civis import APIClient, response
 from civis.base import CivisAPIError, CivisJobFailure
 from civis.futures import (
-    ContainerFuture,
+    _ContainerFuture,
     _ContainerShellExecutor,
     CustomScriptExecutor,
     _create_docker_command,
@@ -171,7 +171,7 @@ def test_future_job_id_run_id(poller_args, expected_job_id, expected_run_id):
 
 def test_container_future_job_id_run_id():
     job_id, run_id = 123, 456
-    result = ContainerFuture(
+    result = _ContainerFuture(
         job_id=job_id,
         run_id=run_id,
         client=create_client_mock_for_container_tests(),
@@ -345,7 +345,7 @@ def test_cancel_finished_job():
     resp_json = c.scripts.post_containers_runs.return_value.json()
     resp_json["state"] = "running"
     c.scripts.post_containers_runs.return_value = response.Response(resp_json)
-    fut = ContainerFuture(
+    fut = _ContainerFuture(
         -10, 100, polling_interval=1, client=c, poll_on_creation=False
     )
     assert not fut.done()
@@ -359,7 +359,7 @@ def test_future_no_retry_error():
     # Verify that with no retries, exceptions on job polling
     #  are raised to the user
     c = _setup_client_mock(failure_is_error=True)
-    fut = ContainerFuture(-10, 100, polling_interval=0.001, client=c)
+    fut = _ContainerFuture(-10, 100, polling_interval=0.001, client=c)
     with pytest.raises(CivisAPIError):
         fut.result()
 
@@ -368,7 +368,7 @@ def test_future_no_retry_failure():
     # Verify that with no retries, job failures are raised as
     # exceptions for the user
     c = _setup_client_mock(failure_is_error=False)
-    fut = ContainerFuture(-10, 100, polling_interval=0.001, client=c)
+    fut = _ContainerFuture(-10, 100, polling_interval=0.001, client=c)
     with pytest.raises(CivisJobFailure):
         fut.result()
 
@@ -377,7 +377,7 @@ def test_future_not_enough_retry_error():
     # Verify that if polling the run is still erroring after all retries
     # are exhausted, the error will be raised for the user.
     c = _setup_client_mock(failure_is_error=True)
-    fut = ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01, client=c)
+    fut = _ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01, client=c)
     with pytest.raises(CivisAPIError):
         fut.result()
 
@@ -386,7 +386,7 @@ def test_future_not_enough_retry_failure():
     # Verify that if the job is still failing after all retries
     # are exhausted, the job failure will be raised for the user.
     c = _setup_client_mock(failure_is_error=False)
-    fut = ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01, client=c)
+    fut = _ContainerFuture(-10, 100, max_n_retries=3, polling_interval=0.01, client=c)
     with pytest.raises(CivisJobFailure):
         fut.result()
 
@@ -394,14 +394,14 @@ def test_future_not_enough_retry_failure():
 def test_future_retry_failure():
     # Verify that we can retry through API errors until a job succeeds
     c = _setup_client_mock(failure_is_error=False)
-    fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01, client=c)
+    fut = _ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01, client=c)
     assert fut.result().state == "succeeded"
 
 
 def test_future_retry_error():
     # Verify that we can retry through job failures until it succeeds
     c = _setup_client_mock(failure_is_error=True)
-    fut = ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01, client=c)
+    fut = _ContainerFuture(-10, 100, max_n_retries=10, polling_interval=0.01, client=c)
     assert fut.result().state == "succeeded"
 
 
@@ -418,7 +418,7 @@ def test_container_exception_no_result_logs(m_sleep):
     mock_client = create_client_mock_for_container_tests(
         1, 2, state="failed", run_outputs=[], log_outputs=logs
     )
-    fut = ContainerFuture(1, 2, client=mock_client)
+    fut = _ContainerFuture(1, 2, client=mock_client)
 
     with pytest.raises(CivisJobFailure) as err:
         fut.result()
@@ -453,8 +453,165 @@ def test_container_exception_memory_error(m_sleep):
     mock_client = create_client_mock_for_container_tests(
         1, 2, state="failed", run_outputs=[], log_outputs=logs
     )
-    fut = ContainerFuture(1, 2, client=mock_client)
+    fut = _ContainerFuture(1, 2, client=mock_client)
 
     with pytest.raises(MemoryError) as err:
         fut.result()
     assert str(err.value) == f"(From job 1 / run 2) {err_msg}"
+
+
+def test_civis_future_cancel_succeeded():
+    mock_civis = create_client_mock()
+    mock_civis.jobs.delete_runs.return_value = response.Response({"state": "cancelled"})
+    fut = CivisFuture(
+        lambda x, y: response.Response({"state": "running"}),
+        (1, 2),
+        client=mock_civis,
+    )
+    assert fut.cancel() is True
+    assert fut.cancelled()
+    mock_civis.jobs.delete_runs.assert_called_once_with(1, 2)
+
+
+def test_civis_future_cancel_already_cancelled():
+    mock_civis = create_client_mock()
+    mock_civis.jobs.delete_runs.return_value = response.Response({"state": "cancelled"})
+    fut = CivisFuture(
+        lambda x, y: response.Response({"state": "running"}),
+        (1, 2),
+        client=mock_civis,
+    )
+    assert fut.cancel() is True
+    mock_civis.jobs.delete_runs.reset_mock()
+    assert fut.cancel() is True
+    mock_civis.jobs.delete_runs.assert_not_called()
+
+
+def test_civis_future_cancel_finished_job():
+    # If we try to cancel a completed job, we get a 404 error,
+    # which shouldn't be raised or warned about.
+    mock_civis = create_client_mock()
+    err_resp = requests.Response()
+    err_resp.status_code = 404
+    err_resp._content = json.dumps(
+        {
+            "status_code": 404,
+            "error": "not_found",
+            "errorDescription": "The requested resource could not be found.",
+            "content": True,
+        }
+    ).encode()
+    mock_civis.jobs.delete_runs.side_effect = CivisAPIError(err_resp)
+    fut = CivisFuture(
+        lambda x, y: response.Response({"state": "running"}),
+        (1, 2),
+        client=mock_civis,
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        assert fut.cancel() is False
+
+
+def test_civis_future_cancel_unexpected_error():
+    mock_civis = create_client_mock()
+    err_resp = requests.Response()
+    err_resp.status_code = 500
+    err_resp._content = json.dumps(
+        {
+            "status_code": 500,
+            "error": "internal_server_error",
+            "errorDescription": "Something went wrong.",
+            "content": True,
+        }
+    ).encode()
+    err_resp.request = mock.Mock(method="DELETE", path_url="/jobs/1/runs/2")
+    mock_civis.jobs.delete_runs.side_effect = CivisAPIError(err_resp)
+    fut = CivisFuture(
+        lambda x, y: response.Response({"state": "running"}),
+        (1, 2),
+        client=mock_civis,
+    )
+    with pytest.warns(UserWarning, match="Unexpected error"):
+        assert fut.cancel() is False
+
+
+def test_civis_future_max_retries_requires_run_id():
+    mock_civis = create_client_mock()
+    with pytest.raises(ValueError, match="max_retries"):
+        CivisFuture(lambda x: x, (1,), max_retries=3, client=mock_civis)
+
+
+def test_civis_future_max_retries_negative():
+    mock_civis = create_client_mock()
+    with pytest.raises(ValueError, match="max_retries"):
+        CivisFuture(lambda x, y: x, (1, 2), max_retries=-1, client=mock_civis)
+
+
+def test_civis_future_no_retry_error():
+    c = _setup_client_mock(failure_is_error=True)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs, [-10, 100], polling_interval=0.001, client=c
+    )
+    with pytest.raises(CivisAPIError):
+        fut.result()
+
+
+def test_civis_future_no_retry_failure():
+    c = _setup_client_mock(failure_is_error=False)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs, [-10, 100], polling_interval=0.001, client=c
+    )
+    with pytest.raises(CivisJobFailure):
+        fut.result()
+
+
+def test_civis_future_not_enough_retry_error():
+    c = _setup_client_mock(failure_is_error=True)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs,
+        [-10, 100],
+        max_retries=3,
+        polling_interval=0.01,
+        client=c,
+    )
+    with pytest.raises(CivisAPIError):
+        fut.result()
+
+
+def test_civis_future_not_enough_retry_failure():
+    c = _setup_client_mock(failure_is_error=False)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs,
+        [-10, 100],
+        max_retries=3,
+        polling_interval=0.01,
+        client=c,
+    )
+    with pytest.raises(CivisJobFailure):
+        fut.result()
+
+
+def test_civis_future_retry_error():
+    # Verify that we can retry through API errors until a job succeeds
+    c = _setup_client_mock(failure_is_error=True)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs,
+        [-10, 100],
+        max_retries=10,
+        polling_interval=0.01,
+        client=c,
+    )
+    assert fut.result().state == "succeeded"
+
+
+def test_civis_future_retry_failure():
+    # Verify that we can retry through job failures until it succeeds
+    c = _setup_client_mock(failure_is_error=False)
+    fut = CivisFuture(
+        c.scripts.get_containers_runs,
+        [-10, 100],
+        max_retries=10,
+        polling_interval=0.01,
+        client=c,
+    )
+    assert fut.result().state == "succeeded"

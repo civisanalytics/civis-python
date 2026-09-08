@@ -3,11 +3,240 @@ Parallel Computation
 ********************
 
 Civis Platform manages a pool of cloud computing resources.
-You can access these resources with the tools in the :mod:`civis.parallel`
-and :mod:`civis.futures` modules.
+You can access these resources with the tools in the :mod:`civis.futures`
+and :mod:`civis.parallel` modules.
+
+.. warning::
+    :mod:`civis.parallel` is deprecated since civis-python v2.10.0 and will be
+    removed at civis-python v3.0.0 (scheduled for release in February 2027).
+    For parallel computation via Civis Platform, please migrate to
+    :class:`~civis.futures.CivisFuture`, as described in `Civis futures`_ below.
+
+.. _civis_futures_parallel:
+
+Civis Futures
+=============
+
+A :class:`~civis.futures.CivisFuture` is a
+:class:`python:concurrent.futures.Future` that tracks a job running in
+Civis Platform. Because it follows the standard library's ``Future`` API,
+you can start many Civis Platform jobs at once and collect their results with
+the usual :mod:`python:concurrent.futures` helpers, such as
+:func:`python:concurrent.futures.as_completed` and
+:func:`python:concurrent.futures.wait`.
+
+Fanning out Many Jobs
+---------------------
+
+The following is an example to run multiple Civis Platform jobs and keep track of them
+while the Python program isn't blocked and can therefore do other things at the same time.
+Represent each Civis job as a :class:`~civis.futures.CivisFuture`,
+keep the futures around, and consume them as
+they finish. The example starts several Civis Platform
+container scripts, each computing ``2 * num1 + num2`` for a different pair of
+arguments:
+
+.. code-block:: python
+
+    import concurrent.futures
+
+    import civis
+
+    client = civis.APIClient()
+
+
+    def submit(num1, num2):
+        """Start a container script and return a CivisFuture for its run."""
+        script = client.scripts.post_containers(
+            required_resources={"cpu": 512, "memory": 256},
+            docker_image_name="civisanalytics/datascience-python",
+            docker_command=f"python -c 'print(2 * {num1} + {num2})'",
+        )
+        return civis.utils.run_job(script.id, client=client)
+
+
+    args = [(0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
+
+    # Map each future back to the arguments it was created with, so that
+    # out-of-order results can be re-associated with their inputs.
+    futures = {submit(*a): a for a in args}
+
+    # Importantly, this Python code at this juncture is *not* blocked,
+    # while the Civis Platform jobs launched above are running (some of them
+    # may finish at any point). If desired for your application,
+    # you can execute any other Python code before needing to handle these jobs
+    # via `futures`.
+
+    for future in concurrent.futures.as_completed(futures):
+        num1, num2 = futures[future]
+        run = future.result()  # blocks until this one job is done
+        print(f"({num1}, {num2}) finished with state {run.state}")
+
+:func:`civis.utils.run_job <civis.utils.run_job>` is a convenience wrapper that starts a run for an
+existing job and hands back a :class:`~civis.futures.CivisFuture`.
+:func:`python:concurrent.futures.as_completed` gives you
+each result as soon
+as its job finishes, rather than after all jobs have finished. If you want the
+results in submission order instead, iterate over the futures directly and call
+``.result()`` on each one.
+
+Passing Inputs and Outputs
+--------------------------
+
+:class:`~civis.futures.CivisFuture` does not ship a function, its arguments,
+or its return value between the parent process and a child job. Instead:
+
+- The code you want to run must already exist in the child job's environment,
+  either baked into the Docker image or cloned from GitHub via the
+  ``repo_http_uri`` and ``repo_ref`` parameters of
+  :func:`~civis.resources._resources.Scripts.post_containers`.
+- You are responsible for moving data. Small inputs can go directly into the
+  ``docker_command``. Larger inputs, and all outputs, should travel through
+  Civis Files.
+
+.. code-block:: python
+
+    # A parent job running a child job and retrieving its result.
+
+    import io
+
+    import civis
+
+    client = civis.APIClient()
+
+    # Upload the input for one child job.
+    input_file_id = civis.io.file_to_civis(
+        io.BytesIO(b"some input data"), name="my-input", client=client
+    )
+
+    script = client.scripts.post_containers(
+        required_resources={"cpu": 512, "memory": 256},
+        docker_image_name="civisanalytics/datascience-python",
+        docker_command=f"python /app/my_script.py {input_file_id}",
+        repo_http_uri="github.com/my-org/my-repo.git",
+    )
+    future = civis.utils.run_job(script.id, client=client)
+    future.result()
+
+    # Download what the child job produced.
+    output_file_id = civis.io.file_id_from_run_output(
+        "my-output", future.job_id, future.run_id, client=client
+    )
+    buf = io.BytesIO()
+    civis.io.civis_to_file(output_file_id, buf, client=client)
+
+For the parent to find the output that way, the child job has to register it as
+a run output. Inside ``my_script.py``, that looks like:
+
+.. code-block:: python
+
+    # The child job.
+
+    import os
+
+    import civis
+
+    # Some work has happened and produced an output file.
+    output_path = "some_output.txt"
+    client = civis.APIClient()
+    output_file_id = civis.io.file_to_civis(output_path, name="my-output", client=client)
+    client.scripts.post_containers_runs_outputs(
+        os.environ["CIVIS_JOB_ID"],
+        os.environ["CIVIS_RUN_ID"],
+        "File",
+        output_file_id,
+    )
+
+As this code shows, a child job can read the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
+environment
+variables to identify itself.
+
+You can also pass the parent's own job and run IDs
+down to it if the child needs to communicate back to the parent:
+
+.. code-block:: python
+
+    # A parent job passing its own job and run IDs to its child job.
+
+    import os
+
+    import civis
+
+    client = civis.APIClient()
+
+    # The parent job's own identity, forwarded to the child.
+    parent_job_id = os.environ["CIVIS_JOB_ID"]
+    parent_run_id = os.environ["CIVIS_RUN_ID"]
+
+    script = client.scripts.post_containers(
+        required_resources={"cpu": 512, "memory": 256},
+        docker_image_name="civisanalytics/datascience-python",
+        docker_command=(
+            f"python /app/my_script.py {parent_job_id} {parent_run_id}"
+        ),
+        repo_http_uri="github.com/my-org/my-repo.git",
+    )
+    future = civis.utils.run_job(script.id, client=client)
+    future.result()
+
+Inside ``my_script.py``, the child job reads those IDs from its arguments
+and can use them to, for example, attach one of its own outputs to the
+parent's run instead of its own:
+
+.. code-block:: python
+
+    # A child job that produces some result and sends it back to its parent job
+    # as a run output at the parent job.
+
+    import sys
+
+    import civis
+
+    parent_job_id, parent_run_id = sys.argv[1], sys.argv[2]
+
+    # Some work has happened and produced an output file.
+    output_path = "some_output.txt"
+
+    client = civis.APIClient()
+    output_file_id = civis.io.file_to_civis(output_path, client=client)
+    client.scripts.post_containers_runs_outputs(
+        parent_job_id,
+        parent_run_id,
+        "File",
+        output_file_id,
+    )
+
+Errors, Retries, and Concurrency
+--------------------------------
+
+Calling ``.result()`` on a future for a job that failed raises a
+``civis.base.CivisJobFailure``.
+You may catch failures and choose how to handle them:
+
+.. code-block:: python
+
+    for future in concurrent.futures.as_completed(futures):
+        try:
+            run = future.result()
+        except Exception as e:
+            print(f"Job {future.job_id} failed: {e}")
+
+To stop as soon as anything fails, use
+:func:`python:concurrent.futures.wait` with
+``return_when=concurrent.futures.FIRST_EXCEPTION``, and then cancel the runs
+that are still going by calling ``.cancel()`` on each remaining
+:class:`~civis.futures.CivisFuture`.
 
 Joblib backend
 ==============
+
+.. warning::
+    :mod:`civis.parallel`, and therefore the Civis joblib backend described in
+    this section, is deprecated since civis-python v2.10.0 and will be removed
+    at civis-python v3.0.0 (scheduled for release in February 2027).
+    For parallel computation via Civis Platform, please migrate to
+    :class:`~civis.futures.CivisFuture`, as described in `Civis futures`_ above.
+
 If you can divide your work into multiple independent chunks, each of which takes
 at least several minutes to run, you can reduce the time your job takes to finish
 by running each chunk simultaneously in Civis Platform. The Civis joblib
@@ -278,6 +507,9 @@ parameter of :func:`~civis.parallel.make_backend_factory` to install it from Git
 
 Object Reference
 ================
+
+.. autoclass:: civis.futures.CivisFuture
+   :members:
 
 .. automodule:: civis.parallel
     :members:
