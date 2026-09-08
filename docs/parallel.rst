@@ -14,7 +14,7 @@ and :mod:`civis.parallel` modules.
 
 .. _civis_futures_parallel:
 
-Civis futures
+Civis Futures
 =============
 
 A :class:`~civis.futures.CivisFuture` is a
@@ -25,11 +25,14 @@ the usual :mod:`python:concurrent.futures` helpers, such as
 :func:`python:concurrent.futures.as_completed` and
 :func:`python:concurrent.futures.wait`.
 
-Fanning out many jobs
+Fanning out Many Jobs
 ---------------------
 
-Submit one job per chunk of work, keep the futures around, and consume them as
-they finish. It starts several Civis Platform
+The following is an example to run multiple Civis Platform jobs and keep track of them
+while the Python program isn't blocked and can therefore do other things at the same time.
+Represent each Civis job as a :class:`~civis.futures.CivisFuture`,
+keep the futures around, and consume them as
+they finish. The example starts several Civis Platform
 container scripts, each computing ``2 * num1 + num2`` for a different pair of
 arguments:
 
@@ -58,12 +61,18 @@ arguments:
     # out-of-order results can be re-associated with their inputs.
     futures = {submit(*a): a for a in args}
 
+    # Importantly, this Python code at this juncture is *not* blocked,
+    # while the Civis Platform jobs launched above are running (some of them
+    # may finish at any point). If desired for your application,
+    # you can execute any other Python code before needing to handle these jobs
+    # via `futures`.
+
     for future in concurrent.futures.as_completed(futures):
         num1, num2 = futures[future]
         run = future.result()  # blocks until this one job is done
         print(f"({num1}, {num2}) finished with state {run.state}")
 
-:func:`~civis.utils.run_job` is a convenience wrapper that starts a run for an
+:func:`civis.utils.run_job <civis.utils.run_job>` is a convenience wrapper that starts a run for an
 existing job and hands back a :class:`~civis.futures.CivisFuture`.
 :func:`python:concurrent.futures.as_completed` gives you
 each result as soon
@@ -71,7 +80,7 @@ as its job finishes, rather than after all jobs have finished. If you want the
 results in submission order instead, iterate over the futures directly and call
 ``.result()`` on each one.
 
-Passing inputs and outputs
+Passing Inputs and Outputs
 --------------------------
 
 :class:`~civis.futures.CivisFuture` does not ship a function, its arguments,
@@ -86,6 +95,8 @@ or its return value between the parent process and a child job. Instead:
   Civis Files.
 
 .. code-block:: python
+
+    # A parent job running a child job and retrieving its result.
 
     import io
 
@@ -119,12 +130,16 @@ a run output. Inside ``my_script.py``, that looks like:
 
 .. code-block:: python
 
+    # The child job.
+
     import os
 
     import civis
 
+    # Some work has happened and produced an output file.
+    output_path = "some_output.txt"
     client = civis.APIClient()
-    output_file_id = civis.io.file_to_civis(buf, name="my-output", client=client)
+    output_file_id = civis.io.file_to_civis(output_path, name="my-output", client=client)
     client.scripts.post_containers_runs_outputs(
         os.environ["CIVIS_JOB_ID"],
         os.environ["CIVIS_RUN_ID"],
@@ -132,11 +147,16 @@ a run output. Inside ``my_script.py``, that looks like:
         output_file_id,
     )
 
-A child job can also read the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID`` environment
-variables to identify itself, and you can pass the parent's own job and run IDs
+As this code shows, a child job can read the ``CIVIS_JOB_ID`` and ``CIVIS_RUN_ID``
+environment
+variables to identify itself.
+
+You can also pass the parent's own job and run IDs
 down to it if the child needs to communicate back to the parent:
 
 .. code-block:: python
+
+    # A parent job passing its own job and run IDs to its child job.
 
     import os
 
@@ -165,16 +185,20 @@ parent's run instead of its own:
 
 .. code-block:: python
 
+    # A child job that produces some result and sends it back to its parent job
+    # as a run output at the parent job.
+
     import sys
 
     import civis
 
     parent_job_id, parent_run_id = sys.argv[1], sys.argv[2]
 
+    # Some work has happened and produced an output file.
+    output_path = "some_output.txt"
+
     client = civis.APIClient()
-    output_file_id = civis.io.file_to_civis(
-        buf, name="status-from-child", client=client
-    )
+    output_file_id = civis.io.file_to_civis(output_path, client=client)
     client.scripts.post_containers_runs_outputs(
         parent_job_id,
         parent_run_id,
@@ -182,7 +206,7 @@ parent's run instead of its own:
         output_file_id,
     )
 
-Errors, retries, and concurrency
+Errors, Retries, and Concurrency
 --------------------------------
 
 Calling ``.result()`` on a future for a job that failed raises a
@@ -195,7 +219,7 @@ You may catch failures and choose how to handle them:
         try:
             run = future.result()
         except Exception as e:
-            print(f"{futures[future]} failed: {e}")
+            print(f"Job {future.job_id} failed: {e}")
 
 To stop as soon as anything fails, use
 :func:`python:concurrent.futures.wait` with
@@ -483,6 +507,9 @@ parameter of :func:`~civis.parallel.make_backend_factory` to install it from Git
 
 Object Reference
 ================
+
+.. autoclass:: civis.futures.CivisFuture
+   :members:
 
 .. automodule:: civis.parallel
     :members:
