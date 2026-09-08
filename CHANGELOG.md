@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.10.0 - 2026-09-08
+
+### Added
 - `CivisFuture` now supports job cancellation via `.cancel()` and automatic
   retries of failed runs via the `max_retries` parameter. (#542)
-
-### Changed
 
 ### Deprecated
 - Deprecated the `civis.parallel` submodule. For parallel computation via
@@ -19,10 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Civis Platform are unaffected. (#542)
 - Deprecated `ContainerFuture`. `CivisFuture` now supports job cancellation
   and automatic retries -- please migrate to it. (#542)
-
-### Removed
-### Fixed
-### Security
 
 ## 2.9.3 - 2026-08-11
 
