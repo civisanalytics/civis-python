@@ -6,6 +6,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Breaking Changes from v2.x.x to v3.0.0
+
+v3.0.0 is scheduled for release in February 2027.
+
+- The kwarg `use_pandas` at `civis.io.read_civis_sql` and `civis.io.read_civis`
+  will be removed. Please use the new kwarg `return_as` instead.
+- The property `default_credential` at `civis.APIClient` will be removed,
+  in favor of the new property `default_database_credential_id`.
+- The `civis.parallel` submodule will be removed. For parallel computation via
+  Civis Platform, please migrate to `CivisFuture`.
+- The `civis.ml` submodule. The CivisML script templates in
+  Civis Platform are unaffected. To continue to use `civis.ml`,
+  please pin civis-python at v2.x.x.
+- The classes `ContainerFuture`, `ServiceClient`, `PollableResult`, and
+  `CivisAsyncResultBase` will be removed.
+- The JSONValue parameter of `civis.utils.run_template` will be removed.
+  Please use the new kwarg `return_as` instead.
+- The property `feature_flags` at a `civis.APIClient` instance will be removed.
+  `client.users.list_me()["feature_flags"]` should be used instead.
+- The method `get_database_credential_id` at `civis.APIClient` will be removed.
+- Some of the `list*` methods from various Civis API endpoints should have been named
+  `get*`, because they return a singleton `civis.Response` object, as opposed to an array
+  of such objects. These `list*` methods will be removed at v3.0.0. The corresponding
+  equivalent `get*` methods should be used instead.
+  The following is the full list of these `list*` methods and their correct `get*` counterparts:
+   * `client.clusters.list_kubernetes_instance_configs_historical_graphs` -> `client.clusters.get_kubernetes_instance_configs_historical_graphs`
+   * `client.clusters.list_kubernetes_instance_configs_historical_metrics` -> `client.clusters.get_kubernetes_instance_configs_historical_metrics`
+   * `client.databases.list_advanced_settings` -> `client.databases.get_advanced_settings`
+   * `client.endpoints.list` -> `client.endpoints.get`
+   * `client.git_repos.list_refs` -> `client.git_repos.get_refs`
+   * `client.groups.list_child_groups` -> `client.groups.get_child_groups`
+   * `client.models.list_schedules` -> `client.models.get_schedules`
+   * `client.notebooks.list_update_links` -> `client.notebooks.get_update_links`
+   * `client.notebooks.list_git` -> `client.notebooks.get_git`
+   * `client.notifications.list` -> `client.notifications.get`
+   * `client.predictions.list_schedules` -> `client.predictions.get_schedules`
+   * `client.reports.list_git` -> `client.reports.get_git`
+   * `client.scripts.list_sql_git` -> `client.scripts.get_sql_git`
+   * `client.scripts.list_javascript_git` -> `client.scripts.get_javascript_git`
+   * `client.scripts.list_python3_git` -> `client.scripts.get_python3_git`
+   * `client.scripts.list_r_git` -> `client.scripts.get_r_git`
+   * `client.usage.list_llm_organization_summary` -> `client.usage.get_llm_organization_summary`
+   * `client.users.list_me` -> `client.users.get_me`
+   * `client.workflows.list_git` -> `client.workflows.get_git`
+
 ### Added
 ### Changed
 ### Deprecated
