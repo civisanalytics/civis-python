@@ -4,6 +4,7 @@ from collections import OrderedDict
 import concurrent.futures as cf
 import io
 from functools import partial
+import html
 import json
 import logging
 import math
@@ -14,7 +15,7 @@ from tempfile import TemporaryDirectory
 from typing import BinaryIO
 
 import requests
-from requests import HTTPError
+from requests import HTTPError, RequestException
 
 from civis import APIClient, find_one
 from civis.base import CivisAPIError, EmptyResultError
@@ -49,28 +50,26 @@ log = logging.getLogger(__name__)
 CHUNK_SIZE = 32 * 1024
 
 
+def _strip_url_queries(text):
+    return re.sub(r"\?[^\s'\"]*", "", text)
+
+
 def _get_aws_error_message(response):
-    # Amazon gives back informative error messages
     # http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
-    # NOTE: This is cribbed from response.raise_for_status with AWS
-    # message appended
-    msg = ""
+    # Only the error code and message are kept, because the URL's query string
+    # and the rest of the error body can carry the presigned URL's signature.
+    status = response.status_code
+    error_type = "Client" if 400 <= status < 500 else "Server"
+    url = _strip_url_queries(response.url)
+    msg = f"{status} {error_type} Error: {response.reason} for url: {url}"
 
-    if 400 <= response.status_code < 500:
-        msg = "%s Client Error: %s for url: %s" % (
-            response.status_code,
-            response.reason,
-            response.url,
+    code = re.search(r"<Code>(.*?)</Code>", response.text, re.DOTALL)
+    detail = re.search(r"<Message>(.*?)</Message>", response.text, re.DOTALL)
+    if code and detail:
+        msg += (
+            f"\nAWS Error: {html.unescape(code.group(1))}: "
+            f"{html.unescape(detail.group(1))}"
         )
-
-    elif 500 <= response.status_code < 600:
-        msg = "%s Server Error: %s for url: %s" % (
-            response.status_code,
-            response.reason,
-            response.url,
-        )
-
-    msg += "\nAWS Content: %s" % response.content
 
     return msg
 
@@ -160,14 +159,22 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         offset = part_size * part_num
         num_bytes = min(part_size, file_size - offset)
 
+        error_prefix = (
+            f"Failed to upload part {part_num + 1} of {num_parts} "
+            f"for Civis file {file_response.id}: "
+        )
+
         log.debug("Uploading file part %s", part_num)
         with open(file_path, "rb") as fin:
             fin.seek(offset)
             partial_buf = _BufferedPartialReader(fin, num_bytes)
-            part_response = requests.put(part_url, data=partial_buf, timeout=60)
+            try:
+                part_response = requests.put(part_url, data=partial_buf, timeout=60)
+            except RequestException as e:
+                raise type(e)(error_prefix + _strip_url_queries(str(e))) from None
 
         if not part_response.ok:
-            msg = _get_aws_error_message(part_response)
+            msg = error_prefix + _get_aws_error_message(part_response)
             raise HTTPError(msg, response=part_response)
 
         log.debug("Completed upload of file part %s", part_num)
@@ -239,7 +246,7 @@ def file_to_civis(
         If ``name`` is not provided and cannot be inferred from ``buf``
     ValueError
         If ``description`` is provided and it's longer than 512 characters.
-    requests.HTTPError
+    requests.RequestException
         If uploading the file (or any part of a multipart upload) fails
         after retries.
 
