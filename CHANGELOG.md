@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## 2.10.1 - 2026-10-06
+
+### Fixed
+- Fixed `civis.io.file_to_civis` silently completing a multipart upload
+  when a file part failed to upload. The error is now raised and the upload
+  is not completed. (#543)
+
 ## 2.10.0 - 2026-09-08
 
 ### Added

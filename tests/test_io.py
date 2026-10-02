@@ -15,6 +15,7 @@ from pathlib import Path
 
 import pytest
 import requests
+import tenacity
 
 try:
     import pandas as pd
@@ -33,6 +34,7 @@ except ImportError:
 import civis
 from civis.io import _files
 from civis._deprecation import DeprecatedKwargDefault
+from civis._retries import get_default_retrying
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name, TypePathLike
 from civis.response import Response
@@ -1524,6 +1526,43 @@ def test_file_multipart_upload_retries(mock_requests):
             # _multipart_upload should retry on failed attempts and eventually succeed.
             _files._multipart_upload(f, "filename", 6, mock_civis_client)
     assert mock_requests.put.call_count == failed_attempts + 1
+    mock_civis_client.files.post_multipart_complete.assert_called_once_with(123)
+
+
+@mock.patch.object(
+    _files,
+    "get_default_retrying",
+    lambda: get_default_retrying().copy(
+        stop=tenacity.stop_after_attempt(3), wait=tenacity.wait_none()
+    ),
+)
+@mock.patch.object(_files, "MIN_PART_SIZE", 3)
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_multipart_upload_part_failure_raises(mock_requests):
+    ok_response = mock.Mock(ok=True, status_code=200)
+    failed_response = mock.Mock(ok=False, status_code=500, content="whatever")
+    mock_requests.put.side_effect = lambda url, **kwargs: (
+        failed_response if url == "https://fake.upload.url/2" else ok_response
+    )
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_urls = [
+        "https://fake.upload.url/1",
+        "https://fake.upload.url/2",
+    ]
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post_multipart.return_value = mock_civis_response
+
+    with TemporaryDirectory() as temp_dir:
+        temp_path = os.path.join(temp_dir, "tempfile")
+        with open(temp_path, "wb") as f:
+            f.write(b"abcdef")
+        with open(temp_path, "rb") as f:
+            with pytest.raises(requests.HTTPError):
+                _files._multipart_upload(f, "filename", 6, mock_civis_client)
+    assert mock_requests.put.call_count == 1 + 3
+    mock_civis_client.files.post_multipart_complete.assert_not_called()
 
 
 @pytest.mark.parametrize("input_filename", ["newname", None])

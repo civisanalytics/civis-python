@@ -181,14 +181,10 @@ def _multipart_upload(buf, name, file_size, client, **kwargs):
         file_size=file_size,
     )
 
-    try:
-        with cf.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-            executor.map(_upload_part, enumerate(urls))
+    with cf.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
+        list(executor.map(_upload_part, enumerate(urls)))
 
-    # complete the multipart upload; an abort will be triggered
-    # if any part except the last failed to upload at least 5MB
-    finally:
-        client.files.post_multipart_complete(file_response.id)
+    client.files.post_multipart_complete(file_response.id)
 
     log.debug("Uploaded File %d", file_response.id)
     return file_response.id
@@ -243,6 +239,9 @@ def file_to_civis(
         If ``name`` is not provided and cannot be inferred from ``buf``
     ValueError
         If ``description`` is provided and it's longer than 512 characters.
+    requests.HTTPError
+        If uploading the file (or any part of a multipart upload) fails
+        after retries.
 
     Examples
     --------
