@@ -7,6 +7,7 @@ import json
 import os
 import warnings
 from functools import partial
+from http import HTTPStatus
 from io import StringIO, BytesIO
 from unittest import mock
 from tempfile import TemporaryDirectory
@@ -15,6 +16,7 @@ from pathlib import Path
 
 import pytest
 import requests
+import tenacity
 
 try:
     import pandas as pd
@@ -33,6 +35,7 @@ except ImportError:
 import civis
 from civis.io import _files
 from civis._deprecation import DeprecatedKwargDefault
+from civis._retries import get_default_retrying
 from civis.io._tables import _File
 from civis.io._utils import maybe_get_random_name, TypePathLike
 from civis.response import Response
@@ -1472,18 +1475,38 @@ def test_civis_to_file_retries(mock_requests):
     )
 
 
+_PRESIGNED_URL = (
+    "https://bucket.s3.amazonaws.com/key?partNumber=1&uploadId=abc"
+    "&X-Amz-Signature=deadbeefsignature"
+)
+
+
+def _make_response(status_code, url="https://fake.upload.url", text=""):
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = HTTPStatus(status_code).phrase
+    response.url = url
+    response._content = text.encode()
+    return response
+
+
+def _fast_default_retrying(retry_on=requests.HTTPError):
+    # Retrying only the expected exception type makes any other exception
+    # fail the test, instead of being retried until the call count matches.
+    return get_default_retrying().copy(
+        stop=tenacity.stop_after_attempt(3),
+        wait=tenacity.wait_none(),
+        retry=tenacity.retry_if_exception_type(retry_on),
+    )
+
+
+@mock.patch.object(_files, "get_default_retrying", _fast_default_retrying)
 @mock.patch.object(_files, "requests", autospec=True)
 def test_file_single_upload_retries(mock_requests):
-    mock_post_response = mock.Mock()
-    mock_post_response.content = "whatever"
     failed_attempts = 2
-    type(mock_post_response).ok = mock.PropertyMock(
-        side_effect=[False] * failed_attempts + [True]
-    )
-    type(mock_post_response).status_code = mock.PropertyMock(
-        side_effect=[500] * failed_attempts + [200]
-    )
-    mock_requests.post.return_value = mock_post_response
+    mock_requests.post.side_effect = [_make_response(500)] * failed_attempts + [
+        _make_response(200)
+    ]
 
     mock_civis_response = mock.Mock()
     mock_civis_response.upload_url = "https://fake.upload.url"
@@ -1497,18 +1520,13 @@ def test_file_single_upload_retries(mock_requests):
     assert mock_requests.post.call_count == failed_attempts + 1
 
 
+@mock.patch.object(_files, "get_default_retrying", _fast_default_retrying)
 @mock.patch.object(_files, "requests", autospec=True)
 def test_file_multipart_upload_retries(mock_requests):
-    mock_post_response = mock.Mock()
-    mock_post_response.content = "whatever"
     failed_attempts = 2
-    type(mock_post_response).ok = mock.PropertyMock(
-        side_effect=[False] * failed_attempts + [True]
-    )
-    type(mock_post_response).status_code = mock.PropertyMock(
-        side_effect=[500] * failed_attempts + [200]
-    )
-    mock_requests.put.return_value = mock_post_response
+    mock_requests.put.side_effect = [_make_response(500)] * failed_attempts + [
+        _make_response(200)
+    ]
 
     mock_civis_response = mock.Mock()
     mock_civis_response.upload_urls = ["https://fake.upload.url"]
@@ -1524,6 +1542,113 @@ def test_file_multipart_upload_retries(mock_requests):
             # _multipart_upload should retry on failed attempts and eventually succeed.
             _files._multipart_upload(f, "filename", 6, mock_civis_client)
     assert mock_requests.put.call_count == failed_attempts + 1
+    mock_civis_client.files.post_multipart_complete.assert_called_once_with(123)
+
+
+@mock.patch.object(_files, "get_default_retrying", _fast_default_retrying)
+@mock.patch.object(_files, "MIN_PART_SIZE", 3)
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_multipart_upload_part_failure_raises(mock_requests):
+    mock_requests.put.side_effect = lambda url, **kwargs: (
+        _make_response(500, url=f"{url}?X-Amz-Signature=secret")
+        if url == "https://fake.upload.url/2"
+        else _make_response(200, url=url)
+    )
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_urls = [
+        "https://fake.upload.url/1",
+        "https://fake.upload.url/2",
+    ]
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post_multipart.return_value = mock_civis_response
+
+    with TemporaryDirectory() as temp_dir:
+        temp_path = os.path.join(temp_dir, "tempfile")
+        with open(temp_path, "wb") as f:
+            f.write(b"abcdef")
+        with open(temp_path, "rb") as f:
+            with pytest.raises(requests.HTTPError) as excinfo:
+                _files._multipart_upload(f, "filename", 6, mock_civis_client)
+    assert str(excinfo.value) == (
+        "Failed to upload part 2 of 2 for Civis file 123: "
+        "500 Server Error: Internal Server Error for url: https://fake.upload.url/2"
+    )
+    assert mock_requests.put.call_count == 1 + 3
+    mock_civis_client.files.post_multipart_complete.assert_not_called()
+
+
+@mock.patch.object(
+    _files,
+    "get_default_retrying",
+    partial(_fast_default_retrying, retry_on=requests.ConnectionError),
+)
+@mock.patch.object(_files, "requests", autospec=True)
+def test_file_multipart_upload_connection_error_omits_presigned_url(mock_requests):
+    mock_requests.put.side_effect = requests.ConnectionError(
+        "HTTPSConnectionPool(host='bucket.s3.amazonaws.com', port=443): "
+        "Max retries exceeded with url: "
+        "/key?partNumber=1&uploadId=abc&X-Amz-Signature=deadbeefsignature "
+        "(Caused by NewConnectionError('Failed to establish a new connection'))"
+    )
+
+    mock_civis_response = mock.Mock()
+    mock_civis_response.upload_urls = ["https://fake.upload.url"]
+    mock_civis_response.id = 123
+    mock_civis_client = create_client_mock()
+    mock_civis_client.files.post_multipart.return_value = mock_civis_response
+
+    with TemporaryDirectory() as temp_dir:
+        temp_path = os.path.join(temp_dir, "tempfile")
+        with open(temp_path, "wb") as f:
+            f.write(b"abcdef")
+        with open(temp_path, "rb") as f:
+            with pytest.raises(requests.ConnectionError) as excinfo:
+                _files._multipart_upload(f, "filename", 6, mock_civis_client)
+    assert str(excinfo.value) == (
+        "Failed to upload part 1 of 1 for Civis file 123: "
+        "HTTPSConnectionPool(host='bucket.s3.amazonaws.com', port=443): "
+        "Max retries exceeded with url: /key "
+        "(Caused by NewConnectionError('Failed to establish a new connection'))"
+    )
+    assert excinfo.value.__suppress_context__
+    assert mock_requests.put.call_count == 3
+    mock_civis_client.files.post_multipart_complete.assert_not_called()
+
+
+def test_get_aws_error_message_omits_presigned_url_signature():
+    response = _make_response(
+        403,
+        url=_PRESIGNED_URL,
+        text=(
+            '<?xml version="1.0" encoding="UTF-8"?>\n<Error>'
+            "<Code>SignatureDoesNotMatch</Code>"
+            "<Message>The request signature we calculated doesn&apos;t match.</Message>"
+            "<SignatureProvided>deadbeefsignature</SignatureProvided>"
+            "<CanonicalRequest>PUT uploadId=abc</CanonicalRequest></Error>"
+        ),
+    )
+    assert _files._get_aws_error_message(response) == (
+        "403 Client Error: Forbidden for url: https://bucket.s3.amazonaws.com/key\n"
+        "AWS Error: SignatureDoesNotMatch: "
+        "The request signature we calculated doesn't match."
+    )
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "<html>upstream error for https://bucket.s3.amazonaws.com/key?uploadId=abc"
+        "&X-Amz-Signature=deadbeefsignature</html>",
+        "",
+    ],
+)
+def test_get_aws_error_message_omits_unparseable_body(text):
+    response = _make_response(403, url=_PRESIGNED_URL, text=text)
+    assert _files._get_aws_error_message(response) == (
+        "403 Client Error: Forbidden for url: https://bucket.s3.amazonaws.com/key"
+    )
 
 
 @pytest.mark.parametrize("input_filename", ["newname", None])
