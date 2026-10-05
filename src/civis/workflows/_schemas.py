@@ -16,6 +16,17 @@ from civis.resources import API_SPEC_PATH
 
 _CLIENT = APIClient(local_api_spec=API_SPEC_PATH, api_key="no-key-needed")
 
+# Civis Platform's Mistral only supports YAQL expressions, not Jinja.
+_YAQL_EXPRESSION_PATTERN = r"(?s)^<%.*?%>\s*$"
+
+
+def _allow_yaql_expression(schema: dict) -> dict:
+    return {
+        **schema,
+        "type": [schema["type"], "string"],
+        "pattern": _YAQL_EXPRESSION_PATTERN,
+    }
+
 
 def _endpoint_method_params(endpoint: str, method: str) -> tuple[list[str], list[str]]:
     endpt = getattr(_CLIENT, endpoint)
@@ -43,14 +54,16 @@ def _if_then_create_script(action: str) -> dict:
         "if": {"properties": {"action": {"const": action}}},
         "then": {
             "properties": {
-                "input": {
-                    "type": "object",
-                    # Although we have type annotations for each key name,
-                    # leave the value unspecified as {} to allow YAQL expressions.
-                    "properties": {name: {} for name in required + optional},
-                    "required": required,
-                    "additionalProperties": False,
-                },
+                "input": _allow_yaql_expression(
+                    {
+                        "type": "object",
+                        # Although we have type annotations for each key name,
+                        # leave the value unspecified as {} to allow YAQL expressions.
+                        "properties": {name: {} for name in required + optional},
+                        "required": required,
+                        "additionalProperties": False,
+                    }
+                ),
             },
         },
     }
@@ -88,12 +101,14 @@ def _if_then_import() -> dict:
         "if": {"properties": {"action": {"const": "civis.import"}}},
         "then": {
             "properties": {
-                "input": {
-                    "type": "object",
-                    "properties": properties,
-                    "required": required_post,
-                    "additionalProperties": False,
-                },
+                "input": _allow_yaql_expression(
+                    {
+                        "type": "object",
+                        "properties": properties,
+                        "required": required_post,
+                        "additionalProperties": False,
+                    }
+                ),
             },
         },
     }
@@ -104,14 +119,16 @@ def _if_then_execute(action: str, id_name: str) -> dict:
         "if": {"properties": {"action": {"const": action}}},
         "then": {
             "properties": {
-                "input": {
-                    "type": "object",
-                    # Although the ID should be an integer,
-                    # leave it unspecified as {} to allow YAQL expressions.
-                    "properties": {id_name: {}},
-                    "required": [id_name],
-                    "additionalProperties": False,
-                },
+                "input": _allow_yaql_expression(
+                    {
+                        "type": "object",
+                        # Although the ID should be an integer,
+                        # leave it unspecified as {} to allow YAQL expressions.
+                        "properties": {id_name: {}},
+                        "required": [id_name],
+                        "additionalProperties": False,
+                    }
+                ),
             },
         },
     }
@@ -171,7 +188,7 @@ TASK_SCHEMA = {
                 "std.noop",
             ],
         },
-        "input": {"type": "object"},
+        "input": _allow_yaql_expression({"type": "object"}),
         "publish": {"type": "object"},
         "publish-on-error": {"type": "object"},
         "on-success": TASK_TRANSITION_SCHEMA,
@@ -190,29 +207,33 @@ TASK_SCHEMA = {
                 {"type": "array", "items": {"type": "string"}},
             ],
         },
-        "keep-result": {"type": "boolean"},
+        "keep-result": _allow_yaql_expression({"type": "boolean"}),
         "target": {"type": "string"},
-        "pause-before": {"type": "boolean"},
-        "wait-before": {"type": "number", "minimum": 0},
-        "wait-after": {"type": "number", "minimum": 0},
+        "pause-before": _allow_yaql_expression({"type": "boolean"}),
+        "wait-before": _allow_yaql_expression({"type": "number", "minimum": 0}),
+        "wait-after": _allow_yaql_expression({"type": "number", "minimum": 0}),
         "fail-on": {"type": "string"},
-        "timeout": {"type": "number", "minimum": 0},
+        "timeout": _allow_yaql_expression({"type": "number", "minimum": 0}),
         "retry": {
             "oneOf": [
                 {"type": "string"},
                 {
                     "type": "object",
                     "properties": {
-                        "count": {"type": "number", "minimum": 0},
-                        "delay": {"type": "number", "minimum": 0},
+                        "count": _allow_yaql_expression(
+                            {"type": "number", "minimum": 0}
+                        ),
+                        "delay": _allow_yaql_expression(
+                            {"type": "number", "minimum": 0}
+                        ),
                         "break-on": {"type": "string"},
                         "continue-on": {"type": "string"},
                     },
                 },
             ],
         },
-        "concurrency": {"type": "number", "minimum": 1},
-        "safe-rerun": {"type": "boolean"},
+        "concurrency": _allow_yaql_expression({"type": "number", "minimum": 1}),
+        "safe-rerun": _allow_yaql_expression({"type": "boolean"}),
     },
     "required": ["action"],
     "allOf": [
