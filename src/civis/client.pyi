@@ -66,6 +66,8 @@ class _Admin:
                 If true, emails sent by platform will not include Civis text.
             - salesforce_account_id : str
                 The Salesforce Account ID for this organization.
+            - aws_account_id : str
+                The AWS Account ID for this organization.
             - tableau_site_id : str
                 The Tableau Site ID for this organization.
             - fedramp_enabled : bool
@@ -2126,9 +2128,9 @@ class _Credentials:
         type : str, optional
             The type (or types) of credentials to return. One or more of: Amazon Web
             Services S3, Bitbucket, CASS/NCOA PAF, Certificate, Civis Platform, Custom,
-            Database, Google, Github, OAuth User, Salesforce User, Salesforce Client,
-            and TableauUser. Specify multiple values as a comma-separated list (e.g.,
-            "A,B").
+            Database, Google, Github, OAuth User, Redshift IAM, Salesforce User,
+            Salesforce Client, and TableauUser. Specify multiple values as a comma-
+            separated list (e.g., "A,B").
         remote_host_id : int, optional
             The ID of the remote host associated with the credentials to return.
         default : bool, optional
@@ -8696,6 +8698,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -8832,6 +8839,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -8991,6 +9003,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9124,6 +9141,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -9260,6 +9282,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9393,6 +9420,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -9529,6 +9561,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9983,6 +10020,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -11941,6 +11983,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -18942,8 +18989,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19036,8 +19082,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19154,8 +19199,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19280,8 +19324,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19372,8 +19415,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19498,8 +19540,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19590,8 +19631,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19712,8 +19752,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -20062,8 +20101,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -35565,8 +35603,8 @@ class _Reports:
         Parameters
         ----------
         type : str, optional
-            If specified, return report of these types. It accepts a comma-separated
-            list, possible values are 'tableau' or 'other'.
+            If specified, return reports of these types. It accepts a comma-separated
+            list, possible values are 'html', 'tableau', 'service', 'sql' and 'quick'.
         template_id : int, optional
             If specified, return reports using the provided Template.
         author : str, optional
@@ -72312,6 +72350,7 @@ class _ResponseAdminListOrganizations(Response):
     cs_metadata: str
     remove_footer_in_emails: bool
     salesforce_account_id: str
+    aws_account_id: str
     tableau_site_id: str
     fedramp_enabled: bool
     created_by_id: int
@@ -75107,6 +75146,7 @@ class _ResponseEnhancementsPostCassNcoaDestination(Response):
 class _ResponseEnhancementsPostCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPostCassNcoaColumnMapping(Response):
     address1: str
@@ -75191,6 +75231,7 @@ class _ResponseEnhancementsGetCassNcoaDestination(Response):
 class _ResponseEnhancementsGetCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsGetCassNcoaColumnMapping(Response):
     address1: str
@@ -75275,6 +75316,7 @@ class _ResponseEnhancementsPutCassNcoaDestination(Response):
 class _ResponseEnhancementsPutCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPutCassNcoaColumnMapping(Response):
     address1: str
@@ -75359,6 +75401,7 @@ class _ResponseEnhancementsPatchCassNcoaDestination(Response):
 class _ResponseEnhancementsPatchCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPatchCassNcoaColumnMapping(Response):
     address1: str
@@ -75468,6 +75511,7 @@ class _ResponseEnhancementsGetCassNcoaRunsInputsDestination(Response):
 class _ResponseEnhancementsGetCassNcoaRunsInputsDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsGetCassNcoaRunsInputsColumnMapping(Response):
     address1: str
@@ -76112,6 +76156,7 @@ class _ResponseEnhancementsPutCassNcoaArchiveDestination(Response):
 class _ResponseEnhancementsPutCassNcoaArchiveDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPutCassNcoaArchiveColumnMapping(Response):
     address1: str
