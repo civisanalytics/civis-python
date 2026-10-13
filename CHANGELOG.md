@@ -16,12 +16,12 @@ v3.0.0 is scheduled for release in February 2027.
   in favor of the new property `default_database_credential_id`.
 - The `civis.parallel` submodule will be removed. For parallel computation via
   Civis Platform, please migrate to `CivisFuture`.
-- The `civis.ml` submodule. The CivisML script templates in
-  Civis Platform are unaffected. To continue to use `civis.ml`,
+- The `civis.ml` submodule will be removed. The CivisML script templates in
+  Civis Platform are unaffected. To continue to use `civis.ml` from the Civis Python client,
   please pin civis-python at v2.x.x.
 - The classes `ContainerFuture`, `ServiceClient`, `PollableResult`, and
   `CivisAsyncResultBase` will be removed.
-- The JSONValue parameter of `civis.utils.run_template` will be removed.
+- The kwarg `JSONValue` of `civis.utils.run_template` will be removed.
   Please use the new kwarg `return_as` instead.
 - The property `feature_flags` at a `civis.APIClient` instance will be removed.
   `client.users.list_me()["feature_flags"]` should be used instead.
