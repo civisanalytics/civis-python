@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### Fixed
 ### Security
+- Updated `docs/requirements.txt` due to a security advisory for certifi. See GHSA-6q48-6c7w-9gw2 (#544)
 
 ## 2.10.1 - 2026-10-06
 
