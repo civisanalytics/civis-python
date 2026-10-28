@@ -66,6 +66,8 @@ class _Admin:
                 If true, emails sent by platform will not include Civis text.
             - salesforce_account_id : str
                 The Salesforce Account ID for this organization.
+            - aws_account_id : str
+                The AWS Account ID for this organization.
             - tableau_site_id : str
                 The Tableau Site ID for this organization.
             - fedramp_enabled : bool
@@ -2126,9 +2128,9 @@ class _Credentials:
         type : str, optional
             The type (or types) of credentials to return. One or more of: Amazon Web
             Services S3, Bitbucket, CASS/NCOA PAF, Certificate, Civis Platform, Custom,
-            Database, Google, Github, OAuth User, Salesforce User, Salesforce Client,
-            and TableauUser. Specify multiple values as a comma-separated list (e.g.,
-            "A,B").
+            Database, Google, Github, OAuth User, Redshift IAM, Salesforce User,
+            Salesforce Client, and TableauUser. Specify multiple values as a comma-
+            separated list (e.g., "A,B").
         remote_host_id : int, optional
             The ID of the remote host associated with the credentials to return.
         default : bool, optional
@@ -8696,6 +8698,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -8832,6 +8839,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -8991,6 +9003,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9124,6 +9141,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -9260,6 +9282,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9393,6 +9420,11 @@ class _Enhancements:
                     The schema name for the output data.
                 - table : str
                     The table name for the output data.
+                - existing_table_rows : str
+                    The behavior if an output table with the requested name already
+                    exists. One of "fail", "truncate", "append", or "drop". If null or
+                    omitted, the output table name is auto-incremented to avoid
+                    conflicts.
         column_mapping : dict, optional
             - address1 : str
                 The first address line.
@@ -9529,6 +9561,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -9983,6 +10020,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -11941,6 +11983,11 @@ class _Enhancements:
                         The schema name for the output data.
                     - table : str
                         The table name for the output data.
+                    - existing_table_rows : str
+                        The behavior if an output table with the requested name already
+                        exists. One of "fail", "truncate", "append", or "drop". If null
+                        or omitted, the output table name is auto-incremented to avoid
+                        conflicts.
             - column_mapping : :class:`civis.Response`
                 - address1 : str
                     The first address line.
@@ -18942,8 +18989,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19036,8 +19082,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19154,8 +19199,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19280,8 +19324,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19372,8 +19415,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19498,8 +19540,7 @@ class _Imports:
             "delayed", the data will be moved after a brief delay. If set to
             "immediate", the data will be moved immediately. In non-upsert modes,
             controls the speed at which detailed column stats appear in the data
-            catalogue. Defaults to "delayed", to accommodate concurrent upserts to the
-            same table and speedier non-upsert imports.
+            catalogue. Defaults to "immediate".
         redshift_destination_options : dict, optional
             - diststyle : str
                 The diststyle to use for the table. One of "even", "all", or "key".
@@ -19590,8 +19631,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -19712,8 +19752,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -20062,8 +20101,7 @@ class _Imports:
                 "delayed", the data will be moved after a brief delay. If set to
                 "immediate", the data will be moved immediately. In non-upsert modes,
                 controls the speed at which detailed column stats appear in the data
-                catalogue. Defaults to "delayed", to accommodate concurrent upserts to
-                the same table and speedier non-upsert imports.
+                catalogue. Defaults to "immediate".
             - redshift_destination_options : :class:`civis.Response`
                 - diststyle : str
                     The diststyle to use for the table. One of "even", "all", or "key".
@@ -34352,6 +34390,7 @@ class _Queries:
         credential: int | None = ...,
         hidden: bool | None = ...,
         interactive: bool | None = ...,
+        read_only: bool | None = ...,
         include_header: bool | None = ...,
         compression: str | None = ...,
         column_delimiter: str | None = ...,
@@ -34382,6 +34421,13 @@ class _Queries:
             The hidden status of the item.
         interactive : bool, optional
             Deprecated and not used.
+        read_only : bool, optional
+            Whether to run the SQL on a read-only database session [default: false].
+            When true, the SQL must be a single SELECT, or a WITH ... SELECT, or the
+            request is rejected. PostgreSQL and Redshift also refuse any write the
+            SELECT still makes, such as one in a WITH clause or a function. BigQuery
+            has no read-only session, so there it relies on the credential's
+            permissions.
         include_header : bool, optional
             Whether the CSV output should include a header row [default: true].
         compression : str, optional
@@ -34436,6 +34482,13 @@ class _Queries:
                 Deprecated and not used.
             - preview_rows : int
                 The number of rows to save from the query's result (maximum: 1000).
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - include_header : bool
                 Whether the CSV output should include a header row [default: true].
             - compression : str
@@ -34741,6 +34794,13 @@ class _Queries:
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - author : :class:`civis.Response`
                 - id : int
                     The ID of this user.
@@ -34814,6 +34874,13 @@ class _Queries:
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - author : :class:`civis.Response`
                 - id : int
                     The ID of this user.
@@ -34887,6 +34954,13 @@ class _Queries:
                 The archival status of the requested item(s).
             - name : str
                 The name of the query.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - author : :class:`civis.Response`
                 - id : int
                     The ID of this user.
@@ -35565,8 +35639,9 @@ class _Reports:
         Parameters
         ----------
         type : str, optional
-            If specified, return report of these types. It accepts a comma-separated
-            list, possible values are 'tableau' or 'other'.
+            If specified, return reports of these types. It accepts a comma-separated
+            list, possible values are 'html', 'tableau', 'service', 'sql', 'quick' and
+            'quick_dashboard'.
         template_id : int, optional
             If specified, return reports using the provided Template.
         author : str, optional
@@ -35665,6 +35740,9 @@ class _Reports:
                     The time that the run completed.
                 - error : str
                     The error message for this run, if present.
+            - analysis_id : int
+                For Quick dashboard reports, the ID of the analysis report the
+                dashboard was published from. Null for other report types.
         """
         ...
 
@@ -41128,6 +41206,7 @@ class _Scripts:
         time_zone: str | None = ...,
         hidden: bool | None = ...,
         target_project_id: int | None = ...,
+        read_only: bool | None = ...,
         csv_settings: dict | None = ...,
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPostSql:
@@ -41230,6 +41309,13 @@ class _Scripts:
             The hidden status of the item.
         target_project_id : int, optional
             Target project to which script outputs will be added.
+        read_only : bool, optional
+            Whether to run the SQL on a read-only database session [default: false].
+            When true, the SQL must be a single SELECT, or a WITH ... SELECT, or the
+            request is rejected. PostgreSQL and Redshift also refuse any write the
+            SELECT still makes, such as one in a WITH clause or a function. BigQuery
+            has no read-only session, so there it relies on the credential's
+            permissions.
         csv_settings : dict, optional
             - include_header : bool
                 Whether or not to include headers in the output data. Default: true
@@ -41421,6 +41507,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -41640,6 +41733,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -41690,6 +41790,7 @@ class _Scripts:
         next_run_at: str | None = ...,
         time_zone: str | None = ...,
         target_project_id: int | None = ...,
+        read_only: bool | None = ...,
         csv_settings: dict | None = ...,
         running_as_id: int | None = ...,
     ) -> _ResponseScriptsPutSql:
@@ -41792,6 +41893,13 @@ class _Scripts:
             The time zone of this script.
         target_project_id : int, optional
             Target project to which script outputs will be added.
+        read_only : bool, optional
+            Whether to run the SQL on a read-only database session [default: false].
+            When true, the SQL must be a single SELECT, or a WITH ... SELECT, or the
+            request is rejected. PostgreSQL and Redshift also refuse any write the
+            SELECT still makes, such as one in a WITH clause or a function. BigQuery
+            has no read-only session, so there it relies on the credential's
+            permissions.
         csv_settings : dict, optional
             - include_header : bool
                 Whether or not to include headers in the output data. Default: true
@@ -41983,6 +42091,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -42031,6 +42146,7 @@ class _Scripts:
         time_zone: str | None = ...,
         target_project_id: int | None = ...,
         sql: str | None = ...,
+        read_only: bool | None = ...,
         remote_host_id: int | None = ...,
         credential_id: int | None = ...,
         csv_settings: dict | None = ...,
@@ -42131,6 +42247,13 @@ class _Scripts:
             Target project to which script outputs will be added.
         sql : str, optional
             The raw SQL query for the script.
+        read_only : bool, optional
+            Whether to run the SQL on a read-only database session [default: false].
+            When true, the SQL must be a single SELECT, or a WITH ... SELECT, or the
+            request is rejected. PostgreSQL and Redshift also refuse any write the
+            SELECT still makes, such as one in a WITH clause or a function. BigQuery
+            has no read-only session, so there it relies on the credential's
+            permissions.
         remote_host_id : int, optional
             The remote host ID that this script will connect to.
         credential_id : int, optional
@@ -42326,6 +42449,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -51468,6 +51598,13 @@ class _Scripts:
                 Target project to which script outputs will be added.
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - remote_host_id : int
                 The remote host ID that this script will connect to.
             - credential_id : int
@@ -54655,6 +54792,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -59059,6 +59203,13 @@ class _Scripts:
                 The archival status of the requested item(s).
             - sql : str
                 The raw SQL query for the script.
+            - read_only : bool
+                Whether to run the SQL on a read-only database session [default:
+                false]. When true, the SQL must be a single SELECT, or a WITH ...
+                SELECT, or the request is rejected. PostgreSQL and Redshift also refuse
+                any write the SELECT still makes, such as one in a WITH clause or a
+                function. BigQuery has no read-only session, so there it relies on the
+                credential's permissions.
             - expanded_arguments : :class:`civis.Response`
                 Expanded arguments for use in injecting into different environments.
             - remote_host_id : int
@@ -60591,6 +60742,9 @@ class _Search:
                     The exception of the item after the last run, if the item is a job.
                 - auto_share : bool
                     The flag that indicates if a project has Auto-Share enabled.
+                - analysis_id : int
+                    The ID of the analysis report this dashboard was published from, if
+                    the item is a Quick dashboard.
         """
         ...
 
@@ -72312,6 +72466,7 @@ class _ResponseAdminListOrganizations(Response):
     cs_metadata: str
     remove_footer_in_emails: bool
     salesforce_account_id: str
+    aws_account_id: str
     tableau_site_id: str
     fedramp_enabled: bool
     created_by_id: int
@@ -75107,6 +75262,7 @@ class _ResponseEnhancementsPostCassNcoaDestination(Response):
 class _ResponseEnhancementsPostCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPostCassNcoaColumnMapping(Response):
     address1: str
@@ -75191,6 +75347,7 @@ class _ResponseEnhancementsGetCassNcoaDestination(Response):
 class _ResponseEnhancementsGetCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsGetCassNcoaColumnMapping(Response):
     address1: str
@@ -75275,6 +75432,7 @@ class _ResponseEnhancementsPutCassNcoaDestination(Response):
 class _ResponseEnhancementsPutCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPutCassNcoaColumnMapping(Response):
     address1: str
@@ -75359,6 +75517,7 @@ class _ResponseEnhancementsPatchCassNcoaDestination(Response):
 class _ResponseEnhancementsPatchCassNcoaDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPatchCassNcoaColumnMapping(Response):
     address1: str
@@ -75468,6 +75627,7 @@ class _ResponseEnhancementsGetCassNcoaRunsInputsDestination(Response):
 class _ResponseEnhancementsGetCassNcoaRunsInputsDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsGetCassNcoaRunsInputsColumnMapping(Response):
     address1: str
@@ -76112,6 +76272,7 @@ class _ResponseEnhancementsPutCassNcoaArchiveDestination(Response):
 class _ResponseEnhancementsPutCassNcoaArchiveDestinationDatabaseTable(Response):
     schema: str
     table: str
+    existing_table_rows: str
 
 class _ResponseEnhancementsPutCassNcoaArchiveColumnMapping(Response):
     address1: str
@@ -83981,6 +84142,7 @@ class _ResponseQueriesPost(Response):
     my_permission_level: str
     interactive: bool
     preview_rows: int
+    read_only: bool
     include_header: bool
     compression: str
     column_delimiter: str
@@ -84043,6 +84205,7 @@ class _ResponseQueriesPutScripts(Response):
     hidden: bool
     archived: bool
     name: str
+    read_only: bool
     author: _ResponseQueriesPutScriptsAuthor
     report_id: int
 
@@ -84072,6 +84235,7 @@ class _ResponseQueriesGet(Response):
     hidden: bool
     archived: bool
     name: str
+    read_only: bool
     author: _ResponseQueriesGetAuthor
     report_id: int
 
@@ -84101,6 +84265,7 @@ class _ResponseQueriesDelete(Response):
     hidden: bool
     archived: bool
     name: str
+    read_only: bool
     author: _ResponseQueriesDeleteAuthor
     report_id: int
 
@@ -84340,6 +84505,7 @@ class _ResponseReportsList(Response):
     template_id: int
     auth_thumbnail_url: str
     last_run: _ResponseReportsListLastRun
+    analysis_id: int
 
 class _ResponseReportsListUser(Response):
     id: int
@@ -86285,6 +86451,7 @@ class _ResponseScriptsPostSql(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -86393,6 +86560,7 @@ class _ResponseScriptsGetSql(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -86501,6 +86669,7 @@ class _ResponseScriptsPutSql(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -86609,6 +86778,7 @@ class _ResponseScriptsPatchSql(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -89306,6 +89476,7 @@ class _ResponseScriptsGetSqlRunsInputs(Response):
     hidden: bool
     target_project_id: int
     sql: str
+    read_only: bool
     remote_host_id: int
     credential_id: int
     csv_settings: _ResponseScriptsGetSqlRunsInputsCsvSettings
@@ -90232,6 +90403,7 @@ class _ResponseScriptsPutSqlArchive(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -92035,6 +92207,7 @@ class _ResponseScriptsPostSqlClone(Response):
     target_project_id: int
     archived: bool
     sql: str
+    read_only: bool
     expanded_arguments: dict
     remote_host_id: int
     credential_id: int
@@ -92788,6 +92961,7 @@ class _ResponseSearchListResults(Response):
     public: bool
     last_run_exception: str
     auto_share: bool
+    analysis_id: int
 
 class _ResponseSearchListTypes(Response):
     type: str
