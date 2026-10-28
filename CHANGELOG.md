@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 ### Changed
+- Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#545)
+
 ### Deprecated
 ### Removed
 ### Fixed

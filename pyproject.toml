@@ -75,8 +75,7 @@ dev-civisml = [
 docs = [
     # docs/requirements.txt pins all transitive dependencies for a reproducible doc build.
     "numpydoc",
-    # Sphinx v9 would break custom code in docs/conf.py.
-    "Sphinx < 9",
+    "Sphinx",
     "sphinx-rtd-theme",
 ]
 
