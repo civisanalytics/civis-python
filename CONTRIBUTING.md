@@ -26,11 +26,11 @@ These set-up steps need to be done only once per machine / OS.
    For the Python version, use the latest Python 3.x that civis-python supports,
    as indicated by the trove classifiers in  `pyproject.toml` at the repo's top level.
    For instance, if you use [uv](https://docs.astral.sh/uv/) and the latest Python version
-   supported by civis-python is 3.14:
+   supported by civis-python is 3.15:
 
 ```bash
-uv python install 3.14
-uv venv .venv --managed-python --python=python3.14
+uv python install 3.15
+uv venv .venv --managed-python --python=python3.15
 source .venv/bin/activate
 ```
 
