@@ -1,5 +1,7 @@
 import os
+import re
 import tempfile
+import textwrap
 import zipfile
 
 import requests
@@ -58,6 +60,127 @@ def test_invalid_workflow_yaml(replacee, replacer, error_message_contains):
     invalid_wf_yaml = _VALID_WORKFLOW_YAML.replace(replacee, replacer)
     with pytest.raises(WorkflowValidationError, match=error_message_contains):
         validate_workflow_yaml(invalid_wf_yaml)
+
+
+def _workflow_yaml(tasks: str, workflow_extras: str = "") -> str:
+    tasks = textwrap.indent(textwrap.dedent(tasks).strip(), "    ")
+    workflow_extras = textwrap.indent(textwrap.dedent(workflow_extras).strip(), "  ")
+    return f"version: '2.0'\nworkflow:\n{workflow_extras}\n  tasks:\n{tasks}\n"
+
+
+@pytest.mark.parametrize(
+    "wf_yaml",
+    [
+        pytest.param(
+            textwrap.dedent("""
+                version: '2.0'
+                workflow:
+                  input:
+                  - pause_before_submit: false
+                  tasks:
+                    prep:
+                      action: civis.scripts.python3
+                      input:
+                        name: prep
+                        source: print("Preparing submission")
+                      on-success:
+                      - submit
+                    submit:
+                      action: civis.scripts.python3
+                      pause-before: <% $.pause_before_submit in [true, "true"] %>
+                      input:
+                        name: submit
+                        source: print("Submitting")
+                """),
+            id="CIVIS-14543",
+        ),
+        pytest.param(
+            _workflow_yaml("a:\n  action: std.noop\n  pause-before: <% false %>"),
+            id="pause-before",
+        ),
+        pytest.param(
+            _workflow_yaml("a:\n  action: std.noop\n  keep-result: <% true %>"),
+            id="keep-result",
+        ),
+        pytest.param(
+            _workflow_yaml("a:\n  action: std.noop\n  safe-rerun: <% true %>"),
+            id="safe-rerun",
+        ),
+        pytest.param(
+            _workflow_yaml("""
+                a:
+                  action: std.noop
+                  wait-before: <% 1 %>
+                  wait-after: <% 1 %>
+                  timeout: <% 60 %>
+                  concurrency: <% 2 %>
+                """),
+            id="wait-before, wait-after, timeout, and concurrency",
+        ),
+        pytest.param(
+            _workflow_yaml("""
+                a:
+                  action: std.noop
+                  retry:
+                    count: <% 2 %>
+                    delay: <% 10 %>
+                """),
+            id="retry count and delay",
+        ),
+        pytest.param(
+            _workflow_yaml("a:\n  action: std.noop\n  input: <% $.x %>", "input:\n- x"),
+            id="input",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                "a:\n  action: civis.run_job\n  input: <% $.x %>", "input:\n- x"
+            ),
+            id="input for a Civis action",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                "a:\n  action: std.noop", "task-defaults:\n  pause-before: <% false %>"
+            ),
+            id="task-defaults",
+        ),
+        pytest.param(
+            _workflow_yaml("""
+                a:
+                  action: std.noop
+                  pause-before: |
+                    <% $.x and
+                       $.y %>
+                """),
+            id="multi-line expression",
+        ),
+    ],
+)
+def test_valid_workflow_yaml_yaql_expressions(wf_yaml):
+    validate_workflow_yaml(wf_yaml)
+
+
+@pytest.mark.parametrize(
+    "task_extras, error_message_contains",
+    [
+        ("pause-before: 'yes'", "'yes' does not match"),
+        ("pause-before: '{{ false }}'", "'{{ false }}' does not match"),
+        ("pause-before: 5", "5 is not of type 'boolean', 'string'"),
+        ("timeout: soon", "'soon' does not match"),
+        ("timeout: -1", "-1 is less than the minimum of 0"),
+    ],
+)
+def test_invalid_workflow_yaml_task_policies(task_extras, error_message_contains):
+    wf_yaml = _workflow_yaml(f"a:\n  action: std.noop\n  {task_extras}")
+    with pytest.raises(
+        WorkflowValidationError, match=re.escape(error_message_contains)
+    ):
+        validate_workflow_yaml(wf_yaml)
+
+
+def test_invalid_workflow_yaml_civis_action_input_not_an_expression():
+    wf_yaml = _workflow_yaml("a:\n  action: civis.run_job\n  input: foo")
+    with pytest.raises(WorkflowValidationError, match="'foo' does not match"):
+        validate_workflow_yaml(wf_yaml)
 
 
 def test_workflows_public_repo():
