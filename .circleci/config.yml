@@ -12,7 +12,7 @@ jobs:
       latest-supported-python-version:
         type: string
         # Pick the highest Python 3.x version that civis-python is known to support
-        default: "3.14"
+        default: "3.15"
     docker:
       - image: cimg/python:<< parameters.latest-supported-python-version >>
     steps:
@@ -133,7 +133,7 @@ workflows:
             - twine
           matrix:
             parameters:
-              python-version: ["3.11", "3.12", "3.13", "3.14"]
+              python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
       - build-python-win:
           requires:
             - bandit

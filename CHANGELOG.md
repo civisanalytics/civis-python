@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+- Added support for Python 3.15. (#545)
 ### Changed
 ### Deprecated
 ### Removed
