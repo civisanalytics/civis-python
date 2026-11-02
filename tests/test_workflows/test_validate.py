@@ -62,10 +62,13 @@ def test_invalid_workflow_yaml(replacee, replacer, error_message_contains):
         validate_workflow_yaml(invalid_wf_yaml)
 
 
-def _workflow_yaml(tasks: str, workflow_extras: str = "") -> str:
+def _workflow_yaml(tasks: str, workflow_extras: str = "", version="'2.0'") -> str:
     tasks = textwrap.indent(textwrap.dedent(tasks).strip(), "    ")
     workflow_extras = textwrap.indent(textwrap.dedent(workflow_extras).strip(), "  ")
-    return f"version: '2.0'\nworkflow:\n{workflow_extras}\n  tasks:\n{tasks}\n"
+    return f"version: {version}\nworkflow:\n{workflow_extras}\n  tasks:\n{tasks}\n"
+
+
+_NOOP = "action: std.noop"
 
 
 @pytest.mark.parametrize(
@@ -180,6 +183,368 @@ def test_invalid_workflow_yaml_task_policies(task_extras, error_message_contains
 def test_invalid_workflow_yaml_civis_action_input_not_an_expression():
     wf_yaml = _workflow_yaml("a:\n  action: civis.run_job\n  input: foo")
     with pytest.raises(WorkflowValidationError, match="'foo' does not match"):
+        validate_workflow_yaml(wf_yaml)
+
+
+@pytest.mark.parametrize(
+    "wf_yaml",
+    [
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}\n  fail-on: true"), id="fail-on boolean"
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}\n  fail-on: <% true %>"),
+            id="fail-on expression",
+        ),
+        pytest.param(
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  concurrency: 0
+                  retry:
+                    count: <% 2 %>
+                    delay: 1
+                    break-on: <% false %>
+                """),
+            id="policies",
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}\n  retry: count=3 delay=1"),
+            id="retry as a string",
+        ),
+        pytest.param(
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success: [c]
+                b:
+                  {_NOOP}
+                  on-success: [c]
+                c:
+                  {_NOOP}
+                  join: one
+                """),
+            id="join one",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success: [b]\nb:\n  {_NOOP}\n  join: 0"
+            ),
+            id="join 0",
+        ),
+        pytest.param(
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success: [b]
+                b:
+                  {_NOOP}
+                  join: all
+                  pause-before: false
+                """),
+            id="join with pause-before false",
+        ),
+        pytest.param(
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success:
+                    - b
+                    - c: <% true %>
+                b:
+                  {_NOOP}
+                c:
+                  {_NOOP}
+                """),
+            id="transitions with and without a guard",
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}\n  on-error: fail"),
+            id="transition to an engine command",
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}", version="2.0"), id="version float"
+        ),
+        pytest.param(_workflow_yaml(f"a:\n  {_NOOP}", version="2"), id="version int"),
+        pytest.param(
+            _workflow_yaml("a:\n  action: civis.run_job job_id=123"),
+            id="inline action params",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                "a:\n  action: civis.scripts.python3 source=\"print('hi')\" name='a b'"
+            ),
+            id="inline action params with quotes",
+        ),
+        pytest.param(
+            "version: '2.0'\nworkflow:\n\ttasks:\n\t\ta:\n\t\t\taction: std.noop\n",
+            id="tabs",
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}\n  name: noop\n  type: whatever"),
+            id="task name and type",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  with-items:\n"
+                "    - x in [1, 2]\n    - y in <% $.ys %>",
+                "input:\n  - ys: [1]",
+            ),
+            id="with-items",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"""
+                a:
+                  {_NOOP}
+                  on-success: [b]
+                b:
+                  {_NOOP}
+                c:
+                  {_NOOP}
+                """,
+                "task-defaults:\n  on-error: [c]",
+            ),
+            id="task-defaults transition excludes the task itself",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\nx:\n  {_NOOP}\ny:\n  {_NOOP}",
+                "task-defaults:\n  on-complete: [x, y]",
+            ),
+            id="task-defaults transition is skipped for a task listed in it",
+        ),
+        pytest.param(
+            _workflow_yaml(f"""
+                s:
+                  {_NOOP}
+                  on-success: [a]
+                a:
+                  {_NOOP}
+                  on-error: fail
+                fail:
+                  {_NOOP}
+                  on-success: [a]
+                """),
+            id="cycle check ignores a task named like an engine command",
+        ),
+        pytest.param(
+            _workflow_yaml(f"a:\n  {_NOOP}", "anchor: &recursive [*recursive]"),
+            id="recursive anchor",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\nb:\n  {_NOOP}\n  requires: [a]", "type: reverse"
+            ),
+            id="reverse workflow",
+        ),
+        pytest.param(_workflow_yaml(f"fail:\n  {_NOOP}"), id="task named fail"),
+        pytest.param(_workflow_yaml(f"{'a' * 255}:\n  {_NOOP}"), id="long task name"),
+        pytest.param(
+            "version: '2.0'\nworkflow:\n  anchor: &a\n    action: std.noop\n"
+            "  tasks:\n    a: *a\n",
+            id="anchor",
+        ),
+    ],
+)
+def test_valid_workflow_yaml_variants(wf_yaml):
+    validate_workflow_yaml(wf_yaml)
+
+
+@pytest.mark.parametrize(
+    "wf_yaml, error_message_contains",
+    [
+        ("", "None is not of type 'object'"),
+        ("version: '2.0'\nworkflow: [", "Invalid YAML"),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  fail-on: 'yes'"),
+            "'yes' does not match",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  timeout: 1.5"),
+            "1.5 is not of type 'integer', 'string'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  retry:\n    count: 2"),
+            "'delay' is a required property",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success:\n    next: [b]\nb:\n  {_NOOP}"
+            ),
+            "is not valid under any of the given schemas",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success:\n    - b: true\nb:\n  {_NOOP}"
+            ),
+            "True is not of type 'string'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  on-success: [b, b]\nb:\n  {_NOOP}"),
+            "has non-unique elements",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  on-success: [noop]"),
+            "undefined task 'noop'",
+        ),
+        (
+            _workflow_yaml(f'a:\n  {_NOOP}\n  on-success:\n    - fail msg="x"'),
+            "does not match",
+        ),
+        (
+            _workflow_yaml("a:\n  action: std.echo\n  input:\n    output: hi"),
+            "'std.echo' is not one of",
+        ),
+        (
+            _workflow_yaml("a:\n  action: civis.scripts.python3"),
+            "'input' is a required property",
+        ),
+        (
+            _workflow_yaml("a:\n  action: civis.run_job foo=1"),
+            "'job_id' is a required property",
+        ),
+        (_workflow_yaml(f"a:\n  {_NOOP}\n  input: {{}}"), "should be non-empty"),
+        (_workflow_yaml(f"a:\n  {_NOOP}\n  publish: {{}}"), "should be non-empty"),
+        (_workflow_yaml(f"a:\n  {_NOOP}\n  with-items: foo"), "does not match"),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}", "input:\n  - x\n  - x"),
+            "has non-unique elements",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}", "task-defaults:\n  input:\n    x: 1"),
+            "'input' was unexpected",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}", "type: foo"),
+            "'foo' is not one of ['direct', 'reverse']",
+        ),
+        (
+            _workflow_yaml("a:\n  action: std.bogus").replace(
+                "workflow:", "conversion_workflow:"
+            ),
+            "'std.bogus' is not one of",
+        ),
+        (_workflow_yaml(f"{'a' * 256}:\n  {_NOOP}"), "is too long"),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success: [{'j' * 209}]\n{'j' * 209}:\n"
+                f"  {_NOOP}\n  join: all"
+            ),
+            "cannot exceed 208 characters",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  join: all"),
+            "Task 'a' has 'join: all' but only 0 inbound task(s).",
+        ),
+        (
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success: [c]
+                b:
+                  {_NOOP}
+                  on-success: [c]
+                c:
+                  {_NOOP}
+                  join: 3
+                """),
+            "Task 'c' has 'join: 3' but only 2 inbound task(s).",
+        ),
+        (
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success: [b]
+                b:
+                  {_NOOP}
+                  join: all
+                  pause-before: true
+                """),
+            "Task 'b' cannot use 'pause-before'",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success: [b]\nb:\n  {_NOOP}\n  join: all",
+                "task-defaults:\n  pause-before: <% $.pause %>",
+            ),
+            "Task 'b' cannot use 'pause-before'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}", "task-defaults:\n  on-error: [undefined]"),
+            "undefined task 'undefined' in 'on-error' of 'task-defaults'",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success: [b]\nb:\n  {_NOOP}\n  on-success: [a]"
+            ),
+            "There must be at least one task without an inbound transition",
+        ),
+        (
+            _workflow_yaml(f"""
+                a:
+                  {_NOOP}
+                  on-success: [b]
+                b:
+                  {_NOOP}
+                  on-success: [c]
+                c:
+                  {_NOOP}
+                  on-success: [d]
+                d:
+                  {_NOOP}
+                  on-success: [b]
+                """),
+            "Workflow cannot contain a cycle: b -> c -> d -> b",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\nn:\n  {_NOOP}",
+                "task-defaults:\n  on-error:\n    - n: <% true %>",
+            ),
+            "Workflow cannot contain a cycle: n -> n",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  publish:\n    x: <% tasks() %>"),
+            "reserved function 'tasks()'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\nb:\n  {_NOOP}\n  requires: [a]"),
+            "Task 'b' cannot use 'requires'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  requires: a", "type: reverse"),
+            "'a' is not of type 'array'",
+        ),
+        (
+            _workflow_yaml(f"a:\n  {_NOOP}\n  requires: [b]", "type: reverse"),
+            "Task 'a' requires an undefined task 'b'.",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}", "type: reverse\ntask-defaults:\n  requires: [b]"
+            ),
+            "'task-defaults' requires an undefined task 'b'.",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  on-success: [b]\nb:\n  {_NOOP}", "type: reverse"
+            ),
+            "Task 'a' cannot use 'on-success' in a workflow of type 'reverse'.",
+        ),
+        (
+            _workflow_yaml(
+                f"a:\n  {_NOOP}\n  requires: [b]\nb:\n  {_NOOP}\n  requires: [a]",
+                "type: reverse",
+            ),
+            "Workflow cannot contain a cycle",
+        ),
+    ],
+)
+def test_invalid_workflow_yaml_variants(wf_yaml, error_message_contains):
+    with pytest.raises(
+        WorkflowValidationError, match=re.escape(error_message_contains)
+    ):
         validate_workflow_yaml(wf_yaml)
 
 
