@@ -503,7 +503,7 @@ def civis_to_csv(
     include_header: bool = True,
     compression: str = "none",
     delimiter: str = ",",
-    unquoted: bool = False,
+    unquoted=DeprecatedKwargDefault(),
     hidden: bool = True,
     polling_interval: int | float | None = None,
 ) -> CivisFuture:
@@ -545,7 +545,11 @@ def civis_to_csv(
         Which delimiter to use, if any. One of ``','``, ``'\t'``, or
         ``'|'``. Default: ``','``.
     unquoted: bool, optional
-        Whether or not to quote fields. Default: ``False``.
+        Has no effect. Fields are quoted only where needed.
+
+        .. deprecated:: 2.11.0
+            ``unquoted`` will be removed at civis-python v3.0.0
+            (scheduled for February 2027).
     polling_interval : int or float, optional
         Number of seconds to wait between checks for query completion.
     hidden : bool, optional
@@ -578,6 +582,16 @@ def civis_to_csv(
     civis.io.read_civis_sql : Read results of a SQL query into memory.
     civis.io.export_to_civis_file : Store a SQL query's results in a Civis file
     """
+    if not isinstance(unquoted, DeprecatedKwargDefault):
+        warnings.warn(
+            "The keyword argument 'unquoted' of civis.io.civis_to_csv has no effect "
+            "and is deprecated since civis-python v2.11.0. It will be removed in "
+            "civis-python v3.0.0 (scheduled for February 2027). "
+            "Please stop setting 'unquoted'.",
+            FutureWarning,
+            stacklevel=2,
+        )
+
     if client is None:
         client = APIClient()
 
@@ -604,7 +618,6 @@ def civis_to_csv(
         include_header=include_header,
         compression="gzip",
         column_delimiter=delimiter,
-        unquoted=unquoted,
         filename_prefix=None,
         force_multifile=False,
     )
@@ -689,7 +702,8 @@ def civis_to_multifile_csv(
     max_file_size: int, optional
         Maximum number of Megabytes each created file will be.
     unquoted: bool, optional
-        Whether or not to quote fields. Default: ``False``.
+        Only applies to Redshift. If ``True``, fields are not quoted.
+        If ``False`` (the default), every field is quoted.
     prefix: str, optional
         A user specified filename prefix for the output file to have. Default:
         ``None``.
@@ -724,7 +738,7 @@ def civis_to_multifile_csv(
                 Signed S3 URL ('https://...')
 
         'unquoted': bool
-            Whether the cells are quoted.
+            Whether the cells are unquoted.
 
         'compression': str
             Type of compression used.

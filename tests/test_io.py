@@ -1146,6 +1146,27 @@ def test_civis_to_multifile_passes_client(
     m_civis_to_file.assert_called_once_with(mock.ANY, mock.ANY, client=mock_client)
 
 
+@pytest.mark.parametrize("unquoted", [True, False, DeprecatedKwargDefault()])
+@mock.patch("civis.io._tables.CivisFuture")
+@mock.patch("civis.io._tables._sql_script")
+def test_civis_to_csv_warns_for_deprecated_unquoted(
+    m_sql_script, m_CivisFuture, unquoted
+):
+    m_sql_script.return_value = (1, 2)
+    args = ("out.csv", "select 1", "db")
+    kwargs = dict(unquoted=unquoted, client=mock.MagicMock())
+
+    if isinstance(unquoted, DeprecatedKwargDefault):
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", FutureWarning)
+            civis.io.civis_to_csv(*args, **kwargs)
+    else:
+        with pytest.warns(FutureWarning, match="'unquoted'"):
+            civis.io.civis_to_csv(*args, **kwargs)
+
+    assert "unquoted" not in m_sql_script.call_args.kwargs["csv_settings"]
+
+
 @mock.patch("civis.io.query_civis")
 @mock.patch("civis.io.transfer_table")
 def test_transfer_table(m_transfer_table, m_query_civis):
