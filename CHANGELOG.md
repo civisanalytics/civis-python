@@ -11,8 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#546)
 ### Deprecated
+- Deprecated the `unquoted` parameter of `civis.io.civis_to_csv`, which has no effect.
+  It will be removed in v3.0.0. (#548)
 ### Removed
 ### Fixed
+- Fixed the docstring of `civis.io.civis_to_multifile_csv` for the `unquoted` parameter
+  and the `'unquoted'` key of the returned manifest, which described the opposite
+  of the actual behavior. (#548)
 ### Security
 - Updated `docs/requirements.txt` due to a security advisory for certifi. See GHSA-6q48-6c7w-9gw2 (#544)
 
