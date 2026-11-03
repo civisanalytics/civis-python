@@ -17,9 +17,8 @@ class FakeUsersEndpoint:
         return {"feature_flags": {"foo": True, "bar": True, "baz": False}}
 
 
-@mock.patch("civis.resources._resources.get_api_spec", return_value=API_SPEC)
-def test_feature_flags(mock_spec):
-    client = APIClient(api_key="none")
+def test_feature_flags():
+    client = APIClient(local_api_spec=API_SPEC, api_key="none")
     setattr(client, "users", FakeUsersEndpoint())
 
     with warnings.catch_warnings():
@@ -27,9 +26,8 @@ def test_feature_flags(mock_spec):
         assert client.feature_flags == ("foo", "bar")
 
 
-@mock.patch("civis.resources._resources.get_api_spec", return_value=API_SPEC)
-def test_feature_flags_memoized(mock_spec):
-    client = APIClient(api_key="none")
+def test_feature_flags_memoized():
+    client = APIClient(local_api_spec=API_SPEC, api_key="none")
     setattr(client, "users", FakeUsersEndpoint())
     with warnings.catch_warnings():
         with mock.patch.object(client.users, "get_me", wraps=client.users.get_me):

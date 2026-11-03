@@ -1139,7 +1139,7 @@ def test_civis_to_multifile_passes_client(
     m_sql_script.return_value = (mock.MagicMock(), mock.MagicMock())
     # We need to write some JSON into the buffer to avoid errors.
     m_civis_to_file.side_effect = lambda _, buf, *args, **kwargs: buf.write(b"{}")
-    mock_client = mock.MagicMock()
+    mock_client = create_client_mock()
 
     civis.io.civis_to_multifile_csv("sql", "db", client=mock_client)
 
@@ -1154,7 +1154,7 @@ def test_civis_to_csv_warns_for_deprecated_unquoted(
 ):
     m_sql_script.return_value = (1, 2)
     args = ("out.csv", "select 1", "db")
-    kwargs = dict(unquoted=unquoted, client=mock.MagicMock())
+    kwargs = dict(unquoted=unquoted, client=create_client_mock())
 
     if isinstance(unquoted, DeprecatedKwargDefault):
         with warnings.catch_warnings():
@@ -1281,7 +1281,7 @@ def test_get_sql_select(*mocks):
 
 
 def test_file_id_from_run_output_exact():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.return_value = [
         Response({"name": "spam", "object_id": 2013, "object_type": "File"})
     ]
@@ -1292,7 +1292,7 @@ def test_file_id_from_run_output_exact():
 
 def test_file_id_from_run_output_approximate():
     # Test fuzzy name matching
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.return_value = [
         Response({"name": "spam.csv.gz", "object_id": 2013, "object_type": "File"})
     ]
@@ -1303,7 +1303,7 @@ def test_file_id_from_run_output_approximate():
 
 def test_file_id_from_run_output_approximate_multiple():
     # Fuzzy name matching with muliple matches should return the first
-    m_cl = mock.Mock()
+    m_cl = create_client_mock()
     m_cl.jobs.list_runs_outputs.return_value = [
         Response({"name": "spam.csv.gz", "object_id": 2013, "object_type": "File"}),
         Response({"name": "eggs.csv.gz", "object_id": 2014, "object_type": "File"}),
@@ -1315,7 +1315,7 @@ def test_file_id_from_run_output_approximate_multiple():
 
 def test_file_id_from_run_output_no_file():
     # Get an IOError if we request a file which doesn't exist
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.return_value = [
         Response({"name": "spam", "object_id": 2013, "object_type": "File"})
     ]
@@ -1327,7 +1327,7 @@ def test_file_id_from_run_output_no_file():
 
 def test_file_id_from_run_output_no_run():
     # Get an IOError if we request a file from a run which doesn't exist
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.side_effect = MockAPIError(
         404
     )  # Mock a run which doesn't exist
@@ -1339,7 +1339,7 @@ def test_file_id_from_run_output_no_run():
 
 def test_file_id_from_run_output_platform_error():
     # Make sure we don't swallow real Platform errors
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.side_effect = MockAPIError(
         500
     )  # Mock a platform error
@@ -1348,7 +1348,7 @@ def test_file_id_from_run_output_platform_error():
 
 
 def test_file_id_from_run_output_no_filename():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     m_client.jobs.list_runs_outputs.return_value = [
         Response({"name": "spam.csv.gz", "object_id": 2013, "object_type": "File"}),
         Response({"name": "eggs.csv.gz", "object_id": 2014, "object_type": "File"}),
@@ -1360,7 +1360,7 @@ def test_file_id_from_run_output_no_filename():
 
 @pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_expired():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     url = None
     m_client.files.get.return_value = Response({"name": "spam.csv", "file_url": url})
     expected_err = (
@@ -1372,7 +1372,7 @@ def test_file_to_dataframe_expired():
 
 @pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     url = "url"
     m_client.files.get.return_value = Response({"name": "spam.csv", "file_url": url})
     with mock.patch.object(
@@ -1384,7 +1384,7 @@ def test_file_to_dataframe_infer():
 
 @pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_infer_gzip():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     url = "url"
     m_client.files.get.return_value = Response({"name": "spam.csv.gz", "file_url": url})
     with mock.patch.object(
@@ -1396,7 +1396,7 @@ def test_file_to_dataframe_infer_gzip():
 
 @pytest.mark.skipif(not ON_CI and not has_pandas, reason="pandas not installed")
 def test_file_to_dataframe_kwargs():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     url = "url"
     m_client.files.get.return_value = Response({"name": "spam.csv", "file_url": url})
     with mock.patch.object(
@@ -1412,7 +1412,7 @@ def test_file_to_dataframe_kwargs():
 
 @pytest.mark.skipif(not ON_CI and not has_polars, reason="polars not installed")
 def test_file_to_dataframe_polars():
-    m_client = mock.Mock()
+    m_client = create_client_mock()
     url = "url"
     m_client.files.get.return_value = Response({"name": "spam.csv", "file_url": url})
     with mock.patch.object(
@@ -1432,7 +1432,7 @@ def test_load_json(mock_c2f):
         buf.write(json.dumps(obj).encode())
 
     mock_c2f.side_effect = _dump_json
-    out = civis.io.file_to_json(13, client=mock.Mock())
+    out = civis.io.file_to_json(13, client=create_client_mock())
     assert out == obj
 
 
