@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `civis.workflows.validate_workflow_yaml` now accepts YAQL expressions for the task
   properties `concurrency`, `input`, `keep-result`, `pause-before`,
   `retry` (`count` and `delay`), `safe-rerun`, `timeout`,
-  `wait-after`, and `wait-before`.
+  `wait-after`, and `wait-before`. (#551)
 ### Security
 - Updated `docs/requirements.txt` due to a security advisory for certifi. See GHSA-6q48-6c7w-9gw2 (#544)
 
