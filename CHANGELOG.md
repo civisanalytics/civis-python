@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#546)
 - The test suite no longer requires the `CIVIS_API_KEY` environment variable. (#550)
-- Updated the API spec.
+- Updated the API spec. (#552)
 ### Deprecated
 - Deprecated the `unquoted` parameter of `civis.io.civis_to_csv`, which has no effect.
   It will be removed in v3.0.0. (#548)
@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   transitions across direct and reverse workflows, and actions that Platform
   doesn't allow (`std.echo`, `std.async_noop`). Invalid YAML now raises
   `WorkflowValidationError`, and workflow names containing "version" are no
-  longer exempt from validation.
+  longer exempt from validation. (#552)
 ### Security
 - Updated `docs/requirements.txt` due to a security advisory for certifi. See GHSA-6q48-6c7w-9gw2 (#544)
 
