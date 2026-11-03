@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added a `CLAUDE.md` file with guidance for Claude Code in this codebase. (#549)
 ### Changed
 - Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#546)
+- The test suite no longer requires the `CIVIS_API_KEY` environment variable.
 ### Deprecated
 - Deprecated the `unquoted` parameter of `civis.io.civis_to_csv`, which has no effect.
   It will be removed in v3.0.0. (#548)

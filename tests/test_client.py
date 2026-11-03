@@ -19,7 +19,7 @@ class FakeUsersEndpoint:
 
 @mock.patch("civis.resources._resources.get_api_spec", return_value=API_SPEC)
 def test_feature_flags(mock_spec):
-    client = APIClient()
+    client = APIClient(api_key="none")
     setattr(client, "users", FakeUsersEndpoint())
 
     with warnings.catch_warnings():
@@ -29,7 +29,7 @@ def test_feature_flags(mock_spec):
 
 @mock.patch("civis.resources._resources.get_api_spec", return_value=API_SPEC)
 def test_feature_flags_memoized(mock_spec):
-    client = APIClient()
+    client = APIClient(api_key="none")
     setattr(client, "users", FakeUsersEndpoint())
     with warnings.catch_warnings():
         with mock.patch.object(client.users, "get_me", wraps=client.users.get_me):
