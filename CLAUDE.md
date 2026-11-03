@@ -21,9 +21,10 @@ CI ([.circleci/config.yml](.circleci/config.yml)) runs bandit, black, flake8, my
 
 ### Dynamic API client generation
 
-The core abstraction is [APIClient](src/civis/client.py), but it has almost no hand-written endpoint methods. `client.scripts.*`, `client.jobs.*`, `client.users.*`, and so on are **generated at runtime** from the Civis OpenAPI spec:
+The core abstraction is [APIClient](src/civis/client.py) to interact with the Civis API, but it has no hand-written endpoint methods. `client.scripts.*`, `client.jobs.*`, `client.users.*`, and so on are **generated** from a Civis OpenAPI spec:
 
-- [src/civis/resources/civis_api_spec.json](src/civis/resources/civis_api_spec.json) is the committed OpenAPI spec and the source of truth for which endpoints exist. It also drives the "API Resources" pages in the docs.
+- At runtime, `APIClient` uses a Civis API key (typically from the environment variable `CIVIS_API_KEY`, but it can also be passed into `APIClient` through the keyword argument `api_key`) to fetch the Civis OpenAPI spec for the given Civis Platform user.
+- Separately, [src/civis/resources/civis_api_spec.json](src/civis/resources/civis_api_spec.json) is the committed OpenAPI spec and the source of truth for which endpoints exist for a standard Civis Platform user. It also drives the "API Resources" pages in the docs.
 - [src/civis/resources/_resources.py](src/civis/resources/_resources.py) walks the spec and builds `Endpoint` subclasses with Python methods, docstrings, and signatures, mapping camelCase JSON to snake_case kwargs.
 - [src/civis/client.pyi](src/civis/client.pyi) is an **auto-generated** type stub (from [src/civis/resources/_client_pyi.py](src/civis/resources/_client_pyi.py)) that mirrors the dynamic methods for IDEs and `mypy`. Do not hand-edit it.
 - [tools/update_civis_api_spec.py](tools/update_civis_api_spec.py) re-downloads the spec and regenerates `client.pyi`, keeping the two in sync. It needs a Civis employee's regular Platform API key in `CIVIS_API_KEY`, because it runs a custom script on Civis Platform to export the spec. The resulting spec only reflects what a standard Platform user can see. After a refresh, tests that hardcode endpoint parameters (e.g., `test_generate_cli_civis` in [tests/test_cli.py](tests/test_cli.py)) may need updating, and the change gets an "Updated the API spec." changelog entry.
@@ -49,7 +50,7 @@ Consequences for editing:
 ### Tests
 
 - Tests under [tests/](tests/) mirror `src/civis/` module by module (`tests/test_client.py` for `src/civis/client.py`, etc.).
-- [tests/petstore.json](tests/petstore.json) is a small OpenAPI spec for exercising the dynamic generator without the full Civis spec.
+- `civis.tests.create_client_mock` is useful when an `APIClient` mock is needed for tests.
 
 ### Other maintainer tools
 
