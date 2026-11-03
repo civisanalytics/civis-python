@@ -59,5 +59,6 @@ Consequences for editing:
 
 - The git remote for `civisanalytics/civis-python` is named `upstream`, not `origin`.
 - PR titles start with the internal ticket key and a change-type tag, e.g., `[CIVIS-1234] FIX ...`, using `ENH`, `FIX`, `DEP`, `DOC`, or `MAINT` (see `git log`).
+- Branch names are prefixed with the ticket key, e.g., `civis-1234-<short-description>` for the ticket CIVIS-1234.
 - Every change gets an entry under "Unreleased" in [CHANGELOG.md](CHANGELOG.md) (Keep a Changelog format), ending with the PR number, e.g., `(#548)`.
 - The version lives in `[project].version` in [pyproject.toml](pyproject.toml) and is surfaced as `civis.__version__`. Publishing a GitHub release tagged `vX.Y.Z` publishes to PyPI ([.github/workflows/release.yml](.github/workflows/release.yml)) and triggers the "stable" docs build on Read the Docs.
