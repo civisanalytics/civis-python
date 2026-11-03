@@ -12,7 +12,7 @@ Development assumes a `uv` virtual environment on the latest supported Python (t
 - Lint and format check (matches CI): `flake8 src tools tests docs/conf.py && black --check src tools tests docs/conf.py`. Auto-format with `black src tools tests docs/conf.py`. Style is `black` at line length 88 and `flake8` with `max-line-length = 88`, `extend-ignore = E203` (see [.flake8](.flake8)).
 - Type-check: `mypy src`. Several modules are excluded; see `[tool.mypy]` in [pyproject.toml](pyproject.toml).
 - Security scans (CI): `bandit -r src -x tests`, and `pip-audit --skip-editable` after also installing `docs/requirements.txt`.
-- Build docs: `pip install -r docs/requirements.txt`, then `sphinx-build -b html docs docs/build`. [docs/conf.py](docs/conf.py) generates one page per endpoint (`docs/api_<endpoint>_endpoint.rst`) and one per endpoint method (`docs/api_<endpoint>/<method>.rst`); these are gitignored. Delete `docs/build` when switching between branches that generate different pages, so Sphinx doesn't leave stale HTML behind.
+- Build docs: `uv pip install -r docs/requirements.txt`, then `sphinx-build -b html docs docs/build`. [docs/conf.py](docs/conf.py) generates one page per endpoint (`docs/api_<endpoint>_endpoint.rst`) and one per endpoint method (`docs/api_<endpoint>/<method>.rst`); these are gitignored. Delete `docs/build` when switching between branches that generate different pages, so Sphinx doesn't leave stale HTML behind.
 - CLI entrypoint: `civis --help` (defined in [src/civis/cli/__main__.py](src/civis/cli/__main__.py)).
 
 CI ([.circleci/config.yml](.circleci/config.yml)) runs bandit, black, flake8, mypy, pip-audit, and a twine check first, then the test suite on every supported Python version and on Windows.
