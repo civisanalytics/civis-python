@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added support for Python 3.15. (#545)
-- Added a `CLAUDE.md` file with guidance for Claude Code in this codebase.
+- Added a `CLAUDE.md` file with guidance for Claude Code in this codebase. (#549)
 ### Changed
 - Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#546)
 ### Deprecated
