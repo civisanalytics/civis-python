@@ -88,8 +88,9 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
             assert p.required
 
 
+@mock.patch("civis.cli.__main__.get_api_key", return_value="none")
 @mock.patch("civis.cli.__main__.open_session", autospec=True)
-def test_blank_output(mock_session):
+def test_blank_output(mock_session, mock_get_api_key):
     """
     Test that endpoints that return blank results don't cause exceptions.
     """
@@ -107,8 +108,9 @@ def test_blank_output(mock_session):
     assert pytest_wrapped_e.value.code == 0
 
 
+@mock.patch("civis.cli.__main__.get_api_key", return_value="none")
 @mock.patch("civis.cli.__main__.open_session", autospec=True)
-def test_failure_exit_code(mock_session):
+def test_failure_exit_code(mock_session, mock_get_api_key):
     """
     Test that we return a nonzero exit code when the API request fails.
     """
@@ -131,9 +133,10 @@ def test_failure_exit_code(mock_session):
     assert pytest_wrapped_e.value.code != 0
 
 
+@mock.patch("civis.cli.__main__.get_api_key", return_value="none")
 @mock.patch("civis.cli.__main__.open_session", autospec=True)
 @mock.patch("civis.cli.__main__.Request", autospec=True)
-def test_parameter_case(mock_request, mock_session):
+def test_parameter_case(mock_request, mock_session, mock_get_api_key):
     """
     Test that parameter names are sent in camelCase rather than snake_case.
     """
@@ -142,7 +145,6 @@ def test_parameter_case(mock_request, mock_session):
     session_context.send.return_value.json.return_value = api_response
     session_context.send.return_value.status_code = 200
 
-    # To avoid needing CIVIS_API_KEY set in the environment.
     op = {
         "parameters": [
             {"name": "firstParameter", "in": "query"},
@@ -153,8 +155,6 @@ def test_parameter_case(mock_request, mock_session):
         invoke(
             "WIBBLE", "/wobble/wubble", op, first_parameter="a", second_parameter="b"
         )
-
-    mock_session.call_args[1]["user_agent"] = "civis-cli"
 
     mock_request.assert_called_with(
         url="https://api.civisanalytics.com/wobble/wubble",

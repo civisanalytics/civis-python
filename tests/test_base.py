@@ -5,6 +5,7 @@ import pytest
 import requests
 
 from civis.base import Endpoint, get_base_url, CivisAPIError
+from civis.tests import create_client_mock
 
 
 def test_base_url_default():
@@ -26,7 +27,7 @@ def test_endpoint_base_url(mock_get_base_url):
 
 
 def test_store_last_response():
-    mock_client = mock.Mock()
+    mock_client = create_client_mock()
     endpoint = Endpoint({}, client=mock_client, return_type="raw")
 
     returned_resp = {"value": "response"}

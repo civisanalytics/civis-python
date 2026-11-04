@@ -32,8 +32,6 @@ jobs:
         type: string
     docker:
       - image: cimg/python:<< parameters.python-version >>
-    environment:
-      CIVIS_API_KEY: FOOBAR
     steps:
       - checkout
       - run:
@@ -82,7 +80,7 @@ jobs:
             python.exe -m pip install --upgrade pip setuptools wheel && \
             python.exe -m pip install ".[dev-core,dev-civisml]" && \
             python.exe -m pip list && \
-            CIVIS_API_KEY=foobar pytest
+            pytest
 
 workflows:
   version: 2

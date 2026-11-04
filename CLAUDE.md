@@ -8,7 +8,7 @@ Development assumes a `uv` virtual environment on the latest supported Python (t
 
 - Run all tests: `pytest` (configured in [pyproject.toml](pyproject.toml) to target `tests/` with coverage on `src/civis` and `--strict-markers`).
 - Run a single test: `pytest tests/test_client.py::test_name` or `pytest -k "partial_name"`.
-- Tests require `CIVIS_API_KEY` to be set to any value (CI uses `FOOBAR`). The API spec is loaded from the committed [src/civis/resources/civis_api_spec.json](src/civis/resources/civis_api_spec.json), so tests don't call the Civis API. The one exception to "no network" is `test_workflows_public_repo`, which downloads the public `civisanalytics/workflows-public` repo from GitHub.
+- Tests don't need `CIVIS_API_KEY`. An autouse fixture in [tests/conftest.py](tests/conftest.py) unsets it, so a test that needs a client or a key must supply one (see [Tests](#tests)). The API spec is loaded from the committed [src/civis/resources/civis_api_spec.json](src/civis/resources/civis_api_spec.json), so tests don't call the Civis API. The one exception to "no network" is `test_workflows_public_repo`, which downloads the public `civisanalytics/workflows-public` repo from GitHub.
 - Lint and format check (matches CI): `flake8 src tools tests docs/conf.py && black --check src tools tests docs/conf.py`. Auto-format with `black src tools tests docs/conf.py`. Style is `black` at line length 88 and `flake8` with `max-line-length = 88`, `extend-ignore = E203` (see [.flake8](.flake8)).
 - Type-check: `mypy src`. Several modules are excluded; see `[tool.mypy]` in [pyproject.toml](pyproject.toml).
 - Security scans (CI): `bandit -r src -x tests`, and `pip-audit --skip-editable` after also installing `docs/requirements.txt`.
@@ -50,7 +50,10 @@ Consequences for editing:
 ### Tests
 
 - Tests under [tests/](tests/) mirror `src/civis/` module by module (`tests/test_client.py` for `src/civis/client.py`, etc.).
-- `civis.tests.create_client_mock` is useful when an `APIClient` mock is needed for tests.
+- To supply a client or a key in a test:
+  - `civis.tests.create_client_mock()` when the code under test takes a client. It's autospecced from the API spec, so a misspelled endpoint method or parameter fails the test. Prefer it over a bare `mock.Mock()`.
+  - `APIClient(local_api_spec=API_SPEC, api_key="none")` only when testing `APIClient`'s own methods (see [tests/test_client.py](tests/test_client.py)).
+  - Patching `civis.cli.__main__.get_api_key` for the CLI's `invoke()`, which reads the key without building an `APIClient`.
 
 ### Other maintainer tools
 
