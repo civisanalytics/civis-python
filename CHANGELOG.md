@@ -7,16 +7,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## 2.11.0 - 2026-11-09
+
+### Added
 - Added support for Python 3.15. (#545)
 - Added a `CLAUDE.md` file with guidance for Claude Code in this codebase. (#549)
+
 ### Changed
 - Lifted the `Sphinx < 9` pin for the doc build and refreshed `docs/requirements.txt`. (#546)
 - The test suite no longer requires the `CIVIS_API_KEY` environment variable. (#550)
 - Updated the API spec. (#552)
+
 ### Deprecated
 - Deprecated the `unquoted` parameter of `civis.io.civis_to_csv`, which has no effect.
   It will be removed in v3.0.0. (#548)
-### Removed
+
 ### Fixed
 - Fixed the docstring of `civis.io.civis_to_multifile_csv` for the `unquoted` parameter
   and the `'unquoted'` key of the returned manifest, which described the opposite
@@ -36,6 +47,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   doesn't allow (`std.echo`, `std.async_noop`). Invalid YAML now raises
   `WorkflowValidationError`, and workflow names containing "version" are no
   longer exempt from validation. (#552)
+
 ### Security
 - Updated `docs/requirements.txt` due to a security advisory for certifi. See GHSA-6q48-6c7w-9gw2 (#544)
 
