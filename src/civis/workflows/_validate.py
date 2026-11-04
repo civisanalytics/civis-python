@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import graphlib
 import io
+import json
 import re
 from collections import Counter
 from collections.abc import Iterator
@@ -73,7 +74,7 @@ def _validate_workflow_yaml_ascii_only(wf_def: str) -> None:
 
 def _move_inline_action_params_to_input(wf: Any) -> None:
     """Turn {"action": "civis.run_job job_id=1"} into the equivalent
-    {"action": "civis.run_job", "input": {"job_id": "1"}}, as Mistral does."""
+    {"action": "civis.run_job", "input": {"job_id": 1}}, as Mistral does."""
     if not isinstance(wf, dict):
         return
     for key, workflow in wf.items():
@@ -90,10 +91,25 @@ def _move_inline_action_params_to_input(wf: Any) -> None:
                 continue
             if match := _INLINE_ACTION.match(action):
                 task["action"] = match.group()
-            params = dict(_INLINE_ACTION_PARAM.findall(action))
+            params = {
+                name: _parse_inline_action_param_value(value)
+                for name, value in _INLINE_ACTION_PARAM.findall(action)
+            }
             task_input = task.get("input", {})
             if params and isinstance(task_input, dict):
                 task["input"] = {**task_input, **params}
+
+
+def _parse_inline_action_param_value(value: str) -> Any:
+    """Strip the quotes of a quoted value, or else decode it as JSON
+    if possible, as Mistral does."""
+    value = value.strip()
+    if value[0] in "\"'":
+        return value[1:-1]
+    try:
+        return json.loads(value)
+    except json.JSONDecodeError:
+        return value
 
 
 def _get_next_task_names(next_tasks: str | list | None) -> list[str]:
@@ -215,7 +231,7 @@ def _validate_join_tasks(
             )
         if not (join := task["join"]):
             continue
-        if len(str(task_name)) > _MAX_LENGTH_JOIN_TASK_NAME:
+        if len(task_name) > _MAX_LENGTH_JOIN_TASK_NAME:
             raise WorkflowValidationError(
                 f"The name of a task with 'join' cannot exceed "
                 f"{_MAX_LENGTH_JOIN_TASK_NAME} characters: {task_name!r}"

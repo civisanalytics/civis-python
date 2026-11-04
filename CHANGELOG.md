@@ -38,10 +38,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   `wait-after`, and `wait-before`. (#551)
 - `civis.workflows.validate_workflow_yaml` now matches Civis Platform's
   workflow validation more closely. It now accepts inline action parameters,
+  YAQL expressions in the `syncs` input of `civis.import`,
   tabs, `join: one`, `join: 0`, `concurrency: 0`, `fail-on` as a boolean,
   and an unquoted `version: 2.0`. It now catches cycles, workflows without
   a start task, unsatisfiable `join`s, `join` combined with `pause-before`,
   malformed `with-items` and transitions, undefined targets in `task-defaults`,
+  non-string task names,
   missing `input` for Civis actions, `tasks()` usage, misuse of `requires` and
   transitions across direct and reverse workflows, and actions that Platform
   doesn't allow (`std.echo`, `std.async_noop`). Invalid YAML now raises

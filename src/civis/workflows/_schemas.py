@@ -109,19 +109,24 @@ def _if_then_import() -> dict:
         required_post_syncs.remove("id")
     properties = {
         **{name: {} for name in required_post + optional_post},
-        "syncs": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                # Although we have type annotations for each key name,
-                # leave the value unspecified as {} to allow YAQL expressions.
-                "properties": {
-                    name: {} for name in required_post_syncs + optional_post_syncs
-                },
-                "required": required_post_syncs,
-                "additionalProperties": False,
-            },
-        },
+        "syncs": _allow_yaql_expression(
+            {
+                "type": "array",
+                "items": _allow_yaql_expression(
+                    {
+                        "type": "object",
+                        # Although we have type annotations for each key name,
+                        # leave the value unspecified as {} to allow YAQL expressions.
+                        "properties": {
+                            name: {}
+                            for name in required_post_syncs + optional_post_syncs
+                        },
+                        "required": required_post_syncs,
+                        "additionalProperties": False,
+                    }
+                ),
+            }
+        ),
     }
     return _if_then_input("civis.import", properties, required_post)
 
@@ -308,7 +313,7 @@ WORKFLOW_SCHEMA = {
             "task-defaults": TASK_DEFAULTS_SCHEMA,
             "tasks": {
                 "type": "object",
-                "propertyNames": {"maxLength": 255},
+                "propertyNames": {"type": "string", "maxLength": 255},
                 "additionalProperties": TASK_SCHEMA,
                 "minProperties": 1,
             },

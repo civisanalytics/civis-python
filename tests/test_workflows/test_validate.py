@@ -69,6 +69,8 @@ def _workflow_yaml(tasks: str, workflow_extras: str = "", version="'2.0'") -> st
 
 
 _NOOP = "action: std.noop"
+_INLINE_IMPORT = "civis.import name='x' sync_type='Dbsync' is_outbound=false"
+_SYNCS = '[{"source":{},"destination":{}}]'
 
 
 @pytest.mark.parametrize(
@@ -277,6 +279,32 @@ def test_invalid_workflow_yaml_civis_action_input_not_an_expression():
             id="inline action params with quotes",
         ),
         pytest.param(
+            _workflow_yaml(f"a:\n  action: {_INLINE_IMPORT} syncs={_SYNCS}"),
+            id="inline action param array",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  action: {_INLINE_IMPORT} syncs=<% $.syncs %>",
+                "input: [syncs]",
+            ),
+            id="inline action param expression for an array",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  action: {_INLINE_IMPORT}\n  input:\n    syncs: <% $.syncs %>",
+                "input: [syncs]",
+            ),
+            id="expression for an array action input",
+        ),
+        pytest.param(
+            _workflow_yaml(
+                f"a:\n  action: {_INLINE_IMPORT}\n  input:\n"
+                "    syncs: [<% $.sync %>]",
+                "input: [sync]",
+            ),
+            id="expression for an array item in action input",
+        ),
+        pytest.param(
             "version: '2.0'\nworkflow:\n\ttasks:\n\t\ta:\n\t\t\taction: std.noop\n",
             id="tabs",
         ),
@@ -426,6 +454,11 @@ def test_valid_workflow_yaml_variants(wf_yaml):
             "'std.bogus' is not one of",
         ),
         (_workflow_yaml(f"{'a' * 256}:\n  {_NOOP}"), "is too long"),
+        (_workflow_yaml(f"123:\n  {_NOOP}"), "123 is not of type 'string'"),
+        (
+            _workflow_yaml(f"a:\n  action: {_INLINE_IMPORT} syncs='{_SYNCS}'"),
+            "does not match",
+        ),
         (
             _workflow_yaml(
                 f"a:\n  {_NOOP}\n  on-success: [{'j' * 209}]\n{'j' * 209}:\n"
