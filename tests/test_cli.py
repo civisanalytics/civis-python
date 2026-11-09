@@ -75,6 +75,7 @@ def test_generate_cli_civis(mock_retrieve_spec_dict):
         "include_header",
         "interactive",
         "preview_rows",
+        "read_only",
         "sql",
         "unquoted",
         "json_output",

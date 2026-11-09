@@ -10,6 +10,7 @@ https://docs.openstack.org/mistral/latest/user/wf_lang_v2.html#workflows
 from __future__ import annotations
 
 import inspect
+from typing import Any
 
 from civis import APIClient
 from civis.resources import API_SPEC_PATH
@@ -18,6 +19,7 @@ _CLIENT = APIClient(local_api_spec=API_SPEC_PATH, api_key="no-key-needed")
 
 # Civis Platform's Mistral only supports YAQL expressions, not Jinja.
 _YAQL_EXPRESSION_PATTERN = r"(?s)^<%.*?%>\s*$"
+_YAQL_EXPRESSION = {"type": "string", "pattern": _YAQL_EXPRESSION_PATTERN}
 
 
 def _allow_yaql_expression(schema: dict) -> dict:
@@ -26,6 +28,25 @@ def _allow_yaql_expression(schema: dict) -> dict:
         "type": [schema["type"], "string"],
         "pattern": _YAQL_EXPRESSION_PATTERN,
     }
+
+
+_BOOLEAN_OR_YAQL = _allow_yaql_expression({"type": "boolean"})
+_NON_NEGATIVE_INTEGER_OR_YAQL = _allow_yaql_expression(
+    {"type": "integer", "minimum": 0}
+)
+_NONEMPTY_STRING = {"type": "string", "minLength": 1}
+_NONEMPTY_OBJECT = {"type": "object", "minProperties": 1}
+_UNIQUE_STRING_LIST = {
+    "type": "array",
+    "items": _NONEMPTY_STRING,
+    "uniqueItems": True,
+    "minItems": 1,
+}
+_WITH_ITEMS_ITEM = {
+    "type": "string",
+    # e.g., "x in [1, 2, 3]" or "x in <% $.xs %>"
+    "pattern": r"^\s*[\w\-]+\s*in\s*(\[.+\]|<%.*?%>)",
+}
 
 
 def _endpoint_method_params(endpoint: str, method: str) -> tuple[list[str], list[str]]:
@@ -41,6 +62,24 @@ def _endpoint_method_params(endpoint: str, method: str) -> tuple[list[str], list
     return required, optional
 
 
+def _if_then_input(action: str, properties: dict, required: list[str]) -> dict:
+    then: dict = {
+        "properties": {
+            "input": _allow_yaql_expression(
+                {
+                    "type": "object",
+                    "properties": properties,
+                    "required": required,
+                    "additionalProperties": False,
+                }
+            ),
+        },
+    }
+    if required:
+        then["required"] = ["input"]
+    return {"if": {"properties": {"action": {"const": action}}}, "then": then}
+
+
 def _if_then_create_script(action: str) -> dict:
     endpoint, script_type = action.removeprefix("civis.").split(".")
     if script_type == "container":
@@ -50,23 +89,10 @@ def _if_then_create_script(action: str) -> dict:
         # Civis Platform allows the workflow task name to be the script name.
         required.remove("name")
         optional.append("name")
-    return {
-        "if": {"properties": {"action": {"const": action}}},
-        "then": {
-            "properties": {
-                "input": _allow_yaql_expression(
-                    {
-                        "type": "object",
-                        # Although we have type annotations for each key name,
-                        # leave the value unspecified as {} to allow YAQL expressions.
-                        "properties": {name: {} for name in required + optional},
-                        "required": required,
-                        "additionalProperties": False,
-                    }
-                ),
-            },
-        },
-    }
+    # Although we have type annotations for each key name,
+    # leave the value unspecified as {} to allow YAQL expressions.
+    properties: dict = {name: {} for name in required + optional}
+    return _if_then_input(action, properties, required)
 
 
 def _if_then_import() -> dict:
@@ -83,90 +109,70 @@ def _if_then_import() -> dict:
         required_post_syncs.remove("id")
     properties = {
         **{name: {} for name in required_post + optional_post},
-        "syncs": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                # Although we have type annotations for each key name,
-                # leave the value unspecified as {} to allow YAQL expressions.
-                "properties": {
-                    name: {} for name in required_post_syncs + optional_post_syncs
-                },
-                "required": required_post_syncs,
-                "additionalProperties": False,
-            },
-        },
-    }
-    return {
-        "if": {"properties": {"action": {"const": "civis.import"}}},
-        "then": {
-            "properties": {
-                "input": _allow_yaql_expression(
+        "syncs": _allow_yaql_expression(
+            {
+                "type": "array",
+                "items": _allow_yaql_expression(
                     {
                         "type": "object",
-                        "properties": properties,
-                        "required": required_post,
+                        # Although we have type annotations for each key name,
+                        # leave the value unspecified as {} to allow YAQL expressions.
+                        "properties": {
+                            name: {}
+                            for name in required_post_syncs + optional_post_syncs
+                        },
+                        "required": required_post_syncs,
                         "additionalProperties": False,
                     }
                 ),
-            },
-        },
+            }
+        ),
     }
+    return _if_then_input("civis.import", properties, required_post)
 
 
 def _if_then_execute(action: str, id_name: str) -> dict:
-    return {
-        "if": {"properties": {"action": {"const": action}}},
-        "then": {
-            "properties": {
-                "input": _allow_yaql_expression(
-                    {
-                        "type": "object",
-                        # Although the ID should be an integer,
-                        # leave it unspecified as {} to allow YAQL expressions.
-                        "properties": {id_name: {}},
-                        "required": [id_name],
-                        "additionalProperties": False,
-                    }
-                ),
-            },
-        },
-    }
+    # Although the ID should be an integer,
+    # leave it unspecified as {} to allow YAQL expressions.
+    return _if_then_input(action, {id_name: {}}, [id_name])
 
 
+# A transition target is a task name or an engine command ("fail", etc.).
+_NEXT_TASK = {"type": "string", "pattern": r"^\S+$"}
+
+# Mistral also allows a single {task: guard} object or a {"publish", "next"} object,
+# but Civis Platform either rejects those or errors out on them.
 TASK_TRANSITION_SCHEMA = {
     "oneOf": [
-        # A single task name.
-        {"type": "string"},
-        # A list of either (i) task names to transition to, or
-        # (ii) task names that each have a YAQL guard expression, or
-        # a mixture of (i) and (ii).
-        {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}},
-        # A single task name or a list of task names under the (optional?) key "next".
+        _NEXT_TASK,
         {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "oneOf": [
-                        {"type": "string"},
-                        {"type": "array", "items": {"type": "string"}},
-                        {"type": "array", "items": {"type": "object"}},
-                    ],
-                },
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    _NEXT_TASK,
+                    # A task name with a YAQL guard expression.
+                    {
+                        "type": "object",
+                        "minProperties": 1,
+                        "maxProperties": 1,
+                        "propertyNames": _NEXT_TASK,
+                        "additionalProperties": _YAQL_EXPRESSION,
+                    },
+                ],
             },
+            "uniqueItems": True,
+            "minItems": 1,
         },
     ],
 }
 
-TASK_SCHEMA = {
+TASK_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {
-        "name": {
-            "type": "string",
-            "maxLength": 255,
-            "not": {"enum": ["noop", "fail", "succeed", "pause"]},
-        },
+        # Mistral overwrites "name" and "type" with the task key and workflow type.
+        "name": {},
+        "type": {},
         "description": {"type": "string"},
         "action": {
             "type": "string",
@@ -182,58 +188,59 @@ TASK_SCHEMA = {
                 "civis.import",
                 "civis.run_job",
                 "civis.workflows.execute",
-                "std.async_noop",
-                "std.echo",
                 "std.fail",
                 "std.noop",
             ],
         },
-        "input": _allow_yaql_expression({"type": "object"}),
-        "publish": {"type": "object"},
-        "publish-on-error": {"type": "object"},
+        "input": _allow_yaql_expression({"type": "object", "minProperties": 1}),
+        "publish": _NONEMPTY_OBJECT,
+        "publish-on-error": _NONEMPTY_OBJECT,
         "on-success": TASK_TRANSITION_SCHEMA,
         "on-error": TASK_TRANSITION_SCHEMA,
         "on-complete": TASK_TRANSITION_SCHEMA,
         "join": {
             "oneOf": [
-                {"const": "all"},
-                {"type": "integer", "minimum": 1},
+                {"enum": ["all", "one"]},
+                {"type": "integer", "minimum": 0},
             ],
         },
-        "requires": {"type": "array"},
+        "requires": _UNIQUE_STRING_LIST,
         "with-items": {
             "oneOf": [
-                {"type": "string"},
-                {"type": "array", "items": {"type": "string"}},
-            ],
-        },
-        "keep-result": _allow_yaql_expression({"type": "boolean"}),
-        "target": {"type": "string"},
-        "pause-before": _allow_yaql_expression({"type": "boolean"}),
-        "wait-before": _allow_yaql_expression({"type": "number", "minimum": 0}),
-        "wait-after": _allow_yaql_expression({"type": "number", "minimum": 0}),
-        "fail-on": {"type": "string"},
-        "timeout": _allow_yaql_expression({"type": "number", "minimum": 0}),
-        "retry": {
-            "oneOf": [
-                {"type": "string"},
+                _WITH_ITEMS_ITEM,
                 {
-                    "type": "object",
-                    "properties": {
-                        "count": _allow_yaql_expression(
-                            {"type": "number", "minimum": 0}
-                        ),
-                        "delay": _allow_yaql_expression(
-                            {"type": "number", "minimum": 0}
-                        ),
-                        "break-on": {"type": "string"},
-                        "continue-on": {"type": "string"},
-                    },
+                    "type": "array",
+                    "items": _WITH_ITEMS_ITEM,
+                    "uniqueItems": True,
+                    "minItems": 1,
                 },
             ],
         },
-        "concurrency": _allow_yaql_expression({"type": "number", "minimum": 1}),
-        "safe-rerun": _allow_yaql_expression({"type": "boolean"}),
+        "keep-result": _BOOLEAN_OR_YAQL,
+        "target": _NONEMPTY_STRING,
+        "pause-before": _BOOLEAN_OR_YAQL,
+        "wait-before": _NON_NEGATIVE_INTEGER_OR_YAQL,
+        "wait-after": _NON_NEGATIVE_INTEGER_OR_YAQL,
+        "fail-on": _BOOLEAN_OR_YAQL,
+        "timeout": _NON_NEGATIVE_INTEGER_OR_YAQL,
+        "retry": {
+            "oneOf": [
+                _NONEMPTY_STRING,
+                {
+                    "type": "object",
+                    "properties": {
+                        "count": _NON_NEGATIVE_INTEGER_OR_YAQL,
+                        "delay": _NON_NEGATIVE_INTEGER_OR_YAQL,
+                        "break-on": _YAQL_EXPRESSION,
+                        "continue-on": _YAQL_EXPRESSION,
+                    },
+                    "required": ["count", "delay"],
+                    "additionalProperties": False,
+                },
+            ],
+        },
+        "concurrency": _NON_NEGATIVE_INTEGER_OR_YAQL,
+        "safe-rerun": _BOOLEAN_OR_YAQL,
     },
     "required": ["action"],
     "allOf": [
@@ -255,35 +262,64 @@ TASK_SCHEMA = {
     "additionalProperties": False,
 }
 
+TASK_DEFAULTS_SCHEMA = {
+    "type": "object",
+    "properties": {
+        key: TASK_SCHEMA["properties"][key]
+        for key in (
+            "retry",
+            "wait-before",
+            "wait-after",
+            "timeout",
+            "pause-before",
+            "concurrency",
+            "fail-on",
+            "on-success",
+            "on-error",
+            "on-complete",
+            "safe-rerun",
+            "requires",
+        )
+    },
+    "minProperties": 1,
+    "additionalProperties": False,
+}
 
 WORKFLOW_SCHEMA = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
-    "properties": {"version": {"const": "2.0"}},
-    "patternProperties": {
-        "^(?:(?!version).)*$": {
-            "type": "object",
-            "properties": {
-                "type": {"type": "string"},
-                "description": {"type": "string"},
-                "input": {
-                    "type": "array",
-                    "items": {"oneOf": [{"type": "string"}, {"type": "object"}]},
+    "properties": {"version": {"enum": ["2.0", 2.0]}},
+    # The one key other than "version" is the workflow's name.
+    "additionalProperties": {
+        "type": "object",
+        "properties": {
+            "type": {"enum": ["direct", "reverse"]},
+            "description": {"type": "string"},
+            "input": {
+                "type": "array",
+                "items": {
+                    "oneOf": [
+                        _NONEMPTY_STRING,
+                        {"type": "object", "minProperties": 1, "maxProperties": 1},
+                    ],
                 },
-                "output": {},
-                "output-on-error": {},
-                "task-defaults": {
-                    k: v for k, v in TASK_SCHEMA.items() if k != "required"
-                },
-                "tasks": {
-                    "type": "object",
-                    "patternProperties": {"^.*$": TASK_SCHEMA},
-                    "minProperties": 1,
-                },
+                "uniqueItems": True,
+                "minItems": 1,
             },
-            "required": ["tasks"],
-            "additionalProperties": True,  # Allow anchor definitions.
+            "output": _NONEMPTY_OBJECT,
+            "output-on-error": _NONEMPTY_OBJECT,
+            "vars": _NONEMPTY_OBJECT,
+            "tags": _UNIQUE_STRING_LIST,
+            "task-defaults": TASK_DEFAULTS_SCHEMA,
+            "tasks": {
+                "type": "object",
+                "propertyNames": {"type": "string", "maxLength": 255},
+                "additionalProperties": TASK_SCHEMA,
+                "minProperties": 1,
+            },
         },
+        "required": ["tasks"],
+        "additionalProperties": True,  # Allow anchor definitions.
     },
     "required": ["version"],
     "minProperties": 2,
